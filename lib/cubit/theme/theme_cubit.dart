@@ -49,8 +49,7 @@ class ThemeCubit extends Cubit<ThemeState> {
 
   bool _isDarkMode(ThemeMode themeMode) {
     if (themeMode == ThemeMode.system) {
-      return WidgetsBinding.instance.window.platformDispatcher
-              .platformBrightness ==
+      return WidgetsBinding.instance.platformDispatcher.platformBrightness ==
           Brightness.dark;
     }
     return themeMode == ThemeMode.dark;
