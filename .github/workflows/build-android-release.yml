@@ -1,0 +1,93 @@
+name: Build Android Release APK
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+      - master
+    tags:
+      - 'v*'
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  build-android-release:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.38.7'
+          channel: 'stable'
+          cache: true
+          
+      - name: Verify Flutter and Dart versions
+        run: |
+          flutter --version
+          dart --version
+          
+      - name: Set up Java JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+          cache: 'gradle'
+          
+      - name: Verify Java version
+        run: java -version
+        
+      - name: Get Flutter dependencies
+        run: flutter pub get
+        
+      - name: Run Flutter analyze
+        run: flutter analyze
+        
+      - name: Run Flutter tests
+        run: flutter test
+        
+      - name: Decode keystore
+        if: ${{ env.KEYSTORE_BASE64 != '' }}
+        run: |
+          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > android/app/pilates-app.jks
+        env:
+          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+          
+      - name: Create key.properties
+        if: ${{ env.KEYSTORE_BASE64 != '' }}
+        run: |
+          echo "storePassword=${{ secrets.KEYSTORE_PASSWORD }}" > android/key.properties
+          echo "keyPassword=${{ secrets.KEY_PASSWORD }}" >> android/key.properties
+          echo "keyAlias=${{ secrets.KEY_ALIAS }}" >> android/key.properties
+          echo "storeFile=pilates-app.jks" >> android/key.properties
+        env:
+          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+          
+      - name: Build release APK
+        run: flutter build apk --release
+        
+      - name: Display APK information
+        run: |
+          APK_PATH=$(find build/app/outputs/flutter-apk -name "app-release.apk" | head -1)
+          if [ -f "$APK_PATH" ]; then
+            echo "Release APK built successfully at: $APK_PATH"
+            echo "APK size: $(du -h "$APK_PATH" | cut -f1)"
+            echo "APK MD5: $(md5sum "$APK_PATH" | cut -d' ' -f1)"
+          else
+            echo "Error: Release APK file not found!"
+            exit 1
+          fi
+          
+      - name: Upload Release APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: pilates-app-release-apk
+          path: build/app/outputs/flutter-apk/app-release.apk
+          retention-days: 90
+          if-no-files-found: error
