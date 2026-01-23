@@ -37,6 +37,13 @@ jobs:
       - name: Verify Java version
         run: java -version
         
+      - name: Debug repository info
+        run: |
+          echo "Repository: ${{ github.repository }}"
+          echo "Workspace: ${{ github.workspace }}"
+          pwd
+          ls -la
+          
       - name: Get Flutter dependencies
         run: flutter pub get
         
@@ -46,15 +53,21 @@ jobs:
       - name: Decode keystore
         if: ${{ secrets.KEYSTORE_BASE64 != '' }}
         run: |
+          echo "Decoding keystore..."
           echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > android/app/pilates-app.jks
+          echo "Keystore decoded successfully"
+          ls -la android/app/pilates-app.jks
           
       - name: Create key.properties
         if: ${{ secrets.KEYSTORE_BASE64 != '' }}
         run: |
+          echo "Creating key.properties..."
           echo "storePassword=${{ secrets.KEYSTORE_PASSWORD }}" > android/key.properties
           echo "keyPassword=${{ secrets.KEY_PASSWORD }}" >> android/key.properties
           echo "keyAlias=${{ secrets.KEY_ALIAS }}" >> android/key.properties
           echo "storeFile=pilates-app.jks" >> android/key.properties
+          echo "key.properties created successfully"
+          ls -la android/key.properties
           
       - name: Build release APK
         run: flutter build apk --release
