@@ -2,12 +2,6 @@ name: Build Android Release APK
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - main
-      - master
-    tags:
-      - 'v*'
 
 permissions:
   contents: read
