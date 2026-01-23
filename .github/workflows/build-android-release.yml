@@ -51,23 +51,29 @@ jobs:
         run: flutter analyze --no-fatal-infos
         
       - name: Decode keystore
-        if: secrets.KEYSTORE_BASE64
         run: |
-          echo "Decoding keystore..."
-          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > android/app/pilates-app.jks
-          echo "Keystore decoded successfully"
-          ls -la android/app/pilates-app.jks
+          if [ -n "${{ secrets.KEYSTORE_BASE64 }}" ]; then
+            echo "Decoding keystore..."
+            echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > android/app/pilates-app.jks
+            echo "Keystore decoded successfully"
+            ls -la android/app/pilates-app.jks
+          else
+            echo "No keystore secret found, will use debug signing"
+          fi
           
       - name: Create key.properties
-        if: secrets.KEYSTORE_BASE64
         run: |
-          echo "Creating key.properties..."
-          echo "storePassword=${{ secrets.KEYSTORE_PASSWORD }}" > android/key.properties
-          echo "keyPassword=${{ secrets.KEY_PASSWORD }}" >> android/key.properties
-          echo "keyAlias=${{ secrets.KEY_ALIAS }}" >> android/key.properties
-          echo "storeFile=pilates-app.jks" >> android/key.properties
-          echo "key.properties created successfully"
-          ls -la android/key.properties
+          if [ -n "${{ secrets.KEYSTORE_BASE64 }}" ]; then
+            echo "Creating key.properties..."
+            echo "storePassword=${{ secrets.KEYSTORE_PASSWORD }}" > android/key.properties
+            echo "keyPassword=${{ secrets.KEY_PASSWORD }}" >> android/key.properties
+            echo "keyAlias=${{ secrets.KEY_ALIAS }}" >> android/key.properties
+            echo "storeFile=pilates-app.jks" >> android/key.properties
+            echo "key.properties created successfully"
+            ls -la android/key.properties
+          else
+            echo "No keystore secrets found, skipping key.properties creation"
+          fi
           
       - name: Build release APK
         run: flutter build apk --release
