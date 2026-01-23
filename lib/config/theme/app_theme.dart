@@ -12,26 +12,24 @@ class AppTheme {
         secondary: AppColors.lightSecondary,
         tertiary: AppColors.lightTertiary,
         surface: AppColors.lightSurface,
-        background: AppColors.lightBackground,
         error: AppColors.lightError,
         onPrimary: AppColors.lightOnPrimary,
         onSecondary: AppColors.lightOnSecondary,
-        onBackground: AppColors.lightOnBackground,
         onSurface: AppColors.lightOnSurface,
       ),
       textTheme: TextTheme(
         displayLarge: AppTextStyles.displayLarge
-            .copyWith(color: AppColors.lightOnBackground),
+            .copyWith(color: AppColors.lightOnSurface),
         displayMedium: AppTextStyles.displayMedium
-            .copyWith(color: AppColors.lightOnBackground),
+            .copyWith(color: AppColors.lightOnSurface),
         displaySmall: AppTextStyles.displaySmall
-            .copyWith(color: AppColors.lightOnBackground),
+            .copyWith(color: AppColors.lightOnSurface),
         headlineLarge: AppTextStyles.headlineLarge
-            .copyWith(color: AppColors.lightOnBackground),
+            .copyWith(color: AppColors.lightOnSurface),
         headlineMedium: AppTextStyles.headlineMedium
-            .copyWith(color: AppColors.lightOnBackground),
+            .copyWith(color: AppColors.lightOnSurface),
         headlineSmall: AppTextStyles.headlineSmall
-            .copyWith(color: AppColors.lightOnBackground),
+            .copyWith(color: AppColors.lightOnSurface),
         titleLarge:
             AppTextStyles.titleLarge.copyWith(color: AppColors.lightOnSurface),
         titleMedium:
@@ -39,9 +37,9 @@ class AppTheme {
         titleSmall:
             AppTextStyles.titleSmall.copyWith(color: AppColors.lightOnSurface),
         bodyLarge: AppTextStyles.bodyLarge
-            .copyWith(color: AppColors.lightOnBackground),
+            .copyWith(color: AppColors.lightOnSurface),
         bodyMedium: AppTextStyles.bodyMedium
-            .copyWith(color: AppColors.lightOnBackground),
+            .copyWith(color: AppColors.lightOnSurface),
         bodySmall: AppTextStyles.bodySmall.copyWith(color: AppColors.grey),
         labelLarge:
             AppTextStyles.labelLarge.copyWith(color: AppColors.lightPrimary),
@@ -113,26 +111,24 @@ class AppTheme {
         secondary: AppColors.darkSecondary,
         tertiary: AppColors.darkTertiary,
         surface: AppColors.darkSurface,
-        background: AppColors.darkBackground,
         error: AppColors.darkError,
         onPrimary: AppColors.darkOnPrimary,
         onSecondary: AppColors.darkOnSecondary,
-        onBackground: AppColors.darkOnBackground,
         onSurface: AppColors.darkOnSurface,
       ),
       textTheme: TextTheme(
         displayLarge: AppTextStyles.displayLarge
-            .copyWith(color: AppColors.darkOnBackground),
+            .copyWith(color: AppColors.darkOnSurface),
         displayMedium: AppTextStyles.displayMedium
-            .copyWith(color: AppColors.darkOnBackground),
+            .copyWith(color: AppColors.darkOnSurface),
         displaySmall: AppTextStyles.displaySmall
-            .copyWith(color: AppColors.darkOnBackground),
+            .copyWith(color: AppColors.darkOnSurface),
         headlineLarge: AppTextStyles.headlineLarge
-            .copyWith(color: AppColors.darkOnBackground),
+            .copyWith(color: AppColors.darkOnSurface),
         headlineMedium: AppTextStyles.headlineMedium
-            .copyWith(color: AppColors.darkOnBackground),
+            .copyWith(color: AppColors.darkOnSurface),
         headlineSmall: AppTextStyles.headlineSmall
-            .copyWith(color: AppColors.darkOnBackground),
+            .copyWith(color: AppColors.darkOnSurface),
         titleLarge:
             AppTextStyles.titleLarge.copyWith(color: AppColors.darkOnSurface),
         titleMedium:
@@ -140,9 +136,9 @@ class AppTheme {
         titleSmall:
             AppTextStyles.titleSmall.copyWith(color: AppColors.darkOnSurface),
         bodyLarge: AppTextStyles.bodyLarge
-            .copyWith(color: AppColors.darkOnBackground),
+            .copyWith(color: AppColors.darkOnSurface),
         bodyMedium: AppTextStyles.bodyMedium
-            .copyWith(color: AppColors.darkOnBackground),
+            .copyWith(color: AppColors.darkOnSurface),
         bodySmall: AppTextStyles.bodySmall.copyWith(color: AppColors.grey),
         labelLarge:
             AppTextStyles.labelLarge.copyWith(color: AppColors.darkPrimary),
