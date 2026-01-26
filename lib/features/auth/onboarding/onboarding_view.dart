@@ -29,7 +29,7 @@ class _OnboardingViewState extends State<OnboardingView> {
 
   void _onNext() {
     context.read<AuthCubit>().goToSignUp();
-  }
+   }
 
   @override
   Widget build(BuildContext context) {
