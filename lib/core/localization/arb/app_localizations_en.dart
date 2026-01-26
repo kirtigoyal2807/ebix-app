@@ -16,11 +16,12 @@ class AppLocalizationsEn extends AppLocalizations {
       'Improve your strength and flexibility with guided sessions.';
 
   @override
-  String get onboarding_title_2 => 'Train with Experts';
+  String get onboarding_title_2 =>
+      'Move with intention, strength, and balance.';
 
   @override
   String get onboarding_desc_2 =>
-      'Learn from certified instructors anytime, anywhere.';
+      'Build strength, flexibility, and calm through guided Pilates sessions made for you.';
 
   @override
   String get onboarding_title_3 => 'Track Your Progress';
@@ -28,6 +29,18 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get onboarding_desc_3 =>
       'Monitor your improvement and stay motivated.';
+
+  @override
+  String get noExperienceNeeded => 'No experience needed';
+
+  @override
+  String get alreadyHaveAccount => 'I already have an account';
+
+  @override
+  String get help => 'Help';
+
+  @override
+  String get languageCode => 'EN';
 
   @override
   String get next => 'Next';
@@ -48,7 +61,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get helpAndSupport => 'Help & Support';
 
   @override
-  String get changeLanguage => 'Change Language';
+  String get changeLanguage => 'Select Language';
 
   @override
   String get firstName => 'First name';
@@ -60,7 +73,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get email => 'Email address';
 
   @override
-  String get createPassword => 'Create password';
+  String get createPassword => 'Create a password and add your phone';
 
   @override
   String get passwordHint =>
@@ -79,41 +92,42 @@ class AppLocalizationsEn extends AppLocalizations {
   String get otpHint => 'Enter the 6-digit code sent to your email';
 
   @override
-  String get resendCode => 'Resend code';
+  String get resendCode => 'Didn\'t receive code? Resend Code';
 
   @override
   String get verify => 'Verify';
 
   @override
-  String get experienceTitle => 'Your experience level';
+  String get experienceTitle => 'Your Pilates experience';
 
   @override
-  String get experienceSubtitle => 'Help us tailor workouts for you';
+  String get experienceSubtitle => 'Help us personalize your journey';
 
   @override
   String get experienceBeginner => 'Beginner';
 
   @override
-  String get experienceBeginnerDesc => 'New to Pilates or just getting started';
+  String get experienceBeginnerDesc => 'New to Pilates or just starting out';
 
   @override
   String get experienceIntermediate => 'Intermediate';
 
   @override
   String get experienceIntermediateDesc =>
-      'Some experience and regular practice';
+      'Comfortable with basics, ready to progress';
 
   @override
   String get experienceAdvanced => 'Advanced';
 
   @override
-  String get experienceAdvancedDesc => 'Experienced with advanced routines';
+  String get experienceAdvancedDesc =>
+      'Experienced practitioner seeking challenge';
 
   @override
-  String get branchTitle => 'Choose your studio';
+  String get branchTitle => 'Choose your home studio';
 
   @override
-  String get branchSubtitle => 'Select the location where you plan to train';
+  String get branchSubtitle => 'Select your preferred location';
 
   @override
   String get branchDowntown => 'Downtown Studio';
@@ -131,11 +145,47 @@ class AppLocalizationsEn extends AppLocalizations {
   String get finishSignUp => 'Create account';
 
   @override
-  String get liveChat => 'Live chat';
+  String get liveChat => 'Live Chat';
 
   @override
-  String get emailSupport => 'Email support';
+  String get liveChatDesc => 'Chat with our team • Available 9 AM - 9 PM';
 
   @override
-  String get callSupport => 'Call support';
+  String get emailSupport => 'Email Support';
+
+  @override
+  String get emailSupportDesc => 'support@thepilatesstudio.com';
+
+  @override
+  String get phoneSupport => 'Phone Support';
+
+  @override
+  String get phoneSupportDesc => '91 98765 43210 • Mon-Sat 9 AM - 7 PM';
+
+  @override
+  String get splashAppName => 'The Pilates';
+
+  @override
+  String get splashStudio => 'STUDIO';
+
+  @override
+  String get splashTagline => 'Your Pilates Journey Begins';
+
+  @override
+  String get splashVersion => 'Version 1.0';
+
+  @override
+  String get letsGo => 'Let\'s get to know you';
+
+  @override
+  String get tellYourName => 'Tell us your name and email';
+
+  @override
+  String get secureYourAccount => 'Secure your account';
+
+  @override
+  String get verifyPhone => 'Verify your phone';
+
+  @override
+  String get enterCode => 'Enter the 4-digit code sent to';
 }

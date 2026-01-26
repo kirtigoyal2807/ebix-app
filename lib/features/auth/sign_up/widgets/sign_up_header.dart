@@ -32,11 +32,7 @@ class SignUpHeader extends StatelessWidget {
           subtitle,
           style: AppTextStyles.body,
         ),
-        const SizedBox(height: AppSpacing.md),
-        AppText(
-          'Step ${step + 1} of $totalSteps',
-          style: AppTextStyles.caption,
-        ),
+
       ],
     );
   }

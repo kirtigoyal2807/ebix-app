@@ -13,83 +13,91 @@ class HelpSupportBottomSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       top: false,
-      child: Padding(
-        padding: const EdgeInsets.all(AppSpacing.lg),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Handle
-            Center(
-              child: Container(
-                width: 40,
-                height: 4,
-                margin: const EdgeInsets.only(
-                  bottom: AppSpacing.lg,
-                ),
-                decoration: BoxDecoration(
-                  color: Theme.of(context).dividerColor,
-                  borderRadius: BorderRadius.circular(AppRadius.sm),
-                ),
+      child: Material(
+        color: Colors.white, // ✅ WHITE BACKGROUND
+        borderRadius: const BorderRadius.vertical(
+          top: Radius.circular(20),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(AppSpacing.lg),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Header
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  AppText(
+                    context.l10n.helpAndSupport,
+                    style: AppTextStyles.headline,
+                  ),
+                  IconButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      icon: Icon(
+                        Icons.close,
+                        color: Theme.of(context).hintColor,
+                      ))
+                ],
               ),
-            ),
-
-            // Title
-            AppText(
-              context.l10n.helpAndSupport,
-              style: AppTextStyles.headline,
-            ),
-
-            const SizedBox(height: AppSpacing.lg),
-
-            _HelpOption(
-              icon: Icons.chat_bubble_outline,
-              title: context.l10n.liveChat,
-              onTap: () {
-                // TODO: Hook live chat
-                Navigator.pop(context);
-              },
-            ),
-
-            const SizedBox(height: AppSpacing.md),
-
-            _HelpOption(
-              icon: Icons.email_outlined,
-              title: context.l10n.emailSupport,
-              onTap: () {
-                // TODO: Hook email support
-                Navigator.pop(context);
-              },
-            ),
-
-            const SizedBox(height: AppSpacing.md),
-
-            _HelpOption(
-              icon: Icons.call_outlined,
-              title: context.l10n.callSupport,
-              onTap: () {
-                // TODO: Hook call support
-                Navigator.pop(context);
-              },
-            ),
-
-            const SizedBox(height: AppSpacing.lg),
-          ],
+        
+              const SizedBox(height: AppSpacing.lg),
+        
+              _HelpOption(
+                icon: Icons.chat_bubble_outline,
+                title: context.l10n.liveChat,
+                subtitle: context.l10n.liveChatDesc,
+                onTap: () {
+                  // TODO: Hook live chat
+                  Navigator.pop(context);
+                },
+              ),
+        
+              const SizedBox(height: AppSpacing.md),
+        
+              _HelpOption(
+                icon: Icons.alternate_email,
+                title: context.l10n.emailSupport,
+                subtitle: context.l10n.emailSupportDesc,
+                onTap: () {
+                  // TODO: Hook email support
+                  Navigator.pop(context);
+                },
+              ),
+        
+              const SizedBox(height: AppSpacing.md),
+        
+              _HelpOption(
+                icon: Icons.phone_outlined,
+                title: context.l10n.phoneSupport,
+                subtitle: context.l10n.phoneSupportDesc,
+                onTap: () {
+                  // TODO: Hook call support
+                  Navigator.pop(context);
+                },
+              ),
+        
+              const SizedBox(height: AppSpacing.lg),
+            ],
+          ),
         ),
       ),
     );
   }
 }
 
-
 class _HelpOption extends StatelessWidget {
   final IconData icon;
   final String title;
+  final String subtitle;
   final VoidCallback onTap;
 
   const _HelpOption({
     required this.icon,
     required this.title,
+    required this.subtitle,
     required this.onTap,
   });
 
@@ -99,35 +107,34 @@ class _HelpOption extends StatelessWidget {
 
     return InkWell(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(AppRadius.lg),
-      child: Container(
-        padding: const EdgeInsets.all(AppSpacing.lg),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(AppRadius.lg),
-          border: Border.all(
-            color: theme.dividerColor,
-          ),
-          color: theme.colorScheme.surface,
-        ),
-        child: Row(
-          children: [
-            Icon(
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(top: 2),
+            child: Icon(
               icon,
-              color: theme.colorScheme.primary,
+              color: theme.colorScheme.primary, // Brownish color from theme
             ),
-            const SizedBox(width: AppSpacing.md),
-            Expanded(
-              child: AppText(
-                title,
-                style: AppTextStyles.body,
-              ),
+          ),
+          const SizedBox(width: AppSpacing.lg),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                AppText(
+                  title,
+                  style: AppTextStyles.bottomSheet,
+                ),
+                const SizedBox(height: AppSpacing.xs),
+                AppText(
+                  subtitle,
+                  style: AppTextStyles.body,
+                ),
+              ],
             ),
-            Icon(
-              Icons.chevron_right,
-              color: theme.hintColor,
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

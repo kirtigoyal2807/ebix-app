@@ -113,13 +113,13 @@ abstract class AppLocalizations {
   /// No description provided for @onboarding_title_2.
   ///
   /// In en, this message translates to:
-  /// **'Train with Experts'**
+  /// **'Move with intention, strength, and balance.'**
   String get onboarding_title_2;
 
   /// No description provided for @onboarding_desc_2.
   ///
   /// In en, this message translates to:
-  /// **'Learn from certified instructors anytime, anywhere.'**
+  /// **'Build strength, flexibility, and calm through guided Pilates sessions made for you.'**
   String get onboarding_desc_2;
 
   /// No description provided for @onboarding_title_3.
@@ -133,6 +133,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Monitor your improvement and stay motivated.'**
   String get onboarding_desc_3;
+
+  /// No description provided for @noExperienceNeeded.
+  ///
+  /// In en, this message translates to:
+  /// **'No experience needed'**
+  String get noExperienceNeeded;
+
+  /// No description provided for @alreadyHaveAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'I already have an account'**
+  String get alreadyHaveAccount;
+
+  /// No description provided for @help.
+  ///
+  /// In en, this message translates to:
+  /// **'Help'**
+  String get help;
+
+  /// No description provided for @languageCode.
+  ///
+  /// In en, this message translates to:
+  /// **'EN'**
+  String get languageCode;
 
   /// No description provided for @next.
   ///
@@ -173,7 +197,7 @@ abstract class AppLocalizations {
   /// No description provided for @changeLanguage.
   ///
   /// In en, this message translates to:
-  /// **'Change Language'**
+  /// **'Select Language'**
   String get changeLanguage;
 
   /// No description provided for @firstName.
@@ -197,7 +221,7 @@ abstract class AppLocalizations {
   /// No description provided for @createPassword.
   ///
   /// In en, this message translates to:
-  /// **'Create password'**
+  /// **'Create a password and add your phone'**
   String get createPassword;
 
   /// No description provided for @passwordHint.
@@ -233,7 +257,7 @@ abstract class AppLocalizations {
   /// No description provided for @resendCode.
   ///
   /// In en, this message translates to:
-  /// **'Resend code'**
+  /// **'Didn\'t receive code? Resend Code'**
   String get resendCode;
 
   /// No description provided for @verify.
@@ -245,13 +269,13 @@ abstract class AppLocalizations {
   /// No description provided for @experienceTitle.
   ///
   /// In en, this message translates to:
-  /// **'Your experience level'**
+  /// **'Your Pilates experience'**
   String get experienceTitle;
 
   /// No description provided for @experienceSubtitle.
   ///
   /// In en, this message translates to:
-  /// **'Help us tailor workouts for you'**
+  /// **'Help us personalize your journey'**
   String get experienceSubtitle;
 
   /// No description provided for @experienceBeginner.
@@ -263,7 +287,7 @@ abstract class AppLocalizations {
   /// No description provided for @experienceBeginnerDesc.
   ///
   /// In en, this message translates to:
-  /// **'New to Pilates or just getting started'**
+  /// **'New to Pilates or just starting out'**
   String get experienceBeginnerDesc;
 
   /// No description provided for @experienceIntermediate.
@@ -275,7 +299,7 @@ abstract class AppLocalizations {
   /// No description provided for @experienceIntermediateDesc.
   ///
   /// In en, this message translates to:
-  /// **'Some experience and regular practice'**
+  /// **'Comfortable with basics, ready to progress'**
   String get experienceIntermediateDesc;
 
   /// No description provided for @experienceAdvanced.
@@ -287,19 +311,19 @@ abstract class AppLocalizations {
   /// No description provided for @experienceAdvancedDesc.
   ///
   /// In en, this message translates to:
-  /// **'Experienced with advanced routines'**
+  /// **'Experienced practitioner seeking challenge'**
   String get experienceAdvancedDesc;
 
   /// No description provided for @branchTitle.
   ///
   /// In en, this message translates to:
-  /// **'Choose your studio'**
+  /// **'Choose your home studio'**
   String get branchTitle;
 
   /// No description provided for @branchSubtitle.
   ///
   /// In en, this message translates to:
-  /// **'Select the location where you plan to train'**
+  /// **'Select your preferred location'**
   String get branchSubtitle;
 
   /// No description provided for @branchDowntown.
@@ -335,20 +359,92 @@ abstract class AppLocalizations {
   /// No description provided for @liveChat.
   ///
   /// In en, this message translates to:
-  /// **'Live chat'**
+  /// **'Live Chat'**
   String get liveChat;
+
+  /// No description provided for @liveChatDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Chat with our team • Available 9 AM - 9 PM'**
+  String get liveChatDesc;
 
   /// No description provided for @emailSupport.
   ///
   /// In en, this message translates to:
-  /// **'Email support'**
+  /// **'Email Support'**
   String get emailSupport;
 
-  /// No description provided for @callSupport.
+  /// No description provided for @emailSupportDesc.
   ///
   /// In en, this message translates to:
-  /// **'Call support'**
-  String get callSupport;
+  /// **'support@thepilatesstudio.com'**
+  String get emailSupportDesc;
+
+  /// No description provided for @phoneSupport.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone Support'**
+  String get phoneSupport;
+
+  /// No description provided for @phoneSupportDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'91 98765 43210 • Mon-Sat 9 AM - 7 PM'**
+  String get phoneSupportDesc;
+
+  /// No description provided for @splashAppName.
+  ///
+  /// In en, this message translates to:
+  /// **'The Pilates'**
+  String get splashAppName;
+
+  /// No description provided for @splashStudio.
+  ///
+  /// In en, this message translates to:
+  /// **'STUDIO'**
+  String get splashStudio;
+
+  /// No description provided for @splashTagline.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Pilates Journey Begins'**
+  String get splashTagline;
+
+  /// No description provided for @splashVersion.
+  ///
+  /// In en, this message translates to:
+  /// **'Version 1.0'**
+  String get splashVersion;
+
+  /// No description provided for @letsGo.
+  ///
+  /// In en, this message translates to:
+  /// **'Let\'s get to know you'**
+  String get letsGo;
+
+  /// No description provided for @tellYourName.
+  ///
+  /// In en, this message translates to:
+  /// **'Tell us your name and email'**
+  String get tellYourName;
+
+  /// No description provided for @secureYourAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Secure your account'**
+  String get secureYourAccount;
+
+  /// No description provided for @verifyPhone.
+  ///
+  /// In en, this message translates to:
+  /// **'Verify your phone'**
+  String get verifyPhone;
+
+  /// No description provided for @enterCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the 4-digit code sent to'**
+  String get enterCode;
 }
 
 class _AppLocalizationsDelegate

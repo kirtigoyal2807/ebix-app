@@ -19,52 +19,58 @@ class LanguageBottomSheet extends StatelessWidget {
       builder: (context, state) {
         return SafeArea(
           top: false,
-          child: Padding(
-            padding: const EdgeInsets.all(AppSpacing.lg),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Handle
-                Center(
-                  child: Container(
-                    width: 40,
-                    height: 4,
-                    margin: const EdgeInsets.only(
-                      bottom: AppSpacing.lg,
-                    ),
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).dividerColor,
-                      borderRadius:
-                      BorderRadius.circular(AppRadius.sm),
+          child: Material(
+            color: Colors.white, // ✅ WHITE BACKGROUND
+            borderRadius: const BorderRadius.vertical(
+              top: Radius.circular(20),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(AppSpacing.lg),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Handle
+                  Center(
+                    child: Container(
+                      width: 40,
+                      height: 4,
+                      margin: const EdgeInsets.only(
+                        bottom: AppSpacing.lg,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).dividerColor,
+                        borderRadius:
+                        BorderRadius.circular(AppRadius.sm),
+                      ),
                     ),
                   ),
-                ),
 
-                // Title
-                AppText(
-                  context.l10n.changeLanguage,
-                  style: AppTextStyles.headline,
-                ),
+                  // Title
+                  AppText(
+                    context.l10n.changeLanguage,
+                    style: AppTextStyles.headline,
+                  ),
 
-                const SizedBox(height: AppSpacing.lg),
+                  const SizedBox(height: AppSpacing.lg),
 
-                _LanguageOption(
-                  title: 'English',
-                  locale: const Locale('en'),
-                  selected: state.locale.languageCode == 'en',
-                ),
+                  _LanguageOption(
+                    title: 'English',
+                    locale: const Locale('en'),
+                    selected: state.locale.languageCode == 'en',
+                  ),
 
-                const SizedBox(height: AppSpacing.md),
+                  const SizedBox(height: AppSpacing.md),
 
-                _LanguageOption(
-                  title: 'العربية',
-                  locale: const Locale('ar'),
-                  selected: state.locale.languageCode == 'ar',
-                ),
+                  _LanguageOption(
+                    title: 'العربية',
+                    locale: const Locale('ar'),
+                    selected: state.locale.languageCode == 'ar',
+                  ),
 
-                const SizedBox(height: AppSpacing.lg),
-              ],
+                  const SizedBox(height: AppSpacing.lg),
+                ],
+              ),
             ),
           ),
         );

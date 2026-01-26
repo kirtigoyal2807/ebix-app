@@ -13,23 +13,20 @@ class OnboardingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDark =
-        Theme
-            .of(context)
-            .brightness == Brightness.dark;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Expanded(
-              flex: 3,
-              child: SvgPicture.asset(
-                isDark
-                    ? 'assets/images/svg/ic_book_dark.svg'
-                    : 'assets/images/svg/ic_book_light.svg',
-                fit: BoxFit.fitWidth,
-              )
+            flex: 3,
+            child: SvgPicture.asset(
+              isDark
+                  ? 'assets/images/svg/ic_book_dark.svg'
+                  : 'assets/images/svg/ic_book_light.svg',
+              fit: BoxFit.fitWidth,
+            ),
           ),
           const SizedBox(height: AppSpacing.lg),
           AppText(

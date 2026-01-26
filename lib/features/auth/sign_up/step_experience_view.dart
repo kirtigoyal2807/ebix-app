@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
+import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/widgets/app_app_bar.dart';
 import 'package:pilates_app/widgets/app_button.dart';
 import 'package:pilates_app/widgets/app_scaffold.dart';
+import 'package:pilates_app/widgets/app_text.dart';
 import '../../../core/localization/localization_extension.dart';
 import '../cubit/auth_cubit.dart';
 import 'widgets/sign_up_header.dart';
@@ -40,7 +42,13 @@ class _SignUpExperienceViewState
               totalSteps: 5,
             ),
 
+            const SizedBox(height: AppSpacing.md),
+            AppText(
+              'Step ${0 + 4} of ${5}',
+              style: AppTextStyles.caption,
+            ),
             const SizedBox(height: AppSpacing.lg),
+
 
             // Header
             SignUpHeader(
@@ -58,6 +66,7 @@ class _SignUpExperienceViewState
               description:
               context.l10n.experienceBeginnerDesc,
               selected: _selectedIndex == 0,
+              iconPath: "assets/images/svg/ic_beginner.svg",
               onTap: () => setState(() => _selectedIndex = 0),
             ),
 
@@ -68,6 +77,7 @@ class _SignUpExperienceViewState
               description:
               context.l10n.experienceIntermediateDesc,
               selected: _selectedIndex == 1,
+              iconPath: "assets/images/svg/ic_intermediate.svg",
               onTap: () => setState(() => _selectedIndex = 1),
             ),
 
@@ -78,6 +88,7 @@ class _SignUpExperienceViewState
               description:
               context.l10n.experienceAdvancedDesc,
               selected: _selectedIndex == 2,
+              iconPath: "assets/images/svg/ic_advance.svg",
               onTap: () => setState(() => _selectedIndex = 2),
             ),
 

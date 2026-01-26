@@ -1,33 +1,60 @@
 import 'package:flutter/material.dart';
 import 'package:pilates_app/config/theme/app_colors.dart';
 import 'package:pilates_app/config/theme/app_radius.dart' show AppRadius;
+import 'package:pilates_app/config/theme/app_spacing.dart' show AppSpacing;
 import 'package:pilates_app/config/theme/app_text_styles.dart' show AppTextStyles;
+
+enum AppButtonVariant { primary, secondary }
 
 class AppButton extends StatelessWidget {
   final String label;
   final VoidCallback? onPressed;
   final bool expanded;
+  final AppButtonVariant variant;
 
   const AppButton({
     super.key,
     required this.label,
     this.onPressed,
     this.expanded = true,
+    this.variant = AppButtonVariant.primary,
   });
 
   @override
   Widget build(BuildContext context) {
-    final button = ElevatedButton(
-      onPressed: onPressed,
-      style: ElevatedButton.styleFrom(
-        backgroundColor: AppColors.primary,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(AppRadius.lg),
-        ),
-        padding: const EdgeInsets.symmetric(vertical: 14),
-      ),
-      child: Text(label, style: AppTextStyles.button(context)),
-    );
+    final isPrimary = variant == AppButtonVariant.primary;
+    
+    final button = isPrimary
+        ? ElevatedButton(
+            onPressed: onPressed,
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppColors.primaryBrown,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(AppRadius.largeButtonRadius),
+              ),
+              padding: EdgeInsets.symmetric(vertical: (AppSpacing.buttonHeight - 30) / 2),
+              minimumSize: Size(double.infinity, AppSpacing.buttonHeight),
+            ),
+            child: Text(label, style: AppTextStyles.button(context)),
+          )
+        : OutlinedButton(
+            onPressed: onPressed,
+            style: OutlinedButton.styleFrom(
+              foregroundColor: AppColors.primaryBrown,
+              side: const BorderSide(color: AppColors.primaryBrown, width: 1.5),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(AppRadius.largeButtonRadius),
+              ),
+              padding: EdgeInsets.symmetric(vertical: (AppSpacing.buttonHeight - 30) / 2),
+              minimumSize: Size(double.infinity, AppSpacing.buttonHeight),
+            ),
+            child: Text(
+              label,
+              style: AppTextStyles.button(context).copyWith(
+                color: AppColors.primaryBrown,
+              ),
+            ),
+          );
 
     return expanded ? SizedBox(width: double.infinity, child: button) : button;
   }

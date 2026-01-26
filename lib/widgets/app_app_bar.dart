@@ -11,7 +11,7 @@ class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       leading: onBack != null
           ? IconButton(
-        icon: const Icon(Icons.arrow_back),
+        icon: const Icon(Icons.arrow_back_ios_rounded),
         onPressed: onBack,
       )
           : null,

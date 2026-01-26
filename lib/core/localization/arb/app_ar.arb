@@ -18,7 +18,7 @@
   "signIn": "تسجيل الدخول",
 
   "helpAndSupport": "المساعدة والدعم",
-  "changeLanguage": "تغيير اللغة",
+  "changeLanguage": "اختر اللغة",
   "firstName": "الاسم الأول",
   "lastName": "اسم العائلة",
   "email": "البريد الإلكتروني",
@@ -31,20 +31,20 @@
   "resendCode": "إعادة إرسال الرمز",
   "verify": "تأكيد",
 
-  "experienceTitle": "مستوى خبرتك",
-  "experienceSubtitle": "ساعدنا في تخصيص التمارين المناسبة لك",
+"experienceTitle": "خبرتك في بيلاتس",
+"experienceSubtitle": "ساعدنا في تخصيص رحلتك",
 
   "experienceBeginner": "مبتدئ",
-  "experienceBeginnerDesc": "جديد في البيلاتس أو في بداية التعلم",
+  "experienceBeginnerDesc": "مبتدئ في بيلاتس أو في بداية مشوارك",
 
-  "experienceIntermediate": "متوسط",
-  "experienceIntermediateDesc": "لديك خبرة وتمارس بشكل منتظم",
+"experienceIntermediate": "متوسط",
+"experienceIntermediateDesc": "متمكن من الأساسيات وجاهز للتقدم",
 
-  "experienceAdvanced": "متقدم",
-  "experienceAdvancedDesc": "تمتلك خبرة عالية في التمارين المتقدمة",
+"experienceAdvanced": "متقدم",
+"experienceAdvancedDesc": "ممارس ذو خبرة يبحث عن التحدي",
 
-  "branchTitle": "اختر الفرع",
-  "branchSubtitle": "حدد الموقع الذي تفضل التدريب فيه",
+"branchTitle": "اختر الفرع الأنسب لك",
+"branchSubtitle": "حدد موقعك المفضل",
 
   "branchDowntown": "فرع وسط المدينة",
   "branchDowntownAddress": "123 شارع الرئيسي",
@@ -56,7 +56,28 @@
 
   "liveChat": "الدردشة المباشرة",
   "emailSupport": "الدعم عبر البريد الإلكتروني",
-  "callSupport": "الاتصال بالدعم"
+  "callSupport": "الاتصال بالدعم",
+
+  "splashAppName": "The Pilates",
+  "splashStudio": "STUDIO",
+  "splashTagline": "رحلة البيلاتس تبدأ هنا",
+  "splashVersion": "الإصدار 1.0",
+
+  "letsGo": "دعنا نتعرف عليك",
+  "tellYourName": "أخبرنا باسمك وبريدك الإلكتروني",
+
+  "secureYourAccount": "أمن حسابك",
+  "createPassword": "أنشئ كلمة مرور وأضف هاتفك",
+
+  "verifyPhone": "تحقق من هاتفك",
+  "enterCode": "أدخل الرمز المكون من 4 أرقام المرسل إلى",
+
+"liveChatDesc": "تحدث مع فريقنا • متاح من ٩ صباحاً - ٩ مساءً",
+"emailSupportDesc": "support@thepilatesstudio.com",
+"phoneSupport": "الدعم الهاتفي",
+"phoneSupportDesc": "91 98765 43210 • من الاثنين للسبت، ٩ صباحاً - ٧ مساءً"
+
+
 
 
 

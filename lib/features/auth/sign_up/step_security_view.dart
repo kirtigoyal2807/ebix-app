@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
+import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/widgets/app_app_bar.dart';
 import 'package:pilates_app/widgets/app_button.dart';
 import 'package:pilates_app/widgets/app_scaffold.dart';
+import 'package:pilates_app/widgets/app_text.dart';
 import 'package:pilates_app/widgets/app_text_field.dart';
 
 import '../../../core/localization/localization_extension.dart';
@@ -31,7 +33,11 @@ class SignUpSecurityView extends StatelessWidget {
               currentStep: 1,
               totalSteps: 5,
             ),
-
+            const SizedBox(height: AppSpacing.md),
+            AppText(
+              'Step ${0 + 2} of ${5}',
+              style: AppTextStyles.caption,
+            ),
             const SizedBox(height: AppSpacing.lg),
 
             // Header

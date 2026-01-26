@@ -34,6 +34,11 @@ class SignUpOtpView extends StatelessWidget {
               totalSteps: 5,
             ),
 
+            const SizedBox(height: AppSpacing.md),
+            AppText(
+              'Step ${0 + 3} of ${5}',
+              style: AppTextStyles.caption,
+            ),
             const SizedBox(height: AppSpacing.lg),
 
             // Header

@@ -4,11 +4,16 @@
   "onboarding_title_1": "Welcome to Pilates",
   "onboarding_desc_1": "Improve your strength and flexibility with guided sessions.",
 
-  "onboarding_title_2": "Train with Experts",
-  "onboarding_desc_2": "Learn from certified instructors anytime, anywhere.",
+  "onboarding_title_2": "Move with intention, strength, and balance.",
+  "onboarding_desc_2": "Build strength, flexibility, and calm through guided Pilates sessions made for you.",
 
   "onboarding_title_3": "Track Your Progress",
   "onboarding_desc_3": "Monitor your improvement and stay motivated.",
+
+  "noExperienceNeeded": "No experience needed",
+  "alreadyHaveAccount": "I already have an account",
+  "help": "Help",
+  "languageCode": "EN",
 
   "next": "Next",
   "getStarted": "Get Started",
@@ -18,7 +23,7 @@
   "signIn": "Sign In",
 
   "helpAndSupport": "Help & Support",
-  "changeLanguage": "Change Language",
+  "changeLanguage": "Select Language",
 
   "firstName": "First name",
   "lastName": "Last name",
@@ -29,22 +34,22 @@
   "confirmPassword": "Confirm password",
   "verifyOtp": "Verify code",
   "otpHint": "Enter the 6-digit code sent to your email",
-  "resendCode": "Resend code",
+  "resendCode": "Didn't receive code? Resend Code",
   "verify": "Verify",
-  "experienceTitle": "Your experience level",
-  "experienceSubtitle": "Help us tailor workouts for you",
+  "experienceTitle": "Your Pilates experience",
+  "experienceSubtitle": "Help us personalize your journey",
 
   "experienceBeginner": "Beginner",
-  "experienceBeginnerDesc": "New to Pilates or just getting started",
+  "experienceBeginnerDesc": "New to Pilates or just starting out",
 
   "experienceIntermediate": "Intermediate",
-  "experienceIntermediateDesc": "Some experience and regular practice",
+  "experienceIntermediateDesc": "Comfortable with basics, ready to progress",
 
   "experienceAdvanced": "Advanced",
-  "experienceAdvancedDesc": "Experienced with advanced routines",
+  "experienceAdvancedDesc": "Experienced practitioner seeking challenge",
 
-  "branchTitle": "Choose your studio",
-  "branchSubtitle": "Select the location where you plan to train",
+  "branchTitle": "Choose your home studio",
+  "branchSubtitle": "Select your preferred location",
 
   "branchDowntown": "Downtown Studio",
   "branchDowntownAddress": "123 Main Street",
@@ -54,9 +59,28 @@
 
   "finishSignUp": "Create account",
 
-  "liveChat": "Live chat",
-  "emailSupport": "Email support",
-  "callSupport": "Call support"
+  "liveChat": "Live Chat",
+  "liveChatDesc": "Chat with our team • Available 9 AM - 9 PM",
+  "emailSupport": "Email Support",
+  "emailSupportDesc": "support@thepilatesstudio.com",
+  "phoneSupport": "Phone Support",
+  "phoneSupportDesc": "91 98765 43210 • Mon-Sat 9 AM - 7 PM",
+
+  "splashAppName": "The Pilates",
+  "splashStudio": "STUDIO",
+  "splashTagline": "Your Pilates Journey Begins",
+  "splashVersion": "Version 1.0",
+
+  "letsGo": "Let's get to know you",
+  "tellYourName": "Tell us your name and email",
+
+  "secureYourAccount": "Secure your account",
+  "createPassword": "Create a password and add your phone",
+
+  "verifyPhone": "Verify your phone",
+  "enterCode": "Enter the 4-digit code sent to"
+
+
 
 
 

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
+import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/widgets/app_app_bar.dart';
 import 'package:pilates_app/widgets/app_button.dart';
 import 'package:pilates_app/widgets/app_scaffold.dart';
+import 'package:pilates_app/widgets/app_text.dart';
 import 'package:pilates_app/widgets/app_text_field.dart';
 
 import '../../../core/localization/localization_extension.dart';
@@ -19,6 +21,7 @@ class SignUpPersonalInfoView extends StatelessWidget {
     return AppScaffold(
       appBar: AppAppBar(
         onBack: () => context.read<AuthCubit>().previousSignUpStep(),
+        title: context.l10n.signUp,
       ),
       body: Padding(
         padding: const EdgeInsets.all(AppSpacing.lg),
@@ -30,12 +33,16 @@ class SignUpPersonalInfoView extends StatelessWidget {
               currentStep: 0,
               totalSteps: 5,
             ),
-
+            const SizedBox(height: AppSpacing.md),
+            AppText(
+              'Step ${1 } of ${5}',
+              style: AppTextStyles.caption,
+            ),
             const SizedBox(height: AppSpacing.lg),
 
             // Header
             SignUpHeader(
-              title: context.l10n.signUp,
+              title: context.l10n.letsGo,
               subtitle: context.l10n.onboarding_desc_1, // temp copy reuse
               step: 0,
               totalSteps: 5,
@@ -45,7 +52,7 @@ class SignUpPersonalInfoView extends StatelessWidget {
 
             // Form fields
             AppTextField(
-              hint: context.l10n.firstName,
+              hint: context.l10n.tellYourName,
             ),
 
             const SizedBox(height: AppSpacing.md),
