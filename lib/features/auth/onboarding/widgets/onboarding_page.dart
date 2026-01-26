@@ -20,15 +20,15 @@ class OnboardingPage extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Expanded(
-            flex: 3,
+            flex: 2,
             child: SvgPicture.asset(
               isDark
                   ? 'assets/images/svg/ic_book_dark.svg'
                   : 'assets/images/svg/ic_book_light.svg',
-              fit: BoxFit.fitWidth,
+              fit: BoxFit.cover,
             ),
           ),
-          const SizedBox(height: AppSpacing.lg),
+          const SizedBox(height: AppSpacing.md),
           AppText(
             context.l10n.branchDowntown,
             style: AppTextStyles.headline,

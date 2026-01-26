@@ -28,6 +28,7 @@ class _SignUpBranchViewState extends State<SignUpBranchView> {
       appBar: AppAppBar(
         onBack: () =>
             context.read<AuthCubit>().previousSignUpStep(),
+        title: context.l10n.selectedBranch,
       ),
       body: Padding(
         padding: const EdgeInsets.all(AppSpacing.lg),
@@ -39,7 +40,7 @@ class _SignUpBranchViewState extends State<SignUpBranchView> {
               currentStep: 4,
               totalSteps: 5,
             ),
-            const SizedBox(height: AppSpacing.md),
+            const SizedBox(height: AppSpacing.sm),
             AppText(
               'Step ${0 + 5} of ${5}',
               style: AppTextStyles.caption,
@@ -54,25 +55,28 @@ class _SignUpBranchViewState extends State<SignUpBranchView> {
               totalSteps: 5,
             ),
 
-            const SizedBox(height: AppSpacing.xl),
+            const SizedBox(height: AppSpacing.lg),
 
             // Branch list (static for now)
             BranchOption(
-              title: context.l10n.branchDowntown,
-              address: context.l10n.branchDowntownAddress,
-              selected: _selectedIndex == 0,
+              title: 'Balad, Al Al Munawarah',
+              city: 'Al Madinah Al Munawarah',
+              distance: '5 km away',
+              type: 'Premium',
+              selected: true,
               onTap: () => setState(() => _selectedIndex = 0),
             ),
 
             const SizedBox(height: AppSpacing.md),
 
             BranchOption(
-              title: context.l10n.branchUptown,
-              address: context.l10n.branchUptownAddress,
-              selected: _selectedIndex == 1,
+              title: 'Prince Abdul Majeed Street',
+              city: 'Al Madinah Al Munawarah',
+              distance: '8 km away',
+              type: 'Standard',
+              selected: false,
               onTap: () => setState(() => _selectedIndex = 1),
             ),
-
             const Spacer(),
 
             // Finish
@@ -80,6 +84,7 @@ class _SignUpBranchViewState extends State<SignUpBranchView> {
               label: context.l10n.finishSignUp,
               onPressed: () =>
                   context.read<AuthCubit>().completeSignUp(),
+
             ),
           ],
         ),

@@ -33,7 +33,7 @@ class SignUpPersonalInfoView extends StatelessWidget {
               currentStep: 0,
               totalSteps: 5,
             ),
-            const SizedBox(height: AppSpacing.md),
+            const SizedBox(height: AppSpacing.sm),
             AppText(
               'Step ${1 } of ${5}',
               style: AppTextStyles.caption,
@@ -43,35 +43,47 @@ class SignUpPersonalInfoView extends StatelessWidget {
             // Header
             SignUpHeader(
               title: context.l10n.letsGo,
-              subtitle: context.l10n.onboarding_desc_1, // temp copy reuse
+              subtitle: context.l10n.tellYourName, // temp copy reuse
               step: 0,
               totalSteps: 5,
             ),
 
-            const SizedBox(height: AppSpacing.xl),
+            const SizedBox(height: AppSpacing.lg),
 
             // Form fields
             AppTextField(
-              hint: context.l10n.tellYourName,
+              label: 'First Name',
+              hint: 'Ayesha',
+              keyboardType: TextInputType.name,
+              // errorText: 'This email address is already registered.',
             ),
+
 
             const SizedBox(height: AppSpacing.md),
 
             AppTextField(
-              hint: context.l10n.lastName,
+              label: 'Last Name',
+              hint: 'Tajib',
+              keyboardType: TextInputType.name,
+              // errorText: 'This email address is already registered.',
             ),
+
 
             const SizedBox(height: AppSpacing.md),
 
             AppTextField(
-              hint: context.l10n.email,
+              label: 'Email Address',
+              hint: 'Ayesha@gmail.com',
+              keyboardType: TextInputType.emailAddress,
+              // errorText: 'This email address is already registered.',
             ),
+
 
             const Spacer(),
 
             // Continue button
             AppButton(
-              label: context.l10n.next,
+              label: context.l10n.continueTxt,
               onPressed: () =>
                   context.read<AuthCubit>().nextSignUpStep(),
             ),

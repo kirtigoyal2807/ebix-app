@@ -18,11 +18,11 @@ class AppTextStyles {
       );
 
   static TextStyle heading1(BuildContext context) =>
-      GoogleFonts.inter(
+      GoogleFonts.gelasio(
         fontSize: 30,
-        fontWeight: FontWeight.bold,
+        fontWeight: FontWeight.w500,
         color: AppColors.darkText,
-        height: 1.3,
+        height: 1.1,
       );
 
   static TextStyle body(BuildContext context) =>
@@ -40,25 +40,55 @@ class AppTextStyles {
         height: 1.5,
       );
 
+  static TextStyle bodyTextSmall(BuildContext context) =>
+      GoogleFonts.inter(
+        fontSize: 14,
+        fontWeight: FontWeight.w400,
+        color: AppColors.greyText,
+        height: 1,
+      );
+
+
   static TextStyle caption(BuildContext context) =>
       GoogleFonts.inter(
-        fontSize: 12,
-        fontWeight: FontWeight.w400,
-        color: Theme.of(context).hintColor,
+        fontSize: 14,
+        fontWeight: FontWeight.w500,
+        color: AppColors.lightGrey,
       );
 
   static TextStyle captionText(BuildContext context) =>
       GoogleFonts.inter(
-        fontSize: 12.5,
+        fontSize: 12,
         fontWeight: FontWeight.w400,
         color: AppColors.lightGreyText,
       );
 
   static TextStyle button(BuildContext context) =>
       GoogleFonts.inter(
-        fontSize: 14,
+        fontSize: 16,
         fontWeight: FontWeight.w600,
         color: Colors.white,
+      );
+
+  static TextStyle textFieldHeading(BuildContext context) =>
+      GoogleFonts.inter(
+        fontSize: 15,
+        fontWeight: FontWeight.w500,
+        color: AppColors.darkText,
+      );
+
+  static TextStyle appBarTitle(BuildContext context) =>
+      GoogleFonts.inter(
+        fontSize: 18,
+        fontWeight: FontWeight.w500,
+        color: AppColors.darkText,
+      );
+
+  static TextStyle headingSmall(BuildContext context) =>
+      GoogleFonts.inter(
+        fontSize: 13,
+        fontWeight: FontWeight.w500,
+        color: AppColors.darkText,
       );
 
   // Splash Screen Styles
@@ -96,8 +126,8 @@ class AppTextStyles {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return GoogleFonts.inter(
       fontSize: 12,
-      fontWeight: FontWeight.w400,
-      color: isDark ? AppColors.splashTextDark : AppColors.splashTextLight,
+      fontWeight: FontWeight.w500,
+      color: isDark ? AppColors.splashTextDark : AppColors.versionColor,
       letterSpacing: 0,
     );
   }

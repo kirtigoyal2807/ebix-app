@@ -22,6 +22,7 @@ class SignUpOtpView extends StatelessWidget {
       appBar: AppAppBar(
         onBack: () =>
             context.read<AuthCubit>().previousSignUpStep(),
+        title: context.l10n.verification,
       ),
       body: Padding(
         padding: const EdgeInsets.all(AppSpacing.lg),
@@ -34,7 +35,7 @@ class SignUpOtpView extends StatelessWidget {
               totalSteps: 5,
             ),
 
-            const SizedBox(height: AppSpacing.md),
+            const SizedBox(height: AppSpacing.sm),
             AppText(
               'Step ${0 + 3} of ${5}',
               style: AppTextStyles.caption,
@@ -43,18 +44,22 @@ class SignUpOtpView extends StatelessWidget {
 
             // Header
             SignUpHeader(
-              title: context.l10n.verifyOtp,
-              subtitle: context.l10n.otpHint,
+              title: context.l10n.verifyPhone,
+              subtitle: context.l10n.enterCode,
               step: 2,
               totalSteps: 5,
             ),
 
-            const SizedBox(height: AppSpacing.xl),
+            const SizedBox(height: AppSpacing.lg),
 
             // OTP field
-            const OtpField(),
-
-            const SizedBox(height: AppSpacing.md),
+            OtpField(
+              length: 4,
+              onCompleted: (otp) {
+                print('OTP entered: $otp');
+              },
+            ),
+            const SizedBox(height: AppSpacing.sm),
 
             // Resend
             Center(

@@ -90,11 +90,11 @@ class OnboardingView extends StatelessWidget {
                         isDark
                             ? 'assets/images/svg/ic_book_dark.svg'
                             : 'assets/images/svg/ic_book_light.svg',
-                        height: 280,
+                        height: 270,
                         fit: BoxFit.contain,
                       ),
 
-                      const SizedBox(height: AppSpacing.xl + AppSpacing.md),
+                      const SizedBox(height: AppSpacing.lg),
 
                       // Main title
                       AppText(
@@ -106,20 +106,23 @@ class OnboardingView extends StatelessWidget {
                       const SizedBox(height: AppSpacing.md + AppSpacing.sm),
 
                       // Description
-                      AppText(
-                        context.l10n.onboarding_desc_2,
-                        style: AppTextStyles.bodyText,
-                        textAlign: TextAlign.center,
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xl),
+                        child: AppText(
+                          context.l10n.onboarding_desc_2,
+                          style: AppTextStyles.bodyText,
+                          textAlign: TextAlign.center,
+                        ),
                       ),
 
-                      const SizedBox(height: AppSpacing.lg),
+                      const SizedBox(height: AppSpacing.md),
 
                       // "No experience needed" with checkmark
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Icon(
-                            Icons.check,
+                            Icons.check_circle_outline,
                             size: 16,
                             color: AppColors.lightGreyText,
                           ),
@@ -248,17 +251,17 @@ class OnboardingView extends StatelessWidget {
                 fontSize: 14,
               ),
             ),
-            const SizedBox(width: AppSpacing.xs + 2),
+            const SizedBox(width: AppSpacing.xs),
             Container(
               width: 20,
               height: 20,
               decoration: BoxDecoration(
-                color: AppColors.lightGreyBorder,
+                // color: AppColors.lightGreyBorder,
                 shape: BoxShape.circle,
               ),
               child: Icon(
                 Icons.help_outline,
-                size: 12,
+                size: 16,
                 color: AppColors.darkText,
               ),
             ),

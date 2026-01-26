@@ -137,7 +137,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get branchUptownAddress => '456 شارع الشمال';
 
   @override
-  String get finishSignUp => 'إنشاء الحساب';
+  String get finishSignUp => 'إكمال الإعداد';
 
   @override
   String get liveChat => 'الدردشة المباشرة';
@@ -184,4 +184,16 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get enterCode => 'أدخل الرمز المكون من 4 أرقام المرسل إلى';
+
+  @override
+  String get continueTxt => 'متابعة';
+
+  @override
+  String get verification => 'التحقق';
+
+  @override
+  String get experience => 'الخبرة';
+
+  @override
+  String get selectedBranch => 'الفرع المختار';
 }

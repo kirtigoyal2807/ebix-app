@@ -30,6 +30,8 @@ class _SignUpExperienceViewState
       appBar: AppAppBar(
         onBack: () =>
             context.read<AuthCubit>().previousSignUpStep(),
+        title: context.l10n.experience,
+
       ),
       body: Padding(
         padding: const EdgeInsets.all(AppSpacing.lg),
@@ -42,7 +44,7 @@ class _SignUpExperienceViewState
               totalSteps: 5,
             ),
 
-            const SizedBox(height: AppSpacing.md),
+            const SizedBox(height: AppSpacing.sm),
             AppText(
               'Step ${0 + 4} of ${5}',
               style: AppTextStyles.caption,
@@ -58,7 +60,7 @@ class _SignUpExperienceViewState
               totalSteps: 5,
             ),
 
-            const SizedBox(height: AppSpacing.xl),
+            const SizedBox(height: AppSpacing.lg),
 
             // Options
             ExperienceOption(
@@ -96,7 +98,7 @@ class _SignUpExperienceViewState
 
             // Continue
             AppButton(
-              label: context.l10n.next,
+              label: context.l10n.continueTxt,
               onPressed: () =>
                   context.read<AuthCubit>().nextSignUpStep(),
             ),

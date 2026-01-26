@@ -41,7 +41,7 @@ class AppButton extends StatelessWidget {
             onPressed: onPressed,
             style: OutlinedButton.styleFrom(
               foregroundColor: AppColors.primaryBrown,
-              side: const BorderSide(color: AppColors.primaryBrown, width: 1.5),
+              side: const BorderSide(color: AppColors.buttonBorder, width: 1.5),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(AppRadius.largeButtonRadius),
               ),
@@ -51,7 +51,7 @@ class AppButton extends StatelessWidget {
             child: Text(
               label,
               style: AppTextStyles.button(context).copyWith(
-                color: AppColors.primaryBrown,
+                color: AppColors.darkText,
               ),
             ),
           );

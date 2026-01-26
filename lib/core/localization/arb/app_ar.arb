@@ -52,8 +52,7 @@
   "branchUptown": "فرع الحي الشمالي",
   "branchUptownAddress": "456 شارع الشمال",
 
-  "finishSignUp": "إنشاء الحساب",
-
+  "finishSignUp": "إكمال الإعداد",
   "liveChat": "الدردشة المباشرة",
   "emailSupport": "الدعم عبر البريد الإلكتروني",
   "callSupport": "الاتصال بالدعم",
@@ -75,8 +74,11 @@
 "liveChatDesc": "تحدث مع فريقنا • متاح من ٩ صباحاً - ٩ مساءً",
 "emailSupportDesc": "support@thepilatesstudio.com",
 "phoneSupport": "الدعم الهاتفي",
-"phoneSupportDesc": "91 98765 43210 • من الاثنين للسبت، ٩ صباحاً - ٧ مساءً"
-
+"phoneSupportDesc": "91 98765 43210 • من الاثنين للسبت، ٩ صباحاً - ٧ مساءً",
+"continueTxt": "متابعة",
+"verification": "التحقق",
+"experience": "الخبرة",
+"selectedBranch": "الفرع المختار"
 
 
 

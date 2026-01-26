@@ -57,7 +57,7 @@
   "branchUptown": "Uptown Studio",
   "branchUptownAddress": "456 North Avenue",
 
-  "finishSignUp": "Create account",
+  "finishSignUp": "Complete Setup",
 
   "liveChat": "Live Chat",
   "liveChatDesc": "Chat with our team • Available 9 AM - 9 PM",
@@ -78,7 +78,11 @@
   "createPassword": "Create a password and add your phone",
 
   "verifyPhone": "Verify your phone",
-  "enterCode": "Enter the 4-digit code sent to"
+  "enterCode": "Enter the 4-digit code sent to",
+  "continueTxt": "Continue",
+  "verification": "Verification",
+  "experience": "Experience",
+  "selectedBranch": "Selected Branch"
 
 
 

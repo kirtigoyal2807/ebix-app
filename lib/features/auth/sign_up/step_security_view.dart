@@ -7,6 +7,7 @@ import 'package:pilates_app/widgets/app_button.dart';
 import 'package:pilates_app/widgets/app_scaffold.dart';
 import 'package:pilates_app/widgets/app_text.dart';
 import 'package:pilates_app/widgets/app_text_field.dart';
+import 'package:pilates_app/widgets/phone_number_field.dart';
 
 import '../../../core/localization/localization_extension.dart';
 import '../cubit/auth_cubit.dart';
@@ -22,6 +23,7 @@ class SignUpSecurityView extends StatelessWidget {
       appBar: AppAppBar(
         onBack: () =>
             context.read<AuthCubit>().previousSignUpStep(),
+        title: context.l10n.signUp,
       ),
       body: Padding(
         padding: const EdgeInsets.all(AppSpacing.lg),
@@ -33,7 +35,7 @@ class SignUpSecurityView extends StatelessWidget {
               currentStep: 1,
               totalSteps: 5,
             ),
-            const SizedBox(height: AppSpacing.md),
+            const SizedBox(height: AppSpacing.sm),
             AppText(
               'Step ${0 + 2} of ${5}',
               style: AppTextStyles.caption,
@@ -42,33 +44,36 @@ class SignUpSecurityView extends StatelessWidget {
 
             // Header
             SignUpHeader(
-              title: context.l10n.createPassword,
-              subtitle: context.l10n.passwordHint,
+              title: context.l10n.secureYourAccount,
+              subtitle: context.l10n.createPassword,
               step: 1,
               totalSteps: 5,
             ),
 
-            const SizedBox(height: AppSpacing.xl),
+            const SizedBox(height: AppSpacing.lg),
 
             // Password
             AppTextField(
-              hint: context.l10n.password,
-              obscure: true,
+              label: 'Password',
+              hint: '',
+              keyboardType: TextInputType.name,
+              // errorText: 'weak Password.',
             ),
 
             const SizedBox(height: AppSpacing.md),
 
             // Confirm Password
-            AppTextField(
-              hint: context.l10n.confirmPassword,
-              obscure: true,
+            PhoneNumberField(
+              label: 'Phone Number',
+              countryCode: '+1',
+              flagAsset: 'assets/flags/us.svg',
             ),
 
             const Spacer(),
 
             // Continue
             AppButton(
-              label: context.l10n.next,
+              label: context.l10n.continueTxt,
               onPressed: () =>
                   context.read<AuthCubit>().nextSignUpStep(),
             ),

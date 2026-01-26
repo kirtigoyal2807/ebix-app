@@ -353,7 +353,7 @@ abstract class AppLocalizations {
   /// No description provided for @finishSignUp.
   ///
   /// In en, this message translates to:
-  /// **'Create account'**
+  /// **'Complete Setup'**
   String get finishSignUp;
 
   /// No description provided for @liveChat.
@@ -445,6 +445,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Enter the 4-digit code sent to'**
   String get enterCode;
+
+  /// No description provided for @continueTxt.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue'**
+  String get continueTxt;
+
+  /// No description provided for @verification.
+  ///
+  /// In en, this message translates to:
+  /// **'Verification'**
+  String get verification;
+
+  /// No description provided for @experience.
+  ///
+  /// In en, this message translates to:
+  /// **'Experience'**
+  String get experience;
+
+  /// No description provided for @selectedBranch.
+  ///
+  /// In en, this message translates to:
+  /// **'Selected Branch'**
+  String get selectedBranch;
 }
 
 class _AppLocalizationsDelegate

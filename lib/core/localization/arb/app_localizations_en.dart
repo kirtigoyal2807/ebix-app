@@ -142,7 +142,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get branchUptownAddress => '456 North Avenue';
 
   @override
-  String get finishSignUp => 'Create account';
+  String get finishSignUp => 'Complete Setup';
 
   @override
   String get liveChat => 'Live Chat';
@@ -188,4 +188,16 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get enterCode => 'Enter the 4-digit code sent to';
+
+  @override
+  String get continueTxt => 'Continue';
+
+  @override
+  String get verification => 'Verification';
+
+  @override
+  String get experience => 'Experience';
+
+  @override
+  String get selectedBranch => 'Selected Branch';
 }
