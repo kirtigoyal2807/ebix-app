@@ -1,0 +1,66 @@
+{
+  "@@locale": "ar",
+
+  "onboarding_title_1": "مرحبًا بك في البيلاتس",
+  "onboarding_desc_1": "حسّن قوتك ومرونتك من خلال جلسات موجهة.",
+
+  "onboarding_title_2": "تدرّب مع الخبراء",
+  "onboarding_desc_2": "تعلّم من مدربين معتمدين في أي وقت ومن أي مكان.",
+
+  "onboarding_title_3": "تتبع تقدمك",
+  "onboarding_desc_3": "راقب تحسّنك وابقَ متحفزًا.",
+
+  "next": "التالي",
+  "getStarted": "ابدأ الآن",
+  "skip": "تخطي",
+
+  "signUp": "إنشاء حساب",
+  "signIn": "تسجيل الدخول",
+
+  "helpAndSupport": "المساعدة والدعم",
+  "changeLanguage": "تغيير اللغة",
+  "firstName": "الاسم الأول",
+  "lastName": "اسم العائلة",
+  "email": "البريد الإلكتروني",
+  "createPassword": "إنشاء كلمة مرور",
+  "passwordHint": "استخدم 8 أحرف على الأقل مع مزيج من الحروف والأرقام",
+  "password": "كلمة المرور",
+  "confirmPassword": "تأكيد كلمة المرور",
+  "verifyOtp": "تأكيد الرمز",
+  "otpHint": "أدخل رمز التحقق المكون من 6 أرقام المرسل إلى بريدك",
+  "resendCode": "إعادة إرسال الرمز",
+  "verify": "تأكيد",
+
+  "experienceTitle": "مستوى خبرتك",
+  "experienceSubtitle": "ساعدنا في تخصيص التمارين المناسبة لك",
+
+  "experienceBeginner": "مبتدئ",
+  "experienceBeginnerDesc": "جديد في البيلاتس أو في بداية التعلم",
+
+  "experienceIntermediate": "متوسط",
+  "experienceIntermediateDesc": "لديك خبرة وتمارس بشكل منتظم",
+
+  "experienceAdvanced": "متقدم",
+  "experienceAdvancedDesc": "تمتلك خبرة عالية في التمارين المتقدمة",
+
+  "branchTitle": "اختر الفرع",
+  "branchSubtitle": "حدد الموقع الذي تفضل التدريب فيه",
+
+  "branchDowntown": "فرع وسط المدينة",
+  "branchDowntownAddress": "123 شارع الرئيسي",
+
+  "branchUptown": "فرع الحي الشمالي",
+  "branchUptownAddress": "456 شارع الشمال",
+
+  "finishSignUp": "إنشاء الحساب",
+
+  "liveChat": "الدردشة المباشرة",
+  "emailSupport": "الدعم عبر البريد الإلكتروني",
+  "callSupport": "الاتصال بالدعم"
+
+
+
+
+
+
+}

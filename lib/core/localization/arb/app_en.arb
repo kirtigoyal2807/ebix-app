@@ -1,0 +1,65 @@
+{
+  "@@locale": "en",
+
+  "onboarding_title_1": "Welcome to Pilates",
+  "onboarding_desc_1": "Improve your strength and flexibility with guided sessions.",
+
+  "onboarding_title_2": "Train with Experts",
+  "onboarding_desc_2": "Learn from certified instructors anytime, anywhere.",
+
+  "onboarding_title_3": "Track Your Progress",
+  "onboarding_desc_3": "Monitor your improvement and stay motivated.",
+
+  "next": "Next",
+  "getStarted": "Get Started",
+  "skip": "Skip",
+
+  "signUp": "Sign Up",
+  "signIn": "Sign In",
+
+  "helpAndSupport": "Help & Support",
+  "changeLanguage": "Change Language",
+
+  "firstName": "First name",
+  "lastName": "Last name",
+  "email": "Email address",
+  "createPassword": "Create password",
+  "passwordHint": "Use at least 8 characters with a mix of letters and numbers",
+  "password": "Password",
+  "confirmPassword": "Confirm password",
+  "verifyOtp": "Verify code",
+  "otpHint": "Enter the 6-digit code sent to your email",
+  "resendCode": "Resend code",
+  "verify": "Verify",
+  "experienceTitle": "Your experience level",
+  "experienceSubtitle": "Help us tailor workouts for you",
+
+  "experienceBeginner": "Beginner",
+  "experienceBeginnerDesc": "New to Pilates or just getting started",
+
+  "experienceIntermediate": "Intermediate",
+  "experienceIntermediateDesc": "Some experience and regular practice",
+
+  "experienceAdvanced": "Advanced",
+  "experienceAdvancedDesc": "Experienced with advanced routines",
+
+  "branchTitle": "Choose your studio",
+  "branchSubtitle": "Select the location where you plan to train",
+
+  "branchDowntown": "Downtown Studio",
+  "branchDowntownAddress": "123 Main Street",
+
+  "branchUptown": "Uptown Studio",
+  "branchUptownAddress": "456 North Avenue",
+
+  "finishSignUp": "Create account",
+
+  "liveChat": "Live chat",
+  "emailSupport": "Email support",
+  "callSupport": "Call support"
+
+
+
+
+
+}
