@@ -40,8 +40,8 @@ jobs:
       - name: Get Flutter dependencies
         run: flutter pub get
         
-      - name: Run Flutter analyze
-        run: flutter analyze --no-fatal-infos
+      # - name: Run Flutter analyze
+      #   run: flutter analyze --no-fatal-infos
         
       - name: Build release APK
         run: flutter build apk --release

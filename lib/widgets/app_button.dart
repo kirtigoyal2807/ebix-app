@@ -28,9 +28,9 @@ class AppButton extends StatelessWidget {
         ? ElevatedButton(
             onPressed: onPressed,
             style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.primaryBrown,
+              backgroundColor: AppColors.primary,
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(AppRadius.largeButtonRadius),
+                borderRadius: BorderRadius.circular(AppRadius.xl),
               ),
               padding: EdgeInsets.symmetric(vertical: (AppSpacing.buttonHeight - 30) / 2),
               minimumSize: Size(double.infinity, AppSpacing.buttonHeight),
@@ -43,7 +43,7 @@ class AppButton extends StatelessWidget {
               foregroundColor: AppColors.primaryBrown,
               side: const BorderSide(color: AppColors.buttonBorder, width: 1.5),
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(AppRadius.largeButtonRadius),
+                borderRadius: BorderRadius.circular(AppRadius.xl),
               ),
               padding: EdgeInsets.symmetric(vertical: (AppSpacing.buttonHeight - 30) / 2),
               minimumSize: Size(double.infinity, AppSpacing.buttonHeight),

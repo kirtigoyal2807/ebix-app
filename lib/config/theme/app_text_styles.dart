@@ -19,7 +19,7 @@ class AppTextStyles {
 
   static TextStyle heading1(BuildContext context) =>
       GoogleFonts.gelasio(
-        fontSize: 30,
+        fontSize: 25,
         fontWeight: FontWeight.w500,
         color: AppColors.darkText,
         height: 1.1,
@@ -34,7 +34,7 @@ class AppTextStyles {
 
   static TextStyle bodyText(BuildContext context) =>
       GoogleFonts.inter(
-        fontSize: 15,
+        fontSize: 14,
         fontWeight: FontWeight.w400,
         color: AppColors.greyText,
         height: 1.5,

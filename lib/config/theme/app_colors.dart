@@ -17,6 +17,8 @@ class AppColors {
   static const borderLight = Color(0xFFE5DED8);
   static const lightGreyBorder = Color(0xFFE0E0E0); // screenshot pill border
   static const lightGrey = Color(0xFF78706A); // screenshot pill border
+  static const languageIcon = Color(0xFF80604D);
+  static const arrowIcon = Color(0xFFA6A09B);
 
   // Dark
   static const backgroundDark = Color(0xFF0F0D0C);
@@ -24,6 +26,8 @@ class AppColors {
   static const textPrimaryDark = Color(0xFFF5F5F5);
   static const textSecondaryDark = Color(0xFFB5B5B5);
   static const borderDark = Color(0xFF2A2623);
+  static const languageIconDark = Color(0xFF9A7E6D);
+  static const languageTextDark = Color(0xFFB59D8E);
 
   // Splash Screen
   static const splashBackgroundDark = Color(0xFF65422C); // Dark brown
@@ -40,7 +44,5 @@ class AppColors {
   //VersionColor
   static const versionColor = Color(0xFFCFBBAE);
 
-
   static const buttonBorder = Color(0xFFD6D3D1);
-
 }
