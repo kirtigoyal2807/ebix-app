@@ -82,12 +82,7 @@
   "continueTxt": "Continue",
   "verification": "Verification",
   "experience": "Experience",
-  "selectedBranch": "Selected Branch"
-
-
-
-
-
-
-
+  "selectedBranch": "Selected Branch",
+  "selectLanguage": "Select Language",
+  "confirm": "Confirm"
 }

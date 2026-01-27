@@ -19,6 +19,7 @@ class AppColors {
   static const lightGrey = Color(0xFF78706A); // screenshot pill border
   static const languageIcon = Color(0xFF80604D);
   static const arrowIcon = Color(0xFFA6A09B);
+  static const selectedLanguageBg = Color(0xFFFAE8DD);
 
   // Dark
   static const backgroundDark = Color(0xFF0F0D0C);

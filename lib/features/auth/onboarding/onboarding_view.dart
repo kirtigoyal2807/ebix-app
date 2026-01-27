@@ -95,9 +95,7 @@ class OnboardingView extends StatelessWidget {
                           horizontal: AppSpacing.base,
                         ),
                         child: SvgPicture.asset(
-                          isDark
-                              ? 'assets/images/svg/ic_book_dark.svg'
-                              : 'assets/images/svg/ic_book_light.svg',
+                          'assets/images/svg/ic_onboarding.svg',
                           height: 280,
                           fit: BoxFit.contain,
                         ),

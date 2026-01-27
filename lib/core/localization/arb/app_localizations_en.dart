@@ -200,4 +200,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get selectedBranch => 'Selected Branch';
+
+  @override
+  String get selectLanguage => 'Select Language';
+
+  @override
+  String get confirm => 'Confirm';
 }

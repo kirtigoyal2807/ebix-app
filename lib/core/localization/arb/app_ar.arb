@@ -1,14 +1,19 @@
 {
   "@@locale": "ar",
 
-  "onboarding_title_1": "مرحبًا بك في البيلاتس",
+  "onboarding_title_1": "مرحبًا بك في بيلاتس",
   "onboarding_desc_1": "حسّن قوتك ومرونتك من خلال جلسات موجهة.",
 
-  "onboarding_title_2": "تدرّب مع الخبراء",
-  "onboarding_desc_2": "تعلّم من مدربين معتمدين في أي وقت ومن أي مكان.",
+  "onboarding_title_2": "تحرّك بقصد وقوة وتوازن.",
+  "onboarding_desc_2": "ابنِ القوة والمرونة والهدوء من خلال جلسات بيلاتس موجهة ومصممة خصيصًا لك.",
 
-  "onboarding_title_3": "تتبع تقدمك",
-  "onboarding_desc_3": "راقب تحسّنك وابقَ متحفزًا.",
+  "onboarding_title_3": "تابع تقدمك",
+  "onboarding_desc_3": "راقب تطورك وحافظ على حماسك.",
+
+  "noExperienceNeeded": "لا حاجة لخبرة سابقة",
+  "alreadyHaveAccount": "لدي حساب بالفعل",
+  "help": "مساعدة",
+  "languageCode": "AR",
 
   "next": "التالي",
   "getStarted": "ابدأ الآن",
@@ -18,72 +23,66 @@
   "signIn": "تسجيل الدخول",
 
   "helpAndSupport": "المساعدة والدعم",
-  "changeLanguage": "اختر اللغة",
+  "changeLanguage": "اختيار اللغة",
+
   "firstName": "الاسم الأول",
   "lastName": "اسم العائلة",
-  "email": "البريد الإلكتروني",
+  "email": "عنوان البريد الإلكتروني",
   "createPassword": "إنشاء كلمة مرور",
   "passwordHint": "استخدم 8 أحرف على الأقل مع مزيج من الحروف والأرقام",
   "password": "كلمة المرور",
   "confirmPassword": "تأكيد كلمة المرور",
   "verifyOtp": "تأكيد الرمز",
-  "otpHint": "أدخل رمز التحقق المكون من 6 أرقام المرسل إلى بريدك",
-  "resendCode": "إعادة إرسال الرمز",
+  "otpHint": "أدخل الرمز المكون من 6 أرقام المرسل إلى بريدك الإلكتروني",
+  "resendCode": "لم تستلم الرمز؟ أعد الإرسال",
   "verify": "تأكيد",
-
-"experienceTitle": "خبرتك في بيلاتس",
-"experienceSubtitle": "ساعدنا في تخصيص رحلتك",
+  "experienceTitle": "تجربة البيلاتس الخاصة بك",
+  "experienceSubtitle": "ساعدنا على تخصيص رحلتك",
 
   "experienceBeginner": "مبتدئ",
-  "experienceBeginnerDesc": "مبتدئ في بيلاتس أو في بداية مشوارك",
+  "experienceBeginnerDesc": "جديد على البيلاتس أو في البداية",
 
-"experienceIntermediate": "متوسط",
-"experienceIntermediateDesc": "متمكن من الأساسيات وجاهز للتقدم",
+  "experienceIntermediate": "متوسط",
+  "experienceIntermediateDesc": "مرتاح مع الأساسيات ومستعد للتقدم",
 
-"experienceAdvanced": "متقدم",
-"experienceAdvancedDesc": "ممارس ذو خبرة يبحث عن التحدي",
+  "experienceAdvanced": "متقدم",
+  "experienceAdvancedDesc": "ممارس ذو خبرة يبحث عن تحدٍ",
 
-"branchTitle": "اختر الفرع الأنسب لك",
-"branchSubtitle": "حدد موقعك المفضل",
+  "branchTitle": "اختر الاستوديو الرئيسي",
+  "branchSubtitle": "حدد الموقع المفضل لديك",
 
-  "branchDowntown": "فرع وسط المدينة",
-  "branchDowntownAddress": "123 شارع الرئيسي",
+  "branchDowntown": "استوديو وسط المدينة",
+  "branchDowntownAddress": "123 الشارع الرئيسي",
 
-  "branchUptown": "فرع الحي الشمالي",
+  "branchUptown": "استوديو الحي الشمالي",
   "branchUptownAddress": "456 شارع الشمال",
 
   "finishSignUp": "إكمال الإعداد",
-  "liveChat": "الدردشة المباشرة",
-  "emailSupport": "الدعم عبر البريد الإلكتروني",
-  "callSupport": "الاتصال بالدعم",
 
-  "splashAppName": "The Pilates",
-  "splashStudio": "STUDIO",
-  "splashTagline": "رحلة البيلاتس تبدأ هنا",
+  "liveChat": "دردشة مباشرة",
+  "liveChatDesc": "تحدث مع فريقنا • متاح من 9 صباحًا إلى 9 مساءً",
+  "emailSupport": "الدعم عبر البريد الإلكتروني",
+  "emailSupportDesc": "support@thepilatesstudio.com",
+  "phoneSupport": "الدعم الهاتفي",
+  "phoneSupportDesc": "91 98765 43210 • من الاثنين إلى السبت 9 صباحًا - 7 مساءً",
+
+  "splashAppName": "ذا بيلاتس",
+  "splashStudio": "ستوديو",
+  "splashTagline": "رحلة البيلاتس الخاصة بك تبدأ هنا",
   "splashVersion": "الإصدار 1.0",
 
   "letsGo": "دعنا نتعرف عليك",
   "tellYourName": "أخبرنا باسمك وبريدك الإلكتروني",
 
-  "secureYourAccount": "أمن حسابك",
-  "createPassword": "أنشئ كلمة مرور وأضف هاتفك",
+  "secureYourAccount": "أمّن حسابك",
+  "createPassword": "أنشئ كلمة مرور وأضف رقم هاتفك",
 
-  "verifyPhone": "تحقق من هاتفك",
+  "verifyPhone": "تأكيد رقم الهاتف",
   "enterCode": "أدخل الرمز المكون من 4 أرقام المرسل إلى",
-
-"liveChatDesc": "تحدث مع فريقنا • متاح من ٩ صباحاً - ٩ مساءً",
-"emailSupportDesc": "support@thepilatesstudio.com",
-"phoneSupport": "الدعم الهاتفي",
-"phoneSupportDesc": "91 98765 43210 • من الاثنين للسبت، ٩ صباحاً - ٧ مساءً",
-"continueTxt": "متابعة",
-"verification": "التحقق",
-"experience": "الخبرة",
-"selectedBranch": "الفرع المختار"
-
-
-
-
-
-
-
+  "continueTxt": "متابعة",
+  "verification": "التحقق",
+  "experience": "الخبرة",
+  "selectedBranch": "الفرع المختار",
+  "selectLanguage": "اختر اللغة",
+  "confirm": "يتأكد"
 }

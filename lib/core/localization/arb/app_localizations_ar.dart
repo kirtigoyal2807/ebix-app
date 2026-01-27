@@ -9,35 +9,35 @@ class AppLocalizationsAr extends AppLocalizations {
   AppLocalizationsAr([String locale = 'ar']) : super(locale);
 
   @override
-  String get onboarding_title_1 => 'مرحبًا بك في البيلاتس';
+  String get onboarding_title_1 => 'مرحبًا بك في بيلاتس';
 
   @override
   String get onboarding_desc_1 => 'حسّن قوتك ومرونتك من خلال جلسات موجهة.';
 
   @override
-  String get onboarding_title_2 => 'تدرّب مع الخبراء';
+  String get onboarding_title_2 => 'تحرّك بقصد وقوة وتوازن.';
 
   @override
   String get onboarding_desc_2 =>
-      'تعلّم من مدربين معتمدين في أي وقت ومن أي مكان.';
+      'ابنِ القوة والمرونة والهدوء من خلال جلسات بيلاتس موجهة ومصممة خصيصًا لك.';
 
   @override
-  String get onboarding_title_3 => 'تتبع تقدمك';
+  String get onboarding_title_3 => 'تابع تقدمك';
 
   @override
-  String get onboarding_desc_3 => 'راقب تحسّنك وابقَ متحفزًا.';
+  String get onboarding_desc_3 => 'راقب تطورك وحافظ على حماسك.';
 
   @override
-  String get noExperienceNeeded => 'No experience needed';
+  String get noExperienceNeeded => 'لا حاجة لخبرة سابقة';
 
   @override
-  String get alreadyHaveAccount => 'I already have an account';
+  String get alreadyHaveAccount => 'لدي حساب بالفعل';
 
   @override
-  String get help => 'Help';
+  String get help => 'مساعدة';
 
   @override
-  String get languageCode => 'EN';
+  String get languageCode => 'AR';
 
   @override
   String get next => 'التالي';
@@ -58,7 +58,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get helpAndSupport => 'المساعدة والدعم';
 
   @override
-  String get changeLanguage => 'اختر اللغة';
+  String get changeLanguage => 'اختيار اللغة';
 
   @override
   String get firstName => 'الاسم الأول';
@@ -67,10 +67,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String get lastName => 'اسم العائلة';
 
   @override
-  String get email => 'البريد الإلكتروني';
+  String get email => 'عنوان البريد الإلكتروني';
 
   @override
-  String get createPassword => 'أنشئ كلمة مرور وأضف هاتفك';
+  String get createPassword => 'أنشئ كلمة مرور وأضف رقم هاتفك';
 
   @override
   String get passwordHint =>
@@ -86,52 +86,53 @@ class AppLocalizationsAr extends AppLocalizations {
   String get verifyOtp => 'تأكيد الرمز';
 
   @override
-  String get otpHint => 'أدخل رمز التحقق المكون من 6 أرقام المرسل إلى بريدك';
+  String get otpHint =>
+      'أدخل الرمز المكون من 6 أرقام المرسل إلى بريدك الإلكتروني';
 
   @override
-  String get resendCode => 'إعادة إرسال الرمز';
+  String get resendCode => 'لم تستلم الرمز؟ أعد الإرسال';
 
   @override
   String get verify => 'تأكيد';
 
   @override
-  String get experienceTitle => 'خبرتك في بيلاتس';
+  String get experienceTitle => 'تجربة البيلاتس الخاصة بك';
 
   @override
-  String get experienceSubtitle => 'ساعدنا في تخصيص رحلتك';
+  String get experienceSubtitle => 'ساعدنا على تخصيص رحلتك';
 
   @override
   String get experienceBeginner => 'مبتدئ';
 
   @override
-  String get experienceBeginnerDesc => 'مبتدئ في بيلاتس أو في بداية مشوارك';
+  String get experienceBeginnerDesc => 'جديد على البيلاتس أو في البداية';
 
   @override
   String get experienceIntermediate => 'متوسط';
 
   @override
-  String get experienceIntermediateDesc => 'متمكن من الأساسيات وجاهز للتقدم';
+  String get experienceIntermediateDesc => 'مرتاح مع الأساسيات ومستعد للتقدم';
 
   @override
   String get experienceAdvanced => 'متقدم';
 
   @override
-  String get experienceAdvancedDesc => 'ممارس ذو خبرة يبحث عن التحدي';
+  String get experienceAdvancedDesc => 'ممارس ذو خبرة يبحث عن تحدٍ';
 
   @override
-  String get branchTitle => 'اختر الفرع الأنسب لك';
+  String get branchTitle => 'اختر الاستوديو الرئيسي';
 
   @override
-  String get branchSubtitle => 'حدد موقعك المفضل';
+  String get branchSubtitle => 'حدد الموقع المفضل لديك';
 
   @override
-  String get branchDowntown => 'فرع وسط المدينة';
+  String get branchDowntown => 'استوديو وسط المدينة';
 
   @override
-  String get branchDowntownAddress => '123 شارع الرئيسي';
+  String get branchDowntownAddress => '123 الشارع الرئيسي';
 
   @override
-  String get branchUptown => 'فرع الحي الشمالي';
+  String get branchUptown => 'استوديو الحي الشمالي';
 
   @override
   String get branchUptownAddress => '456 شارع الشمال';
@@ -140,10 +141,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String get finishSignUp => 'إكمال الإعداد';
 
   @override
-  String get liveChat => 'الدردشة المباشرة';
+  String get liveChat => 'دردشة مباشرة';
 
   @override
-  String get liveChatDesc => 'تحدث مع فريقنا • متاح من ٩ صباحاً - ٩ مساءً';
+  String get liveChatDesc => 'تحدث مع فريقنا • متاح من 9 صباحًا إلى 9 مساءً';
 
   @override
   String get emailSupport => 'الدعم عبر البريد الإلكتروني';
@@ -156,16 +157,16 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get phoneSupportDesc =>
-      '91 98765 43210 • من الاثنين للسبت، ٩ صباحاً - ٧ مساءً';
+      '91 98765 43210 • من الاثنين إلى السبت 9 صباحًا - 7 مساءً';
 
   @override
-  String get splashAppName => 'The Pilates';
+  String get splashAppName => 'ذا بيلاتس';
 
   @override
-  String get splashStudio => 'STUDIO';
+  String get splashStudio => 'ستوديو';
 
   @override
-  String get splashTagline => 'رحلة البيلاتس تبدأ هنا';
+  String get splashTagline => 'رحلة البيلاتس الخاصة بك تبدأ هنا';
 
   @override
   String get splashVersion => 'الإصدار 1.0';
@@ -177,10 +178,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String get tellYourName => 'أخبرنا باسمك وبريدك الإلكتروني';
 
   @override
-  String get secureYourAccount => 'أمن حسابك';
+  String get secureYourAccount => 'أمّن حسابك';
 
   @override
-  String get verifyPhone => 'تحقق من هاتفك';
+  String get verifyPhone => 'تأكيد رقم الهاتف';
 
   @override
   String get enterCode => 'أدخل الرمز المكون من 4 أرقام المرسل إلى';
@@ -196,4 +197,10 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get selectedBranch => 'الفرع المختار';
+
+  @override
+  String get selectLanguage => 'اختر اللغة';
+
+  @override
+  String get confirm => 'يتأكد';
 }
