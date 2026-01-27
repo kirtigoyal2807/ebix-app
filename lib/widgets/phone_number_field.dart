@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:country_code_picker/country_code_picker.dart';
 import 'package:pilates_app/config/theme/app_radius.dart';
+import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
+import 'package:pilates_app/core/localization/localization_extension.dart';
 
 import 'app_text.dart';
 
@@ -10,6 +12,7 @@ class PhoneNumberField extends StatelessWidget {
   final String countryCode;
   final String flagAsset;
   final TextEditingController? controller;
+  final Function(CountryCode)? onCountryChanged;
 
   const PhoneNumberField({
     super.key,
@@ -17,6 +20,7 @@ class PhoneNumberField extends StatelessWidget {
     required this.countryCode,
     required this.flagAsset,
     this.controller,
+    this.onCountryChanged,
   });
 
   @override
@@ -32,8 +36,7 @@ class PhoneNumberField extends StatelessWidget {
           style: AppTextStyles.textFieldHeading,
         ),
 
-
-        const SizedBox(height: 6),
+        const SizedBox(height: AppSpacing.xs),
 
         /// FIELD
         Container(
@@ -42,28 +45,34 @@ class PhoneNumberField extends StatelessWidget {
             border: Border.all(
               color: theme.dividerColor,
             ),
-            // color: theme.colorScheme.surface,
           ),
           child: Row(
             children: [
-              /// FLAG + CODE
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12),
-                child: Row(
-                  children: [
-                    SvgPicture.asset(
-                      flagAsset,
-                      width: 22,
-                      height: 16,
-                      fit: BoxFit.cover,
-                    ),
-                    const SizedBox(width: 6),
-                    Text(
-                      countryCode,
-                      style: theme.textTheme.bodyMedium,
-                    ),
-                  ],
+              CountryCodePicker(
+                headerText: context.l10n.selectCountry,
+                onChanged: (CountryCode countryCode) {
+                  onCountryChanged?.call(countryCode);
+                },
+                initialSelection: countryCode.replaceFirst('+', ''),
+                showCountryOnly: false,
+                showOnlyCountryWhenClosed: false,
+                alignLeft: false,
+                padding: const EdgeInsets.symmetric(horizontal: 2),
+                boxDecoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(AppRadius.md),
                 ),
+                searchDecoration: InputDecoration(
+                  hintText: context.l10n.searchCountry,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(AppRadius.md),
+                  ),
+                  contentPadding: const EdgeInsets.symmetric(
+                    horizontal: AppSpacing.md,
+                    vertical: AppSpacing.md,
+                  ),
+                ),
+                textStyle: theme.textTheme.bodyMedium,
+                flagWidth: 24,
               ),
 
               /// DIVIDER

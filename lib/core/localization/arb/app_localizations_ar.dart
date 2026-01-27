@@ -55,6 +55,12 @@ class AppLocalizationsAr extends AppLocalizations {
   String get signIn => 'تسجيل الدخول';
 
   @override
+  String get step => 'خطوة';
+
+  @override
+  String get offf => 'من';
+
+  @override
   String get helpAndSupport => 'المساعدة والدعم';
 
   @override
@@ -90,7 +96,10 @@ class AppLocalizationsAr extends AppLocalizations {
       'أدخل الرمز المكون من 6 أرقام المرسل إلى بريدك الإلكتروني';
 
   @override
-  String get resendCode => 'لم تستلم الرمز؟ أعد الإرسال';
+  String get didntReceiveCode => 'لم تتلقى الرمز؟';
+
+  @override
+  String get resendCode => 'إعادة إرسال الرمز';
 
   @override
   String get verify => 'تأكيد';
@@ -203,4 +212,22 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get confirm => 'يتأكد';
+
+  @override
+  String get phoneNumber => 'رقم التليفون';
+
+  @override
+  String get searchCountry => 'البحث عن الدولة...';
+
+  @override
+  String get selectCountry => 'اختر الدولة';
+
+  @override
+  String get welcome => 'مرحباً';
+
+  @override
+  String get enterYourLoginDetails => 'أدخل بيانات تسجيل الدخول الخاصة بك';
+
+  @override
+  String get emailOrPhone => 'البريد الإلكتروني / رقم الهاتف';
 }

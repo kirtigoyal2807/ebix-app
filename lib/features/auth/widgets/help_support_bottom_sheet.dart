@@ -64,7 +64,6 @@ class HelpSupportBottomSheet extends StatelessWidget {
                           title: context.l10n.liveChat,
                           subtitle: context.l10n.liveChatDesc,
                           onTap: () {
-                            // TODO: Hook live chat
                             Navigator.pop(context);
                           },
                         ),
@@ -75,7 +74,6 @@ class HelpSupportBottomSheet extends StatelessWidget {
                           title: context.l10n.emailSupport,
                           subtitle: context.l10n.emailSupportDesc,
                           onTap: () {
-                            // TODO: Hook email support
                             Navigator.pop(context);
                           },
                         ),
@@ -87,7 +85,6 @@ class HelpSupportBottomSheet extends StatelessWidget {
                           title: context.l10n.phoneSupport,
                           subtitle: context.l10n.phoneSupportDesc,
                           onTap: () {
-                            // TODO: Hook call support
                             Navigator.pop(context);
                           },
                         ),

@@ -20,6 +20,7 @@ class AppColors {
   static const languageIcon = Color(0xFF80604D);
   static const arrowIcon = Color(0xFFA6A09B);
   static const selectedLanguageBg = Color(0xFFFAE8DD);
+  static const redLight = Color(0xFFE5484D);
 
   // Dark
   static const backgroundDark = Color(0xFF0F0D0C);
@@ -29,6 +30,7 @@ class AppColors {
   static const borderDark = Color(0xFF2A2623);
   static const languageIconDark = Color(0xFF9A7E6D);
   static const languageTextDark = Color(0xFFB59D8E);
+  static const redDark= Color(0xFFEB8E90);
 
   // Splash Screen
   static const splashBackgroundDark = Color(0xFF65422C); // Dark brown

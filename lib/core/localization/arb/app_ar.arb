@@ -21,6 +21,8 @@
 
   "signUp": "إنشاء حساب",
   "signIn": "تسجيل الدخول",
+  "step": "خطوة",
+  "offf": "من",
 
   "helpAndSupport": "المساعدة والدعم",
   "changeLanguage": "اختيار اللغة",
@@ -34,7 +36,8 @@
   "confirmPassword": "تأكيد كلمة المرور",
   "verifyOtp": "تأكيد الرمز",
   "otpHint": "أدخل الرمز المكون من 6 أرقام المرسل إلى بريدك الإلكتروني",
-  "resendCode": "لم تستلم الرمز؟ أعد الإرسال",
+  "didntReceiveCode": "لم تتلقى الرمز؟",
+  "resendCode": "إعادة إرسال الرمز",
   "verify": "تأكيد",
   "experienceTitle": "تجربة البيلاتس الخاصة بك",
   "experienceSubtitle": "ساعدنا على تخصيص رحلتك",
@@ -84,5 +87,15 @@
   "experience": "الخبرة",
   "selectedBranch": "الفرع المختار",
   "selectLanguage": "اختر اللغة",
-  "confirm": "يتأكد"
+  "confirm": "يتأكد",
+  "firstName": "الاسم الأول",
+  "lastName": "اسم العائلة",
+  "email": "عنوان البريد الإلكتروني",
+  "phoneNumber": "رقم التليفون",
+  "searchCountry": "البحث عن الدولة...",
+  "selectCountry": "اختر الدولة",
+  "signIn":"تسجيل الدخول",
+  "welcome":"مرحباً",
+  "enterYourLoginDetails": "أدخل بيانات تسجيل الدخول الخاصة بك",
+  "emailOrPhone":"البريد الإلكتروني / رقم الهاتف"
 }

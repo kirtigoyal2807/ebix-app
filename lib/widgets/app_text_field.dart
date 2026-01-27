@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:pilates_app/config/theme/app_colors.dart';
 import 'package:pilates_app/config/theme/app_radius.dart';
+import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
 
 import 'app_text.dart';
@@ -35,6 +37,7 @@ class _AppTextFieldState extends State<AppTextField> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final theme = Theme.of(context);
     final hasError = widget.errorText != null;
 
@@ -48,14 +51,16 @@ class _AppTextFieldState extends State<AppTextField> {
         ),
 
 
-        const SizedBox(height: 6),
+        const SizedBox(height: AppSpacing.sm),
 
         /// TEXT FIELD
         TextFormField(
           obscureText: _obscure,
           keyboardType: widget.keyboardType,
+          style: AppTextStyles.textField(context),
           decoration: InputDecoration(
             hintText: widget.hint,
+            hintStyle: AppTextStyles.textField(context).copyWith(color: AppColors.lightGrey),
             contentPadding: const EdgeInsets.symmetric(
               horizontal: 14,
               vertical: 14,
@@ -66,7 +71,7 @@ class _AppTextFieldState extends State<AppTextField> {
               borderRadius: BorderRadius.circular(AppRadius.md),
               borderSide: BorderSide(
                 color: hasError
-                    ? Colors.red
+                    ? isDark?AppColors.redDark:AppColors.redLight
                     : theme.dividerColor,
               ),
             ),
@@ -101,17 +106,17 @@ class _AppTextFieldState extends State<AppTextField> {
           const SizedBox(height: 6),
           Row(
             children: [
-              const Icon(
+               Icon(
                 Icons.info_outline,
                 size: 14,
-                color: Colors.red,
+                color:  isDark?AppColors.redDark:AppColors.redLight,
               ),
               const SizedBox(width: 6),
               Expanded(
                 child: Text(
                   widget.errorText!,
                   style: theme.textTheme.bodySmall?.copyWith(
-                    color: Colors.red,
+                    color: isDark?AppColors.redDark:AppColors.redLight
                   ),
                 ),
               ),

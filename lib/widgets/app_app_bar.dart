@@ -13,15 +13,17 @@ class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       leading: onBack != null
           ? IconButton(
-        icon: const Icon(Icons.arrow_back_ios_rounded),
+        icon: const Icon(Icons.arrow_back_ios_rounded,size: 20,),
         onPressed: onBack,
+        
       )
           : null,
 
       title: title != null ? AppText(title!, style: AppTextStyles.appBarTitle,) : null,
       centerTitle: true,
       elevation: 0,
-      backgroundColor: Colors.transparent,
+      backgroundColor: Colors.white,
+      
     );
   }
 

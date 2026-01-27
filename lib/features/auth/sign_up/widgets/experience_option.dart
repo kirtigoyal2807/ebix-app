@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:pilates_app/config/theme/app_colors.dart';
 import 'package:pilates_app/config/theme/app_radius.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
@@ -26,13 +27,16 @@ class ExperienceOption extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Material(
-      color: Colors.transparent,
+      color: Colors.white,
+      elevation: 4,
+      shadowColor: Colors.black.withValues(alpha: 0.2),
+      borderRadius: BorderRadius.circular(16),
       child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(AppRadius.md),
         child: Container(
           padding: const EdgeInsets.symmetric(
-            horizontal: AppSpacing.lg,
+            horizontal: AppSpacing.md,
             vertical: AppSpacing.md + 2,
           ),
           decoration: BoxDecoration(
@@ -43,9 +47,7 @@ class ExperienceOption extends StatelessWidget {
                   : theme.dividerColor.withValues(alpha: 0.6),
               width: selected ? 1.5 : 1,
             ),
-            color: selected
-                ? theme.colorScheme.primary.withValues(alpha: 0.06)
-                : theme.colorScheme.surface,
+            color: Colors.white,
           ),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -56,9 +58,7 @@ class ExperienceOption extends StatelessWidget {
                 width: 34,
                 height: 34,
                 colorFilter: ColorFilter.mode(
-                  selected
-                      ? theme.colorScheme.primary
-                      : theme.hintColor,
+                  selected ? theme.colorScheme.primary : theme.hintColor,
                   BlendMode.srcIn,
                 ),
                 alignment: Alignment.center,
@@ -73,13 +73,16 @@ class ExperienceOption extends StatelessWidget {
                   children: [
                     AppText(
                       title,
-                      style: AppTextStyles.bottomSheet,
+                      style: (context) =>
+                          AppTextStyles.experienceButton(context),
                     ),
+
                     const SizedBox(height: AppSpacing.xs),
                     AppText(
                       description,
-                      style: AppTextStyles.body,
-
+                      style: (context) => AppTextStyles.body(
+                        context,
+                      ).copyWith(color: AppColors.greyText),
                     ),
                   ],
                 ),

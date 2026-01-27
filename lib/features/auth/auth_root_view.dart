@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pilates_app/features/auth/sign_in/sign_in_view.dart';
 import 'package:pilates_app/features/auth/sign_up/step_branch_view.dart';
 import 'package:pilates_app/features/auth/sign_up/step_experience_view.dart';
 import 'package:pilates_app/features/auth/sign_up/step_otp_view.dart';
@@ -42,7 +43,7 @@ class AuthRootView extends StatelessWidget {
             }
 
           case AuthFlow.signIn:
-            return const _SignInPlaceholder();
+            return const SignInView();
         }
       },
     );

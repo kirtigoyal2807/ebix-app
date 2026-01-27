@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pilates_app/config/theme/app_colors.dart';
 import 'package:pilates_app/config/theme/app_radius.dart';
 
 class SignUpProgress extends StatelessWidget {
@@ -20,7 +21,7 @@ class SignUpProgress extends StatelessWidget {
       child: LinearProgressIndicator(
         value: progress,
         minHeight: 6,
-        backgroundColor: Theme.of(context).dividerColor,
+        backgroundColor: AppColors.selectedLanguageBg,
         valueColor: AlwaysStoppedAnimation<Color>(
           Theme.of(context).colorScheme.primary,
         ),

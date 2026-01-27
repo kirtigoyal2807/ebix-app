@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pilates_app/config/theme/app_colors.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/widgets/app_app_bar.dart';
 import 'package:pilates_app/widgets/app_button.dart';
 import 'package:pilates_app/widgets/app_scaffold.dart';
-import 'package:pilates_app/widgets/app_text.dart';
 
 import '../../../core/localization/localization_extension.dart';
 import '../cubit/auth_cubit.dart';
@@ -20,69 +20,96 @@ class SignUpOtpView extends StatelessWidget {
   Widget build(BuildContext context) {
     return AppScaffold(
       appBar: AppAppBar(
-        onBack: () =>
-            context.read<AuthCubit>().previousSignUpStep(),
+        onBack: () => context.read<AuthCubit>().previousSignUpStep(),
         title: context.l10n.verification,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(AppSpacing.lg),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Progress
-            const SignUpProgress(
-              currentStep: 2,
-              totalSteps: 5,
-            ),
+      body: Container(
+        color: Colors.white,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: AppSpacing.lg,
+            vertical: AppSpacing.md,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Progress
+              const SignUpProgress(currentStep: 2, totalSteps: 5),
 
-            const SizedBox(height: AppSpacing.sm),
-            AppText(
-              'Step ${0 + 3} of ${5}',
-              style: AppTextStyles.caption,
-            ),
-            const SizedBox(height: AppSpacing.lg),
-
-            // Header
-            SignUpHeader(
-              title: context.l10n.verifyPhone,
-              subtitle: context.l10n.enterCode,
-              step: 2,
-              totalSteps: 5,
-            ),
-
-            const SizedBox(height: AppSpacing.lg),
-
-            // OTP field
-            OtpField(
-              length: 4,
-              onCompleted: (otp) {
-                // Handle OTP completion
-              },
-            ),
-            const SizedBox(height: AppSpacing.sm),
-
-            // Resend
-            Center(
-              child: TextButton(
-                onPressed: () {
-                  // UI only for now
-                },
-                child: AppText(
-                  context.l10n.resendCode,
-                  style: AppTextStyles.body,
+              const SizedBox(height: AppSpacing.sm),
+              RichText(
+                text: TextSpan(
+                  children: [
+                    TextSpan(
+                      text: '${context.l10n.step} 3',
+                      style: AppTextStyles.caption(
+                        context,
+                      ).copyWith(color: AppColors.languageIcon),
+                    ),
+                    TextSpan(
+                      text: ' ${context.l10n.offf} 5',
+                      style: AppTextStyles.caption(context),
+                    ),
+                  ],
                 ),
               ),
-            ),
 
-            const Spacer(),
+              const SizedBox(height: AppSpacing.xxl),
 
-            // Verify button
-            AppButton(
-              label: context.l10n.verify,
-              onPressed: () =>
-                  context.read<AuthCubit>().nextSignUpStep(),
-            ),
-          ],
+              // Header
+              SignUpHeader(
+                title: context.l10n.verifyPhone,
+                subtitle: context.l10n.enterCode,
+                step: 2,
+                totalSteps: 5,
+              ),
+
+              const SizedBox(height: AppSpacing.lg),
+
+              // OTP field
+              OtpField(
+                length: 4,
+                onCompleted: (otp) {
+                  // Handle OTP completion
+                },
+              ),
+
+              const SizedBox(height: AppSpacing.lg),
+
+              Center(
+                child: RichText(
+                  text: TextSpan(
+                    children: [
+                      TextSpan(
+                        text: context.l10n.didntReceiveCode,
+                        style: AppTextStyles.caption(context).copyWith(
+                          color: AppColors.greyText,
+                          fontWeight: FontWeight.w400,
+                          height: 1.4,
+                        ),
+                      ),
+                      TextSpan(
+                        text: context.l10n.resendCode,
+                        style: AppTextStyles.caption(context).copyWith(
+                          color: AppColors.languageIcon,
+                          fontWeight: FontWeight.w600,
+                          height: 1.4,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+
+              const Spacer(),
+
+              // Verify button
+              AppButton(
+                label: context.l10n.verify,
+                onPressed: () => context.read<AuthCubit>().nextSignUpStep(),
+              ),
+            ],
+          ),
         ),
       ),
     );

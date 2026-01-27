@@ -42,9 +42,7 @@ class BranchOption extends StatelessWidget {
               color: borderColor,
               width: selected ? 1.5 : 1,
             ),
-            color: selected
-                ? theme.colorScheme.primary.withValues(alpha: 0.05)
-                : theme.colorScheme.surface,
+            color:Colors.white,
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,

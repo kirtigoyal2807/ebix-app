@@ -4,7 +4,7 @@
   "onboarding_title_1": "Welcome to Pilates",
   "onboarding_desc_1": "Improve your strength and flexibility with guided sessions.",
 
-  "onboarding_title_2": "Move with intention, strength, and balance.",
+  "onboarding_title_2": "Move with intention,\nstrength, and balance.",
   "onboarding_desc_2": "Build strength, flexibility, and calm through guided Pilates sessions made for you.",
 
   "onboarding_title_3": "Track Your Progress",
@@ -21,6 +21,8 @@
 
   "signUp": "Sign Up",
   "signIn": "Sign In",
+  "step": "Step",
+  "offf": "of",
 
   "helpAndSupport": "Help & Support",
   "changeLanguage": "Select Language",
@@ -34,7 +36,8 @@
   "confirmPassword": "Confirm password",
   "verifyOtp": "Verify code",
   "otpHint": "Enter the 6-digit code sent to your email",
-  "resendCode": "Didn't receive code? Resend Code",
+  "didntReceiveCode": "Didn't receive code?",
+  "resendCode": " Resend Code",
   "verify": "Verify",
   "experienceTitle": "Your Pilates experience",
   "experienceSubtitle": "Help us personalize your journey",
@@ -84,5 +87,15 @@
   "experience": "Experience",
   "selectedBranch": "Selected Branch",
   "selectLanguage": "Select Language",
-  "confirm": "Confirm"
+  "confirm": "Confirm",
+  "firstName": "First Name",
+  "lastName": "Last Name",
+  "email": "Email Address",
+  "phoneNumber": "Phone Number",
+  "searchCountry": "Search country...",
+  "selectCountry": "Select Country",
+  "signIn": "Sign In",
+  "welcome": "Welcome",
+  "enterYourLoginDetails": "Enter your login details",
+  "emailOrPhone":"Email / Phone Number"
 }

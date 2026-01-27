@@ -32,7 +32,7 @@ class AppTextStyles {
     fontSize: 14,
     fontWeight: FontWeight.w400,
     color: AppColors.greyText,
-    height: 1.5,
+    height: 1.4,
   );
 
   static TextStyle bodyTextSmall(BuildContext context) => GoogleFonts.inter(
@@ -61,15 +61,24 @@ class AppTextStyles {
   );
 
   static TextStyle textFieldHeading(BuildContext context) => GoogleFonts.inter(
-    fontSize: 15,
+    fontSize: 14,
     fontWeight: FontWeight.w500,
     color: AppColors.darkText,
+    height: 1.55,
+  );
+
+  static TextStyle textField(BuildContext context) => GoogleFonts.inter(
+    fontSize: 16,
+    fontWeight: FontWeight.w400,
+    color: AppColors.darkText,
+    height: 1.6,
   );
 
   static TextStyle appBarTitle(BuildContext context) => GoogleFonts.inter(
     fontSize: 18,
     fontWeight: FontWeight.w500,
     color: AppColors.darkText,
+    height: 1.4,
   );
 
   static TextStyle headingSmall(BuildContext context) => GoogleFonts.inter(
@@ -141,4 +150,11 @@ class AppTextStyles {
         fontWeight: FontWeight.w400,
         color: AppColors.greyText,
       );
+
+  static TextStyle experienceButton(BuildContext context) => GoogleFonts.inter(
+    fontSize: 16,
+    fontWeight: FontWeight.w500,
+    color: AppColors.darkText,
+    height: 1.2,
+  );
 }

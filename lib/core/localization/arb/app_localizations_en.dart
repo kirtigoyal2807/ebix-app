@@ -17,7 +17,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get onboarding_title_2 =>
-      'Move with intention, strength, and balance.';
+      'Move with intention,\nstrength, and balance.';
 
   @override
   String get onboarding_desc_2 =>
@@ -58,19 +58,25 @@ class AppLocalizationsEn extends AppLocalizations {
   String get signIn => 'Sign In';
 
   @override
+  String get step => 'Step';
+
+  @override
+  String get offf => 'of';
+
+  @override
   String get helpAndSupport => 'Help & Support';
 
   @override
   String get changeLanguage => 'Select Language';
 
   @override
-  String get firstName => 'First name';
+  String get firstName => 'First Name';
 
   @override
-  String get lastName => 'Last name';
+  String get lastName => 'Last Name';
 
   @override
-  String get email => 'Email address';
+  String get email => 'Email Address';
 
   @override
   String get createPassword => 'Create a password and add your phone';
@@ -92,7 +98,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get otpHint => 'Enter the 6-digit code sent to your email';
 
   @override
-  String get resendCode => 'Didn\'t receive code? Resend Code';
+  String get didntReceiveCode => 'Didn\'t receive code?';
+
+  @override
+  String get resendCode => ' Resend Code';
 
   @override
   String get verify => 'Verify';
@@ -206,4 +215,22 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get confirm => 'Confirm';
+
+  @override
+  String get phoneNumber => 'Phone Number';
+
+  @override
+  String get searchCountry => 'Search country...';
+
+  @override
+  String get selectCountry => 'Select Country';
+
+  @override
+  String get welcome => 'Welcome';
+
+  @override
+  String get enterYourLoginDetails => 'Enter your login details';
+
+  @override
+  String get emailOrPhone => 'Email / Phone Number';
 }

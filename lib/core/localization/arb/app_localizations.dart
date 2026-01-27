@@ -113,7 +113,7 @@ abstract class AppLocalizations {
   /// No description provided for @onboarding_title_2.
   ///
   /// In en, this message translates to:
-  /// **'Move with intention, strength, and balance.'**
+  /// **'Move with intention,\nstrength, and balance.'**
   String get onboarding_title_2;
 
   /// No description provided for @onboarding_desc_2.
@@ -188,6 +188,18 @@ abstract class AppLocalizations {
   /// **'Sign In'**
   String get signIn;
 
+  /// No description provided for @step.
+  ///
+  /// In en, this message translates to:
+  /// **'Step'**
+  String get step;
+
+  /// No description provided for @offf.
+  ///
+  /// In en, this message translates to:
+  /// **'of'**
+  String get offf;
+
   /// No description provided for @helpAndSupport.
   ///
   /// In en, this message translates to:
@@ -203,19 +215,19 @@ abstract class AppLocalizations {
   /// No description provided for @firstName.
   ///
   /// In en, this message translates to:
-  /// **'First name'**
+  /// **'First Name'**
   String get firstName;
 
   /// No description provided for @lastName.
   ///
   /// In en, this message translates to:
-  /// **'Last name'**
+  /// **'Last Name'**
   String get lastName;
 
   /// No description provided for @email.
   ///
   /// In en, this message translates to:
-  /// **'Email address'**
+  /// **'Email Address'**
   String get email;
 
   /// No description provided for @createPassword.
@@ -254,10 +266,16 @@ abstract class AppLocalizations {
   /// **'Enter the 6-digit code sent to your email'**
   String get otpHint;
 
+  /// No description provided for @didntReceiveCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Didn\'t receive code?'**
+  String get didntReceiveCode;
+
   /// No description provided for @resendCode.
   ///
   /// In en, this message translates to:
-  /// **'Didn\'t receive code? Resend Code'**
+  /// **' Resend Code'**
   String get resendCode;
 
   /// No description provided for @verify.
@@ -481,6 +499,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Confirm'**
   String get confirm;
+
+  /// No description provided for @phoneNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone Number'**
+  String get phoneNumber;
+
+  /// No description provided for @searchCountry.
+  ///
+  /// In en, this message translates to:
+  /// **'Search country...'**
+  String get searchCountry;
+
+  /// No description provided for @selectCountry.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Country'**
+  String get selectCountry;
+
+  /// No description provided for @welcome.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome'**
+  String get welcome;
+
+  /// No description provided for @enterYourLoginDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your login details'**
+  String get enterYourLoginDetails;
+
+  /// No description provided for @emailOrPhone.
+  ///
+  /// In en, this message translates to:
+  /// **'Email / Phone Number'**
+  String get emailOrPhone;
 }
 
 class _AppLocalizationsDelegate
