@@ -40,11 +40,11 @@ class ExperienceOption extends StatelessWidget {
             border: Border.all(
               color: selected
                   ? theme.colorScheme.primary
-                  : theme.dividerColor.withOpacity(0.6),
+                  : theme.dividerColor.withValues(alpha: 0.6),
               width: selected ? 1.5 : 1,
             ),
             color: selected
-                ? theme.colorScheme.primary.withOpacity(0.06)
+                ? theme.colorScheme.primary.withValues(alpha: 0.06)
                 : theme.colorScheme.surface,
           ),
           child: Row(

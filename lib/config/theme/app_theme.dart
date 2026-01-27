@@ -10,9 +10,8 @@ class AppTheme {
       fontFamily: 'Inter',
       colorScheme: const ColorScheme.light(
         primary: AppColors.primary,
-        background: AppColors.backgroundLight,
-        surface: AppColors.surfaceLight,
-        onBackground: AppColors.textPrimaryLight,
+        surface: AppColors.backgroundLight,
+        onSurface: AppColors.textPrimaryLight,
         error: AppColors.error,
       ),
       dividerColor: AppColors.borderLight,
@@ -27,9 +26,8 @@ class AppTheme {
       fontFamily: 'Inter',
       colorScheme: const ColorScheme.dark(
         primary: AppColors.primaryDark,
-        background: AppColors.backgroundDark,
-        surface: AppColors.surfaceDark,
-        onBackground: AppColors.textPrimaryDark,
+        surface: AppColors.backgroundDark,
+        onSurface: AppColors.textPrimaryDark,
         error: AppColors.error,
       ),
       dividerColor: AppColors.borderDark,

@@ -15,7 +15,7 @@ class AppLogo extends StatelessWidget {
         Theme.of(context).brightness == Brightness.dark;
 
     return SvgPicture.asset(
-      (isDark ?? false)
+      isDark
           ? 'assets/images/svg/ic_splash_dark_code.svg'
           : 'assets/images/svg/ic_splash_light_code.svg',
       width: size,

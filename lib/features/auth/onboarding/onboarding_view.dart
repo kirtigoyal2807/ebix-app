@@ -7,7 +7,6 @@ import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/core/localization/localization_extension.dart';
 import 'package:pilates_app/widgets/app_button.dart';
-import 'package:pilates_app/widgets/app_scaffold.dart';
 import 'package:pilates_app/widgets/app_text.dart';
 import 'package:pilates_app/widgets/language_bottom_sheet.dart';
 import 'package:pilates_app/features/auth/widgets/help_support_bottom_sheet.dart';

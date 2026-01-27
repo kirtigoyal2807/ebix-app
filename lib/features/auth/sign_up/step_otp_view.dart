@@ -56,7 +56,7 @@ class SignUpOtpView extends StatelessWidget {
             OtpField(
               length: 4,
               onCompleted: (otp) {
-                print('OTP entered: $otp');
+                // Handle OTP completion
               },
             ),
             const SizedBox(height: AppSpacing.sm),

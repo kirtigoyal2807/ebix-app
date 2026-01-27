@@ -43,7 +43,7 @@ class BranchOption extends StatelessWidget {
               width: selected ? 1.5 : 1,
             ),
             color: selected
-                ? theme.colorScheme.primary.withOpacity(0.05)
+                ? theme.colorScheme.primary.withValues(alpha: 0.05)
                 : theme.colorScheme.surface,
           ),
           child: Column(

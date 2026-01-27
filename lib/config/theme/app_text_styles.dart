@@ -7,14 +7,14 @@ class AppTextStyles {
       GoogleFonts.inter(
         fontSize: 24,
         fontWeight: FontWeight.w600,
-        color: Theme.of(context).colorScheme.onBackground,
+        color: Theme.of(context).colorScheme.onSurface,
       );
 
   static TextStyle bottomSheet(BuildContext context) =>
       GoogleFonts.inter(
         fontSize: 18,
         fontWeight: FontWeight.w600,
-        color: Theme.of(context).colorScheme.onBackground,
+        color: Theme.of(context).colorScheme.onSurface,
       );
 
   static TextStyle heading1(BuildContext context) =>
@@ -29,7 +29,7 @@ class AppTextStyles {
       GoogleFonts.inter(
         fontSize: 14,
         fontWeight: FontWeight.w400,
-        color: Theme.of(context).colorScheme.onBackground,
+        color: Theme.of(context).colorScheme.onSurface,
       );
 
   static TextStyle bodyText(BuildContext context) =>
