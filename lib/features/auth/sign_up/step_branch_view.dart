@@ -20,6 +20,8 @@ class SignUpBranchView extends StatefulWidget {
 }
 
 class _SignUpBranchViewState extends State<SignUpBranchView> {
+  int _selectedIndex = 0;
+
   @override
   Widget build(BuildContext context) {
     return AppScaffold(
