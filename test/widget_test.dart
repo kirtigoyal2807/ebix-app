@@ -13,7 +13,7 @@ import 'package:pilates_app/main.dart';
 void main() {
   testWidgets('Pilates app smoke test', (WidgetTester tester) async {
     // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+    await tester.pumpWidget(const PilatesApp());
 
     // Wait for the app to settle
     await tester.pumpAndSettle();
