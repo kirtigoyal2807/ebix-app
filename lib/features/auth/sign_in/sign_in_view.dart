@@ -21,7 +21,7 @@ class SignInView extends StatelessWidget {
         title: context.l10n.signIn,
       ),
       body: Container(
-        color: Colors.white,
+        // color: Colors.white,
         child: Padding(
           padding: const EdgeInsets.symmetric(
             horizontal: AppSpacing.lg,

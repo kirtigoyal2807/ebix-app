@@ -24,13 +24,14 @@ class _SignUpExperienceViewState extends State<SignUpExperienceView> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return AppScaffold(
       appBar: AppAppBar(
         onBack: () => context.read<AuthCubit>().previousSignUpStep(),
         title: context.l10n.experience,
       ),
       body: Container(
-        color: Colors.white,
+        // color: Colors.white,
         child: Padding(
           padding: const EdgeInsets.symmetric(
             horizontal: AppSpacing.lg,
@@ -50,7 +51,9 @@ class _SignUpExperienceViewState extends State<SignUpExperienceView> {
                       text: '${context.l10n.step} 4',
                       style: AppTextStyles.caption(
                         context,
-                      ).copyWith(color: AppColors.languageIcon),
+                      ).copyWith(color: isDark
+                          ? AppColors.languageTextDark
+                          : AppColors.languageIcon,),
                     ),
                     TextSpan(
                       text: ' ${context.l10n.offf} 5',
@@ -77,7 +80,7 @@ class _SignUpExperienceViewState extends State<SignUpExperienceView> {
                 title: context.l10n.experienceBeginner,
                 description: context.l10n.experienceBeginnerDesc,
                 selected: _selectedIndex == 0,
-                iconPath: "assets/images/svg/ic_beginner.svg",
+                iconPath: isDark ? "assets/images/svg/ic_beginner_dark.svg":"assets/images/svg/ic_beginner.svg",
                 onTap: () => setState(() => _selectedIndex = 0),
               ),
         
@@ -87,7 +90,7 @@ class _SignUpExperienceViewState extends State<SignUpExperienceView> {
                 title: context.l10n.experienceIntermediate,
                 description: context.l10n.experienceIntermediateDesc,
                 selected: _selectedIndex == 1,
-                iconPath: "assets/images/svg/ic_intermediate.svg",
+                iconPath: isDark ? "assets/images/svg/ic_intermediate_dark.svg":"assets/images/svg/ic_intermediate.svg",
                 onTap: () => setState(() => _selectedIndex = 1),
               ),
         
@@ -97,7 +100,7 @@ class _SignUpExperienceViewState extends State<SignUpExperienceView> {
                 title: context.l10n.experienceAdvanced,
                 description: context.l10n.experienceAdvancedDesc,
                 selected: _selectedIndex == 2,
-                iconPath: "assets/images/svg/ic_advance.svg",
+                iconPath: isDark ? "assets/images/svg/ic_advance_dark.svg":"assets/images/svg/ic_advance.svg",
                 onTap: () => setState(() => _selectedIndex = 2),
               ),
         

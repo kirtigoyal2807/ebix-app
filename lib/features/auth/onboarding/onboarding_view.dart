@@ -49,7 +49,7 @@ class OnboardingView extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      // backgroundColor: Colors.white,
       body: SafeArea(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -95,7 +95,9 @@ class OnboardingView extends StatelessWidget {
                           horizontal: AppSpacing.base,
                         ),
                         child: SvgPicture.asset(
-                          'assets/images/svg/ic_onboarding.svg',
+                          isDark
+                              ? 'assets/images/svg/ic_onboarding_dark.svg'
+                              : 'assets/images/svg/ic_onboarding.svg',
                           height: 280,
                           fit: BoxFit.contain,
                         ),
@@ -204,8 +206,8 @@ class OnboardingView extends StatelessWidget {
               vertical: AppSpacing.sm,
             ),
             decoration: BoxDecoration(
-              color: Colors.white,
-              border: Border.all(color: AppColors.lightGreyBorder, width: 1),
+              // color: Colors.white,
+              border: Border.all(color: AppColors.lightGreyBorder, width: 0.5),
               borderRadius: BorderRadius.circular(AppRadius.pillRadius),
             ),
             child: Row(
@@ -219,15 +221,7 @@ class OnboardingView extends StatelessWidget {
                       : AppColors.languageIcon,
                 ),
                 const SizedBox(width: AppSpacing.xs + 2),
-                Text(
-                  languageCode,
-                  style: AppTextStyles.body(context).copyWith(
-                    color: isDark
-                        ? AppColors.languageTextDark
-                        : AppColors.languageIcon,
-                    fontSize: 14,
-                  ),
-                ),
+                AppText(languageCode, style: AppTextStyles.body),
                 const SizedBox(width: AppSpacing.xs),
                 Icon(
                   Icons.keyboard_arrow_down,
@@ -252,22 +246,14 @@ class OnboardingView extends StatelessWidget {
           vertical: AppSpacing.sm,
         ),
         decoration: BoxDecoration(
-          color: Colors.white,
-          border: Border.all(color: AppColors.lightGreyBorder, width: 1),
+          // color: Colors.white,
+          border: Border.all(color: AppColors.lightGreyBorder, width: 0.5),
           borderRadius: BorderRadius.circular(AppRadius.pillRadius),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(
-              context.l10n.help,
-              style: AppTextStyles.body(context).copyWith(
-                color: isDark
-                    ? AppColors.languageTextDark
-                    : AppColors.languageIcon,
-                fontSize: 14,
-              ),
-            ),
+            AppText(context.l10n.help, style: AppTextStyles.body),
             const SizedBox(width: AppSpacing.xs),
             Container(
               width: 20,

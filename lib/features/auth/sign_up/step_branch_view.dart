@@ -24,13 +24,13 @@ class _SignUpBranchViewState extends State<SignUpBranchView> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return AppScaffold(
       appBar: AppAppBar(
         onBack: () => context.read<AuthCubit>().previousSignUpStep(),
         title: context.l10n.selectedBranch,
       ),
       body: Container(
-        color: Colors.white,
         child: Padding(
           padding: const EdgeInsets.symmetric(
             horizontal: AppSpacing.lg,
@@ -51,7 +51,9 @@ class _SignUpBranchViewState extends State<SignUpBranchView> {
                       text: '${context.l10n.step} 5',
                       style: AppTextStyles.caption(
                         context,
-                      ).copyWith(color: AppColors.languageIcon),
+                      ).copyWith(color: isDark
+                          ? AppColors.languageTextDark
+                          : AppColors.languageIcon,),
                     ),
                     TextSpan(
                       text: ' ${context.l10n.offf} 5',

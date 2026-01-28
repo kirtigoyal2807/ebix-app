@@ -18,13 +18,15 @@ class SignUpPersonalInfoView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return AppScaffold(
       appBar: AppAppBar(
         onBack: () => context.read<AuthCubit>().previousSignUpStep(),
         title: context.l10n.signUp,
       ),
       body: Container(
-        color: Colors.white,
+        // color: Colors.white,
         child: Padding(
           padding: const EdgeInsets.symmetric(
             horizontal: AppSpacing.lg,
@@ -42,7 +44,9 @@ class SignUpPersonalInfoView extends StatelessWidget {
                     TextSpan(
                       text: '${context.l10n.step} 1',
                       style: AppTextStyles.caption(context).copyWith(
-                        color: AppColors.languageIcon,
+                        color: isDark
+                            ? AppColors.languageTextDark
+                            : AppColors.languageIcon,
                       ),
                     ),
                     TextSpan(
@@ -51,9 +55,9 @@ class SignUpPersonalInfoView extends StatelessWidget {
                     ),
                   ],
                 ),
-              ), 
+              ),
               const SizedBox(height: AppSpacing.xxl),
-        
+
               // Header
               SignUpHeader(
                 title: context.l10n.letsGo,
@@ -61,9 +65,9 @@ class SignUpPersonalInfoView extends StatelessWidget {
                 step: 0,
                 totalSteps: 5,
               ),
-        
+
               const SizedBox(height: AppSpacing.lg),
-        
+
               // Form fields
               AppTextField(
                 label: context.l10n.firstName,
@@ -71,27 +75,27 @@ class SignUpPersonalInfoView extends StatelessWidget {
                 keyboardType: TextInputType.name,
                 // errorText: 'This email address is already registered.',
               ),
-        
+
               const SizedBox(height: AppSpacing.md),
-        
+
               AppTextField(
                 label: context.l10n.lastName,
                 hint: 'Tajib',
                 keyboardType: TextInputType.name,
                 // errorText: 'This email address is already registered.',
               ),
-        
+
               const SizedBox(height: AppSpacing.md),
-        
+
               AppTextField(
                 label: context.l10n.email,
                 hint: 'Ayesha@gmail.com',
                 keyboardType: TextInputType.emailAddress,
                 // errorText: 'This email address is already registered.',
               ),
-        
+
               const Spacer(),
-        
+
               // Continue button
               AppButton(
                 label: context.l10n.continueTxt,

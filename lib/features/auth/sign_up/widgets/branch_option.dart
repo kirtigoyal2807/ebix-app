@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pilates_app/config/theme/app_colors.dart';
 import 'package:pilates_app/config/theme/app_radius.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
@@ -30,7 +31,7 @@ class BranchOption extends StatelessWidget {
         : theme.dividerColor;
 
     return Material(
-      color: Colors.transparent,
+      // color: Colors.transparent,
       child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(AppRadius.xl),
@@ -42,7 +43,7 @@ class BranchOption extends StatelessWidget {
               color: borderColor,
               width: selected ? 1.5 : 1,
             ),
-            color:Colors.white,
+            // color:Colors.white,
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -102,6 +103,7 @@ class _BranchTypeChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Container(
       padding: const EdgeInsets.symmetric(
@@ -113,7 +115,7 @@ class _BranchTypeChip extends StatelessWidget {
         border: Border.all(
           color: theme.dividerColor,
         ),
-        color: theme.colorScheme.surface,
+        color: isDark? AppColors.primaryDarkButton : AppColors.branchTagLight,
       ),
       child: AppText(
         type,

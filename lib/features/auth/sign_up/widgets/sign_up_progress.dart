@@ -14,6 +14,8 @@ class SignUpProgress extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     final progress = (currentStep + 1) / totalSteps;
 
     return ClipRRect(
@@ -21,9 +23,9 @@ class SignUpProgress extends StatelessWidget {
       child: LinearProgressIndicator(
         value: progress,
         minHeight: 6,
-        backgroundColor: AppColors.selectedLanguageBg,
+        backgroundColor: isDark ? AppColors.primaryDarkButton :AppColors.seekBarLight,
         valueColor: AlwaysStoppedAnimation<Color>(
-          Theme.of(context).colorScheme.primary,
+          isDark ?AppColors.languageTextDark:AppColors.languageTextDark,
         ),
       ),
     );

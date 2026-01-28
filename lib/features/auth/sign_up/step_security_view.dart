@@ -19,6 +19,7 @@ class SignUpSecurityView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return AppScaffold(
       appBar: AppAppBar(
         onBack: () =>
@@ -26,7 +27,7 @@ class SignUpSecurityView extends StatelessWidget {
         title: context.l10n.signUp,
       ),
       body: Container(
-        color: Colors.white,
+        // color: Colors.white,
         child: Padding(
          padding: const EdgeInsets.symmetric(
             horizontal: AppSpacing.lg,
@@ -47,7 +48,9 @@ class SignUpSecurityView extends StatelessWidget {
                     TextSpan(
                       text: '${context.l10n.step} 2',
                       style: AppTextStyles.caption(context).copyWith(
-                        color: AppColors.languageIcon,
+                          color: isDark
+                              ? AppColors.languageTextDark
+                              : AppColors.languageIcon,
                       ),
                     ),
                     TextSpan(

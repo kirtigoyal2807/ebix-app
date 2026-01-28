@@ -18,13 +18,14 @@ class SignUpOtpView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return AppScaffold(
       appBar: AppAppBar(
         onBack: () => context.read<AuthCubit>().previousSignUpStep(),
         title: context.l10n.verification,
       ),
       body: Container(
-        color: Colors.white,
+        // color: Colors.white,
         child: Padding(
           padding: const EdgeInsets.symmetric(
             horizontal: AppSpacing.lg,
@@ -42,9 +43,11 @@ class SignUpOtpView extends StatelessWidget {
                   children: [
                     TextSpan(
                       text: '${context.l10n.step} 3',
-                      style: AppTextStyles.caption(
-                        context,
-                      ).copyWith(color: AppColors.languageIcon),
+                      style: AppTextStyles.caption(context).copyWith(
+                        color: isDark
+                            ? AppColors.languageTextDark
+                            : AppColors.languageIcon,
+                      ),
                     ),
                     TextSpan(
                       text: ' ${context.l10n.offf} 5',
@@ -83,7 +86,9 @@ class SignUpOtpView extends StatelessWidget {
                       TextSpan(
                         text: context.l10n.didntReceiveCode,
                         style: AppTextStyles.caption(context).copyWith(
-                          color: AppColors.greyText,
+                          color: isDark
+                              ? AppColors.darkGreyText
+                              : AppColors.greyText,
                           fontWeight: FontWeight.w400,
                           height: 1.4,
                         ),
@@ -91,7 +96,9 @@ class SignUpOtpView extends StatelessWidget {
                       TextSpan(
                         text: context.l10n.resendCode,
                         style: AppTextStyles.caption(context).copyWith(
-                          color: AppColors.languageIcon,
+                          color: isDark
+                              ? AppColors.languageTextDark
+                              : AppColors.languageIcon,
                           fontWeight: FontWeight.w600,
                           height: 1.4,
                         ),

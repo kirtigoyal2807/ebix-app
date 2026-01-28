@@ -25,9 +25,10 @@ class ExperienceOption extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Material(
-      color: Colors.white,
+      // color: Colors.white,
       elevation: 4,
       shadowColor: Colors.black.withValues(alpha: 0.2),
       borderRadius: BorderRadius.circular(16),
@@ -47,7 +48,7 @@ class ExperienceOption extends StatelessWidget {
                   : theme.dividerColor.withValues(alpha: 0.6),
               width: selected ? 1.5 : 1,
             ),
-            color: Colors.white,
+            // color: Colors.white,
           ),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -57,10 +58,10 @@ class ExperienceOption extends StatelessWidget {
                 iconPath,
                 width: 34,
                 height: 34,
-                colorFilter: ColorFilter.mode(
-                  selected ? theme.colorScheme.primary : theme.hintColor,
-                  BlendMode.srcIn,
-                ),
+                // colorFilter: ColorFilter.mode(
+                //   selected ? theme.colorScheme.primary : theme.hintColor,
+                //   BlendMode.srcIn,
+                // ),
                 alignment: Alignment.center,
               ),
 
@@ -80,9 +81,9 @@ class ExperienceOption extends StatelessWidget {
                     const SizedBox(height: AppSpacing.xs),
                     AppText(
                       description,
-                      style: (context) => AppTextStyles.body(
-                        context,
-                      ).copyWith(color: AppColors.greyText),
+                      style: (context) => AppTextStyles.body(context).copyWith(
+                        color: isDark ? AppColors.darkGreyText : AppColors.greyText,
+                      ),
                     ),
                   ],
                 ),

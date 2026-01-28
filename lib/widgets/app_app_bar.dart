@@ -22,7 +22,7 @@ class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
       title: title != null ? AppText(title!, style: AppTextStyles.appBarTitle,) : null,
       centerTitle: true,
       elevation: 0,
-      backgroundColor: Colors.white,
+      // backgroundColor: Colors.white,
       
     );
   }
