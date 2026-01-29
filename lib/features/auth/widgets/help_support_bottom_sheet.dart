@@ -13,7 +13,7 @@ class HelpSupportBottomSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     final isRTL = Directionality.of(context) == TextDirection.rtl;
     return Material(
-      color: Colors.white,
+      // color: Colors.white,
       borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
       child: SafeArea(
         top: false,

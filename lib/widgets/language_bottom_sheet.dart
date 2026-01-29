@@ -34,7 +34,7 @@ class _LanguageBottomSheetState extends State<LanguageBottomSheet> {
     return BlocBuilder<AuthCubit, AuthState>(
       builder: (context, state) {
         return Material(
-          color: Colors.white,
+          // color: Colors.white,
           borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
           child: SafeArea(
             top: false,
@@ -122,7 +122,7 @@ class _LanguageBottomSheetState extends State<LanguageBottomSheet> {
                 // Confirm button with white background extending to bottom
                 Container(
                   width: double.infinity,
-                  color: Colors.white,
+                  // color: Colors.white,
                   padding: EdgeInsets.fromLTRB(
                     AppSpacing.lg,
                     0,
@@ -165,6 +165,7 @@ class _LanguageOption extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return InkWell(
       onTap: onTap,
@@ -177,7 +178,7 @@ class _LanguageOption extends StatelessWidget {
             color: selected ? AppColors.primaryDark : Colors.transparent,
             width: 1.5,
           ),
-          color: selected ? AppColors.selectedLanguageBg : Colors.transparent,
+          color: selected ? (isDark ? AppColors.primaryDarkButton:AppColors.selectedLanguageBg) : Colors.transparent,
         ),
         child: Row(
           children: [
@@ -186,11 +187,7 @@ class _LanguageOption extends StatelessWidget {
             Expanded(
               child: AppText(
                 title,
-                style: (context) => GoogleFonts.inter(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                  color: AppColors.darkText,
-                ),
+                style: AppTextStyles.experienceButton,
               ),
             ),
             if (selected)

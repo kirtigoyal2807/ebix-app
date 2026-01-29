@@ -28,7 +28,7 @@ class OnboardingView extends StatelessWidget {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      backgroundColor: Colors.transparent,
+      // backgroundColor: Colors.transparent,
       builder: (_) => const LanguageBottomSheet(),
     );
   }
@@ -37,7 +37,7 @@ class OnboardingView extends StatelessWidget {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      backgroundColor: Colors.transparent, // keep transparent here
+      // backgroundColor: Colors.transparent, // keep transparent here
       // backgroundColor: Colors.transparent,
       builder: (_) => const HelpSupportBottomSheet(),
     );

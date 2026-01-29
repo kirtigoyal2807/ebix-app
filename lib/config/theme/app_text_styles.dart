@@ -193,7 +193,7 @@ class AppTextStyles {
     return GoogleFonts.inter(
       fontSize: 12,
       fontWeight: FontWeight.w400,
-      color: AppColors.greyText,
+      color: isDark ? AppColors.darkGreyText : AppColors.greyText,
     );
   }
 
