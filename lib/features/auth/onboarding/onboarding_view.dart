@@ -80,84 +80,93 @@ class OnboardingView extends StatelessWidget {
 
             // Main content
             Expanded(
-              child: SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: AppSpacing.horizontalPadding,
-                  ),
-                  child: Column(
-                    children: [
-                      const SizedBox(height: AppSpacing.xl),
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  final screenHeight = MediaQuery.sizeOf(context).height;
+                  final isSmallScreen = screenHeight < 667; // iPhone SE height
 
-                      // Pilates mat illustration
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: AppSpacing.base,
-                        ),
-                        child: SvgPicture.asset(
-                          isDark
-                              ? 'assets/images/svg/ic_onboarding_dark.svg'
-                              : 'assets/images/svg/ic_onboarding.svg',
-                          height: 280,
-                          fit: BoxFit.contain,
-                        ),
+                  return SingleChildScrollView(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: AppSpacing.horizontalPadding,
                       ),
-
-                      const SizedBox(height: AppSpacing.xxl),
-
-                      // Main title
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: AppSpacing.sm,
-                        ),
-                        child: AppText(
-                          context.l10n.onboarding_title_2,
-                          style: AppTextStyles.heading1,
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-
-                      const SizedBox(height: AppSpacing.base),
-
-                      // Description
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: AppSpacing.xxl,
-                        ),
-                        child: AppText(
-                          context.l10n.onboarding_desc_2,
-                          style: AppTextStyles.bodyText,
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-
-                      const SizedBox(height: AppSpacing.base),
-
-                      // "No experience needed" with checkmark
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                      child: Column(
                         children: [
-                          SvgPicture.asset(
-                            isDark
-                                ? 'assets/images/svg/ic_check_circle_dark.svg'
-                                : 'assets/images/svg/ic_check_circle_light.svg',
-                            height: 13,
-                            fit: BoxFit.contain,
+                          SizedBox(height: isSmallScreen ? AppSpacing.md : AppSpacing.xl),
+
+                          // Pilates mat illustration
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: AppSpacing.base,
+                            ),
+                            child: SvgPicture.asset(
+                              isDark
+                                  ? 'assets/images/svg/ic_onboarding_dark.svg'
+                                  : 'assets/images/svg/ic_onboarding.svg',
+                              height: screenHeight * 0.32,
+                              fit: BoxFit.contain,
+                            ),
                           ),
 
-                          const SizedBox(width: AppSpacing.xs + 2),
-                          AppText(
-                            context.l10n.noExperienceNeeded,
-                            style: AppTextStyles.captionText,
-                            textAlign: TextAlign.center,
+                          SizedBox(height: isSmallScreen ? AppSpacing.lg : AppSpacing.xxl),
+
+                          // Main title
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: AppSpacing.sm,
+                            ),
+                            child: AppText(
+                              context.l10n.onboarding_title_2,
+                              style: AppTextStyles.heading1,
+                              textAlign: TextAlign.center,
+                            ),
                           ),
+
+                          const SizedBox(height: AppSpacing.base),
+
+                          // Description
+                          Padding(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: isSmallScreen ? AppSpacing.md : AppSpacing.xxl,
+                            ),
+                            child: AppText(
+                              context.l10n.onboarding_desc_2,
+                              style: AppTextStyles.bodyText,
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+
+                          const SizedBox(height: AppSpacing.base),
+
+                          // "No experience needed" with checkmark
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SvgPicture.asset(
+                                isDark
+                                    ? 'assets/images/svg/ic_check_circle_dark.svg'
+                                    : 'assets/images/svg/ic_check_circle_light.svg',
+                                height: 13,
+                                fit: BoxFit.contain,
+                              ),
+
+                              const SizedBox(width: AppSpacing.xs + 2),
+                              Flexible(
+                                child: AppText(
+                                  context.l10n.noExperienceNeeded,
+                                  style: AppTextStyles.captionText,
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            ],
+                          ),
+
+                          SizedBox(height: isSmallScreen ? AppSpacing.md : AppSpacing.xl + AppSpacing.lg),
                         ],
                       ),
-
-                      const SizedBox(height: AppSpacing.xl + AppSpacing.lg),
-                    ],
-                  ),
-                ),
+                    ),
+                  );
+                },
               ),
             ),
 

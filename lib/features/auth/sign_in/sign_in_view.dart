@@ -20,57 +20,65 @@ class SignInView extends StatelessWidget {
         onBack: () => context.read<AuthCubit>().previousSignUpStep(),
         title: context.l10n.signIn,
       ),
-      body: Container(
-        // color: Colors.white,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: AppSpacing.lg,
-            vertical: AppSpacing.md,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(height: 2),
-        
-              // Header
-              SignUpHeader(
-                title: '${context.l10n.welcome} Tasha',
-                subtitle: context.l10n.enterYourLoginDetails,
-                step: 1,
-                totalSteps: 5,
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          return SingleChildScrollView(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(minHeight: constraints.maxHeight),
+              child: IntrinsicHeight(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: AppSpacing.lg,
+                    vertical: AppSpacing.md,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: 2),
+                
+                      // Header
+                      SignUpHeader(
+                        title: '${context.l10n.welcome} Tasha',
+                        subtitle: context.l10n.enterYourLoginDetails,
+                        step: 1,
+                        totalSteps: 5,
+                      ),
+                
+                      const SizedBox(height: AppSpacing.lg),
+                
+                      // Email or Phone
+                      AppTextField(
+                        label: context.l10n.emailOrPhone,
+                        hint: 'XXXXXXXXXX',
+                        keyboardType: TextInputType.name,
+                        // errorText: 'Weak password',
+                      ),
+                
+                      const SizedBox(height: AppSpacing.md),
+                
+                        // Password
+                      AppTextField(
+                        label: context.l10n.password,
+                        hint: '**********',
+                        keyboardType: TextInputType.name,
+                        // errorText: 'Weak password',
+                      ),
+                
+                
+                      const Spacer(),
+                
+                      // Continue
+                      AppButton(
+                        label: context.l10n.signIn,
+                        onPressed: () => context.read<AuthCubit>().nextSignUpStep(),
+                      ),
+                    ],
+                  ),
+                ),
               ),
-        
-              const SizedBox(height: AppSpacing.lg),
-        
-              // Email or Phone
-              AppTextField(
-                label: context.l10n.emailOrPhone,
-                hint: 'XXXXXXXXXX',
-                keyboardType: TextInputType.name,
-                // errorText: 'Weak password',
-              ),
-        
-              const SizedBox(height: AppSpacing.md),
-        
-                // Password
-              AppTextField(
-                label: context.l10n.password,
-                hint: '**********',
-                keyboardType: TextInputType.name,
-                // errorText: 'Weak password',
-              ),
-        
-        
-              const Spacer(),
-        
-              // Continue
-              AppButton(
-                label: context.l10n.signIn,
-                onPressed: () => context.read<AuthCubit>().nextSignUpStep(),
-              ),
-            ],
-          ),
-        ),
+            ),
+          );
+        },
       ),
     );
   }

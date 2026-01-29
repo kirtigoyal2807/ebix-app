@@ -11,15 +11,16 @@ class AppLogo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDark =
-        Theme.of(context).brightness == Brightness.dark;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final screenWidth = MediaQuery.sizeOf(context).width;
+    final responsiveSize = size * (screenWidth / 375); // 375 is standard width
 
     return SvgPicture.asset(
       isDark
           ? 'assets/images/svg/ic_splash_dark_code.svg'
           : 'assets/images/svg/ic_splash_light_code.svg',
-      width: size,
-      height: size,
+      width: responsiveSize,
+      height: responsiveSize,
     );
   }
 }
