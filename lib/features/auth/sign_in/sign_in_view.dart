@@ -69,7 +69,7 @@ class _SignInViewState extends State<SignInView> {
                               children: [
                                 AppText(
                                   context.l10n.emailTab,
-                                  style:  AppTextStyles.body,
+                                  style:  AppTextStyles.bodyText,
                                 ),
                                 const SizedBox(height: 8),
                                 Container(
@@ -89,7 +89,7 @@ class _SignInViewState extends State<SignInView> {
                               children: [
                                 AppText(
                                   context.l10n.phoneTab,
-                                  style: AppTextStyles.body,
+                                  style: AppTextStyles.bodyText,
                                 ),
                                 const SizedBox(height: 8),
                                 Container(
@@ -135,7 +135,7 @@ class _SignInViewState extends State<SignInView> {
                           },
                           child: AppText(
                             context.l10n.forgotPassword,
-                            style: AppTextStyles.body,
+                            style: AppTextStyles.bodyText,
                           ),
                         ),
                       ),

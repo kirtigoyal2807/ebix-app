@@ -74,10 +74,7 @@ class ForgotOtpView extends StatelessWidget {
                             },
                             child: AppText(
                               context.l10n.resendCode,
-                              style: (context) => AppTextStyles.body(context).copyWith(
-                                color: isDark ? AppColors.languageTextDark : AppColors.primary,
-                                fontWeight: FontWeight.w600,
-                              ),
+                              style:  AppTextStyles.bodyText,
                             ),
                           ),
                         ],
