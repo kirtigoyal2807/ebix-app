@@ -230,4 +230,39 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get emailOrPhone => 'البريد الإلكتروني / رقم الهاتف';
+
+  @override
+  String get forgotPassword => 'هل نسيت كلمة المرور؟';
+
+  @override
+  String get sendOtp => 'إرسال رمز التحقق';
+
+  @override
+  String get emailTab => 'البريد الإلكتروني';
+
+  @override
+  String get phoneTab => 'رقم الهاتف';
+
+  @override
+  String get forgotPasswordTitle => 'هل نسيت كلمة المرور؟';
+
+  @override
+  String get enterEmailHeader => 'أدخل بريدك الإلكتروني';
+
+  @override
+  String get enterEmailSubtitle =>
+      'يرجى إدخال عنوان البريد الإلكتروني المرتبط بحسابك. سنرسل لك رابطًا لإعادة تعيين كلمة المرور واستعادة الوصول.';
+
+  @override
+  String get sendCode => 'إرسال الرمز';
+
+  @override
+  String get otpVerificationTitle => 'التحقق من الرمز';
+
+  @override
+  String get otpVerificationSubtitle =>
+      'أدخل الرمز المرسل إلى بريدك الإلكتروني للتحقق من هويتك. بمجرد التحقق، يمكنك المتابعة لإعادة تعيين كلمة المرور الخاصة بك.';
+
+  @override
+  String get usernameHint => 'username@gmail.com';
 }

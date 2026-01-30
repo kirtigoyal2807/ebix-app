@@ -97,5 +97,16 @@
   "signIn": "Sign In",
   "welcome": "Welcome",
   "enterYourLoginDetails": "Enter your login details",
-  "emailOrPhone":"Email / Phone Number"
+  "emailOrPhone":"Email / Phone Number",
+  "forgotPassword": "Forgot Password?",
+  "sendOtp": "Send OTP",
+  "emailTab": "Email",
+  "phoneTab": "Phone Number",
+  "forgotPasswordTitle": "Forgot Password",
+  "enterEmailHeader": "Enter Your Email",
+  "enterEmailSubtitle": "Please enter the email address associated with your account. We'll send you a link to reset your password and regain access.",
+  "sendCode": "Send Code",
+  "otpVerificationTitle": "OTP Verification",
+  "otpVerificationSubtitle": "Enter the OTP sent to your email to verify your identity. Once verified, you can proceed to reset your password.",
+  "usernameHint": "username@gmail.com"
 }

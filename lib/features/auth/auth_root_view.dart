@@ -5,7 +5,6 @@ import 'package:pilates_app/features/auth/sign_up/step_branch_view.dart';
 import 'package:pilates_app/features/auth/sign_up/step_experience_view.dart';
 import 'package:pilates_app/features/auth/sign_up/step_otp_view.dart';
 import 'package:pilates_app/features/auth/sign_up/step_personal_info_view.dart';
-import 'package:pilates_app/features/auth/sign_up/step_security_view.dart';
 import 'package:pilates_app/features/auth/splash/splash_view.dart';
 import 'cubit/auth_cubit.dart';
 import 'cubit/auth_state.dart';
@@ -31,12 +30,10 @@ class AuthRootView extends StatelessWidget {
               case 0:
                 return const SignUpPersonalInfoView();
               case 1:
-                return const SignUpSecurityView();
-              case 2:
                 return const SignUpOtpView();
-              case 3:
+              case 2:
                 return const SignUpExperienceView();
-              case 4:
+              case 3:
                 return const SignUpBranchView();
               default:
                 return const SizedBox();

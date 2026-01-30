@@ -25,95 +25,92 @@ class _SignUpBranchViewState extends State<SignUpBranchView> {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return AppScaffold(
       appBar: AppAppBar(
         onBack: () => context.read<AuthCubit>().previousSignUpStep(),
         title: context.l10n.selectedBranch,
       ),
-      body: LayoutBuilder(
-        builder: (context, constraints) {
-          return SingleChildScrollView(
-            child: ConstrainedBox(
-              constraints: BoxConstraints(minHeight: constraints.maxHeight),
-              child: IntrinsicHeight(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: AppSpacing.lg,
-                    vertical: AppSpacing.md,
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Progress
-                      const SignUpProgress(currentStep: 4, totalSteps: 5),
-                
-                      const SizedBox(height: AppSpacing.sm),
-                
-                      RichText(
-                        text: TextSpan(
-                          children: [
-                            TextSpan(
-                              text: '${context.l10n.step} 5',
-                              style: AppTextStyles.caption(
-                                context,
-                              ).copyWith(color: isDark
-                                  ? AppColors.languageTextDark
-                                  : AppColors.languageIcon,),
-                            ),
-                            TextSpan(
-                              text: ' ${context.l10n.offf} 5',
-                              style: AppTextStyles.caption(context),
-                            ),
-                          ],
-                        ),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: AppSpacing.lg,
+          vertical: AppSpacing.md,
+        ),
+        child: Column(
+          children: [
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Progress
+                    const SignUpProgress(currentStep: 3, totalSteps: 4),
+                    const SizedBox(height: AppSpacing.sm),
+                    RichText(
+                      text: TextSpan(
+                        children: [
+                          TextSpan(
+                            text: '${context.l10n.step} 4',
+                            style: AppTextStyles.caption(
+                              context,
+                            ).copyWith(color: isDark
+                                ? AppColors.languageTextDark
+                                : AppColors.languageIcon,),
+                          ),
+                          TextSpan(
+                            text: ' ${context.l10n.offf} 4',
+                            style: AppTextStyles.caption(context),
+                          ),
+                        ],
                       ),
-                
-                      const SizedBox(height: AppSpacing.xxl),
-                
-                      // Header
-                      SignUpHeader(
-                        title: context.l10n.branchTitle,
-                        subtitle: context.l10n.branchSubtitle,
-                        step: 4,
-                        totalSteps: 5,
-                      ),
-                
-                      const SizedBox(height: AppSpacing.lg),
-                
-                      // Branch list (static for now)
-                      BranchOption(
-                        title: 'Balad, Al Al Munawarah',
-                        city: 'Al Madinah Al Munawarah',
-                        distance: '5 km away',
-                        type: 'Premium',
-                        selected: true,
-                        onTap: () => setState(() => _selectedIndex = 0),
-                      ),
-                
-                      const SizedBox(height: AppSpacing.md),
-                
-                      BranchOption(
-                        title: 'Prince Abdul Majeed Street',
-                        city: 'Al Madinah Al Munawarah',
-                        distance: '8 km away',
-                        type: 'Standard',
-                        selected: false,
-                        onTap: () => setState(() => _selectedIndex = 1),
-                      ),
-                      const Spacer(),
-                
-                      // Finish
-                      AppButton(
-                        label: context.l10n.finishSignUp,
-                        onPressed: () => context.read<AuthCubit>().completeSignUp(),
-                      ),
-                    ],
-                  ),
+                    ),
+                    const SizedBox(height: AppSpacing.xxl),
+
+                    // Header
+                    SignUpHeader(
+                      title: context.l10n.branchTitle,
+                      subtitle: context.l10n.branchSubtitle,
+                      step: 3,
+                      totalSteps: 4,
+                    ),
+
+                    const SizedBox(height: AppSpacing.lg),
+
+                    // Branch list (static for now)
+                    BranchOption(
+                      title: 'Balad, Al Al Munawarah',
+                      city: 'Al Madinah Al Munawarah',
+                      distance: '5 km away',
+                      type: 'Premium',
+                      selected: _selectedIndex == 0,
+                      onTap: () => setState(() => _selectedIndex = 0),
+                    ),
+
+                    const SizedBox(height: AppSpacing.md),
+
+                    BranchOption(
+                      title: 'Prince Abdul Majeed Street',
+                      city: 'Al Madinah Al Munawarah',
+                      distance: '8 km away',
+                      type: 'Standard',
+                      selected: _selectedIndex == 1,
+                      onTap: () => setState(() => _selectedIndex = 1),
+                    ),
+
+
+                    const SizedBox(height: AppSpacing.lg),
+                  ],
                 ),
               ),
             ),
-          );
-        },
+
+            // Finish
+            AppButton(
+              label: context.l10n.finishSignUp,
+              onPressed: () => context.read<AuthCubit>().completeSignUp(),
+            ),
+          ],
+        ),
       ),
     );
   }

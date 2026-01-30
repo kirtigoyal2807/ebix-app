@@ -7,6 +7,7 @@ import 'package:pilates_app/widgets/app_app_bar.dart';
 import 'package:pilates_app/widgets/app_button.dart';
 import 'package:pilates_app/widgets/app_scaffold.dart';
 import 'package:pilates_app/widgets/app_text_field.dart';
+import 'package:pilates_app/widgets/phone_number_field.dart';
 
 import '../../../core/localization/localization_extension.dart';
 import '../cubit/auth_cubit.dart';
@@ -25,93 +26,104 @@ class SignUpPersonalInfoView extends StatelessWidget {
         onBack: () => context.read<AuthCubit>().previousSignUpStep(),
         title: context.l10n.signUp,
       ),
-      body: LayoutBuilder(
-        builder: (context, constraints) {
-          return SingleChildScrollView(
-            child: ConstrainedBox(
-              constraints: BoxConstraints(minHeight: constraints.maxHeight),
-              child: IntrinsicHeight(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: AppSpacing.lg,
-                    vertical: AppSpacing.md,
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Progress bar
-                      const SignUpProgress(currentStep: 0, totalSteps: 5),
-                      const SizedBox(height: AppSpacing.sm),
-                      RichText(
-                        text: TextSpan(
-                          children: [
-                            TextSpan(
-                              text: '${context.l10n.step} 1',
-                              style: AppTextStyles.caption(context).copyWith(
-                                color: isDark
-                                    ? AppColors.languageTextDark
-                                    : AppColors.languageIcon,
-                              ),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: AppSpacing.lg,
+          vertical: AppSpacing.md,
+        ),
+        child: Column(
+          children: [
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Progress bar
+                    const SignUpProgress(currentStep: 0, totalSteps: 4),
+                    const SizedBox(height: AppSpacing.sm),
+                    RichText(
+                      text: TextSpan(
+                        children: [
+                          TextSpan(
+                            text: '${context.l10n.step} 1',
+                            style: AppTextStyles.caption(context).copyWith(
+                              color: isDark
+                                  ? AppColors.languageTextDark
+                                  : AppColors.languageIcon,
                             ),
-                            TextSpan(
-                              text: ' ${context.l10n.offf} 5',
-                              style: AppTextStyles.caption(context),
-                            ),
-                          ],
-                        ),
+                          ),
+                          TextSpan(
+                            text: ' ${context.l10n.offf} 4',
+                            style: AppTextStyles.caption(context),
+                          ),
+                        ],
                       ),
-                      const SizedBox(height: AppSpacing.xxl),
-                
-                      // Header
-                      SignUpHeader(
-                        title: context.l10n.letsGo,
-                        subtitle: context.l10n.tellYourName, // temp copy reuse
-                        step: 0,
-                        totalSteps: 5,
-                      ),
-                
-                      const SizedBox(height: AppSpacing.lg),
-                
-                      // Form fields
-                      AppTextField(
-                        label: context.l10n.firstName,
-                        hint: 'Ayesha',
-                        keyboardType: TextInputType.name,
-                        // errorText: 'This email address is already registered.',
-                      ),
-                
-                      const SizedBox(height: AppSpacing.md),
-                
-                      AppTextField(
-                        label: context.l10n.lastName,
-                        hint: 'Tajib',
-                        keyboardType: TextInputType.name,
-                        // errorText: 'This email address is already registered.',
-                      ),
-                
-                      const SizedBox(height: AppSpacing.md),
-                
-                      AppTextField(
-                        label: context.l10n.email,
-                        hint: 'Ayesha@gmail.com',
-                        keyboardType: TextInputType.emailAddress,
-                        // errorText: 'This email address is already registered.',
-                      ),
-                
-                      const Spacer(),
-                
-                      // Continue button
-                      AppButton(
-                        label: context.l10n.continueTxt,
-                        onPressed: () => context.read<AuthCubit>().nextSignUpStep(),
-                      ),
-                    ],
-                  ),
+                    ),
+                    const SizedBox(height: AppSpacing.xxl),
+
+                    // Header
+                    SignUpHeader(
+                      title: context.l10n.letsGo,
+                      subtitle: context.l10n.tellYourName, // temp copy reuse
+                      step: 0,
+                      totalSteps: 4,
+                    ),
+
+                    const SizedBox(height: AppSpacing.lg),
+
+                    // Form fields
+                    AppTextField(
+                      label: context.l10n.firstName,
+                      hint: 'Ayesha',
+                      keyboardType: TextInputType.name,
+                    ),
+
+                    const SizedBox(height: AppSpacing.md),
+
+                    AppTextField(
+                      label: context.l10n.lastName,
+                      hint: 'Tajib',
+                      keyboardType: TextInputType.name,
+                    ),
+
+                    const SizedBox(height: AppSpacing.md),
+
+                    AppTextField(
+                      label: context.l10n.email,
+                      hint: 'Ayesha@gmail.com',
+                      keyboardType: TextInputType.emailAddress,
+                    ),
+
+                    const SizedBox(height: AppSpacing.md),
+
+                    AppTextField(
+                      label: context.l10n.password,
+                      hint: '**********',
+                      keyboardType: TextInputType.name,
+                      errorText: 'Weak password',
+                    ),
+
+                    const SizedBox(height: AppSpacing.md),
+
+                    // Phone Number
+                    PhoneNumberField(
+                      label: context.l10n.phoneNumber,
+                      countryCode: '+1',
+                      flagAsset: 'assets/flags/us.svg',
+                    ),
+                    const SizedBox(height: AppSpacing.lg),
+                  ],
                 ),
               ),
             ),
-          );
-        },
+
+            // Continue button
+            AppButton(
+              label: context.l10n.continueTxt,
+              onPressed: () => context.read<AuthCubit>().nextSignUpStep(),
+            ),
+          ],
+        ),
       ),
     );
   }

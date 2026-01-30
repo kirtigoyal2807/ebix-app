@@ -19,113 +19,108 @@ class SignUpOtpView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return AppScaffold(
       appBar: AppAppBar(
         onBack: () => context.read<AuthCubit>().previousSignUpStep(),
         title: context.l10n.verification,
       ),
-      body: LayoutBuilder(
-        builder: (context, constraints) {
-          return SingleChildScrollView(
-            child: ConstrainedBox(
-              constraints: BoxConstraints(minHeight: constraints.maxHeight),
-              child: IntrinsicHeight(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: AppSpacing.lg,
-                    vertical: AppSpacing.md,
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Progress
-                      const SignUpProgress(currentStep: 2, totalSteps: 5),
-                
-                      const SizedBox(height: AppSpacing.sm),
-                      RichText(
+      body: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: AppSpacing.lg,
+          vertical: AppSpacing.md,
+        ),
+        child: Column(
+          children: [
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Progress
+                    const SignUpProgress(currentStep: 1, totalSteps: 4),
+                    const SizedBox(height: AppSpacing.sm),
+                    RichText(
+                      text: TextSpan(
+                        children: [
+                          TextSpan(
+                            text: '${context.l10n.step} 2',
+                            style: AppTextStyles.caption(context).copyWith(
+                              color: isDark
+                                  ? AppColors.languageTextDark
+                                  : AppColors.languageIcon,
+                            ),
+                          ),
+                          TextSpan(
+                            text: ' ${context.l10n.offf} 4',
+                            style: AppTextStyles.caption(context),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: AppSpacing.xxl),
+
+                    // Header
+                    SignUpHeader(
+                      title: context.l10n.verifyPhone,
+                      subtitle: context.l10n.enterCode,
+                      step: 1,
+                      totalSteps: 4,
+                    ),
+
+                    const SizedBox(height: AppSpacing.lg),
+
+                    // OTP field
+                    OtpField(
+                      length: 4,
+                      onCompleted: (otp) {
+                        // Handle OTP completion
+                      },
+                    ),
+
+                    const SizedBox(height: AppSpacing.lg),
+
+                    Center(
+                      child: RichText(
                         text: TextSpan(
                           children: [
                             TextSpan(
-                              text: '${context.l10n.step} 3',
+                              text: context.l10n.didntReceiveCode,
+                              style: AppTextStyles.caption(context).copyWith(
+                                color: isDark
+                                    ? AppColors.darkGreyText
+                                    : AppColors.greyText,
+                                fontWeight: FontWeight.w400,
+                                height: 1.4,
+                              ),
+                            ),
+                            TextSpan(
+                              text: context.l10n.resendCode,
                               style: AppTextStyles.caption(context).copyWith(
                                 color: isDark
                                     ? AppColors.languageTextDark
                                     : AppColors.languageIcon,
+                                fontWeight: FontWeight.w600,
+                                height: 1.4,
                               ),
-                            ),
-                            TextSpan(
-                              text: ' ${context.l10n.offf} 5',
-                              style: AppTextStyles.caption(context),
                             ),
                           ],
                         ),
                       ),
-                
-                      const SizedBox(height: AppSpacing.xxl),
-                
-                      // Header
-                      SignUpHeader(
-                        title: context.l10n.verifyPhone,
-                        subtitle: context.l10n.enterCode,
-                        step: 2,
-                        totalSteps: 5,
-                      ),
-                
-                      const SizedBox(height: AppSpacing.lg),
-                
-                      // OTP field
-                      OtpField(
-                        length: 4,
-                        onCompleted: (otp) {
-                          // Handle OTP completion
-                        },
-                      ),
-                
-                      const SizedBox(height: AppSpacing.lg),
-                
-                      Center(
-                        child: RichText(
-                          text: TextSpan(
-                            children: [
-                              TextSpan(
-                                text: context.l10n.didntReceiveCode,
-                                style: AppTextStyles.caption(context).copyWith(
-                                  color: isDark
-                                      ? AppColors.darkGreyText
-                                      : AppColors.greyText,
-                                  fontWeight: FontWeight.w400,
-                                  height: 1.4,
-                                ),
-                              ),
-                              TextSpan(
-                                text: context.l10n.resendCode,
-                                style: AppTextStyles.caption(context).copyWith(
-                                  color: isDark
-                                      ? AppColors.languageTextDark
-                                      : AppColors.languageIcon,
-                                  fontWeight: FontWeight.w600,
-                                  height: 1.4,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                
-                      const Spacer(),
-                
-                      // Verify button
-                      AppButton(
-                        label: context.l10n.verify,
-                        onPressed: () => context.read<AuthCubit>().nextSignUpStep(),
-                      ),
-                    ],
-                  ),
+                    ),
+                    const SizedBox(height: AppSpacing.lg),
+                  ],
                 ),
               ),
             ),
-          );
-        },
+
+            // Verify button
+            AppButton(
+              label: context.l10n.verify,
+              onPressed: () => context.read<AuthCubit>().nextSignUpStep(),
+            ),
+          ],
+        ),
       ),
     );
   }

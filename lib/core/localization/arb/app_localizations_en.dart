@@ -233,4 +233,39 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get emailOrPhone => 'Email / Phone Number';
+
+  @override
+  String get forgotPassword => 'Forgot Password?';
+
+  @override
+  String get sendOtp => 'Send OTP';
+
+  @override
+  String get emailTab => 'Email';
+
+  @override
+  String get phoneTab => 'Phone Number';
+
+  @override
+  String get forgotPasswordTitle => 'Forgot Password';
+
+  @override
+  String get enterEmailHeader => 'Enter Your Email';
+
+  @override
+  String get enterEmailSubtitle =>
+      'Please enter the email address associated with your account. We\'ll send you a link to reset your password and regain access.';
+
+  @override
+  String get sendCode => 'Send Code';
+
+  @override
+  String get otpVerificationTitle => 'OTP Verification';
+
+  @override
+  String get otpVerificationSubtitle =>
+      'Enter the OTP sent to your email to verify your identity. Once verified, you can proceed to reset your password.';
+
+  @override
+  String get usernameHint => 'username@gmail.com';
 }

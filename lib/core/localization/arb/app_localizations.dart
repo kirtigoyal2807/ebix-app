@@ -535,6 +535,72 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Email / Phone Number'**
   String get emailOrPhone;
+
+  /// No description provided for @forgotPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Forgot Password?'**
+  String get forgotPassword;
+
+  /// No description provided for @sendOtp.
+  ///
+  /// In en, this message translates to:
+  /// **'Send OTP'**
+  String get sendOtp;
+
+  /// No description provided for @emailTab.
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get emailTab;
+
+  /// No description provided for @phoneTab.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone Number'**
+  String get phoneTab;
+
+  /// No description provided for @forgotPasswordTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Forgot Password'**
+  String get forgotPasswordTitle;
+
+  /// No description provided for @enterEmailHeader.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter Your Email'**
+  String get enterEmailHeader;
+
+  /// No description provided for @enterEmailSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter the email address associated with your account. We\'ll send you a link to reset your password and regain access.'**
+  String get enterEmailSubtitle;
+
+  /// No description provided for @sendCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Send Code'**
+  String get sendCode;
+
+  /// No description provided for @otpVerificationTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'OTP Verification'**
+  String get otpVerificationTitle;
+
+  /// No description provided for @otpVerificationSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the OTP sent to your email to verify your identity. Once verified, you can proceed to reset your password.'**
+  String get otpVerificationSubtitle;
+
+  /// No description provided for @usernameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'username@gmail.com'**
+  String get usernameHint;
 }
 
 class _AppLocalizationsDelegate
