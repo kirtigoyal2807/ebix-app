@@ -7,6 +7,7 @@ import 'package:pilates_app/widgets/app_app_bar.dart';
 import 'package:pilates_app/widgets/app_button.dart';
 import 'package:pilates_app/widgets/app_scaffold.dart';
 import 'package:pilates_app/widgets/app_text_field.dart';
+import 'package:pilates_app/widgets/app_dropdown.dart';
 import 'package:pilates_app/widgets/phone_number_field.dart';
 
 import '../../../core/localization/localization_extension.dart';
@@ -14,8 +15,15 @@ import '../cubit/auth_cubit.dart';
 import 'widgets/sign_up_header.dart';
 import 'widgets/sign_up_progress.dart';
 
-class SignUpPersonalInfoView extends StatelessWidget {
+class SignUpPersonalInfoView extends StatefulWidget {
   const SignUpPersonalInfoView({super.key});
+
+  @override
+  State<SignUpPersonalInfoView> createState() => _SignUpPersonalInfoViewState();
+}
+
+class _SignUpPersonalInfoViewState extends State<SignUpPersonalInfoView> {
+  String? selectedGender;
 
   @override
   Widget build(BuildContext context) {
@@ -92,6 +100,35 @@ class SignUpPersonalInfoView extends StatelessWidget {
                       label: context.l10n.email,
                       hint: 'Ayesha@gmail.com',
                       keyboardType: TextInputType.emailAddress,
+                    ),
+
+                    const SizedBox(height: AppSpacing.md),
+
+                    AppDropDown<String>(
+                      label: context.l10n.gender,
+                      hint: context.l10n.selectGender,
+                      value: selectedGender,
+                      items: [
+                        DropdownMenuItem(
+                          value: 'Male',
+                          child: Text(
+                            context.l10n.male,
+                            style: AppTextStyles.textField(context),
+                          ),
+                        ),
+                        DropdownMenuItem(
+                          value: 'Female',
+                          child: Text(
+                            context.l10n.female,
+                            style: AppTextStyles.textField(context),
+                          ),
+                        ),
+                      ],
+                      onChanged: (value) {
+                        setState(() {
+                          selectedGender = value;
+                        });
+                      },
                     ),
 
                     const SizedBox(height: AppSpacing.md),

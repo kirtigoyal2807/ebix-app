@@ -39,7 +39,7 @@
   "didntReceiveCode": "لم تتلقى الرمز؟",
   "resendCode": "إعادة إرسال الرمز",
   "verify": "تأكيد",
-  "experienceTitle": "تجربة البيلاتس الخاصة بك",
+  "experienceTitle": "سنوصي لك بحصص ومدربين يناسبون مستواك",
   "experienceSubtitle": "ساعدنا على تخصيص رحلتك",
 
   "experienceBeginner": "مبتدئ",
@@ -108,5 +108,13 @@
   "sendCode": "إرسال الرمز",
   "otpVerificationTitle": "التحقق من الرمز",
   "otpVerificationSubtitle": "أدخل الرمز المرسل إلى بريدك الإلكتروني للتحقق من هويتك. بمجرد التحقق، يمكنك المتابعة لإعادة تعيين كلمة المرور الخاصة بك.",
-  "usernameHint": "username@gmail.com"
+  "usernameHint": "username@gmail.com",
+  "gender": "الجنس",
+  "selectGender": "اختر الجنس",
+  "male": "ذكر",
+  "female": "أنثى",
+  "dontWorry": "لا تقلق — يمكنك تغيير ذلك في أي وقت من الإعدادات",
+  "createNewPasswordTitle": "إنشاء كلمة مرور جديدة",
+  "createNewPasswordSubtitle": "اختر كلمة مرور قوية جديدة لحسابك. تأكد من أنها فريدة ومختلفة عن كلمات المرور السابقة للحفاظ على أمان حسابك.",
+  "submit": "إرسال"
 }

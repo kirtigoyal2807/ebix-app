@@ -8,6 +8,7 @@ import 'package:pilates_app/widgets/app_app_bar.dart';
 import 'package:pilates_app/widgets/app_button.dart';
 import 'package:pilates_app/widgets/app_scaffold.dart';
 import 'package:pilates_app/widgets/app_text.dart';
+import 'create_new_password_view.dart';
 
 import '../../../core/localization/localization_extension.dart';
 
@@ -21,7 +22,7 @@ class ForgotOtpView extends StatelessWidget {
     return AppScaffold(
       appBar: AppAppBar(
         onBack: () => Navigator.of(context).pop(),
-        title: context.l10n.signIn,
+        title: context.l10n.forgotPasswordTitle,
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(
@@ -60,24 +61,31 @@ class ForgotOtpView extends StatelessWidget {
                     const SizedBox(height: AppSpacing.lg),
 
                     Center(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          AppText(
-                            context.l10n.didntReceiveCode,
-                            style: AppTextStyles.bodyText,
-                          ),
-                          const SizedBox(width: 4),
-                          GestureDetector(
-                            onTap: () {
-                              // Resend logic
-                            },
-                            child: AppText(
-                              context.l10n.resendCode,
-                              style:  AppTextStyles.bodyText,
+                      child: RichText(
+                        text: TextSpan(
+                          children: [
+                            TextSpan(
+                              text: context.l10n.didntReceiveCode,
+                              style: AppTextStyles.caption(context).copyWith(
+                                color: isDark
+                                    ? AppColors.darkGreyText
+                                    : AppColors.greyText,
+                                fontWeight: FontWeight.w400,
+                                height: 1.4,
+                              ),
                             ),
-                          ),
-                        ],
+                            TextSpan(
+                              text: context.l10n.resendCode,
+                              style: AppTextStyles.caption(context).copyWith(
+                                color: isDark
+                                    ? AppColors.languageTextDark
+                                    : AppColors.languageIcon,
+                                fontWeight: FontWeight.w600,
+                                height: 1.4,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ],
@@ -89,7 +97,11 @@ class ForgotOtpView extends StatelessWidget {
             AppButton(
               label: context.l10n.sendOtp,
               onPressed: () {
-                // Next step in forgot password flow
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (_) => const CreateNewPasswordView(),
+                  ),
+                );
               },
             ),
           ],

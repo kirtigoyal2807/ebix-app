@@ -6,6 +6,7 @@ import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/widgets/app_app_bar.dart';
 import 'package:pilates_app/widgets/app_button.dart';
 import 'package:pilates_app/widgets/app_scaffold.dart';
+import 'package:pilates_app/widgets/app_text.dart';
 import '../../../core/localization/localization_extension.dart';
 import '../cubit/auth_cubit.dart';
 import 'widgets/sign_up_header.dart';
@@ -67,12 +68,15 @@ class _SignUpExperienceViewState extends State<SignUpExperienceView> {
                     const SizedBox(height: AppSpacing.xxl),
 
                     // Header
-                    SignUpHeader(
-                      title: context.l10n.experienceTitle,
-                      subtitle: context.l10n.experienceSubtitle,
-                      step: 2,
-                      totalSteps: 4,
-                    ),
+                    // SignUpHeader(
+                    //   title: context.l10n.experienceTitle,
+                    //   subtitle: context.l10n.experienceSubtitle,
+                    //   step: 2,
+                    //   totalSteps: 4,
+                    // ),
+
+                    AppText(context.l10n.experienceTitle, style: AppTextStyles.heading1),
+                    // const SizedBox(height: AppSpacing.sm + 2),
 
                     const SizedBox(height: AppSpacing.lg),
 
@@ -105,6 +109,12 @@ class _SignUpExperienceViewState extends State<SignUpExperienceView> {
                       onTap: () => setState(() => _selectedIndex = 2),
                     ),
                     const SizedBox(height: AppSpacing.lg),
+                    AppText(
+                      context.l10n.dontWorry,
+                      style: (context) => AppTextStyles.body(context).copyWith(
+                        color: isDark ? AppColors.darkGreyText : AppColors.greyText,
+                      ),
+                    ),
                   ],
                 ),
               ),

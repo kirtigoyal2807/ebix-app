@@ -105,7 +105,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get verify => 'تأكيد';
 
   @override
-  String get experienceTitle => 'تجربة البيلاتس الخاصة بك';
+  String get experienceTitle => 'سنوصي لك بحصص ومدربين يناسبون مستواك';
 
   @override
   String get experienceSubtitle => 'ساعدنا على تخصيص رحلتك';
@@ -265,4 +265,29 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get usernameHint => 'username@gmail.com';
+
+  @override
+  String get gender => 'الجنس';
+
+  @override
+  String get selectGender => 'اختر الجنس';
+
+  @override
+  String get male => 'ذكر';
+
+  @override
+  String get female => 'أنثى';
+
+  @override
+  String get dontWorry => 'لا تقلق — يمكنك تغيير ذلك في أي وقت من الإعدادات';
+
+  @override
+  String get createNewPasswordTitle => 'إنشاء كلمة مرور جديدة';
+
+  @override
+  String get createNewPasswordSubtitle =>
+      'اختر كلمة مرور قوية جديدة لحسابك. تأكد من أنها فريدة ومختلفة عن كلمات المرور السابقة للحفاظ على أمان حسابك.';
+
+  @override
+  String get submit => 'إرسال';
 }

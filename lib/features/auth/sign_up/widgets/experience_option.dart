@@ -44,9 +44,9 @@ class ExperienceOption extends StatelessWidget {
             borderRadius: BorderRadius.circular(AppRadius.md),
             border: Border.all(
               color: selected
-                  ? theme.colorScheme.primary
-                  : theme.dividerColor.withValues(alpha: 0.6),
-              width: selected ? 1.5 : 1,
+                  ? isDark ? AppColors.darkGreyBorder: AppColors.languageIconDark
+                  : theme.dividerColor,
+              width: selected ? 1.2 : 1,
             ),
             // color: Colors.white,
           ),
@@ -88,6 +88,19 @@ class ExperienceOption extends StatelessWidget {
                   ],
                 ),
               ),
+
+              if (selected)
+                Container(
+                  width: 20,
+                  height: 20,
+                  decoration: BoxDecoration(
+                    color: (isDark ? AppColors.languageIconDark:AppColors.languageIcon),
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                  child: const Icon(Icons.check, color: Colors.white, size: 12),
+                )
+              else
+                const SizedBox(width: 20),
             ],
           ),
         ),

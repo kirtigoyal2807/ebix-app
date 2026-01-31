@@ -287,7 +287,7 @@ abstract class AppLocalizations {
   /// No description provided for @experienceTitle.
   ///
   /// In en, this message translates to:
-  /// **'Your Pilates experience'**
+  /// **'We\'ll recommend classes and instructors that match your level'**
   String get experienceTitle;
 
   /// No description provided for @experienceSubtitle.
@@ -601,6 +601,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'username@gmail.com'**
   String get usernameHint;
+
+  /// No description provided for @gender.
+  ///
+  /// In en, this message translates to:
+  /// **'Gender'**
+  String get gender;
+
+  /// No description provided for @selectGender.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Gender'**
+  String get selectGender;
+
+  /// No description provided for @male.
+  ///
+  /// In en, this message translates to:
+  /// **'Male'**
+  String get male;
+
+  /// No description provided for @female.
+  ///
+  /// In en, this message translates to:
+  /// **'Female'**
+  String get female;
+
+  /// No description provided for @dontWorry.
+  ///
+  /// In en, this message translates to:
+  /// **'Don\'t worry — you can change this anytime in settings'**
+  String get dontWorry;
+
+  /// No description provided for @createNewPasswordTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Create New Password'**
+  String get createNewPasswordTitle;
+
+  /// No description provided for @createNewPasswordSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a strong new password for your account. Make sure it\'s unique and different from your previous passwords to keep your account secure.'**
+  String get createNewPasswordSubtitle;
+
+  /// No description provided for @submit.
+  ///
+  /// In en, this message translates to:
+  /// **'Submit'**
+  String get submit;
 }
 
 class _AppLocalizationsDelegate

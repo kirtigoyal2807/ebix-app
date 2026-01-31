@@ -5,8 +5,9 @@ import 'package:pilates_app/widgets/app_text.dart';
 class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String? title;
   final VoidCallback? onBack;
+  final List<Widget>? actions;
 
-  const AppAppBar({super.key, this.title, this.onBack});
+  const AppAppBar({super.key, this.title, this.onBack, this.actions});
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +23,12 @@ class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
       title: title != null ? AppText(title!, style: AppTextStyles.appBarTitle,) : null,
       centerTitle: true,
       elevation: 0,
+      actions: [
+        IconButton(
+          icon: const Icon(Icons.more_horiz),
+          onPressed: () {},
+        ),
+      ],
       // backgroundColor: Colors.white,
       
     );

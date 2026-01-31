@@ -175,7 +175,7 @@ class _LanguageOption extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(AppRadius.md),
           border: Border.all(
-            color: selected ? AppColors.primaryDark : Colors.transparent,
+            color: selected ? (isDark ? AppColors.languageIconDark:AppColors.languageIcon) : Colors.transparent,
             width: 1.5,
           ),
           color: selected ? (isDark ? AppColors.primaryDarkButton:AppColors.selectedLanguageBg) : Colors.transparent,
@@ -195,7 +195,7 @@ class _LanguageOption extends StatelessWidget {
                 width: 20,
                 height: 20,
                 decoration: BoxDecoration(
-                  color: theme.colorScheme.primary,
+                  color: (isDark ? AppColors.languageIconDark:AppColors.languageIcon),
                   borderRadius: BorderRadius.circular(4),
                 ),
                 child: const Icon(Icons.check, color: Colors.white, size: 12),

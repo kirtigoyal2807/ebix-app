@@ -56,6 +56,7 @@ class AppColors {
 
   //SeekBar
   static const seekBarLight = Color(0xFFFFF2EB);
-  static const branchTagLight = Color(0xFFF5F5F4);
+  static const branchTagLight = Color(0xFFF8FAFC);
+  static const darkGreyBorder = Color(0xFFDDCABF);
 
 }

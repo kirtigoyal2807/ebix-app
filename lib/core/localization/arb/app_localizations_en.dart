@@ -107,7 +107,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get verify => 'Verify';
 
   @override
-  String get experienceTitle => 'Your Pilates experience';
+  String get experienceTitle =>
+      'We\'ll recommend classes and instructors that match your level';
 
   @override
   String get experienceSubtitle => 'Help us personalize your journey';
@@ -268,4 +269,30 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get usernameHint => 'username@gmail.com';
+
+  @override
+  String get gender => 'Gender';
+
+  @override
+  String get selectGender => 'Select Gender';
+
+  @override
+  String get male => 'Male';
+
+  @override
+  String get female => 'Female';
+
+  @override
+  String get dontWorry =>
+      'Don\'t worry — you can change this anytime in settings';
+
+  @override
+  String get createNewPasswordTitle => 'Create New Password';
+
+  @override
+  String get createNewPasswordSubtitle =>
+      'Choose a strong new password for your account. Make sure it\'s unique and different from your previous passwords to keep your account secure.';
+
+  @override
+  String get submit => 'Submit';
 }

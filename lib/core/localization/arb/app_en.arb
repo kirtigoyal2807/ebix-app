@@ -39,7 +39,7 @@
   "didntReceiveCode": "Didn't receive code?",
   "resendCode": " Resend Code",
   "verify": "Verify",
-  "experienceTitle": "Your Pilates experience",
+  "experienceTitle": "We'll recommend classes and instructors that match your level",
   "experienceSubtitle": "Help us personalize your journey",
 
   "experienceBeginner": "Beginner",
@@ -108,5 +108,13 @@
   "sendCode": "Send Code",
   "otpVerificationTitle": "OTP Verification",
   "otpVerificationSubtitle": "Enter the OTP sent to your email to verify your identity. Once verified, you can proceed to reset your password.",
-  "usernameHint": "username@gmail.com"
+  "usernameHint": "username@gmail.com",
+  "gender": "Gender",
+  "selectGender": "Select Gender",
+  "male": "Male",
+  "female": "Female",
+  "dontWorry": "Don't worry — you can change this anytime in settings",
+  "createNewPasswordTitle": "Create New Password",
+  "createNewPasswordSubtitle": "Choose a strong new password for your account. Make sure it's unique and different from your previous passwords to keep your account secure.",
+  "submit": "Submit"
 }
