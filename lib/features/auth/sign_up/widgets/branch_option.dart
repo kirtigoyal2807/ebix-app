@@ -35,14 +35,14 @@ class BranchOption extends StatelessWidget {
       // color: Colors.transparent,
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(AppRadius.xl),
+        borderRadius: BorderRadius.circular(AppRadius.md),
         child: Container(
           padding: const EdgeInsets.all(AppSpacing.lg),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(AppRadius.md),
             border: Border.all(
               color: borderColor,
-              width: selected ? 1.2 : 1,
+              width: selected ? 1 : 1,
             ),
             // color:Colors.white,
           ),
@@ -116,11 +116,14 @@ class _BranchTypeChip extends StatelessWidget {
         border: Border.all(
           color: theme.dividerColor,
         ),
-        color: isDark? AppColors.languageIcon : AppColors.branchTagLight,
+        color: isDark? (type == 'Premium' ? AppColors.languageIcon: AppColors.blueTagValue) : AppColors.branchTagLight,
       ),
-      child: AppText(
+      child: Text(
         type,
-          style: AppTextStyles.headingSmall
+          // style: AppTextStyles.headingSmall,
+        style: AppTextStyles.headingSmall(context).copyWith(
+          color: isDark ? (type == 'Premium' ? AppColors.lightText: AppColors.blueTagText) : (type == 'Premium' ? AppColors.darkText: AppColors.blueTagText),
+        ),
       ),
     );
   }

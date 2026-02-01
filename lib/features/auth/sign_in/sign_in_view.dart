@@ -37,7 +37,7 @@ class _SignInViewState extends State<SignInView> {
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(
-          horizontal: AppSpacing.lg,
+          horizontal: 0,
           vertical: AppSpacing.md,
         ),
         child: Column(
@@ -50,101 +50,120 @@ class _SignInViewState extends State<SignInView> {
                     const SizedBox(height: 2),
 
                     // Header
-                    SignUpHeader(
-                      title: '${context.l10n.welcome} Tasha',
-                      subtitle: context.l10n.enterYourLoginDetails,
-                      step: 1,
-                      totalSteps: 5,
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+                      child: SignUpHeader(
+                        title: '${context.l10n.welcome} Tasha',
+                        subtitle: context.l10n.enterYourLoginDetails,
+                        step: 1,
+                        totalSteps: 5,
+                      ),
                     ),
 
                     const SizedBox(height: AppSpacing.lg),
 
                     // Tab Selector
-                    Row(
-                      children: [
-                        Expanded(
-                          child: GestureDetector(
-                            onTap: () => setState(() => _selectedTab = 0),
-                            child: Column(
-                              children: [
-                                AppText(
-                                  context.l10n.emailTab,
-                                  style:  AppTextStyles.bodyText,
-                                ),
-                                const SizedBox(height: 8),
-                                Container(
-                                  height: 2,
-                                  color: _selectedTab == 0
-                                      ? (isDark ? AppColors.languageTextDark : AppColors.primary)
-                                      : Colors.transparent,
-                                ),
-                              ],
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: GestureDetector(
+                              onTap: () => setState(() => _selectedTab = 0),
+                              child: Column(
+                                children: [
+                                  AppText(
+                                    context.l10n.emailTab,
+                                    style:  AppTextStyles.bodyText,
+                                  ),
+                                  const SizedBox(height: 8),
+                                  Container(
+                                    height: 2,
+                                    color: _selectedTab == 0
+                                        ? (isDark ? AppColors.languageTextDark : AppColors.primary)
+                                        : Colors.transparent,
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                        Expanded(
-                          child: GestureDetector(
-                            onTap: () => setState(() => _selectedTab = 1),
-                            child: Column(
-                              children: [
-                                AppText(
-                                  context.l10n.phoneTab,
-                                  style: AppTextStyles.bodyText,
-                                ),
-                                const SizedBox(height: 8),
-                                Container(
-                                  height: 2,
-                                  color: _selectedTab == 1
-                                      ? (isDark ? AppColors.languageTextDark : AppColors.primary)
-                                      : Colors.transparent,
-                                ),
-                              ],
+                          Expanded(
+                            child: GestureDetector(
+                              onTap: () => setState(() => _selectedTab = 1),
+                              child: Column(
+                                children: [
+                                  AppText(
+                                    context.l10n.phoneTab,
+                                    style: AppTextStyles.bodyText,
+                                  ),
+                                  const SizedBox(height: 8),
+                                  Container(
+                                    height: 2,
+                                    color: _selectedTab == 1
+                                        ? (isDark ? AppColors.languageTextDark : AppColors.primary)
+                                        : Colors.transparent,
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                    const Divider(height: 1, thickness: 1),
+                     Divider(height: 1, thickness: 1,color: (isDark ? AppColors.greyText : AppColors.buttonBorder),),
 
                     const SizedBox(height: AppSpacing.xl),
 
+
                     if (_selectedTab == 0) ...[
                       // Email Form
-                      AppTextField(
-                        label: context.l10n.emailOrPhone,
-                        hint: 'XXXXXXXXXX',
-                        keyboardType: TextInputType.emailAddress,
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+                        child: AppTextField(
+                          label: context.l10n.emailOrPhone,
+                          hint: 'XXXXXXXXXX',
+                          keyboardType: TextInputType.emailAddress,
+                        ),
                       ),
                       const SizedBox(height: AppSpacing.md),
-                      AppTextField(
-                        label: context.l10n.password,
-                        hint: '**********',
-                        obscure: true,
-                        keyboardType: TextInputType.visiblePassword,
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+                        child: AppTextField(
+                          label: context.l10n.password,
+                          hint: '**********',
+                          obscure: true,
+                          keyboardType: TextInputType.visiblePassword,
+                        ),
                       ),
                       const SizedBox(height: AppSpacing.sm),
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: TextButton(
-                          onPressed: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (_) => const ForgotPasswordView(),
-                              ),
-                            );
-                          },
-                          child: AppText(
-                            context.l10n.forgotPassword,
-                            style: AppTextStyles.bodyText,
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+                        child: Align(
+                          alignment: Alignment.centerRight,
+                          child: TextButton(
+                            onPressed: () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (_) => const ForgotPasswordView(),
+                                ),
+                              );
+                            },
+                            child: AppText(
+                              context.l10n.forgotPassword,
+                              style: AppTextStyles.body,
+                            ),
                           ),
                         ),
                       ),
                     ] else ...[
                       // Phone Number Form
-                      PhoneNumberField(
-                        label: context.l10n.phoneNumber,
-                        countryCode: '+1',
-                        flagAsset: 'assets/flags/us.svg',
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+                        child: PhoneNumberField(
+                          label: context.l10n.phoneNumber,
+                          countryCode: '+1',
+                          flagAsset: 'assets/flags/us.svg',
+                        ),
                       ),
                     ],
                     const SizedBox(height: AppSpacing.lg),
@@ -154,15 +173,18 @@ class _SignInViewState extends State<SignInView> {
             ),
 
             // Sticky Button
-            AppButton(
-              label: _selectedTab == 0 ? context.l10n.signIn : context.l10n.sendOtp,
-              onPressed: () {
-                if (_selectedTab == 0) {
-                   context.read<AuthCubit>().nextSignUpStep();
-                } else {
-                   // Send OTP logic
-                }
-              },
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+              child: AppButton(
+                label: _selectedTab == 0 ? context.l10n.signIn : context.l10n.sendOtp,
+                onPressed: () {
+                  if (_selectedTab == 0) {
+                     context.read<AuthCubit>().nextSignUpStep();
+                  } else {
+                     // Send OTP logic
+                  }
+                },
+              ),
             ),
           ],
         ),

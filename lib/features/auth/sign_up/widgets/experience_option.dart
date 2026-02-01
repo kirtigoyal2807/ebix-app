@@ -46,7 +46,7 @@ class ExperienceOption extends StatelessWidget {
               color: selected
                   ? isDark ? AppColors.darkGreyBorder: AppColors.languageIconDark
                   : theme.dividerColor,
-              width: selected ? 1.2 : 1,
+              width: selected ? 1 : 1,
             ),
             // color: Colors.white,
           ),
@@ -56,8 +56,8 @@ class ExperienceOption extends StatelessWidget {
               /// SVG ICON
               SvgPicture.asset(
                 iconPath,
-                width: 34,
-                height: 34,
+                width: 64,
+                height: 64,
                 // colorFilter: ColorFilter.mode(
                 //   selected ? theme.colorScheme.primary : theme.hintColor,
                 //   BlendMode.srcIn,
@@ -88,6 +88,7 @@ class ExperienceOption extends StatelessWidget {
                   ],
                 ),
               ),
+              const SizedBox(width: AppSpacing.lg),
 
               if (selected)
                 Container(
@@ -95,9 +96,22 @@ class ExperienceOption extends StatelessWidget {
                   height: 20,
                   decoration: BoxDecoration(
                     color: (isDark ? AppColors.languageIconDark:AppColors.languageIcon),
-                    borderRadius: BorderRadius.circular(4),
+                    borderRadius: BorderRadius.circular(6),
                   ),
-                  child: const Icon(Icons.check, color: Colors.white, size: 12),
+                  child:  Center(
+                    child: SvgPicture.asset(
+                      "assets/images/svg/ic_checkbox_white.svg",
+                      width: 10,
+                      height: 10,
+                      fit: BoxFit.contain,
+                      // colorFilter: ColorFilter.mode(
+                      //   selected ? theme.colorScheme.primary : theme.hintColor,
+                      //   BlendMode.srcIn,
+                      // ),
+                      alignment: Alignment.center,
+                    ),
+                  ),
+                  // child: const Icon(Icons.check, color: Colors.white, size: 14),
                 )
               else
                 const SizedBox(width: 20),

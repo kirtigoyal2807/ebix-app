@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pilates_app/config/theme/app_radius.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
@@ -196,9 +197,22 @@ class _LanguageOption extends StatelessWidget {
                 height: 20,
                 decoration: BoxDecoration(
                   color: (isDark ? AppColors.languageIconDark:AppColors.languageIcon),
-                  borderRadius: BorderRadius.circular(4),
+                  borderRadius: BorderRadius.circular(6),
                 ),
-                child: const Icon(Icons.check, color: Colors.white, size: 12),
+                child:  Center(
+                  child: SvgPicture.asset(
+                    "assets/images/svg/ic_checkbox_white.svg",
+                    width: 10,
+                    height: 10,
+                    fit: BoxFit.contain,
+                    // colorFilter: ColorFilter.mode(
+                    //   selected ? theme.colorScheme.primary : theme.hintColor,
+                    //   BlendMode.srcIn,
+                    // ),
+                    alignment: Alignment.center,
+                  ),
+                ),
+                // child: const Icon(Icons.check, color: Colors.white, size: 14),
               )
             else
               const SizedBox(width: 20),

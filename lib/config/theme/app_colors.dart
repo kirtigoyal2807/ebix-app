@@ -59,4 +59,9 @@ class AppColors {
   static const branchTagLight = Color(0xFFF8FAFC);
   static const darkGreyBorder = Color(0xFFDDCABF);
 
+  //Tag value
+  static const blueTagValue = Color(0xFF8396AF);
+  static const blueTagText = Color(0xFF8CB4ED);
+
+
 }

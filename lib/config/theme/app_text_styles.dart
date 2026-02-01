@@ -35,7 +35,16 @@ class AppTextStyles {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return GoogleFonts.inter(
       fontSize: 14,
-      fontWeight: FontWeight.w400,
+      fontWeight: FontWeight.w500,
+      color: isDark ? AppColors.languageTextDark : AppColors.languageIcon,
+    );
+  }
+
+  static TextStyle boldBody(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    return GoogleFonts.inter(
+      fontSize: 14,
+      fontWeight: FontWeight.w600,
       color: isDark ? AppColors.languageTextDark : AppColors.languageIcon,
     );
   }

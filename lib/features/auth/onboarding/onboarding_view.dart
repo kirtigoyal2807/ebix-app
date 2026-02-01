@@ -216,7 +216,7 @@ class OnboardingView extends StatelessWidget {
             ),
             decoration: BoxDecoration(
               // color: Colors.white,
-              border: Border.all(color: AppColors.lightGreyBorder, width: 0.5),
+              border: Border.all(color:isDark ? AppColors.greyText: AppColors.buttonBorder, width: 1),
               borderRadius: BorderRadius.circular(AppRadius.pillRadius),
             ),
             child: Row(
@@ -256,7 +256,7 @@ class OnboardingView extends StatelessWidget {
         ),
         decoration: BoxDecoration(
           // color: Colors.white,
-          border: Border.all(color: AppColors.lightGreyBorder, width: 0.5),
+          border: Border.all(color:isDark ? AppColors.greyText: AppColors.buttonBorder, width: 1),
           borderRadius: BorderRadius.circular(AppRadius.pillRadius),
         ),
         child: Row(

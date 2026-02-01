@@ -49,7 +49,7 @@ class AppButton extends StatelessWidget {
               foregroundColor: isDark
                   ? AppColors.primaryDark
                   : AppColors.primaryBrown,
-              side: const BorderSide(color: AppColors.buttonBorder, width: 1.5),
+              side: BorderSide(color: (isDark ? AppColors.greyText: AppColors.buttonBorder), width: 1.5),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(AppRadius.xl),
               ),

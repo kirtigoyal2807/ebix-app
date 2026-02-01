@@ -44,16 +44,21 @@ class AppDropDown<T> extends StatelessWidget {
         /// DROPDOWN
         DropdownButtonFormField<T>(
           value: value,
+          isDense: true,
           items: items,
           onChanged: onChanged,
           isExpanded: true,
           style: AppTextStyles.textField(context),
-          icon: Icon(
-            Icons.keyboard_arrow_down,
-            color: isDark ? AppColors.arrowIcon : AppColors.arrowIcon,
-            size: 24,
+          icon: Padding(
+            padding: const EdgeInsets.only(right: 4),
+            child: Icon(
+              Icons.keyboard_arrow_down,
+              color: isDark ? AppColors.arrowIcon : AppColors.arrowIcon,
+              size: 24,
+            ),
           ),
           decoration: InputDecoration(
+            isDense: true,
             hintText: hint,
             hintStyle: AppTextStyles.textField(context).copyWith(color: AppColors.lightGrey),
             contentPadding: const EdgeInsets.symmetric(

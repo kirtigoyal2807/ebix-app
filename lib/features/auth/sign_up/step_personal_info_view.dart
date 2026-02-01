@@ -137,7 +137,7 @@ class _SignUpPersonalInfoViewState extends State<SignUpPersonalInfoView> {
                       label: context.l10n.password,
                       hint: '**********',
                       keyboardType: TextInputType.name,
-                      errorText: 'Weak password',
+                      // errorText: 'Weak password',
                     ),
 
                     const SizedBox(height: AppSpacing.md),
