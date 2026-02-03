@@ -6,6 +6,7 @@ class AppSpacing {
   static const lg = 24.0;
   static const xl = 32.0;
   static const xxl = 40.0;
+  static const xxxl = 48.0;
   static const horizontalPadding = 24.0;
   static const buttonHeight = 54.0;
 }

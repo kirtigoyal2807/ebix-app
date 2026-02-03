@@ -649,6 +649,240 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Submit'**
   String get submit;
+
+  /// No description provided for @hi.
+  ///
+  /// In en, this message translates to:
+  /// **'Hi'**
+  String get hi;
+
+  /// No description provided for @readyToFlow.
+  ///
+  /// In en, this message translates to:
+  /// **'Ready to flow?'**
+  String get readyToFlow;
+
+  /// No description provided for @bookNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Book Now'**
+  String get bookNow;
+
+  /// No description provided for @exploreBranches.
+  ///
+  /// In en, this message translates to:
+  /// **'Explore Branches'**
+  String get exploreBranches;
+
+  /// No description provided for @viewSchedule.
+  ///
+  /// In en, this message translates to:
+  /// **'View Schedule'**
+  String get viewSchedule;
+
+  /// No description provided for @springResetChallenge.
+  ///
+  /// In en, this message translates to:
+  /// **'Spring Reset Challenge'**
+  String get springResetChallenge;
+
+  /// No description provided for @springResetDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'21 days to increased energy'**
+  String get springResetDesc;
+
+  /// No description provided for @startYourJourney.
+  ///
+  /// In en, this message translates to:
+  /// **'Start Your Journey'**
+  String get startYourJourney;
+
+  /// No description provided for @yourProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Progress'**
+  String get yourProgress;
+
+  /// No description provided for @seeAll.
+  ///
+  /// In en, this message translates to:
+  /// **'See All'**
+  String get seeAll;
+
+  /// No description provided for @monthlyProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly Progress'**
+  String get monthlyProgress;
+
+  /// No description provided for @classes.
+  ///
+  /// In en, this message translates to:
+  /// **'Classes'**
+  String get classes;
+
+  /// No description provided for @totalTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Time'**
+  String get totalTime;
+
+  /// No description provided for @goal.
+  ///
+  /// In en, this message translates to:
+  /// **'Goal'**
+  String get goal;
+
+  /// No description provided for @ofClassesThisMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'of {count} classes this month'**
+  String ofClassesThisMonth(int count);
+
+  /// No description provided for @featuredClass.
+  ///
+  /// In en, this message translates to:
+  /// **'Featured Class'**
+  String get featuredClass;
+
+  /// No description provided for @inYourPlan.
+  ///
+  /// In en, this message translates to:
+  /// **'In Your Plan'**
+  String get inYourPlan;
+
+  /// No description provided for @withTrainer.
+  ///
+  /// In en, this message translates to:
+  /// **'with {trainer}'**
+  String withTrainer(String trainer);
+
+  /// No description provided for @spotsLeft.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} Spots Left'**
+  String spotsLeft(int count);
+
+  /// No description provided for @bookClass.
+  ///
+  /// In en, this message translates to:
+  /// **'Book Class'**
+  String get bookClass;
+
+  /// No description provided for @membershipExpired.
+  ///
+  /// In en, this message translates to:
+  /// **'Membership Expired'**
+  String get membershipExpired;
+
+  /// No description provided for @expiredOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Expired on {date}'**
+  String expiredOn(String date);
+
+  /// No description provided for @renew.
+  ///
+  /// In en, this message translates to:
+  /// **'Renew'**
+  String get renew;
+
+  /// No description provided for @noActiveSubscriptions.
+  ///
+  /// In en, this message translates to:
+  /// **'No Active Subscriptions'**
+  String get noActiveSubscriptions;
+
+  /// No description provided for @startJourneyToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Start your Pilates journey today'**
+  String get startJourneyToday;
+
+  /// No description provided for @viewPlans.
+  ///
+  /// In en, this message translates to:
+  /// **'View Plans'**
+  String get viewPlans;
+
+  /// No description provided for @premiumMember.
+  ///
+  /// In en, this message translates to:
+  /// **'Premium Member'**
+  String get premiumMember;
+
+  /// No description provided for @unlimitedClasses.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlimited Classes'**
+  String get unlimitedClasses;
+
+  /// No description provided for @startYourPilatesJourney.
+  ///
+  /// In en, this message translates to:
+  /// **'Start Your Pilates Journey'**
+  String get startYourPilatesJourney;
+
+  /// No description provided for @bookFirstClassDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Book your first class to begin tracking your progress and achieving your wellness goals.'**
+  String get bookFirstClassDesc;
+
+  /// No description provided for @bookYourFirstClass.
+  ///
+  /// In en, this message translates to:
+  /// **'Book Your First Class'**
+  String get bookYourFirstClass;
+
+  /// No description provided for @classTypes.
+  ///
+  /// In en, this message translates to:
+  /// **'Class Types'**
+  String get classTypes;
+
+  /// No description provided for @topTrainers.
+  ///
+  /// In en, this message translates to:
+  /// **'Top Trainers'**
+  String get topTrainers;
+
+  /// No description provided for @viewClasses.
+  ///
+  /// In en, this message translates to:
+  /// **'View Classes'**
+  String get viewClasses;
+
+  /// No description provided for @home.
+  ///
+  /// In en, this message translates to:
+  /// **'Home'**
+  String get home;
+
+  /// No description provided for @explore.
+  ///
+  /// In en, this message translates to:
+  /// **'Explore'**
+  String get explore;
+
+  /// No description provided for @account.
+  ///
+  /// In en, this message translates to:
+  /// **'Account'**
+  String get account;
+
+  /// No description provided for @classesNav.
+  ///
+  /// In en, this message translates to:
+  /// **'Classes'**
+  String get classesNav;
+
+  /// No description provided for @today.
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get today;
 }
 
 class _AppLocalizationsDelegate

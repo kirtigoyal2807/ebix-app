@@ -116,5 +116,72 @@
   "dontWorry": "Don't worry — you can change this anytime in settings",
   "createNewPasswordTitle": "Create New Password",
   "createNewPasswordSubtitle": "Choose a strong new password for your account. Make sure it's unique and different from your previous passwords to keep your account secure.",
-  "submit": "Submit"
+  "submit": "Submit",
+  "hi": "Hi",
+  "readyToFlow": "Ready to flow?",
+  "bookNow": "Book Now",
+  "exploreBranches": "Explore Branches",
+  "viewSchedule": "View Schedule",
+  "springResetChallenge": "Spring Reset Challenge",
+  "springResetDesc": "21 days to increased energy",
+  "startYourJourney": "Start Your Journey",
+  "yourProgress": "Your Progress",
+  "seeAll": "See All",
+  "monthlyProgress": "Monthly Progress",
+  "classes": "Classes",
+  "totalTime": "Total Time",
+  "goal": "Goal",
+  "ofClassesThisMonth": "of {count} classes this month",
+  "@ofClassesThisMonth": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "featuredClass": "Featured Class",
+  "inYourPlan": "In Your Plan",
+  "withTrainer": "with {trainer}",
+  "@withTrainer": {
+    "placeholders": {
+      "trainer": {
+        "type": "String"
+      }
+    }
+  },
+  "spotsLeft": "{count} Spots Left",
+  "@spotsLeft": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "bookClass": "Book Class",
+  "membershipExpired": "Membership Expired",
+  "expiredOn": "Expired on {date}",
+  "@expiredOn": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "renew": "Renew",
+  "noActiveSubscriptions": "No Active Subscriptions",
+  "startJourneyToday": "Start your Pilates journey today",
+  "viewPlans": "View Plans",
+  "premiumMember": "Premium Member",
+  "unlimitedClasses": "Unlimited Classes",
+  "startYourPilatesJourney": "Start Your Pilates Journey",
+  "bookFirstClassDesc": "Book your first class to begin tracking your progress and achieving your wellness goals.",
+  "bookYourFirstClass": "Book Your First Class",
+  "classTypes": "Class Types",
+  "topTrainers": "Top Trainers",
+  "viewClasses": "View Classes",
+  "home": "Home",
+  "explore": "Explore",
+  "account": "Account",
+  "classesNav": "Classes",
+  "today": "Today"
 }

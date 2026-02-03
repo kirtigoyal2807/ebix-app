@@ -290,4 +290,130 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get submit => 'إرسال';
+
+  @override
+  String get hi => 'مرحباً';
+
+  @override
+  String get readyToFlow => 'جاهز للتدفق؟';
+
+  @override
+  String get bookNow => 'احجز الآن';
+
+  @override
+  String get exploreBranches => 'استكشف الفروع';
+
+  @override
+  String get viewSchedule => 'عرض الجدول';
+
+  @override
+  String get springResetChallenge => 'تحدي إعادة ضبط الربيع';
+
+  @override
+  String get springResetDesc => '21 يوماً لزيادة الطاقة';
+
+  @override
+  String get startYourJourney => 'ابدأ رحلتك';
+
+  @override
+  String get yourProgress => 'تقدمك';
+
+  @override
+  String get seeAll => 'عرض الكل';
+
+  @override
+  String get monthlyProgress => 'التقدم الشهري';
+
+  @override
+  String get classes => 'حصص';
+
+  @override
+  String get totalTime => 'إجمالي الوقت';
+
+  @override
+  String get goal => 'الهدف';
+
+  @override
+  String ofClassesThisMonth(int count) {
+    return 'من $count حصص هذا الشهر';
+  }
+
+  @override
+  String get featuredClass => 'حصة مميزة';
+
+  @override
+  String get inYourPlan => 'في خطتك';
+
+  @override
+  String withTrainer(String trainer) {
+    return 'مع $trainer';
+  }
+
+  @override
+  String spotsLeft(int count) {
+    return 'بقي $count أماكن';
+  }
+
+  @override
+  String get bookClass => 'حجز الحصة';
+
+  @override
+  String get membershipExpired => 'انتهت العضوية';
+
+  @override
+  String expiredOn(String date) {
+    return 'انتهت في $date';
+  }
+
+  @override
+  String get renew => 'تجديد';
+
+  @override
+  String get noActiveSubscriptions => 'لا توجد اشتراكات نشطة';
+
+  @override
+  String get startJourneyToday => 'ابدأ رحلتك في البيلاتس اليوم';
+
+  @override
+  String get viewPlans => 'عرض الخطط';
+
+  @override
+  String get premiumMember => 'عضو متميز';
+
+  @override
+  String get unlimitedClasses => 'حصص غير محدودة';
+
+  @override
+  String get startYourPilatesJourney => 'ابدأ رحلتك في البيلاتس';
+
+  @override
+  String get bookFirstClassDesc =>
+      'احجز حصتك الأولى للبدء في تتبع تقدمك وتحقيق أهدافك الصحية.';
+
+  @override
+  String get bookYourFirstClass => 'احجز حصتك الأولى';
+
+  @override
+  String get classTypes => 'أنواع الحصص';
+
+  @override
+  String get topTrainers => 'أفضل المدربين';
+
+  @override
+  String get viewClasses => 'عرض الحصص';
+
+  @override
+  String get home => 'الرئيسية';
+
+  @override
+  String get explore => 'اكتشف';
+
+  @override
+  String get account => 'الحساب';
+
+  @override
+  String get classesNav => 'الحصص';
+
+  @override
+  String get today => 'اليوم';
 }

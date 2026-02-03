@@ -39,8 +39,12 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   void completeSignUp() {
+    emit(state.copyWith(flow: AuthFlow.authenticated));
+  }
+
+  void signIn(String emailOrPhone, String password) {
     // later → API / token logic
-    emit(state.copyWith(flow: AuthFlow.signIn));
+    emit(state.copyWith(flow: AuthFlow.authenticated));
   }
 
   // Language

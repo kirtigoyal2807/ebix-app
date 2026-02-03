@@ -10,6 +10,7 @@ import 'cubit/auth_cubit.dart';
 import 'cubit/auth_state.dart';
 import 'cubit/auth_flow.dart';
 import 'onboarding/onboarding_view.dart';
+import '../home/home_view.dart';
 
 class AuthRootView extends StatelessWidget {
   const AuthRootView({super.key});
@@ -41,6 +42,9 @@ class AuthRootView extends StatelessWidget {
 
           case AuthFlow.signIn:
             return const SignInView();
+
+          case AuthFlow.authenticated:
+            return const HomeView();
         }
       },
     );

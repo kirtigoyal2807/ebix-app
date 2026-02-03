@@ -295,4 +295,130 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get submit => 'Submit';
+
+  @override
+  String get hi => 'Hi';
+
+  @override
+  String get readyToFlow => 'Ready to flow?';
+
+  @override
+  String get bookNow => 'Book Now';
+
+  @override
+  String get exploreBranches => 'Explore Branches';
+
+  @override
+  String get viewSchedule => 'View Schedule';
+
+  @override
+  String get springResetChallenge => 'Spring Reset Challenge';
+
+  @override
+  String get springResetDesc => '21 days to increased energy';
+
+  @override
+  String get startYourJourney => 'Start Your Journey';
+
+  @override
+  String get yourProgress => 'Your Progress';
+
+  @override
+  String get seeAll => 'See All';
+
+  @override
+  String get monthlyProgress => 'Monthly Progress';
+
+  @override
+  String get classes => 'Classes';
+
+  @override
+  String get totalTime => 'Total Time';
+
+  @override
+  String get goal => 'Goal';
+
+  @override
+  String ofClassesThisMonth(int count) {
+    return 'of $count classes this month';
+  }
+
+  @override
+  String get featuredClass => 'Featured Class';
+
+  @override
+  String get inYourPlan => 'In Your Plan';
+
+  @override
+  String withTrainer(String trainer) {
+    return 'with $trainer';
+  }
+
+  @override
+  String spotsLeft(int count) {
+    return '$count Spots Left';
+  }
+
+  @override
+  String get bookClass => 'Book Class';
+
+  @override
+  String get membershipExpired => 'Membership Expired';
+
+  @override
+  String expiredOn(String date) {
+    return 'Expired on $date';
+  }
+
+  @override
+  String get renew => 'Renew';
+
+  @override
+  String get noActiveSubscriptions => 'No Active Subscriptions';
+
+  @override
+  String get startJourneyToday => 'Start your Pilates journey today';
+
+  @override
+  String get viewPlans => 'View Plans';
+
+  @override
+  String get premiumMember => 'Premium Member';
+
+  @override
+  String get unlimitedClasses => 'Unlimited Classes';
+
+  @override
+  String get startYourPilatesJourney => 'Start Your Pilates Journey';
+
+  @override
+  String get bookFirstClassDesc =>
+      'Book your first class to begin tracking your progress and achieving your wellness goals.';
+
+  @override
+  String get bookYourFirstClass => 'Book Your First Class';
+
+  @override
+  String get classTypes => 'Class Types';
+
+  @override
+  String get topTrainers => 'Top Trainers';
+
+  @override
+  String get viewClasses => 'View Classes';
+
+  @override
+  String get home => 'Home';
+
+  @override
+  String get explore => 'Explore';
+
+  @override
+  String get account => 'Account';
+
+  @override
+  String get classesNav => 'Classes';
+
+  @override
+  String get today => 'Today';
 }

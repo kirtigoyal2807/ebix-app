@@ -40,6 +40,7 @@ class AppTextStyles {
     );
   }
 
+
   static TextStyle boldBody(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return GoogleFonts.inter(

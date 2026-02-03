@@ -116,5 +116,72 @@
   "dontWorry": "لا تقلق — يمكنك تغيير ذلك في أي وقت من الإعدادات",
   "createNewPasswordTitle": "إنشاء كلمة مرور جديدة",
   "createNewPasswordSubtitle": "اختر كلمة مرور قوية جديدة لحسابك. تأكد من أنها فريدة ومختلفة عن كلمات المرور السابقة للحفاظ على أمان حسابك.",
-  "submit": "إرسال"
+  "submit": "إرسال",
+  "hi": "مرحباً",
+  "readyToFlow": "جاهز للتدفق؟",
+  "bookNow": "احجز الآن",
+  "exploreBranches": "استكشف الفروع",
+  "viewSchedule": "عرض الجدول",
+  "springResetChallenge": "تحدي إعادة ضبط الربيع",
+  "springResetDesc": "21 يوماً لزيادة الطاقة",
+  "startYourJourney": "ابدأ رحلتك",
+  "yourProgress": "تقدمك",
+  "seeAll": "عرض الكل",
+  "monthlyProgress": "التقدم الشهري",
+  "classes": "حصص",
+  "totalTime": "إجمالي الوقت",
+  "goal": "الهدف",
+  "ofClassesThisMonth": "من {count} حصص هذا الشهر",
+  "@ofClassesThisMonth": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "featuredClass": "حصة مميزة",
+  "inYourPlan": "في خطتك",
+  "withTrainer": "مع {trainer}",
+  "@withTrainer": {
+    "placeholders": {
+      "trainer": {
+        "type": "String"
+      }
+    }
+  },
+  "spotsLeft": "بقي {count} أماكن",
+  "@spotsLeft": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "bookClass": "حجز الحصة",
+  "membershipExpired": "انتهت العضوية",
+  "expiredOn": "انتهت في {date}",
+  "@expiredOn": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "renew": "تجديد",
+  "noActiveSubscriptions": "لا توجد اشتراكات نشطة",
+  "startJourneyToday": "ابدأ رحلتك في البيلاتس اليوم",
+  "viewPlans": "عرض الخطط",
+  "premiumMember": "عضو متميز",
+  "unlimitedClasses": "حصص غير محدودة",
+  "startYourPilatesJourney": "ابدأ رحلتك في البيلاتس",
+  "bookFirstClassDesc": "احجز حصتك الأولى للبدء في تتبع تقدمك وتحقيق أهدافك الصحية.",
+  "bookYourFirstClass": "احجز حصتك الأولى",
+  "classTypes": "أنواع الحصص",
+  "topTrainers": "أفضل المدربين",
+  "viewClasses": "عرض الحصص",
+  "home": "الرئيسية",
+  "explore": "اكتشف",
+  "account": "الحساب",
+  "classesNav": "الحصص",
+  "today": "اليوم"
 }

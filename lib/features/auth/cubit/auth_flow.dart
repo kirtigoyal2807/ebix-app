@@ -3,4 +3,5 @@ enum AuthFlow {
   onboarding,
   signUp,
   signIn,
+  authenticated,
 }

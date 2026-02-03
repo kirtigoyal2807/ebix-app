@@ -63,5 +63,8 @@ class AppColors {
   static const blueTagValue = Color(0xFF8396AF);
   static const blueTagText = Color(0xFF8CB4ED);
 
+  // Home background
+  static const homeBackground = Color(0xFF120F0D);
+
 
 }
