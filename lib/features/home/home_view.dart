@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:pilates_app/config/theme/app_colors.dart';
+import 'package:pilates_app/config/theme/app_radius.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/core/localization/localization_extension.dart';
@@ -21,6 +23,7 @@ class HomeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.sizeOf(context);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return BlocProvider(
       create: (context) => HomeCubit(),
@@ -36,47 +39,76 @@ class HomeView extends StatelessWidget {
                       children: [
                         HomeHeader(userName: state.userName),
                         const SizedBox(height: AppSpacing.lg),
-                        
+
                         const SpringChallengeCard(),
                         const SizedBox(height: AppSpacing.lg),
                         const QuickActions(),
                         const SizedBox(height: AppSpacing.lg),
-                        
-                        if (state.status == HomeUserStatus.expired) ...[
-                          MembershipCard(status: state.status),
-                          const SizedBox(height: AppSpacing.lg),
-                        ],
-                        
+
+                        // if (state.status == HomeUserStatus.expired) ...[
+                        MembershipCard(status: HomeUserStatus.empty),
+                        const SizedBox(height: AppSpacing.lg),
+                        MembershipCard(status: HomeUserStatus.expired),
+                        const SizedBox(height: AppSpacing.lg),
+                        MembershipCard(status: HomeUserStatus.existing),
+
+                        // ],
+                        const SizedBox(height: AppSpacing.md),
+
                         Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: AppSpacing.lg,
+                          ),
                           child: AppText(
                             context.l10n.yourProgress,
-                            style: (context) => AppTextStyles.boldBody(context).copyWith(
-                              fontSize: size.width * 0.045 > 18 ? 18 : size.width * 0.045,
-                            ),
+                            style: (context) =>
+                                AppTextStyles.heading1(context).copyWith(
+                                  color: isDark
+                                      ? AppColors.lightText
+                                      : AppColors.darkText,
+                                  fontSize: size.width * 0.055 > 22
+                                      ? 22
+                                      : size.width * 0.055,
+                                  fontWeight: FontWeight.w400,
+
+                                  // height: 1.1,
+                                ),
                           ),
                         ),
                         const SizedBox(height: AppSpacing.md),
                         ProgressCard(
-                          status: state.status,
+                          status: HomeUserStatus.empty,
+                          classesDone: state.classesDone,
+                          totalHours: state.totalHours,
+                          goalClasses: state.goalClasses,
+                        ),
+
+                        const SizedBox(height: AppSpacing.md),
+                        ProgressCard(
+                          status: HomeUserStatus.existing,
                           classesDone: state.classesDone,
                           totalHours: state.totalHours,
                           goalClasses: state.goalClasses,
                         ),
                         const SizedBox(height: AppSpacing.lg),
-                        
-                        if (state.status != HomeUserStatus.expired) ...[
-                          MembershipCard(status: state.status),
-                          const SizedBox(height: AppSpacing.lg),
-                        ],
-                        
+
+                        // if (state.status != HomeUserStatus.expired) ...[
+                        MembershipCard(status: state.status),
+                        const SizedBox(height: AppSpacing.lg),
+
+                        // ],
                         Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: AppSpacing.lg,
+                          ),
                           child: AppText(
                             context.l10n.featuredClass,
-                            style: (context) => AppTextStyles.boldBody(context).copyWith(
-                              fontSize: size.width * 0.045 > 18 ? 18 : size.width * 0.045,
-                            ),
+                            style: (context) =>
+                                AppTextStyles.boldBody(context).copyWith(
+                                  fontSize: size.width * 0.045 > 18
+                                      ? 18
+                                      : size.width * 0.045,
+                                ),
                           ),
                         ),
                         const SizedBox(height: AppSpacing.md),
@@ -92,7 +124,10 @@ class HomeView extends StatelessWidget {
                 ),
               ],
             ),
-            bottomNavigationBar: _buildBottomNavBar(context, state.currentIndex),
+            bottomNavigationBar: _buildBottomNavBar(
+              context,
+              state.currentIndex,
+            ),
           );
         },
       ),
@@ -137,11 +172,17 @@ class HomeView extends StatelessWidget {
             label: context.l10n.home,
           ),
           BottomNavigationBarItem(
-            icon: Icon(currentIndex == 1 ? Icons.fitness_center : Icons.fitness_center_outlined),
+            icon: Icon(
+              currentIndex == 1
+                  ? Icons.fitness_center
+                  : Icons.fitness_center_outlined,
+            ),
             label: context.l10n.classesNav,
           ),
           BottomNavigationBarItem(
-            icon: Icon(currentIndex == 2 ? Icons.explore : Icons.explore_outlined),
+            icon: Icon(
+              currentIndex == 2 ? Icons.explore : Icons.explore_outlined,
+            ),
             label: context.l10n.explore,
           ),
           BottomNavigationBarItem(

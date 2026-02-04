@@ -95,18 +95,17 @@ class QuickActions extends StatelessWidget {
               fit: BoxFit.contain,
             ),
           ),
-          const SizedBox(height: AppSpacing.sm),
+          const SizedBox(height: AppSpacing.xs),
           Expanded(
             child: Center(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 12),
                 child: AppText(
                   title,
-                  style: (context) => AppTextStyles.boldBody(context).copyWith(
-                    fontSize: size.height * 0.015 > 12 ? 12 : size.height * 0.015,
+                  style: (context) => AppTextStyles.body(context).copyWith(
                     color: isDark
-                        ? AppColors.textPrimaryDark
-                        : AppColors.textPrimaryLight,
+                        ? AppColors.lightText
+                        : AppColors.darkText,
                   ),
                   textAlign: TextAlign.center,
                   maxLines: 2,
@@ -115,7 +114,7 @@ class QuickActions extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(height: AppSpacing.sm),
+          // const SizedBox(height: AppSpacing.sm),
         ],
       ),
     );

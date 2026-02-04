@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:pilates_app/config/theme/app_colors.dart';
 import 'package:pilates_app/config/theme/app_radius.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
@@ -35,41 +36,46 @@ class ProgressCard extends StatelessWidget {
 
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
-      padding: EdgeInsets.all(size.width * 0.05),
+      padding: EdgeInsets.all(size.width * 0.07),
       decoration: BoxDecoration(
-        color: isDark ? AppColors.surfaceDark : Colors.white,
-        borderRadius: BorderRadius.circular(AppRadius.lg),
-        border: Border.all(color: isDark ? AppColors.borderDark : AppColors.borderLight),
+        color: isDark ? AppColors.homeBackground : Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: isDark ? AppColors.greyText : AppColors.buttonBorder,
+        ),
       ),
       child: Column(
         children: [
-          Container(
-            padding: const EdgeInsets.all(AppSpacing.md),
-            decoration: const BoxDecoration(
-              color: Color(0xFFFDF2ED),
-              shape: BoxShape.circle,
-            ),
-            child: Icon(
-              Icons.fitness_center,
-              color: const Color(0xFFC48B71),
-              size: size.width * 0.08 > 32 ? 32 : size.width * 0.08,
+          SizedBox(
+            height: size.height * 0.06,
+            child: SvgPicture.asset(
+              isDark
+                  ? 'assets/images/svg/ic_pirates_book_dark.svg'
+                  : 'assets/images/svg/ic_pirates_book_light.svg',
+              height: size.height * 0.06,
+              // width: width * 0.6,
+              fit: BoxFit.contain,
             ),
           ),
           const SizedBox(height: AppSpacing.md),
           AppText(
             context.l10n.startYourPilatesJourney,
-            style: (context) => AppTextStyles.heading1(context).copyWith(
-              fontSize: size.width * 0.045 > 18 ? 18 : size.width * 0.045,
+            style: (context) => AppTextStyles.body(context).copyWith(
+              color: isDark ? AppColors.lightText : AppColors.darkText,
+              fontSize: 16,
             ),
             textAlign: TextAlign.center,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
           ),
-          const SizedBox(height: AppSpacing.sm),
+
+          const SizedBox(height: AppSpacing.xs),
           AppText(
             context.l10n.bookFirstClassDesc,
-            style: (context) => AppTextStyles.bodyText(context).copyWith(
-              fontSize: size.width * 0.035 > 14 ? 14 : size.width * 0.035,
-            ),
+            style: AppTextStyles.bodyTextSmall,
             textAlign: TextAlign.center,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
           ),
           const SizedBox(height: AppSpacing.lg),
           ElevatedButton(
@@ -77,7 +83,9 @@ class ProgressCard extends StatelessWidget {
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.primaryBrown,
               foregroundColor: Colors.white,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.md)),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(AppRadius.pillRadius),
+              ),
               minimumSize: const Size(double.infinity, 48),
             ),
             child: AppText(
@@ -101,9 +109,11 @@ class ProgressCard extends StatelessWidget {
       margin: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
       padding: EdgeInsets.all(size.width * 0.05),
       decoration: BoxDecoration(
-        color: isDark ? AppColors.surfaceDark : Colors.white,
-        borderRadius: BorderRadius.circular(AppRadius.lg),
-        border: Border.all(color: isDark ? AppColors.borderDark : AppColors.borderLight),
+        color: isDark ? AppColors.homeBackground : Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: isDark ? AppColors.greyText : AppColors.buttonBorder,
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -138,9 +148,27 @@ class ProgressCard extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Expanded(child: _buildProgressStat(context, classesDone.toString(), context.l10n.classes)),
-              Expanded(child: _buildProgressStat(context, '${totalHours} h', context.l10n.totalTime)),
-              Expanded(child: _buildProgressStat(context, '${(progress * 100).toInt()}%', context.l10n.goal)),
+              Expanded(
+                child: _buildProgressStat(
+                  context,
+                  classesDone.toString(),
+                  context.l10n.classes,
+                ),
+              ),
+              Expanded(
+                child: _buildProgressStat(
+                  context,
+                  '${totalHours} h',
+                  context.l10n.totalTime,
+                ),
+              ),
+              Expanded(
+                child: _buildProgressStat(
+                  context,
+                  '${(progress * 100).toInt()}%',
+                  context.l10n.goal,
+                ),
+              ),
             ],
           ),
           const SizedBox(height: AppSpacing.lg),
@@ -180,9 +208,9 @@ class ProgressCard extends StatelessWidget {
         ),
         AppText(
           label,
-          style: (context) => AppTextStyles.captionText(context).copyWith(
-            fontSize: size.width * 0.03 > 12 ? 12 : size.width * 0.03,
-          ),
+          style: (context) => AppTextStyles.captionText(
+            context,
+          ).copyWith(fontSize: size.width * 0.03 > 12 ? 12 : size.width * 0.03),
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
         ),

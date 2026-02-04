@@ -65,6 +65,7 @@ class AppColors {
 
   // Home background
   static const homeBackground = Color(0xFF120F0D);
+  static const cardLightBackground = Color(0xFFFEEBEC);
 
 
 }

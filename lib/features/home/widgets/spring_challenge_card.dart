@@ -57,8 +57,8 @@ class _SpringChallengeCardState extends State<SpringChallengeCard> {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(AppRadius.lg),
         gradient: const LinearGradient(
-          begin: Alignment.bottomLeft,
-          end: Alignment.topRight,
+          begin: Alignment.bottomRight,
+          end: Alignment.topLeft,
           colors: [
             Color(0xFF65422C),
             Color(0xFF8B6C5A),
@@ -95,26 +95,27 @@ class _SpringChallengeCardState extends State<SpringChallengeCard> {
                   child: AppText(
                     context.l10n.springResetChallenge,
                     style: (context) => AppTextStyles.heading1(context).copyWith(
-                      color: Colors.white,
+                      color: isDark ?AppColors.lightText : Colors.white,
                       fontSize: size.width * 0.055 > 22 ? 22 : size.width * 0.055,
                       height: 1.1,
+
                     ),
                   ),
                 ),
-                SizedBox(height: size.height < 667 ? 2 : AppSpacing.xs),
+                SizedBox(height: AppSpacing.sm),
                 AppText(
                   '21 days to renewed energy',
-                  style: (context) => AppTextStyles.bodyText(context).copyWith(
-                    color: Colors.white.withOpacity(0.8),
+                  style: (context) => AppTextStyles.bodyTextSmall(context).copyWith(
+                    color: isDark ?AppColors.seekBarLight : Colors.white,
                     fontSize: size.width * 0.035 > 14 ? 14 : size.width * 0.035,
                   ),
                 ),
-                SizedBox(height: size.height < 667 ? AppSpacing.md : AppSpacing.lg),
+                SizedBox(height: size.height < 667 ? AppSpacing.xl : AppSpacing.xxl),
                 ElevatedButton(
                   onPressed: () {},
                   style: ElevatedButton.styleFrom(
                     backgroundColor: isDark
-                        ? AppColors.primaryDarkButton
+                        ? AppColors.whiteColor
                         : AppColors.whiteColor,
                     foregroundColor: const Color(0xFF65422C),
                     elevation: 0,

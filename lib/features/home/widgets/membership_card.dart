@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:pilates_app/config/theme/app_colors.dart';
 import 'package:pilates_app/config/theme/app_radius.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
@@ -25,58 +26,80 @@ class MembershipCard extends StatelessWidget {
   }
 
   Widget _buildEmptyCard(BuildContext context) {
+    final size = MediaQuery.sizeOf(context);
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
-      padding: const EdgeInsets.all(AppSpacing.lg),
+      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg,vertical: AppSpacing.md),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(AppRadius.lg),
+        borderRadius: BorderRadius.circular(AppRadius.md),
         color: AppColors.primaryBrown,
-        image: const DecorationImage(
-          image: NetworkImage('https://www.transparenttextures.com/patterns/carbon-fibre.png'),
-          opacity: 0.1,
-          fit: BoxFit.cover,
-        ),
+        // image: const DecorationImage(
+        //   image: NetworkImage('https://www.transparenttextures.com/patterns/carbon-fibre.png'),
+        //   opacity: 0.1,
+        //   fit: BoxFit.cover,
+        // ),
       ),
-      child: Row(
+      child: Column(
         children: [
-          Container(
-            padding: const EdgeInsets.all(AppSpacing.sm),
-            decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.2),
-              shape: BoxShape.circle,
-            ),
-            child: const Icon(Icons.workspace_premium, color: Colors.orange, size: 24),
-          ),
-          const SizedBox(width: AppSpacing.md),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                AppText(
-                  context.l10n.noActiveSubscriptions,
-                  style: (context) => AppTextStyles.boldBody(context).copyWith(color: Colors.white),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                child: SvgPicture.asset(
+                  'assets/images/svg/ic_king.svg',
+                  width: size.width * 0.05,
+                  height: size.height * 0.05,
                 ),
-                AppText(
-                  context.l10n.startJourneyToday,
-                  style: (context) => AppTextStyles.captionText(context).copyWith(color: Colors.white70),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(width: AppSpacing.md),
-          ElevatedButton(
-            onPressed: () {},
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.white,
-              foregroundColor: AppColors.primaryBrown,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.pillRadius)),
-              padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
-              minimumSize: const Size(0, 32),
-            ),
-            child: AppText(
-              context.l10n.viewPlans,
-              style: (context) => AppTextStyles.boldBody(context).copyWith(fontSize: 10, color: AppColors.primaryBrown),
-            ),
+              ),
+              const SizedBox(width: AppSpacing.md),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      AppText(
+                        context.l10n.noActiveSubscriptions,
+                        style: (context) => AppTextStyles.heading1(
+                          context,
+                        ).copyWith(color: AppColors.seekBarLight, fontSize: 16),
+                      ),
+                      AppText(
+                        context.l10n.startJourneyToday,
+                        style: (context) => AppTextStyles.captionText(
+                          context,
+                        ).copyWith(color: AppColors.lightGreyText),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: AppSpacing.sm),
+                  ElevatedButton(
+                    onPressed: () {},
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.white,
+                      foregroundColor: AppColors.primaryBrown,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(
+                          AppRadius.pillRadius,
+                        ),
+                      ),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: AppSpacing.md,
+                      ),
+                      minimumSize: const Size(0, 32),
+                    ),
+                    child: AppText(
+                      context.l10n.viewPlans,
+                      style: (context) => AppTextStyles.boldBody(
+                        context,
+                      ).copyWith(fontSize: 10, color: AppColors.primaryBrown),
+                    ),
+                  ),
+                ],
+              ),
+            ],
           ),
         ],
       ),
@@ -84,35 +107,44 @@ class MembershipCard extends StatelessWidget {
   }
 
   Widget _buildExistingCard(BuildContext context) {
+    final size = MediaQuery.sizeOf(context);
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
-      padding: const EdgeInsets.all(AppSpacing.md),
+      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg,vertical: AppSpacing.lg),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(AppRadius.lg),
+        borderRadius: BorderRadius.circular(AppRadius.md),
         color: AppColors.primaryBrown,
+        // image: const DecorationImage(
+        //   image: NetworkImage('https://www.transparenttextures.com/patterns/carbon-fibre.png'),
+        //   opacity: 0.1,
+        //   fit: BoxFit.cover,
+        // ),
       ),
       child: Row(
         children: [
           Container(
-            padding: const EdgeInsets.all(AppSpacing.sm),
-            decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.2),
-              shape: BoxShape.circle,
+            child: SvgPicture.asset(
+              'assets/images/svg/ic_king.svg',
+              width: size.width * 0.05,
+              height: size.height * 0.05,
             ),
-            child: const Icon(Icons.workspace_premium, color: Colors.orange, size: 20),
           ),
           const SizedBox(width: AppSpacing.md),
           Expanded(
-            child: Column(
+            child:  Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 AppText(
                   context.l10n.premiumMember,
-                  style: (context) => AppTextStyles.boldBody(context).copyWith(color: Colors.white),
+                  style: (context) => AppTextStyles.heading1(
+                    context,
+                  ).copyWith(color: AppColors.seekBarLight, fontSize: 16),
                 ),
                 AppText(
                   context.l10n.unlimitedClasses,
-                  style: (context) => AppTextStyles.captionText(context).copyWith(color: Colors.white70),
+                  style: (context) => AppTextStyles.captionText(
+                    context,
+                  ).copyWith(color: AppColors.lightGreyText),
                 ),
               ],
             ),
@@ -122,13 +154,17 @@ class MembershipCard extends StatelessWidget {
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.white,
               foregroundColor: AppColors.primaryBrown,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.pillRadius)),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(AppRadius.pillRadius),
+              ),
               padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
               minimumSize: const Size(0, 32),
             ),
             child: AppText(
               context.l10n.viewPlans,
-              style: (context) => AppTextStyles.boldBody(context).copyWith(fontSize: 10, color: AppColors.primaryBrown),
+              style: (context) => AppTextStyles.boldBody(
+                context,
+              ).copyWith(fontSize: 10, color: AppColors.primaryBrown),
             ),
           ),
         ],
@@ -137,36 +173,47 @@ class MembershipCard extends StatelessWidget {
   }
 
   Widget _buildExpiredCard(BuildContext context) {
+    final size = MediaQuery.sizeOf(context);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
-      padding: const EdgeInsets.all(AppSpacing.md),
+      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg,vertical: AppSpacing.lg),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(AppRadius.lg),
-        color: const Color(0xFFFEF2F2),
-        border: Border.all(color: const Color(0xFFFCA5A5).withOpacity(0.5)),
+        borderRadius: BorderRadius.circular(AppRadius.md),
+        color: isDark
+            ? AppColors.primaryDarkButton
+            : AppColors.primary,
+        // image: const DecorationImage(
+        //   image: NetworkImage('https://www.transparenttextures.com/patterns/carbon-fibre.png'),
+        //   opacity: 0.1,
+        //   fit: BoxFit.cover,
+        // ),
       ),
       child: Row(
         children: [
           Container(
-            padding: const EdgeInsets.all(AppSpacing.sm),
-            decoration: BoxDecoration(
-              color: const Color(0xFFFFEDD5),
-              shape: BoxShape.circle,
+            child: SvgPicture.asset(
+              'assets/images/svg/ic_king.svg',
+              width: size.width * 0.05,
+              height: size.height * 0.05,
             ),
-            child: const Icon(Icons.workspace_premium, color: Colors.orange, size: 20),
           ),
           const SizedBox(width: AppSpacing.md),
           Expanded(
-            child: Column(
+            child:  Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 AppText(
                   context.l10n.membershipExpired,
-                  style: (context) => AppTextStyles.boldBody(context).copyWith(color: const Color(0xFF991B1B)),
+                  style: (context) => AppTextStyles.heading1(
+                    context,
+                  ).copyWith(color: AppColors.seekBarLight, fontSize: 16),
                 ),
                 AppText(
                   context.l10n.expiredOn("29 Jan, 2024"),
-                  style: (context) => AppTextStyles.captionText(context).copyWith(color: const Color(0xFFB91C1C)),
+                  style: (context) => AppTextStyles.captionText(
+                    context,
+                  ).copyWith(color: AppColors.lightGreyText),
                 ),
               ],
             ),
@@ -176,13 +223,17 @@ class MembershipCard extends StatelessWidget {
             style: ElevatedButton.styleFrom(
               backgroundColor: const Color(0xFF78350F),
               foregroundColor: Colors.white,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.pillRadius)),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(AppRadius.pillRadius),
+              ),
               padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
               minimumSize: const Size(0, 32),
             ),
             child: AppText(
               context.l10n.renew,
-              style: (context) => AppTextStyles.boldBody(context).copyWith(fontSize: 10, color: Colors.white),
+              style: (context) => AppTextStyles.boldBody(
+                context,
+              ).copyWith(fontSize: 10, color: Colors.white),
             ),
           ),
         ],

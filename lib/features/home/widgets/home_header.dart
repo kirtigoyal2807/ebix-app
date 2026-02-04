@@ -43,7 +43,7 @@ class HomeHeader extends StatelessWidget {
             child: Opacity(
               opacity: 0.1,
               child: SvgPicture.asset(
-                'assets/images/svg/ic_onboarding.svg',
+                isDark ? 'assets/images/svg/ic_home_top_dark.svg':'assets/images/svg/ic_home_top_light.svg',
                 height: size.height * 0.35,
                 // width: size.width * 0.5,
                 fit: BoxFit.contain,
@@ -52,7 +52,7 @@ class HomeHeader extends StatelessWidget {
           ),
           Padding(
             padding: EdgeInsets.symmetric(
-              horizontal: AppSpacing.xl,
+              horizontal: AppSpacing.lg,
               vertical: isSmallScreen ? AppSpacing.xxl : AppSpacing.xxxl,
             ),
             child: SafeArea(
