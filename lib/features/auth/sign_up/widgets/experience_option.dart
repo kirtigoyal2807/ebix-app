@@ -44,7 +44,7 @@ class ExperienceOption extends StatelessWidget {
             borderRadius: BorderRadius.circular(AppRadius.md),
             border: Border.all(
               color: selected
-                  ? isDark ? AppColors.darkGreyBorder: AppColors.languageIconDark
+                  ? isDark ? AppColors.languageIconDark: AppColors.languageIconDark
                   : theme.dividerColor,
               width: selected ? 1 : 1,
             ),

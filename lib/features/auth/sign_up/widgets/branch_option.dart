@@ -28,7 +28,7 @@ class BranchOption extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final theme = Theme.of(context);
     final borderColor = selected
-        ? isDark ? AppColors.darkGreyBorder: AppColors.languageIconDark
+        ? isDark ? AppColors.languageIconDark: AppColors.languageIconDark
         : theme.dividerColor;
 
     return Material(
@@ -114,9 +114,9 @@ class _BranchTypeChip extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
-          color: theme.dividerColor,
+          color: isDark ? AppColors.languageIcon :AppColors.darkGreyBorder,
         ),
-        color: isDark? (type == 'Premium' ? AppColors.languageIcon: AppColors.blueTagValue) : AppColors.branchTagLight,
+        color: isDark? (type == 'Premium' ? AppColors.badgeBackground: AppColors.badgeblueBackground.withValues(alpha:0.16)) : AppColors.branchTagLight,
       ),
       child: Text(
         type,

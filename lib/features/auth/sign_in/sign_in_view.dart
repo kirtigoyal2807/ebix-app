@@ -74,7 +74,9 @@ class _SignInViewState extends State<SignInView> {
                                 children: [
                                   AppText(
                                     context.l10n.emailTab,
-                                    style:  AppTextStyles.bodyText,
+                                    style:  (context) => AppTextStyles.boldBody(context).copyWith(
+                                      fontSize: 16,
+                                    ),
                                   ),
                                   const SizedBox(height: 8),
                                   Container(
@@ -94,7 +96,9 @@ class _SignInViewState extends State<SignInView> {
                                 children: [
                                   AppText(
                                     context.l10n.phoneTab,
-                                    style: AppTextStyles.bodyText,
+                                    style:  (context) => AppTextStyles.boldBody(context).copyWith(
+                                      fontSize: 16,
+                                    ),
                                   ),
                                   const SizedBox(height: 8),
                                   Container(
@@ -121,7 +125,7 @@ class _SignInViewState extends State<SignInView> {
                         padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
                         child: AppTextField(
                           label: context.l10n.emailOrPhone,
-                          hint: 'XXXXXXXXXX',
+                          hint: 'user@gmail.com',
                           keyboardType: TextInputType.emailAddress,
                         ),
                       ),
@@ -131,7 +135,7 @@ class _SignInViewState extends State<SignInView> {
                         child: AppTextField(
                           label: context.l10n.password,
                           hint: '**********',
-                          obscure: true,
+                          // obscure: true,
                           keyboardType: TextInputType.visiblePassword,
                         ),
                       ),
