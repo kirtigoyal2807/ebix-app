@@ -27,7 +27,7 @@ class _SpringChallengeCardState extends State<SpringChallengeCard> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.sizeOf(context);
-    final cardHeight = size.height * 0.25 > 200 ? 200.0 : size.height * 0.25;
+    final cardHeight = (size.height * 0.25).clamp(180.0, 200.0);
 
     return Column(
       children: [
@@ -61,7 +61,7 @@ class _SpringChallengeCardState extends State<SpringChallengeCard> {
           end: Alignment.topLeft,
           colors: [
             Color(0xFF65422C),
-            Color(0xFF8B6C5A),
+            Color(0xFFC4A089),
           ],
         ),
       ),
@@ -73,9 +73,9 @@ class _SpringChallengeCardState extends State<SpringChallengeCard> {
             bottom: 0,
             top: 0,
             child: Opacity(
-              opacity: 0.3,
+              opacity: 1,
               child: SvgPicture.asset(
-                'assets/images/svg/ic_onboarding.svg',
+                'assets/images/svg/ic_reset_bg.svg',
                 height: height,
                 fit: BoxFit.contain,
               ),
@@ -84,40 +84,39 @@ class _SpringChallengeCardState extends State<SpringChallengeCard> {
 
           // Content
           Padding(
-            padding: EdgeInsets.all(size.height < 667 ? AppSpacing.md : AppSpacing.xl),
+            padding: EdgeInsets.all(size.height < 700 ? AppSpacing.md : AppSpacing.lg),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
               children: [
                 SizedBox(
-                  width: size.width * 0.55,
+                  width: size.width * 0.5,
                   child: AppText(
                     context.l10n.springResetChallenge,
+                    maxLines: 2,
                     style: (context) => AppTextStyles.heading1(context).copyWith(
-                      color: isDark ?AppColors.lightText : Colors.white,
+                      color: isDark ? AppColors.lightText : Colors.white,
                       fontSize: size.width * 0.055 > 22 ? 22 : size.width * 0.055,
                       height: 1.1,
-
                     ),
                   ),
                 ),
-                SizedBox(height: AppSpacing.sm),
+                const SizedBox(height: AppSpacing.sm),
                 AppText(
                   '21 days to renewed energy',
+                  maxLines: 1,
                   style: (context) => AppTextStyles.bodyTextSmall(context).copyWith(
-                    color: isDark ?AppColors.seekBarLight : Colors.white,
+                    color: isDark ? AppColors.seekBarLight : Colors.white,
                     fontSize: size.width * 0.035 > 14 ? 14 : size.width * 0.035,
                   ),
                 ),
-                SizedBox(height: size.height < 667 ? AppSpacing.xl : AppSpacing.xxl),
+                SizedBox(height: size.height < 700 ? AppSpacing.md : AppSpacing.lg),
                 ElevatedButton(
                   onPressed: () {},
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: isDark
-                        ? AppColors.whiteColor
-                        : AppColors.whiteColor,
-                    foregroundColor: const Color(0xFF65422C),
+                    backgroundColor: AppColors.whiteColor,
+                    // foregroundColor: const Color(0xFF65422C),
                     elevation: 0,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(AppRadius.pillRadius),
@@ -130,8 +129,9 @@ class _SpringChallengeCardState extends State<SpringChallengeCard> {
                   ),
                   child: AppText(
                     context.l10n.startYourJourney,
+                    maxLines: 1,
                     style: (context) => AppTextStyles.boldBody(context).copyWith(
-                      color: const Color(0xFF65422C),
+                      color: isDark ? AppColors.blackColor : AppColors.languageIcon,
                       fontSize: size.width * 0.035 > 14 ? 14 : size.width * 0.035,
                     ),
                   ),
@@ -145,6 +145,7 @@ class _SpringChallengeCardState extends State<SpringChallengeCard> {
   }
 
   Widget _buildPageIndicator() {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: List.generate(3, (index) {
@@ -155,7 +156,7 @@ class _SpringChallengeCardState extends State<SpringChallengeCard> {
           height: 4,
           width: isSelected ? 24 : 12,
           decoration: BoxDecoration(
-            color: isSelected ? const Color(0xFF65422C) : const Color(0xFFD9D9D9),
+            color: isSelected ? (isDark?AppColors.languageIconDark :  AppColors.languageIcon) : (isDark?AppColors.lightBlackColor :  AppColors.darkGreyBorder),
             borderRadius: BorderRadius.circular(2),
           ),
         );

@@ -68,6 +68,13 @@ class AppColors {
   static const cardLightBackground = Color(0xFFFEEBEC);
   static const badgeBackground = Color(0xFF29231F);
   static const badgeblueBackground = Color(0xFF9DCEFF29);
+  static const blackColor = Color(0xFF000000);
+  static const lightBlackColor = Color(0xFF292624);
+  static const featuredTagBackgroundColor = Color(0xFFE6F6EB);
+  static const featuredTagBackgroundDarkColor = Color(0xFF5BB98B5C);
+  static const lightGreyColor = Color(0xFF8ECEAA);
+  static const GreyColor = Color(0xFF30A46C);
+  static const trainerBlackBackgroundColor = Color(0xFF281A12);
 
 
 }

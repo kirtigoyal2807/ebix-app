@@ -38,7 +38,7 @@ class ProgressCard extends StatelessWidget {
       margin: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
       padding: EdgeInsets.all(size.width * 0.07),
       decoration: BoxDecoration(
-        color: isDark ? AppColors.homeBackground : Colors.white,
+        color: isDark ? AppColors.homeBackground : AppColors.whiteColor,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
           color: isDark ? AppColors.greyText : AppColors.buttonBorder,
@@ -81,7 +81,7 @@ class ProgressCard extends StatelessWidget {
           ElevatedButton(
             onPressed: () {},
             style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.primaryBrown,
+              backgroundColor: AppColors.splashBackgroundDark,
               foregroundColor: Colors.white,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(AppRadius.pillRadius),

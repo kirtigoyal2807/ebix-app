@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:pilates_app/config/theme/app_colors.dart';
 import 'package:pilates_app/config/theme/app_radius.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
@@ -10,11 +12,12 @@ class ClassTypesSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final size = MediaQuery.sizeOf(context);
     final types = [
-      {'name': 'Reformer', 'image': 'https://images.unsplash.com/photo-1599447421416-3414502d18a5?q=80&w=2070&auto=format&fit=crop'},
-      {'name': 'Cadillac', 'image': 'https://images.unsplash.com/photo-1599447421416-3414502d18a5?q=80&w=2070&auto=format&fit=crop'},
-      {'name': 'Flow', 'image': 'https://images.unsplash.com/photo-1599447421416-3414502d18a5?q=80&w=2070&auto=format&fit=crop'},
+      {'name': 'Reformer', 'image': 'assets/images/svg/ic_table.svg'},
+      {'name': 'Cadillac', 'image': 'assets/images/svg/ic_table.svg'},
+      {'name': 'Flow', 'image': 'assets/images/svg/ic_table.svg'},
     ];
 
     final itemWidth = size.width * 0.32 > 120 ? 120.0 : size.width * 0.32;
@@ -22,28 +25,6 @@ class ClassTypesSection extends StatelessWidget {
 
     return Column(
       children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              AppText(
-                context.l10n.classTypes,
-                style: (context) => AppTextStyles.boldBody(context).copyWith(
-                  fontSize: size.width * 0.045 > 18 ? 18 : size.width * 0.045,
-                ),
-              ),
-              AppText(
-                context.l10n.seeAll,
-                style: (context) => AppTextStyles.captionText(context).copyWith(
-                  color: Colors.grey,
-                  fontSize: size.width * 0.03 > 12 ? 12 : size.width * 0.03,
-                ),
-              ),
-            ],
-          ),
-        ),
-        const SizedBox(height: AppSpacing.md),
         SizedBox(
           height: itemHeight + 40,
           child: ListView.separated(
@@ -59,18 +40,22 @@ class ClassTypesSection extends StatelessWidget {
                   children: [
                     ClipRRect(
                       borderRadius: BorderRadius.circular(AppRadius.md),
-                      child: Image.network(
+                      child: SvgPicture.asset(
                         types[index]['image']!,
                         width: itemWidth,
                         height: itemHeight,
                         fit: BoxFit.cover,
                       ),
+
                     ),
                     const SizedBox(height: AppSpacing.xs),
                     AppText(
                       types[index]['name']!,
-                      style: (context) => AppTextStyles.boldBody(context).copyWith(
+                      style: (context) => AppTextStyles.heading1(context).copyWith(
                         fontSize: size.width * 0.035 > 14 ? 14 : size.width * 0.035,
+                        color: isDark
+                            ? AppColors.lightText
+                            : AppColors.darkText,
                       ),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
@@ -91,6 +76,7 @@ class TopTrainersSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final size = MediaQuery.sizeOf(context);
     final trainers = [
       {'name': 'Lena Hart', 'type': 'Grounded Flow', 'image': 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=1976&auto=format&fit=crop'},
@@ -103,28 +89,6 @@ class TopTrainersSection extends StatelessWidget {
 
     return Column(
       children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              AppText(
-                context.l10n.topTrainers,
-                style: (context) => AppTextStyles.boldBody(context).copyWith(
-                  fontSize: size.width * 0.045 > 18 ? 18 : size.width * 0.045,
-                ),
-              ),
-              AppText(
-                context.l10n.seeAll,
-                style: (context) => AppTextStyles.captionText(context).copyWith(
-                  color: Colors.grey,
-                  fontSize: size.width * 0.03 > 12 ? 12 : size.width * 0.03,
-                ),
-              ),
-            ],
-          ),
-        ),
-        const SizedBox(height: AppSpacing.md),
         SizedBox(
           height: itemHeight,
           child: ListView.separated(
@@ -137,8 +101,8 @@ class TopTrainersSection extends StatelessWidget {
                 width: itemWidth,
                 padding: EdgeInsets.all(itemWidth * 0.1),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFFDF2ED),
-                  borderRadius: BorderRadius.circular(AppRadius.lg),
+                  color: isDark ? AppColors.trainerBlackBackgroundColor: AppColors.seekBarLight,
+                  borderRadius: BorderRadius.circular(AppRadius.md),
                 ),
                 child: Column(
                   children: [
@@ -149,8 +113,11 @@ class TopTrainersSection extends StatelessWidget {
                     const SizedBox(height: AppSpacing.sm),
                     AppText(
                       trainers[index]['name']!,
-                      style: (context) => AppTextStyles.boldBody(context).copyWith(
+                      style: (context) => AppTextStyles.heading1(context).copyWith(
                         fontSize: size.width * 0.035 > 14 ? 14 : size.width * 0.035,
+                        color: isDark
+                            ? AppColors.lightText
+                            : AppColors.darkText,
                       ),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
@@ -159,18 +126,22 @@ class TopTrainersSection extends StatelessWidget {
                       trainers[index]['type']!,
                       style: (context) => AppTextStyles.captionText(context).copyWith(
                         fontSize: size.width * 0.03 > 12 ? 12 : size.width * 0.03,
+                        color: isDark
+                            ? AppColors.languageIconDark
+                            : AppColors.lightGrey,
                       ),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
-                    const Spacer(),
+                    const SizedBox(height: AppSpacing.md),
                     AppText(
                       context.l10n.viewClasses,
                       style: (context) => AppTextStyles.captionText(context).copyWith(
-                        color: const Color(0xFFC48B71),
+                        color: isDark
+                            ? AppColors.versionColor
+                            : AppColors.languageIcon,
                         fontWeight: FontWeight.bold,
-                        decoration: TextDecoration.underline,
-                        fontSize: size.width * 0.03 > 12 ? 12 : size.width * 0.03,
+                        fontSize: size.width * 0.03 > 14 ? 14 : size.width * 0.03,
                       ),
                     ),
                   ],

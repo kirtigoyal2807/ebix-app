@@ -76,7 +76,7 @@ class QuickActions extends StatelessWidget {
       width: width,
       padding: EdgeInsets.symmetric(vertical: padding,),
       decoration: BoxDecoration(
-        color: isDark ? AppColors.homeBackground : Colors.white,
+        color: isDark ? AppColors.homeBackground : AppColors.whiteColor,
         borderRadius: BorderRadius.circular(AppRadius.md),
         border: Border.all(
           color: isDark ? AppColors.greyText : AppColors.buttonBorder,

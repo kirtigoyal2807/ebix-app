@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:pilates_app/config/theme/app_colors.dart';
 import 'package:pilates_app/config/theme/app_radius.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
@@ -20,55 +21,51 @@ class FeaturedClassCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: isDark ? AppColors.surfaceDark : Colors.white,
         borderRadius: BorderRadius.circular(AppRadius.lg),
-        boxShadow: [
-          if (!isDark)
-            BoxShadow(
-              color: Colors.black.withOpacity(0.05),
-              blurRadius: 10,
-              offset: const Offset(0, 4),
-            ),
-        ],
+        border: Border.all(
+          color: isDark ? AppColors.greyText : AppColors.buttonBorder,
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Stack(
-            children: [
-              ClipRRect(
-                borderRadius: const BorderRadius.vertical(top: Radius.circular(AppRadius.lg)),
-                child: Image.network(
-                  'https://images.unsplash.com/photo-1518611012118-2960c8bac4d4?q=80&w=2070&auto=format&fit=crop',
-                  height: imageHeight,
-                  width: double.infinity,
-                  fit: BoxFit.cover,
-                ),
-              ),
-              Positioned(
-                top: AppSpacing.md,
-                left: AppSpacing.md,
-                child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: AppSpacing.sm, vertical: AppSpacing.xs),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFDCFCE7),
-                    borderRadius: BorderRadius.circular(AppRadius.sm),
+          ClipRRect(
+            borderRadius: const BorderRadius.vertical(
+              top: Radius.circular(AppRadius.lg),
+            ),
+            child: SvgPicture.asset(
+              'assets/images/svg/ic_yoga.svg',
+              height: imageHeight,
+              // width: width * 0.6,
+              fit: BoxFit.fill,
+            ),
+          ),
+          Container(
+            margin: const EdgeInsets.symmetric(
+              horizontal: AppSpacing.md,
+              // vertical: AppSpacing.xs,
+            ),
+            padding: const EdgeInsets.symmetric(
+              horizontal: AppSpacing.sm,
+              vertical: AppSpacing.xs,
+            ),
+            decoration: BoxDecoration(
+              color: isDark ?AppColors.featuredTagBackgroundDarkColor:AppColors.featuredTagBackgroundColor,
+              borderRadius: BorderRadius.circular(16),
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                 Icon(Icons.check, color: isDark?AppColors.lightGreyColor :AppColors.GreyColor, size: 12),
+                const SizedBox(width: AppSpacing.xs),
+                AppText(
+                  context.l10n.inYourPlan.toUpperCase(),
+                  style: (context) => AppTextStyles.boldBody(context).copyWith(
+                    fontSize: size.width * 0.025 > 10 ? 10 : size.width * 0.025,
+                    color: isDark?AppColors.lightGreyColor :AppColors.GreyColor,
                   ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      const Icon(Icons.check, color: Color(0xFF166534), size: 12),
-                      const SizedBox(width: AppSpacing.xs),
-                      AppText(
-                        context.l10n.inYourPlan.toUpperCase(),
-                        style: (context) => AppTextStyles.boldBody(context).copyWith(
-                          fontSize: size.width * 0.025 > 10 ? 10 : size.width * 0.025,
-                          color: const Color(0xFF166534),
-                        ),
-                      ),
-                    ],
-                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
           Padding(
             padding: const EdgeInsets.all(AppSpacing.md),
@@ -79,14 +76,20 @@ class FeaturedClassCard extends StatelessWidget {
                   'Power Pilates ${context.l10n.withTrainer("Aisha Sherin")}',
                   style: (context) => AppTextStyles.boldBody(context).copyWith(
                     fontSize: size.width * 0.04 > 16 ? 16 : size.width * 0.04,
+                    color: isDark ? AppColors.lightText: AppColors.darkText,
                   ),
                 ),
                 const SizedBox(height: AppSpacing.xs),
                 AppText(
                   '${context.l10n.branchDowntown} • ${context.l10n.today} • ${context.l10n.spotsLeft(3)}',
-                  style: (context) => AppTextStyles.captionText(context).copyWith(
-                    fontSize: size.width * 0.03 > 12 ? 12 : size.width * 0.03,
-                  ),
+                  style: (context) =>
+                      AppTextStyles.captionText(context).copyWith(
+                        fontSize: size.width * 0.03 > 14
+                            ? 14
+                            : size.width * 0.03,
+                        color: isDark ? AppColors.lightGrey: AppColors.lightGrey,
+
+                      ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -94,17 +97,22 @@ class FeaturedClassCard extends StatelessWidget {
                 ElevatedButton(
                   onPressed: () {},
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.primaryBrown,
+                    backgroundColor: AppColors.splashBackgroundDark,
                     foregroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.md)),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(AppRadius.xl),
+                    ),
                     minimumSize: const Size(double.infinity, 40),
                   ),
                   child: AppText(
                     context.l10n.bookClass,
-                    style: (context) => AppTextStyles.boldBody(context).copyWith(
-                      color: Colors.white,
-                      fontSize: size.width * 0.035 > 14 ? 14 : size.width * 0.035,
-                    ),
+                    style: (context) =>
+                        AppTextStyles.boldBody(context).copyWith(
+                          color: Colors.white,
+                          fontSize: size.width * 0.035 > 14
+                              ? 14
+                              : size.width * 0.035,
+                        ),
                   ),
                 ),
               ],

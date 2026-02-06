@@ -32,22 +32,28 @@ class HomeHeader extends StatelessWidget {
 
     return Container(
       width: double.infinity,
-      decoration: BoxDecoration(
-        color: isDark ? AppColors.surfaceDark : const Color(0xFFFDF7F2),
-      ),
+
       child: Stack(
         children: [
-          Positioned(
-            // right: -size.width * 0.05,
-            // top: -size.width * 0.05,
-            child: Opacity(
-              opacity: 0.1,
-              child: SvgPicture.asset(
-                isDark ? 'assets/images/svg/ic_home_top_dark.svg':'assets/images/svg/ic_home_top_light.svg',
-                height: size.height * 0.35,
-                // width: size.width * 0.5,
-                fit: BoxFit.contain,
+          Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(AppRadius.lg),
+              gradient: const LinearGradient(
+                begin: Alignment.bottomRight,
+                end: Alignment.topLeft,
+                colors: [
+                  Color(0xFFF3ECE7),
+                  Color(0xFFF7EBDD),
+                ],
               ),
+            ),
+            child: SvgPicture.asset(
+              isDark
+                  ? 'assets/images/svg/ic_home_top_dark.svg'
+                  : 'assets/images/svg/ic_home_top_light.svg',
+              height: size.height * 0.33,
+              // width: size.width * 0.5,
+              fit: BoxFit.fill,
             ),
           ),
           Padding(
@@ -70,18 +76,28 @@ class HomeHeader extends StatelessWidget {
                           children: [
                             AppText(
                               '${context.l10n.hi}, $userName!',
-                              style: (context) => AppTextStyles.heading1(context).copyWith(
-                                fontSize: size.height * 0.055 > 24 ? 24 : size.width * 0.055,
-                                color: isDark ? AppColors.lightText : AppColors.languageIcon,
-                              ),
+                              style: (context) =>
+                                  AppTextStyles.heading1(context).copyWith(
+                                    fontSize: size.height * 0.055 > 24
+                                        ? 24
+                                        : size.width * 0.055,
+                                    color: isDark
+                                        ? AppColors.lightText
+                                        : AppColors.languageIcon,
+                                  ),
                             ),
                             const SizedBox(height: AppSpacing.xs),
                             AppText(
                               context.l10n.readyToFlow,
-                              style: (context) => AppTextStyles.body(context).copyWith(
-                                fontSize: size.height * 0.035 > 14 ? 14 : size.width * 0.035,
-                                color: isDark ? AppColors.lightText : AppColors.languageIcon,
-                              ),
+                              style: (context) =>
+                                  AppTextStyles.body(context).copyWith(
+                                    fontSize: size.height * 0.035 > 14
+                                        ? 14
+                                        : size.width * 0.035,
+                                    color: isDark
+                                        ? AppColors.lightText
+                                        : AppColors.languageIcon,
+                                  ),
                             ),
                           ],
                         ),
@@ -112,8 +128,11 @@ class HomeHeader extends StatelessWidget {
               vertical: AppSpacing.sm,
             ),
             decoration: BoxDecoration(
-              // color: Colors.white,
-              border: Border.all(color:isDark ? AppColors.greyText: AppColors.buttonBorder, width: 1),
+              color: isDark ? AppColors.homeBackground : AppColors.whiteColor,
+              border: Border.all(
+                color: isDark ? AppColors.greyText : AppColors.buttonBorder,
+                width: 1,
+              ),
               borderRadius: BorderRadius.circular(AppRadius.pillRadius),
             ),
             child: Row(

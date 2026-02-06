@@ -46,6 +46,27 @@ class HomeView extends StatelessWidget {
                         const SizedBox(height: AppSpacing.lg),
 
                         // if (state.status == HomeUserStatus.expired) ...[
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: AppSpacing.lg,
+                          ),
+                          child: AppText(
+                            "Your Membership",
+                            style: (context) =>
+                                AppTextStyles.heading1(context).copyWith(
+                                  color: isDark
+                                      ? AppColors.lightText
+                                      : AppColors.darkText,
+                                  fontSize: size.width * 0.055 > 18
+                                      ? 18
+                                      : size.width * 0.055,
+                                  fontWeight: FontWeight.w400,
+
+                                  // height: 1.1,
+                                ),
+                          ),
+                        ),
+                        const SizedBox(height: AppSpacing.md),
                         MembershipCard(status: HomeUserStatus.empty),
                         const SizedBox(height: AppSpacing.lg),
                         MembershipCard(status: HomeUserStatus.expired),
@@ -66,8 +87,8 @@ class HomeView extends StatelessWidget {
                                   color: isDark
                                       ? AppColors.lightText
                                       : AppColors.darkText,
-                                  fontSize: size.width * 0.055 > 22
-                                      ? 22
+                                  fontSize: size.width * 0.055 > 18
+                                      ? 18
                                       : size.width * 0.055,
                                   fontWeight: FontWeight.w400,
 
@@ -104,18 +125,92 @@ class HomeView extends StatelessWidget {
                           child: AppText(
                             context.l10n.featuredClass,
                             style: (context) =>
-                                AppTextStyles.boldBody(context).copyWith(
-                                  fontSize: size.width * 0.045 > 18
+                                AppTextStyles.heading1(context).copyWith(
+                                  color: isDark
+                                      ? AppColors.lightText
+                                      : AppColors.darkText,
+                                  fontSize: size.width * 0.055 > 18
                                       ? 18
-                                      : size.width * 0.045,
+                                      : size.width * 0.055,
+                                  fontWeight: FontWeight.w400,
+
+                                  // height: 1.1,
                                 ),
                           ),
                         ),
                         const SizedBox(height: AppSpacing.md),
                         const FeaturedClassCard(),
                         const SizedBox(height: AppSpacing.xl),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: AppSpacing.lg,
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              AppText(
+                                context.l10n.classTypes,
+                                style: (context) =>
+                                    AppTextStyles.heading1(context).copyWith(
+                                      color: isDark
+                                          ? AppColors.lightText
+                                          : AppColors.darkText,
+                                      fontSize: size.width * 0.055 > 18
+                                          ? 18
+                                          : size.width * 0.055,
+                                      fontWeight: FontWeight.w400,
+
+                                      // height: 1.1,
+                                    ),
+                              ),
+
+                              AppText(
+                                context.l10n.seeAll,
+                                style: (context) => AppTextStyles.captionText(context).copyWith(
+                                  color: isDark ? AppColors.languageTextDark:AppColors.languageIcon,
+                                  fontSize: size.width * 0.03 > 14 ? 14 : size.width * 0.03,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: AppSpacing.md),
                         const ClassTypesSection(),
                         const SizedBox(height: AppSpacing.xl),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: AppSpacing.lg,
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              AppText(
+                                context.l10n.topTrainers,
+                                style: (context) =>
+                                    AppTextStyles.heading1(context).copyWith(
+                                      color: isDark
+                                          ? AppColors.lightText
+                                          : AppColors.darkText,
+                                      fontSize: size.width * 0.055 > 18
+                                          ? 18
+                                          : size.width * 0.055,
+                                      fontWeight: FontWeight.w400,
+
+                                      // height: 1.1,
+                                    ),
+                              ),
+
+                              AppText(
+                                context.l10n.seeAll,
+                                style: (context) => AppTextStyles.captionText(context).copyWith(
+                                  color: isDark ? AppColors.languageTextDark:AppColors.languageIcon,
+                                  fontSize: size.width * 0.03 > 14 ? 14 : size.width * 0.03,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: AppSpacing.md),
                         const TopTrainersSection(),
                         const SizedBox(height: AppSpacing.xxl),
                       ],
