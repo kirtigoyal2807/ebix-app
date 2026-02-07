@@ -112,20 +112,22 @@ class HomeView extends StatelessWidget {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              AppText(
-                                context.l10n.yourProgress,
-                                style: (context) =>
-                                    AppTextStyles.heading1(context).copyWith(
-                                      color: isDark
-                                          ? AppColors.lightText
-                                          : AppColors.darkText,
-                                      fontSize: size.width * 0.055 > 18
-                                          ? 18
-                                          : size.width * 0.055,
-                                      fontWeight: FontWeight.w400,
+                              Expanded(
+                                child: AppText(
+                                  context.l10n.yourProgress,
+                                  style: (context) =>
+                                      AppTextStyles.heading1(context).copyWith(
+                                        color: isDark
+                                            ? AppColors.lightText
+                                            : AppColors.darkText,
+                                        fontSize: size.width * 0.055 > 18
+                                            ? 18
+                                            : size.width * 0.055,
+                                        fontWeight: FontWeight.w400,
 
-                                      // height: 1.1,
-                                    ),
+                                        // height: 1.1,
+                                      ),
+                                ),
                               ),
 
                               AppText(
@@ -182,20 +184,22 @@ class HomeView extends StatelessWidget {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              AppText(
-                                context.l10n.classTypes,
-                                style: (context) =>
-                                    AppTextStyles.heading1(context).copyWith(
-                                      color: isDark
-                                          ? AppColors.lightText
-                                          : AppColors.darkText,
-                                      fontSize: size.width * 0.055 > 18
-                                          ? 18
-                                          : size.width * 0.055,
-                                      fontWeight: FontWeight.w400,
+                              Expanded(
+                                child: AppText(
+                                  context.l10n.classTypes,
+                                  style: (context) =>
+                                      AppTextStyles.heading1(context).copyWith(
+                                        color: isDark
+                                            ? AppColors.lightText
+                                            : AppColors.darkText,
+                                        fontSize: size.width * 0.055 > 18
+                                            ? 18
+                                            : size.width * 0.055,
+                                        fontWeight: FontWeight.w400,
 
-                                      // height: 1.1,
-                                    ),
+                                        // height: 1.1,
+                                      ),
+                                ),
                               ),
 
                               AppText(
@@ -218,20 +222,22 @@ class HomeView extends StatelessWidget {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              AppText(
-                                context.l10n.topTrainers,
-                                style: (context) =>
-                                    AppTextStyles.heading1(context).copyWith(
-                                      color: isDark
-                                          ? AppColors.lightText
-                                          : AppColors.darkText,
-                                      fontSize: size.width * 0.055 > 18
-                                          ? 18
-                                          : size.width * 0.055,
-                                      fontWeight: FontWeight.w400,
+                              Expanded(
+                                child: AppText(
+                                  context.l10n.topTrainers,
+                                  style: (context) =>
+                                      AppTextStyles.heading1(context).copyWith(
+                                        color: isDark
+                                            ? AppColors.lightText
+                                            : AppColors.darkText,
+                                        fontSize: size.width * 0.055 > 18
+                                            ? 18
+                                            : size.width * 0.055,
+                                        fontWeight: FontWeight.w400,
 
-                                      // height: 1.1,
-                                    ),
+                                        // height: 1.1,
+                                      ),
+                                ),
                               ),
 
                               AppText(

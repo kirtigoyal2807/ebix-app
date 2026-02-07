@@ -106,6 +106,7 @@ class QuickActions extends StatelessWidget {
                     color: isDark
                         ? AppColors.lightText
                         : AppColors.darkText,
+                    fontSize: size.width * 0.03 > 12 ? 12 : size.width * 0.03,
                   ),
                   textAlign: TextAlign.center,
                   maxLines: 2,

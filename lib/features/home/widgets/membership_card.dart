@@ -73,61 +73,63 @@ class MembershipCard extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(width: AppSpacing.md),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            AppText(
-                              context.l10n.noActiveSubscriptions,
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              AppText(
+                                context.l10n.noActiveSubscriptions,
+                                style: (context) =>
+                                    AppTextStyles.heading1(context).copyWith(
+                                      color: AppColors.seekBarLight,
+                                      fontSize: 16,
+                                    ),
+                              ),
+                              AppText(
+                                context.l10n.startJourneyToday,
+                                style: (context) => AppTextStyles.captionText(
+                                  context,
+                                ).copyWith(color: AppColors.lightGreyText),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: AppSpacing.sm),
+                          ElevatedButton(
+                            onPressed: () {},
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: AppColors.whiteColor,
+                              // foregroundColor: const Color(0xFF65422C),
+                              elevation: 0,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(
+                                  AppRadius.pillRadius,
+                                ),
+                              ),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: AppSpacing.lg,
+                                vertical: AppSpacing.sm,
+                              ),
+                              minimumSize: const Size(0, 32),
+                            ),
+                            child: AppText(
+                              context.l10n.viewPlans,
                               style: (context) =>
-                                  AppTextStyles.heading1(context).copyWith(
-                                    color: AppColors.seekBarLight,
-                                    fontSize: 16,
+                                  AppTextStyles.boldBody(context).copyWith(
+                                    color: isDark
+                                        ? AppColors.blackColor
+                                        : AppColors.darkText,
+                                    fontSize: size.width * 0.035 > 14
+                                        ? 14
+                                        : size.width * 0.035,
                                   ),
                             ),
-                            AppText(
-                              context.l10n.startJourneyToday,
-                              style: (context) => AppTextStyles.captionText(
-                                context,
-                              ).copyWith(color: AppColors.lightGreyText),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: AppSpacing.sm),
-                        ElevatedButton(
-                          onPressed: () {},
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: AppColors.whiteColor,
-                            // foregroundColor: const Color(0xFF65422C),
-                            elevation: 0,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(
-                                AppRadius.pillRadius,
-                              ),
-                            ),
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: AppSpacing.lg,
-                              vertical: AppSpacing.sm,
-                            ),
-                            minimumSize: const Size(0, 32),
                           ),
-                          child: AppText(
-                            context.l10n.viewPlans,
-                            style: (context) =>
-                                AppTextStyles.boldBody(context).copyWith(
-                                  color: isDark
-                                      ? AppColors.blackColor
-                                      : AppColors.darkText,
-                                  fontSize: size.width * 0.035 > 14
-                                      ? 14
-                                      : size.width * 0.035,
-                                ),
-                          ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ],
                 ),

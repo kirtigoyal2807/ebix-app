@@ -127,8 +127,7 @@ class ProgressCard extends StatelessWidget {
                     ? 'assets/images/svg/ic_monthly_progress_dark.svg'
                     : 'assets/images/svg/ic_monthly_progress_light.svg',
                 height: size.height * 0.06,
-                width: size.width * 0.6 ,
-                fit: BoxFit.fill,
+                fit: BoxFit.contain,
               ),
               const SizedBox(width: AppSpacing.md),
               Expanded(

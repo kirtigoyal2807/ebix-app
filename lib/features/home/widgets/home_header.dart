@@ -78,9 +78,9 @@ class HomeHeader extends StatelessWidget {
                               '${context.l10n.hi}, $userName!',
                               style: (context) =>
                                   AppTextStyles.heading1(context).copyWith(
-                                    fontSize: size.height * 0.055 > 24
+                                    fontSize: size.width * 0.065 > 24
                                         ? 24
-                                        : size.width * 0.055,
+                                        : size.width * 0.065,
                                     color: isDark
                                         ? AppColors.lightText
                                         : AppColors.languageIcon,
@@ -91,9 +91,9 @@ class HomeHeader extends StatelessWidget {
                               context.l10n.readyToFlow,
                               style: (context) =>
                                   AppTextStyles.body(context).copyWith(
-                                    fontSize: size.height * 0.035 > 14
+                                    fontSize: size.width * 0.04 > 14
                                         ? 14
-                                        : size.width * 0.035,
+                                        : size.width * 0.04,
                                     color: isDark
                                         ? AppColors.lightText
                                         : AppColors.languageIcon,
