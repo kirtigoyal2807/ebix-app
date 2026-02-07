@@ -205,5 +205,11 @@
   "classTypeCadillac": "كاديلاك",
   "classTypeFlow": "فلو",
   "trainerGroundedFlow": "جراوندد فلو",
-  "powerPilates": "باور بيلاتس"
+  "powerPilates": "باور بيلاتس",
+  "trainers": "المدربون",
+  "searchClassesHint": "البحث عن حصص...",
+  "allCategories": "جميع الفئات",
+  "allGender": "جميع الأجناس",
+  "upgradeRequired": "مطلوب ترقية"
 }
+

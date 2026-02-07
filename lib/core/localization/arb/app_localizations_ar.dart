@@ -444,4 +444,19 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get powerPilates => 'باور بيلاتس';
+
+  @override
+  String get trainers => 'المدربون';
+
+  @override
+  String get searchClassesHint => 'البحث عن حصص...';
+
+  @override
+  String get allCategories => 'جميع الفئات';
+
+  @override
+  String get allGender => 'جميع الأجناس';
+
+  @override
+  String get upgradeRequired => 'مطلوب ترقية';
 }

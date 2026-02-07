@@ -75,6 +75,10 @@ class AppColors {
   static const lightGreyColor = Color(0xFF8ECEAA);
   static const GreyColor = Color(0xFF30A46C);
   static const trainerBlackBackgroundColor = Color(0xFF281A12);
+  static const upgradeLightBackgroundColor = Color(0xFFFFFBE0);
+  static const upgradeDarkBackgroundColor = Color(0xFFF0851C);
+  static const upgradeDarkLockBackgroundColor = Color(0xFFD08700);
+  static const lightRedColor = Color(0xFFA65F00);
 
 
 }

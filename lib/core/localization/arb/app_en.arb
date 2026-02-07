@@ -205,5 +205,11 @@
   "classTypeCadillac": "Cadillac",
   "classTypeFlow": "Flow",
   "trainerGroundedFlow": "Grounded Flow",
-  "powerPilates": "Power Pilates"
+  "powerPilates": "Power Pilates",
+  "trainers": "Trainers",
+  "searchClassesHint": "Search classes...",
+  "allCategories": "All Categories",
+  "allGender": "All Gender",
+  "upgradeRequired": "Upgrade Required"
 }
+

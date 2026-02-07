@@ -14,7 +14,7 @@ class FeaturedClassCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final size = MediaQuery.sizeOf(context);
-    final imageHeight = size.height * 0.22 > 180 ? 180.0 : size.height * 0.22;
+    final imageHeight = size.height * 0.22 ;
 
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
@@ -55,7 +55,7 @@ class FeaturedClassCard extends StatelessWidget {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                 Icon(Icons.check, color: isDark?AppColors.lightGreyColor :AppColors.GreyColor, size: 12),
+                 Icon(Icons.check, color: isDark?AppColors.lightGreyColor :AppColors.GreyColor, size: 14),
                 const SizedBox(width: AppSpacing.xs),
                 AppText(
                   context.l10n.inYourPlan.toUpperCase(),
@@ -68,7 +68,7 @@ class FeaturedClassCard extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(AppSpacing.md),
+            padding: const EdgeInsets.only(right: AppSpacing.md,left: AppSpacing.md,bottom: AppSpacing.md),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

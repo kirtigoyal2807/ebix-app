@@ -449,4 +449,19 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get powerPilates => 'Power Pilates';
+
+  @override
+  String get trainers => 'Trainers';
+
+  @override
+  String get searchClassesHint => 'Search classes...';
+
+  @override
+  String get allCategories => 'All Categories';
+
+  @override
+  String get allGender => 'All Gender';
+
+  @override
+  String get upgradeRequired => 'Upgrade Required';
 }

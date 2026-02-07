@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:pilates_app/config/theme/app_colors.dart';
-import 'package:pilates_app/config/theme/app_radius.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/core/localization/localization_extension.dart';
@@ -17,246 +15,26 @@ import 'widgets/progress_card.dart';
 import 'widgets/featured_class_card.dart';
 import 'widgets/horizontal_list_section.dart';
 
+import '../booking/booking_view.dart';
+
+
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.sizeOf(context);
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-
     return BlocProvider(
       create: (context) => HomeCubit(),
       child: BlocBuilder<HomeCubit, HomeState>(
         builder: (context, state) {
           return Scaffold(
-            body: Column(
+            body: IndexedStack(
+              index: state.currentIndex,
               children: [
-                Expanded(
-                  child: SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        HomeHeader(userName: state.userName),
-                        const SizedBox(height: AppSpacing.lg),
-
-                        const SpringChallengeCard(),
-                        const SizedBox(height: AppSpacing.lg),
-                        const QuickActions(),
-                        const SizedBox(height: AppSpacing.lg),
-
-                        // if (state.status == HomeUserStatus.expired) ...[
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: AppSpacing.lg,
-                          ),
-                          child: AppText(
-                            context.l10n.yourMembership,
-                            style: (context) =>
-                                AppTextStyles.heading1(context).copyWith(
-                                  color: isDark
-                                      ? AppColors.lightText
-                                      : AppColors.darkText,
-                                  fontSize: size.width * 0.055 > 18
-                                      ? 18
-                                      : size.width * 0.055,
-                                  fontWeight: FontWeight.w400,
-
-                                  // height: 1.1,
-                                ),
-                          ),
-                        ),
-                        const SizedBox(height: AppSpacing.md),
-                        MembershipCard(status: HomeUserStatus.empty),
-                        const SizedBox(height: AppSpacing.lg),
-                        MembershipCard(status: HomeUserStatus.expired),
-                        const SizedBox(height: AppSpacing.lg),
-                        MembershipCard(status: HomeUserStatus.existing),
-
-                        // ],
-                        const SizedBox(height: AppSpacing.md),
-
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: AppSpacing.lg,
-                          ),
-                          child: AppText(
-                            context.l10n.yourProgress,
-                            style: (context) =>
-                                AppTextStyles.heading1(context).copyWith(
-                                  color: isDark
-                                      ? AppColors.lightText
-                                      : AppColors.darkText,
-                                  fontSize: size.width * 0.055 > 18
-                                      ? 18
-                                      : size.width * 0.055,
-                                  fontWeight: FontWeight.w400,
-
-                                  // height: 1.1,
-                                ),
-                          ),
-                        ),
-                        const SizedBox(height: AppSpacing.md),
-                        ProgressCard(
-                          status: HomeUserStatus.empty,
-                          classesDone: state.classesDone,
-                          totalHours: state.totalHours,
-                          goalClasses: state.goalClasses,
-                        ),
-
-                        const SizedBox(height: AppSpacing.md),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: AppSpacing.lg,
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Expanded(
-                                child: AppText(
-                                  context.l10n.yourProgress,
-                                  style: (context) =>
-                                      AppTextStyles.heading1(context).copyWith(
-                                        color: isDark
-                                            ? AppColors.lightText
-                                            : AppColors.darkText,
-                                        fontSize: size.width * 0.055 > 18
-                                            ? 18
-                                            : size.width * 0.055,
-                                        fontWeight: FontWeight.w400,
-
-                                        // height: 1.1,
-                                      ),
-                                ),
-                              ),
-
-                              AppText(
-                                context.l10n.seeAll,
-                                style: (context) => AppTextStyles.captionText(context).copyWith(
-                                  color: isDark ? AppColors.languageTextDark:AppColors.languageIcon,
-                                  fontSize: size.width * 0.03 > 14 ? 14 : size.width * 0.03,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(height: AppSpacing.md),
-                        ProgressCard(
-                          status: HomeUserStatus.existing,
-                          classesDone: state.classesDone,
-                          totalHours: state.totalHours,
-                          goalClasses: state.goalClasses,
-                        ),
-                        const SizedBox(height: AppSpacing.lg),
-
-                        // if (state.status != HomeUserStatus.expired) ...[
-                        MembershipCard(status: state.status),
-                        const SizedBox(height: AppSpacing.lg),
-
-                        // ],
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: AppSpacing.lg,
-                          ),
-                          child: AppText(
-                            context.l10n.featuredClass,
-                            style: (context) =>
-                                AppTextStyles.heading1(context).copyWith(
-                                  color: isDark
-                                      ? AppColors.lightText
-                                      : AppColors.darkText,
-                                  fontSize: size.width * 0.055 > 18
-                                      ? 18
-                                      : size.width * 0.055,
-                                  fontWeight: FontWeight.w400,
-
-                                  // height: 1.1,
-                                ),
-                          ),
-                        ),
-                        const SizedBox(height: AppSpacing.md),
-                        const FeaturedClassCard(),
-                        const SizedBox(height: AppSpacing.xl),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: AppSpacing.lg,
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Expanded(
-                                child: AppText(
-                                  context.l10n.classTypes,
-                                  style: (context) =>
-                                      AppTextStyles.heading1(context).copyWith(
-                                        color: isDark
-                                            ? AppColors.lightText
-                                            : AppColors.darkText,
-                                        fontSize: size.width * 0.055 > 18
-                                            ? 18
-                                            : size.width * 0.055,
-                                        fontWeight: FontWeight.w400,
-
-                                        // height: 1.1,
-                                      ),
-                                ),
-                              ),
-
-                              AppText(
-                                context.l10n.seeAll,
-                                style: (context) => AppTextStyles.captionText(context).copyWith(
-                                  color: isDark ? AppColors.languageTextDark:AppColors.languageIcon,
-                                  fontSize: size.width * 0.03 > 14 ? 14 : size.width * 0.03,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(height: AppSpacing.md),
-                        const ClassTypesSection(),
-                        const SizedBox(height: AppSpacing.xl),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: AppSpacing.lg,
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Expanded(
-                                child: AppText(
-                                  context.l10n.topTrainers,
-                                  style: (context) =>
-                                      AppTextStyles.heading1(context).copyWith(
-                                        color: isDark
-                                            ? AppColors.lightText
-                                            : AppColors.darkText,
-                                        fontSize: size.width * 0.055 > 18
-                                            ? 18
-                                            : size.width * 0.055,
-                                        fontWeight: FontWeight.w400,
-
-                                        // height: 1.1,
-                                      ),
-                                ),
-                              ),
-
-                              AppText(
-                                context.l10n.seeAll,
-                                style: (context) => AppTextStyles.captionText(context).copyWith(
-                                  color: isDark ? AppColors.languageTextDark:AppColors.languageIcon,
-                                  fontSize: size.width * 0.03 > 14 ? 14 : size.width * 0.03,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(height: AppSpacing.md),
-                        const TopTrainersSection(),
-                        const SizedBox(height: AppSpacing.xxl),
-                      ],
-                    ),
-                  ),
-                ),
+                const HomeContentView(),
+                const BookingView(),
+                const Center(child: Text('Explore')),
+                const Center(child: Text('Account')),
               ],
             ),
             bottomNavigationBar: _buildBottomNavBar(
@@ -326,6 +104,243 @@ class HomeView extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class HomeContentView extends StatelessWidget {
+  const HomeContentView({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final size = MediaQuery.sizeOf(context);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    return BlocBuilder<HomeCubit, HomeState>(
+      builder: (context, state) {
+        return Column(
+          children: [
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    HomeHeader(userName: state.userName),
+                    const SizedBox(height: AppSpacing.lg),
+
+                    const SpringChallengeCard(),
+                    const SizedBox(height: AppSpacing.lg),
+                    const QuickActions(),
+                    const SizedBox(height: AppSpacing.lg),
+
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: AppSpacing.lg,
+                      ),
+                      child: AppText(
+                        context.l10n.yourMembership,
+                        style: (context) =>
+                            AppTextStyles.heading1(context).copyWith(
+                          color:
+                              isDark ? AppColors.lightText : AppColors.darkText,
+                          fontSize: size.width * 0.055 > 18
+                              ? 18
+                              : size.width * 0.055,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: AppSpacing.md),
+                    MembershipCard(status: HomeUserStatus.empty),
+                    const SizedBox(height: AppSpacing.lg),
+                    MembershipCard(status: HomeUserStatus.expired),
+                    const SizedBox(height: AppSpacing.lg),
+                    MembershipCard(status: HomeUserStatus.existing),
+
+                    const SizedBox(height: AppSpacing.md),
+
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: AppSpacing.lg,
+                      ),
+                      child: AppText(
+                        context.l10n.yourProgress,
+                        style: (context) =>
+                            AppTextStyles.heading1(context).copyWith(
+                          color:
+                              isDark ? AppColors.lightText : AppColors.darkText,
+                          fontSize: size.width * 0.055 > 18
+                              ? 18
+                              : size.width * 0.055,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: AppSpacing.md),
+                    ProgressCard(
+                      status: HomeUserStatus.empty,
+                      classesDone: state.classesDone,
+                      totalHours: state.totalHours,
+                      goalClasses: state.goalClasses,
+                    ),
+
+                    const SizedBox(height: AppSpacing.md),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: AppSpacing.lg,
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            child: AppText(
+                              context.l10n.yourProgress,
+                              style: (context) =>
+                                  AppTextStyles.heading1(context).copyWith(
+                                color: isDark
+                                    ? AppColors.lightText
+                                    : AppColors.darkText,
+                                fontSize: size.width * 0.055 > 18
+                                    ? 18
+                                    : size.width * 0.055,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                          ),
+                          AppText(
+                            context.l10n.seeAll,
+                            style: (context) =>
+                                AppTextStyles.captionText(context).copyWith(
+                              color: isDark
+                                  ? AppColors.languageTextDark
+                                  : AppColors.languageIcon,
+                              fontSize: size.width * 0.03 > 14
+                                  ? 14
+                                  : size.width * 0.03,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: AppSpacing.md),
+                    ProgressCard(
+                      status: HomeUserStatus.existing,
+                      classesDone: state.classesDone,
+                      totalHours: state.totalHours,
+                      goalClasses: state.goalClasses,
+                    ),
+                    const SizedBox(height: AppSpacing.lg),
+
+                    MembershipCard(status: state.status),
+                    const SizedBox(height: AppSpacing.lg),
+
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: AppSpacing.lg,
+                      ),
+                      child: AppText(
+                        context.l10n.featuredClass,
+                        style: (context) =>
+                            AppTextStyles.heading1(context).copyWith(
+                          color:
+                              isDark ? AppColors.lightText : AppColors.darkText,
+                          fontSize: size.width * 0.055 > 18
+                              ? 18
+                              : size.width * 0.055,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: AppSpacing.md),
+                    const FeaturedClassCard(),
+                    const SizedBox(height: AppSpacing.xl),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: AppSpacing.lg,
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            child: AppText(
+                              context.l10n.classTypes,
+                              style: (context) =>
+                                  AppTextStyles.heading1(context).copyWith(
+                                color: isDark
+                                    ? AppColors.lightText
+                                    : AppColors.darkText,
+                                fontSize: size.width * 0.055 > 18
+                                    ? 18
+                                    : size.width * 0.055,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                          ),
+                          AppText(
+                            context.l10n.seeAll,
+                            style: (context) =>
+                                AppTextStyles.captionText(context).copyWith(
+                              color: isDark
+                                  ? AppColors.languageTextDark
+                                  : AppColors.languageIcon,
+                              fontSize: size.width * 0.03 > 14
+                                  ? 14
+                                  : size.width * 0.03,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: AppSpacing.md),
+                    const ClassTypesSection(),
+                    const SizedBox(height: AppSpacing.xl),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: AppSpacing.lg,
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            child: AppText(
+                              context.l10n.topTrainers,
+                              style: (context) =>
+                                  AppTextStyles.heading1(context).copyWith(
+                                color: isDark
+                                    ? AppColors.lightText
+                                    : AppColors.darkText,
+                                fontSize: size.width * 0.055 > 18
+                                    ? 18
+                                    : size.width * 0.055,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                          ),
+                          AppText(
+                            context.l10n.seeAll,
+                            style: (context) =>
+                                AppTextStyles.captionText(context).copyWith(
+                              color: isDark
+                                  ? AppColors.languageTextDark
+                                  : AppColors.languageIcon,
+                              fontSize: size.width * 0.03 > 14
+                                  ? 14
+                                  : size.width * 0.03,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: AppSpacing.md),
+                    const TopTrainersSection(),
+                    const SizedBox(height: AppSpacing.xxl),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }

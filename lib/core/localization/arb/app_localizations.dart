@@ -931,6 +931,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Power Pilates'**
   String get powerPilates;
+
+  /// No description provided for @trainers.
+  ///
+  /// In en, this message translates to:
+  /// **'Trainers'**
+  String get trainers;
+
+  /// No description provided for @searchClassesHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search classes...'**
+  String get searchClassesHint;
+
+  /// No description provided for @allCategories.
+  ///
+  /// In en, this message translates to:
+  /// **'All Categories'**
+  String get allCategories;
+
+  /// No description provided for @allGender.
+  ///
+  /// In en, this message translates to:
+  /// **'All Gender'**
+  String get allGender;
+
+  /// No description provided for @upgradeRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Upgrade Required'**
+  String get upgradeRequired;
 }
 
 class _AppLocalizationsDelegate
