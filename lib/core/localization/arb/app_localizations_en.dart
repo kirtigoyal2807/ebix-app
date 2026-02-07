@@ -300,6 +300,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get hi => 'Hi';
 
   @override
+  String hiUser(String name) {
+    return 'Hi, $name!';
+  }
+
+  @override
   String get readyToFlow => 'Ready to flow?';
 
   @override
@@ -421,4 +426,27 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get today => 'Today';
+
+  @override
+  String get yourMembership => 'Your Membership';
+
+  @override
+  String hoursCount(String count) {
+    return '$count h';
+  }
+
+  @override
+  String get classTypeReformer => 'Reformer';
+
+  @override
+  String get classTypeCadillac => 'Cadillac';
+
+  @override
+  String get classTypeFlow => 'Flow';
+
+  @override
+  String get trainerGroundedFlow => 'Grounded Flow';
+
+  @override
+  String get powerPilates => 'Power Pilates';
 }

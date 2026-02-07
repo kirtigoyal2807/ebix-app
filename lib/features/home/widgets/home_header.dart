@@ -75,7 +75,7 @@ class HomeHeader extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             AppText(
-                              '${context.l10n.hi}, $userName!',
+                              context.l10n.hiUser(userName),
                               style: (context) =>
                                   AppTextStyles.heading1(context).copyWith(
                                     fontSize: size.width * 0.065 > 24

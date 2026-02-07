@@ -15,9 +15,9 @@ class ClassTypesSection extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final size = MediaQuery.sizeOf(context);
     final types = [
-      {'name': 'Reformer', 'image': 'assets/images/svg/ic_table.svg'},
-      {'name': 'Cadillac', 'image': 'assets/images/svg/ic_table.svg'},
-      {'name': 'Flow', 'image': 'assets/images/svg/ic_table.svg'},
+      {'name': context.l10n.classTypeReformer, 'image': 'assets/images/svg/ic_table.svg'},
+      {'name': context.l10n.classTypeCadillac, 'image': 'assets/images/svg/ic_table.svg'},
+      {'name': context.l10n.classTypeFlow, 'image': 'assets/images/svg/ic_table.svg'},
     ];
 
     final itemWidth = size.width * 0.32 > 120 ? 120.0 : size.width * 0.32;
@@ -79,9 +79,9 @@ class TopTrainersSection extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final size = MediaQuery.sizeOf(context);
     final trainers = [
-      {'name': 'Lena Hart', 'type': 'Grounded Flow', 'image': 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=1976&auto=format&fit=crop'},
-      {'name': 'Lena Hart', 'type': 'Grounded Flow', 'image': 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=1976&auto=format&fit=crop'},
-      {'name': 'Lena Hart', 'type': 'Grounded Flow', 'image': 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=1976&auto=format&fit=crop'},
+      {'name': 'Lena Hart', 'type': context.l10n.trainerGroundedFlow, 'image': 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=1976&auto=format&fit=crop'},
+      {'name': 'Lena Hart', 'type': context.l10n.trainerGroundedFlow, 'image': 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=1976&auto=format&fit=crop'},
+      {'name': 'Lena Hart', 'type': context.l10n.trainerGroundedFlow, 'image': 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=1976&auto=format&fit=crop'},
     ];
 
     final itemWidth = size.width * 0.38 > 140 ? 140.0 : size.width * 0.38;

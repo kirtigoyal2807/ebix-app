@@ -295,6 +295,11 @@ class AppLocalizationsAr extends AppLocalizations {
   String get hi => 'مرحباً';
 
   @override
+  String hiUser(String name) {
+    return 'مرحباً، $name!';
+  }
+
+  @override
   String get readyToFlow => 'جاهز للتدفق؟';
 
   @override
@@ -416,4 +421,27 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get today => 'اليوم';
+
+  @override
+  String get yourMembership => 'عضويتك';
+
+  @override
+  String hoursCount(String count) {
+    return '$count س';
+  }
+
+  @override
+  String get classTypeReformer => 'ريفورمر';
+
+  @override
+  String get classTypeCadillac => 'كاديلاك';
+
+  @override
+  String get classTypeFlow => 'فلو';
+
+  @override
+  String get trainerGroundedFlow => 'جراوندد فلو';
+
+  @override
+  String get powerPilates => 'باور بيلاتس';
 }

@@ -656,6 +656,12 @@ abstract class AppLocalizations {
   /// **'Hi'**
   String get hi;
 
+  /// No description provided for @hiUser.
+  ///
+  /// In en, this message translates to:
+  /// **'Hi, {name}!'**
+  String hiUser(String name);
+
   /// No description provided for @readyToFlow.
   ///
   /// In en, this message translates to:
@@ -883,6 +889,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Today'**
   String get today;
+
+  /// No description provided for @yourMembership.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Membership'**
+  String get yourMembership;
+
+  /// No description provided for @hoursCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} h'**
+  String hoursCount(String count);
+
+  /// No description provided for @classTypeReformer.
+  ///
+  /// In en, this message translates to:
+  /// **'Reformer'**
+  String get classTypeReformer;
+
+  /// No description provided for @classTypeCadillac.
+  ///
+  /// In en, this message translates to:
+  /// **'Cadillac'**
+  String get classTypeCadillac;
+
+  /// No description provided for @classTypeFlow.
+  ///
+  /// In en, this message translates to:
+  /// **'Flow'**
+  String get classTypeFlow;
+
+  /// No description provided for @trainerGroundedFlow.
+  ///
+  /// In en, this message translates to:
+  /// **'Grounded Flow'**
+  String get trainerGroundedFlow;
+
+  /// No description provided for @powerPilates.
+  ///
+  /// In en, this message translates to:
+  /// **'Power Pilates'**
+  String get powerPilates;
 }
 
 class _AppLocalizationsDelegate
