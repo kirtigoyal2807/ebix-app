@@ -42,10 +42,10 @@ class ClassDetailView extends StatelessWidget {
       body: Stack(
         children: [
           SingleChildScrollView(
-            padding: const EdgeInsets.only(
+            padding: EdgeInsets.only(
               left: AppSpacing.lg,
               right: AppSpacing.lg,
-              bottom: 100, // Space for sticky button
+              bottom: size.height * 0.15, // Space for sticky button
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -71,17 +71,17 @@ class ClassDetailView extends StatelessWidget {
                       'Power Pilates',
                       style: (context) => AppTextStyles.heading1(context).copyWith(
                         fontSize: 24,
-                        fontWeight: FontWeight.w700,
+                        fontWeight: FontWeight.w500,
                       ),
                     ),
                     Row(
                       children: [
-                        const Icon(Icons.star, color: Color(0xFFEAB308), size: 20),
+                        const Icon(Icons.star, color: AppColors.goldStarColor, size: 20),
                         const SizedBox(width: 4),
                         AppText(
                           '4.5',
                           style: (context) => AppTextStyles.boldBody(context).copyWith(
-                            fontSize: 18,
+                            fontSize: 16,
                             color: isDark ? AppColors.lightText : AppColors.darkText,
                           ),
                         ),
@@ -90,9 +90,12 @@ class ClassDetailView extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: AppSpacing.xs),
-                AppText(
-                  'Build strength, flexibility, and calm through guided Pilates sessions.',
-                  style: (context) => AppTextStyles.bodyText(context),
+                Padding(
+                  padding: const EdgeInsets.only(right: AppSpacing.xxl),
+                  child: AppText(
+                    'Build strength, flexibility, and calm through guided Pilates sessions.',
+                    style: (context) => AppTextStyles.bodyText(context),
+                  ),
                 ),
                 const SizedBox(height: AppSpacing.xl),
 
@@ -103,7 +106,7 @@ class ClassDetailView extends StatelessWidget {
                   crossAxisCount: 2,
                   mainAxisSpacing: AppSpacing.md,
                   crossAxisSpacing: AppSpacing.md,
-                  childAspectRatio: 1.6,
+                  childAspectRatio: 2,
                   children: [
                     _InfoCard(
                       label: context.l10n.instructor,
@@ -124,7 +127,7 @@ class ClassDetailView extends StatelessWidget {
                     ),
                   ],
                 ),
-                const SizedBox(height: AppSpacing.lg),
+                // const SizedBox(height: AppSpacing.lg),
 
                 // Location Card
                 _LargeCard(
@@ -134,21 +137,23 @@ class ClassDetailView extends StatelessWidget {
                       AppText(
                         context.l10n.location,
                         style: (context) => AppTextStyles.captionText(context).copyWith(
-                          color: isDark ? AppColors.darkGreyText : AppColors.greyText,
+                          color: isDark ? AppColors.lightGrey : AppColors.lightGrey,
+                          fontSize: 12,
                         ),
                       ),
                       const SizedBox(height: AppSpacing.xs),
                       AppText(
                         context.l10n.branchDowntown,
                         style: (context) => AppTextStyles.boldBody(context).copyWith(
-                          fontSize: 16,
+                          fontSize: 14,
                           color: isDark ? AppColors.lightText : AppColors.darkText,
                         ),
                       ),
                       AppText(
                         '123 Main Street, Suite 200',
-                        style: (context) => AppTextStyles.bodyTextSmall(context).copyWith(
-                          color: isDark ? AppColors.darkGreyText : AppColors.greyText,
+                        style: (context) => AppTextStyles.boldBody(context).copyWith(
+                          fontSize: 14,
+                          color: isDark ? AppColors.lightText : AppColors.darkText,
                         ),
                       ),
                     ],
@@ -159,10 +164,15 @@ class ClassDetailView extends StatelessWidget {
                 // About This Class
                 AppText(
                   context.l10n.aboutThisClass,
-                  style: (context) => AppTextStyles.boldBody(context).copyWith(
-                    fontSize: 18,
-                    color: isDark ? AppColors.lightText : AppColors.darkText,
-                  ),
+                  style: (context) =>
+                      AppTextStyles.heading1(context).copyWith(
+                        color:
+                        isDark ? AppColors.lightText : AppColors.darkText,
+                        fontSize: size.width * 0.055 > 18
+                            ? 18
+                            : size.width * 0.055,
+                        fontWeight: FontWeight.w400,
+                      ),
                 ),
                 const SizedBox(height: AppSpacing.sm),
                 AppText(
@@ -170,16 +180,22 @@ class ClassDetailView extends StatelessWidget {
                   style: (context) => AppTextStyles.bodyText(context).copyWith(
                     height: 1.6,
                   ),
+                  maxLines: 5,
                 ),
                 const SizedBox(height: AppSpacing.xl),
 
                 // What to Bring
                 AppText(
                   context.l10n.whatToBring, // Fix later if typo in arb
-                  style: (context) => AppTextStyles.boldBody(context).copyWith(
-                    fontSize: 18,
-                    color: isDark ? AppColors.lightText : AppColors.darkText,
-                  ),
+                  style: (context) =>
+                      AppTextStyles.heading1(context).copyWith(
+                        color:
+                        isDark ? AppColors.lightText : AppColors.darkText,
+                        fontSize: size.width * 0.055 > 18
+                            ? 18
+                            : size.width * 0.055,
+                        fontWeight: FontWeight.w400,
+                      ),
                 ),
                 const SizedBox(height: AppSpacing.sm),
                 _BulletList(
@@ -196,22 +212,31 @@ class ClassDetailView extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    AppText(
-                      context.l10n.recentReviews,
-                      style: (context) => AppTextStyles.boldBody(context).copyWith(
-                        fontSize: 18,
-                        color: isDark ? AppColors.lightText : AppColors.darkText,
+                    Expanded(
+                      child: AppText(
+                        context.l10n.recentReviews,
+                        style: (context) =>
+                            AppTextStyles.heading1(context).copyWith(
+                              color:
+                              isDark ? AppColors.lightText : AppColors.darkText,
+                              fontSize: size.width * 0.055 > 18
+                                  ? 18
+                                  : size.width * 0.055,
+                              fontWeight: FontWeight.w400,
+                            ),
                       ),
                     ),
-                    TextButton(
-                      onPressed: () {},
-                      child: AppText(
-                        context.l10n.seeAll,
-                        style: (context) => AppTextStyles.body(context).copyWith(
-                          color: isDark ? AppColors.languageIconDark : AppColors.languageIcon,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
+                    AppText(
+                      context.l10n.seeAll,
+                      style: (context) =>
+                          AppTextStyles.captionText(context).copyWith(
+                            color: isDark
+                                ? AppColors.languageTextDark
+                                : AppColors.languageIcon,
+                            fontSize: size.width * 0.03 > 14
+                                ? 14
+                                : size.width * 0.03,
+                          ),
                     ),
                   ],
                 ),
@@ -219,38 +244,45 @@ class ClassDetailView extends StatelessWidget {
 
                 // Reviews Summary
                 _LargeCard(
-                  child: Row(
+                  child: Column(
                     children: [
-                      Column(
+                      Row(
                         children: [
                           AppText(
                             '4.8',
-                            style: (context) => AppTextStyles.heading1(context).copyWith(
+                            style: (context) => AppTextStyles.bottomSheetTitle(context).copyWith(
                               fontSize: 40,
-                              fontWeight: FontWeight.w700,
+                              fontWeight: FontWeight.w600,
                             ),
                           ),
-                          _StarRating(rating: 5, size: 14),
-                          const SizedBox(height: 4),
-                          AppText(
-                            'Based on 27 reviews',
-                            style: (context) => AppTextStyles.captionText(context).copyWith(
-                              fontSize: 11,
-                            ),
-                          ),
+                          const SizedBox(width: 12),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              _StarRating(rating: 5, size: 14),
+                              const SizedBox(height: 4),
+                              AppText(
+                                'Based on 27 reviews',
+                                style: (context) => AppTextStyles.captionText(context).copyWith(
+                                  fontSize: 12,
+                                  color: isDark ? AppColors.darkGreyText : AppColors.greyText,
+                                ),
+                              ),
+                            ],
+                          )
+
                         ],
                       ),
-                      const SizedBox(width: AppSpacing.lg),
-                      Expanded(
-                        child: Column(
-                          children: [
-                            _RatingBar(stars: 5, progress: 0.8),
-                            _RatingBar(stars: 4, progress: 0.2),
-                            _RatingBar(stars: 3, progress: 0.1),
-                            _RatingBar(stars: 2, progress: 0.05),
-                            _RatingBar(stars: 1, progress: 0.05),
-                          ],
-                        ),
+                      const SizedBox(height: AppSpacing.md),
+                      Column(
+                        children: [
+                          _RatingBar(stars: 5, progress: 0.6),
+                          _RatingBar(stars: 4, progress: 0.2),
+                          _RatingBar(stars: 3, progress: 0.1),
+                          _RatingBar(stars: 2, progress: 0.05),
+                          _RatingBar(stars: 1, progress: 0.05),
+                        ],
                       ),
                     ],
                   ),
@@ -259,7 +291,7 @@ class ClassDetailView extends StatelessWidget {
 
                 // Review Cards - Horizontal
                 SizedBox(
-                  height: 160,
+                  height: size.height * 0.18,
                   child: ListView.separated(
                     scrollDirection: Axis.horizontal,
                     itemCount: 3,
@@ -275,22 +307,25 @@ class ClassDetailView extends StatelessWidget {
           Positioned(
             left: 0,
             right: 0,
-            bottom: 0,
-            child: Container(
-              padding: const EdgeInsets.all(AppSpacing.lg),
-              decoration: BoxDecoration(
-                color: isDark ? AppColors.backgroundDark : AppColors.backgroundLight,
-                border: Border(
-                  top: BorderSide(
-                    color: isDark ? AppColors.borderDark : AppColors.borderLight,
-                    width: 0.5,
+            bottom: size.height*0.08,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+              child: ElevatedButton(
+                onPressed: () {},
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.splashBackgroundDark,
+                  foregroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(AppRadius.pillRadius),
+                  ),
+                  minimumSize: const Size(double.infinity, 48),
+                ),
+                child: AppText(
+                  context.l10n.bookThisClass,
+                  style: (context) => AppTextStyles.button(context).copyWith(
+                    fontSize: size.width * 0.04 > 16 ? 16 : size.width * 0.04,
                   ),
                 ),
-              ),
-              child: AppButton(
-                label: context.l10n.bookThisClass,
-                onPressed: () {},
-                variant: AppButtonVariant.primary,
               ),
             ),
           ),
@@ -318,19 +353,20 @@ class _InfoCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(AppSpacing.md),
       decoration: BoxDecoration(
-        color: isDark ? AppColors.surfaceDark : Colors.white,
+        color: isDark ? AppColors.homeBackground : AppColors.whiteColor,
         borderRadius: BorderRadius.circular(AppRadius.md),
         border: Border.all(
-          color: isDark ? AppColors.borderDark : AppColors.borderLight,
+          color: isDark ? AppColors.greyText : AppColors.buttonBorder,
         ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           AppText(
             label,
             style: (context) => AppTextStyles.captionText(context).copyWith(
-              color: isDark ? AppColors.darkGreyText : AppColors.greyText,
+              color: isDark ? AppColors.lightGrey : AppColors.lightGrey,
               fontSize: 12,
             ),
           ),
@@ -381,10 +417,10 @@ class _LargeCard extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(AppSpacing.lg),
       decoration: BoxDecoration(
-        color: isDark ? AppColors.surfaceDark : Colors.white,
+        color: isDark ? AppColors.homeBackground : AppColors.whiteColor,
         borderRadius: BorderRadius.circular(AppRadius.md),
         border: Border.all(
-          color: isDark ? AppColors.borderDark : AppColors.borderLight,
+          color: isDark ? AppColors.greyText : AppColors.buttonBorder,
         ),
       ),
       child: child,
@@ -439,11 +475,11 @@ class _RatingBar extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 2.0),
       child: Row(
         children: [
-          const Icon(Icons.star, color: Color(0xFFEAB308), size: 14),
+          const Icon(Icons.star, color: AppColors.goldStarColor, size: 14),
           const SizedBox(width: 4),
           AppText(
             stars.toString(),
-            style: (context) => AppTextStyles.captionText(context).copyWith(
+            style: (context) => AppTextStyles.helpAndSupportItemLabel(context).copyWith(
               fontWeight: FontWeight.w600,
             ),
           ),
@@ -453,8 +489,8 @@ class _RatingBar extends StatelessWidget {
               borderRadius: BorderRadius.circular(2),
               child: LinearProgressIndicator(
                 value: progress,
-                backgroundColor: isDark ? AppColors.borderDark : AppColors.borderLight,
-                color: const Color(0xFFEAB308),
+                backgroundColor: isDark ? AppColors.primaryDarkButton : AppColors.ratingBarBackground,
+                color: AppColors.goldStarColor,
                 minHeight: 6,
               ),
             ),
@@ -464,6 +500,7 @@ class _RatingBar extends StatelessWidget {
             (progress * 12).toInt().toString(), // Dummy count
             style: (context) => AppTextStyles.captionText(context).copyWith(
               fontSize: 10,
+              color: AppColors.lightGrey,
             ),
           ),
         ],
@@ -501,13 +538,13 @@ class _ReviewCard extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Container(
-      width: 280,
+      width: MediaQuery.sizeOf(context).width * 0.7,
       padding: const EdgeInsets.all(AppSpacing.md),
       decoration: BoxDecoration(
-        color: isDark ? AppColors.surfaceDark : Colors.white,
+        color: isDark ? AppColors.homeBackground : AppColors.whiteColor,
         borderRadius: BorderRadius.circular(AppRadius.md),
         border: Border.all(
-          color: isDark ? AppColors.borderDark : AppColors.borderLight,
+          color: isDark ? AppColors.greyText : AppColors.buttonBorder,
         ),
       ),
       child: Column(
@@ -515,6 +552,7 @@ class _ReviewCard extends StatelessWidget {
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -527,19 +565,23 @@ class _ReviewCard extends StatelessWidget {
                   ),
                   AppText(
                     '2 days ago',
-                    style: (context) => AppTextStyles.captionText(context),
+                    style: (context) => AppTextStyles.helpAndSupportItemSubLabel(context),
                   ),
                 ],
               ),
               Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  const Icon(Icons.star, color: Color(0xFFEAB308), size: 14),
+                  const Icon(Icons.star, color: AppColors.goldStarColor, size: 14),
                   const SizedBox(width: 4),
                   AppText(
                     '4.5',
                     style: (context) => AppTextStyles.boldBody(context).copyWith(
                       fontSize: 14,
+                      color: isDark ? AppColors.lightText : AppColors.darkText,
                     ),
+
                   ),
                 ],
               ),
@@ -548,10 +590,10 @@ class _ReviewCard extends StatelessWidget {
           const SizedBox(height: AppSpacing.sm),
           AppText(
             '"Sarah is incredible! Her classes are challenging but she makes sure everyone feels supported. I\'ve seen amazing progress in my core strength."',
-            style: (context) => AppTextStyles.bodyTextSmall(context).copyWith(
+            style: (context) => AppTextStyles.bodyText(context).copyWith(
               height: 1.4,
             ),
-            maxLines: 4,
+            maxLines: 5,
             overflow: TextOverflow.ellipsis,
           ),
         ],

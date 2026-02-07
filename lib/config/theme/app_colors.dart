@@ -79,6 +79,8 @@ class AppColors {
   static const upgradeDarkBackgroundColor = Color(0xFFF0851C);
   static const upgradeDarkLockBackgroundColor = Color(0xFFD08700);
   static const lightRedColor = Color(0xFFA65F00);
+  static const goldStarColor = Color(0xFFF0B100);
+  static const ratingBarBackground = Color(0xFFE7E5E4);
 
 
 }
