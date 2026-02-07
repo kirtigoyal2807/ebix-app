@@ -118,6 +118,14 @@
   "createNewPasswordSubtitle": "Choose a strong new password for your account. Make sure it's unique and different from your previous passwords to keep your account secure.",
   "submit": "Submit",
   "hi": "Hi",
+  "hiUser": "Hi, {name}!",
+  "@hiUser": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "readyToFlow": "Ready to flow?",
   "bookNow": "Book Now",
   "exploreBranches": "Explore Branches",
@@ -183,5 +191,19 @@
   "explore": "Explore",
   "account": "Account",
   "classesNav": "Classes",
-  "today": "Today"
+  "today": "Today",
+  "yourMembership": "Your Membership",
+  "hoursCount": "{count} h",
+  "@hoursCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "classTypeReformer": "Reformer",
+  "classTypeCadillac": "Cadillac",
+  "classTypeFlow": "Flow",
+  "trainerGroundedFlow": "Grounded Flow",
+  "powerPilates": "Power Pilates"
 }

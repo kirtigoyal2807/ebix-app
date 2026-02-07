@@ -155,7 +155,7 @@ class ProgressCard extends StatelessWidget {
               Expanded(
                 child: _buildProgressStat(
                   context,
-                  '${totalHours} h',
+                  context.l10n.hoursCount(totalHours.toString()),
                   context.l10n.totalTime,
                 ),
               ),

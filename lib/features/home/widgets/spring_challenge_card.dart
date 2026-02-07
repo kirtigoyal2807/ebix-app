@@ -104,7 +104,7 @@ class _SpringChallengeCardState extends State<SpringChallengeCard> {
                 ),
                 const SizedBox(height: AppSpacing.sm),
                 AppText(
-                  '21 days to renewed energy',
+                  context.l10n.springResetDesc,
                   maxLines: 1,
                   style: (context) => AppTextStyles.bodyTextSmall(context).copyWith(
                     color: isDark ? AppColors.seekBarLight : Colors.white,

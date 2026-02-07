@@ -118,6 +118,14 @@
   "createNewPasswordSubtitle": "اختر كلمة مرور قوية جديدة لحسابك. تأكد من أنها فريدة ومختلفة عن كلمات المرور السابقة للحفاظ على أمان حسابك.",
   "submit": "إرسال",
   "hi": "مرحباً",
+  "hiUser": "مرحباً، {name}!",
+  "@hiUser": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "readyToFlow": "جاهز للتدفق؟",
   "bookNow": "احجز الآن",
   "exploreBranches": "استكشف الفروع",
@@ -183,5 +191,19 @@
   "explore": "اكتشف",
   "account": "الحساب",
   "classesNav": "الحصص",
-  "today": "اليوم"
+  "today": "اليوم",
+  "yourMembership": "عضويتك",
+  "hoursCount": "{count} س",
+  "@hoursCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "classTypeReformer": "ريفورمر",
+  "classTypeCadillac": "كاديلاك",
+  "classTypeFlow": "فلو",
+  "trainerGroundedFlow": "جراوندد فلو",
+  "powerPilates": "باور بيلاتس"
 }

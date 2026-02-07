@@ -51,7 +51,7 @@ class HomeView extends StatelessWidget {
                             horizontal: AppSpacing.lg,
                           ),
                           child: AppText(
-                            "Your Membership",
+                            context.l10n.yourMembership,
                             style: (context) =>
                                 AppTextStyles.heading1(context).copyWith(
                                   color: isDark

@@ -73,7 +73,7 @@ class FeaturedClassCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 AppText(
-                  'Power Pilates ${context.l10n.withTrainer("Aisha Sherin")}',
+                  '${context.l10n.powerPilates} ${context.l10n.withTrainer("Aisha Sherin")}',
                   style: (context) => AppTextStyles.boldBody(context).copyWith(
                     fontSize: size.width * 0.04 > 16 ? 16 : size.width * 0.04,
                     color: isDark ? AppColors.lightText: AppColors.darkText,
