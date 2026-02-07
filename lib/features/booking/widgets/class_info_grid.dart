@@ -11,30 +11,43 @@ class ClassInfoGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GridView.count(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      crossAxisCount: 2,
-      mainAxisSpacing: AppSpacing.md,
-      crossAxisSpacing: AppSpacing.md,
-      childAspectRatio: 2.1, // Adjusted for responsiveness
+    return Column(
       children: [
-        _InfoCard(
-          label: context.l10n.instructor,
-          value: context.l10n.trainerAishaSherin,
-          showAvatar: true,
+        Row(
+          children: [
+            Expanded(
+              child: _InfoCard(
+                label: context.l10n.instructor,
+                value: context.l10n.trainerAishaSherin,
+                showAvatar: true,
+              ),
+            ),
+            const SizedBox(width: AppSpacing.md),
+            Expanded(
+              child: _InfoCard(
+                label: context.l10n.duration,
+                value: context.l10n.minutesCount(40),
+              ),
+            ),
+          ],
         ),
-        _InfoCard(
-          label: context.l10n.duration,
-          value: context.l10n.minutesCount(40),
-        ),
-        _InfoCard(
-          label: context.l10n.dateTime,
-          value: '${context.l10n.today}, 6:00 PM',
-        ),
-        _InfoCard(
-          label: context.l10n.availability,
-          value: context.l10n.spotsLeft(3),
+        const SizedBox(height: AppSpacing.md),
+        Row(
+          children: [
+            Expanded(
+              child: _InfoCard(
+                label: context.l10n.dateTime,
+                value: '${context.l10n.today}, 6:00 PM',
+              ),
+            ),
+            const SizedBox(width: AppSpacing.md),
+            Expanded(
+              child: _InfoCard(
+                label: context.l10n.availability,
+                value: context.l10n.spotsLeft(3),
+              ),
+            ),
+          ],
         ),
       ],
     );
