@@ -81,4 +81,11 @@ class AppColors {
   static const lightRedColor = Color(0xFFA65F00);
 
 
+  ///shadow Color
+  static const shadowColor = Color(0xFF5F5854);
+
+  static const successColor = Color(0xFF30A46C);
+  static const greyContainerBg = Color(0xFFF5F5F4);
+  static const primaryDarkContainer = Color(0xFF513523);
+
 }

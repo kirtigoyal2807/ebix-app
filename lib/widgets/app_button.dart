@@ -5,7 +5,7 @@ import 'package:pilates_app/config/theme/app_spacing.dart' show AppSpacing;
 import 'package:pilates_app/config/theme/app_text_styles.dart'
     show AppTextStyles;
 
-enum AppButtonVariant { primary, secondary }
+enum AppButtonVariant { primary, secondary, disable }
 
 class AppButton extends StatelessWidget {
   final String label;
@@ -30,9 +30,11 @@ class AppButton extends StatelessWidget {
         ? ElevatedButton(
             onPressed: onPressed,
             style: ElevatedButton.styleFrom(
-              backgroundColor: isDark
-                  ? AppColors.primaryDarkButton
-                  : AppColors.primary,
+              backgroundColor:
+              // isDark
+              //     ? AppColors.primaryDarkButton
+              //     :
+              AppColors.primary,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(AppRadius.xl),
               ),
@@ -43,13 +45,40 @@ class AppButton extends StatelessWidget {
             ),
             child: Text(label, style: AppTextStyles.button(context)),
           )
+        : variant == AppButtonVariant.disable
+        ? ElevatedButton(
+            onPressed: onPressed,
+            style: ElevatedButton.styleFrom(
+              backgroundColor: isDark
+                  ? AppColors.lightBlackColor
+                  : AppColors.darkGreyBorder,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(AppRadius.xl),
+              ),
+              padding: EdgeInsets.symmetric(
+                vertical: (AppSpacing.buttonHeight - 30) / 2,
+              ),
+              minimumSize: Size(double.infinity, AppSpacing.buttonHeight),
+            ),
+            child: Text(
+              label,
+              style: AppTextStyles.button(context).copyWith(
+                color: isDark
+                    ? AppColors.lightDarkGrey
+                    : AppColors.languageTextDark,
+              ),
+            ),
+          )
         : OutlinedButton(
             onPressed: onPressed,
             style: OutlinedButton.styleFrom(
               foregroundColor: isDark
                   ? AppColors.primaryDark
                   : AppColors.primaryBrown,
-              side: BorderSide(color: (isDark ? AppColors.greyText: AppColors.buttonBorder), width: 1.5),
+              side: BorderSide(
+                color: (isDark ? AppColors.greyText : AppColors.buttonBorder),
+                width: 1.5,
+              ),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(AppRadius.xl),
               ),

@@ -536,4 +536,102 @@ class AppLocalizationsAr extends AppLocalizations {
   String minutesCount(Object count) {
     return '$count دقيقة';
   }
+
+  @override
+  String get bookYourClass => 'احجز حصتك';
+
+  @override
+  String get paymentSummery => 'ملخص الدفع';
+
+  @override
+  String get classFee => 'رسوم الحصة';
+
+  @override
+  String get total => 'الإجمالي';
+
+  @override
+  String get bookPolicy =>
+      'أوافق على سياسة الإلغاء وأفهم أنه يمكنني الإلغاء قبل بدء الحصة بـ 4 ساعات.';
+
+  @override
+  String get confirmBooking => 'تأكيد الحجز';
+
+  @override
+  String get bookingSuccess => 'تم الحجز بنجاح';
+
+  @override
+  String get successMessage => 'تم تأكيد حجز حصتك بنجاح.';
+
+  @override
+  String get checkIn => 'تسجيل الحضور';
+
+  @override
+  String get checkInDescription =>
+      'يبدأ تسجيل الحضور قبل 30 دقيقة من بدء الحصة\n(متاح الساعة 5:30 مساءً)';
+
+  @override
+  String get checkInLongDescription => 'ستتلقى إشعارًا عند توفر تسجيل الحضور';
+
+  @override
+  String get classDetail => 'تفاصيل الحصة';
+
+  @override
+  String get time => 'الوقت';
+
+  @override
+  String get addToCalender => 'إضافة إلى التقويم';
+
+  @override
+  String get getDirection => 'الحصول على الاتجاهات';
+
+  @override
+  String get cancelPolicyDescription =>
+      'إلغاء مجاني حتى 4 ساعات قبل الحصة. قد يتم فرض رسوم على الإلغاء المتأخر.';
+
+  @override
+  String get viewMyBooking => 'عرض حجوزاتي';
+
+  @override
+  String get browseMoreClasses => 'تصفح المزيد من الحصص';
+
+  @override
+  String get joinWailList => 'الانضمام إلى قائمة الانتظار';
+
+  @override
+  String get classIsFull => 'الحصة ممتلئة';
+
+  @override
+  String get classIsFullDescription =>
+      'انضم إلى قائمة الانتظار وسنقوم بإشعارك فور توفر مكان.';
+
+  @override
+  String get currentWaitList => 'قائمة الانتظار الحالية';
+
+  @override
+  String get people => 'أشخاص';
+
+  @override
+  String get smartTip => 'نصيحة ذكية لقائمة الانتظار';
+
+  @override
+  String get smartTipDescription =>
+      'استنادًا إلى البيانات السابقة، تشهد هذه الحصة عادةً من 2 إلى 3 حالات إلغاء. فرصك في الانضمام مرتفعة!';
+
+  @override
+  String get joinWaitList => 'الانضمام إلى قائمة الانتظار';
+
+  @override
+  String get browseOtherClasses => 'تصفح حصص أخرى';
+
+  @override
+  String get onWaitList => 'في قائمة الانتظار';
+
+  @override
+  String get onWaitListDescription => 'سنقوم بإشعارك عند توفر مكان';
+
+  @override
+  String get yourPosition => 'ترتيبك';
+
+  @override
+  String get inLine => 'في الصف';
 }

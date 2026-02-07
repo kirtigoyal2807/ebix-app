@@ -1111,6 +1111,192 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{count} minutes'**
   String minutesCount(Object count);
+
+  /// No description provided for @bookYourClass.
+  ///
+  /// In en, this message translates to:
+  /// **'Book Your Class'**
+  String get bookYourClass;
+
+  /// No description provided for @paymentSummery.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment Summary'**
+  String get paymentSummery;
+
+  /// No description provided for @classFee.
+  ///
+  /// In en, this message translates to:
+  /// **'Class Fee'**
+  String get classFee;
+
+  /// No description provided for @total.
+  ///
+  /// In en, this message translates to:
+  /// **'Total'**
+  String get total;
+
+  /// No description provided for @bookPolicy.
+  ///
+  /// In en, this message translates to:
+  /// **'I agree to the cancellation policy and understand that I can cancel up to 4 hours before the class starts.'**
+  String get bookPolicy;
+
+  /// No description provided for @confirmBooking.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm Booking'**
+  String get confirmBooking;
+
+  /// No description provided for @bookingSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Booking Successful'**
+  String get bookingSuccess;
+
+  /// No description provided for @successMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re all set for your class.'**
+  String get successMessage;
+
+  /// No description provided for @checkIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Check In'**
+  String get checkIn;
+
+  /// No description provided for @checkInDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Check-in opens 30 minutes before class (Available at 5:30 PM)'**
+  String get checkInDescription;
+
+  /// No description provided for @checkInLongDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'ll receive a notification when check-in becomes available'**
+  String get checkInLongDescription;
+
+  /// No description provided for @classDetail.
+  ///
+  /// In en, this message translates to:
+  /// **'Class Details'**
+  String get classDetail;
+
+  /// No description provided for @time.
+  ///
+  /// In en, this message translates to:
+  /// **'Time'**
+  String get time;
+
+  /// No description provided for @addToCalender.
+  ///
+  /// In en, this message translates to:
+  /// **'Add to Calendar'**
+  String get addToCalender;
+
+  /// No description provided for @getDirection.
+  ///
+  /// In en, this message translates to:
+  /// **'Get Directions'**
+  String get getDirection;
+
+  /// No description provided for @cancelPolicyDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Free cancellation up to 4 hours before class. Late cancellations may incur a fee.'**
+  String get cancelPolicyDescription;
+
+  /// No description provided for @viewMyBooking.
+  ///
+  /// In en, this message translates to:
+  /// **'View My Booking'**
+  String get viewMyBooking;
+
+  /// No description provided for @browseMoreClasses.
+  ///
+  /// In en, this message translates to:
+  /// **'Browse More Classes'**
+  String get browseMoreClasses;
+
+  /// No description provided for @joinWailList.
+  ///
+  /// In en, this message translates to:
+  /// **'Join Waitlist'**
+  String get joinWailList;
+
+  /// No description provided for @classIsFull.
+  ///
+  /// In en, this message translates to:
+  /// **'Class Is Full'**
+  String get classIsFull;
+
+  /// No description provided for @classIsFullDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Join the waitlist and we\'ll notify you immediately if a spot opens up.'**
+  String get classIsFullDescription;
+
+  /// No description provided for @currentWaitList.
+  ///
+  /// In en, this message translates to:
+  /// **'Current Waitlist'**
+  String get currentWaitList;
+
+  /// No description provided for @people.
+  ///
+  /// In en, this message translates to:
+  /// **'People'**
+  String get people;
+
+  /// No description provided for @smartTip.
+  ///
+  /// In en, this message translates to:
+  /// **'Smart Waitlist Tip'**
+  String get smartTip;
+
+  /// No description provided for @smartTipDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Based on historical data, this class typically has 2-3 cancellations. Your chances of getting in are high!'**
+  String get smartTipDescription;
+
+  /// No description provided for @joinWaitList.
+  ///
+  /// In en, this message translates to:
+  /// **'Join Waitlist'**
+  String get joinWaitList;
+
+  /// No description provided for @browseOtherClasses.
+  ///
+  /// In en, this message translates to:
+  /// **'Browse Other Classes'**
+  String get browseOtherClasses;
+
+  /// No description provided for @onWaitList.
+  ///
+  /// In en, this message translates to:
+  /// **'On Waitlist'**
+  String get onWaitList;
+
+  /// No description provided for @onWaitListDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'We\'ll notify you if a spot opens up'**
+  String get onWaitListDescription;
+
+  /// No description provided for @yourPosition.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Position'**
+  String get yourPosition;
+
+  /// No description provided for @inLine.
+  ///
+  /// In en, this message translates to:
+  /// **'In Line'**
+  String get inLine;
 }
 
 class _AppLocalizationsDelegate

@@ -541,4 +541,103 @@ class AppLocalizationsEn extends AppLocalizations {
   String minutesCount(Object count) {
     return '$count minutes';
   }
+
+  @override
+  String get bookYourClass => 'Book Your Class';
+
+  @override
+  String get paymentSummery => 'Payment Summary';
+
+  @override
+  String get classFee => 'Class Fee';
+
+  @override
+  String get total => 'Total';
+
+  @override
+  String get bookPolicy =>
+      'I agree to the cancellation policy and understand that I can cancel up to 4 hours before the class starts.';
+
+  @override
+  String get confirmBooking => 'Confirm Booking';
+
+  @override
+  String get bookingSuccess => 'Booking Successful';
+
+  @override
+  String get successMessage => 'You\'re all set for your class.';
+
+  @override
+  String get checkIn => 'Check In';
+
+  @override
+  String get checkInDescription =>
+      'Check-in opens 30 minutes before class (Available at 5:30 PM)';
+
+  @override
+  String get checkInLongDescription =>
+      'You\'ll receive a notification when check-in becomes available';
+
+  @override
+  String get classDetail => 'Class Details';
+
+  @override
+  String get time => 'Time';
+
+  @override
+  String get addToCalender => 'Add to Calendar';
+
+  @override
+  String get getDirection => 'Get Directions';
+
+  @override
+  String get cancelPolicyDescription =>
+      'Free cancellation up to 4 hours before class. Late cancellations may incur a fee.';
+
+  @override
+  String get viewMyBooking => 'View My Booking';
+
+  @override
+  String get browseMoreClasses => 'Browse More Classes';
+
+  @override
+  String get joinWailList => 'Join Waitlist';
+
+  @override
+  String get classIsFull => 'Class Is Full';
+
+  @override
+  String get classIsFullDescription =>
+      'Join the waitlist and we\'ll notify you immediately if a spot opens up.';
+
+  @override
+  String get currentWaitList => 'Current Waitlist';
+
+  @override
+  String get people => 'People';
+
+  @override
+  String get smartTip => 'Smart Waitlist Tip';
+
+  @override
+  String get smartTipDescription =>
+      'Based on historical data, this class typically has 2-3 cancellations. Your chances of getting in are high!';
+
+  @override
+  String get joinWaitList => 'Join Waitlist';
+
+  @override
+  String get browseOtherClasses => 'Browse Other Classes';
+
+  @override
+  String get onWaitList => 'On Waitlist';
+
+  @override
+  String get onWaitListDescription => 'We\'ll notify you if a spot opens up';
+
+  @override
+  String get yourPosition => 'Your Position';
+
+  @override
+  String get inLine => 'In Line';
 }

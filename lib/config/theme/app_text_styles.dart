@@ -40,7 +40,6 @@ class AppTextStyles {
     );
   }
 
-
   static TextStyle boldBody(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return GoogleFonts.inter(
@@ -214,6 +213,36 @@ class AppTextStyles {
       fontWeight: FontWeight.w500,
       color: isDark ? AppColors.lightText : AppColors.darkText,
       height: 1.2,
+    );
+  }
+
+  static TextStyle appBarText(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    return GoogleFonts.inter(
+      fontSize: 22,
+      fontWeight: FontWeight.w600,
+      color: isDark ? AppColors.lightText : AppColors.darkText,
+    );
+  }
+
+  static TextStyle gelasioMedium(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    return GoogleFonts.gelasio(
+      fontSize: 20,
+      fontWeight: FontWeight.w500,
+      color: isDark ? AppColors.lightText : AppColors.darkText,
+      height: 1.1,
+    );
+  }
+
+  static TextStyle gelasioRegular(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    return GoogleFonts.gelasio(
+      fontSize: 18,
+      fontWeight: FontWeight.w400,
+      color: isDark ? AppColors.lightText : AppColors.darkText,
+      height: 1.1,
+      letterSpacing: -2,
     );
   }
 }
