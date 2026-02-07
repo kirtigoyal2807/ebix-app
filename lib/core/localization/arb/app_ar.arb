@@ -235,6 +235,26 @@
   "whatToBring": "ما يجب إحضاره",
   "recentReviews": "المراجعات الأخيرة",
   "bookThisClass": "احجز هذه الحصة",
-  "minutesCount": "{count} دقيقة"
+  "minutesCount": "{count} دقيقة",
+  "classDescriptionShort": "ابنِ القوة والمرونة والهدوء من خلال جلسات بيلاتس موجهة.",
+  "trainerAishaSherin": "عائشة شيرين",
+  "branchAddressDetail": "123 الشارع الرئيسي، جناح 200",
+  "aboutClassDescription": "تركز هذه الحصة الديناميكية على بناء القوة الأساسية وتحسين المرونة. مثالية لجميع المستويات، ستتدفق عبر سلسلة من الحركات الخاضعة للسيطرة التي تتحدى جسمك مع تعزيز اليقظة والتوازن.",
+  "itemAttire": "ملابس تمارين مريحة",
+  "itemWater": "زجاجة ماء",
+  "itemTowel": "منشفة (اختياري)",
+  "itemMat": "سجادة متوفرة في الاستوديو",
+  "basedOnReviews": "بناءً على {count} مراجعة",
+  "@basedOnReviews": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "reviewerName1": "جيسيكا م.",
+  "reviewerTime1": "منذ يومين",
+  "reviewerComment1": "\"سارة رائعة! حصصها مليئة بالتحديات لكنها تحرص على أن يشعر الجميع بالدعم. لقد رأيت تقدماً مذهلاً في قوتي الأساسية.\""
 }
+
 

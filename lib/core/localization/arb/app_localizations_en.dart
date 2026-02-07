@@ -541,4 +541,45 @@ class AppLocalizationsEn extends AppLocalizations {
   String minutesCount(Object count) {
     return '$count minutes';
   }
+
+  @override
+  String get classDescriptionShort =>
+      'Build strength, flexibility, and calm through guided Pilates sessions.';
+
+  @override
+  String get trainerAishaSherin => 'Aisha Sherin';
+
+  @override
+  String get branchAddressDetail => '123 Main Street, Suite 200';
+
+  @override
+  String get aboutClassDescription =>
+      'This dynamic class focuses on building core strength and improving flexibility. Perfect for all levels, you\'ll flow through a series of controlled movements that challenge your body while promoting mindfulness and balance.';
+
+  @override
+  String get itemAttire => 'Comfortable workout attire';
+
+  @override
+  String get itemWater => 'Water bottle';
+
+  @override
+  String get itemTowel => 'Towel (optional)';
+
+  @override
+  String get itemMat => 'Mat provided at studio';
+
+  @override
+  String basedOnReviews(int count) {
+    return 'Based on $count reviews';
+  }
+
+  @override
+  String get reviewerName1 => 'Jessica M.';
+
+  @override
+  String get reviewerTime1 => '2 days ago';
+
+  @override
+  String get reviewerComment1 =>
+      '\"Sarah is incredible! Her classes are challenging but she makes sure everyone feels supported. I\'ve seen amazing progress in my core strength.\"';
 }

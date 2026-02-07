@@ -235,6 +235,26 @@
   "whatToBring": "What to bring",
   "recentReviews": "Recent Reviews",
   "bookThisClass": "Book This Class",
-  "minutesCount": "{count} minutes"
+  "minutesCount": "{count} minutes",
+  "classDescriptionShort": "Build strength, flexibility, and calm through guided Pilates sessions.",
+  "trainerAishaSherin": "Aisha Sherin",
+  "branchAddressDetail": "123 Main Street, Suite 200",
+  "aboutClassDescription": "This dynamic class focuses on building core strength and improving flexibility. Perfect for all levels, you'll flow through a series of controlled movements that challenge your body while promoting mindfulness and balance.",
+  "itemAttire": "Comfortable workout attire",
+  "itemWater": "Water bottle",
+  "itemTowel": "Towel (optional)",
+  "itemMat": "Mat provided at studio",
+  "basedOnReviews": "Based on {count} reviews",
+  "@basedOnReviews": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "reviewerName1": "Jessica M.",
+  "reviewerTime1": "2 days ago",
+  "reviewerComment1": "\"Sarah is incredible! Her classes are challenging but she makes sure everyone feels supported. I've seen amazing progress in my core strength.\""
 }
+
 
