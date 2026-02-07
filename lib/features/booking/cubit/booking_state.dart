@@ -5,6 +5,7 @@ enum BookingTab { classes, trainers }
 class BookingState extends Equatable {
   final BookingTab selectedTab;
   final String searchQuery;
+  final String selectedBranch;
   final String selectedDate;
   final String selectedCategory;
   final String selectedGender;
@@ -12,6 +13,7 @@ class BookingState extends Equatable {
   const BookingState({
     this.selectedTab = BookingTab.classes,
     this.searchQuery = '',
+    this.selectedBranch = 'All Branches',
     this.selectedDate = 'Today',
     this.selectedCategory = 'All Categories',
     this.selectedGender = 'All Gender',
@@ -20,6 +22,7 @@ class BookingState extends Equatable {
   BookingState copyWith({
     BookingTab? selectedTab,
     String? searchQuery,
+    String? selectedBranch,
     String? selectedDate,
     String? selectedCategory,
     String? selectedGender,
@@ -27,6 +30,7 @@ class BookingState extends Equatable {
     return BookingState(
       selectedTab: selectedTab ?? this.selectedTab,
       searchQuery: searchQuery ?? this.searchQuery,
+      selectedBranch: selectedBranch ?? this.selectedBranch,
       selectedDate: selectedDate ?? this.selectedDate,
       selectedCategory: selectedCategory ?? this.selectedCategory,
       selectedGender: selectedGender ?? this.selectedGender,
@@ -37,6 +41,7 @@ class BookingState extends Equatable {
   List<Object?> get props => [
         selectedTab,
         searchQuery,
+        selectedBranch,
         selectedDate,
         selectedCategory,
         selectedGender,

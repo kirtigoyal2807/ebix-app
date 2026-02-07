@@ -458,5 +458,82 @@ class AppLocalizationsAr extends AppLocalizations {
   String get allGender => 'جميع الأجناس';
 
   @override
+  String get allDates => 'جميع التواريخ';
+
+  @override
+  String get tomorrow => 'غداً';
+
+  @override
+  String get thisWeek => 'هذا الأسبوع';
+
+  @override
+  String get nextWeek => 'الأسبوع القادم';
+
+  @override
+  String get thisWeekend => 'عطلة نهاية الأسبوع';
+
+  @override
+  String get allBranches => 'جميع الفروع';
+
+  @override
+  String get branch1 => 'فرع 1';
+
+  @override
+  String get branch2 => 'فرع 2';
+
+  @override
+  String get branch3 => 'فرع 3';
+
+  @override
+  String get branch4 => 'فرع 4';
+
+  @override
+  String get branch5 => 'فرع 5';
+
+  @override
+  String get date => 'التاريخ';
+
+  @override
+  String get category => 'الفئة';
+
+  @override
+  String get branch => 'الفرع';
+
+  @override
   String get upgradeRequired => 'مطلوب ترقية';
+
+  @override
+  String get classDetails => 'تفاصيل الحصة';
+
+  @override
+  String get instructor => 'المدرب';
+
+  @override
+  String get duration => 'المدة';
+
+  @override
+  String get dateTime => 'التاريخ والوقت';
+
+  @override
+  String get availability => 'التوفر';
+
+  @override
+  String get location => 'الموقع';
+
+  @override
+  String get aboutThisClass => 'عن هذه الحصة';
+
+  @override
+  String get whatToBring => 'ما يجب إحضاره';
+
+  @override
+  String get recentReviews => 'المراجعات الأخيرة';
+
+  @override
+  String get bookThisClass => 'احجز هذه الحصة';
+
+  @override
+  String minutesCount(Object count) {
+    return '$count دقيقة';
+  }
 }

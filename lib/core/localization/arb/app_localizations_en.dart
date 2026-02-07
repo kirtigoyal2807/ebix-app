@@ -463,5 +463,82 @@ class AppLocalizationsEn extends AppLocalizations {
   String get allGender => 'All Gender';
 
   @override
+  String get allDates => 'All Dates';
+
+  @override
+  String get tomorrow => 'Tomorrow';
+
+  @override
+  String get thisWeek => 'This Week';
+
+  @override
+  String get nextWeek => 'Next Week';
+
+  @override
+  String get thisWeekend => 'This Weekend';
+
+  @override
+  String get allBranches => 'All Branches';
+
+  @override
+  String get branch1 => 'Branch 1';
+
+  @override
+  String get branch2 => 'Branch 2';
+
+  @override
+  String get branch3 => 'Branch 3';
+
+  @override
+  String get branch4 => 'Branch 4';
+
+  @override
+  String get branch5 => 'Branch 5';
+
+  @override
+  String get date => 'Date';
+
+  @override
+  String get category => 'Category';
+
+  @override
+  String get branch => 'Branch';
+
+  @override
   String get upgradeRequired => 'Upgrade Required';
+
+  @override
+  String get classDetails => 'Class Details';
+
+  @override
+  String get instructor => 'Instructor';
+
+  @override
+  String get duration => 'Duration';
+
+  @override
+  String get dateTime => 'Date & Time';
+
+  @override
+  String get availability => 'Availability';
+
+  @override
+  String get location => 'Location';
+
+  @override
+  String get aboutThisClass => 'About this class';
+
+  @override
+  String get whatToBring => 'What to bring';
+
+  @override
+  String get recentReviews => 'Recent Reviews';
+
+  @override
+  String get bookThisClass => 'Book This Class';
+
+  @override
+  String minutesCount(Object count) {
+    return '$count minutes';
+  }
 }

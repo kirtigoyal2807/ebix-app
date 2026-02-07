@@ -7,6 +7,8 @@ import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/core/localization/localization_extension.dart';
 import 'package:pilates_app/widgets/app_text.dart';
 
+import '../views/class_detail_view.dart';
+
 class BookingClassCard extends StatelessWidget {
   final String title;
   final String trainerName;
@@ -34,16 +36,26 @@ class BookingClassCard extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final size = MediaQuery.sizeOf(context);
 
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
-      decoration: BoxDecoration(
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+      child: Material(
         color: isDark ? AppColors.surfaceDark : Colors.white,
         borderRadius: BorderRadius.circular(AppRadius.lg),
-        border: Border.all(
-          color: isDark ? AppColors.greyText : AppColors.buttonBorder,
-        ),
-      ),
-      child: Column(
+        child: InkWell(
+          onTap: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => const ClassDetailView()),
+            );
+          },
+          borderRadius: BorderRadius.circular(AppRadius.lg),
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(AppRadius.lg),
+              border: Border.all(
+                color: isDark ? AppColors.greyText : AppColors.buttonBorder,
+              ),
+            ),
+            child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Image part with tags
@@ -170,7 +182,7 @@ class BookingClassCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 AppText(
-                  '${context.l10n.powerPilates} ${context.l10n.withTrainer("Aisha Sherin")}',
+                  '$title ${context.l10n.withTrainer(trainerName)}',
                   style: (context) => AppTextStyles.boldBody(context).copyWith(
                     fontSize: size.width * 0.04 > 16 ? 16 : size.width * 0.04,
                     color: isDark ? AppColors.lightText : AppColors.darkText,
@@ -178,7 +190,7 @@ class BookingClassCard extends StatelessWidget {
                 ),
                 const SizedBox(height: AppSpacing.xs),
                 AppText(
-                  '${context.l10n.branchDowntown} • ${context.l10n.today} • ${context.l10n.spotsLeft(3)}',
+                  '$studio • $time • ${context.l10n.spotsLeft(spotsLeft)}',
                   style: (context) =>
                       AppTextStyles.captionText(context).copyWith(
                         fontSize: size.width * 0.03 > 14
@@ -196,6 +208,9 @@ class BookingClassCard extends StatelessWidget {
           ),
         ],
       ),
+    ),
+    ),
+    ),
     );
   }
 }

@@ -956,11 +956,161 @@ abstract class AppLocalizations {
   /// **'All Gender'**
   String get allGender;
 
+  /// No description provided for @allDates.
+  ///
+  /// In en, this message translates to:
+  /// **'All Dates'**
+  String get allDates;
+
+  /// No description provided for @tomorrow.
+  ///
+  /// In en, this message translates to:
+  /// **'Tomorrow'**
+  String get tomorrow;
+
+  /// No description provided for @thisWeek.
+  ///
+  /// In en, this message translates to:
+  /// **'This Week'**
+  String get thisWeek;
+
+  /// No description provided for @nextWeek.
+  ///
+  /// In en, this message translates to:
+  /// **'Next Week'**
+  String get nextWeek;
+
+  /// No description provided for @thisWeekend.
+  ///
+  /// In en, this message translates to:
+  /// **'This Weekend'**
+  String get thisWeekend;
+
+  /// No description provided for @allBranches.
+  ///
+  /// In en, this message translates to:
+  /// **'All Branches'**
+  String get allBranches;
+
+  /// No description provided for @branch1.
+  ///
+  /// In en, this message translates to:
+  /// **'Branch 1'**
+  String get branch1;
+
+  /// No description provided for @branch2.
+  ///
+  /// In en, this message translates to:
+  /// **'Branch 2'**
+  String get branch2;
+
+  /// No description provided for @branch3.
+  ///
+  /// In en, this message translates to:
+  /// **'Branch 3'**
+  String get branch3;
+
+  /// No description provided for @branch4.
+  ///
+  /// In en, this message translates to:
+  /// **'Branch 4'**
+  String get branch4;
+
+  /// No description provided for @branch5.
+  ///
+  /// In en, this message translates to:
+  /// **'Branch 5'**
+  String get branch5;
+
+  /// No description provided for @date.
+  ///
+  /// In en, this message translates to:
+  /// **'Date'**
+  String get date;
+
+  /// No description provided for @category.
+  ///
+  /// In en, this message translates to:
+  /// **'Category'**
+  String get category;
+
+  /// No description provided for @branch.
+  ///
+  /// In en, this message translates to:
+  /// **'Branch'**
+  String get branch;
+
   /// No description provided for @upgradeRequired.
   ///
   /// In en, this message translates to:
   /// **'Upgrade Required'**
   String get upgradeRequired;
+
+  /// No description provided for @classDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Class Details'**
+  String get classDetails;
+
+  /// No description provided for @instructor.
+  ///
+  /// In en, this message translates to:
+  /// **'Instructor'**
+  String get instructor;
+
+  /// No description provided for @duration.
+  ///
+  /// In en, this message translates to:
+  /// **'Duration'**
+  String get duration;
+
+  /// No description provided for @dateTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Date & Time'**
+  String get dateTime;
+
+  /// No description provided for @availability.
+  ///
+  /// In en, this message translates to:
+  /// **'Availability'**
+  String get availability;
+
+  /// No description provided for @location.
+  ///
+  /// In en, this message translates to:
+  /// **'Location'**
+  String get location;
+
+  /// No description provided for @aboutThisClass.
+  ///
+  /// In en, this message translates to:
+  /// **'About this class'**
+  String get aboutThisClass;
+
+  /// No description provided for @whatToBring.
+  ///
+  /// In en, this message translates to:
+  /// **'What to bring'**
+  String get whatToBring;
+
+  /// No description provided for @recentReviews.
+  ///
+  /// In en, this message translates to:
+  /// **'Recent Reviews'**
+  String get recentReviews;
+
+  /// No description provided for @bookThisClass.
+  ///
+  /// In en, this message translates to:
+  /// **'Book This Class'**
+  String get bookThisClass;
+
+  /// No description provided for @minutesCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} minutes'**
+  String minutesCount(Object count);
 }
 
 class _AppLocalizationsDelegate

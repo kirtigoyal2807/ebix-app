@@ -20,6 +20,10 @@ class BookingCubit extends Cubit<BookingState> {
     emit(state.copyWith(selectedCategory: category));
   }
 
+  void setBranch(String branch) {
+    emit(state.copyWith(selectedBranch: branch));
+  }
+
   void setGender(String gender) {
     emit(state.copyWith(selectedGender: gender));
   }
