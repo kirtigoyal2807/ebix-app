@@ -105,6 +105,40 @@ class HomeView extends StatelessWidget {
                         ),
 
                         const SizedBox(height: AppSpacing.md),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: AppSpacing.lg,
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              AppText(
+                                context.l10n.yourProgress,
+                                style: (context) =>
+                                    AppTextStyles.heading1(context).copyWith(
+                                      color: isDark
+                                          ? AppColors.lightText
+                                          : AppColors.darkText,
+                                      fontSize: size.width * 0.055 > 18
+                                          ? 18
+                                          : size.width * 0.055,
+                                      fontWeight: FontWeight.w400,
+
+                                      // height: 1.1,
+                                    ),
+                              ),
+
+                              AppText(
+                                context.l10n.seeAll,
+                                style: (context) => AppTextStyles.captionText(context).copyWith(
+                                  color: isDark ? AppColors.languageTextDark:AppColors.languageIcon,
+                                  fontSize: size.width * 0.03 > 14 ? 14 : size.width * 0.03,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: AppSpacing.md),
                         ProgressCard(
                           status: HomeUserStatus.existing,
                           classesDone: state.classesDone,
@@ -232,7 +266,7 @@ class HomeView extends StatelessWidget {
   Widget _buildBottomNavBar(BuildContext context, int currentIndex) {
     final size = MediaQuery.sizeOf(context);
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final activeColor = AppColors.primaryBrown;
+    final activeColor = AppColors.splashBackgroundDark;
     final inactiveColor = isDark ? Colors.grey : Colors.grey.shade400;
 
     return Container(
