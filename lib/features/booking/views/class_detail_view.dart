@@ -5,30 +5,18 @@ import 'package:pilates_app/config/theme/app_radius.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/core/localization/localization_extension.dart';
-import 'package:pilates_app/features/booking/cubit/class_detail/class_detail_cubit.dart';
-import 'package:pilates_app/features/booking/cubit/class_detail/class_detail_state.dart';
-import 'package:pilates_app/features/booking/widgets/class_detail/class_detail_header.dart';
-import 'package:pilates_app/features/booking/widgets/class_detail/class_info_grid.dart';
-import 'package:pilates_app/features/booking/widgets/class_detail/class_location_card.dart';
-import 'package:pilates_app/features/booking/widgets/class_detail/class_about_section.dart';
-import 'package:pilates_app/features/booking/widgets/class_detail/class_what_to_bring.dart';
-import 'package:pilates_app/features/booking/widgets/class_detail/class_reviews_section.dart';
+import 'package:pilates_app/features/booking/cubit/booking_cubit.dart';
+import 'package:pilates_app/features/booking/cubit/booking_state.dart';
+import 'package:pilates_app/features/booking/widgets/class_detail_header.dart';
+import 'package:pilates_app/features/booking/widgets/class_info_grid.dart';
+import 'package:pilates_app/features/booking/widgets/class_location_card.dart';
+import 'package:pilates_app/features/booking/widgets/class_about_section.dart';
+import 'package:pilates_app/features/booking/widgets/class_what_to_bring.dart';
+import 'package:pilates_app/features/booking/widgets/class_reviews_section.dart';
 import 'package:pilates_app/widgets/app_text.dart';
 
 class ClassDetailView extends StatelessWidget {
   const ClassDetailView({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => ClassDetailCubit()..loadClassDetails(),
-      child: const ClassDetailBody(),
-    );
-  }
-}
-
-class ClassDetailBody extends StatelessWidget {
-  const ClassDetailBody({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -58,9 +46,9 @@ class ClassDetailBody extends StatelessWidget {
         ),
         centerTitle: true,
       ),
-      body: BlocBuilder<ClassDetailCubit, ClassDetailState>(
+      body: BlocBuilder<BookingCubit, BookingState>(
         builder: (context, state) {
-          if (state is ClassDetailLoading) {
+          if (state.classDetailStatus == ClassDetailStatus.loading) {
             return const Center(child: CircularProgressIndicator());
           }
 
@@ -98,7 +86,7 @@ class ClassDetailBody extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
                   child: ElevatedButton(
-                    onPressed: () => context.read<ClassDetailCubit>().bookClass(),
+                    onPressed: () => context.read<BookingCubit>().bookClass(),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.splashBackgroundDark,
                       foregroundColor: Colors.white,

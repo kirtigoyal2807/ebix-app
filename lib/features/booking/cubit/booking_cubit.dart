@@ -27,4 +27,16 @@ class BookingCubit extends Cubit<BookingState> {
   void setGender(String gender) {
     emit(state.copyWith(selectedGender: gender));
   }
+
+  void loadClassDetails() {
+    emit(state.copyWith(classDetailStatus: ClassDetailStatus.loading));
+    // Simulate loading data
+    Future.delayed(const Duration(milliseconds: 500), () {
+      emit(state.copyWith(classDetailStatus: ClassDetailStatus.loaded));
+    });
+  }
+
+  void bookClass() {
+    // Add booking logic here
+  }
 }

@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 
 enum BookingTab { classes, trainers }
+enum ClassDetailStatus { initial, loading, loaded, error }
 
 class BookingState extends Equatable {
   final BookingTab selectedTab;
@@ -9,6 +10,7 @@ class BookingState extends Equatable {
   final String selectedDate;
   final String selectedCategory;
   final String selectedGender;
+  final ClassDetailStatus classDetailStatus;
 
   const BookingState({
     this.selectedTab = BookingTab.classes,
@@ -17,6 +19,7 @@ class BookingState extends Equatable {
     this.selectedDate = 'Today',
     this.selectedCategory = 'All Categories',
     this.selectedGender = 'All Gender',
+    this.classDetailStatus = ClassDetailStatus.initial,
   });
 
   BookingState copyWith({
@@ -26,6 +29,7 @@ class BookingState extends Equatable {
     String? selectedDate,
     String? selectedCategory,
     String? selectedGender,
+    ClassDetailStatus? classDetailStatus,
   }) {
     return BookingState(
       selectedTab: selectedTab ?? this.selectedTab,
@@ -34,6 +38,7 @@ class BookingState extends Equatable {
       selectedDate: selectedDate ?? this.selectedDate,
       selectedCategory: selectedCategory ?? this.selectedCategory,
       selectedGender: selectedGender ?? this.selectedGender,
+      classDetailStatus: classDetailStatus ?? this.classDetailStatus,
     );
   }
 
@@ -45,5 +50,6 @@ class BookingState extends Equatable {
         selectedDate,
         selectedCategory,
         selectedGender,
+        classDetailStatus,
       ];
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:pilates_app/config/theme/app_colors.dart';
 import 'package:pilates_app/config/theme/app_radius.dart';
@@ -6,7 +7,7 @@ import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/core/localization/localization_extension.dart';
 import 'package:pilates_app/widgets/app_text.dart';
-
+import 'package:pilates_app/features/booking/cubit/booking_cubit.dart';
 import '../views/class_detail_view.dart';
 
 class BookingClassCard extends StatelessWidget {
@@ -43,8 +44,15 @@ class BookingClassCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(AppRadius.lg),
         child: InkWell(
           onTap: () {
+            final cubit = BlocProvider.of<BookingCubit>(context);
+            cubit.loadClassDetails();
             Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => const ClassDetailView()),
+              MaterialPageRoute(
+                builder: (newContext) => BlocProvider.value(
+                  value: cubit,
+                  child: const ClassDetailView(),
+                ),
+              ),
             );
           },
           borderRadius: BorderRadius.circular(AppRadius.lg),
