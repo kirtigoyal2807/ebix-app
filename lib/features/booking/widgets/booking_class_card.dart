@@ -111,6 +111,12 @@ class BookingClassCard extends StatelessWidget {
                                   ? AppColors.featuredTagBackgroundDarkColor
                                   : AppColors.featuredTagBackgroundColor,
                               borderRadius: BorderRadius.circular(16),
+                              border: Border.all(
+                                color: isDark
+                                    ? AppColors.successBorderDark
+                                    : AppColors.successBorder,
+                                width: 1,
+                              ),
                             ),
                             child: Row(
                               mainAxisSize: MainAxisSize.min,
@@ -125,7 +131,7 @@ class BookingClassCard extends StatelessWidget {
                                 const SizedBox(width: AppSpacing.xs),
                                 Flexible(
                                   child: AppText(
-                                    context.l10n.inYourPlan.toUpperCase(),
+                                    context.l10n.inYourPlan,
                                     style: (context) =>
                                         AppTextStyles.boldBody(context).copyWith(
                                       fontSize: 10,
@@ -175,7 +181,7 @@ class BookingClassCard extends StatelessWidget {
                                 const SizedBox(width: 4),
                                 Flexible(
                                   child: AppText(
-                                    context.l10n.upgradeRequired.toUpperCase(),
+                                    context.l10n.upgradeRequired,
                                     style: (context) =>
                                         AppTextStyles.boldBody(context).copyWith(
                                       fontSize: 10,
@@ -219,6 +225,7 @@ class BookingClassCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                const SizedBox(height: AppSpacing.sm),
                 AppText(
                   '$title ${context.l10n.withTrainer(trainerName)}',
                   style: (context) => AppTextStyles.boldBody(context).copyWith(
@@ -235,8 +242,8 @@ class BookingClassCard extends StatelessWidget {
                             ? 14
                             : size.width * 0.03,
                         color: isDark
-                            ? AppColors.lightGrey
-                            : AppColors.lightGrey,
+                            ? AppColors.darkGreyText
+                            : AppColors.greyText,
                       ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,

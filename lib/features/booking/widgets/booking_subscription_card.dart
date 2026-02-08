@@ -4,7 +4,6 @@ import 'package:pilates_app/config/theme/app_colors.dart';
 import 'package:pilates_app/config/theme/app_radius.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
-import 'package:pilates_app/core/localization/localization_extension.dart';
 import 'package:pilates_app/widgets/app_text.dart';
 
 class BookingSubscriptionCard extends StatelessWidget {
@@ -18,8 +17,8 @@ class BookingSubscriptionCard extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
       padding: const EdgeInsets.symmetric(
-        horizontal: AppSpacing.lg,
-        vertical: AppSpacing.lg,
+        horizontal: AppSpacing.base,
+        vertical: AppSpacing.sm + 2,
       ),
       decoration: BoxDecoration(
         gradient: const LinearGradient(
@@ -35,12 +34,10 @@ class BookingSubscriptionCard extends StatelessWidget {
       ),
       child: Row(
         children: [
-          Container(
-            child: SvgPicture.asset(
-              'assets/images/svg/ic_king.svg',
-              width: size.width * 0.05,
-              height: size.height * 0.05,
-            ),
+          SvgPicture.asset(
+            'assets/images/svg/ic_king.svg',
+            width: size.width * 0.05,
+            height: size.height * 0.05,
           ),
           const SizedBox(width: AppSpacing.md),
           Expanded(
