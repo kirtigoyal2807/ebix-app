@@ -562,7 +562,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get confirmBooking => 'Confirm Booking';
 
   @override
-  String get bookingSuccess => 'Booking Successful';
+  String get bookingSuccess => 'Booking Successfully';
 
   @override
   String get successMessage => 'You\'re all set for your class.';
@@ -579,6 +579,9 @@ class AppLocalizationsEn extends AppLocalizations {
       'You\'ll receive a notification when check-in becomes available';
 
   @override
+  String get checkInButton => 'Check-In (Opens at 5:30 PM)';
+
+  @override
   String get classDetail => 'Class Details';
 
   @override
@@ -592,7 +595,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get cancelPolicyDescription =>
-      'Free cancellation up to 4 hours before class. Late cancellations may incur a fee.';
+      'I agree to the cancellation policy and understand that I can cancel up to 4 hours before the class starts.';
 
   @override
   String get viewMyBooking => 'View My Booking';
@@ -640,4 +643,8 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get inLine => 'In Line';
+
+  @override
+  String get cancelBooking =>
+      'Cancellation Policy: Free cancellation up to 4 hours before class. Late cancellations may incur a fee.';
 }

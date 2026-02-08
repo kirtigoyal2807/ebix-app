@@ -1151,7 +1151,7 @@ abstract class AppLocalizations {
   /// No description provided for @bookingSuccess.
   ///
   /// In en, this message translates to:
-  /// **'Booking Successful'**
+  /// **'Booking Successfully'**
   String get bookingSuccess;
 
   /// No description provided for @successMessage.
@@ -1177,6 +1177,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'You\'ll receive a notification when check-in becomes available'**
   String get checkInLongDescription;
+
+  /// No description provided for @checkInButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Check-In (Opens at 5:30 PM)'**
+  String get checkInButton;
 
   /// No description provided for @classDetail.
   ///
@@ -1205,7 +1211,7 @@ abstract class AppLocalizations {
   /// No description provided for @cancelPolicyDescription.
   ///
   /// In en, this message translates to:
-  /// **'Free cancellation up to 4 hours before class. Late cancellations may incur a fee.'**
+  /// **'I agree to the cancellation policy and understand that I can cancel up to 4 hours before the class starts.'**
   String get cancelPolicyDescription;
 
   /// No description provided for @viewMyBooking.
@@ -1297,6 +1303,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'In Line'**
   String get inLine;
+
+  /// No description provided for @cancelBooking.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancellation Policy: Free cancellation up to 4 hours before class. Late cancellations may incur a fee.'**
+  String get cancelBooking;
 }
 
 class _AppLocalizationsDelegate

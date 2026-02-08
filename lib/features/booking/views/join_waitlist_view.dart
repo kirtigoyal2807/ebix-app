@@ -33,7 +33,7 @@ class JoinWaitlistView extends StatelessWidget {
         leading: IconButton(
           padding: const EdgeInsetsDirectional.only(
             start: AppSpacing.md,
-            bottom: AppSpacing.xs,
+            bottom: 3,
           ),
           icon: Icon(
             Directionality.of(context) == TextDirection.rtl
@@ -45,31 +45,26 @@ class JoinWaitlistView extends StatelessWidget {
           onPressed: () => Navigator.of(context).pop(),
         ),
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _buildClassDetailsCard(context, isDark),
-                  const SizedBox(height: AppSpacing.sm),
-                  Divider(
-                    color: isDark ? AppColors.greyText : AppColors.buttonBorder,
-                  ),
-                  const SizedBox(height: AppSpacing.lg),
-                  _buildClassCard(context, isDark),
-                  const SizedBox(height: AppSpacing.lg),
-                  _buildWaitListCard(context, isDark),
-                  const SizedBox(height: AppSpacing.lg),
-                  _buildSmartTip(context, isDark),
-                  const SizedBox(height: AppSpacing.lg),
-                ],
-              ),
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _buildClassDetailsCard(context, isDark),
+            const SizedBox(height: AppSpacing.sm),
+            Divider(
+              color: isDark ? AppColors.greyText : AppColors.buttonBorder,
             ),
-          ),
-          _buildFooterLinks(context, isDark),
-        ],
+            const SizedBox(height: AppSpacing.lg),
+            _buildClassCard(context, isDark),
+            const SizedBox(height: AppSpacing.lg),
+            _buildWaitListCard(context, isDark),
+            const SizedBox(height: AppSpacing.lg),
+            _buildSmartTip(context, isDark),
+            const SizedBox(height: AppSpacing.lg),
+            _buildFooterLinks(context, isDark),
+            SizedBox(height: MediaQuery.of(context).viewPadding.bottom,)
+          ],
+        ),
       ),
     );
   }
@@ -116,15 +111,15 @@ class JoinWaitlistView extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 AppText(
-                  l10n.classDetail,
+                  "Core Strength & Balance",
                   style: (context) => AppTextStyles.gelasioMedium(context),
                 ),
                 const SizedBox(height: AppSpacing.md),
-                _buildDetailRow(Icons.location_on_outlined, l10n.getDirection),
-                const SizedBox(height: 12),
-                _buildDetailRow(Icons.watch_later_outlined, l10n.time),
-                const SizedBox(height: 12),
-                _buildDetailRow(Icons.person_outline, l10n.people),
+                _buildDetailRow(Icons.location_on_outlined, "Downtown Studio"),
+                const SizedBox(height: AppSpacing.sm),
+                _buildDetailRow(Icons.watch_later_outlined, "Today, 6:00 PM"),
+                const SizedBox(height: AppSpacing.sm),
+                _buildDetailRow(Icons.person_outline, "Fatima Al-Hashmi"),
               ],
             ),
           ),
@@ -187,7 +182,7 @@ class JoinWaitlistView extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
       child: Container(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
         decoration: BoxDecoration(
           color: isDark ? AppColors.homeBackground : Colors.white,
           borderRadius: BorderRadius.circular(AppRadius.md),
@@ -204,17 +199,28 @@ class JoinWaitlistView extends StatelessWidget {
                   AppText(
                     l10n.currentWaitList,
                     style: (context) =>
-                        AppTextStyles.helpAndSupportItemSubLabel(context),
+                        AppTextStyles.helpAndSupportItemSubLabel(
+                          context,
+                        ).copyWith(
+                          color: AppColors.lightGrey,
+                          fontWeight: FontWeight.w500,
+                        ),
                   ),
                   const SizedBox(height: AppSpacing.sm),
                   AppText(
                     '5 ${l10n.people}',
-                    style: (context) => AppTextStyles.experienceButton(context),
+                    style: (context) => AppTextStyles.experienceButton(
+                      context,
+                    ).copyWith(fontWeight: FontWeight.w600),
                   ),
                 ],
               ),
             ),
-            SvgPicture.asset("assets/images/svg/ic_waitlist_person.svg"),
+            isDark
+                ? SvgPicture.asset(
+                    "assets/images/svg/ic_waitlist_person_dark.svg",
+                  )
+                : SvgPicture.asset("assets/images/svg/ic_waitlist_person.svg"),
           ],
         ),
       ),
@@ -237,6 +243,7 @@ class JoinWaitlistView extends StatelessWidget {
         ),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             SvgPicture.asset("assets/images/svg/ic_tip.svg"),
             const SizedBox(width: AppSpacing.sm),
@@ -246,15 +253,15 @@ class JoinWaitlistView extends StatelessWidget {
                   children: [
                     TextSpan(
                       text: '${l10n.smartTip}: ',
-                      style: AppTextStyles.helpAndSupportItemSubLabel(context)
-                          .copyWith(
-                            fontWeight: FontWeight.w600,
-                            color: AppColors.primaryBrown,
-                          ),
+                      style: AppTextStyles.helpAndSupportItemSubLabel(
+                        context,
+                      ).copyWith(fontWeight: FontWeight.w600),
                     ),
                     TextSpan(
                       text: l10n.smartTipDescription,
-                      style: AppTextStyles.helpAndSupportItemSubLabel(context),
+                      style: AppTextStyles.helpAndSupportItemSubLabel(
+                        context,
+                      ).copyWith(height: 1.55),
                     ),
                   ],
                 ),
@@ -274,7 +281,7 @@ class JoinWaitlistView extends StatelessWidget {
       padding: EdgeInsets.only(
         left: AppSpacing.lg,
         right: AppSpacing.lg,
-        bottom: MediaQuery.of(context).viewPadding.bottom,
+        bottom: 34
       ),
       child: Column(
         children: [
@@ -292,10 +299,24 @@ class JoinWaitlistView extends StatelessWidget {
             },
           ),
           const SizedBox(height: AppSpacing.sm),
-          AppButton(
-            label: l10n.browseOtherClasses,
-            variant: AppButtonVariant.secondary,
-            onPressed: () {},
+          Container(
+            decoration: BoxDecoration(
+              color: isDark ? AppColors.homeBackground : Colors.white,
+              borderRadius: BorderRadius.circular(AppRadius.xl),
+              boxShadow: [
+                BoxShadow(
+                  color: AppColors.shadowColor.withValues(alpha: 0.06),
+                  offset: const Offset(0, 1),
+                  blurRadius: 2,
+                  spreadRadius: 0,
+                ),
+              ],
+            ),
+            child: AppButton(
+              label: l10n.browseOtherClasses,
+              variant: AppButtonVariant.secondary,
+              onPressed: () {},
+            ),
           ),
         ],
       ),

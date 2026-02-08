@@ -24,95 +24,81 @@ class BookingSuccessScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: isDark ? AppColors.backgroundDark : Colors.white,
-      body: Column(
-        children: [
-          Expanded(
-            child: SingleChildScrollView(
-              padding: EdgeInsetsDirectional.only(
-                top: MediaQuery.of(context).viewPadding.top,
-                bottom: MediaQuery.of(context).viewPadding.bottom,
+      body: SingleChildScrollView(
+        padding: EdgeInsetsDirectional.only(
+          top: MediaQuery.of(context).viewPadding.top,
+          bottom: MediaQuery.of(context).viewPadding.bottom,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            const SizedBox(height: AppSpacing.xl),
+
+            Container(
+              height: 100,
+              width: 100,
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                color: AppColors.successColor,
+                borderRadius: BorderRadius.circular(AppRadius.pillRadius),
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  const SizedBox(height: AppSpacing.xl),
+              child: const Icon(Icons.done, color: Colors.white, size: 80),
+            ),
 
-                  Container(
-                    height: 100,
-                    width: 100,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      color: AppColors.successColor,
-                      borderRadius: BorderRadius.circular(AppRadius.pillRadius),
-                    ),
-                    child: const Icon(
-                      Icons.done,
-                      color: Colors.white,
-                      size: 80,
-                    ),
-                  ),
+            const SizedBox(height: AppSpacing.md),
 
-                  const SizedBox(height: AppSpacing.md),
-
-                  AppText(
-                    successPage == SuccessPage.booking
-                        ? l10n.bookingSuccess
-                        : l10n.onWaitList,
-                    style: (context) =>
-                        AppTextStyles.gelasioMedium(context).copyWith(
-                          fontSize: 24,
-                          color: isDark
-                              ? AppColors.lightText
-                              : const Color(0xff0D0D12),
-                        ),
-                  ),
-
-                  const SizedBox(height: AppSpacing.sm),
-
-                  AppText(
-                    successPage == SuccessPage.booking
-                        ? l10n.successMessage
-                        : l10n.onWaitListDescription,
-                    style: (context) => AppTextStyles.bodyText(context),
-                    textAlign: TextAlign.center,
-                  ),
-
-                  const SizedBox(height: AppSpacing.lg),
-
-                  successPage == SuccessPage.booking
-                      ? _buildCheckInSection(context, isDark)
-                      : _buildPositionCard(context, isDark),
-
-                  const SizedBox(height: AppSpacing.lg),
-
-                  _buildClassDetailsSection(context, isDark),
-
-                  const SizedBox(height: AppSpacing.lg),
-
-                  _buildActionButtons(context, isDark),
-
-                  const SizedBox(height: AppSpacing.lg),
-
-                  Padding(
-                    padding: const EdgeInsetsDirectional.symmetric(
-                      horizontal: AppSpacing.lg,
-                    ),
-                    child: AppText(
-                      l10n.cancelPolicyDescription,
-                      style: (context) =>
-                          AppTextStyles.helpAndSupportItemSubLabel(context),
-                      textAlign: TextAlign.start,
-                    ),
-                  ),
-
-                  const SizedBox(height: AppSpacing.lg),
-                ],
+            AppText(
+              successPage == SuccessPage.booking
+                  ? l10n.bookingSuccess
+                  : l10n.onWaitList,
+              style: (context) => AppTextStyles.gelasioMedium(context).copyWith(
+                fontSize: 24,
+                color: isDark ? AppColors.lightText : const Color(0xff0D0D12),
               ),
             ),
-          ),
 
-          _buildFooterLinks(context, isDark),
-        ],
+            const SizedBox(height: AppSpacing.sm),
+
+            AppText(
+              successPage == SuccessPage.booking
+                  ? l10n.successMessage
+                  : l10n.onWaitListDescription,
+              style: (context) => AppTextStyles.bodyText(context),
+              textAlign: TextAlign.center,
+            ),
+
+            const SizedBox(height: AppSpacing.lg),
+
+            successPage == SuccessPage.booking
+                ? _buildCheckInSection(context, isDark)
+                : _buildPositionCard(context, isDark),
+
+            const SizedBox(height: AppSpacing.lg),
+
+            _buildClassDetailsSection(context, isDark),
+
+            const SizedBox(height: AppSpacing.lg),
+
+            _buildActionButtons(context, isDark),
+
+            const SizedBox(height: AppSpacing.lg),
+
+            Padding(
+              padding: const EdgeInsetsDirectional.symmetric(
+                horizontal: AppSpacing.lg,
+              ),
+              child: AppText(
+                l10n.cancelBooking,
+                style: (context) =>
+                    AppTextStyles.helpAndSupportItemSubLabel(context),
+                textAlign: TextAlign.start,
+              ),
+            ),
+
+            const SizedBox(height: AppSpacing.lg),
+            _buildFooterLinks(context, isDark),
+          ],
+        ),
       ),
     );
   }
@@ -138,7 +124,7 @@ class BookingSuccessScreen extends StatelessWidget {
             style: (context) => AppTextStyles.experienceButton(context),
           ),
 
-          const SizedBox(height: 6),
+          const SizedBox(height: AppSpacing.xi),
 
           AppText(
             l10n.checkInDescription,
@@ -149,7 +135,7 @@ class BookingSuccessScreen extends StatelessWidget {
           const SizedBox(height: AppSpacing.md),
 
           AppButton(
-            label: l10n.checkIn,
+            label: l10n.checkInButton,
             variant: AppButtonVariant.disable,
             onPressed: () {},
           ),
@@ -157,6 +143,8 @@ class BookingSuccessScreen extends StatelessWidget {
           const SizedBox(height: AppSpacing.md),
 
           Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
               const Icon(
                 Icons.warning_amber_rounded,
@@ -169,7 +157,7 @@ class BookingSuccessScreen extends StatelessWidget {
                   l10n.checkInLongDescription,
                   style: (context) =>
                       AppTextStyles.helpAndSupportItemSubLabel(context),
-                  textAlign: TextAlign.start,
+                  textAlign: TextAlign.center,
                 ),
               ),
             ],
@@ -186,18 +174,23 @@ class BookingSuccessScreen extends StatelessWidget {
       children: [
         Divider(color: isDark ? AppColors.greyText : AppColors.buttonBorder),
         const SizedBox(height: AppSpacing.lg),
-
         Container(
           width: double.infinity,
           margin: const EdgeInsetsDirectional.symmetric(
             horizontal: AppSpacing.lg,
           ),
-          padding: const EdgeInsets.all(AppSpacing.lg),
+          padding: const EdgeInsets.symmetric(
+            horizontal: AppSpacing.lg,
+            vertical: AppSpacing.md,
+          ),
           decoration: BoxDecoration(
             color: isDark
                 ? AppColors.primaryDarkContainer
                 : AppColors.seekBarLight,
             borderRadius: BorderRadius.circular(AppRadius.base),
+            border: isDark
+                ? null
+                : Border.all(width: 1, color: AppColors.darkGreyBorder),
           ),
           child: Column(
             children: [
@@ -345,18 +338,46 @@ class BookingSuccessScreen extends StatelessWidget {
       child: Row(
         children: [
           Expanded(
-            child: AppButton(
-              label: l10n.addToCalender,
-              onPressed: () {},
-              variant: AppButtonVariant.secondary,
+            child: Container(
+              decoration: BoxDecoration(
+                color: isDark ? AppColors.homeBackground : Colors.white,
+                borderRadius: BorderRadius.circular(AppRadius.xl),
+                boxShadow: [
+                  BoxShadow(
+                    color: AppColors.shadowColor.withValues(alpha: 0.06),
+                    offset: const Offset(0, 1),
+                    blurRadius: 2,
+                    spreadRadius: 0,
+                  ),
+                ],
+              ),
+              child: AppButton(
+                label: l10n.addToCalender,
+                onPressed: () {},
+                variant: AppButtonVariant.secondary,
+              ),
             ),
           ),
-          const SizedBox(width: AppSpacing.md),
+          const SizedBox(width: AppSpacing.xi),
           Expanded(
-            child: AppButton(
-              label: l10n.getDirection,
-              onPressed: () {},
-              variant: AppButtonVariant.secondary,
+            child: Container(
+              decoration: BoxDecoration(
+                color: isDark ? AppColors.homeBackground : Colors.white,
+                borderRadius: BorderRadius.circular(AppRadius.xl),
+                boxShadow: [
+                  BoxShadow(
+                    color: AppColors.shadowColor.withValues(alpha: 0.06),
+                    offset: const Offset(0, 1),
+                    blurRadius: 2,
+                    spreadRadius: 0,
+                  ),
+                ],
+              ),
+              child: AppButton(
+                label: l10n.getDirection,
+                onPressed: () {},
+                variant: AppButtonVariant.secondary,
+              ),
             ),
           ),
         ],
@@ -371,7 +392,7 @@ class BookingSuccessScreen extends StatelessWidget {
       padding: EdgeInsetsDirectional.only(
         start: 24,
         end: 24,
-        bottom: MediaQuery.of(context).viewPadding.bottom,
+        bottom: 34,
       ),
       child: Column(
         children: [
@@ -386,10 +407,24 @@ class BookingSuccessScreen extends StatelessWidget {
             variant: AppButtonVariant.primary,
           ),
           const SizedBox(height: AppSpacing.sm),
-          AppButton(
-            label: l10n.browseMoreClasses,
-            onPressed: () {},
-            variant: AppButtonVariant.secondary,
+          Container(
+            decoration: BoxDecoration(
+              color: isDark ? AppColors.homeBackground : Colors.white,
+              borderRadius: BorderRadius.circular(AppRadius.xl),
+              boxShadow: [
+                BoxShadow(
+                  color: AppColors.shadowColor.withValues(alpha: 0.06),
+                  offset: const Offset(0, 1),
+                  blurRadius: 2,
+                  spreadRadius: 0,
+                ),
+              ],
+            ),
+            child: AppButton(
+              label: l10n.browseMoreClasses,
+              onPressed: () {},
+              variant: AppButtonVariant.secondary,
+            ),
           ),
         ],
       ),

@@ -573,6 +573,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get checkInLongDescription => 'ستتلقى إشعارًا عند توفر تسجيل الحضور';
 
   @override
+  String get checkInButton => 'تسجيل الحضور (يفتح الساعة 5:30 مساءً)';
+
+  @override
   String get classDetail => 'تفاصيل الحصة';
 
   @override
@@ -586,7 +589,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get cancelPolicyDescription =>
-      'إلغاء مجاني حتى 4 ساعات قبل الحصة. قد يتم فرض رسوم على الإلغاء المتأخر.';
+      'أوافق على سياسة الإلغاء وأفهم أنه يمكنني الإلغاء قبل بدء الحصة بـ 4 ساعات.';
 
   @override
   String get viewMyBooking => 'عرض حجوزاتي';
@@ -634,4 +637,8 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get inLine => 'في الصف';
+
+  @override
+  String get cancelBooking =>
+      'سياسة الإلغاء: إلغاء مجاني حتى 4 ساعات قبل بدء الحصة. قد يتم فرض رسوم على الإلغاءات المتأخرة.';
 }

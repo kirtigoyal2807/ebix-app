@@ -242,16 +242,17 @@
     "total": "Total",
     "bookPolicy": "I agree to the cancellation policy and understand that I can cancel up to 4 hours before the class starts.",
     "confirmBooking": "Confirm Booking",
-    "bookingSuccess": "Booking Successful",
+    "bookingSuccess": "Booking Successfully",
     "successMessage": "You're all set for your class.",
     "checkIn": "Check In",
     "checkInDescription": "Check-in opens 30 minutes before class (Available at 5:30 PM)",
     "checkInLongDescription": "You'll receive a notification when check-in becomes available",
+    "checkInButton":"Check-In (Opens at 5:30 PM)",
     "classDetail": "Class Details",
     "time": "Time",
     "addToCalender": "Add to Calendar",
     "getDirection": "Get Directions",
-    "cancelPolicyDescription": "Free cancellation up to 4 hours before class. Late cancellations may incur a fee.",
+    "cancelPolicyDescription": "I agree to the cancellation policy and understand that I can cancel up to 4 hours before the class starts.",
     "viewMyBooking": "View My Booking",
     "browseMoreClasses": "Browse More Classes",
     "joinWailList": "Join Waitlist",
@@ -266,6 +267,8 @@
     "onWaitList": "On Waitlist",
     "onWaitListDescription": "We'll notify you if a spot opens up",
     "yourPosition": "Your Position",
-    "inLine": "In Line"
+    "inLine": "In Line",
+    "cancelBooking":"Cancellation Policy: Free cancellation up to 4 hours before class. Late cancellations may incur a fee."
+
 }
 

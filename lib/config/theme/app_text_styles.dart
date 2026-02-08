@@ -219,7 +219,7 @@ class AppTextStyles {
   static TextStyle appBarText(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return GoogleFonts.inter(
-      fontSize: 22,
+      fontSize: 16,
       fontWeight: FontWeight.w600,
       color: isDark ? AppColors.lightText : AppColors.darkText,
     );
@@ -242,7 +242,7 @@ class AppTextStyles {
       fontWeight: FontWeight.w400,
       color: isDark ? AppColors.lightText : AppColors.darkText,
       height: 1.1,
-      letterSpacing: -2,
+      // letterSpacing: -2,
     );
   }
 }

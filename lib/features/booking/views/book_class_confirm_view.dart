@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 
 import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/widgets/app_shadow.dart';
@@ -9,6 +11,8 @@ import '../../../config/theme/app_radius.dart';
 import '../../../config/theme/app_text_styles.dart';
 import '../../../core/localization/arb/app_localizations.dart';
 import '../../../widgets/app_button.dart';
+import '../cubit/confirm_booking_cubit.dart';
+import '../cubit/confirm_booking_state.dart';
 import 'booking_success_view.dart';
 
 class BookClassConfirmView extends StatelessWidget {
@@ -21,6 +25,7 @@ class BookClassConfirmView extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: isDark ? AppColors.backgroundDark : Colors.white,
+
       appBar: AppBar(
         title: AppText(
           l10n.bookYourClass,
@@ -30,9 +35,9 @@ class BookClassConfirmView extends StatelessWidget {
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-          padding: const EdgeInsets.only(
-            left: AppSpacing.md,
-            bottom: AppSpacing.xs,
+          padding: const EdgeInsetsDirectional.only(
+            start: AppSpacing.xxl,
+            bottom: 3,
           ),
           icon: Icon(
             Directionality.of(context) == TextDirection.rtl
@@ -44,42 +49,45 @@ class BookClassConfirmView extends StatelessWidget {
           onPressed: () => Navigator.of(context).pop(),
         ),
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _buildClassDetailsCard(isDark: isDark),
-          const SizedBox(height: AppSpacing.sm),
-          Divider(
-            color: isDark ? AppColors.greyText : AppColors.buttonBorder,
-            height: 1,
-          ),
-          const SizedBox(height: AppSpacing.lg),
-
-          _buildPaymentSummary(isDark: isDark, l10n: l10n),
-          const SizedBox(height: AppSpacing.lg),
-
-          _buildPolicyAgreement(l10n: l10n),
-          const Spacer(),
-
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
-            child: AppButton(
-              label: l10n.confirmBooking,
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const BookingSuccessScreen(
-                      successPage: SuccessPage.booking,
-                    ),
-                  ),
-                );
-              },
-              variant: AppButtonVariant.primary,
+      body: BlocProvider(
+        create: (context) => ConfirmBookingCubit(),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _buildClassDetailsCard(isDark: isDark),
+            const SizedBox(height: AppSpacing.sm),
+            Divider(
+              color: isDark ? AppColors.greyText : AppColors.buttonBorder,
+              height: 1,
             ),
-          ),
-          const SizedBox(height: 34),
-        ],
+            const SizedBox(height: AppSpacing.lg),
+
+            _buildPaymentSummary(isDark: isDark, l10n: l10n),
+            const SizedBox(height: AppSpacing.lg),
+
+            _buildPolicyAgreement(l10n: l10n, isDark: isDark),
+            const Spacer(),
+
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+              child: AppButton(
+                label: l10n.confirmBooking,
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const BookingSuccessScreen(
+                        successPage: SuccessPage.booking,
+                      ),
+                    ),
+                  );
+                },
+                variant: AppButtonVariant.primary,
+              ),
+            ),
+            const SizedBox(height: 34),
+          ],
+        ),
       ),
     );
   }
@@ -117,17 +125,17 @@ class BookClassConfirmView extends StatelessWidget {
                   'Power Pilates',
                   style: (context) => AppTextStyles.gelasioMedium(context),
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: AppSpacing.lmd),
                 _buildDetailRow(
                   icon: Icons.location_on_outlined,
                   text: 'Downtown Studio',
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(height: AppSpacing.sm),
                 _buildDetailRow(
                   icon: Icons.watch_later_outlined,
                   text: 'Today, 6:00 PM',
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(height: AppSpacing.sm),
                 _buildDetailRow(
                   icon: Icons.person_outline,
                   text: 'Aisha Sherin',
@@ -169,7 +177,7 @@ class BookClassConfirmView extends StatelessWidget {
         children: [
           AppText(
             l10n.paymentSummery,
-            style: (context) => AppTextStyles.gelasioMedium(context),
+            style: (context) => AppTextStyles.gelasioRegular(context),
           ),
           const SizedBox(height: AppSpacing.md),
           Container(
@@ -217,35 +225,87 @@ class BookClassConfirmView extends StatelessWidget {
     );
   }
 
-  Widget _buildPolicyAgreement({required AppLocalizations l10n}) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Checkbox(
-            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-            visualDensity: VisualDensity.compact,
-            value: false,
-            onChanged: (value) {},
-            activeColor: AppColors.primary,
-            checkColor: Colors.white,
-            side: const BorderSide(color: AppColors.buttonBorder, width: 1),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(4),
-            ),
+  Widget _buildPolicyAgreement({
+    required AppLocalizations l10n,
+    required bool isDark,
+  }) {
+    return BlocBuilder<ConfirmBookingCubit, ConfirmBookingState>(
+      builder: (context, state) {
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              GestureDetector(
+                onTap: () {
+                  context.read<ConfirmBookingCubit>().setAgree();
+                },
+                child: state.agreePolicy == true
+                    ? Container(
+                        width: 16,
+                        height: 16,
+                        decoration: BoxDecoration(
+                          color: (isDark
+                              ? AppColors.languageIconDark
+                              : AppColors.languageIcon),
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                        child: Center(
+                          child: SvgPicture.asset(
+                            "assets/images/svg/ic_checkbox_white.svg",
+                            width: 8,
+                            height: 8,
+                            fit: BoxFit.contain,
+                            // colorFilter: ColorFilter.mode(
+                            //   selected ? theme.colorScheme.primary : theme.hintColor,
+                            //   BlendMode.srcIn,
+                            // ),
+                            alignment: Alignment.center,
+                          ),
+                        ),
+                        // child: const Icon(Icons.check, color: Colors.white, size: 14),
+                      )
+                    : SizedBox(
+                        height: 16,
+                        width: 16,
+                        child: Checkbox(
+                          value: state.agreePolicy,
+                          onChanged: (value) {
+                            context.read<ConfirmBookingCubit>().setAgree();
+                          },
+                          materialTapTargetSize:
+                              MaterialTapTargetSize.shrinkWrap,
+                          visualDensity: const VisualDensity(
+                            horizontal: -4,
+                            vertical: -4,
+                          ),
+                          activeColor: AppColors.languageIcon,
+                          checkColor: Colors.white,
+                          side: const BorderSide(
+                            color: AppColors.buttonBorder,
+                            width: 1,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(4),
+                          ),
+                        ),
+                      ),
+              ),
+
+              const SizedBox(width: AppSpacing.base),
+              Expanded(
+                child: AppText(
+                  l10n.cancelPolicyDescription,
+                  style: (context) =>
+                      AppTextStyles.helpAndSupportItemSubLabel(context),
+                  maxLines: 3,
+                ),
+              ),
+            ],
           ),
-          const SizedBox(width: AppSpacing.base),
-          Expanded(
-            child: AppText(
-              l10n.cancelPolicyDescription,
-              style: (context) =>
-                  AppTextStyles.helpAndSupportItemSubLabel(context),
-              maxLines: 3,
-            ),
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 }
