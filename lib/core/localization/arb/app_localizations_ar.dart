@@ -682,4 +682,32 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get reviewerComment1 =>
       '\"سارة رائعة! حصصها مليئة بالتحديات لكنها تحرص على أن يشعر الجميع بالدعم. لقد رأيت تقدماً مذهلاً في قوتي الأساسية.\"';
+
+  @override
+  String get branchNotInPlanTitle => 'هذا الفرع غير مشمول في خطتك';
+
+  @override
+  String get branchNotInPlanDescription =>
+      'استوديو ويست سايد غير مشمول في خطتك المميزة. قم بترقية خطتك أو ادفع لكل حصة للوصول إلى هذا الموقع.';
+
+  @override
+  String get yourPlan => 'خطتك:';
+
+  @override
+  String get neededPlan => 'الخطة المطلوبة:';
+
+  @override
+  String get premiumPlan => 'الخطة المميزة (وسط المدينة + أبتاون)';
+
+  @override
+  String get elitePlan => 'خطة النخبة (جميع المواقع)';
+
+  @override
+  String get upgradeToElite => 'الترقية إلى خطة النخبة';
+
+  @override
+  String get paySingleClass => 'ادفع 24 دولارًا لحصة واحدة';
+
+  @override
+  String get cancel => 'إلغاء';
 }

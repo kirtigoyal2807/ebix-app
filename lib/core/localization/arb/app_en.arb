@@ -268,7 +268,7 @@
     "onWaitListDescription": "We'll notify you if a spot opens up",
     "yourPosition": "Your Position",
     "inLine": "In Line",
-    "cancelBooking":"Cancellation Policy: Free cancellation up to 4 hours before class. Late cancellations may incur a fee."
+    "cancelBooking":"Cancellation Policy: Free cancellation up to 4 hours before class. Late cancellations may incur a fee.",
 
   "minutesCount": "{count} minutes",
   "classDescriptionShort": "Build strength, flexibility, and calm through guided Pilates sessions.",
@@ -289,7 +289,16 @@
   },
   "reviewerName1": "Jessica M.",
   "reviewerTime1": "2 days ago",
-  "reviewerComment1": "\"Sarah is incredible! Her classes are challenging but she makes sure everyone feels supported. I've seen amazing progress in my core strength.\""
+  "reviewerComment1": "\"Sarah is incredible! Her classes are challenging but she makes sure everyone feels supported. I've seen amazing progress in my core strength.\"",
+  "branchNotInPlanTitle": "Branch not in your plan",
+    "branchNotInPlanDescription": "Westside Studio is not included in your Premium Plan. Upgrade your plan or pay per class to access this location.",
+    "yourPlan": "Your Plan:",
+    "neededPlan": "Needed:",
+    "premiumPlan": "Premium (Downtown + Uptown)",
+    "elitePlan": "Elite Plan (All locations)",
+    "upgradeToElite": "Upgrade to Elite Plan",
+    "paySingleClass": "Pay $24 for Single Class",
+    "cancel": "Cancel"
 }
 
 

@@ -6,6 +6,7 @@ import 'package:pilates_app/config/theme/app_radius.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/core/localization/localization_extension.dart';
+import 'package:pilates_app/features/booking/widgets/upgrade_bottom_sheet.dart';
 import 'package:pilates_app/widgets/app_text.dart';
 import 'package:pilates_app/features/booking/cubit/booking_cubit.dart';
 import '../views/class_detail_view.dart';
@@ -44,16 +45,27 @@ class BookingClassCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(AppRadius.lg),
         child: InkWell(
           onTap: () {
-            final cubit = BlocProvider.of<BookingCubit>(context);
-            cubit.loadClassDetails();
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (newContext) => BlocProvider.value(
-                  value: cubit,
-                  child: const ClassDetailView(),
+            if(isInPlan){
+              final cubit = BlocProvider.of<BookingCubit>(context);
+              cubit.loadClassDetails();
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (newContext) => BlocProvider.value(
+                    value: cubit,
+                    child:   ClassDetailView(classState: ClassState.booking,),
+                  ),
                 ),
-              ),
-            );
+              );
+            }else{
+              showModalBottomSheet(
+                context: context,
+                isScrollControlled: true,
+                backgroundColor: Colors.transparent,
+                builder: (_) => const BranchNotInPlanSheet(),
+              );
+
+            }
+
           },
           borderRadius: BorderRadius.circular(AppRadius.lg),
           child: Container(

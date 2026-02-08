@@ -16,8 +16,13 @@ import 'package:pilates_app/features/booking/widgets/class_reviews_section.dart'
 import 'package:pilates_app/widgets/app_app_bar.dart';
 import 'package:pilates_app/widgets/app_text.dart';
 
+import 'book_class_confirm_view.dart';
+import 'join_waitlist_view.dart';
+
 class ClassDetailView extends StatelessWidget {
-  const ClassDetailView({super.key});
+  const ClassDetailView({super.key, required this.classState});
+
+  final ClassState classState;
 
   @override
   Widget build(BuildContext context) {
@@ -69,22 +74,48 @@ class ClassDetailView extends StatelessWidget {
                 right: 0,
                 bottom: size.height * 0.08,
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: AppSpacing.lg,
+                  ),
                   child: ElevatedButton(
-                    onPressed: () => context.read<BookingCubit>().bookClass(),
+                    onPressed: () {
+                      if (classState == ClassState.booking) {
+                        context.read<BookingCubit>().bookClass();
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (_) => const BookClassConfirmView(),
+                          ),
+                        );
+                      } else {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => const JoinWaitlistView(),
+                          ),
+                        );
+                      }
+                    },
+
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.splashBackgroundDark,
                       foregroundColor: Colors.white,
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(AppRadius.pillRadius),
+                        borderRadius: BorderRadius.circular(
+                          AppRadius.pillRadius,
+                        ),
                       ),
                       minimumSize: const Size(double.infinity, 48),
                     ),
                     child: AppText(
-                      context.l10n.bookThisClass,
-                      style: (context) => AppTextStyles.button(context).copyWith(
-                        fontSize: size.width * 0.04 > 16 ? 16 : size.width * 0.04,
-                      ),
+                      classState == ClassState.booking
+                          ? context.l10n.bookThisClass
+                          : context.l10n.joinWailList,
+                      style: (context) =>
+                          AppTextStyles.button(context).copyWith(
+                            fontSize: size.width * 0.04 > 16
+                                ? 16
+                                : size.width * 0.04,
+                          ),
                     ),
                   ),
                 ),
@@ -96,3 +127,5 @@ class ClassDetailView extends StatelessWidget {
     );
   }
 }
+
+enum ClassState { booking, waitList }

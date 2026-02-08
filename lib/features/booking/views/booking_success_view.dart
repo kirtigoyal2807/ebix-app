@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:pilates_app/config/theme/app_spacing.dart';
@@ -10,6 +11,9 @@ import '../../../config/theme/app_text_styles.dart';
 import '../../../core/localization/arb/app_localizations.dart';
 import '../../../widgets/app_button.dart';
 import '../../../widgets/dotted_underline.dart';
+import '../cubit/booking_cubit.dart';
+import '../cubit/booking_state.dart';
+import 'class_detail_view.dart';
 import 'join_waitlist_view.dart';
 
 class BookingSuccessScreen extends StatelessWidget {
@@ -396,15 +400,32 @@ class BookingSuccessScreen extends StatelessWidget {
       ),
       child: Column(
         children: [
-          AppButton(
-            label: l10n.viewMyBooking,
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (_) => const JoinWaitlistView()),
-              );
-            },
-            variant: AppButtonVariant.primary,
+          BlocProvider(
+            create: (context) => BookingCubit(),
+            child: BlocBuilder<BookingCubit, BookingState>(
+              builder: (context,state) {
+                return AppButton(
+                  label: l10n.viewMyBooking,
+                  onPressed: () {
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(builder: (_) => const JoinWaitlistView()),
+                    // );
+                    final cubit = BlocProvider.of<BookingCubit>(context);
+                    cubit.loadClassDetails();
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (newContext) => BlocProvider.value(
+                          value: cubit,
+                          child:   ClassDetailView(classState: ClassState.waitList,),
+                        ),
+                      ),
+                    );
+                  },
+                  variant: AppButtonVariant.primary,
+                );
+              }
+            ),
           ),
           const SizedBox(height: AppSpacing.sm),
           Container(

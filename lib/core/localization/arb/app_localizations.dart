@@ -1381,6 +1381,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'\"Sarah is incredible! Her classes are challenging but she makes sure everyone feels supported. I\'ve seen amazing progress in my core strength.\"'**
   String get reviewerComment1;
+
+  /// No description provided for @branchNotInPlanTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Branch not in your plan'**
+  String get branchNotInPlanTitle;
+
+  /// No description provided for @branchNotInPlanDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Westside Studio is not included in your Premium Plan. Upgrade your plan or pay per class to access this location.'**
+  String get branchNotInPlanDescription;
+
+  /// No description provided for @yourPlan.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Plan:'**
+  String get yourPlan;
+
+  /// No description provided for @neededPlan.
+  ///
+  /// In en, this message translates to:
+  /// **'Needed:'**
+  String get neededPlan;
+
+  /// No description provided for @premiumPlan.
+  ///
+  /// In en, this message translates to:
+  /// **'Premium (Downtown + Uptown)'**
+  String get premiumPlan;
+
+  /// No description provided for @elitePlan.
+  ///
+  /// In en, this message translates to:
+  /// **'Elite Plan (All locations)'**
+  String get elitePlan;
+
+  /// No description provided for @upgradeToElite.
+  ///
+  /// In en, this message translates to:
+  /// **'Upgrade to Elite Plan'**
+  String get upgradeToElite;
+
+  /// No description provided for @paySingleClass.
+  ///
+  /// In en, this message translates to:
+  /// **'Pay \$24 for Single Class'**
+  String get paySingleClass;
+
+  /// No description provided for @cancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get cancel;
 }
 
 class _AppLocalizationsDelegate

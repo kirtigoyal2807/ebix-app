@@ -688,4 +688,32 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get reviewerComment1 =>
       '\"Sarah is incredible! Her classes are challenging but she makes sure everyone feels supported. I\'ve seen amazing progress in my core strength.\"';
+
+  @override
+  String get branchNotInPlanTitle => 'Branch not in your plan';
+
+  @override
+  String get branchNotInPlanDescription =>
+      'Westside Studio is not included in your Premium Plan. Upgrade your plan or pay per class to access this location.';
+
+  @override
+  String get yourPlan => 'Your Plan:';
+
+  @override
+  String get neededPlan => 'Needed:';
+
+  @override
+  String get premiumPlan => 'Premium (Downtown + Uptown)';
+
+  @override
+  String get elitePlan => 'Elite Plan (All locations)';
+
+  @override
+  String get upgradeToElite => 'Upgrade to Elite Plan';
+
+  @override
+  String get paySingleClass => 'Pay \$24 for Single Class';
+
+  @override
+  String get cancel => 'Cancel';
 }
