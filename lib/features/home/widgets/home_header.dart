@@ -30,7 +30,7 @@ class HomeHeader extends StatelessWidget {
     final size = MediaQuery.sizeOf(context);
     final isSmallScreen = size.height < 667;
 
-    return Container(
+    return SizedBox(
       width: double.infinity,
 
       child: Stack(
@@ -41,16 +41,13 @@ class HomeHeader extends StatelessWidget {
               gradient: const LinearGradient(
                 begin: Alignment.bottomRight,
                 end: Alignment.topLeft,
-                colors: [
-                  Color(0xFFF3ECE7),
-                  Color(0xFFF7EBDD),
-                ],
+                colors: [Color(0xFFF3ECE7), Color(0xFFF7EBDD)],
               ),
             ),
-            child: SvgPicture.asset(
+            child: Image.asset(
               isDark
-                  ? 'assets/images/svg/ic_home_top_dark.svg'
-                  : 'assets/images/svg/ic_home_top_light.svg',
+                  ? 'assets/images/png/ic_home_top_dark.png'
+                  : 'assets/images/png/ic_home_top_light.png',
               height: size.height * 0.33,
               // width: size.width * 0.5,
               fit: BoxFit.fill,

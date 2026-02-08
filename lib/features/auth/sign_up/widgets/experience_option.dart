@@ -44,7 +44,9 @@ class ExperienceOption extends StatelessWidget {
             borderRadius: BorderRadius.circular(AppRadius.md),
             border: Border.all(
               color: selected
-                  ? isDark ? AppColors.languageIconDark: AppColors.languageIconDark
+                  ? isDark
+                        ? AppColors.languageIconDark
+                        : AppColors.languageIconDark
                   : theme.dividerColor,
               width: selected ? 1 : 1,
             ),
@@ -82,7 +84,9 @@ class ExperienceOption extends StatelessWidget {
                     AppText(
                       description,
                       style: (context) => AppTextStyles.body(context).copyWith(
-                        color: isDark ? AppColors.darkGreyText : AppColors.greyText,
+                        color: isDark
+                            ? AppColors.darkGreyText
+                            : AppColors.greyText,
                       ),
                     ),
                   ],
@@ -95,10 +99,12 @@ class ExperienceOption extends StatelessWidget {
                   width: 20,
                   height: 20,
                   decoration: BoxDecoration(
-                    color: (isDark ? AppColors.languageIconDark:AppColors.languageIcon),
+                    color: (isDark
+                        ? AppColors.languageIconDark
+                        : AppColors.languageIcon),
                     borderRadius: BorderRadius.circular(6),
                   ),
-                  child:  Center(
+                  child: Center(
                     child: SvgPicture.asset(
                       "assets/images/svg/ic_checkbox_white.svg",
                       width: 10,

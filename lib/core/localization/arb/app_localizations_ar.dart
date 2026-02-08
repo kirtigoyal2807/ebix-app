@@ -350,6 +350,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get inYourPlan => 'في خطتك';
 
   @override
+  String get withKey => 'مع';
+
+  @override
   String withTrainer(String trainer) {
     return 'مع $trainer';
   }

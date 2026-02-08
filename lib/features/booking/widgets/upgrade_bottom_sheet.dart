@@ -17,17 +17,16 @@ class BranchNotInPlanSheet extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       padding: const EdgeInsets.fromLTRB(24, 45, 24, 21),
-      decoration:   BoxDecoration(
-        color: isDark  ?AppColors.homeBackground : Colors.white,
+      decoration: BoxDecoration(
+        color: isDark ? AppColors.homeBackground : Colors.white,
         borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          isDark ?
-              SvgPicture.asset("assets/images/svg/ic_warning_dark.svg")
-              :
-          SvgPicture.asset("assets/images/svg/ic_warning.svg"),
+          isDark
+              ? SvgPicture.asset("assets/images/svg/ic_warning_dark.svg")
+              : SvgPicture.asset("assets/images/svg/ic_warning.svg"),
 
           const SizedBox(height: AppSpacing.lmd),
           AppText(
@@ -50,19 +49,24 @@ class BranchNotInPlanSheet extends StatelessWidget {
 
           // Plan card
           Container(
-            padding:  EdgeInsets.all(AppSpacing.lmd),
+            padding: EdgeInsets.all(AppSpacing.lmd),
             decoration: BoxDecoration(
-              color:isDark ? AppColors.primaryDarkButton: AppColors.seekBarLight,
+              color: isDark
+                  ? AppColors.primaryDarkButton
+                  : AppColors.seekBarLight,
               borderRadius: BorderRadius.circular(12),
             ),
             child: Column(
-              children:   [
+              children: [
                 _PlanRow(
-                  label:  context.l10n.yourPlan,
-                  value: context.l10n.premiumPlan
+                  label: context.l10n.yourPlan,
+                  value: context.l10n.premiumPlan,
                 ),
                 SizedBox(height: AppSpacing.sm),
-                _PlanRow(label:  context.l10n.neededPlan, value: context.l10n.elitePlan),
+                _PlanRow(
+                  label: context.l10n.neededPlan,
+                  value: context.l10n.elitePlan,
+                ),
               ],
             ),
           ),

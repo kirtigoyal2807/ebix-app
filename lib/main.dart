@@ -25,10 +25,7 @@ class PilatesApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
 
             locale: state.locale,
-            supportedLocales: const [
-              Locale('en'),
-              Locale('ar'),
-            ],
+            supportedLocales: const [Locale('en'), Locale('ar')],
 
             localizationsDelegates: const [
               AppLocalizations.delegate,

@@ -758,10 +758,16 @@ abstract class AppLocalizations {
   /// **'In Your Plan'**
   String get inYourPlan;
 
+  /// No description provided for @withKey.
+  ///
+  /// In en, this message translates to:
+  /// **'with'**
+  String get withKey;
+
   /// No description provided for @withTrainer.
   ///
   /// In en, this message translates to:
-  /// **'with {trainer}'**
+  /// **'{trainer}'**
   String withTrainer(String trainer);
 
   /// No description provided for @spotsLeft.

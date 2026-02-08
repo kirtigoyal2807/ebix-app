@@ -14,7 +14,7 @@ import '../../../widgets/dotted_underline.dart';
 import '../cubit/booking_cubit.dart';
 import '../cubit/booking_state.dart';
 import 'class_detail_view.dart';
-import 'join_waitlist_view.dart';
+
 
 class BookingSuccessScreen extends StatelessWidget {
   const BookingSuccessScreen({super.key, required this.successPage});
@@ -24,7 +24,7 @@ class BookingSuccessScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final l10n = AppLocalizations.of(context)!;
+    final l10n = AppLocalizations.of(context);
 
     return Scaffold(
       backgroundColor: isDark ? AppColors.backgroundDark : Colors.white,
@@ -108,7 +108,7 @@ class BookingSuccessScreen extends StatelessWidget {
   }
 
   Widget _buildCheckInSection(BuildContext context, bool isDark) {
-    final l10n = AppLocalizations.of(context)!;
+    final l10n = AppLocalizations.of(context);
 
     return Container(
       margin: const EdgeInsetsDirectional.symmetric(horizontal: AppSpacing.lg),
@@ -172,7 +172,7 @@ class BookingSuccessScreen extends StatelessWidget {
   }
 
   Widget _buildPositionCard(BuildContext context, bool isDark) {
-    final l10n = AppLocalizations.of(context)!;
+    final l10n = AppLocalizations.of(context);
 
     return Column(
       children: [
@@ -228,7 +228,7 @@ class BookingSuccessScreen extends StatelessWidget {
   }
 
   Widget _buildClassDetailsSection(BuildContext context, bool isDark) {
-    final l10n = AppLocalizations.of(context)!;
+    final l10n = AppLocalizations.of(context);
 
     return Container(
       margin: const EdgeInsetsDirectional.symmetric(horizontal: AppSpacing.lg),
@@ -335,7 +335,7 @@ class BookingSuccessScreen extends StatelessWidget {
   }
 
   Widget _buildActionButtons(BuildContext context, bool isDark) {
-    final l10n = AppLocalizations.of(context)!;
+    final l10n = AppLocalizations.of(context);
 
     return Padding(
       padding: const EdgeInsetsDirectional.symmetric(horizontal: AppSpacing.lg),
@@ -390,20 +390,16 @@ class BookingSuccessScreen extends StatelessWidget {
   }
 
   Widget _buildFooterLinks(BuildContext context, bool isDark) {
-    final l10n = AppLocalizations.of(context)!;
+    final l10n = AppLocalizations.of(context);
 
     return Padding(
-      padding: EdgeInsetsDirectional.only(
-        start: 24,
-        end: 24,
-        bottom: 34,
-      ),
+      padding: EdgeInsetsDirectional.only(start: 24, end: 24, bottom: 34),
       child: Column(
         children: [
           BlocProvider(
             create: (context) => BookingCubit(),
             child: BlocBuilder<BookingCubit, BookingState>(
-              builder: (context,state) {
+              builder: (context, state) {
                 return AppButton(
                   label: l10n.viewMyBooking,
                   onPressed: () {
@@ -417,14 +413,16 @@ class BookingSuccessScreen extends StatelessWidget {
                       MaterialPageRoute(
                         builder: (newContext) => BlocProvider.value(
                           value: cubit,
-                          child:   ClassDetailView(classState: ClassState.waitList,),
+                          child: ClassDetailView(
+                            classState: ClassState.waitList,
+                          ),
                         ),
                       ),
                     );
                   },
                   variant: AppButtonVariant.primary,
                 );
-              }
+              },
             ),
           ),
           const SizedBox(height: AppSpacing.sm),

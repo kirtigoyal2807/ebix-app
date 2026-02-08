@@ -149,6 +149,7 @@
   },
   "featuredClass": "حصة مميزة",
   "inYourPlan": "في خطتك",
+  "withKey": "مع",
   "withTrainer": "مع {trainer}",
   "@withTrainer": {
     "placeholders": {

@@ -26,7 +26,7 @@ class ClassDetailView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    // final isDark = Theme.of(context).brightness == Brightness.dark;
     final size = MediaQuery.sizeOf(context);
 
     return Scaffold(
@@ -72,7 +72,7 @@ class ClassDetailView extends StatelessWidget {
               Positioned(
                 left: 0,
                 right: 0,
-                bottom: size.height * 0.08,
+                bottom: size.height * 0.04,
                 child: Padding(
                   padding: const EdgeInsets.symmetric(
                     horizontal: AppSpacing.lg,

@@ -355,8 +355,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get inYourPlan => 'In Your Plan';
 
   @override
+  String get withKey => 'with';
+
+  @override
   String withTrainer(String trainer) {
-    return 'with $trainer';
+    return '$trainer';
   }
 
   @override

@@ -147,8 +147,20 @@ class BookClassConfirmView extends StatelessWidget {
             height: 72,
             width: 94,
             decoration: BoxDecoration(
-              color: Colors.grey,
+              // color: Colors.grey,
               borderRadius: BorderRadius.circular(12),
+            ),
+            child: ClipRRect(
+              borderRadius: const BorderRadius.vertical(
+                top: Radius.circular(AppRadius.lg),
+                bottom: Radius.circular(AppRadius.lg),
+              ),
+              child: Image.asset(
+                "assets/images/demo images/yoga.png",
+                height: 72,
+                width: 94,
+                fit: BoxFit.fill,
+              ),
             ),
           ),
         ],

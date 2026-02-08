@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
+
 import 'package:pilates_app/config/theme/app_colors.dart';
 import 'package:pilates_app/config/theme/app_radius.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
@@ -14,7 +14,7 @@ class FeaturedClassCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final size = MediaQuery.sizeOf(context);
-    final imageHeight = size.height * 0.22 ;
+    final imageHeight = size.height * 0.22;
 
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
@@ -32,43 +32,64 @@ class FeaturedClassCard extends StatelessWidget {
             borderRadius: const BorderRadius.vertical(
               top: Radius.circular(AppRadius.lg),
             ),
-            child: SvgPicture.asset(
-              'assets/images/svg/ic_yoga.svg',
-              height: imageHeight,
-              // width: width * 0.6,
-              fit: BoxFit.fill,
-            ),
+            child:
+                // SvgPicture.asset(
+                //   'assets/images/svg/ic_yoga.svg',
+                //   height: imageHeight,
+                //   // width: width * 0.6,
+                //   fit: BoxFit.fill,
+                // ),
+                Image.asset(
+                  "assets/images/demo images/Class Image.png",
+                  height: imageHeight,
+                  // width: width * 0.6,
+                  fit: BoxFit.fill,
+                ),
           ),
           Container(
             margin: const EdgeInsets.symmetric(
               horizontal: AppSpacing.md,
-              // vertical: AppSpacing.xs,
+              vertical: AppSpacing.sm,
             ),
             padding: const EdgeInsets.symmetric(
               horizontal: AppSpacing.sm,
               vertical: AppSpacing.xs,
             ),
             decoration: BoxDecoration(
-              color: isDark ?AppColors.featuredTagBackgroundDarkColor:AppColors.featuredTagBackgroundColor,
+              color: isDark
+                  ? AppColors.featuredTagBackgroundDarkColor
+                  : AppColors.featuredTagBackgroundColor,
               borderRadius: BorderRadius.circular(16),
             ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                 Icon(Icons.check, color: isDark?AppColors.lightGreyColor :AppColors.GreyColor, size: 14),
+                Icon(
+                  Icons.check,
+                  color: isDark
+                      ? AppColors.lightGreyColor
+                      : AppColors.GreyColor,
+                  size: 14,
+                ),
                 const SizedBox(width: AppSpacing.xs),
                 AppText(
                   context.l10n.inYourPlan.toUpperCase(),
                   style: (context) => AppTextStyles.boldBody(context).copyWith(
                     fontSize: size.width * 0.025 > 10 ? 10 : size.width * 0.025,
-                    color: isDark?AppColors.lightGreyColor :AppColors.GreyColor,
+                    color: isDark
+                        ? AppColors.lightGreyColor
+                        : AppColors.GreyColor,
                   ),
                 ),
               ],
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(right: AppSpacing.md,left: AppSpacing.md,bottom: AppSpacing.md),
+            padding: const EdgeInsets.only(
+              right: AppSpacing.md,
+              left: AppSpacing.md,
+              bottom: AppSpacing.md,
+            ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -76,7 +97,7 @@ class FeaturedClassCard extends StatelessWidget {
                   '${context.l10n.powerPilates} ${context.l10n.withTrainer("Aisha Sherin")}',
                   style: (context) => AppTextStyles.boldBody(context).copyWith(
                     fontSize: size.width * 0.04 > 16 ? 16 : size.width * 0.04,
-                    color: isDark ? AppColors.lightText: AppColors.darkText,
+                    color: isDark ? AppColors.lightText : AppColors.darkText,
                   ),
                 ),
                 const SizedBox(height: AppSpacing.xs),
@@ -87,8 +108,9 @@ class FeaturedClassCard extends StatelessWidget {
                         fontSize: size.width * 0.03 > 14
                             ? 14
                             : size.width * 0.03,
-                        color: isDark ? AppColors.lightGrey: AppColors.lightGrey,
-
+                        color: isDark
+                            ? AppColors.lightGrey
+                            : AppColors.lightGrey,
                       ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,

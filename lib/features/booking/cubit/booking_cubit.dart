@@ -38,6 +38,5 @@ class BookingCubit extends Cubit<BookingState> {
 
   void bookClass() {
     // Add booking logic here
-
   }
 }

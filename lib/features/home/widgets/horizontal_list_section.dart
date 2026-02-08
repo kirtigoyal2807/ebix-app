@@ -15,9 +15,9 @@ class ClassTypesSection extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final size = MediaQuery.sizeOf(context);
     final types = [
-      {'name': context.l10n.classTypeReformer, 'image': 'assets/images/svg/ic_table.svg'},
-      {'name': context.l10n.classTypeCadillac, 'image': 'assets/images/svg/ic_table.svg'},
-      {'name': context.l10n.classTypeFlow, 'image': 'assets/images/svg/ic_table.svg'},
+      {'name': context.l10n.classTypeReformer, 'image': 'assets/images/demo images/ic_table.png'},
+      {'name': context.l10n.classTypeCadillac, 'image': 'assets/images/demo images/ic_table.png'},
+      {'name': context.l10n.classTypeFlow, 'image': 'assets/images/demo images/ic_table.png'},
     ];
 
     final itemWidth = size.width * 0.32 > 120 ? 120.0 : size.width * 0.32;
@@ -40,7 +40,7 @@ class ClassTypesSection extends StatelessWidget {
                   children: [
                     ClipRRect(
                       borderRadius: BorderRadius.circular(AppRadius.md),
-                      child: SvgPicture.asset(
+                      child: Image.asset(
                         types[index]['image']!,
                         width: itemWidth,
                         height: itemHeight,

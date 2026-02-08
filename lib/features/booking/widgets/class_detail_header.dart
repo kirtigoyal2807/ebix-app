@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
+
 import 'package:pilates_app/config/theme/app_colors.dart';
 import 'package:pilates_app/config/theme/app_radius.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
@@ -22,12 +22,19 @@ class ClassDetailHeader extends StatelessWidget {
         // Hero Image
         ClipRRect(
           borderRadius: BorderRadius.circular(AppRadius.lg + 4),
-          child: SvgPicture.asset(
-            'assets/images/svg/ic_yoga.svg',
-            width: double.infinity,
-            height: size.height * 0.28,
-            fit: BoxFit.cover,
-          ),
+          child:
+              // SvgPicture.asset(
+              //   'assets/images/svg/ic_yoga.svg',
+              //   width: double.infinity,
+              //   height: size.height * 0.28,
+              //   fit: BoxFit.cover,
+              // ),
+              Image.asset(
+                "assets/images/demo images/Class Image.png",
+                height: size.height * 0.28,
+                // width: width * 0.6,
+                fit: BoxFit.cover,
+              ),
         ),
         const SizedBox(height: AppSpacing.lg),
 
@@ -38,15 +45,18 @@ class ClassDetailHeader extends StatelessWidget {
             Expanded(
               child: AppText(
                 context.l10n.powerPilates,
-                style: (context) => AppTextStyles.heading1(context).copyWith(
-                  fontSize: 24,
-                  fontWeight: FontWeight.w500,
-                ),
+                style: (context) => AppTextStyles.heading1(
+                  context,
+                ).copyWith(fontSize: 24, fontWeight: FontWeight.w500),
               ),
             ),
             Row(
               children: [
-                const Icon(Icons.star, color: AppColors.goldStarColor, size: 20),
+                const Icon(
+                  Icons.star,
+                  color: AppColors.goldStarColor,
+                  size: 20,
+                ),
                 const SizedBox(width: 4),
                 AppText(
                   '4.5',

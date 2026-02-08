@@ -18,7 +18,7 @@ class JoinWaitlistView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final l10n = AppLocalizations.of(context)!;
+    final l10n = AppLocalizations.of(context);
 
     return Scaffold(
       backgroundColor: isDark ? AppColors.backgroundDark : Colors.white,
@@ -62,7 +62,7 @@ class JoinWaitlistView extends StatelessWidget {
             _buildSmartTip(context, isDark),
             const SizedBox(height: AppSpacing.lg),
             _buildFooterLinks(context, isDark),
-            SizedBox(height: MediaQuery.of(context).viewPadding.bottom,)
+            SizedBox(height: MediaQuery.of(context).viewPadding.bottom),
           ],
         ),
       ),
@@ -71,7 +71,7 @@ class JoinWaitlistView extends StatelessWidget {
 
   /// CLASS DETAILS
   Widget _buildClassDetailsCard(BuildContext context, bool isDark) {
-    final l10n = AppLocalizations.of(context)!;
+    // final l10n = AppLocalizations.of(context)!;
 
     return Container(
       margin: const EdgeInsets.symmetric(
@@ -101,8 +101,20 @@ class JoinWaitlistView extends StatelessWidget {
             height: 72,
             width: 94,
             decoration: BoxDecoration(
-              color: Colors.grey,
-              borderRadius: BorderRadius.circular(AppRadius.md),
+              // color: Colors.grey,
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: ClipRRect(
+              borderRadius: const BorderRadius.vertical(
+                top: Radius.circular(AppRadius.lg),
+                bottom: Radius.circular(AppRadius.lg),
+              ),
+              child: Image.asset(
+                "assets/images/demo images/yoga.png",
+                height: 72,
+                width: 94,
+                fit: BoxFit.fill,
+              ),
             ),
           ),
           const SizedBox(width: AppSpacing.lmd),
@@ -140,7 +152,7 @@ class JoinWaitlistView extends StatelessWidget {
 
   /// CLASS FULL CARD
   Widget _buildClassCard(BuildContext context, bool isDark) {
-    final l10n = AppLocalizations.of(context)!;
+    final l10n = AppLocalizations.of(context);
 
     return Container(
       width: double.infinity,
@@ -177,7 +189,7 @@ class JoinWaitlistView extends StatelessWidget {
 
   /// WAITLIST INFO
   Widget _buildWaitListCard(BuildContext context, bool isDark) {
-    final l10n = AppLocalizations.of(context)!;
+    final l10n = AppLocalizations.of(context);
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
@@ -229,7 +241,7 @@ class JoinWaitlistView extends StatelessWidget {
 
   /// SMART TIP
   Widget _buildSmartTip(BuildContext context, bool isDark) {
-    final l10n = AppLocalizations.of(context)!;
+    final l10n = AppLocalizations.of(context);
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
@@ -275,13 +287,13 @@ class JoinWaitlistView extends StatelessWidget {
 
   /// FOOTER
   Widget _buildFooterLinks(BuildContext context, bool isDark) {
-    final l10n = AppLocalizations.of(context)!;
+    final l10n = AppLocalizations.of(context);
 
     return Padding(
       padding: EdgeInsets.only(
         left: AppSpacing.lg,
         right: AppSpacing.lg,
-        bottom: 34
+        bottom: 34,
       ),
       child: Column(
         children: [

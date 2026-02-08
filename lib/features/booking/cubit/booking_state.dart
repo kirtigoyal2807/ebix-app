@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 
 enum BookingTab { classes, trainers }
+
 enum ClassDetailStatus { initial, loading, loaded, error }
 
 class BookingState extends Equatable {
@@ -44,12 +45,12 @@ class BookingState extends Equatable {
 
   @override
   List<Object?> get props => [
-        selectedTab,
-        searchQuery,
-        selectedBranch,
-        selectedDate,
-        selectedCategory,
-        selectedGender,
-        classDetailStatus,
-      ];
+    selectedTab,
+    searchQuery,
+    selectedBranch,
+    selectedDate,
+    selectedCategory,
+    selectedGender,
+    classDetailStatus,
+  ];
 }

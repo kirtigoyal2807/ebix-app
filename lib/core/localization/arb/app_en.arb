@@ -149,7 +149,8 @@
   },
   "featuredClass": "Featured Class",
   "inYourPlan": "In Your Plan",
-  "withTrainer": "with {trainer}",
+  "withKey": "with",
+  "withTrainer": "{trainer}",
   "@withTrainer": {
     "placeholders": {
       "trainer": {

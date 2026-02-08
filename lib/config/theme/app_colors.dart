@@ -26,7 +26,7 @@ class AppColors {
   static const arrowIcon = Color(0xFFA6A09B);
   static const selectedLanguageBg = Color(0xFFFAE8DD);
   static const redLight = Color(0xFFE5484D);
-  static const successBorder= Color(0xFFD6F1DF);
+  static const successBorder = Color(0xFFD6F1DF);
 
   // Dark
   static const backgroundDark = Color(0xFF0F0D0C);
@@ -36,8 +36,8 @@ class AppColors {
   static const borderDark = Color(0xFF2A2623);
   static const languageIconDark = Color(0xFF9A7E6D);
   static const languageTextDark = Color(0xFFB59D8E);
-  static const redDark= Color(0xFFEB8E90);
-  static const successBorderDark= Color(0xFF8ECEAA);
+  static const redDark = Color(0xFFEB8E90);
+  static const successBorderDark = Color(0xFF8ECEAA);
 
   // Splash Screen
   static const splashBackgroundDark = Color(0xFF65422C); // Dark brown
@@ -84,12 +84,10 @@ class AppColors {
   static const goldStarColor = Color(0xFFF0B100);
   static const ratingBarBackground = Color(0xFFE7E5E4);
 
-
   ///shadow Color
   static const shadowColor = Color(0xFF5F5854);
 
   static const successColor = Color(0xFF30A46C);
   static const greyContainerBg = Color(0xFFF5F5F4);
   static const primaryDarkContainer = Color(0xFF513523);
-
 }
