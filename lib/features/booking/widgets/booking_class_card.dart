@@ -315,7 +315,7 @@ class BookingClassCard extends StatelessWidget {
                                   : size.width * 0.03,
                               color: isDark
                                   ? AppColors.darkGreyText
-                                  : AppColors.greyText,
+                                  : AppColors.lightGrey,
                             ),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,

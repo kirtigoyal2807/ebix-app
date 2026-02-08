@@ -48,7 +48,7 @@ class ClassTypesSection extends StatelessWidget {
                       ),
 
                     ),
-                    const SizedBox(height: AppSpacing.xs),
+                    const SizedBox(height: AppSpacing.sm),
                     AppText(
                       types[index]['name']!,
                       style: (context) => AppTextStyles.heading1(context).copyWith(

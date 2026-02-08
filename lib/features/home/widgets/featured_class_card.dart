@@ -57,9 +57,17 @@ class FeaturedClassCard extends StatelessWidget {
             ),
             decoration: BoxDecoration(
               color: isDark
-                  ? AppColors.featuredTagBackgroundDarkColor
+                  ? AppColors.successColor.withValues(
+                alpha: 0.36,
+              )
                   : AppColors.featuredTagBackgroundColor,
               borderRadius: BorderRadius.circular(16),
+              border: Border.all(
+                color: isDark
+                    ? AppColors.successBorderDark
+                    : AppColors.successBorder,
+                width: 1,
+              ),
             ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
@@ -72,13 +80,20 @@ class FeaturedClassCard extends StatelessWidget {
                   size: 14,
                 ),
                 const SizedBox(width: AppSpacing.xs),
-                AppText(
-                  context.l10n.inYourPlan.toUpperCase(),
-                  style: (context) => AppTextStyles.boldBody(context).copyWith(
-                    fontSize: size.width * 0.025 > 10 ? 10 : size.width * 0.025,
-                    color: isDark
-                        ? AppColors.lightGreyColor
-                        : AppColors.GreyColor,
+                Flexible(
+                  child: AppText(
+                    context.l10n.inYourPlan,
+                    style: (context) =>
+                        AppTextStyles.boldBody(
+                          context,
+                        ).copyWith(
+                          fontSize: 10,
+                          color: isDark
+                              ? AppColors.lightGreyColor
+                              : AppColors.GreyColor,
+                        ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ),
               ],
@@ -93,13 +108,49 @@ class FeaturedClassCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                AppText(
-                  '${context.l10n.powerPilates} ${context.l10n.withTrainer("Aisha Sherin")}',
-                  style: (context) => AppTextStyles.boldBody(context).copyWith(
-                    fontSize: size.width * 0.04 > 16 ? 16 : size.width * 0.04,
-                    color: isDark ? AppColors.lightText : AppColors.darkText,
+                // AppText(
+                //   '${context.l10n.powerPilates} ${context.l10n.withTrainer("Aisha Sherin")}',
+                //   style: (context) => AppTextStyles.boldBody(context).copyWith(
+                //     fontSize: size.width * 0.04 > 16 ? 16 : size.width * 0.04,
+                //     color: isDark ? AppColors.lightText : AppColors.darkText,
+                //   ),
+                // ),
+                RichText(
+                  text: TextSpan(
+                    text:context.l10n.powerPilates,
+                    style: AppTextStyles.boldBody(context).copyWith(
+                      fontSize: size.width * 0.04 > 16
+                          ? 16
+                          : size.width * 0.04,
+                      color: isDark
+                          ? AppColors.lightText
+                          : AppColors.darkText,
+                    ),
+                    children: [
+                      TextSpan(
+                        text: " ${context.l10n.withKey} ",
+                        style: AppTextStyles.bodyText(context).copyWith(
+                          fontSize: size.width * 0.04 > 16
+                              ? 16
+                              : size.width * 0.04,
+                          // highlight
+                        ),
+                      ),
+                      TextSpan(
+                        text: context.l10n.withTrainer("Aisha Sherin"),
+                        style: AppTextStyles.boldBody(context).copyWith(
+                          fontSize: size.width * 0.04 > 16
+                              ? 16
+                              : size.width * 0.04,
+                          color: isDark
+                              ? AppColors.lightText
+                              : AppColors.darkText,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
+
                 const SizedBox(height: AppSpacing.xs),
                 AppText(
                   '${context.l10n.branchDowntown} • ${context.l10n.today} • ${context.l10n.spotsLeft(3)}',
@@ -109,7 +160,7 @@ class FeaturedClassCard extends StatelessWidget {
                             ? 14
                             : size.width * 0.03,
                         color: isDark
-                            ? AppColors.lightGrey
+                            ? AppColors.darkGreyText
                             : AppColors.lightGrey,
                       ),
                   maxLines: 1,
