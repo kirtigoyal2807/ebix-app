@@ -74,7 +74,7 @@ class _TabItem extends StatelessWidget {
                 width: 2,
               ),
             ),
-          ),
+          ) ,
           child: Center(
             child: AppText(
               label,
