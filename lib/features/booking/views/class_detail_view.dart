@@ -13,6 +13,7 @@ import 'package:pilates_app/features/booking/widgets/class_location_card.dart';
 import 'package:pilates_app/features/booking/widgets/class_about_section.dart';
 import 'package:pilates_app/features/booking/widgets/class_what_to_bring.dart';
 import 'package:pilates_app/features/booking/widgets/class_reviews_section.dart';
+import 'package:pilates_app/widgets/app_app_bar.dart';
 import 'package:pilates_app/widgets/app_text.dart';
 
 class ClassDetailView extends StatelessWidget {
@@ -24,27 +25,11 @@ class ClassDetailView extends StatelessWidget {
     final size = MediaQuery.sizeOf(context);
 
     return Scaffold(
-      backgroundColor: isDark ? AppColors.backgroundDark : AppColors.backgroundLight,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: IconButton(
-          icon: Icon(
-            Directionality.of(context) == TextDirection.rtl
-                ? Icons.arrow_forward_ios
-                : Icons.arrow_back_ios_new,
-            color: isDark ? AppColors.whiteColor : AppColors.blackColor,
-            size: 20,
-          ),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-        title: AppText(
-          context.l10n.classDetails,
-          style: (context) => AppTextStyles.appBarTitle(context).copyWith(
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-        centerTitle: true,
+      // backgroundColor: isDark ? AppColors.backgroundDark : AppColors.backgroundLight,
+      appBar: AppAppBar(
+        onBack: () => Navigator.of(context).pop(),
+        title: context.l10n.classDetails,
+        isMoreMenu: false,
       ),
       body: BlocBuilder<BookingCubit, BookingState>(
         builder: (context, state) {

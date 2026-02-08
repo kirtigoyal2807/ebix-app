@@ -6,8 +6,9 @@ class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String? title;
   final VoidCallback? onBack;
   final List<Widget>? actions;
+  final bool? isMoreMenu;
 
-  const AppAppBar({super.key, this.title, this.onBack, this.actions});
+  const AppAppBar({super.key, this.title, this.onBack, this.actions, this.isMoreMenu = true});
 
   @override
   Widget build(BuildContext context) {
@@ -24,10 +25,10 @@ class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
       centerTitle: true,
       elevation: 0,
       actions: [
-        IconButton(
+        (isMoreMenu ?? true) ? IconButton(
           icon: const Icon(Icons.more_horiz),
           onPressed: () {},
-        ),
+        ):SizedBox(),
       ],
       // backgroundColor: Colors.white,
       

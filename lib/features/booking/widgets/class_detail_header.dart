@@ -35,11 +35,13 @@ class ClassDetailHeader extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            AppText(
-              context.l10n.powerPilates,
-              style: (context) => AppTextStyles.heading1(context).copyWith(
-                fontSize: 24,
-                fontWeight: FontWeight.w500,
+            Expanded(
+              child: AppText(
+                context.l10n.powerPilates,
+                style: (context) => AppTextStyles.heading1(context).copyWith(
+                  fontSize: 24,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
             ),
             Row(

@@ -98,7 +98,7 @@ class ClassReviewsSection extends StatelessWidget {
 
         // Review Cards - Horizontal
         SizedBox(
-          height: size.height * 0.18,
+          height: 180,
           child: ListView.separated(
             scrollDirection: Axis.horizontal,
             itemCount: 3,

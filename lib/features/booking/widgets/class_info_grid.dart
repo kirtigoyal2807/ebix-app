@@ -111,7 +111,7 @@ class _InfoCard extends StatelessWidget {
                   value,
                   style: (context) => AppTextStyles.boldBody(context).copyWith(
                     fontSize: 14,
-                    color: isDark ? AppColors.lightText : AppColors.darkText,
+                    color: showAvatar ?isDark ? AppColors.languageTextDark : AppColors.languageIcon  : (isDark ? AppColors.lightText : AppColors.darkText),
                   ),
                 ),
               ),
