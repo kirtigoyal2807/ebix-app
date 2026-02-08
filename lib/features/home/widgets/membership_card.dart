@@ -29,6 +29,7 @@ class MembershipCard extends StatelessWidget {
     final size = MediaQuery.sizeOf(context);
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
+      clipBehavior: Clip.antiAlias,
       margin: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
       // padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg,vertical: AppSpacing.md),
       decoration: BoxDecoration(

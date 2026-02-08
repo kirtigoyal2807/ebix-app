@@ -27,7 +27,7 @@ class _SpringChallengeCardState extends State<SpringChallengeCard> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.sizeOf(context);
-    final cardHeight = (size.height * 0.25).clamp(200.0, 240.0);
+    final cardHeight = (size.height * 0.25).clamp(180.0, 200.0);
 
     return Column(
       children: [
@@ -54,6 +54,7 @@ class _SpringChallengeCardState extends State<SpringChallengeCard> {
 
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: AppSpacing.xs),
+      clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(AppRadius.lg),
         gradient: const LinearGradient(
@@ -91,13 +92,13 @@ class _SpringChallengeCardState extends State<SpringChallengeCard> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 SizedBox(
-                  width: size.width * 0.6,
+                  width: size.width * 0.5,
                   child: AppText(
                     context.l10n.springResetChallenge,
                     maxLines: 2,
                     style: (context) => AppTextStyles.heading1(context).copyWith(
                       color: isDark ? AppColors.lightText : Colors.white,
-                      fontSize: size.width * 0.055 > 20 ? 20 : size.width * 0.055,
+                      fontSize: size.width * 0.055 > 22 ? 22 : size.width * 0.055,
                       height: 1.1,
                     ),
                   ),
@@ -105,13 +106,13 @@ class _SpringChallengeCardState extends State<SpringChallengeCard> {
                 const SizedBox(height: AppSpacing.sm),
                 AppText(
                   context.l10n.springResetDesc,
-                  maxLines: 2,
+                  maxLines: 1,
                   style: (context) => AppTextStyles.bodyTextSmall(context).copyWith(
                     color: isDark ? AppColors.seekBarLight : Colors.white,
                     fontSize: size.width * 0.035 > 14 ? 14 : size.width * 0.035,
                   ),
                 ),
-                SizedBox(height: size.height < 700 ? AppSpacing.sm : AppSpacing.md),
+                SizedBox(height: size.height < 700 ? AppSpacing.md : AppSpacing.lg),
                 ElevatedButton(
                   onPressed: () {},
                   style: ElevatedButton.styleFrom(
