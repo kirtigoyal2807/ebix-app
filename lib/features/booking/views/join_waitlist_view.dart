@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 import 'package:pilates_app/config/theme/app_spacing.dart';
+import 'package:pilates_app/widgets/app_app_bar.dart';
 import 'package:pilates_app/widgets/app_shadow.dart';
 import 'package:pilates_app/widgets/app_text.dart';
 
@@ -22,28 +23,10 @@ class JoinWaitlistView extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: isDark ? AppColors.backgroundDark : Colors.white,
-      appBar: AppBar(
-        title: AppText(
-          l10n.joinWaitList,
-          style: (context) => AppTextStyles.appBarText(context),
-        ),
-        centerTitle: true,
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: IconButton(
-          padding: const EdgeInsetsDirectional.only(
-            start: AppSpacing.md,
-            bottom: 3,
-          ),
-          icon: Icon(
-            Directionality.of(context) == TextDirection.rtl
-                ? Icons.arrow_forward_ios
-                : Icons.arrow_back_ios_new,
-            color: isDark ? AppColors.whiteColor : AppColors.blackColor,
-            size: 20,
-          ),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
+      appBar: AppAppBar(
+        onBack: () => Navigator.of(context).pop(),
+        title: l10n.joinWailList,
+        isMoreMenu: false,
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -80,11 +63,10 @@ class JoinWaitlistView extends StatelessWidget {
       ),
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: isDark ? AppColors.homeBackground : Colors.white,
+        color: isDark ? AppColors.homeBackground : AppColors.whiteColor,
         borderRadius: BorderRadius.circular(AppRadius.md),
         border: Border.all(
           color: isDark ? AppColors.greyText : AppColors.buttonBorder,
-          width: 0.5,
         ),
         boxShadow: [
           AppShadows.lightShadow,
@@ -102,12 +84,12 @@ class JoinWaitlistView extends StatelessWidget {
             width: 94,
             decoration: BoxDecoration(
               // color: Colors.grey,
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(8),
             ),
             child: ClipRRect(
               borderRadius: const BorderRadius.vertical(
-                top: Radius.circular(AppRadius.lg),
-                bottom: Radius.circular(AppRadius.lg),
+                top: Radius.circular(AppRadius.md),
+                bottom: Radius.circular(AppRadius.md),
               ),
               child: Image.asset(
                 "assets/images/demo images/yoga.png",
@@ -162,9 +144,11 @@ class JoinWaitlistView extends StatelessWidget {
       ),
       margin: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
       decoration: BoxDecoration(
-        color: isDark ? AppColors.primaryDarkButton : AppColors.seekBarLight,
-        borderRadius: BorderRadius.circular(AppRadius.base),
-        border: isDark ? null : Border.all(color: AppColors.darkGreyBorder),
+        color: isDark ? AppColors.homeBackground : AppColors.seekBarLight,
+        borderRadius: BorderRadius.circular(AppRadius.md),
+        border: Border.all(
+          color: isDark ? AppColors.greyText : AppColors.buttonBorder,
+        ),
       ),
       child: Column(
         children: [
@@ -196,7 +180,7 @@ class JoinWaitlistView extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
         decoration: BoxDecoration(
-          color: isDark ? AppColors.homeBackground : Colors.white,
+          color: isDark ? AppColors.homeBackground : AppColors.whiteColor,
           borderRadius: BorderRadius.circular(AppRadius.md),
           border: Border.all(
             color: isDark ? AppColors.greyText : AppColors.buttonBorder,

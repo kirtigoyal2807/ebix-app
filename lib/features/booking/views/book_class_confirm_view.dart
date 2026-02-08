@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 
 import 'package:pilates_app/config/theme/app_spacing.dart';
+import 'package:pilates_app/widgets/app_app_bar.dart';
 import 'package:pilates_app/widgets/app_shadow.dart';
 import 'package:pilates_app/widgets/app_text.dart';
 
@@ -26,28 +27,10 @@ class BookClassConfirmView extends StatelessWidget {
     return Scaffold(
       backgroundColor: isDark ? AppColors.backgroundDark : Colors.white,
 
-      appBar: AppBar(
-        title: AppText(
-          l10n.bookYourClass,
-          style: (context) => AppTextStyles.appBarText(context),
-        ),
-        centerTitle: true,
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: IconButton(
-          padding: const EdgeInsetsDirectional.only(
-            start: AppSpacing.xxl,
-            bottom: 3,
-          ),
-          icon: Icon(
-            Directionality.of(context) == TextDirection.rtl
-                ? Icons.arrow_forward_ios
-                : Icons.arrow_back_ios_new,
-            color: isDark ? AppColors.whiteColor : AppColors.blackColor,
-            size: 20,
-          ),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
+      appBar: AppAppBar(
+        onBack: () => Navigator.of(context).pop(),
+        title: l10n.bookYourClass,
+        isMoreMenu: false,
       ),
       body: BlocProvider(
         create: (context) => ConfirmBookingCubit(),

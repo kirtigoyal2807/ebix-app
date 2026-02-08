@@ -202,7 +202,7 @@ class BookingSuccessScreen extends StatelessWidget {
                 l10n.yourPosition,
                 style: (context) => AppTextStyles.captionText(
                   context,
-                ).copyWith(color: AppColors.lightGrey),
+                ).copyWith(color: isDark ? AppColors.darkGreyText:AppColors.lightGrey),
               ),
               const SizedBox(height: AppSpacing.md),
               AppText(
@@ -215,7 +215,7 @@ class BookingSuccessScreen extends StatelessWidget {
                 l10n.inLine,
                 style: (context) => AppTextStyles.captionText(
                   context,
-                ).copyWith(color: AppColors.lightGrey),
+                ).copyWith(color: isDark ? AppColors.darkGreyText:AppColors.lightGrey),
               ),
             ],
           ),
@@ -234,12 +234,10 @@ class BookingSuccessScreen extends StatelessWidget {
       margin: const EdgeInsetsDirectional.symmetric(horizontal: AppSpacing.lg),
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: isDark ? AppColors.homeBackground : Colors.white,
+        color: isDark ? AppColors.homeBackground : AppColors.whiteColor,
         borderRadius: BorderRadius.circular(AppRadius.md),
         border: Border.all(
-          color: isDark ? AppColors.greyText : AppColors.buttonBorder,
-          width: 0.5,
-        ),
+          color: isDark ? AppColors.greyText : AppColors.buttonBorder,),
         boxShadow: [
           AppShadows.lightShadow,
           AppShadows.mediumShadow,
