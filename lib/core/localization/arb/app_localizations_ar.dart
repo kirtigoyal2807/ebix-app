@@ -641,4 +641,45 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get cancelBooking =>
       'سياسة الإلغاء: إلغاء مجاني حتى 4 ساعات قبل بدء الحصة. قد يتم فرض رسوم على الإلغاءات المتأخرة.';
+
+  @override
+  String get classDescriptionShort =>
+      'ابنِ القوة والمرونة والهدوء من خلال جلسات بيلاتس موجهة.';
+
+  @override
+  String get trainerAishaSherin => 'عائشة شيرين';
+
+  @override
+  String get branchAddressDetail => '123 الشارع الرئيسي، جناح 200';
+
+  @override
+  String get aboutClassDescription =>
+      'تركز هذه الحصة الديناميكية على بناء القوة الأساسية وتحسين المرونة. مثالية لجميع المستويات، ستتدفق عبر سلسلة من الحركات الخاضعة للسيطرة التي تتحدى جسمك مع تعزيز اليقظة والتوازن.';
+
+  @override
+  String get itemAttire => 'ملابس تمارين مريحة';
+
+  @override
+  String get itemWater => 'زجاجة ماء';
+
+  @override
+  String get itemTowel => 'منشفة (اختياري)';
+
+  @override
+  String get itemMat => 'سجادة متوفرة في الاستوديو';
+
+  @override
+  String basedOnReviews(int count) {
+    return 'بناءً على $count مراجعة';
+  }
+
+  @override
+  String get reviewerName1 => 'جيسيكا م.';
+
+  @override
+  String get reviewerTime1 => 'منذ يومين';
+
+  @override
+  String get reviewerComment1 =>
+      '\"سارة رائعة! حصصها مليئة بالتحديات لكنها تحرص على أن يشعر الجميع بالدعم. لقد رأيت تقدماً مذهلاً في قوتي الأساسية.\"';
 }

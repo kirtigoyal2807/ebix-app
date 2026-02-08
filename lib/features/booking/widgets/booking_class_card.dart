@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:pilates_app/config/theme/app_colors.dart';
 import 'package:pilates_app/config/theme/app_radius.dart';
@@ -6,7 +7,7 @@ import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/core/localization/localization_extension.dart';
 import 'package:pilates_app/widgets/app_text.dart';
-
+import 'package:pilates_app/features/booking/cubit/booking_cubit.dart';
 import '../views/class_detail_view.dart';
 
 class BookingClassCard extends StatelessWidget {
@@ -43,8 +44,15 @@ class BookingClassCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(AppRadius.lg),
         child: InkWell(
           onTap: () {
+            final cubit = BlocProvider.of<BookingCubit>(context);
+            cubit.loadClassDetails();
             Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => const ClassDetailView()),
+              MaterialPageRoute(
+                builder: (newContext) => BlocProvider.value(
+                  value: cubit,
+                  child: const ClassDetailView(),
+                ),
+              ),
             );
           },
           borderRadius: BorderRadius.circular(AppRadius.lg),
@@ -73,92 +81,110 @@ class BookingClassCard extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(right: AppSpacing.md,left: AppSpacing.md),
             child: Row(
-              mainAxisAlignment:MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                if (isInPlan)
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: AppSpacing.sm,
-                      vertical: AppSpacing.xs,
-                    ),
-                    decoration: BoxDecoration(
-                      color: isDark
-                          ? AppColors.featuredTagBackgroundDarkColor
-                          : AppColors.featuredTagBackgroundColor,
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(
-                          Icons.check,
-                          color: isDark
-                              ? AppColors.lightGreyColor
-                              : AppColors.GreyColor,
-                          size: 14,
+                Expanded(
+                  child: Row(
+                    children: [
+                      if (isInPlan)
+                        Flexible(
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: AppSpacing.sm,
+                              vertical: AppSpacing.xs,
+                            ),
+                            margin: const EdgeInsets.only(right: AppSpacing.xs),
+                            decoration: BoxDecoration(
+                              color: isDark
+                                  ? AppColors.featuredTagBackgroundDarkColor
+                                  : AppColors.featuredTagBackgroundColor,
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Icon(
+                                  Icons.check,
+                                  color: isDark
+                                      ? AppColors.lightGreyColor
+                                      : AppColors.GreyColor,
+                                  size: 14,
+                                ),
+                                const SizedBox(width: AppSpacing.xs),
+                                Flexible(
+                                  child: AppText(
+                                    context.l10n.inYourPlan.toUpperCase(),
+                                    style: (context) =>
+                                        AppTextStyles.boldBody(context).copyWith(
+                                      fontSize: 10,
+                                      color: isDark
+                                          ? AppColors.lightGreyColor
+                                          : AppColors.GreyColor,
+                                    ),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
-                        const SizedBox(width: AppSpacing.xs),
-                        AppText(
-                          context.l10n.inYourPlan.toUpperCase(),
-                          style: (context) =>
-                              AppTextStyles.boldBody(context).copyWith(
-                                fontSize: size.width * 0.025 > 10
-                                    ? 10
-                                    : size.width * 0.025,
-                                color: isDark
-                                    ? AppColors.lightGreyColor
-                                    : AppColors.GreyColor,
-                              ),
-                        ),
-                      ],
-                    ),
-                  ),
-                if (upgradeRequired)
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: AppSpacing.sm,
-                      vertical: AppSpacing.xs,
-                    ),
-                    decoration: BoxDecoration(
-                      color: isDark
-                          ? AppColors.upgradeDarkBackgroundColor.withValues(
-                        alpha: 0.11,
-                      )
-                          : AppColors
-                          .upgradeLightBackgroundColor, // Light yellow
-                      borderRadius: BorderRadius.circular(16),
-                      border: Border.all(
-                        color: isDark
-                            ? AppColors.upgradeDarkLockBackgroundColor
-                            : AppColors.upgradeDarkLockBackgroundColor,
-                        width: 1,
-                      ),
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(
-                          Icons.lock_outline,
-                          color: isDark
-                              ? AppColors.upgradeDarkLockBackgroundColor
-                              : AppColors.lightRedColor,
-                          size: 14,
-                        ),
-                        const SizedBox(width: 4),
-                        AppText(
-                          context.l10n.upgradeRequired.toUpperCase(),
-                          style: (context) =>
-                              AppTextStyles.boldBody(context).copyWith(
-                                fontSize: 10,
+                      if (upgradeRequired)
+                        Flexible(
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: AppSpacing.sm,
+                              vertical: AppSpacing.xs,
+                            ),
+                            decoration: BoxDecoration(
+                              color: isDark
+                                  ? AppColors.upgradeDarkBackgroundColor.withValues(
+                                      alpha: 0.11,
+                                    )
+                                  : AppColors.upgradeLightBackgroundColor,
+                              borderRadius: BorderRadius.circular(16),
+                              border: Border.all(
                                 color: isDark
                                     ? AppColors.upgradeDarkLockBackgroundColor
                                     : AppColors.upgradeDarkLockBackgroundColor,
+                                width: 1,
                               ),
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Icon(
+                                  Icons.lock_outline,
+                                  color: isDark
+                                      ? AppColors.upgradeDarkLockBackgroundColor
+                                      : AppColors.lightRedColor,
+                                  size: 14,
+                                ),
+                                const SizedBox(width: 4),
+                                Flexible(
+                                  child: AppText(
+                                    context.l10n.upgradeRequired.toUpperCase(),
+                                    style: (context) =>
+                                        AppTextStyles.boldBody(context).copyWith(
+                                      fontSize: 10,
+                                      color: isDark
+                                          ? AppColors.upgradeDarkLockBackgroundColor
+                                          : AppColors.upgradeDarkLockBackgroundColor,
+                                    ),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
-                      ],
-                    ),
+                    ],
                   ),
+                ),
+                const SizedBox(width: AppSpacing.xs),
                 Row(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
                     const Icon(Icons.star, color: Color(0xFFEAB308), size: 16),
                     const SizedBox(width: 4),
@@ -166,8 +192,8 @@ class BookingClassCard extends StatelessWidget {
                       rating.toString(),
                       style: (context) =>
                           AppTextStyles.boldBody(context).copyWith(
-                            color: isDark ?  AppColors.lightText : AppColors.darkText,
-                          ),
+                        color: isDark ? AppColors.lightText : AppColors.darkText,
+                      ),
                     ),
                   ],
                 ),

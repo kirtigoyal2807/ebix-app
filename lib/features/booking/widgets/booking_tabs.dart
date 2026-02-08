@@ -20,7 +20,7 @@ class BookingTabs extends StatelessWidget {
           decoration: BoxDecoration(
             border: Border(
               bottom: BorderSide(
-                color: isDark ? AppColors.borderDark : AppColors.borderLight,
+                color: isDark ? AppColors.greyText : AppColors.buttonBorder,
                 width: 1,
               ),
             ),
@@ -59,8 +59,8 @@ class _TabItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final activeColor = (isDark ? AppColors.languageTextDark : AppColors.primary);
-    final inactiveColor = isDark ? AppColors.darkGreyText : AppColors.greyText;
+    final activeColor = (isDark ? AppColors.darkGreyBorder : AppColors.primary);
+    final inactiveColor = isDark ? AppColors.lightGrey : AppColors.lightGrey;
 
     return Expanded(
       child: GestureDetector(
@@ -70,18 +70,18 @@ class _TabItem extends StatelessWidget {
           decoration: BoxDecoration(
             border: Border(
               bottom: BorderSide(
-                color: isSelected ? activeColor : Colors.transparent,
+                color: isSelected ? activeColor : isDark ? AppColors.greyText : AppColors.buttonBorder,
                 width: 2,
               ),
             ),
-          ),
+          ) ,
           child: Center(
             child: AppText(
               label,
               style:  (context) => AppTextStyles.boldBody(context).copyWith(
                 fontSize: 16,
                 fontWeight: isSelected ? FontWeight.w600:FontWeight.w400,
-                color: isSelected ? activeColor : inactiveColor,
+                color: isSelected ? (isDark ? AppColors.languageTextDark : AppColors.languageIcon) : inactiveColor,
               ),
             ),
           ),

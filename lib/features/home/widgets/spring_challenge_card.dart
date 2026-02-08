@@ -54,6 +54,7 @@ class _SpringChallengeCardState extends State<SpringChallengeCard> {
 
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: AppSpacing.xs),
+      clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(AppRadius.lg),
         gradient: const LinearGradient(

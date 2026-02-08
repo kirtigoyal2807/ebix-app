@@ -1309,6 +1309,78 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Cancellation Policy: Free cancellation up to 4 hours before class. Late cancellations may incur a fee.'**
   String get cancelBooking;
+
+  /// No description provided for @classDescriptionShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Build strength, flexibility, and calm through guided Pilates sessions.'**
+  String get classDescriptionShort;
+
+  /// No description provided for @trainerAishaSherin.
+  ///
+  /// In en, this message translates to:
+  /// **'Aisha Sherin'**
+  String get trainerAishaSherin;
+
+  /// No description provided for @branchAddressDetail.
+  ///
+  /// In en, this message translates to:
+  /// **'123 Main Street, Suite 200'**
+  String get branchAddressDetail;
+
+  /// No description provided for @aboutClassDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'This dynamic class focuses on building core strength and improving flexibility. Perfect for all levels, you\'ll flow through a series of controlled movements that challenge your body while promoting mindfulness and balance.'**
+  String get aboutClassDescription;
+
+  /// No description provided for @itemAttire.
+  ///
+  /// In en, this message translates to:
+  /// **'Comfortable workout attire'**
+  String get itemAttire;
+
+  /// No description provided for @itemWater.
+  ///
+  /// In en, this message translates to:
+  /// **'Water bottle'**
+  String get itemWater;
+
+  /// No description provided for @itemTowel.
+  ///
+  /// In en, this message translates to:
+  /// **'Towel (optional)'**
+  String get itemTowel;
+
+  /// No description provided for @itemMat.
+  ///
+  /// In en, this message translates to:
+  /// **'Mat provided at studio'**
+  String get itemMat;
+
+  /// No description provided for @basedOnReviews.
+  ///
+  /// In en, this message translates to:
+  /// **'Based on {count} reviews'**
+  String basedOnReviews(int count);
+
+  /// No description provided for @reviewerName1.
+  ///
+  /// In en, this message translates to:
+  /// **'Jessica M.'**
+  String get reviewerName1;
+
+  /// No description provided for @reviewerTime1.
+  ///
+  /// In en, this message translates to:
+  /// **'2 days ago'**
+  String get reviewerTime1;
+
+  /// No description provided for @reviewerComment1.
+  ///
+  /// In en, this message translates to:
+  /// **'\"Sarah is incredible! Her classes are challenging but she makes sure everyone feels supported. I\'ve seen amazing progress in my core strength.\"'**
+  String get reviewerComment1;
 }
 
 class _AppLocalizationsDelegate
