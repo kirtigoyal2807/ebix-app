@@ -26,11 +26,11 @@ class ClassDetailView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final isDark = Theme.of(context).brightness == Brightness.dark;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final size = MediaQuery.sizeOf(context);
 
     return Scaffold(
-      // backgroundColor: isDark ? AppColors.backgroundDark : AppColors.backgroundLight,
+      backgroundColor: isDark ? AppColors.homeBackground : AppColors.whiteColor,
       appBar: AppAppBar(
         onBack: () => Navigator.of(context).pop(),
         title: context.l10n.classDetails,
@@ -46,22 +46,37 @@ class ClassDetailView extends StatelessWidget {
             children: [
               SingleChildScrollView(
                 padding: EdgeInsets.only(
-                  left: AppSpacing.lg,
-                  right: AppSpacing.lg,
+                  // left: AppSpacing.lg,
+                  // right: AppSpacing.lg,
                   bottom: size.height * 0.15, // Space for sticky button
                 ),
                 child: const Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    ClassDetailHeader(),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal:AppSpacing.lg ),
+                      child: ClassDetailHeader(),
+                    ),
                     SizedBox(height: AppSpacing.lg),
-                    ClassInfoGrid(),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal:AppSpacing.lg ),
+                      child: ClassInfoGrid(),
+                    ),
                     SizedBox(height: AppSpacing.lg),
-                    ClassLocationCard(),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal:AppSpacing.lg ),
+                      child: ClassLocationCard(),
+                    ),
                     SizedBox(height: AppSpacing.lg),
-                    ClassAboutSection(),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal:AppSpacing.lg ),
+                      child: ClassAboutSection(),
+                    ),
                     SizedBox(height: AppSpacing.lg),
-                    ClassWhatToBring(),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal:AppSpacing.lg ),
+                      child: ClassWhatToBring(),
+                    ),
                     SizedBox(height: AppSpacing.lg),
                     ClassReviewsSection(),
                   ],

@@ -22,7 +22,7 @@ class JoinWaitlistView extends StatelessWidget {
     final l10n = AppLocalizations.of(context);
 
     return Scaffold(
-      backgroundColor: isDark ? AppColors.backgroundDark : Colors.white,
+      backgroundColor: isDark ? AppColors.homeBackground : AppColors.whiteColor,
       appBar: AppAppBar(
         onBack: () => Navigator.of(context).pop(),
         title: l10n.joinWailList,

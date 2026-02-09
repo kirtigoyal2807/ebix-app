@@ -17,93 +17,102 @@ class ClassReviewsSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Expanded(
-              child: AppText(
-                context.l10n.recentReviews,
-                style: (context) => AppTextStyles.heading1(context).copyWith(
-                  color: isDark ? AppColors.lightText : AppColors.darkText,
-                  fontSize: size.width * 0.055 > 18 ? 18 : size.width * 0.055,
-                  fontWeight: FontWeight.w400,
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal:AppSpacing.lg ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                child: AppText(
+                  context.l10n.recentReviews,
+                  style: (context) => AppTextStyles.heading1(context).copyWith(
+                    color: isDark ? AppColors.lightText : AppColors.darkText,
+                    fontSize: size.width * 0.055 > 18 ? 18 : size.width * 0.055,
+                    fontWeight: FontWeight.w400,
+                  ),
                 ),
               ),
-            ),
-            AppText(
-              context.l10n.seeAll,
-              style: (context) => AppTextStyles.captionText(context).copyWith(
-                color: isDark ? AppColors.languageTextDark : AppColors.languageIcon,
-                fontSize: size.width * 0.03 > 14 ? 14 : size.width * 0.03,
+              AppText(
+                context.l10n.seeAll,
+                style: (context) => AppTextStyles.captionText(context).copyWith(
+                  color: isDark ? AppColors.languageTextDark : AppColors.languageIcon,
+                  fontSize: size.width * 0.03 > 14 ? 14 : size.width * 0.03,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
         const SizedBox(height: AppSpacing.md),
 
         // Reviews Summary
-        Container(
-          width: double.infinity,
-          padding: const EdgeInsets.all(AppSpacing.lg),
-          decoration: BoxDecoration(
-            color: isDark ? AppColors.homeBackground : AppColors.whiteColor,
-            borderRadius: BorderRadius.circular(AppRadius.md),
-            border: Border.all(
-              color: isDark ? AppColors.greyText : AppColors.buttonBorder,
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal:AppSpacing.lg ),
+          child: Container(
+            width: double.infinity,
+            padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg,vertical: AppSpacing.md),
+            decoration: BoxDecoration(
+              color: isDark ? AppColors.homeBackground : AppColors.whiteColor,
+              borderRadius: BorderRadius.circular(AppRadius.md),
+              border: Border.all(
+                color: isDark ? AppColors.greyText : AppColors.buttonBorder,
+              ),
             ),
-          ),
-          child: Column(
-            children: [
-              Row(
-                children: [
-                  AppText(
-                    '4.8',
-                    style: (context) => AppTextStyles.bottomSheetTitle(context).copyWith(
-                      fontSize: 40,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  const SizedBox(width: 12),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const _StarRating(rating: 5, size: 14),
-                      const SizedBox(height: 4),
-                      AppText(
-                        context.l10n.basedOnReviews(27),
-                        style: (context) => AppTextStyles.captionText(context).copyWith(
-                          fontSize: 12,
-                          color: isDark ? AppColors.darkGreyText : AppColors.greyText,
-                        ),
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    AppText(
+                      '4.8',
+                      style: (context) => AppTextStyles.bottomSheetTitle(context).copyWith(
+                        fontSize: 40,
+                        fontWeight: FontWeight.w600,
                       ),
-                    ],
-                  )
-                ],
-              ),
-              const SizedBox(height: AppSpacing.md),
-              const Column(
-                children: [
-                  _RatingBar(stars: 5, progress: 0.6),
-                  _RatingBar(stars: 4, progress: 0.2),
-                  _RatingBar(stars: 3, progress: 0.1),
-                  _RatingBar(stars: 2, progress: 0.05),
-                  _RatingBar(stars: 1, progress: 0.05),
-                ],
-              ),
-            ],
+                    ),
+                    const SizedBox(width: 12),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const _StarRating(rating: 5, size: 14),
+                        const SizedBox(height: 4),
+                        AppText(
+                          context.l10n.basedOnReviews(27),
+                          style: (context) => AppTextStyles.captionText(context).copyWith(
+                            fontSize: 12,
+                            color: isDark ? AppColors.darkGreyText : AppColors.greyText,
+                          ),
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+                const SizedBox(height: AppSpacing.sm),
+                const Column(
+                  children: [
+                    _RatingBar(stars: 5, progress: 0.6),
+                    _RatingBar(stars: 4, progress: 0.2),
+                    _RatingBar(stars: 3, progress: 0.1),
+                    _RatingBar(stars: 2, progress: 0.05),
+                    _RatingBar(stars: 1, progress: 0.05),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
         const SizedBox(height: AppSpacing.lg),
 
         // Review Cards - Horizontal
         SizedBox(
-          height: 180,
+          height: 150,
           child: ListView.separated(
             scrollDirection: Axis.horizontal,
             itemCount: 3,
             separatorBuilder: (context, index) => const SizedBox(width: AppSpacing.md),
-            itemBuilder: (context, index) => const _ReviewCard(),
+            itemBuilder: (context, index) => Padding(
+              padding: EdgeInsets.only(left:index ==0 ? AppSpacing.lg:0, right: index ==2? AppSpacing.lg:0 ),
+              child: const _ReviewCard(),
+            ),
           ),
         ),
       ],
@@ -149,7 +158,7 @@ class _RatingBar extends StatelessWidget {
           AppText(
             (progress * 12).toInt().toString(), // Dummy count
             style: (context) => AppTextStyles.captionText(context).copyWith(
-              fontSize: 10,
+              fontSize: 14,
               color: AppColors.lightGrey,
             ),
           ),
@@ -188,7 +197,8 @@ class _ReviewCard extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Container(
-      width: MediaQuery.sizeOf(context).width * 0.7,
+      width: MediaQuery.sizeOf(context).width * 0.75,
+      // margin: EdgeInsets.only(left: AppSpacing.lg),
       padding: const EdgeInsets.all(AppSpacing.md),
       decoration: BoxDecoration(
         color: isDark ? AppColors.homeBackground : AppColors.whiteColor,
@@ -240,7 +250,7 @@ class _ReviewCard extends StatelessWidget {
           AppText(
             context.l10n.reviewerComment1,
             style: (context) => AppTextStyles.bodyText(context).copyWith(
-              height: 1.4,
+              height: 1.3,
             ),
             maxLines: 5,
             overflow: TextOverflow.ellipsis,

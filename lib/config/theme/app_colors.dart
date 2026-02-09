@@ -58,18 +58,21 @@ class AppColors {
 
   //SeekBar
   static const seekBarLight = Color(0xFFFFF2EB);
-  static const branchTagLight = Color(0xFFF8FAFC);
+  static const branchTagLight = Color(0xFFFFF7ED);
+  static const branchTagLightStandard = Color(0xFFF8FAFC);
+  static const branchTagLightStandardBorder = Color(0xFFE2E8F0);
   static const darkGreyBorder = Color(0xFFDDCABF);
 
   //Tag value
   static const blueTagValue = Color(0xFF8396AF);
-  static const blueTagText = Color(0xFF8CB4ED);
+  static const blueTagText = Color(0xFF64748B);
+  static const blueTagDarkText = Color(0xFF8CB4ED);
 
   // Home background
   static const homeBackground = Color(0xFF120F0D);
   static const cardLightBackground = Color(0xFFFEEBEC);
   static const badgeBackground = Color(0xFF29231F);
-  static const badgeblueBackground = Color(0xFF9DCEFF29);
+  static const badgeblueBackground = Color(0x9DCEFF29);
   static const blackColor = Color(0xFF000000);
   static const lightBlackColor = Color(0xFF292624);
   static const featuredTagBackgroundColor = Color(0xFFE6F6EB);
@@ -90,4 +93,5 @@ class AppColors {
   static const successColor = Color(0xFF30A46C);
   static const greyContainerBg = Color(0xFFF5F5F4);
   static const primaryDarkContainer = Color(0xFF513523);
+  static const whiteBorderColor = Color(0xFFF2EEEA);
 }

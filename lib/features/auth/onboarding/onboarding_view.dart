@@ -49,7 +49,7 @@ class OnboardingView extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      // backgroundColor: Colors.white,
+      backgroundColor: isDark ? AppColors.homeBackground : AppColors.whiteColor,
       body: SafeArea(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

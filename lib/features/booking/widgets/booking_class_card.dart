@@ -90,7 +90,7 @@ class BookingClassCard extends StatelessWidget {
                       // ),
                       Image.asset(
                         "assets/images/demo images/Class Image.png",
-                        height: size.height * 0.22,
+                        height: size.height * 0.18,
                         // width: width * 0.6,
                         fit: BoxFit.fill,
                       ),
@@ -127,7 +127,7 @@ class BookingClassCard extends StatelessWidget {
                                     border: Border.all(
                                       color: isDark
                                           ? AppColors.successBorderDark
-                                          : AppColors.successBorder,
+                                          : AppColors.featuredTagBackgroundColor,
                                       width: 1,
                                     ),
                                   ),
@@ -139,7 +139,7 @@ class BookingClassCard extends StatelessWidget {
                                         color: isDark
                                             ? AppColors.lightGreyColor
                                             : AppColors.GreyColor,
-                                        size: 14,
+                                        size: 12,
                                       ),
                                       const SizedBox(width: AppSpacing.xs),
                                       Flexible(
@@ -149,7 +149,7 @@ class BookingClassCard extends StatelessWidget {
                                               AppTextStyles.boldBody(
                                                 context,
                                               ).copyWith(
-                                                fontSize: 10,
+                                                fontSize: 12,
                                                 color: isDark
                                                     ? AppColors.lightGreyColor
                                                     : AppColors.GreyColor,
@@ -252,11 +252,13 @@ class BookingClassCard extends StatelessWidget {
                     right: AppSpacing.md,
                     left: AppSpacing.md,
                     bottom: AppSpacing.md,
+                    top:  AppSpacing.sm,
+
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const SizedBox(height: AppSpacing.sm),
+                      // const SizedBox(height: AppSpacing.sm),
                       // AppText(
                       //   '$title ${context.l10n.withKey} ${context.l10n.withTrainer(trainerName)}',
                       //   style: (context) =>

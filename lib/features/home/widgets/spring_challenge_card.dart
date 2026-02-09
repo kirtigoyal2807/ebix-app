@@ -112,7 +112,8 @@ class _SpringChallengeCardState extends State<SpringChallengeCard> {
                     fontSize: size.width * 0.035 > 14 ? 14 : size.width * 0.035,
                   ),
                 ),
-                SizedBox(height: size.height < 700 ? AppSpacing.md : AppSpacing.lg),
+                Spacer(),
+                // SizedBox(height: size.height < 700 ? AppSpacing.md : AppSpacing.lg),
                 ElevatedButton(
                   onPressed: () {},
                   style: ElevatedButton.styleFrom(
@@ -123,7 +124,7 @@ class _SpringChallengeCardState extends State<SpringChallengeCard> {
                       borderRadius: BorderRadius.circular(AppRadius.pillRadius),
                     ),
                     padding: const EdgeInsets.symmetric(
-                      horizontal: AppSpacing.lg,
+                      horizontal: AppSpacing.md,
                       vertical: AppSpacing.sm,
                     ),
                     minimumSize: const Size(0, 32),

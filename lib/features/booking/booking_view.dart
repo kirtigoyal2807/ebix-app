@@ -39,9 +39,8 @@ class _BookingBodyState extends State<BookingBody> {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      backgroundColor: isDark
-          ? AppColors.backgroundDark
-          : AppColors.backgroundLight,
+      backgroundColor: isDark ? AppColors.homeBackground : AppColors.whiteColor,
+
       body: SafeArea(
         child: Column(
           children: [

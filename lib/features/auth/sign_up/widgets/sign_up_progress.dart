@@ -23,9 +23,9 @@ class SignUpProgress extends StatelessWidget {
       child: LinearProgressIndicator(
         value: progress,
         minHeight: 6,
-        backgroundColor: isDark ? AppColors.primaryDarkButton :AppColors.seekBarLight,
+        backgroundColor: isDark ? AppColors.primaryDarkButton :AppColors.ratingBarBackground,
         valueColor: AlwaysStoppedAnimation<Color>(
-          isDark ?AppColors.languageTextDark:AppColors.languageTextDark,
+          isDark ?AppColors.languageIconDark:AppColors.languageIconDark,
         ),
       ),
     );

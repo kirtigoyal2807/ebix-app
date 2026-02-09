@@ -27,7 +27,7 @@ class BookingSuccessScreen extends StatelessWidget {
     final l10n = AppLocalizations.of(context);
 
     return Scaffold(
-      backgroundColor: isDark ? AppColors.backgroundDark : Colors.white,
+      backgroundColor: isDark ? AppColors.homeBackground : AppColors.whiteColor,
       body: SingleChildScrollView(
         padding: EdgeInsetsDirectional.only(
           top: MediaQuery.of(context).viewPadding.top,

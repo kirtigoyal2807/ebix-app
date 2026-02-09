@@ -93,18 +93,12 @@ class _InfoCard extends StatelessWidget {
           Row(
             children: [
               if (showAvatar) ...[
-                CircleAvatar(
-                  radius: 12,
-                  backgroundColor: isDark ? AppColors.languageIconDark : AppColors.languageIcon,
-                  child: AppText(
-                    'A',
-                    style: (context) => AppTextStyles.captionText(context).copyWith(
-                      color: isDark ? AppColors.darkGreyText : AppColors.greyText,
-                      fontSize: 12,
-                    ),
-                  ),
-                ),
+                Image.asset("assets/images/png/ic_trainer.png",height: 24,
+                  width: 24,
+                  fit: BoxFit.fill,),
                 const SizedBox(width: 8),
+              ]else ...[
+                SizedBox(height: 24,)
               ],
               Expanded(
                 child: AppText(

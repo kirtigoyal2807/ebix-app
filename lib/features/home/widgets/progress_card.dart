@@ -47,14 +47,14 @@ class ProgressCard extends StatelessWidget {
       child: Column(
         children: [
           SizedBox(
-            height: size.height * 0.06,
+            height: 60,
             child: SvgPicture.asset(
               isDark
                   ? 'assets/images/svg/ic_pirates_book_dark.svg'
                   : 'assets/images/svg/ic_pirates_book_light.svg',
-              height: size.height * 0.06,
-              // width: width * 0.6,
-              fit: BoxFit.contain,
+              height: 60,
+              width: 60,
+              fit: BoxFit.cover,
             ),
           ),
           const SizedBox(height: AppSpacing.md),
@@ -72,12 +72,15 @@ class ProgressCard extends StatelessWidget {
           const SizedBox(height: AppSpacing.xs),
           AppText(
             context.l10n.bookFirstClassDesc,
-            style: AppTextStyles.bodyTextSmall,
+            style:(context) => AppTextStyles.bodyTextSmall(context).copyWith(
+              fontSize: 12,
+              height: 1.4
+            ),
             textAlign: TextAlign.center,
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
           ),
-          const SizedBox(height: AppSpacing.lg),
+          const SizedBox(height: AppSpacing.md),
           ElevatedButton(
             onPressed: () {},
             style: ElevatedButton.styleFrom(

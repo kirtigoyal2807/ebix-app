@@ -20,8 +20,8 @@ class ClassTypesSection extends StatelessWidget {
       {'name': context.l10n.classTypeFlow, 'image': 'assets/images/demo images/ic_table.png'},
     ];
 
-    final itemWidth = size.width * 0.32 > 120 ? 120.0 : size.width * 0.32;
-    final itemHeight = itemWidth * 0.83;
+    final itemWidth = size.width * 0.45;
+    final itemHeight = itemWidth * 0.65;
 
     return Column(
       children: [
@@ -48,7 +48,7 @@ class ClassTypesSection extends StatelessWidget {
                       ),
 
                     ),
-                    const SizedBox(height: AppSpacing.sm),
+                    const SizedBox(height: AppSpacing.base),
                     AppText(
                       types[index]['name']!,
                       style: (context) => AppTextStyles.heading1(context).copyWith(

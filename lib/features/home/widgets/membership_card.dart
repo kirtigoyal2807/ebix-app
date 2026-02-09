@@ -73,7 +73,7 @@ class MembershipCard extends StatelessWidget {
                         height: size.height * 0.05,
                       ),
                     ),
-                    const SizedBox(width: AppSpacing.md),
+                    const SizedBox(width: AppSpacing.sm),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -90,6 +90,8 @@ class MembershipCard extends StatelessWidget {
                                       fontSize: 16,
                                     ),
                               ),
+                              SizedBox(height: 4,),
+
                               AppText(
                                 context.l10n.startJourneyToday,
                                 style: (context) => AppTextStyles.captionText(
@@ -111,7 +113,7 @@ class MembershipCard extends StatelessWidget {
                                 ),
                               ),
                               padding: const EdgeInsets.symmetric(
-                                horizontal: AppSpacing.lg,
+                                horizontal: AppSpacing.md,
                                 vertical: AppSpacing.sm,
                               ),
                               minimumSize: const Size(0, 32),
@@ -149,7 +151,7 @@ class MembershipCard extends StatelessWidget {
       margin: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
       padding: const EdgeInsets.symmetric(
         horizontal: AppSpacing.lg,
-        vertical: AppSpacing.lg,
+        vertical: AppSpacing.md,
       ),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(AppRadius.md),
@@ -169,7 +171,7 @@ class MembershipCard extends StatelessWidget {
               height: size.height * 0.05,
             ),
           ),
-          const SizedBox(width: AppSpacing.md),
+          const SizedBox(width: AppSpacing.sm),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -182,6 +184,7 @@ class MembershipCard extends StatelessWidget {
                         fontSize: 16,
                       ),
                 ),
+                SizedBox(height: 4,),
                 AppText(
                   context.l10n.unlimitedClasses,
                   style: (context) => AppTextStyles.captionText(
@@ -233,7 +236,7 @@ class MembershipCard extends StatelessWidget {
       margin: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
       padding: const EdgeInsets.symmetric(
         horizontal: AppSpacing.lg,
-        vertical: AppSpacing.lg,
+        vertical: AppSpacing.md,
       ),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(AppRadius.md),
@@ -253,11 +256,11 @@ class MembershipCard extends StatelessWidget {
               isDark
                   ? 'assets/images/svg/ic_king.svg'
                   : 'assets/images/svg/ic_king_gold.svg',
-              width: size.width * 0.05,
-              height: size.height * 0.05,
+              width: size.width * 0.04,
+              height: size.height * 0.04,
             ),
           ),
-          const SizedBox(width: AppSpacing.md),
+          const SizedBox(width: AppSpacing.sm),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -269,6 +272,7 @@ class MembershipCard extends StatelessWidget {
                     fontSize: 16,
                   ),
                 ),
+                SizedBox(height: 4,),
                 AppText(
                   context.l10n.expiredOn("29 Jan, 2024"),
                   style: (context) =>
@@ -282,38 +286,20 @@ class MembershipCard extends StatelessWidget {
             ),
           ),
           Container(
+            padding: EdgeInsets.symmetric(horizontal: 16,vertical: 12),
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(AppRadius.pillRadius),
+              borderRadius: BorderRadius.circular(200),
               gradient: const LinearGradient(
                 begin: Alignment.bottomLeft,
                 end: Alignment.topRight,
                 colors: [Color(0xFF65422C), Color(0xFFC79B7F)],
               ),
             ),
-            child: ElevatedButton(
-              onPressed: () {},
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.transparent,
-                foregroundColor: Colors.white,
-                shadowColor: Colors.transparent,
-                surfaceTintColor: Colors.transparent,
-                elevation: 0,
-                padding: const EdgeInsets.symmetric(
-                  // 🔥 SAME AS OTHER BUTTON
-                  horizontal: AppSpacing.lg,
-                  vertical: AppSpacing.sm,
-                ),
-                // shape: RoundedRectangleBorder(
-                //   borderRadius: BorderRadius.circular(AppRadius.pillRadius),
-                // ),
-                minimumSize: const Size(0, 32),
-              ),
-              child: AppText(
-                context.l10n.renew,
-                style: (context) => AppTextStyles.boldBody(context).copyWith(
-                  fontSize: size.width * 0.035 > 14 ? 14 : size.width * 0.035,
-                  color: AppColors.lightText,
-                ),
+            child: AppText(
+              context.l10n.renew,
+              style: (context) => AppTextStyles.boldBody(context).copyWith(
+                fontSize: size.width * 0.035 > 14 ? 14 : size.width * 0.035,
+                color: AppColors.lightText,
               ),
             ),
           ),

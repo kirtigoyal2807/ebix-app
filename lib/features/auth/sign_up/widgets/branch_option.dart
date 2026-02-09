@@ -29,12 +29,16 @@ class BranchOption extends StatelessWidget {
     final theme = Theme.of(context);
     final borderColor = selected
         ? isDark ? AppColors.languageIconDark: AppColors.languageIconDark
-        : theme.dividerColor;
+        : isDark ? AppColors.greyText: AppColors.whiteBorderColor;
 
     return Material(
       // color: Colors.transparent,
       child: InkWell(
         onTap: onTap,
+        splashColor: Colors.transparent,
+        highlightColor: Colors.transparent,
+        hoverColor: Colors.transparent,
+        focusColor: Colors.transparent,
         borderRadius: BorderRadius.circular(AppRadius.md),
         child: Container(
           padding: const EdgeInsets.all(AppSpacing.lg),
@@ -114,15 +118,15 @@ class _BranchTypeChip extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
-          color: isDark ? AppColors.languageIcon :AppColors.darkGreyBorder,
+          color: isDark ? (type == 'Premium' ? AppColors.languageIcon:AppColors.blueTagValue) : (type == 'Premium' ? AppColors.darkGreyBorder:AppColors.branchTagLightStandardBorder),
         ),
-        color: isDark? (type == 'Premium' ? AppColors.badgeBackground: AppColors.badgeblueBackground.withValues(alpha:0.16)) : AppColors.branchTagLight,
+        color: isDark? (type == 'Premium' ? AppColors.badgeBackground:  Color(0x299DCEFF)) :(type == 'Premium' ? AppColors.branchTagLight:AppColors.branchTagLightStandard),
       ),
       child: Text(
         type,
           // style: AppTextStyles.headingSmall,
         style: AppTextStyles.headingSmall(context).copyWith(
-          color: isDark ? (type == 'Premium' ? AppColors.lightText: AppColors.blueTagText) : (type == 'Premium' ? AppColors.darkText: AppColors.blueTagText),
+          color: isDark ? (type == 'Premium' ? AppColors.languageTextDark: AppColors.blueTagDarkText) : (type == 'Premium' ? AppColors.languageIcon: AppColors.blueTagText),
         ),
       ),
     );

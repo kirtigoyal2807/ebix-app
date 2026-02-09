@@ -27,7 +27,9 @@ class HomeView extends StatelessWidget {
       create: (context) => HomeCubit(),
       child: BlocBuilder<HomeCubit, HomeState>(
         builder: (context, state) {
+          final isDark = Theme.of(context).brightness == Brightness.dark;
           return Scaffold(
+            backgroundColor: isDark ? AppColors.homeBackground : AppColors.whiteColor,
             body: IndexedStack(
               index: state.currentIndex,
               children: [
@@ -54,8 +56,9 @@ class HomeView extends StatelessWidget {
     final inactiveColor = isDark ? Colors.grey : Colors.grey.shade400;
 
     return Container(
+      padding: EdgeInsets.only(bottom: 12),
       decoration: BoxDecoration(
-        color: isDark ? AppColors.surfaceDark : Colors.white,
+        color: isDark ? AppColors.homeBackground : AppColors.whiteColor,
         border: Border(
           top: BorderSide(
             color: isDark ? AppColors.borderDark : AppColors.borderLight,
@@ -126,12 +129,12 @@ class HomeContentView extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     HomeHeader(userName: state.userName),
-                    const SizedBox(height: AppSpacing.lg),
+                    const SizedBox(height: AppSpacing.md),
 
                     const SpringChallengeCard(),
-                    const SizedBox(height: AppSpacing.lg),
+                    const SizedBox(height: AppSpacing.md),
                     const QuickActions(),
-                    const SizedBox(height: AppSpacing.lg),
+                    const SizedBox(height: AppSpacing.md),
 
                     Padding(
                       padding: const EdgeInsets.symmetric(
@@ -152,9 +155,9 @@ class HomeContentView extends StatelessWidget {
                     ),
                     const SizedBox(height: AppSpacing.md),
                     MembershipCard(status: HomeUserStatus.empty),
-                    const SizedBox(height: AppSpacing.lg),
+                    const SizedBox(height: AppSpacing.md),
                     MembershipCard(status: HomeUserStatus.expired),
-                    const SizedBox(height: AppSpacing.lg),
+                    const SizedBox(height: AppSpacing.md),
                     MembershipCard(status: HomeUserStatus.existing),
 
                     const SizedBox(height: AppSpacing.md),
@@ -229,10 +232,10 @@ class HomeContentView extends StatelessWidget {
                       totalHours: state.totalHours,
                       goalClasses: state.goalClasses,
                     ),
-                    const SizedBox(height: AppSpacing.lg),
+                    const SizedBox(height: AppSpacing.md),
 
                     MembershipCard(status: state.status),
-                    const SizedBox(height: AppSpacing.lg),
+                    const SizedBox(height: AppSpacing.md),
 
                     Padding(
                       padding: const EdgeInsets.symmetric(
@@ -253,7 +256,7 @@ class HomeContentView extends StatelessWidget {
                     ),
                     const SizedBox(height: AppSpacing.md),
                     const FeaturedClassCard(),
-                    const SizedBox(height: AppSpacing.xl),
+                    const SizedBox(height: AppSpacing.md),
                     Padding(
                       padding: const EdgeInsets.symmetric(
                         horizontal: AppSpacing.lg,
@@ -293,7 +296,7 @@ class HomeContentView extends StatelessWidget {
                     ),
                     const SizedBox(height: AppSpacing.md),
                     const ClassTypesSection(),
-                    const SizedBox(height: AppSpacing.xl),
+                    const SizedBox(height: AppSpacing.md),
                     Padding(
                       padding: const EdgeInsets.symmetric(
                         horizontal: AppSpacing.lg,
@@ -333,7 +336,7 @@ class HomeContentView extends StatelessWidget {
                     ),
                     const SizedBox(height: AppSpacing.md),
                     const TopTrainersSection(),
-                    const SizedBox(height: AppSpacing.xxl),
+                    const SizedBox(height: AppSpacing.xl),
                   ],
                 ),
               ),

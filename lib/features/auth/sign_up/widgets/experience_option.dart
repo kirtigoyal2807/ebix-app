@@ -33,6 +33,10 @@ class ExperienceOption extends StatelessWidget {
       shadowColor: Colors.black.withValues(alpha: 0.2),
       borderRadius: BorderRadius.circular(16),
       child: InkWell(
+        splashColor: Colors.transparent,
+        highlightColor: Colors.transparent,
+        hoverColor: Colors.transparent,
+        focusColor: Colors.transparent,
         onTap: onTap,
         borderRadius: BorderRadius.circular(AppRadius.md),
         child: Container(

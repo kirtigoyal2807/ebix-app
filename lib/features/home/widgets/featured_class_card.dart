@@ -14,7 +14,7 @@ class FeaturedClassCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final size = MediaQuery.sizeOf(context);
-    final imageHeight = size.height * 0.22;
+    final imageHeight = size.height * 0.18;
 
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
@@ -46,57 +46,63 @@ class FeaturedClassCard extends StatelessWidget {
                   fit: BoxFit.fill,
                 ),
           ),
-          Container(
-            margin: const EdgeInsets.symmetric(
-              horizontal: AppSpacing.md,
-              vertical: AppSpacing.sm,
+          Padding(
+            padding: const EdgeInsets.only(
+              right: AppSpacing.md,
+              left: AppSpacing.md,
+              top: AppSpacing.base,
             ),
-            padding: const EdgeInsets.symmetric(
-              horizontal: AppSpacing.sm,
-              vertical: AppSpacing.xs,
-            ),
-            decoration: BoxDecoration(
-              color: isDark
-                  ? AppColors.successColor.withValues(
-                alpha: 0.36,
-              )
-                  : AppColors.featuredTagBackgroundColor,
-              borderRadius: BorderRadius.circular(16),
-              border: Border.all(
-                color: isDark
-                    ? AppColors.successBorderDark
-                    : AppColors.successBorder,
-                width: 1,
+            child: Container(
+              padding: const EdgeInsets.symmetric(
+                horizontal: AppSpacing.sm,
+                vertical: AppSpacing.xs,
               ),
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(
-                  Icons.check,
+              margin: const EdgeInsets.only(
+                right: AppSpacing.xs,
+              ),
+              decoration: BoxDecoration(
+                color: isDark
+                    ? AppColors.successColor.withValues(
+                  alpha: 0.36,
+                )
+                    : AppColors.featuredTagBackgroundColor,
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(
                   color: isDark
-                      ? AppColors.lightGreyColor
-                      : AppColors.GreyColor,
-                  size: 14,
+                      ? AppColors.successBorderDark
+                      : AppColors.featuredTagBackgroundColor,
+                  width: 1,
                 ),
-                const SizedBox(width: AppSpacing.xs),
-                Flexible(
-                  child: AppText(
-                    context.l10n.inYourPlan,
-                    style: (context) =>
-                        AppTextStyles.boldBody(
-                          context,
-                        ).copyWith(
-                          fontSize: 10,
-                          color: isDark
-                              ? AppColors.lightGreyColor
-                              : AppColors.GreyColor,
-                        ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    Icons.check,
+                    color: isDark
+                        ? AppColors.lightGreyColor
+                        : AppColors.GreyColor,
+                    size: 12,
                   ),
-                ),
-              ],
+                  const SizedBox(width: AppSpacing.xs),
+                  Flexible(
+                    child: AppText(
+                      context.l10n.inYourPlan,
+                      style: (context) =>
+                          AppTextStyles.boldBody(
+                            context,
+                          ).copyWith(
+                            fontSize: 12,
+                            color: isDark
+                                ? AppColors.lightGreyColor
+                                : AppColors.GreyColor,
+                          ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
           Padding(
@@ -104,6 +110,7 @@ class FeaturedClassCard extends StatelessWidget {
               right: AppSpacing.md,
               left: AppSpacing.md,
               bottom: AppSpacing.md,
+              top:  AppSpacing.sm,
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -166,7 +173,7 @@ class FeaturedClassCard extends StatelessWidget {
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
-                const SizedBox(height: AppSpacing.md),
+                const SizedBox(height: AppSpacing.sm),
                 ElevatedButton(
                   onPressed: () {},
                   style: ElevatedButton.styleFrom(
