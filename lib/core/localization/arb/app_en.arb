@@ -350,7 +350,29 @@
   "tabCurrent": "Current",
   "tabPast": "Past",
   "tabCancelled": "Cancelled",
-  "reviewExcellent": "Excellent class! Sarah is an amazing instructor."
+  "reviewExcellent": "Excellent class! Sarah is an amazing instructor.",
+  "subscriptionTitle": "Subscription",
+  "chooseYourPlan": "Choose your plan",
+  "selectPlanSubtitle": "Select the plan that works best for you",
+  "buyAsGift": "Buy as Gift",
+  "perfectForFriends": "Perfect for friends & family",
+  "subscribeNow": "Subscribe Now",
+  "mostPopular": "Most Popular",
+  "starter": "Starter",
+  "premiumPlanTitle": "Premium Plan",
+  "basicPlanTitle": "Basic Plan",
+  "unlimitedPlanTitle": "Unlimited Plan",
+  "month": "Month",
+  "feature12Classes": "12 classes per month",
+  "featureDowntownUptown": "Downtown + uptown studios",
+  "featureFreeMatEquipment": "Free mat + equipment rental",
+  "featurePriorityBooking": "Priority booking",
+  "feature8Classes": "8 classes per month",
+  "featureDowntownOnly": "Downtown studio only",
+  "featureFreeMat": "Free mat rental",
+  "featureUnlimitedClasses": "Unlimited classes",
+  "featureAllStudios": "All studios access",
+  "featurePriorityGuest": "Priority booking + Guest passes"
 
 
 

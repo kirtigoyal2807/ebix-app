@@ -825,4 +825,70 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get reviewExcellent => 'حصة رائعة! سارة مدرّبة مميزة للغاية.';
+
+  @override
+  String get subscriptionTitle => 'الاشتراك';
+
+  @override
+  String get chooseYourPlan => 'اختر خطتك';
+
+  @override
+  String get selectPlanSubtitle => 'اختر الخطة التي تناسبك';
+
+  @override
+  String get buyAsGift => 'شراء كهدية';
+
+  @override
+  String get perfectForFriends => 'مثالي للأصدقاء والعائلة';
+
+  @override
+  String get subscribeNow => 'اشترك الآن';
+
+  @override
+  String get mostPopular => 'الأكثر شهرة';
+
+  @override
+  String get starter => 'بداية';
+
+  @override
+  String get premiumPlanTitle => 'الخطة المميزة';
+
+  @override
+  String get basicPlanTitle => 'الخطة الأساسية';
+
+  @override
+  String get unlimitedPlanTitle => 'خطة غير محدودة';
+
+  @override
+  String get month => 'شهر';
+
+  @override
+  String get feature12Classes => '12 حصة في الشهر';
+
+  @override
+  String get featureDowntownUptown => 'استوديوهات وسط المدينة + الحي الشمالي';
+
+  @override
+  String get featureFreeMatEquipment => 'تأجير مجاني للسجادة والمعدات';
+
+  @override
+  String get featurePriorityBooking => 'أولوية الحجز';
+
+  @override
+  String get feature8Classes => '8 حصص في الشهر';
+
+  @override
+  String get featureDowntownOnly => 'استوديو وسط المدينة فقط';
+
+  @override
+  String get featureFreeMat => 'تأجير مجاني للسجادة';
+
+  @override
+  String get featureUnlimitedClasses => 'حصص غير محدودة';
+
+  @override
+  String get featureAllStudios => 'الوصول لجميع الاستوديوهات';
+
+  @override
+  String get featurePriorityGuest => 'أولوية الحجز + تصاريح للضيوف';
 }

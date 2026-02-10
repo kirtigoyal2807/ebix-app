@@ -5,6 +5,7 @@ import 'package:pilates_app/config/theme/app_radius.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/core/localization/localization_extension.dart';
+import 'package:pilates_app/features/subscription/purchase_subscription/view/subscription_view.dart';
 import 'package:pilates_app/widgets/app_text.dart';
 
 import '../../my_booking/my_booking_view.dart';
@@ -47,14 +48,22 @@ class QuickActions extends StatelessWidget {
               ),
             ),
             SizedBox(width: gap),
-            _buildActionItem(
-              context,
-              context.l10n.exploreBranches,
-              isDark
-                  ? 'assets/images/svg/ic_location_dark.svg'
-                  : 'assets/images/svg/ic_location_light.svg',
-              itemPadding,
-              itemWidth,
+            GestureDetector(
+              onTap: (){
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => SubscriptionView()),
+                );
+              },
+              child: _buildActionItem(
+                context,
+                context.l10n.exploreBranches,
+                isDark
+                    ? 'assets/images/svg/ic_location_dark.svg'
+                    : 'assets/images/svg/ic_location_light.svg',
+                itemPadding,
+                itemWidth,
+              ),
             ),
             SizedBox(width: gap),
             _buildActionItem(

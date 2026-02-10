@@ -349,7 +349,29 @@
             "tabCurrent": "الحالية",
             "tabPast": "السابقة",
             "tabCancelled": "الملغاة",
-            "reviewExcellent": "حصة رائعة! سارة مدرّبة مميزة للغاية."
+            "reviewExcellent": "حصة رائعة! سارة مدرّبة مميزة للغاية.",
+  "subscriptionTitle": "الاشتراك",
+  "chooseYourPlan": "اختر خطتك",
+  "selectPlanSubtitle": "اختر الخطة التي تناسبك",
+  "buyAsGift": "شراء كهدية",
+  "perfectForFriends": "مثالي للأصدقاء والعائلة",
+  "subscribeNow": "اشترك الآن",
+  "mostPopular": "الأكثر شهرة",
+  "starter": "بداية",
+  "premiumPlanTitle": "الخطة المميزة",
+  "basicPlanTitle": "الخطة الأساسية",
+  "unlimitedPlanTitle": "خطة غير محدودة",
+  "month": "شهر",
+  "feature12Classes": "12 حصة في الشهر",
+  "featureDowntownUptown": "استوديوهات وسط المدينة + الحي الشمالي",
+  "featureFreeMatEquipment": "تأجير مجاني للسجادة والمعدات",
+  "featurePriorityBooking": "أولوية الحجز",
+  "feature8Classes": "8 حصص في الشهر",
+  "featureDowntownOnly": "استوديو وسط المدينة فقط",
+  "featureFreeMat": "تأجير مجاني للسجادة",
+  "featureUnlimitedClasses": "حصص غير محدودة",
+  "featureAllStudios": "الوصول لجميع الاستوديوهات",
+  "featurePriorityGuest": "أولوية الحجز + تصاريح للضيوف"
 
 
 }

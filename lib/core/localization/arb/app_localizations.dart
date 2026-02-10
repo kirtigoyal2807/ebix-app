@@ -1645,6 +1645,138 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Excellent class! Sarah is an amazing instructor.'**
   String get reviewExcellent;
+
+  /// No description provided for @subscriptionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscription'**
+  String get subscriptionTitle;
+
+  /// No description provided for @chooseYourPlan.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose your plan'**
+  String get chooseYourPlan;
+
+  /// No description provided for @selectPlanSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Select the plan that works best for you'**
+  String get selectPlanSubtitle;
+
+  /// No description provided for @buyAsGift.
+  ///
+  /// In en, this message translates to:
+  /// **'Buy as Gift'**
+  String get buyAsGift;
+
+  /// No description provided for @perfectForFriends.
+  ///
+  /// In en, this message translates to:
+  /// **'Perfect for friends & family'**
+  String get perfectForFriends;
+
+  /// No description provided for @subscribeNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscribe Now'**
+  String get subscribeNow;
+
+  /// No description provided for @mostPopular.
+  ///
+  /// In en, this message translates to:
+  /// **'Most Popular'**
+  String get mostPopular;
+
+  /// No description provided for @starter.
+  ///
+  /// In en, this message translates to:
+  /// **'Starter'**
+  String get starter;
+
+  /// No description provided for @premiumPlanTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Premium Plan'**
+  String get premiumPlanTitle;
+
+  /// No description provided for @basicPlanTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Basic Plan'**
+  String get basicPlanTitle;
+
+  /// No description provided for @unlimitedPlanTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlimited Plan'**
+  String get unlimitedPlanTitle;
+
+  /// No description provided for @month.
+  ///
+  /// In en, this message translates to:
+  /// **'Month'**
+  String get month;
+
+  /// No description provided for @feature12Classes.
+  ///
+  /// In en, this message translates to:
+  /// **'12 classes per month'**
+  String get feature12Classes;
+
+  /// No description provided for @featureDowntownUptown.
+  ///
+  /// In en, this message translates to:
+  /// **'Downtown + uptown studios'**
+  String get featureDowntownUptown;
+
+  /// No description provided for @featureFreeMatEquipment.
+  ///
+  /// In en, this message translates to:
+  /// **'Free mat + equipment rental'**
+  String get featureFreeMatEquipment;
+
+  /// No description provided for @featurePriorityBooking.
+  ///
+  /// In en, this message translates to:
+  /// **'Priority booking'**
+  String get featurePriorityBooking;
+
+  /// No description provided for @feature8Classes.
+  ///
+  /// In en, this message translates to:
+  /// **'8 classes per month'**
+  String get feature8Classes;
+
+  /// No description provided for @featureDowntownOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'Downtown studio only'**
+  String get featureDowntownOnly;
+
+  /// No description provided for @featureFreeMat.
+  ///
+  /// In en, this message translates to:
+  /// **'Free mat rental'**
+  String get featureFreeMat;
+
+  /// No description provided for @featureUnlimitedClasses.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlimited classes'**
+  String get featureUnlimitedClasses;
+
+  /// No description provided for @featureAllStudios.
+  ///
+  /// In en, this message translates to:
+  /// **'All studios access'**
+  String get featureAllStudios;
+
+  /// No description provided for @featurePriorityGuest.
+  ///
+  /// In en, this message translates to:
+  /// **'Priority booking + Guest passes'**
+  String get featurePriorityGuest;
 }
 
 class _AppLocalizationsDelegate

@@ -834,4 +834,70 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get reviewExcellent =>
       'Excellent class! Sarah is an amazing instructor.';
+
+  @override
+  String get subscriptionTitle => 'Subscription';
+
+  @override
+  String get chooseYourPlan => 'Choose your plan';
+
+  @override
+  String get selectPlanSubtitle => 'Select the plan that works best for you';
+
+  @override
+  String get buyAsGift => 'Buy as Gift';
+
+  @override
+  String get perfectForFriends => 'Perfect for friends & family';
+
+  @override
+  String get subscribeNow => 'Subscribe Now';
+
+  @override
+  String get mostPopular => 'Most Popular';
+
+  @override
+  String get starter => 'Starter';
+
+  @override
+  String get premiumPlanTitle => 'Premium Plan';
+
+  @override
+  String get basicPlanTitle => 'Basic Plan';
+
+  @override
+  String get unlimitedPlanTitle => 'Unlimited Plan';
+
+  @override
+  String get month => 'Month';
+
+  @override
+  String get feature12Classes => '12 classes per month';
+
+  @override
+  String get featureDowntownUptown => 'Downtown + uptown studios';
+
+  @override
+  String get featureFreeMatEquipment => 'Free mat + equipment rental';
+
+  @override
+  String get featurePriorityBooking => 'Priority booking';
+
+  @override
+  String get feature8Classes => '8 classes per month';
+
+  @override
+  String get featureDowntownOnly => 'Downtown studio only';
+
+  @override
+  String get featureFreeMat => 'Free mat rental';
+
+  @override
+  String get featureUnlimitedClasses => 'Unlimited classes';
+
+  @override
+  String get featureAllStudios => 'All studios access';
+
+  @override
+  String get featurePriorityGuest => 'Priority booking + Guest passes';
 }

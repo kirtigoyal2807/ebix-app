@@ -98,5 +98,7 @@ class AppColors {
   static const whiteBorderColor = Color(0xFFF2EEEA);
   static const warningColor = Color(0xFFFDC700);
   static const redText = Color(0xFFDC3E42);
+  static const switchInactiveDark = Color(0xFF140D09);
+  static const goldBackground = Color(0xFFFDC7003B);
 
 }

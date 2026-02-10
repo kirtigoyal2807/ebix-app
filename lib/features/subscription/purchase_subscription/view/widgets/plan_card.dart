@@ -1,0 +1,95 @@
+import 'package:flutter/material.dart';
+import 'package:pilates_app/config/theme/app_colors.dart';
+import 'package:pilates_app/config/theme/app_radius.dart';
+import 'package:pilates_app/config/theme/app_text_styles.dart';
+import 'package:pilates_app/widgets/app_text.dart';
+
+class PlanCard extends StatelessWidget {
+  final String id;
+  final String title;
+  final String price;
+  final bool isSelected;
+  final bool isPopular;
+  final String? badgeText; // e.g. "Most Popular" or "Starter"
+  final VoidCallback onTap;
+
+  const PlanCard({
+    super.key,
+    required this.id,
+    required this.title,
+    required this.price,
+    required this.isSelected,
+    this.badgeText,
+    this.isPopular = false,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final borderColor = isSelected 
+        ? AppColors.primaryBrown 
+        : (isDark ? AppColors.borderDark : AppColors.lightGreyBorder);
+
+    return LayoutBuilder( // To ensure container doesn't overflow or break
+      builder: (context, constraints) {
+        return GestureDetector(
+          onTap: onTap,
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 200),
+            margin: const EdgeInsets.only(bottom: 12),
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: isDark ? AppColors.homeBackground : AppColors.whiteColor,
+              borderRadius: BorderRadius.circular(AppRadius.md),
+              border: Border.all(
+                color: isDark ? AppColors.greyText : AppColors.buttonBorder,
+              ),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    AppText(
+                      title,
+                      style: (context) => AppTextStyles.body(context).copyWith(
+                        fontSize: 16,
+                        color: isDark ? AppColors.lightText : AppColors.darkText,
+                      ),
+                    ),
+                    if (badgeText != null)
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                        decoration: BoxDecoration(
+                          color: (isDark ? const Color(0x3BFDC700) : AppColors.goldStarColor), // Gold for popular
+                          borderRadius: BorderRadius.circular(20),
+                          // border: isPopular ? null : Border.all(color: AppColors.lightGreyBorder),
+                        ),
+                        child: AppText(
+                          badgeText!,
+                          style: (context) => AppTextStyles.body(context).copyWith(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
+                            color: (isDark ? AppColors.upgradeDarkLockBackgroundColor : AppColors.darkText),
+                          ),
+                        ),
+                      ),
+                  ],
+                ),
+                const SizedBox(height: 12),
+                AppText(
+                  price + ' / Month',
+                  style: (context) => AppTextStyles.body(context).copyWith(
+                    fontSize: 18,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
