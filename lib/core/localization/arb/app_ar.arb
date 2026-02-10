@@ -371,7 +371,26 @@
   "featureFreeMat": "تأجير مجاني للسجادة",
   "featureUnlimitedClasses": "حصص غير محدودة",
   "featureAllStudios": "الوصول لجميع الاستوديوهات",
-  "featurePriorityGuest": "أولوية الحجز + تصاريح للضيوف"
+  "featurePriorityGuest": "أولوية الحجز + تصاريح للضيوف",
+  "healthInformation": "المعلومات الصحية",
+  "personalInformation": "المعلومات الشخصية",
+  "medicalHistory": "التاريخ الطبي",
+  "chronicConditions": "هل تعاني من أي أمراض مزمنة؟ (مثل ارتفاع ضغط الدم، السكري، أمراض القلب)",
+  "surgeriesInjuries": "هل أجريت أي عمليات جراحية مؤخرًا أو هل تعاني من أي إصابات حالية؟",
+  "painBonesMuscles": "هل تعاني من أي ألم أو مشاكل في العظام أو المفاصل أو العضلات؟",
+  "respiratoryProblems": "هل تعاني من أي مشاكل في الجهاز التنفسي أو القلب أو الرئة؟",
+  "medications": "هل تتناول أي أدوية بانتظام؟",
+  "highBloodPressure": "ارتفاع ضغط الدم",
+  "diabetes": "السكري",
+  "heartDisease": "أمراض القلب",
+  "heartCondition": "حالة قلبية",
+  "noneOfTheAbove": "لا شيء مما سبق",
+  "age": "العمر",
+  "heightCm": "الطول (سم)",
+  "weightKg": "الوزن (كجم)",
+  "hearProblems": "مشاكل في السمع",
+  "lungProblems": "مشاكل في الرئة",
+  "respiratoryProblem": "مشكلة في الجهاز التنفسي"
 
 
 }

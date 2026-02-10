@@ -900,4 +900,65 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get featurePriorityGuest => 'Priority booking + Guest passes';
+
+  @override
+  String get healthInformation => 'Health Information';
+
+  @override
+  String get personalInformation => 'Personal Information';
+
+  @override
+  String get medicalHistory => 'Medical History';
+
+  @override
+  String get chronicConditions =>
+      'Do you have any chronic medical conditions? (e.g., high blood pressure, diabetes, heart disease)';
+
+  @override
+  String get surgeriesInjuries =>
+      'Have you had any recent surgeries or do you have any current injuries?';
+
+  @override
+  String get painBonesMuscles =>
+      'Do you have any pain or problems in bones, joints, or muscles?';
+
+  @override
+  String get respiratoryProblems =>
+      'Do you have any respiratory, heart, or lung problems?';
+
+  @override
+  String get medications => 'Do you take any medications regularly?';
+
+  @override
+  String get highBloodPressure => 'High Blood Pressure';
+
+  @override
+  String get diabetes => 'Diabetes';
+
+  @override
+  String get heartDisease => 'Heart Disease';
+
+  @override
+  String get heartCondition => 'Heart condition';
+
+  @override
+  String get noneOfTheAbove => 'None of the above';
+
+  @override
+  String get age => 'Age';
+
+  @override
+  String get heightCm => 'Height (cm)';
+
+  @override
+  String get weightKg => 'Weight (kg)';
+
+  @override
+  String get hearProblems => 'Hear Problems';
+
+  @override
+  String get lungProblems => 'Lung Problems';
+
+  @override
+  String get respiratoryProblem => 'Respiratory Problem';
 }

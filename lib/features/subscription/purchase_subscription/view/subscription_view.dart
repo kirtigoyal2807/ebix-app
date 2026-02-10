@@ -10,6 +10,8 @@ import 'package:pilates_app/features/subscription/purchase_subscription/view/wid
 import 'package:pilates_app/features/subscription/purchase_subscription/view/widgets/gift_toggle_card.dart';
 import 'package:pilates_app/features/subscription/purchase_subscription/view/widgets/plan_card.dart';
 import 'package:pilates_app/features/subscription/purchase_subscription/view/widgets/plan_details_modal.dart';
+import 'package:pilates_app/features/subscription/purchase_subscription/view/health_information_view.dart';
+import 'package:pilates_app/features/subscription/purchase_subscription/view/medical_history_view.dart';
 import 'package:pilates_app/widgets/app_app_bar.dart';
 import 'package:pilates_app/widgets/app_button.dart';
 import 'package:pilates_app/widgets/app_text.dart';
@@ -34,10 +36,59 @@ class _SubscriptionViewContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final cubit = context.read<SubscriptionCubit>();
-    final l10n = AppLocalizations.of(context);
+    
+    // We lift the l10n and cubit access inside BlocBuilder mostly, or here if stable.
+    
+    return BlocBuilder<SubscriptionCubit, SubscriptionState>(
+      // Listen to currentStep usage
+      builder: (context, state) {
+        final l10n = AppLocalizations.of(context)!;
+        String appBarTitle;
+        if (state.currentStep == 0) {
+          appBarTitle = l10n.subscriptionTitle;
+        } else if (state.currentStep == 1 || state.currentStep == 2) {
+          appBarTitle = l10n.healthInformation; // As per screenshot header
+        } else {
+          appBarTitle = l10n.subscriptionTitle;
+        }
 
-    // We use a function or build context to get localized strings
+        return Scaffold(
+          backgroundColor: isDark ? AppColors.homeBackground : AppColors.whiteColor,
+          appBar: AppAppBar(
+            title: appBarTitle,
+            isMoreMenu: false,
+            onBack: () {
+              if (state.currentStep > 0) {
+                context.read<SubscriptionCubit>().previousStep();
+              } else {
+                context.pop();
+              }
+            },
+          ),
+          body: SafeArea(
+            child: IndexedStack(
+              index: state.currentStep,
+              children: [
+                const _PlanSelectionStep(),
+                const HealthInformationView(),
+                const MedicalHistoryView(),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
+
+class _PlanSelectionStep extends StatelessWidget {
+  const _PlanSelectionStep();
+
+  @override
+  Widget build(BuildContext context) {
+    final cubit = context.read<SubscriptionCubit>();
+    final l10n = AppLocalizations.of(context)!;
+
     final List<Map<String, dynamic>> plans = [
       {
         'id': 'premium',
@@ -78,118 +129,103 @@ class _SubscriptionViewContent extends StatelessWidget {
       },
     ];
 
-    return Scaffold(
-      backgroundColor: isDark ? AppColors.homeBackground : AppColors.whiteColor,
-      appBar: AppAppBar(
-        title: l10n.subscriptionTitle,
-        onBack: () => context.pop(),
-        isMoreMenu: false,
-      ),
-      body: SafeArea(
-        child: Column(
-          children: [
-            Expanded(
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(vertical: AppSpacing.lg),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Header
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
-                      child: AppText(
-                        l10n.chooseYourPlan,
-                        style: (context) => AppTextStyles.gelasioMedium(context).copyWith(fontSize: 24),
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
-                      child: AppText(
-                        l10n.selectPlanSubtitle,
-                        style: AppTextStyles.bodyText,
-                      ),
-                    ),
-                    const SizedBox(height: AppSpacing.md),
-
-                    // Gift Toggle
-                    BlocBuilder<SubscriptionCubit, SubscriptionState>(
-                      buildWhen: (previous, current) => previous.isGift != current.isGift,
-                      builder: (context, state) {
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
-                          child: GiftToggleCard(
-                            isGift: state.isGift,
-                            onToggle: (val) => cubit.toggleGift(val),
-                          ),
-                        );
-                      },
-                    ),
-                    const SizedBox(height: AppSpacing.md),
-
-                    // Branch Selector
-                    BlocBuilder<SubscriptionCubit, SubscriptionState>(
-                      buildWhen: (previous, current) => previous.selectedBranchId != current.selectedBranchId,
-                      builder: (context, state) {
-                        return BranchSelector(
-                          branches: const ['Branch A', 'Branch B', 'Branch C', 'Branch D'],
-                          selectedBranchId: state.selectedBranchId,
-                          onSelect: (branchId) => cubit.selectBranch(branchId),
-                        );
-                      },
-                    ),
-                    const SizedBox(height: AppSpacing.md),
-
-                    // Plans List
-                    BlocBuilder<SubscriptionCubit, SubscriptionState>(
-                      buildWhen: (previous, current) => previous.selectedPlanId != current.selectedPlanId,
-                      builder: (context, state) {
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
-                          child: Column(
-                            children: plans.map((plan) {
-                              return PlanCard(
-                                id: plan['id'],
-                                title: plan['title'],
-                                price: plan['price'],
-                                isSelected: state.selectedPlanId == plan['id'],
-                                isPopular: plan['isPopular'] ?? false,
-                                badgeText: plan['badge'],
-                                onTap: () {
-                                  cubit.selectPlan(plan['id']);
-                                  showModalBottomSheet(
-                                    context: context,
-                                    isScrollControlled: true,
-                                    backgroundColor: Colors.transparent,
-                                    builder: (context) => PlanDetailsModal(plan: plan),
-                                  );
-                                },
-                              );
-                            }).toList(),
-                          ),
-                        );
-                      },
-                    ),
-                  ],
+    return Column(
+      children: [
+        Expanded(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(vertical: AppSpacing.lg),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Header
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+                  child: AppText(
+                    l10n.chooseYourPlan,
+                    style:(style)=> AppTextStyles.gelasioMedium(context).copyWith(fontSize: 24),
+                  ),
                 ),
-              ),
+                const SizedBox(height: 4),
+                Padding(
+                   padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+                   child: AppText(
+                     l10n.selectPlanSubtitle,
+                     style: (style)=> AppTextStyles.bodyText(context),
+                   ),
+                 ),
+                const SizedBox(height: AppSpacing.md),
+
+                 // Gift Toggle
+                 BlocBuilder<SubscriptionCubit, SubscriptionState>(
+                   buildWhen: (p, c) => p.isGift != c.isGift,
+                   builder: (context, state) {
+                     return Padding(
+                       padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+                       child: GiftToggleCard(
+                         isGift: state.isGift,
+                         onToggle: (val) => cubit.toggleGift(val),
+                       ),
+                     );
+                   },
+                 ),
+                 const SizedBox(height: AppSpacing.md),
+
+                 // Branch Selector
+                 BlocBuilder<SubscriptionCubit, SubscriptionState>(
+                   buildWhen: (p, c) => p.selectedBranchId != c.selectedBranchId,
+                   builder: (context, state) {
+                     return BranchSelector(
+                       branches: const ['Branch A', 'Branch B', 'Branch C', 'Branch D'],
+                       selectedBranchId: state.selectedBranchId,
+                       onSelect: (branchId) => cubit.selectBranch(branchId),
+                     );
+                   },
+                 ),
+                 const SizedBox(height: AppSpacing.md),
+
+                 // Plans List
+                 BlocBuilder<SubscriptionCubit, SubscriptionState>(
+                   buildWhen: (p, c) => p.selectedPlanId != c.selectedPlanId,
+                   builder: (context, state) {
+                     // Find the currently selected plan object to pass to the modal
+                     return Padding(
+                       padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+                       child: Column(
+                         children: plans.map((plan) {
+                           return PlanCard(
+                             id: plan['id'],
+                             title: plan['title'],
+                             price: plan['price'],
+                             isSelected: state.selectedPlanId == plan['id'],
+                             isPopular: plan['isPopular'] ?? false,
+                             badgeText: plan['badge'],
+                             onTap: () {
+                               cubit.selectPlan(plan['id']);
+                             },
+                           );
+                         }).toList(),
+                       ),
+                     );
+                   },
+                 ),
+              ],
             ),
-            
-            // Fixed Bottom Button
-            Padding(
-              padding: const EdgeInsets.all(24),
-              child: AppButton(
-                label: l10n.continueTxt,
-                onPressed: () {
-                  // Handle subscription flow
-                },
-                buttonColor: AppColors.primaryBrown,
-                expanded: true,
-              ),
-            ),
-          ],
+          ),
         ),
-      ),
+        
+        // Fixed Bottom Button
+        Padding(
+          padding: const EdgeInsets.all(24),
+          child: AppButton(
+            label: l10n.continueTxt,
+            onPressed: () {
+               cubit.nextStep();
+            },
+            buttonColor: AppColors.primaryBrown,
+            expanded: true,
+          ),
+        ),
+      ],
     );
   }
 }

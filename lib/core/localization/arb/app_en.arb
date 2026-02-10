@@ -372,7 +372,26 @@
   "featureFreeMat": "Free mat rental",
   "featureUnlimitedClasses": "Unlimited classes",
   "featureAllStudios": "All studios access",
-  "featurePriorityGuest": "Priority booking + Guest passes"
+  "featurePriorityGuest": "Priority booking + Guest passes",
+  "healthInformation": "Health Information",
+  "personalInformation": "Personal Information",
+  "medicalHistory": "Medical History",
+  "chronicConditions": "Do you have any chronic medical conditions? (e.g., high blood pressure, diabetes, heart disease)",
+  "surgeriesInjuries": "Have you had any recent surgeries or do you have any current injuries?",
+  "painBonesMuscles": "Do you have any pain or problems in bones, joints, or muscles?",
+  "respiratoryProblems": "Do you have any respiratory, heart, or lung problems?",
+  "medications": "Do you take any medications regularly?",
+  "highBloodPressure": "High Blood Pressure",
+  "diabetes": "Diabetes",
+  "heartDisease": "Heart Disease",
+  "heartCondition": "Heart condition",
+  "noneOfTheAbove": "None of the above",
+  "age": "Age",
+  "heightCm": "Height (cm)",
+  "weightKg": "Weight (kg)",
+  "hearProblems": "Hear Problems",
+  "lungProblems": "Lung Problems",
+  "respiratoryProblem": "Respiratory Problem"
 
 
 

@@ -891,4 +891,65 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get featurePriorityGuest => 'أولوية الحجز + تصاريح للضيوف';
+
+  @override
+  String get healthInformation => 'المعلومات الصحية';
+
+  @override
+  String get personalInformation => 'المعلومات الشخصية';
+
+  @override
+  String get medicalHistory => 'التاريخ الطبي';
+
+  @override
+  String get chronicConditions =>
+      'هل تعاني من أي أمراض مزمنة؟ (مثل ارتفاع ضغط الدم، السكري، أمراض القلب)';
+
+  @override
+  String get surgeriesInjuries =>
+      'هل أجريت أي عمليات جراحية مؤخرًا أو هل تعاني من أي إصابات حالية؟';
+
+  @override
+  String get painBonesMuscles =>
+      'هل تعاني من أي ألم أو مشاكل في العظام أو المفاصل أو العضلات؟';
+
+  @override
+  String get respiratoryProblems =>
+      'هل تعاني من أي مشاكل في الجهاز التنفسي أو القلب أو الرئة؟';
+
+  @override
+  String get medications => 'هل تتناول أي أدوية بانتظام؟';
+
+  @override
+  String get highBloodPressure => 'ارتفاع ضغط الدم';
+
+  @override
+  String get diabetes => 'السكري';
+
+  @override
+  String get heartDisease => 'أمراض القلب';
+
+  @override
+  String get heartCondition => 'حالة قلبية';
+
+  @override
+  String get noneOfTheAbove => 'لا شيء مما سبق';
+
+  @override
+  String get age => 'العمر';
+
+  @override
+  String get heightCm => 'الطول (سم)';
+
+  @override
+  String get weightKg => 'الوزن (كجم)';
+
+  @override
+  String get hearProblems => 'مشاكل في السمع';
+
+  @override
+  String get lungProblems => 'مشاكل في الرئة';
+
+  @override
+  String get respiratoryProblem => 'مشكلة في الجهاز التنفسي';
 }

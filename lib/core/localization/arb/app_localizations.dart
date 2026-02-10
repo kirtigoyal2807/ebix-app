@@ -1777,6 +1777,120 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Priority booking + Guest passes'**
   String get featurePriorityGuest;
+
+  /// No description provided for @healthInformation.
+  ///
+  /// In en, this message translates to:
+  /// **'Health Information'**
+  String get healthInformation;
+
+  /// No description provided for @personalInformation.
+  ///
+  /// In en, this message translates to:
+  /// **'Personal Information'**
+  String get personalInformation;
+
+  /// No description provided for @medicalHistory.
+  ///
+  /// In en, this message translates to:
+  /// **'Medical History'**
+  String get medicalHistory;
+
+  /// No description provided for @chronicConditions.
+  ///
+  /// In en, this message translates to:
+  /// **'Do you have any chronic medical conditions? (e.g., high blood pressure, diabetes, heart disease)'**
+  String get chronicConditions;
+
+  /// No description provided for @surgeriesInjuries.
+  ///
+  /// In en, this message translates to:
+  /// **'Have you had any recent surgeries or do you have any current injuries?'**
+  String get surgeriesInjuries;
+
+  /// No description provided for @painBonesMuscles.
+  ///
+  /// In en, this message translates to:
+  /// **'Do you have any pain or problems in bones, joints, or muscles?'**
+  String get painBonesMuscles;
+
+  /// No description provided for @respiratoryProblems.
+  ///
+  /// In en, this message translates to:
+  /// **'Do you have any respiratory, heart, or lung problems?'**
+  String get respiratoryProblems;
+
+  /// No description provided for @medications.
+  ///
+  /// In en, this message translates to:
+  /// **'Do you take any medications regularly?'**
+  String get medications;
+
+  /// No description provided for @highBloodPressure.
+  ///
+  /// In en, this message translates to:
+  /// **'High Blood Pressure'**
+  String get highBloodPressure;
+
+  /// No description provided for @diabetes.
+  ///
+  /// In en, this message translates to:
+  /// **'Diabetes'**
+  String get diabetes;
+
+  /// No description provided for @heartDisease.
+  ///
+  /// In en, this message translates to:
+  /// **'Heart Disease'**
+  String get heartDisease;
+
+  /// No description provided for @heartCondition.
+  ///
+  /// In en, this message translates to:
+  /// **'Heart condition'**
+  String get heartCondition;
+
+  /// No description provided for @noneOfTheAbove.
+  ///
+  /// In en, this message translates to:
+  /// **'None of the above'**
+  String get noneOfTheAbove;
+
+  /// No description provided for @age.
+  ///
+  /// In en, this message translates to:
+  /// **'Age'**
+  String get age;
+
+  /// No description provided for @heightCm.
+  ///
+  /// In en, this message translates to:
+  /// **'Height (cm)'**
+  String get heightCm;
+
+  /// No description provided for @weightKg.
+  ///
+  /// In en, this message translates to:
+  /// **'Weight (kg)'**
+  String get weightKg;
+
+  /// No description provided for @hearProblems.
+  ///
+  /// In en, this message translates to:
+  /// **'Hear Problems'**
+  String get hearProblems;
+
+  /// No description provided for @lungProblems.
+  ///
+  /// In en, this message translates to:
+  /// **'Lung Problems'**
+  String get lungProblems;
+
+  /// No description provided for @respiratoryProblem.
+  ///
+  /// In en, this message translates to:
+  /// **'Respiratory Problem'**
+  String get respiratoryProblem;
 }
 
 class _AppLocalizationsDelegate
