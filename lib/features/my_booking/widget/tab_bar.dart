@@ -15,10 +15,10 @@ PreferredSizeWidget bookingTabBar({
     unselectedLabelStyle: AppTextStyles.caption(
       context,
     ).copyWith(fontWeight: FontWeight.w400),
-    dividerColor: isDark ? AppColors.greyText : AppColors.buttonBorder,
+    dividerColor: Colors.transparent,
     dividerHeight: 1,
     indicatorColor: isDark ? AppColors.darkGreyBorder : AppColors.primary,
-
+    labelPadding: const EdgeInsets.symmetric(horizontal: 9),
     indicatorPadding: const EdgeInsets.symmetric(horizontal: -12),
 
     tabs: [

@@ -68,15 +68,16 @@ class _TabItem extends StatelessWidget {
       child: GestureDetector(
         onTap: onTap,
         child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 16),
+          // padding: const EdgeInsets.symmetric(vertical: 16),
+          margin: EdgeInsets.symmetric(horizontal: 24),
           decoration: BoxDecoration(
             border: Border(
               bottom: BorderSide(
-                color: isSelected
-                    ? activeColor
-                    : isDark
-                    ? AppColors.greyText
-                    : AppColors.buttonBorder,
+                color: isSelected ? activeColor : Colors.transparent,
+                // isDark
+                //     ?
+                // AppColors.greyText
+                //     : AppColors.buttonBorder,
                 width: 2,
               ),
             ),

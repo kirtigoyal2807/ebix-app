@@ -61,8 +61,10 @@ class _SpringChallengeCardState extends State<SpringChallengeCard> {
           begin: Alignment.bottomRight,
           end: Alignment.topLeft,
           colors: [
-            Color(0xFF65422C),
-            Color(0xFFC4A089),
+            // Color(0xFF65422C),
+            // Color(0xFFC4A089),
+            Color(0xff65422C),
+            Color(0xffB28E77),
           ],
         ),
       ),
@@ -85,7 +87,9 @@ class _SpringChallengeCardState extends State<SpringChallengeCard> {
 
           // Content
           Padding(
-            padding: EdgeInsets.all(size.height < 700 ? AppSpacing.md : AppSpacing.lg),
+            padding: EdgeInsets.all(
+              size.height < 700 ? AppSpacing.md : AppSpacing.lmd,
+            ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
@@ -96,21 +100,27 @@ class _SpringChallengeCardState extends State<SpringChallengeCard> {
                   child: AppText(
                     context.l10n.springResetChallenge,
                     maxLines: 2,
-                    style: (context) => AppTextStyles.heading1(context).copyWith(
-                      color: isDark ? AppColors.lightText : Colors.white,
-                      fontSize: size.width * 0.055 > 22 ? 22 : size.width * 0.055,
-                      height: 1.1,
-                    ),
+                    style: (context) =>
+                        AppTextStyles.heading1(context).copyWith(
+                          color: isDark ? AppColors.lightText : Colors.white,
+                          fontSize: size.width * 0.055 > 22
+                              ? 22
+                              : size.width * 0.055,
+                          height: 1.1,
+                        ),
                   ),
                 ),
                 const SizedBox(height: AppSpacing.sm),
                 AppText(
                   context.l10n.springResetDesc,
                   maxLines: 1,
-                  style: (context) => AppTextStyles.bodyTextSmall(context).copyWith(
-                    color: isDark ? AppColors.seekBarLight : Colors.white,
-                    fontSize: size.width * 0.035 > 14 ? 14 : size.width * 0.035,
-                  ),
+                  style: (context) =>
+                      AppTextStyles.bodyTextSmall(context).copyWith(
+                        color: isDark ? AppColors.seekBarLight : Colors.white,
+                        fontSize: size.width * 0.035 > 14
+                            ? 14
+                            : size.width * 0.035,
+                      ),
                 ),
                 Spacer(),
                 // SizedBox(height: size.height < 700 ? AppSpacing.md : AppSpacing.lg),
@@ -132,10 +142,15 @@ class _SpringChallengeCardState extends State<SpringChallengeCard> {
                   child: AppText(
                     context.l10n.startYourJourney,
                     maxLines: 1,
-                    style: (context) => AppTextStyles.boldBody(context).copyWith(
-                      color: isDark ? AppColors.blackColor : AppColors.languageIcon,
-                      fontSize: size.width * 0.035 > 14 ? 14 : size.width * 0.035,
-                    ),
+                    style: (context) =>
+                        AppTextStyles.boldBody(context).copyWith(
+                          color: isDark
+                              ? AppColors.blackColor
+                              : AppColors.languageIcon,
+                          fontSize: size.width * 0.035 > 14
+                              ? 14
+                              : size.width * 0.035,
+                        ),
                   ),
                 ),
               ],
@@ -158,7 +173,11 @@ class _SpringChallengeCardState extends State<SpringChallengeCard> {
           height: 4,
           width: isSelected ? 24 : 12,
           decoration: BoxDecoration(
-            color: isSelected ? (isDark?AppColors.languageIconDark :  AppColors.languageIcon) : (isDark?AppColors.lightBlackColor :  AppColors.darkGreyBorder),
+            color: isSelected
+                ? (isDark ? AppColors.languageIconDark : AppColors.languageIcon)
+                : (isDark
+                      ? AppColors.lightBlackColor
+                      : AppColors.darkGreyBorder),
             borderRadius: BorderRadius.circular(2),
           ),
         );

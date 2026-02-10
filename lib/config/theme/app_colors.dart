@@ -101,4 +101,7 @@ class AppColors {
   static const switchInactiveDark = Color(0xFF140D09);
   static const goldBackground = Color(0xFFFDC7003B);
 
+
+  static const lightExpireCard = Color(0xFF641723);
+
 }

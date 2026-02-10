@@ -9,6 +9,7 @@ class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
   final List<Widget>? actions;
   final bool? isMoreMenu;
   final PreferredSize? bottomPreferredSize;
+  final Widget? leading;
 
   const AppAppBar({
     super.key,
@@ -17,6 +18,7 @@ class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.actions,
     this.isMoreMenu = true,
     this.bottomPreferredSize,
+    this.leading,
   });
 
   @override
@@ -28,12 +30,12 @@ class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
       backgroundColor: isDark ? AppColors.homeBackground : AppColors.whiteColor,
       scrolledUnderElevation: 0,
       // IMPORTANT
-      leading: onBack != null
+      leading:leading??( onBack != null
           ? IconButton(
-              icon: const Icon(Icons.arrow_back_ios_rounded, size: 20),
-              onPressed: onBack,
-            )
-          : null,
+                  icon: const Icon(Icons.arrow_back_ios_rounded, size: 20),
+                  onPressed: onBack,
+                )
+              : null),
 
       title: title != null
           ? AppText(title!, style: AppTextStyles.appBarTitle)
