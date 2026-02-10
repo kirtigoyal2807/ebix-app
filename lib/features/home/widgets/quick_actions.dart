@@ -21,7 +21,7 @@ class QuickActions extends StatelessWidget {
     final horizontalPadding = AppSpacing.lg;
     final gap = AppSpacing.md;
     final itemWidth = (size.width - (horizontalPadding * 2) - (gap * 2)) / 3;
-    final itemPadding = size.width * 0.03;
+    final itemPadding = size.width * 0.04;
 
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
@@ -95,17 +95,17 @@ class QuickActions extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          const SizedBox(height: AppSpacing.md),
+          // const SizedBox(height: AppSpacing.md),
           SizedBox(
-            height: size.height * 0.06,
+            height: 56,
             child: SvgPicture.asset(
               icon,
-              height: size.height * 0.06,
+              height: 56,
               // width: width * 0.6,
               fit: BoxFit.contain,
             ),
           ),
-          const SizedBox(height: AppSpacing.xs),
+          const SizedBox(height: AppSpacing.sm),
           Expanded(
             child: Center(
               child: Padding(
@@ -114,7 +114,8 @@ class QuickActions extends StatelessWidget {
                   title,
                   style: (context) => AppTextStyles.body(context).copyWith(
                     color: isDark ? AppColors.lightText : AppColors.darkText,
-                    fontSize: size.width * 0.03 > 12 ? 12 : size.width * 0.03,
+                    fontSize: 14,
+                    // size.width * 0.03 > 12 ? 12 : size.width * 0.03,
                   ),
                   textAlign: TextAlign.center,
                   maxLines: 2,

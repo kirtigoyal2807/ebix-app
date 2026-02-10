@@ -26,7 +26,7 @@ class ClassTypesSection extends StatelessWidget {
     return Column(
       children: [
         SizedBox(
-          height: itemHeight + 40,
+          height: 135,
           child: ListView.separated(
             padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
             scrollDirection: Axis.horizontal,
@@ -34,7 +34,7 @@ class ClassTypesSection extends StatelessWidget {
             separatorBuilder: (_, __) => const SizedBox(width: AppSpacing.md),
             itemBuilder: (context, index) {
               return SizedBox(
-                width: itemWidth,
+                width: 140,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -42,8 +42,10 @@ class ClassTypesSection extends StatelessWidget {
                       borderRadius: BorderRadius.circular(AppRadius.md),
                       child: Image.asset(
                         types[index]['image']!,
-                        width: itemWidth,
-                        height: itemHeight,
+                        width: 140,
+                        height: 105,
+                        // width: itemWidth,
+                        // height: itemHeight,
                         fit: BoxFit.cover,
                       ),
 

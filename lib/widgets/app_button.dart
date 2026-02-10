@@ -47,18 +47,23 @@ class AppButton extends StatelessWidget {
                 borderRadius: BorderRadius.circular(AppRadius.xl),
               ),
               padding: EdgeInsets.symmetric(
-                vertical:
-               verticalPadding ??
-                  (AppSpacing.buttonHeight - 30) / 2,
-
-            ),
-              minimumSize: Size(
-                double.infinity,
-                buttonHeight ??
-                    AppSpacing.buttonHeight,
+                vertical: verticalPadding ?? (AppSpacing.buttonHeight - 30) / 2,
               ),
+              // 🔒 Lock height
+              fixedSize: Size(
+                double.infinity,
+                buttonHeight ?? AppSpacing.buttonHeight,
+              ),
+
+              // ✂️ Remove extra touch padding
+              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
             ),
-            child: Text(label, style: AppTextStyles.button(context).copyWith(fontSize: buttonFontSize??16)),
+            child: Text(
+              label,
+              style: AppTextStyles.button(
+                context,
+              ).copyWith(fontSize: buttonFontSize ?? 16),
+            ),
           )
         : variant == AppButtonVariant.disable
         ? ElevatedButton(
@@ -73,11 +78,14 @@ class AppButton extends StatelessWidget {
               padding: EdgeInsets.symmetric(
                 vertical: verticalPadding ?? (AppSpacing.buttonHeight - 30) / 2,
               ),
-              minimumSize: Size(
+              // 🔒 Lock height
+              fixedSize: Size(
                 double.infinity,
-                buttonHeight ??
-                    AppSpacing.buttonHeight,
+                buttonHeight ?? AppSpacing.buttonHeight,
               ),
+
+              // ✂️ Remove extra touch padding
+              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
             ),
             child: Text(
               label,
@@ -85,7 +93,7 @@ class AppButton extends StatelessWidget {
                 color: isDark
                     ? AppColors.lightDarkGrey
                     : AppColors.languageTextDark,
-                  fontSize:buttonFontSize??16
+                fontSize: buttonFontSize ?? 16,
               ),
             ),
           )
@@ -105,16 +113,24 @@ class AppButton extends StatelessWidget {
               padding: EdgeInsets.symmetric(
                 vertical: verticalPadding ?? (AppSpacing.buttonHeight - 30) / 2,
               ),
-              minimumSize: Size(
+              // minimumSize: Size(
+              //   double.infinity,
+              //   buttonHeight ?? AppSpacing.buttonHeight,
+              // ),
+              // 🔒 Lock height
+              fixedSize: Size(
                 double.infinity,
                 buttonHeight ?? AppSpacing.buttonHeight,
               ),
+
+              // ✂️ Remove extra touch padding
+              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
             ),
             child: Text(
               label,
               style: AppTextStyles.button(context).copyWith(
                 color: isDark ? AppColors.lightText : AppColors.darkText,
-                fontSize: buttonFontSize??16
+                fontSize: buttonFontSize ?? 16,
               ),
             ),
           );
@@ -122,4 +138,3 @@ class AppButton extends StatelessWidget {
     return expanded ? SizedBox(width: double.infinity, child: button) : button;
   }
 }
-

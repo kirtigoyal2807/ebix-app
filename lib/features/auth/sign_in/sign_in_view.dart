@@ -51,7 +51,9 @@ class _SignInViewState extends State<SignInView> {
 
                     // Header
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: AppSpacing.lg,
+                      ),
                       child: SignUpHeader(
                         title: '${context.l10n.welcome} Tasha',
                         subtitle: context.l10n.enterYourLoginDetails,
@@ -64,7 +66,9 @@ class _SignInViewState extends State<SignInView> {
 
                     // Tab Selector
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: AppSpacing.lg,
+                      ),
                       child: Row(
                         children: [
                           Expanded(
@@ -74,15 +78,17 @@ class _SignInViewState extends State<SignInView> {
                                 children: [
                                   AppText(
                                     context.l10n.emailTab,
-                                    style:  (context) => AppTextStyles.boldBody(context).copyWith(
-                                      fontSize: 16,
-                                    ),
+                                    style: (context) => AppTextStyles.boldBody(
+                                      context,
+                                    ).copyWith(fontSize: 16),
                                   ),
                                   const SizedBox(height: 8),
                                   Container(
                                     height: 2,
                                     color: _selectedTab == 0
-                                        ? (isDark ? AppColors.languageTextDark : AppColors.primary)
+                                        ? (isDark
+                                              ? AppColors.languageTextDark
+                                              : AppColors.primary)
                                         : Colors.transparent,
                                   ),
                                 ],
@@ -96,15 +102,17 @@ class _SignInViewState extends State<SignInView> {
                                 children: [
                                   AppText(
                                     context.l10n.phoneTab,
-                                    style:  (context) => AppTextStyles.boldBody(context).copyWith(
-                                      fontSize: 16,
-                                    ),
+                                    style: (context) => AppTextStyles.boldBody(
+                                      context,
+                                    ).copyWith(fontSize: 16),
                                   ),
                                   const SizedBox(height: 8),
                                   Container(
                                     height: 2,
                                     color: _selectedTab == 1
-                                        ? (isDark ? AppColors.languageTextDark : AppColors.primary)
+                                        ? (isDark
+                                              ? AppColors.languageTextDark
+                                              : AppColors.primary)
                                         : Colors.transparent,
                                   ),
                                 ],
@@ -114,15 +122,22 @@ class _SignInViewState extends State<SignInView> {
                         ],
                       ),
                     ),
-                     Divider(height: 1, thickness: 1,color: (isDark ? AppColors.greyText : AppColors.buttonBorder),),
+                    Divider(
+                      height: 1,
+                      thickness: 1,
+                      color: (isDark
+                          ? AppColors.greyText
+                          : AppColors.buttonBorder),
+                    ),
 
                     const SizedBox(height: AppSpacing.xl),
-
 
                     if (_selectedTab == 0) ...[
                       // Email Form
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: AppSpacing.lg,
+                        ),
                         child: AppTextField(
                           label: context.l10n.emailOrPhone,
                           hint: 'user@gmail.com',
@@ -131,17 +146,21 @@ class _SignInViewState extends State<SignInView> {
                       ),
                       const SizedBox(height: AppSpacing.md),
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: AppSpacing.lg,
+                        ),
                         child: AppTextField(
                           label: context.l10n.password,
                           hint: '**********',
-                          // obscure: true,
+                          obscure: true,
                           keyboardType: TextInputType.visiblePassword,
                         ),
                       ),
                       const SizedBox(height: AppSpacing.sm),
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: AppSpacing.lg,
+                        ),
                         child: Align(
                           alignment: Alignment.centerRight,
                           child: TextButton(
@@ -162,7 +181,9 @@ class _SignInViewState extends State<SignInView> {
                     ] else ...[
                       // Phone Number Form
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: AppSpacing.lg,
+                        ),
                         child: PhoneNumberField(
                           label: context.l10n.phoneNumber,
                           countryCode: '+1',
@@ -180,12 +201,14 @@ class _SignInViewState extends State<SignInView> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
               child: AppButton(
-                label: _selectedTab == 0 ? context.l10n.signIn : context.l10n.sendOtp,
+                label: _selectedTab == 0
+                    ? context.l10n.signIn
+                    : context.l10n.sendOtp,
                 onPressed: () {
                   if (_selectedTab == 0) {
-                     context.read<AuthCubit>().nextSignUpStep();
+                    context.read<AuthCubit>().nextSignUpStep();
                   } else {
-                     // Send OTP logic
+                    // Send OTP logic
                   }
                 },
               ),

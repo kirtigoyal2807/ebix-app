@@ -15,16 +15,18 @@ class CurrentBookingView extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: AppSpacing.lg),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+        // mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
+          SizedBox(height: 120),
           isDark
               ? SvgPicture.asset("assets/images/svg/ic_dark_no_class.svg")
               : SvgPicture.asset("assets/images/svg/ic_no_class.svg"),
           SizedBox(height: AppSpacing.lmd),
           AppText(
             context.l10n.noClassesToday,
-            style: (context) => AppTextStyles.gelasioMedium(context),
+            style: (context) =>
+                AppTextStyles.gelasioMedium(context).copyWith(height: 1.55),
           ),
           SizedBox(height: AppSpacing.xs),
           AppText(

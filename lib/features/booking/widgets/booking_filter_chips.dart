@@ -21,10 +21,14 @@ class BookingFilterChips extends StatelessWidget {
     required Function(String) onSelect,
     required String Function(String) labelBuilder,
   }) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
+      barrierColor: isDark
+          ? Colors.white.withValues(alpha: 0.2)
+          : Colors.black.withValues(alpha: 0.2),
       builder: (_) => FilterSelectionBottomSheet(
         title: title,
         options: options,

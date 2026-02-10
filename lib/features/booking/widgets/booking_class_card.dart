@@ -61,6 +61,9 @@ class BookingClassCard extends StatelessWidget {
                 context: context,
                 isScrollControlled: true,
                 backgroundColor: Colors.transparent,
+                barrierColor: isDark
+                    ? Colors.white.withValues(alpha: 0.2)
+                    : Colors.black.withValues(alpha: 0.2),
                 builder: (_) => const BranchNotInPlanSheet(),
               );
             }

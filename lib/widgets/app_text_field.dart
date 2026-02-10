@@ -28,11 +28,19 @@ class AppTextField extends StatefulWidget {
 
 class _AppTextFieldState extends State<AppTextField> {
   late bool _obscure;
+  late final FocusNode _focusNode;
 
   @override
   void initState() {
     _obscure = widget.obscure;
+    _focusNode = FocusNode();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _focusNode.dispose();
+    super.dispose();
   }
 
   @override
@@ -45,22 +53,21 @@ class _AppTextFieldState extends State<AppTextField> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         /// LABEL
-        AppText(
-          widget.label,
-          style: AppTextStyles.textFieldHeading,
-        ),
-
+        AppText(widget.label, style: AppTextStyles.textFieldHeading),
 
         const SizedBox(height: AppSpacing.sm),
 
         /// TEXT FIELD
         TextFormField(
+          focusNode: _focusNode,
           obscureText: _obscure,
           keyboardType: widget.keyboardType,
           style: AppTextStyles.textField(context),
           decoration: InputDecoration(
             hintText: widget.hint,
-            hintStyle: AppTextStyles.textField(context).copyWith(color: AppColors.lightGrey),
+            hintStyle: AppTextStyles.textField(
+              context,
+            ).copyWith(color: AppColors.lightGrey),
             contentPadding: const EdgeInsets.symmetric(
               horizontal: 14,
               vertical: 14,
@@ -71,32 +78,58 @@ class _AppTextFieldState extends State<AppTextField> {
               borderRadius: BorderRadius.circular(AppRadius.md),
               borderSide: BorderSide(
                 color: hasError
-                    ? isDark?AppColors.redDark:AppColors.redLight
+                    ? isDark
+                          ? AppColors.redDark
+                          : AppColors.redLight
                     : theme.dividerColor,
               ),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(AppRadius.md),
               borderSide: BorderSide(
-                color: hasError
-                    ? Colors.red
-                    : theme.colorScheme.primary,
+                color: hasError ? Colors.red : theme.colorScheme.primary,
                 width: 1.5,
               ),
             ),
 
             /// PASSWORD TOGGLE
+            // suffixIcon: widget.obscure
+            //     ? IconButton(
+            //   icon: Icon(
+            //     _obscure
+            //         ? Icons.visibility_off
+            //         : Icons.visibility,
+            //     size: 20,
+            //     color:  AppColors.lightGrey,
+            //   ),
+            //   onPressed: () =>
+            //       setState(() => _obscure = !_obscure),
+            // )
+            //     : null,
             suffixIcon: widget.obscure
-                ? IconButton(
-              icon: Icon(
-                _obscure
-                    ? Icons.visibility_off
-                    : Icons.visibility,
-                size: 20,
-              ),
-              onPressed: () =>
-                  setState(() => _obscure = !_obscure),
-            )
+                ? AnimatedBuilder(
+                    animation: _focusNode,
+                    builder: (context, _) {
+                      final isFocused = _focusNode.hasFocus;
+
+                      return IconButton(
+                        icon: Icon(
+                          _obscure ? Icons.visibility_off : Icons.visibility,
+                          size: 20,
+                          color: hasError
+                              ? (isDark
+                                    ? AppColors.redDark
+                                    : AppColors.redLight)
+                              : isFocused
+                              ? (isDark
+                                    ? Colors.white
+                                    : AppColors.homeBackground)
+                              : AppColors.lightGrey,
+                        ),
+                        onPressed: () => setState(() => _obscure = !_obscure),
+                      );
+                    },
+                  )
                 : null,
           ),
         ),
@@ -106,17 +139,17 @@ class _AppTextFieldState extends State<AppTextField> {
           const SizedBox(height: 6),
           Row(
             children: [
-               Icon(
+              Icon(
                 Icons.info_outline,
                 size: 14,
-                color:  isDark?AppColors.redDark:AppColors.redLight,
+                color: isDark ? AppColors.redDark : AppColors.redLight,
               ),
               const SizedBox(width: 6),
               Expanded(
                 child: Text(
                   widget.errorText!,
                   style: theme.textTheme.bodySmall?.copyWith(
-                    color: isDark?AppColors.redDark:AppColors.redLight
+                    color: isDark ? AppColors.redDark : AppColors.redLight,
                   ),
                 ),
               ),
@@ -127,4 +160,3 @@ class _AppTextFieldState extends State<AppTextField> {
     );
   }
 }
-

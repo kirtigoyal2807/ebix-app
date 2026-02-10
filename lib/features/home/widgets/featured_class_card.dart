@@ -57,22 +57,18 @@ class FeaturedClassCard extends StatelessWidget {
                 horizontal: AppSpacing.sm,
                 vertical: AppSpacing.xs,
               ),
-              margin: const EdgeInsets.only(
-                right: AppSpacing.xs,
-              ),
+              margin: const EdgeInsets.only(right: AppSpacing.xs),
               decoration: BoxDecoration(
                 color: isDark
-                    ? AppColors.successColor.withValues(
-                  alpha: 0.36,
-                )
+                    ? AppColors.successColor.withValues(alpha: 0.36)
                     : AppColors.featuredTagBackgroundColor,
                 borderRadius: BorderRadius.circular(16),
-                border: Border.all(
-                  color: isDark
-                      ? AppColors.successBorderDark
-                      : AppColors.featuredTagBackgroundColor,
-                  width: 1,
-                ),
+                // border: Border.all(
+                //   color: isDark
+                //       ? AppColors.successBorderDark
+                //       : AppColors.featuredTagBackgroundColor,
+                //   width: 1,
+                // ),
               ),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
@@ -89,9 +85,7 @@ class FeaturedClassCard extends StatelessWidget {
                     child: AppText(
                       context.l10n.inYourPlan,
                       style: (context) =>
-                          AppTextStyles.boldBody(
-                            context,
-                          ).copyWith(
+                          AppTextStyles.boldBody(context).copyWith(
                             fontSize: 12,
                             color: isDark
                                 ? AppColors.lightGreyColor
@@ -110,7 +104,7 @@ class FeaturedClassCard extends StatelessWidget {
               right: AppSpacing.md,
               left: AppSpacing.md,
               bottom: AppSpacing.md,
-              top:  AppSpacing.sm,
+              top: AppSpacing.sm,
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -124,14 +118,10 @@ class FeaturedClassCard extends StatelessWidget {
                 // ),
                 RichText(
                   text: TextSpan(
-                    text:context.l10n.powerPilates,
+                    text: context.l10n.powerPilates,
                     style: AppTextStyles.boldBody(context).copyWith(
-                      fontSize: size.width * 0.04 > 16
-                          ? 16
-                          : size.width * 0.04,
-                      color: isDark
-                          ? AppColors.lightText
-                          : AppColors.darkText,
+                      fontSize: size.width * 0.04 > 16 ? 16 : size.width * 0.04,
+                      color: isDark ? AppColors.lightText : AppColors.darkText,
                     ),
                     children: [
                       TextSpan(

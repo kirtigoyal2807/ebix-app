@@ -47,17 +47,17 @@ class ProgressCard extends StatelessWidget {
       child: Column(
         children: [
           SizedBox(
-            height: 60,
+            height: 56,
             child: SvgPicture.asset(
               isDark
                   ? 'assets/images/svg/ic_pirates_book_dark.svg'
                   : 'assets/images/svg/ic_pirates_book_light.svg',
-              height: 60,
-              width: 60,
+              height: 56,
+              width: 56,
               fit: BoxFit.cover,
             ),
           ),
-          const SizedBox(height: AppSpacing.md),
+          const SizedBox(height: AppSpacing.base),
           AppText(
             context.l10n.startYourPilatesJourney,
             style: (context) => AppTextStyles.body(context).copyWith(
@@ -74,7 +74,7 @@ class ProgressCard extends StatelessWidget {
             context.l10n.bookFirstClassDesc,
             style:(context) => AppTextStyles.bodyTextSmall(context).copyWith(
               fontSize: 12,
-              height: 1.4
+              height: 1.55
             ),
             textAlign: TextAlign.center,
             maxLines: 2,
@@ -129,10 +129,12 @@ class ProgressCard extends StatelessWidget {
                 isDark
                     ? 'assets/images/svg/ic_monthly_progress_dark.svg'
                     : 'assets/images/svg/ic_monthly_progress_light.svg',
-                height: size.height * 0.06,
+                // height: size.height * 0.06,
+                height: 56,
+                width: 56,
                 fit: BoxFit.contain,
               ),
-              const SizedBox(width: AppSpacing.md),
+              const SizedBox(width: AppSpacing.base),
               Expanded(
                 child: AppText(
                   context.l10n.monthlyProgress,

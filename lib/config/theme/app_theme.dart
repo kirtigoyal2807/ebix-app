@@ -5,7 +5,8 @@ class AppTheme {
   static ThemeData light() {
     return ThemeData(
       brightness: Brightness.light,
-      scaffoldBackgroundColor: AppColors.backgroundLight,
+      // scaffoldBackgroundColor: AppColors.backgroundLight,
+      scaffoldBackgroundColor: Colors.white,
       primaryColor: AppColors.primary,
       fontFamily: 'Inter',
       colorScheme: const ColorScheme.light(

@@ -17,7 +17,6 @@ import 'widgets/horizontal_list_section.dart';
 
 import '../booking/booking_view.dart';
 
-
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
 
@@ -29,7 +28,9 @@ class HomeView extends StatelessWidget {
         builder: (context, state) {
           final isDark = Theme.of(context).brightness == Brightness.dark;
           return Scaffold(
-            backgroundColor: isDark ? AppColors.homeBackground : AppColors.whiteColor,
+            backgroundColor: isDark
+                ? AppColors.homeBackground
+                : AppColors.whiteColor,
             body: IndexedStack(
               index: state.currentIndex,
               children: [
@@ -132,9 +133,9 @@ class HomeContentView extends StatelessWidget {
                     const SizedBox(height: AppSpacing.md),
 
                     const SpringChallengeCard(),
-                    const SizedBox(height: AppSpacing.md),
+                    const SizedBox(height: AppSpacing.lg),
                     const QuickActions(),
-                    const SizedBox(height: AppSpacing.md),
+                    const SizedBox(height: AppSpacing.lg),
 
                     Padding(
                       padding: const EdgeInsets.symmetric(
@@ -144,13 +145,14 @@ class HomeContentView extends StatelessWidget {
                         context.l10n.yourMembership,
                         style: (context) =>
                             AppTextStyles.heading1(context).copyWith(
-                          color:
-                              isDark ? AppColors.lightText : AppColors.darkText,
-                          fontSize: size.width * 0.055 > 18
-                              ? 18
-                              : size.width * 0.055,
-                          fontWeight: FontWeight.w400,
-                        ),
+                              color: isDark
+                                  ? AppColors.lightText
+                                  : AppColors.darkText,
+                              fontSize: size.width * 0.055 > 18
+                                  ? 18
+                                  : size.width * 0.055,
+                              fontWeight: FontWeight.w400,
+                            ),
                       ),
                     ),
                     const SizedBox(height: AppSpacing.md),
@@ -160,7 +162,7 @@ class HomeContentView extends StatelessWidget {
                     const SizedBox(height: AppSpacing.md),
                     MembershipCard(status: HomeUserStatus.existing),
 
-                    const SizedBox(height: AppSpacing.md),
+                    const SizedBox(height: AppSpacing.lmd),
 
                     Padding(
                       padding: const EdgeInsets.symmetric(
@@ -170,13 +172,14 @@ class HomeContentView extends StatelessWidget {
                         context.l10n.yourProgress,
                         style: (context) =>
                             AppTextStyles.heading1(context).copyWith(
-                          color:
-                              isDark ? AppColors.lightText : AppColors.darkText,
-                          fontSize: size.width * 0.055 > 18
-                              ? 18
-                              : size.width * 0.055,
-                          fontWeight: FontWeight.w400,
-                        ),
+                              color: isDark
+                                  ? AppColors.lightText
+                                  : AppColors.darkText,
+                              fontSize: size.width * 0.055 > 18
+                                  ? 18
+                                  : size.width * 0.055,
+                              fontWeight: FontWeight.w400,
+                            ),
                       ),
                     ),
                     const SizedBox(height: AppSpacing.md),
@@ -187,7 +190,7 @@ class HomeContentView extends StatelessWidget {
                       goalClasses: state.goalClasses,
                     ),
 
-                    const SizedBox(height: AppSpacing.md),
+                    const SizedBox(height: AppSpacing.lg),
                     Padding(
                       padding: const EdgeInsets.symmetric(
                         horizontal: AppSpacing.lg,
@@ -200,27 +203,27 @@ class HomeContentView extends StatelessWidget {
                               context.l10n.yourProgress,
                               style: (context) =>
                                   AppTextStyles.heading1(context).copyWith(
-                                color: isDark
-                                    ? AppColors.lightText
-                                    : AppColors.darkText,
-                                fontSize: size.width * 0.055 > 18
-                                    ? 18
-                                    : size.width * 0.055,
-                                fontWeight: FontWeight.w400,
-                              ),
+                                    color: isDark
+                                        ? AppColors.lightText
+                                        : AppColors.darkText,
+                                    fontSize: size.width * 0.055 > 18
+                                        ? 18
+                                        : size.width * 0.055,
+                                    fontWeight: FontWeight.w400,
+                                  ),
                             ),
                           ),
                           AppText(
                             context.l10n.seeAll,
                             style: (context) =>
                                 AppTextStyles.captionText(context).copyWith(
-                              color: isDark
-                                  ? AppColors.languageTextDark
-                                  : AppColors.languageIcon,
-                              fontSize: size.width * 0.03 > 14
-                                  ? 14
-                                  : size.width * 0.03,
-                            ),
+                                  color: isDark
+                                      ? AppColors.languageTextDark
+                                      : AppColors.languageIcon,
+                                  fontSize: size.width * 0.03 > 14
+                                      ? 14
+                                      : size.width * 0.03,
+                                ),
                           ),
                         ],
                       ),
@@ -245,13 +248,14 @@ class HomeContentView extends StatelessWidget {
                         context.l10n.featuredClass,
                         style: (context) =>
                             AppTextStyles.heading1(context).copyWith(
-                          color:
-                              isDark ? AppColors.lightText : AppColors.darkText,
-                          fontSize: size.width * 0.055 > 18
-                              ? 18
-                              : size.width * 0.055,
-                          fontWeight: FontWeight.w400,
-                        ),
+                              color: isDark
+                                  ? AppColors.lightText
+                                  : AppColors.darkText,
+                              fontSize: size.width * 0.055 > 18
+                                  ? 18
+                                  : size.width * 0.055,
+                              fontWeight: FontWeight.w400,
+                            ),
                       ),
                     ),
                     const SizedBox(height: AppSpacing.md),
@@ -269,27 +273,27 @@ class HomeContentView extends StatelessWidget {
                               context.l10n.classTypes,
                               style: (context) =>
                                   AppTextStyles.heading1(context).copyWith(
-                                color: isDark
-                                    ? AppColors.lightText
-                                    : AppColors.darkText,
-                                fontSize: size.width * 0.055 > 18
-                                    ? 18
-                                    : size.width * 0.055,
-                                fontWeight: FontWeight.w400,
-                              ),
+                                    color: isDark
+                                        ? AppColors.lightText
+                                        : AppColors.darkText,
+                                    fontSize: size.width * 0.055 > 18
+                                        ? 18
+                                        : size.width * 0.055,
+                                    fontWeight: FontWeight.w400,
+                                  ),
                             ),
                           ),
                           AppText(
                             context.l10n.seeAll,
                             style: (context) =>
                                 AppTextStyles.captionText(context).copyWith(
-                              color: isDark
-                                  ? AppColors.languageTextDark
-                                  : AppColors.languageIcon,
-                              fontSize: size.width * 0.03 > 14
-                                  ? 14
-                                  : size.width * 0.03,
-                            ),
+                                  color: isDark
+                                      ? AppColors.languageTextDark
+                                      : AppColors.languageIcon,
+                                  fontSize: size.width * 0.03 > 14
+                                      ? 14
+                                      : size.width * 0.03,
+                                ),
                           ),
                         ],
                       ),
@@ -309,27 +313,27 @@ class HomeContentView extends StatelessWidget {
                               context.l10n.topTrainers,
                               style: (context) =>
                                   AppTextStyles.heading1(context).copyWith(
-                                color: isDark
-                                    ? AppColors.lightText
-                                    : AppColors.darkText,
-                                fontSize: size.width * 0.055 > 18
-                                    ? 18
-                                    : size.width * 0.055,
-                                fontWeight: FontWeight.w400,
-                              ),
+                                    color: isDark
+                                        ? AppColors.lightText
+                                        : AppColors.darkText,
+                                    fontSize: size.width * 0.055 > 18
+                                        ? 18
+                                        : size.width * 0.055,
+                                    fontWeight: FontWeight.w400,
+                                  ),
                             ),
                           ),
                           AppText(
                             context.l10n.seeAll,
                             style: (context) =>
                                 AppTextStyles.captionText(context).copyWith(
-                              color: isDark
-                                  ? AppColors.languageTextDark
-                                  : AppColors.languageIcon,
-                              fontSize: size.width * 0.03 > 14
-                                  ? 14
-                                  : size.width * 0.03,
-                            ),
+                                  color: isDark
+                                      ? AppColors.languageTextDark
+                                      : AppColors.languageIcon,
+                                  fontSize: size.width * 0.03 > 14
+                                      ? 14
+                                      : size.width * 0.03,
+                                ),
                           ),
                         ],
                       ),

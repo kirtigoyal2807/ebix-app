@@ -25,18 +25,26 @@ class OnboardingView extends StatelessWidget {
   }
 
   void _showLanguageSelector(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
+      barrierColor: isDark
+          ? Colors.white.withValues(alpha: 0.2)
+          : Colors.black.withValues(alpha: 0.2),
       // backgroundColor: Colors.transparent,
       builder: (_) => const LanguageBottomSheet(),
     );
   }
 
   void _showHelp(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
+      barrierColor: isDark
+          ? Colors.white.withValues(alpha: 0.2)
+          : Colors.black.withValues(alpha: 0.2),
       // backgroundColor: Colors.transparent, // keep transparent here
       // backgroundColor: Colors.transparent,
       builder: (_) => const HelpSupportBottomSheet(),

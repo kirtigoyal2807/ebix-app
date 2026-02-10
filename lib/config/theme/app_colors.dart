@@ -99,4 +99,7 @@ class AppColors {
   static const warningColor = Color(0xFFFDC700);
   static const redText = Color(0xFFDC3E42);
 
+
+  static const lightExpireCard = Color(0xFF641723);
+
 }
