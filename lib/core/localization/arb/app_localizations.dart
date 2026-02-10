@@ -1891,6 +1891,96 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Respiratory Problem'**
   String get respiratoryProblem;
+
+  /// No description provided for @physicalActivityLevel.
+  ///
+  /// In en, this message translates to:
+  /// **'Physical Activity Level'**
+  String get physicalActivityLevel;
+
+  /// No description provided for @doYouExerciseRegularly.
+  ///
+  /// In en, this message translates to:
+  /// **'Do you exercise regularly?'**
+  String get doYouExerciseRegularly;
+
+  /// No description provided for @yes.
+  ///
+  /// In en, this message translates to:
+  /// **'Yes'**
+  String get yes;
+
+  /// No description provided for @sometimes.
+  ///
+  /// In en, this message translates to:
+  /// **'Sometimes'**
+  String get sometimes;
+
+  /// No description provided for @no.
+  ///
+  /// In en, this message translates to:
+  /// **'No'**
+  String get no;
+
+  /// No description provided for @ifYesHowManyTimes.
+  ///
+  /// In en, this message translates to:
+  /// **'If yes, how many times per week?'**
+  String get ifYesHowManyTimes;
+
+  /// No description provided for @daysAWeek.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} days a week'**
+  String daysAWeek(int count);
+
+  /// No description provided for @pregnancy.
+  ///
+  /// In en, this message translates to:
+  /// **'Pregnancy (if applicable)'**
+  String get pregnancy;
+
+  /// No description provided for @areYouPregnant.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you pregnant?'**
+  String get areYouPregnant;
+
+  /// No description provided for @goals.
+  ///
+  /// In en, this message translates to:
+  /// **'Goals'**
+  String get goals;
+
+  /// No description provided for @whatIsYourGoal.
+  ///
+  /// In en, this message translates to:
+  /// **'What is your goal for practicing Pilates?'**
+  String get whatIsYourGoal;
+
+  /// No description provided for @enterYourGoals.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your goals'**
+  String get enterYourGoals;
+
+  /// No description provided for @declaration.
+  ///
+  /// In en, this message translates to:
+  /// **'Declaration'**
+  String get declaration;
+
+  /// No description provided for @declarationText.
+  ///
+  /// In en, this message translates to:
+  /// **'I declare that all information provided is true and accurate. I understand that any incorrect information may affect my safety during exercises.'**
+  String get declarationText;
+
+  /// No description provided for @signature.
+  ///
+  /// In en, this message translates to:
+  /// **'Signature'**
+  String get signature;
 }
 
 class _AppLocalizationsDelegate

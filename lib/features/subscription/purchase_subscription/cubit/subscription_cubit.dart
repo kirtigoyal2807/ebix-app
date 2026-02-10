@@ -20,8 +20,20 @@ class SubscriptionCubit extends Cubit<SubscriptionState> {
 
   // Navigation
   void nextStep() {
-    if (state.currentStep < 2) {
+    // Current assumption: 6 steps total (0-5 index? Start index 0 is Plan. Then Health Steps 1-6. Total 7 steps? or 0 is Plan, 1 is Name, 2 is Medical, 3 is Physical, 4 is Pregnancy, 5 is Goals, 6 is Declaration)
+    // The design shows "Step 3 of 6" for "Physical Activity Level". So 6 health steps?
+    // Let's assume:
+    // Step 0: Plan Selection
+    // Step 1: Personal Info
+    // Step 2: Medical History
+    // Step 3: Physical Activity
+    // Step 4: Pregnancy
+    // Step 5: Goals
+    // Step 6: Declaration
+    if (state.currentStep < 6) {
       emit(state.copyWith(currentStep: state.currentStep + 1));
+    } else {
+      // Finish flow
     }
   }
 
@@ -31,7 +43,7 @@ class SubscriptionCubit extends Cubit<SubscriptionState> {
     }
   }
   
-  // Health Info Updates
+  // Health Info Updates - Step 1
   void updateName(String val) => emit(state.copyWith(name: val));
   void updateAge(String val) => emit(state.copyWith(age: val));
   void updateHeight(String val) => emit(state.copyWith(height: val));
@@ -39,7 +51,7 @@ class SubscriptionCubit extends Cubit<SubscriptionState> {
   void updatePhone(String val) => emit(state.copyWith(phoneNumber: val));
   void updateEmail(String val) => emit(state.copyWith(email: val));
 
-  // Medical History Updates (Generic helper for checkbox maps)
+  // Medical History Updates - Step 2 (Generic helper for checkbox maps)
   void updateChronicCondition(String key, bool? val) {
     final newMap = Map<String, bool>.from(state.chronicConditions);
     newMap[key] = val ?? false;
@@ -69,4 +81,19 @@ class SubscriptionCubit extends Cubit<SubscriptionState> {
     newMap[key] = val ?? false;
     emit(state.copyWith(medications: newMap));
   }
+
+  // Physical Activity Updates - Step 3
+  void updateExerciseRegularly(String val) => emit(state.copyWith(exerciseRegularly: val));
+  void updateActivityFrequency(PhysicalActivityFrequency val) => emit(state.copyWith(activityFrequency: val));
+
+  // Pregnancy Updates - Step 4
+  void updateIsPregnant(bool val) => emit(state.copyWith(isPregnant: val));
+
+  // Goals Updates - Step 5
+  void updateGoals(String val) => emit(state.copyWith(goals: val));
+
+  // Declaration Updates - Step 6
+  void updateDeclarationName(String val) => emit(state.copyWith(declarationName: val));
+  void updateDeclarationSignature(String val) => emit(state.copyWith(declarationSignature: val));
+  void updateDeclarationDate(String val) => emit(state.copyWith(declarationDate: val));
 }

@@ -390,7 +390,30 @@
   "weightKg": "الوزن (كجم)",
   "hearProblems": "مشاكل في السمع",
   "lungProblems": "مشاكل في الرئة",
-  "respiratoryProblem": "مشكلة في الجهاز التنفسي"
+  "respiratoryProblem": "مشكلة في الجهاز التنفسي",
+  "physicalActivityLevel": "مستوى النشاط البدني",
+  "doYouExerciseRegularly": "هل تمارس الرياضة بانتظام؟",
+  "yes": "نعم",
+  "sometimes": "أحياناً",
+  "no": "لا",
+  "ifYesHowManyTimes": "إذا كانت الإجابة بنعم، كم مرة في الأسبوع؟",
+  "daysAWeek": "{count} أيام في الأسبوع",
+  "@daysAWeek": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "pregnancy": "الحمل (إن وجد)",
+  "areYouPregnant": "هل أنت حامل؟",
+  "goals": "الأهداف",
+  "whatIsYourGoal": "ما هو هدفك من ممارسة البيلاتس؟",
+  "enterYourGoals": "أدخل أهدافك",
+  "declaration": "الإقرار",
+  "declarationText": "أقر بأن جميع المعلومات المقدمة صحيحة ودقيقة. أفهم أن أي معلومات غير صحيحة قد تؤثر على سلامتي أثناء التمارين.",
+  "signature": "التوقيع",
+  "date": "التاريخ"
 
 
 }

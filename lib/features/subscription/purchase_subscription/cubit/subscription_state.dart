@@ -2,14 +2,17 @@ part of 'subscription_cubit.dart';
 
 enum SubscriptionStatus { initial, loading, success, error }
 
+// For Physical Activity Choice
+enum PhysicalActivityFrequency { twoDays, threeDays, fourDays, fiveDays }
+
 class SubscriptionState extends Equatable {
   final SubscriptionStatus status;
   final String selectedPlanId;
   final String selectedBranchId;
   final bool isGift;
-  final int currentStep; // 0: Plan, 1: Health Info, 2: Medical History
+  final int currentStep; // 0: Plan, 1-6: Health Info Flow
 
-  // Health Information
+  // Step 1: Personal Information
   final String name;
   final String age;
   final String height;
@@ -17,12 +20,27 @@ class SubscriptionState extends Equatable {
   final String phoneNumber;
   final String email;
 
-  // Medical History (Checkboxes states)
+  // Step 2: Medical History (Checkboxes states)
   final Map<String, bool> chronicConditions;
   final Map<String, bool> surgeriesInjuries;
   final Map<String, bool> painBonesMuscles;
   final Map<String, bool> respiratoryProblems;
   final Map<String, bool> medications;
+
+  // Step 3: Physical Activity
+  final String? exerciseRegularly; // 'yes', 'sometimes', 'no'
+  final PhysicalActivityFrequency? activityFrequency;
+
+  // Step 4: Pregnancy
+  final bool? isPregnant; // true = Yes, false = No, null = unselected
+
+  // Step 5: Goals
+  final String goals;
+
+  // Step 6: Declaration
+  final String declarationName;
+  final String declarationSignature;
+  final String declarationDate;
 
 
   const SubscriptionState({
@@ -42,6 +60,13 @@ class SubscriptionState extends Equatable {
     this.painBonesMuscles = const {},
     this.respiratoryProblems = const {},
     this.medications = const {},
+    this.exerciseRegularly,
+    this.activityFrequency,
+    this.isPregnant,
+    this.goals = '',
+    this.declarationName = '',
+    this.declarationSignature = '',
+    this.declarationDate = '',
   });
 
   SubscriptionState copyWith({
@@ -61,6 +86,13 @@ class SubscriptionState extends Equatable {
     Map<String, bool>? painBonesMuscles,
     Map<String, bool>? respiratoryProblems,
     Map<String, bool>? medications,
+    String? exerciseRegularly,
+    PhysicalActivityFrequency? activityFrequency,
+    bool? isPregnant,
+    String? goals,
+    String? declarationName,
+    String? declarationSignature,
+    String? declarationDate,
   }) {
     return SubscriptionState(
       status: status ?? this.status,
@@ -79,11 +111,18 @@ class SubscriptionState extends Equatable {
       painBonesMuscles: painBonesMuscles ?? this.painBonesMuscles,
       respiratoryProblems: respiratoryProblems ?? this.respiratoryProblems,
       medications: medications ?? this.medications,
+      exerciseRegularly: exerciseRegularly ?? this.exerciseRegularly,
+      activityFrequency: activityFrequency ?? this.activityFrequency,
+      isPregnant: isPregnant ?? this.isPregnant,
+      goals: goals ?? this.goals,
+      declarationName: declarationName ?? this.declarationName,
+      declarationSignature: declarationSignature ?? this.declarationSignature,
+      declarationDate: declarationDate ?? this.declarationDate,
     );
   }
 
   @override
-  List<Object> get props => [
+  List<Object?> get props => [
         status,
         selectedPlanId,
         selectedBranchId,
@@ -100,5 +139,12 @@ class SubscriptionState extends Equatable {
         painBonesMuscles,
         respiratoryProblems,
         medications,
+        exerciseRegularly,
+        activityFrequency,
+        isPregnant,
+        goals,
+        declarationName,
+        declarationSignature,
+        declarationDate,
       ];
 }

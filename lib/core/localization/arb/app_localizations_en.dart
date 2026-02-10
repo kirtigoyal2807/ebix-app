@@ -961,4 +961,52 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get respiratoryProblem => 'Respiratory Problem';
+
+  @override
+  String get physicalActivityLevel => 'Physical Activity Level';
+
+  @override
+  String get doYouExerciseRegularly => 'Do you exercise regularly?';
+
+  @override
+  String get yes => 'Yes';
+
+  @override
+  String get sometimes => 'Sometimes';
+
+  @override
+  String get no => 'No';
+
+  @override
+  String get ifYesHowManyTimes => 'If yes, how many times per week?';
+
+  @override
+  String daysAWeek(int count) {
+    return '$count days a week';
+  }
+
+  @override
+  String get pregnancy => 'Pregnancy (if applicable)';
+
+  @override
+  String get areYouPregnant => 'Are you pregnant?';
+
+  @override
+  String get goals => 'Goals';
+
+  @override
+  String get whatIsYourGoal => 'What is your goal for practicing Pilates?';
+
+  @override
+  String get enterYourGoals => 'Enter your goals';
+
+  @override
+  String get declaration => 'Declaration';
+
+  @override
+  String get declarationText =>
+      'I declare that all information provided is true and accurate. I understand that any incorrect information may affect my safety during exercises.';
+
+  @override
+  String get signature => 'Signature';
 }

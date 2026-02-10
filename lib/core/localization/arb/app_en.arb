@@ -391,7 +391,30 @@
   "weightKg": "Weight (kg)",
   "hearProblems": "Hear Problems",
   "lungProblems": "Lung Problems",
-  "respiratoryProblem": "Respiratory Problem"
+  "respiratoryProblem": "Respiratory Problem",
+  "physicalActivityLevel": "Physical Activity Level",
+  "doYouExerciseRegularly": "Do you exercise regularly?",
+  "yes": "Yes",
+  "sometimes": "Sometimes",
+  "no": "No",
+  "ifYesHowManyTimes": "If yes, how many times per week?",
+  "daysAWeek": "{count} days a week",
+  "@daysAWeek": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "pregnancy": "Pregnancy (if applicable)",
+  "areYouPregnant": "Are you pregnant?",
+  "goals": "Goals",
+  "whatIsYourGoal": "What is your goal for practicing Pilates?",
+  "enterYourGoals": "Enter your goals",
+  "declaration": "Declaration",
+  "declarationText": "I declare that all information provided is true and accurate. I understand that any incorrect information may affect my safety during exercises.",
+  "signature": "Signature",
+  "date": "Date"
 
 
 

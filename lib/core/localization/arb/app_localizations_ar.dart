@@ -952,4 +952,52 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get respiratoryProblem => 'مشكلة في الجهاز التنفسي';
+
+  @override
+  String get physicalActivityLevel => 'مستوى النشاط البدني';
+
+  @override
+  String get doYouExerciseRegularly => 'هل تمارس الرياضة بانتظام؟';
+
+  @override
+  String get yes => 'نعم';
+
+  @override
+  String get sometimes => 'أحياناً';
+
+  @override
+  String get no => 'لا';
+
+  @override
+  String get ifYesHowManyTimes => 'إذا كانت الإجابة بنعم، كم مرة في الأسبوع؟';
+
+  @override
+  String daysAWeek(int count) {
+    return '$count أيام في الأسبوع';
+  }
+
+  @override
+  String get pregnancy => 'الحمل (إن وجد)';
+
+  @override
+  String get areYouPregnant => 'هل أنت حامل؟';
+
+  @override
+  String get goals => 'الأهداف';
+
+  @override
+  String get whatIsYourGoal => 'ما هو هدفك من ممارسة البيلاتس؟';
+
+  @override
+  String get enterYourGoals => 'أدخل أهدافك';
+
+  @override
+  String get declaration => 'الإقرار';
+
+  @override
+  String get declarationText =>
+      'أقر بأن جميع المعلومات المقدمة صحيحة ودقيقة. أفهم أن أي معلومات غير صحيحة قد تؤثر على سلامتي أثناء التمارين.';
+
+  @override
+  String get signature => 'التوقيع';
 }

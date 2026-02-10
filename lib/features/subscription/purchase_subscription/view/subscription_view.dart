@@ -9,9 +9,12 @@ import 'package:pilates_app/features/subscription/purchase_subscription/cubit/su
 import 'package:pilates_app/features/subscription/purchase_subscription/view/widgets/branch_selector.dart';
 import 'package:pilates_app/features/subscription/purchase_subscription/view/widgets/gift_toggle_card.dart';
 import 'package:pilates_app/features/subscription/purchase_subscription/view/widgets/plan_card.dart';
-import 'package:pilates_app/features/subscription/purchase_subscription/view/widgets/plan_details_modal.dart';
 import 'package:pilates_app/features/subscription/purchase_subscription/view/health_information_view.dart';
 import 'package:pilates_app/features/subscription/purchase_subscription/view/medical_history_view.dart';
+import 'package:pilates_app/features/subscription/purchase_subscription/view/physical_activity_view.dart'; // Import
+import 'package:pilates_app/features/subscription/purchase_subscription/view/pregnancy_view.dart'; // Import
+import 'package:pilates_app/features/subscription/purchase_subscription/view/goals_view.dart'; // Import
+import 'package:pilates_app/features/subscription/purchase_subscription/view/declaration_view.dart'; // Import
 import 'package:pilates_app/widgets/app_app_bar.dart';
 import 'package:pilates_app/widgets/app_button.dart';
 import 'package:pilates_app/widgets/app_text.dart';
@@ -37,8 +40,6 @@ class _SubscriptionViewContent extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     
-    // We lift the l10n and cubit access inside BlocBuilder mostly, or here if stable.
-    
     return BlocBuilder<SubscriptionCubit, SubscriptionState>(
       // Listen to currentStep usage
       builder: (context, state) {
@@ -46,8 +47,8 @@ class _SubscriptionViewContent extends StatelessWidget {
         String appBarTitle;
         if (state.currentStep == 0) {
           appBarTitle = l10n.subscriptionTitle;
-        } else if (state.currentStep == 1 || state.currentStep == 2) {
-          appBarTitle = l10n.healthInformation; // As per screenshot header
+        } else if (state.currentStep >= 1 && state.currentStep <= 6) {
+          appBarTitle = l10n.healthInformation; // Title stays "Health Information" for steps 1-6 according to screenshot
         } else {
           appBarTitle = l10n.subscriptionTitle;
         }
@@ -72,6 +73,10 @@ class _SubscriptionViewContent extends StatelessWidget {
                 const _PlanSelectionStep(),
                 const HealthInformationView(),
                 const MedicalHistoryView(),
+                const PhysicalActivityView(), // Step 3
+                const PregnancyView(), // Step 4
+                const GoalsView(), // Step 5
+                const DeclarationView(), // Step 6
               ],
             ),
           ),
@@ -89,6 +94,7 @@ class _PlanSelectionStep extends StatelessWidget {
     final cubit = context.read<SubscriptionCubit>();
     final l10n = AppLocalizations.of(context)!;
 
+    // Plans data (unchanged)
     final List<Map<String, dynamic>> plans = [
       {
         'id': 'premium',
@@ -142,7 +148,7 @@ class _PlanSelectionStep extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
                   child: AppText(
                     l10n.chooseYourPlan,
-                    style:(style)=> AppTextStyles.gelasioMedium(context).copyWith(fontSize: 24),
+                    style: (context) => AppTextStyles.gelasioMedium(context).copyWith(fontSize: 24),
                   ),
                 ),
                 const SizedBox(height: 4),
@@ -150,7 +156,7 @@ class _PlanSelectionStep extends StatelessWidget {
                    padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
                    child: AppText(
                      l10n.selectPlanSubtitle,
-                     style: (style)=> AppTextStyles.bodyText(context),
+                     style: (context) => AppTextStyles.bodyText(context),
                    ),
                  ),
                 const SizedBox(height: AppSpacing.md),
@@ -187,7 +193,6 @@ class _PlanSelectionStep extends StatelessWidget {
                  BlocBuilder<SubscriptionCubit, SubscriptionState>(
                    buildWhen: (p, c) => p.selectedPlanId != c.selectedPlanId,
                    builder: (context, state) {
-                     // Find the currently selected plan object to pass to the modal
                      return Padding(
                        padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
                        child: Column(
