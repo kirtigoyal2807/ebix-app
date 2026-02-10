@@ -12,6 +12,10 @@ class AppButton extends StatelessWidget {
   final VoidCallback? onPressed;
   final bool expanded;
   final AppButtonVariant variant;
+  final double? buttonHeight;
+  final double? verticalPadding;
+  final Color? buttonColor;
+  final double? buttonFontSize;
 
   const AppButton({
     super.key,
@@ -19,6 +23,10 @@ class AppButton extends StatelessWidget {
     this.onPressed,
     this.expanded = true,
     this.variant = AppButtonVariant.primary,
+    this.verticalPadding,
+    this.buttonHeight,
+    this.buttonColor,
+    this.buttonFontSize,
   });
 
   @override
@@ -31,19 +39,26 @@ class AppButton extends StatelessWidget {
             onPressed: onPressed,
             style: ElevatedButton.styleFrom(
               backgroundColor:
-              // isDark
-              //     ? AppColors.primaryDarkButton
-              //     :
-              AppColors.primary,
+                  // isDark
+                  //     ? AppColors.primaryDarkButton
+                  //     :
+                  buttonColor ?? AppColors.primary,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(AppRadius.xl),
               ),
               padding: EdgeInsets.symmetric(
-                vertical: (AppSpacing.buttonHeight - 30) / 2,
-              ),
-              minimumSize: Size(double.infinity, AppSpacing.buttonHeight),
+                vertical:
+               verticalPadding ??
+                  (AppSpacing.buttonHeight - 30) / 2,
+
             ),
-            child: Text(label, style: AppTextStyles.button(context)),
+              minimumSize: Size(
+                double.infinity,
+                buttonHeight ??
+                    AppSpacing.buttonHeight,
+              ),
+            ),
+            child: Text(label, style: AppTextStyles.button(context).copyWith(fontSize: buttonFontSize??16)),
           )
         : variant == AppButtonVariant.disable
         ? ElevatedButton(
@@ -56,9 +71,13 @@ class AppButton extends StatelessWidget {
                 borderRadius: BorderRadius.circular(AppRadius.xl),
               ),
               padding: EdgeInsets.symmetric(
-                vertical: (AppSpacing.buttonHeight - 30) / 2,
+                vertical: verticalPadding ?? (AppSpacing.buttonHeight - 30) / 2,
               ),
-              minimumSize: Size(double.infinity, AppSpacing.buttonHeight),
+              minimumSize: Size(
+                double.infinity,
+                buttonHeight ??
+                    AppSpacing.buttonHeight,
+              ),
             ),
             child: Text(
               label,
@@ -66,6 +85,7 @@ class AppButton extends StatelessWidget {
                 color: isDark
                     ? AppColors.lightDarkGrey
                     : AppColors.languageTextDark,
+                  fontSize:buttonFontSize??16
               ),
             ),
           )
@@ -83,14 +103,18 @@ class AppButton extends StatelessWidget {
                 borderRadius: BorderRadius.circular(AppRadius.xl),
               ),
               padding: EdgeInsets.symmetric(
-                vertical: (AppSpacing.buttonHeight - 30) / 2,
+                vertical: verticalPadding ?? (AppSpacing.buttonHeight - 30) / 2,
               ),
-              minimumSize: Size(double.infinity, AppSpacing.buttonHeight),
+              minimumSize: Size(
+                double.infinity,
+                buttonHeight ?? AppSpacing.buttonHeight,
+              ),
             ),
             child: Text(
               label,
               style: AppTextStyles.button(context).copyWith(
                 color: isDark ? AppColors.lightText : AppColors.darkText,
+                fontSize: buttonFontSize??16
               ),
             ),
           );
@@ -98,3 +122,4 @@ class AppButton extends StatelessWidget {
     return expanded ? SizedBox(width: double.infinity, child: button) : button;
   }
 }
+

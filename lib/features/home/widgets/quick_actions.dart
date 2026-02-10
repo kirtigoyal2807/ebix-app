@@ -7,6 +7,8 @@ import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/core/localization/localization_extension.dart';
 import 'package:pilates_app/widgets/app_text.dart';
 
+import '../../my_booking/my_booking_view.dart';
+
 class QuickActions extends StatelessWidget {
   const QuickActions({super.key});
 
@@ -14,7 +16,7 @@ class QuickActions extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.sizeOf(context);
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    
+
     // Calculate precise width to ensure all items are identical
     final horizontalPadding = AppSpacing.lg;
     final gap = AppSpacing.md;
@@ -27,14 +29,22 @@ class QuickActions extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            _buildActionItem(
-              context,
-              context.l10n.bookNow,
-              isDark
-                  ? 'assets/images/svg/ic_calendar_dark.svg'
-                  : 'assets/images/svg/ic_calendar_light.svg',
-              itemPadding,
-              itemWidth,
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => MyBookingView()),
+                );
+              },
+              child: _buildActionItem(
+                context,
+                context.l10n.bookNow,
+                isDark
+                    ? 'assets/images/svg/ic_calendar_dark.svg'
+                    : 'assets/images/svg/ic_calendar_light.svg',
+                itemPadding,
+                itemWidth,
+              ),
             ),
             SizedBox(width: gap),
             _buildActionItem(
@@ -74,7 +84,7 @@ class QuickActions extends StatelessWidget {
 
     return Container(
       width: width,
-      padding: EdgeInsets.symmetric(vertical: padding,),
+      padding: EdgeInsets.symmetric(vertical: padding),
       decoration: BoxDecoration(
         color: isDark ? AppColors.homeBackground : AppColors.whiteColor,
         borderRadius: BorderRadius.circular(AppRadius.md),
@@ -87,10 +97,10 @@ class QuickActions extends StatelessWidget {
         children: [
           const SizedBox(height: AppSpacing.md),
           SizedBox(
-            height: size.height *0.06,
+            height: size.height * 0.06,
             child: SvgPicture.asset(
               icon,
-              height: size.height *0.06,
+              height: size.height * 0.06,
               // width: width * 0.6,
               fit: BoxFit.contain,
             ),
@@ -103,9 +113,7 @@ class QuickActions extends StatelessWidget {
                 child: AppText(
                   title,
                   style: (context) => AppTextStyles.body(context).copyWith(
-                    color: isDark
-                        ? AppColors.lightText
-                        : AppColors.darkText,
+                    color: isDark ? AppColors.lightText : AppColors.darkText,
                     fontSize: size.width * 0.03 > 12 ? 12 : size.width * 0.03,
                   ),
                   textAlign: TextAlign.center,

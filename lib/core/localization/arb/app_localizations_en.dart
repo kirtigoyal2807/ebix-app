@@ -364,7 +364,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String spotsLeft(int count) {
-    return '$count Spots Left';
+    return '$count spots left';
   }
 
   @override
@@ -571,7 +571,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get successMessage => 'You\'re all set for your class.';
 
   @override
-  String get checkIn => 'Check In';
+  String get checkIn => 'Check-In';
 
   @override
   String get checkInDescription =>
@@ -719,4 +719,119 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get cancel => 'Cancel';
+
+  @override
+  String get noClassesToday => 'No classes today';
+
+  @override
+  String get noClassesDescription =>
+      'Check your upcoming bookings or\nbrowse available classes';
+
+  @override
+  String get confirmed => 'Confirmed';
+
+  @override
+  String get waitlisted => 'Waitlisted';
+
+  @override
+  String get completed => 'Completed';
+
+  @override
+  String get cancelled => 'Cancelled';
+
+  @override
+  String get spot => 'Spot';
+
+  @override
+  String get position => 'Position';
+
+  @override
+  String get myBookings => 'My Bookings';
+
+  @override
+  String get upcoming => 'Upcoming';
+
+  @override
+  String get current => 'Current';
+
+  @override
+  String get keepIt => 'No, keep it';
+
+  @override
+  String get leaveWaitlist => 'Leave Waitlist';
+
+  @override
+  String get rateThisClass => 'Rate This Class';
+
+  @override
+  String get cancelClassConfirm =>
+      'Are you sure you want to cancel your class?';
+
+  @override
+  String get cancelClassYes => 'Yes, Cancel';
+
+  @override
+  String get leaveWaitlistConfirm =>
+      'Are you sure you want to leave the waitlist?';
+
+  @override
+  String get leaveWaitlistYes => 'Yes, Leave';
+
+  @override
+  String positionOnWaitlist(Object position) {
+    return 'Position #$position on waitlist';
+  }
+
+  @override
+  String cancelledOn(Object date, Object time) {
+    return 'Cancelled on $date at $time';
+  }
+
+  @override
+  String get excellentReview =>
+      'Excellent class! Sarah is an amazing instructor.';
+
+  @override
+  String get rateYourClass => 'Rate Your Class';
+
+  @override
+  String rateYourClassDesc(Object className) {
+    return 'How was your experience with $className?';
+  }
+
+  @override
+  String get rateYourTrainer => 'Rate Your Trainer';
+
+  @override
+  String rateYourTrainerDesc(Object trainerName) {
+    return 'How was your experience with $trainerName?';
+  }
+
+  @override
+  String get writeDetailedReview => 'Write Detailed Review';
+
+  @override
+  String get shareExperienceHint => 'Share your experience (optional)';
+
+  @override
+  String get submitReview => 'Submit Review';
+
+  @override
+  String get skipForNow => 'Skip for Now';
+
+  @override
+  String get tabUpcoming => 'Upcoming';
+
+  @override
+  String get tabCurrent => 'Current';
+
+  @override
+  String get tabPast => 'Past';
+
+  @override
+  String get tabCancelled => 'Cancelled';
+
+  @override
+  String get reviewExcellent =>
+      'Excellent class! Sarah is an amazing instructor.';
 }

@@ -92,6 +92,11 @@ class AppColors {
 
   static const successColor = Color(0xFF30A46C);
   static const greyContainerBg = Color(0xFFF5F5F4);
+  static const lightGreenBorder = Color(0xFFD6F1DF);
+  static const redBorder = Color(0xFFF4A9AA);
   static const primaryDarkContainer = Color(0xFF513523);
   static const whiteBorderColor = Color(0xFFF2EEEA);
+  static const warningColor = Color(0xFFFDC700);
+  static const redText = Color(0xFFDC3E42);
+
 }

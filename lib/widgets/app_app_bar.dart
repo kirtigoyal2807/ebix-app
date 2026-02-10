@@ -8,38 +8,49 @@ class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
   final VoidCallback? onBack;
   final List<Widget>? actions;
   final bool? isMoreMenu;
+  final PreferredSize? bottomPreferredSize;
 
-  const AppAppBar({super.key, this.title, this.onBack, this.actions, this.isMoreMenu = true});
+  const AppAppBar({
+    super.key,
+    this.title,
+    this.onBack,
+    this.actions,
+    this.isMoreMenu = true,
+    this.bottomPreferredSize,
+  });
 
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return AppBar(
-      surfaceTintColor: Colors.transparent, // IMPORTANT (Material 3)
+      surfaceTintColor: Colors.transparent,
+      // IMPORTANT (Material 3)
       backgroundColor: isDark ? AppColors.homeBackground : AppColors.whiteColor,
-      scrolledUnderElevation: 0, // IMPORTANT
+      scrolledUnderElevation: 0,
+      // IMPORTANT
       leading: onBack != null
           ? IconButton(
-        icon: const Icon(Icons.arrow_back_ios_rounded,size: 20,),
-        onPressed: onBack,
-        
-      )
+              icon: const Icon(Icons.arrow_back_ios_rounded, size: 20),
+              onPressed: onBack,
+            )
           : null,
 
-      title: title != null ? AppText(title!, style: AppTextStyles.appBarTitle,) : null,
+      title: title != null
+          ? AppText(title!, style: AppTextStyles.appBarTitle)
+          : null,
       centerTitle: true,
       elevation: 0,
       actions: [
-        (isMoreMenu ?? true) ? IconButton(
-          icon: const Icon(Icons.more_horiz),
-          onPressed: () {},
-        ):SizedBox(),
+        (isMoreMenu ?? true)
+            ? IconButton(icon: const Icon(Icons.more_horiz), onPressed: () {})
+            : SizedBox(),
       ],
+      bottom: bottomPreferredSize,
+
       // backgroundColor: Colors.white,
-      
     );
   }
 
   @override
-  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
+  Size get preferredSize =>bottomPreferredSize?.preferredSize ?? const Size.fromHeight(kToolbarHeight);
 }

@@ -299,7 +299,61 @@
     "elitePlan": "Elite Plan (All locations)",
     "upgradeToElite": "Upgrade to Elite Plan",
     "paySingleClass": "Pay $24 for Single Class",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+
+    "noClassesToday": "No classes today",
+    "noClassesDescription": "Check your upcoming bookings or\nbrowse available classes",
+"confirmed": "Confirmed",
+  "waitlisted": "On Waitlist",
+  "completed": "Completed",
+  "cancelled": "Cancelled",
+  "spot": "Spot",
+  "position": "Position",
+  "myBookings": "My Bookings",
+  "upcoming": "Upcoming",
+    "current": "Current",
+    "completed": "Completed",
+    "cancelled": "Cancelled",
+
+      "keepIt": "No, keep it",
+      "confirmed": "Confirmed",
+        "completed": "Completed",
+        "waitlisted": "Waitlisted",
+        "cancelled": "Cancelled",
+
+        "checkIn": "Check-In",
+        "cancel": "Cancel",
+        "leaveWaitlist": "Leave Waitlist",
+        "rateThisClass": "Rate This Class",
+
+        "cancelClassConfirm": "Are you sure you want to cancel your class?",
+        "cancelClassYes": "Yes, Cancel",
+
+        "leaveWaitlistConfirm": "Are you sure you want to leave the waitlist?",
+        "leaveWaitlistYes": "Yes, Leave",
+
+        "spotsLeft": "{count} spots left",
+        "positionOnWaitlist": "Position #{position} on waitlist",
+
+        "cancelledOn": "Cancelled on {date} at {time}",
+
+        "excellentReview": "Excellent class! Sarah is an amazing instructor.",
+        "rateYourClass": "Rate Your Class",
+          "rateYourClassDesc": "How was your experience with {className}?",
+          "rateYourTrainer": "Rate Your Trainer",
+          "rateYourTrainerDesc": "How was your experience with {trainerName}?",
+          "writeDetailedReview": "Write Detailed Review",
+          "shareExperienceHint": "Share your experience (optional)",
+          "submitReview": "Submit Review",
+          "skipForNow": "Skip for Now",
+  "tabUpcoming": "Upcoming",
+  "tabCurrent": "Current",
+  "tabPast": "Past",
+  "tabCancelled": "Cancelled",
+  "reviewExcellent": "Excellent class! Sarah is an amazing instructor."
+
+
+
 }
 
 

@@ -30,12 +30,14 @@ class BookingTabs extends StatelessWidget {
               _TabItem(
                 label: context.l10n.classesNav,
                 isSelected: state.selectedTab == BookingTab.classes,
-                onTap: () => context.read<BookingCubit>().setTab(BookingTab.classes),
+                onTap: () =>
+                    context.read<BookingCubit>().setTab(BookingTab.classes),
               ),
               _TabItem(
                 label: context.l10n.trainers,
                 isSelected: state.selectedTab == BookingTab.trainers,
-                onTap: () => context.read<BookingCubit>().setTab(BookingTab.trainers),
+                onTap: () =>
+                    context.read<BookingCubit>().setTab(BookingTab.trainers),
               ),
             ],
           ),
@@ -70,18 +72,26 @@ class _TabItem extends StatelessWidget {
           decoration: BoxDecoration(
             border: Border(
               bottom: BorderSide(
-                color: isSelected ? activeColor : isDark ? AppColors.greyText : AppColors.buttonBorder,
+                color: isSelected
+                    ? activeColor
+                    : isDark
+                    ? AppColors.greyText
+                    : AppColors.buttonBorder,
                 width: 2,
               ),
             ),
-          ) ,
+          ),
           child: Center(
             child: AppText(
               label,
-              style:  (context) => AppTextStyles.boldBody(context).copyWith(
+              style: (context) => AppTextStyles.boldBody(context).copyWith(
                 fontSize: 16,
-                fontWeight: isSelected ? FontWeight.w600:FontWeight.w400,
-                color: isSelected ? (isDark ? AppColors.languageTextDark : AppColors.languageIcon) : inactiveColor,
+                fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
+                color: isSelected
+                    ? (isDark
+                          ? AppColors.languageTextDark
+                          : AppColors.languageIcon)
+                    : inactiveColor,
               ),
             ),
           ),

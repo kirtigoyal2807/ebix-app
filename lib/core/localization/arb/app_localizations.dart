@@ -773,7 +773,7 @@ abstract class AppLocalizations {
   /// No description provided for @spotsLeft.
   ///
   /// In en, this message translates to:
-  /// **'{count} Spots Left'**
+  /// **'{count} spots left'**
   String spotsLeft(int count);
 
   /// No description provided for @bookClass.
@@ -1169,7 +1169,7 @@ abstract class AppLocalizations {
   /// No description provided for @checkIn.
   ///
   /// In en, this message translates to:
-  /// **'Check In'**
+  /// **'Check-In'**
   String get checkIn;
 
   /// No description provided for @checkInDescription.
@@ -1441,6 +1441,210 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Cancel'**
   String get cancel;
+
+  /// No description provided for @noClassesToday.
+  ///
+  /// In en, this message translates to:
+  /// **'No classes today'**
+  String get noClassesToday;
+
+  /// No description provided for @noClassesDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Check your upcoming bookings or\nbrowse available classes'**
+  String get noClassesDescription;
+
+  /// No description provided for @confirmed.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirmed'**
+  String get confirmed;
+
+  /// No description provided for @waitlisted.
+  ///
+  /// In en, this message translates to:
+  /// **'Waitlisted'**
+  String get waitlisted;
+
+  /// No description provided for @completed.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed'**
+  String get completed;
+
+  /// No description provided for @cancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancelled'**
+  String get cancelled;
+
+  /// No description provided for @spot.
+  ///
+  /// In en, this message translates to:
+  /// **'Spot'**
+  String get spot;
+
+  /// No description provided for @position.
+  ///
+  /// In en, this message translates to:
+  /// **'Position'**
+  String get position;
+
+  /// No description provided for @myBookings.
+  ///
+  /// In en, this message translates to:
+  /// **'My Bookings'**
+  String get myBookings;
+
+  /// No description provided for @upcoming.
+  ///
+  /// In en, this message translates to:
+  /// **'Upcoming'**
+  String get upcoming;
+
+  /// No description provided for @current.
+  ///
+  /// In en, this message translates to:
+  /// **'Current'**
+  String get current;
+
+  /// No description provided for @keepIt.
+  ///
+  /// In en, this message translates to:
+  /// **'No, keep it'**
+  String get keepIt;
+
+  /// No description provided for @leaveWaitlist.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave Waitlist'**
+  String get leaveWaitlist;
+
+  /// No description provided for @rateThisClass.
+  ///
+  /// In en, this message translates to:
+  /// **'Rate This Class'**
+  String get rateThisClass;
+
+  /// No description provided for @cancelClassConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to cancel your class?'**
+  String get cancelClassConfirm;
+
+  /// No description provided for @cancelClassYes.
+  ///
+  /// In en, this message translates to:
+  /// **'Yes, Cancel'**
+  String get cancelClassYes;
+
+  /// No description provided for @leaveWaitlistConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to leave the waitlist?'**
+  String get leaveWaitlistConfirm;
+
+  /// No description provided for @leaveWaitlistYes.
+  ///
+  /// In en, this message translates to:
+  /// **'Yes, Leave'**
+  String get leaveWaitlistYes;
+
+  /// No description provided for @positionOnWaitlist.
+  ///
+  /// In en, this message translates to:
+  /// **'Position #{position} on waitlist'**
+  String positionOnWaitlist(Object position);
+
+  /// No description provided for @cancelledOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancelled on {date} at {time}'**
+  String cancelledOn(Object date, Object time);
+
+  /// No description provided for @excellentReview.
+  ///
+  /// In en, this message translates to:
+  /// **'Excellent class! Sarah is an amazing instructor.'**
+  String get excellentReview;
+
+  /// No description provided for @rateYourClass.
+  ///
+  /// In en, this message translates to:
+  /// **'Rate Your Class'**
+  String get rateYourClass;
+
+  /// No description provided for @rateYourClassDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'How was your experience with {className}?'**
+  String rateYourClassDesc(Object className);
+
+  /// No description provided for @rateYourTrainer.
+  ///
+  /// In en, this message translates to:
+  /// **'Rate Your Trainer'**
+  String get rateYourTrainer;
+
+  /// No description provided for @rateYourTrainerDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'How was your experience with {trainerName}?'**
+  String rateYourTrainerDesc(Object trainerName);
+
+  /// No description provided for @writeDetailedReview.
+  ///
+  /// In en, this message translates to:
+  /// **'Write Detailed Review'**
+  String get writeDetailedReview;
+
+  /// No description provided for @shareExperienceHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Share your experience (optional)'**
+  String get shareExperienceHint;
+
+  /// No description provided for @submitReview.
+  ///
+  /// In en, this message translates to:
+  /// **'Submit Review'**
+  String get submitReview;
+
+  /// No description provided for @skipForNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Skip for Now'**
+  String get skipForNow;
+
+  /// No description provided for @tabUpcoming.
+  ///
+  /// In en, this message translates to:
+  /// **'Upcoming'**
+  String get tabUpcoming;
+
+  /// No description provided for @tabCurrent.
+  ///
+  /// In en, this message translates to:
+  /// **'Current'**
+  String get tabCurrent;
+
+  /// No description provided for @tabPast.
+  ///
+  /// In en, this message translates to:
+  /// **'Past'**
+  String get tabPast;
+
+  /// No description provided for @tabCancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancelled'**
+  String get tabCancelled;
+
+  /// No description provided for @reviewExcellent.
+  ///
+  /// In en, this message translates to:
+  /// **'Excellent class! Sarah is an amazing instructor.'**
+  String get reviewExcellent;
 }
 
 class _AppLocalizationsDelegate

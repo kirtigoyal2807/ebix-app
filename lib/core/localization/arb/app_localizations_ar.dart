@@ -359,7 +359,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String spotsLeft(int count) {
-    return 'بقي $count أماكن';
+    return 'متبقي $count أماكن';
   }
 
   @override
@@ -713,4 +713,116 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get cancel => 'إلغاء';
+
+  @override
+  String get noClassesToday => 'لا توجد حصص اليوم';
+
+  @override
+  String get noClassesDescription =>
+      'تحقق من حجوزاتك القادمة\nأو تصفح الحصص المتاحة';
+
+  @override
+  String get confirmed => 'مؤكد';
+
+  @override
+  String get waitlisted => 'على قائمة الانتظار';
+
+  @override
+  String get completed => 'مكتمل';
+
+  @override
+  String get cancelled => 'ملغي';
+
+  @override
+  String get spot => 'المقعد';
+
+  @override
+  String get position => 'الترتيب';
+
+  @override
+  String get myBookings => 'حجوزاتي';
+
+  @override
+  String get upcoming => 'القادمة';
+
+  @override
+  String get current => 'الحالية';
+
+  @override
+  String get keepIt => 'لا، احتفظ بها';
+
+  @override
+  String get leaveWaitlist => 'مغادرة قائمة الانتظار';
+
+  @override
+  String get rateThisClass => 'قيّم هذا الصف';
+
+  @override
+  String get cancelClassConfirm => 'هل أنت متأكد أنك تريد إلغاء هذا الصف؟';
+
+  @override
+  String get cancelClassYes => 'نعم، إلغاء';
+
+  @override
+  String get leaveWaitlistConfirm =>
+      'هل أنت متأكد أنك تريد مغادرة قائمة الانتظار؟';
+
+  @override
+  String get leaveWaitlistYes => 'نعم، مغادرة';
+
+  @override
+  String positionOnWaitlist(Object position) {
+    return 'الترتيب رقم $position في قائمة الانتظار';
+  }
+
+  @override
+  String cancelledOn(Object date, Object time) {
+    return 'تم الإلغاء في $date الساعة $time';
+  }
+
+  @override
+  String get excellentReview => 'صف ممتاز! سارة مدربة رائعة.';
+
+  @override
+  String get rateYourClass => 'قيّم حصتك';
+
+  @override
+  String rateYourClassDesc(Object className) {
+    return 'كيف كانت تجربتك مع $className؟';
+  }
+
+  @override
+  String get rateYourTrainer => 'قيّم المدرب';
+
+  @override
+  String rateYourTrainerDesc(Object trainerName) {
+    return 'كيف كانت تجربتك مع $trainerName؟';
+  }
+
+  @override
+  String get writeDetailedReview => 'اكتب مراجعة مفصلة';
+
+  @override
+  String get shareExperienceHint => 'شارك تجربتك (اختياري)';
+
+  @override
+  String get submitReview => 'إرسال التقييم';
+
+  @override
+  String get skipForNow => 'تخطي الآن';
+
+  @override
+  String get tabUpcoming => 'القادمة';
+
+  @override
+  String get tabCurrent => 'الحالية';
+
+  @override
+  String get tabPast => 'السابقة';
+
+  @override
+  String get tabCancelled => 'الملغاة';
+
+  @override
+  String get reviewExcellent => 'حصة رائعة! سارة مدرّبة مميزة للغاية.';
 }

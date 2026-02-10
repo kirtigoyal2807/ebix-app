@@ -299,7 +299,59 @@
     "elitePlan": "خطة النخبة (جميع المواقع)",
     "upgradeToElite": "الترقية إلى خطة النخبة",
     "paySingleClass": "ادفع 24 دولارًا لحصة واحدة",
-    "cancel": "إلغاء"
+    "cancel": "إلغاء",
+    "noClassesToday": "لا توجد حصص اليوم",
+      "noClassesDescription": "تحقق من حجوزاتك القادمة\nأو تصفح الحصص المتاحة",
+"confirmed": "مؤكد",
+  "waitlisted": "على قائمة الانتظار",
+  "completed": "مكتمل",
+  "cancelled": "ملغي",
+  "spot": "المقعد",
+  "position": "الترتيب",
+  "myBookings": "حجوزاتي",
+   "upcoming": "القادمة",
+    "current": "الحالية",
+    "completed": "المكتملة",
+    "cancelled": "الملغاة",
+
+      "keepIt": "لا، احتفظ بها",
+      "confirmed": "مؤكد",
+        "completed": "مكتمل",
+        "waitlisted": "على قائمة الانتظار",
+        "cancelled": "ملغي",
+
+        "checkIn": "تسجيل الحضور",
+        "cancel": "إلغاء",
+        "leaveWaitlist": "مغادرة قائمة الانتظار",
+        "rateThisClass": "قيّم هذا الصف",
+
+        "cancelClassConfirm": "هل أنت متأكد أنك تريد إلغاء هذا الصف؟",
+        "cancelClassYes": "نعم، إلغاء",
+
+        "leaveWaitlistConfirm": "هل أنت متأكد أنك تريد مغادرة قائمة الانتظار؟",
+        "leaveWaitlistYes": "نعم، مغادرة",
+
+        "spotsLeft": "متبقي {count} أماكن",
+        "positionOnWaitlist": "الترتيب رقم {position} في قائمة الانتظار",
+
+        "cancelledOn": "تم الإلغاء في {date} الساعة {time}",
+
+        "excellentReview": "صف ممتاز! سارة مدربة رائعة.",
+          "rateYourClass": "قيّم حصتك",
+          "rateYourClassDesc": "كيف كانت تجربتك مع {className}؟",
+          "rateYourTrainer": "قيّم المدرب",
+          "rateYourTrainerDesc": "كيف كانت تجربتك مع {trainerName}؟",
+          "writeDetailedReview": "اكتب مراجعة مفصلة",
+          "shareExperienceHint": "شارك تجربتك (اختياري)",
+          "submitReview": "إرسال التقييم",
+          "skipForNow": "تخطي الآن",
+            "tabUpcoming": "القادمة",
+            "tabCurrent": "الحالية",
+            "tabPast": "السابقة",
+            "tabCancelled": "الملغاة",
+            "reviewExcellent": "حصة رائعة! سارة مدرّبة مميزة للغاية."
+
+
 }
 
 

@@ -18,7 +18,7 @@ class ClassReviewsSection extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: EdgeInsets.symmetric(horizontal:AppSpacing.lg ),
+          padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -35,7 +35,9 @@ class ClassReviewsSection extends StatelessWidget {
               AppText(
                 context.l10n.seeAll,
                 style: (context) => AppTextStyles.captionText(context).copyWith(
-                  color: isDark ? AppColors.languageTextDark : AppColors.languageIcon,
+                  color: isDark
+                      ? AppColors.languageTextDark
+                      : AppColors.languageIcon,
                   fontSize: size.width * 0.03 > 14 ? 14 : size.width * 0.03,
                 ),
               ),
@@ -46,10 +48,13 @@ class ClassReviewsSection extends StatelessWidget {
 
         // Reviews Summary
         Padding(
-          padding: EdgeInsets.symmetric(horizontal:AppSpacing.lg ),
+          padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
           child: Container(
             width: double.infinity,
-            padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg,vertical: AppSpacing.md),
+            padding: const EdgeInsets.symmetric(
+              horizontal: AppSpacing.lg,
+              vertical: AppSpacing.md,
+            ),
             decoration: BoxDecoration(
               color: isDark ? AppColors.homeBackground : AppColors.whiteColor,
               borderRadius: BorderRadius.circular(AppRadius.md),
@@ -63,10 +68,9 @@ class ClassReviewsSection extends StatelessWidget {
                   children: [
                     AppText(
                       '4.8',
-                      style: (context) => AppTextStyles.bottomSheetTitle(context).copyWith(
-                        fontSize: 40,
-                        fontWeight: FontWeight.w600,
-                      ),
+                      style: (context) => AppTextStyles.bottomSheetTitle(
+                        context,
+                      ).copyWith(fontSize: 40, fontWeight: FontWeight.w600),
                     ),
                     const SizedBox(width: 12),
                     Column(
@@ -77,13 +81,16 @@ class ClassReviewsSection extends StatelessWidget {
                         const SizedBox(height: 4),
                         AppText(
                           context.l10n.basedOnReviews(27),
-                          style: (context) => AppTextStyles.captionText(context).copyWith(
-                            fontSize: 12,
-                            color: isDark ? AppColors.darkGreyText : AppColors.greyText,
-                          ),
+                          style: (context) =>
+                              AppTextStyles.captionText(context).copyWith(
+                                fontSize: 12,
+                                color: isDark
+                                    ? AppColors.darkGreyText
+                                    : AppColors.greyText,
+                              ),
                         ),
                       ],
-                    )
+                    ),
                   ],
                 ),
                 const SizedBox(height: AppSpacing.sm),
@@ -104,13 +111,17 @@ class ClassReviewsSection extends StatelessWidget {
 
         // Review Cards - Horizontal
         SizedBox(
-          height: 150,
+          height: 170,
           child: ListView.separated(
             scrollDirection: Axis.horizontal,
             itemCount: 3,
-            separatorBuilder: (context, index) => const SizedBox(width: AppSpacing.md),
+            separatorBuilder: (context, index) =>
+                const SizedBox(width: AppSpacing.md),
             itemBuilder: (context, index) => Padding(
-              padding: EdgeInsets.only(left:index ==0 ? AppSpacing.lg:0, right: index ==2? AppSpacing.lg:0 ),
+              padding: EdgeInsets.only(
+                left: index == 0 ? AppSpacing.lg : 0,
+                right: index == 2 ? AppSpacing.lg : 0,
+              ),
               child: const _ReviewCard(),
             ),
           ),
@@ -138,9 +149,9 @@ class _RatingBar extends StatelessWidget {
           const SizedBox(width: 4),
           AppText(
             stars.toString(),
-            style: (context) => AppTextStyles.helpAndSupportItemLabel(context).copyWith(
-              fontWeight: FontWeight.w600,
-            ),
+            style: (context) => AppTextStyles.helpAndSupportItemLabel(
+              context,
+            ).copyWith(fontWeight: FontWeight.w600),
           ),
           const SizedBox(width: AppSpacing.sm),
           Expanded(
@@ -148,7 +159,9 @@ class _RatingBar extends StatelessWidget {
               borderRadius: BorderRadius.circular(2),
               child: LinearProgressIndicator(
                 value: progress,
-                backgroundColor: isDark ? AppColors.primaryDarkButton : AppColors.ratingBarBackground,
+                backgroundColor: isDark
+                    ? AppColors.primaryDarkButton
+                    : AppColors.ratingBarBackground,
                 color: AppColors.goldStarColor,
                 minHeight: 6,
               ),
@@ -157,10 +170,9 @@ class _RatingBar extends StatelessWidget {
           const SizedBox(width: AppSpacing.sm),
           AppText(
             (progress * 12).toInt().toString(), // Dummy count
-            style: (context) => AppTextStyles.captionText(context).copyWith(
-              fontSize: 14,
-              color: AppColors.lightGrey,
-            ),
+            style: (context) => AppTextStyles.captionText(
+              context,
+            ).copyWith(fontSize: 14, color: AppColors.lightGrey),
           ),
         ],
       ),
@@ -219,13 +231,17 @@ class _ReviewCard extends StatelessWidget {
                 children: [
                   AppText(
                     context.l10n.reviewerName1,
-                    style: (context) => AppTextStyles.boldBody(context).copyWith(
-                      color: isDark ? AppColors.lightText : AppColors.darkText,
-                    ),
+                    style: (context) =>
+                        AppTextStyles.boldBody(context).copyWith(
+                          color: isDark
+                              ? AppColors.lightText
+                              : AppColors.darkText,
+                        ),
                   ),
                   AppText(
                     context.l10n.reviewerTime1,
-                    style: (context) => AppTextStyles.helpAndSupportItemSubLabel(context),
+                    style: (context) =>
+                        AppTextStyles.helpAndSupportItemSubLabel(context),
                   ),
                 ],
               ),
@@ -233,14 +249,21 @@ class _ReviewCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  const Icon(Icons.star, color: AppColors.goldStarColor, size: 14),
+                  const Icon(
+                    Icons.star,
+                    color: AppColors.goldStarColor,
+                    size: 14,
+                  ),
                   const SizedBox(width: 4),
                   AppText(
                     '4.5',
-                    style: (context) => AppTextStyles.boldBody(context).copyWith(
-                      fontSize: 14,
-                      color: isDark ? AppColors.lightText : AppColors.darkText,
-                    ),
+                    style: (context) =>
+                        AppTextStyles.boldBody(context).copyWith(
+                          fontSize: 14,
+                          color: isDark
+                              ? AppColors.lightText
+                              : AppColors.darkText,
+                        ),
                   ),
                 ],
               ),
@@ -249,9 +272,8 @@ class _ReviewCard extends StatelessWidget {
           const SizedBox(height: AppSpacing.sm),
           AppText(
             context.l10n.reviewerComment1,
-            style: (context) => AppTextStyles.bodyText(context).copyWith(
-              height: 1.3,
-            ),
+            style: (context) =>
+                AppTextStyles.bodyText(context).copyWith(height: 1.3),
             maxLines: 5,
             overflow: TextOverflow.ellipsis,
           ),
