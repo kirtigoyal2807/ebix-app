@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pilates_app/config/theme/app_colors.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
+import 'package:pilates_app/widgets/app_text.dart';
 
 class BranchSelector extends StatelessWidget {
   final List<String> branches;
@@ -30,20 +31,31 @@ class BranchSelector extends StatelessWidget {
               onTap: () => onSelect(branch),
               child: AnimatedContainer(
                 duration: const Duration(milliseconds: 200),
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                decoration: BoxDecoration(
-                  color: isSelected ? AppColors.primary : isDark ? AppColors.switchInactiveDark :AppColors.greyContainerBg, // Dark brown for selected
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(
-                    color: Colors.transparent,
-                  ),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 8,
                 ),
-                child: Text(
+                decoration: BoxDecoration(
+                  color: isSelected
+                      ? AppColors.primary
+                      : isDark
+                      ? AppColors.switchInactiveDark
+                      : AppColors.greyContainerBg,
+                  // Dark brown for selected
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(color: Colors.transparent),
+                ),
+                child: AppText(
                   branch, // You might want to map branchId to display name
-                  style: AppTextStyles.bodyTextSmall(context).copyWith(
-                    color: isSelected ? AppColors.whiteColor : (isDark ? AppColors.lightText : AppColors.darkText),
-                    fontWeight: FontWeight.w500,
-                  ),
+                  style: (style) =>
+                      AppTextStyles.bodyTextSmall(context).copyWith(
+                        color: isSelected
+                            ? AppColors.whiteColor
+                            : (isDark
+                                  ? AppColors.lightText
+                                  : AppColors.darkText),
+                        fontWeight: FontWeight.w500,
+                      ),
                 ),
               ),
             ),

@@ -58,6 +58,7 @@ class PlanDetailsModal extends StatelessWidget {
                 const SizedBox(),
               Container(
                 height: 28,
+                width: 32,
                 child: IconButton(
                   icon: Icon(
                     Icons.close,
