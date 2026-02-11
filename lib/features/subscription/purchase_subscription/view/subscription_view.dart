@@ -9,6 +9,7 @@ import 'package:pilates_app/features/subscription/purchase_subscription/cubit/su
 import 'package:pilates_app/features/subscription/purchase_subscription/view/widgets/branch_selector.dart';
 import 'package:pilates_app/features/subscription/purchase_subscription/view/widgets/gift_toggle_card.dart';
 import 'package:pilates_app/features/subscription/purchase_subscription/view/widgets/plan_card.dart';
+import 'package:pilates_app/features/subscription/purchase_subscription/view/widgets/plan_details_modal.dart';
 import 'package:pilates_app/features/subscription/purchase_subscription/view/health_information_view.dart';
 import 'package:pilates_app/features/subscription/purchase_subscription/view/medical_history_view.dart';
 import 'package:pilates_app/features/subscription/purchase_subscription/view/physical_activity_view.dart'; // Import
@@ -218,6 +219,12 @@ class _PlanSelectionStep extends StatelessWidget {
                              badgeText: plan['badge'],
                              onTap: () {
                                cubit.selectPlan(plan['id']);
+                               showModalBottomSheet(
+                                 context: context,
+                                 isScrollControlled: true,
+                                 backgroundColor: Colors.transparent,
+                                 builder: (context) => PlanDetailsModal(plan: plan),
+                               );
                              },
                            );
                          }).toList(),
