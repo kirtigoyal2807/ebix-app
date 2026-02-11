@@ -1269,4 +1269,71 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get refunds => 'Refunds';
+
+  @override
+  String get termsAndConditions => 'Terms & Conditions';
+
+  @override
+  String get pleaseReviewTerms => 'Please review and accept our terms';
+
+  @override
+  String get subscriptionAgreement => 'Subscription Agreement';
+
+  @override
+  String get subscriptionTermsText =>
+      'By subscribing to our Pilates membership, you agree to the following terms and conditions:\n\n1. Membership Terms\n- Your membership will automatically renew each month unless cancelled\n- Cancel anytime with 7 days notice before next billing cycle\n- No refunds for partial months\n\n2. Class Booking\n- Book classes 24 hours in advance\n- Cancel bookings minimum 2 hours before class\n- Late cancellations will deduct from your monthly credits\n- No-shows forfeit the class credit\n\n3. Branch Access\n- Your plan determines which branches you can access\n- Upgrade required to access additional locations...';
+
+  @override
+  String get agreeToTermsAndConditions =>
+      'I have read and agree to the Terms & Conditions and Privacy Policy';
+
+  @override
+  String get continueToPayment => 'Continue to Payment';
+
+  @override
+  String get safetyText =>
+      'Please read carefully.\n I understand that Pilates is physical exercise and has some risk of injury.\n I join the class voluntarily.\n I confirm the information I provided is true.\n I will tell The Pilates Studio if my health changes, if I get injured, or if I become pregnant.\n I understand Pilates instructors are not doctors and cannot diagnose or treat medical problems.\n I accept responsibility for my own safety during sessions.\n I understand that The Pilates Studio is not responsible for injuries that happen during normal exercise, except in cases of serious negligence.\n My information will stay private and used only to keep me safe.\n In an emergency, I allow staff to get medical help for me.\n I have read and understood everything above.\n I agree to follow instructions and exercise safely.';
+
+  @override
+  String get safetyConsent => 'Safety & Consent';
+
+  @override
+  String get requiredInformation => 'Required Information';
+
+  @override
+  String get requiredForLegalCompliance =>
+      'Required for legal compliance: This Information is mandatory for identity verification, fraud prevention, and refund processing.';
+
+  @override
+  String get requiredForLegalComplianceShort => 'Required for legal compliance';
+
+  @override
+  String get emergencyContact => 'Emergency Contact';
+
+  @override
+  String get emergencyContactSubtitle => 'In case of emergency during class';
+
+  @override
+  String get contactName => 'Contact Name';
+
+  @override
+  String get fullName => 'Full Name';
+
+  @override
+  String get relationship => 'Relationship';
+
+  @override
+  String get selectRelationship => 'Select Relationship';
+
+  @override
+  String get identityVerification => 'Identity Verification';
+
+  @override
+  String get idType => 'ID Type';
+
+  @override
+  String get selectIdType => 'Select ID Type';
+
+  @override
+  String get idNumber => 'ID Number';
 }

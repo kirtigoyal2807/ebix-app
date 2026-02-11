@@ -30,10 +30,14 @@ class SubscriptionCubit extends Cubit<SubscriptionState> {
     // Step 4: Pregnancy
     // Step 5: Goals
     // Step 6: Declaration
-    if (state.currentStep < 6) {
+    // Step 7: Terms & Conditions
+    // Step 7: Safety
+    // Step 8: Terms & Conditions
+    // Step 9: Required Information
+    if (state.currentStep < 9) {
       emit(state.copyWith(currentStep: state.currentStep + 1));
     } else {
-      // Finish flow
+      // Finish flow (e.g. navigate to payment)
     }
   }
 
@@ -96,4 +100,14 @@ class SubscriptionCubit extends Cubit<SubscriptionState> {
   void updateDeclarationName(String val) => emit(state.copyWith(declarationName: val));
   void updateDeclarationSignature(String val) => emit(state.copyWith(declarationSignature: val));
   void updateDeclarationDate(String val) => emit(state.copyWith(declarationDate: val));
+
+  // Terms & Conditions Updates - Step 8
+  void toggleTermsAccepted(bool val) => emit(state.copyWith(isTermsAccepted: val));
+
+  // Required Information Updates - Step 9
+  void updateEmergencyContactName(String val) => emit(state.copyWith(emergencyContactName: val));
+  void updateEmergencyContactRelationship(String val) => emit(state.copyWith(emergencyContactRelationship: val));
+  void updateEmergencyContactPhone(String val) => emit(state.copyWith(emergencyContactPhone: val));
+  void updateIdType(String val) => emit(state.copyWith(idType: val));
+  void updateIdNumber(String val) => emit(state.copyWith(idNumber: val));
 }

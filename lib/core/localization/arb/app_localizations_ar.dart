@@ -1257,4 +1257,71 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get refunds => 'المبالغ المستردة';
+
+  @override
+  String get termsAndConditions => 'الشروط والأحكام';
+
+  @override
+  String get pleaseReviewTerms => 'يرجى مراجعة وقبول شروطنا';
+
+  @override
+  String get subscriptionAgreement => 'اتفاقية الاشتراك';
+
+  @override
+  String get subscriptionTermsText =>
+      'من خلال الاشتراك في عضوية البيلاتس الخاصة بنا، فإنك توافق على الشروط والأحكام التالية:\n\n1. شروط العضوية\n- سيتم تجديد عضويتك تلقائيًا كل شهر ما لم يتم إلغاؤها\n- الإلغاء في أي وقت مع إشعار قبل 7 أيام من دورة الفوترة التالية\n- لا توجد مبالغ مستردة للأشهر الجزئية\n\n2. حجز الحصص\n- احجز الحصص قبل 24 ساعة\n- إلغاء الحجوزات قبل ساعتين كحد أدنى من موعد الحصة\n- سيتم خصم الإلغاءات المتأخرة من رصيدك الشهري\n- عدم الحضور يفقدك رصيد الحصة\n\n3. الوصول إلى الفروع\n- تحدد خطتك الفروع التي يمكنك الوصول إليها\n- الترقية مطلوبة للوصول إلى مواقع إضافية...';
+
+  @override
+  String get agreeToTermsAndConditions =>
+      'لقت قرأت ووافقت على الشروط والأحكام وسياسة الخصوصية';
+
+  @override
+  String get continueToPayment => 'المتابعة للدفع';
+
+  @override
+  String get safetyText =>
+      'يرجى القراءة بعناية.\n أفهم أن تمارين البيلاتس هي نشاط بدني وقد تنطوي على بعض مخاطر الإصابة.\n أنضم إلى الصف بإرادتي الحرة.\n أؤكد أن المعلومات التي قدمتها صحيحة.\n سأبلغ استوديو البيلاتس في حال تغيّر وضعي الصحي، أو تعرضت لإصابة، أو أصبحت حاملاً.\n أفهم أن مدربي البيلاتس ليسوا أطباء ولا يمكنهم تشخيص أو علاج المشاكل الطبية.\n أتحمل المسؤولية الكاملة عن سلامتي أثناء الجلسات.\n أفهم أن استوديو البيلاتس غير مسؤول عن الإصابات التي تحدث أثناء التمارين العادية، إلا في حالات الإهمال الجسيم.\n ستبقى معلوماتي خاصة ولن تُستخدم إلا للحفاظ على سلامتي.\n في حالات الطوارئ، أسمح للموظفين بطلب المساعدة الطبية لي.\n لقد قرأت وفهمت كل ما ورد أعلاه.\n أوافق على اتباع التعليمات وممارسة التمارين بأمان.';
+
+  @override
+  String get safetyConsent => 'السلامة والموافقة';
+
+  @override
+  String get requiredInformation => 'المعلومات المطلوبة';
+
+  @override
+  String get requiredForLegalCompliance =>
+      'مطلوب للامتثال القانوني: هذه المعلومات إلزامية للتحقق من الهوية ومنع الاحتيال ومعالجة استرداد الأموال.';
+
+  @override
+  String get requiredForLegalComplianceShort => 'مطلوب للامتثال القانوني';
+
+  @override
+  String get emergencyContact => 'جهة الاتصال في حالات الطوارئ';
+
+  @override
+  String get emergencyContactSubtitle => 'في حالة الطوارئ أثناء الحصة';
+
+  @override
+  String get contactName => 'اسم جهة الاتصال';
+
+  @override
+  String get fullName => 'الاسم الكامل';
+
+  @override
+  String get relationship => 'العلاقة';
+
+  @override
+  String get selectRelationship => 'اختر العلاقة';
+
+  @override
+  String get identityVerification => 'التحقق من الهوية';
+
+  @override
+  String get idType => 'نوع الهوية';
+
+  @override
+  String get selectIdType => 'اختر نوع الهوية';
+
+  @override
+  String get idNumber => 'رقم الهوية';
 }
