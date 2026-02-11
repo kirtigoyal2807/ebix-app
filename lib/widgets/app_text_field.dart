@@ -12,6 +12,8 @@ class AppTextField extends StatefulWidget {
   final bool obscure;
   final TextInputType keyboardType;
   final String? errorText;
+  final ValueChanged<String>? onChanged;
+  final String? initialValue;
 
   const AppTextField({
     super.key,
@@ -20,6 +22,8 @@ class AppTextField extends StatefulWidget {
     this.obscure = false,
     this.keyboardType = TextInputType.text,
     this.errorText,
+    this.onChanged,
+    this.initialValue,
   });
 
   @override
@@ -60,6 +64,8 @@ class _AppTextFieldState extends State<AppTextField> {
         /// TEXT FIELD
         TextFormField(
           focusNode: _focusNode,
+          onChanged: widget.onChanged,
+          initialValue: widget.initialValue,
           obscureText: _obscure,
           keyboardType: widget.keyboardType,
           style: AppTextStyles.textField(context),

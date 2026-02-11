@@ -1981,6 +1981,132 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Signature'**
   String get signature;
+
+  /// No description provided for @termsAndConditions.
+  ///
+  /// In en, this message translates to:
+  /// **'Terms & Conditions'**
+  String get termsAndConditions;
+
+  /// No description provided for @pleaseReviewTerms.
+  ///
+  /// In en, this message translates to:
+  /// **'Please review and accept our terms'**
+  String get pleaseReviewTerms;
+
+  /// No description provided for @subscriptionAgreement.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscription Agreement'**
+  String get subscriptionAgreement;
+
+  /// No description provided for @subscriptionTermsText.
+  ///
+  /// In en, this message translates to:
+  /// **'By subscribing to our Pilates membership, you agree to the following terms and conditions:\n\n1. Membership Terms\n- Your membership will automatically renew each month unless cancelled\n- Cancel anytime with 7 days notice before next billing cycle\n- No refunds for partial months\n\n2. Class Booking\n- Book classes 24 hours in advance\n- Cancel bookings minimum 2 hours before class\n- Late cancellations will deduct from your monthly credits\n- No-shows forfeit the class credit\n\n3. Branch Access\n- Your plan determines which branches you can access\n- Upgrade required to access additional locations...'**
+  String get subscriptionTermsText;
+
+  /// No description provided for @agreeToTermsAndConditions.
+  ///
+  /// In en, this message translates to:
+  /// **'I have read and agree to the Terms & Conditions and Privacy Policy'**
+  String get agreeToTermsAndConditions;
+
+  /// No description provided for @continueToPayment.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue to Payment'**
+  String get continueToPayment;
+
+  /// No description provided for @safetyText.
+  ///
+  /// In en, this message translates to:
+  /// **'Please read carefully.\n I understand that Pilates is physical exercise and has some risk of injury.\n I join the class voluntarily.\n I confirm the information I provided is true.\n I will tell The Pilates Studio if my health changes, if I get injured, or if I become pregnant.\n I understand Pilates instructors are not doctors and cannot diagnose or treat medical problems.\n I accept responsibility for my own safety during sessions.\n I understand that The Pilates Studio is not responsible for injuries that happen during normal exercise, except in cases of serious negligence.\n My information will stay private and used only to keep me safe.\n In an emergency, I allow staff to get medical help for me.\n I have read and understood everything above.\n I agree to follow instructions and exercise safely.'**
+  String get safetyText;
+
+  /// No description provided for @safetyConsent.
+  ///
+  /// In en, this message translates to:
+  /// **'Safety & Consent'**
+  String get safetyConsent;
+
+  /// No description provided for @requiredInformation.
+  ///
+  /// In en, this message translates to:
+  /// **'Required Information'**
+  String get requiredInformation;
+
+  /// No description provided for @requiredForLegalCompliance.
+  ///
+  /// In en, this message translates to:
+  /// **'Required for legal compliance: This Information is mandatory for identity verification, fraud prevention, and refund processing.'**
+  String get requiredForLegalCompliance;
+
+  /// No description provided for @requiredForLegalComplianceShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Required for legal compliance'**
+  String get requiredForLegalComplianceShort;
+
+  /// No description provided for @emergencyContact.
+  ///
+  /// In en, this message translates to:
+  /// **'Emergency Contact'**
+  String get emergencyContact;
+
+  /// No description provided for @emergencyContactSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'In case of emergency during class'**
+  String get emergencyContactSubtitle;
+
+  /// No description provided for @contactName.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact Name'**
+  String get contactName;
+
+  /// No description provided for @fullName.
+  ///
+  /// In en, this message translates to:
+  /// **'Full Name'**
+  String get fullName;
+
+  /// No description provided for @relationship.
+  ///
+  /// In en, this message translates to:
+  /// **'Relationship'**
+  String get relationship;
+
+  /// No description provided for @selectRelationship.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Relationship'**
+  String get selectRelationship;
+
+  /// No description provided for @identityVerification.
+  ///
+  /// In en, this message translates to:
+  /// **'Identity Verification'**
+  String get identityVerification;
+
+  /// No description provided for @idType.
+  ///
+  /// In en, this message translates to:
+  /// **'ID Type'**
+  String get idType;
+
+  /// No description provided for @selectIdType.
+  ///
+  /// In en, this message translates to:
+  /// **'Select ID Type'**
+  String get selectIdType;
+
+  /// No description provided for @idNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'ID Number'**
+  String get idNumber;
 }
 
 class _AppLocalizationsDelegate

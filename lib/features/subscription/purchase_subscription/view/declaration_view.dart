@@ -82,7 +82,7 @@ class DeclarationView extends StatelessWidget {
           AppButton(
             label: l10n.continueTxt,
             onPressed: () {
-              // Finalize subscription
+               cubit.nextStep();
             },
             buttonColor: AppColors.primaryBrown,
             expanded: true,

@@ -42,6 +42,15 @@ class SubscriptionState extends Equatable {
   final String declarationSignature;
   final String declarationDate;
 
+  // Step 7: Terms & Conditions
+  final bool isTermsAccepted;
+
+  // Step 8: Required Information
+  final String emergencyContactName;
+  final String? emergencyContactRelationship;
+  final String emergencyContactPhone;
+  final String? idType;
+  final String idNumber;
 
   const SubscriptionState({
     this.status = SubscriptionStatus.initial,
@@ -67,6 +76,12 @@ class SubscriptionState extends Equatable {
     this.declarationName = '',
     this.declarationSignature = '',
     this.declarationDate = '',
+    this.isTermsAccepted = false,
+    this.emergencyContactName = '',
+    this.emergencyContactRelationship,
+    this.emergencyContactPhone = '',
+    this.idType,
+    this.idNumber = '',
   });
 
   SubscriptionState copyWith({
@@ -93,6 +108,12 @@ class SubscriptionState extends Equatable {
     String? declarationName,
     String? declarationSignature,
     String? declarationDate,
+    bool? isTermsAccepted,
+    String? emergencyContactName,
+    String? emergencyContactRelationship,
+    String? emergencyContactPhone,
+    String? idType,
+    String? idNumber,
   }) {
     return SubscriptionState(
       status: status ?? this.status,
@@ -118,6 +139,14 @@ class SubscriptionState extends Equatable {
       declarationName: declarationName ?? this.declarationName,
       declarationSignature: declarationSignature ?? this.declarationSignature,
       declarationDate: declarationDate ?? this.declarationDate,
+      isTermsAccepted: isTermsAccepted ?? this.isTermsAccepted,
+      emergencyContactName: emergencyContactName ?? this.emergencyContactName,
+      emergencyContactRelationship:
+          emergencyContactRelationship ?? this.emergencyContactRelationship,
+      emergencyContactPhone:
+          emergencyContactPhone ?? this.emergencyContactPhone,
+      idType: idType ?? this.idType,
+      idNumber: idNumber ?? this.idNumber,
     );
   }
 
@@ -146,5 +175,11 @@ class SubscriptionState extends Equatable {
         declarationName,
         declarationSignature,
         declarationDate,
+        isTermsAccepted,
+        emergencyContactName,
+        emergencyContactRelationship,
+        emergencyContactPhone,
+        idType,
+        idNumber,
       ];
 }

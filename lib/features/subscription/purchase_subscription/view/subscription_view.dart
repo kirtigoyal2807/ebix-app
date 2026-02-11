@@ -14,7 +14,10 @@ import 'package:pilates_app/features/subscription/purchase_subscription/view/med
 import 'package:pilates_app/features/subscription/purchase_subscription/view/physical_activity_view.dart'; // Import
 import 'package:pilates_app/features/subscription/purchase_subscription/view/pregnancy_view.dart'; // Import
 import 'package:pilates_app/features/subscription/purchase_subscription/view/goals_view.dart'; // Import
-import 'package:pilates_app/features/subscription/purchase_subscription/view/declaration_view.dart'; // Import
+import 'package:pilates_app/features/subscription/purchase_subscription/view/declaration_view.dart';
+import 'package:pilates_app/features/subscription/purchase_subscription/view/terms_and_conditions_view.dart';
+import 'package:pilates_app/features/subscription/purchase_subscription/view/required_information_view.dart';
+import 'package:pilates_app/features/subscription/purchase_subscription/view/widgets/safety_view.dart';
 import 'package:pilates_app/widgets/app_app_bar.dart';
 import 'package:pilates_app/widgets/app_button.dart';
 import 'package:pilates_app/widgets/app_text.dart';
@@ -48,7 +51,13 @@ class _SubscriptionViewContent extends StatelessWidget {
         if (state.currentStep == 0) {
           appBarTitle = l10n.subscriptionTitle;
         } else if (state.currentStep >= 1 && state.currentStep <= 6) {
-          appBarTitle = l10n.healthInformation; // Title stays "Health Information" for steps 1-6 according to screenshot
+          appBarTitle = l10n.healthInformation;
+        } else if (state.currentStep == 7) {
+          appBarTitle = l10n.safetyConsent;
+        } else if (state.currentStep == 8) {
+          appBarTitle = l10n.termsAndConditions;
+        } else if (state.currentStep == 9) {
+          appBarTitle = l10n.requiredInformation;
         } else {
           appBarTitle = l10n.subscriptionTitle;
         }
@@ -77,6 +86,9 @@ class _SubscriptionViewContent extends StatelessWidget {
                 const PregnancyView(), // Step 4
                 const GoalsView(), // Step 5
                 const DeclarationView(), // Step 6
+                const SafetyView(),
+                const TermsAndConditionsView(),
+                const RequiredInformationView(),
               ],
             ),
           ),
