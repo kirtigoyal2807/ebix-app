@@ -413,7 +413,129 @@
   "declaration": "الإقرار",
   "declarationText": "أقر بأن جميع المعلومات المقدمة صحيحة ودقيقة. أفهم أن أي معلومات غير صحيحة قد تؤثر على سلامتي أثناء التمارين.",
   "signature": "التوقيع",
-  "date": "التاريخ"
+  "date": "التاريخ",
+  "accountTitle":"الحساب",
+   "logout":"تسجيل الخروج",
+     "appPreferences": "تفضيلات التطبيق",
+     "language": "اللغة",
+     "englishShort": "الإنجليزية (EN)",
+     "homeBranch": "الفرع الرئيسي",
+     "updatePreferredStudio": "تحديث الاستوديو المفضل",
+     "appTheme": "مظهر التطبيق",
+     "systemMode": "وضع النظام",
+       "billingSubscriptions": "الفواتير والاشتراكات",
+       "mySubscriptions": "اشتراكاتي",
+       "viewManagePlans": "عرض وإدارة الخطط",
+       "buySubscription": "شراء اشتراك",
+       "purchaseNewPlan": "شراء خطة جديدة",
+       "giftSubscription": "إهداء اشتراك",
+       "sendGiftToSomeone": "إرسال هدية لشخص ما",
+       "invoiceHistory": "سجل الفواتير",
+       "viewBillingDocuments": "عرض مستندات الفواتير",
+  "personalInfo": "المعلومات الشخصية",
+  "personalData": "البيانات الشخصية",
+  "personalDataSubtitle": "الاسم، البريد الإلكتروني، الهاتف، الصورة",
+  "pushNotification": "الإشعارات",
+  "manageAlertsReminders": "إدارة التنبيهات والتذكيرات",
+  "basic": "أساسي",
+  "mySubscription": "اشتراكاتي",
+  "active": "نشط",
+  "premiumPlan": "الخطة المميزة",
+  "pricePerMonth": "89$ / شهرياً",
+  "pauseHistory": "سجل الإيقاف",
+  "changePlan": "تغيير الخطة",
+  "pauseSubscription": "إيقاف الاشتراك",
+  "cancelSubscription": "إلغاء الاشتراك",
+
+  "featureClasses": "12 حصة شهرياً",
+  "featureStudios": "استوديوهات وسط المدينة + أبتاون",
+  "featureEquipment": "حصيرة ومعدات مجانية",
+  "featurePriority": "أولوية الحجز",
+  "featurePause": "محاولتا إيقاف سنوياً",
+
+  "pastPauses": "الإيقافات السابقة",
+  "remainingThisYear": "المتبقي هذا العام",
+  "pauseAttemptsRemaining": "محاولات الإيقاف المتبقية",
+  "attemptCount": "1 من 2 محاولات",
+  "premiumPlan": "الخطة المميزة",
+  "basicPlan": "الخطة الأساسية",
+  "upgradedFromBasic": "تمت الترقية من الخطة الأساسية",
+  "initialSubscription": "الاشتراك الأولي",
+  "sinceDate": "منذ {date}",
+  "planDuration": "{start} - {end}",
+  "activeStatus": "نشط",
+
+  "sinceDate": "منذ {date}",
+  "@sinceDate": {
+    "placeholders": {
+      "date": {}
+    }
+  },
+  "planDuration": "{start} - {end}",
+  "@planDuration": {
+    "placeholders": {
+      "start": {},
+      "end": {}
+    }
+  },
+
+"pauseSubscription": "إيقاف الاشتراك مؤقتًا",
+"pauseDescription": "قم بإيقاف اشتراكك والفوترة مؤقتًا. ستعود مزايا خطتك عند استئناف الاشتراك.",
+
+"cannotPauseTitle": "لا يمكن إيقاف الاشتراك",
+"cannotPauseMessage": "لديك 7 أيام تجميد متبقية فقط. يرجى اختيار فترة إيقاف أقصر أو ترقية خطتك.",
+
+"selectPausePeriod": "اختر فترة الإيقاف",
+"startDate": "تاريخ البدء",
+"endDate": "تاريخ الانتهاء",
+"duration": "المدة",
+"daysCount": "{count} يوم",
+
+"yourPlan": "خطتك",
+"pauseAttemptsPerYear": "محاولتا إيقاف سنويًا",
+"remainingThisYear": "المتبقي هذا العام",
+"pauseAttempts": "محاولات الإيقاف",
+"attemptRemaining": "متبقي {count} محاولة",
+
+"duringPausePeriod": "خلال فترة الإيقاف",
+"noBillingCharges": "لن يتم فرض أي رسوم",
+"noBookingAllowed": "لا يمكنك حجز أو حضور أي حصص",
+"subscriptionExtended": "سيتم تمديد اشتراكك بمدة الإيقاف",
+"nextBillingDate": "سيكون تاريخ الفاتورة التالي {date} (تم التمديد {days} أيام)",
+"creditsPreserved": "سيتم الاحتفاظ بأرصدة الحصص غير المستخدمة",
+
+"confirmPause": "تأكيد الإيقاف",
+"cancelSubscription": "إلغاء الاشتراك",
+"classesUsed": "الحصص المستخدمة",
+"pauseUsed": "مرات الإيقاف المستخدمة",
+"currentPlan": "الخطة الحالية",
+"existingPlan": "الخطط السابقة",
+"noInvoicesYet": "لا توجد فواتير بعد",
+"invoiceHistorySubtitle": "سيظهر سجل المدفوعات هنا.",
+"invoiceNumber": "فاتورة رقم {number}",
+"noClassesYet": "لا توجد حصص بعد",
+"classInvoiceSubtitle": "ستظهر فواتير شراء الحصص هنا.",
+"noRefundsYet": "لا توجد استردادات بعد",
+"noRefundsSubtitle": "لم تقم بطلب أي استرداد.",
+"noSubscriptionsYet": "لا توجد اشتراكات بعد",
+"noSubscriptionsSubtitle": "ستظهر فواتير الاشتراك هنا.",
+"view": "عرض",
+"download": "تحميل",
+"invoiceHistory": "سجل الفواتير",
+"all": "الكل",
+"subscriptions": "الاشتراكات",
+"classes": "الحصص",
+"refunds": "المبالغ المستردة"
+
+
+
+
+
+
+
+
+
+
 
 
 }

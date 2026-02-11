@@ -1,0 +1,82 @@
+import 'package:flutter/material.dart';
+import 'package:pilates_app/config/theme/app_colors.dart';
+import 'package:pilates_app/config/theme/app_spacing.dart';
+import 'package:pilates_app/config/theme/app_text_styles.dart';
+
+import 'package:pilates_app/features/account/widget/app_preference.dart';
+import 'package:pilates_app/features/account/widget/billing_and_subscription.dart';
+import 'package:pilates_app/features/account/widget/personal_info.dart';
+import 'package:pilates_app/features/account/widget/profile_card.dart';
+import 'package:pilates_app/widgets/app_app_bar.dart';
+
+import '../../config/theme/app_radius.dart';
+import '../../core/localization/localization_extension.dart';
+
+class AccountView extends StatelessWidget {
+  const AccountView({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    return Scaffold(
+      appBar: AppAppBar(title: context.l10n.accountTitle, isMoreMenu: false),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: AppSpacing.lg,
+            vertical: AppSpacing.md,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ProfileCard(),
+              SizedBox(height: AppSpacing.lg),
+
+              PersonalInfo(),
+              SizedBox(height: AppSpacing.xl),
+              BillingAndSubscription(),
+              SizedBox(height: AppSpacing.xl),
+              AppPreference(),
+              SizedBox(height: AppSpacing.xl),
+              SizedBox(
+                width: MediaQuery.of(context).size.width,
+                child: ElevatedButton(
+                  onPressed: () {},
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.logOutButton,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(AppRadius.xl),
+                    ),
+                    padding: EdgeInsets.symmetric(
+                      vertical: (AppSpacing.buttonHeight - 30) / 2,
+                    ),
+                    // 🔒 Lock height
+                    fixedSize: Size(double.infinity, AppSpacing.buttonHeight),
+
+                    // ✂️ Remove extra touch padding
+                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    spacing: 10,
+                    children: [
+                      Icon(Icons.exit_to_app, color: Colors.white),
+                      Text(
+                        context.l10n.logout,
+                        style: AppTextStyles.button(context).copyWith(
+                          fontSize: 16,
+                          color: isDark ? Colors.black : Colors.white,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              SizedBox(height: AppSpacing.base),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}

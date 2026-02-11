@@ -15,7 +15,6 @@ import '../cubit/booking_cubit.dart';
 import '../cubit/booking_state.dart';
 import 'class_detail_view.dart';
 
-
 class BookingSuccessScreen extends StatelessWidget {
   const BookingSuccessScreen({super.key, required this.successPage});
 
@@ -200,9 +199,9 @@ class BookingSuccessScreen extends StatelessWidget {
             children: [
               AppText(
                 l10n.yourPosition,
-                style: (context) => AppTextStyles.captionText(
-                  context,
-                ).copyWith(color: isDark ? AppColors.darkGreyText:AppColors.lightGrey),
+                style: (context) => AppTextStyles.captionText(context).copyWith(
+                  color: isDark ? AppColors.darkGreyText : AppColors.lightGrey,
+                ),
               ),
               const SizedBox(height: AppSpacing.md),
               AppText(
@@ -213,9 +212,9 @@ class BookingSuccessScreen extends StatelessWidget {
               const SizedBox(height: AppSpacing.sm),
               AppText(
                 l10n.inLine,
-                style: (context) => AppTextStyles.captionText(
-                  context,
-                ).copyWith(color: isDark ? AppColors.darkGreyText:AppColors.lightGrey),
+                style: (context) => AppTextStyles.captionText(context).copyWith(
+                  color: isDark ? AppColors.darkGreyText : AppColors.lightGrey,
+                ),
               ),
             ],
           ),
@@ -237,7 +236,8 @@ class BookingSuccessScreen extends StatelessWidget {
         color: isDark ? AppColors.homeBackground : AppColors.whiteColor,
         borderRadius: BorderRadius.circular(AppRadius.md),
         border: Border.all(
-          color: isDark ? AppColors.greyText : AppColors.buttonBorder,),
+          color: isDark ? AppColors.greyText : AppColors.buttonBorder,
+        ),
         boxShadow: [
           AppShadows.lightShadow,
           AppShadows.mediumShadow,

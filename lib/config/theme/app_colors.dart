@@ -104,4 +104,20 @@ class AppColors {
 
   static const lightExpireCard = Color(0xFF641723);
 
+
+  ///card gradient
+static const accountCardGradient1 = Color(0xffDEB994);
+static const accountCardGradient2 = Color(0xff876335);
+
+
+static const logOutButton = Color(0xffDF1C41);
+
+
+//subscription card gradient
+
+  static const subscriptionCardGradient1 = Color(0xff3D281A);
+  static const subscriptionCardGradient2 = Color(0xff9A7E6D);
+
+
+  static const containerGreyBg = Color(0xffFAF9F9);
 }

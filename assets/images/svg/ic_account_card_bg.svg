@@ -1,0 +1,22 @@
+<svg width="327" height="192" viewBox="0 0 327 192" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_95_120)">
+<rect width="327" height="192" rx="12" fill="#65422C"/>
+<circle cx="23" cy="110" r="208" fill="url(#paint0_linear_95_120)"/>
+<g opacity="0.6" style="mix-blend-mode:lighten">
+<ellipse cx="280.5" cy="208" rx="105" ry="104.5" transform="rotate(-90 280.5 208)" fill="url(#paint1_linear_95_120)"/>
+</g>
+</g>
+<defs>
+<linearGradient id="paint0_linear_95_120" x1="415.624" y1="128.128" x2="-29" y2="128.128" gradientUnits="userSpaceOnUse">
+<stop stop-color="#DEB994"/>
+<stop offset="1" stop-color="#876335" stop-opacity="0"/>
+</linearGradient>
+<linearGradient id="paint1_linear_95_120" x1="478.7" y1="217.108" x2="254.25" y2="217.108" gradientUnits="userSpaceOnUse">
+<stop stop-color="#DEB994"/>
+<stop offset="1" stop-color="#876335" stop-opacity="0"/>
+</linearGradient>
+<clipPath id="clip0_95_120">
+<rect width="327" height="192" rx="12" fill="white"/>
+</clipPath>
+</defs>
+</svg>

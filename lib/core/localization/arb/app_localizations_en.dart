@@ -700,13 +700,13 @@ class AppLocalizationsEn extends AppLocalizations {
       'Westside Studio is not included in your Premium Plan. Upgrade your plan or pay per class to access this location.';
 
   @override
-  String get yourPlan => 'Your Plan:';
+  String get yourPlan => 'Your Plan';
 
   @override
   String get neededPlan => 'Needed:';
 
   @override
-  String get premiumPlan => 'Premium (Downtown + Uptown)';
+  String get premiumPlan => 'Premium Plan';
 
   @override
   String get elitePlan => 'Elite Plan (All locations)';
@@ -1009,4 +1009,264 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get signature => 'Signature';
+
+  @override
+  String get accountTitle => 'Account';
+
+  @override
+  String get logout => 'Logout';
+
+  @override
+  String get appPreferences => 'App Preferences';
+
+  @override
+  String get language => 'Language';
+
+  @override
+  String get englishShort => 'English (EN)';
+
+  @override
+  String get homeBranch => 'Home Branch';
+
+  @override
+  String get updatePreferredStudio => 'Update preferred studio';
+
+  @override
+  String get appTheme => 'App Theme';
+
+  @override
+  String get systemMode => 'System Mode';
+
+  @override
+  String get billingSubscriptions => 'Billing & Subscriptions';
+
+  @override
+  String get mySubscriptions => 'My Subscriptions';
+
+  @override
+  String get viewManagePlans => 'View and manage plans';
+
+  @override
+  String get buySubscription => 'Buy Subscription';
+
+  @override
+  String get purchaseNewPlan => 'Purchase a new plan';
+
+  @override
+  String get giftSubscription => 'Gift Subscription';
+
+  @override
+  String get sendGiftToSomeone => 'Send a gift to someone';
+
+  @override
+  String get invoiceHistory => 'Invoice History';
+
+  @override
+  String get viewBillingDocuments => 'View billing documents';
+
+  @override
+  String get personalInfo => 'Personal Info';
+
+  @override
+  String get personalData => 'Personal Data';
+
+  @override
+  String get personalDataSubtitle => 'Name, email, phone, photo';
+
+  @override
+  String get pushNotification => 'Push Notification';
+
+  @override
+  String get manageAlertsReminders => 'Manage alerts & reminders';
+
+  @override
+  String get basic => 'Basic';
+
+  @override
+  String get mySubscription => 'My Subscription';
+
+  @override
+  String get active => 'Active';
+
+  @override
+  String get pricePerMonth => '89\$ / Month';
+
+  @override
+  String get pauseHistory => 'Pause History';
+
+  @override
+  String get changePlan => 'Change Plan';
+
+  @override
+  String get pauseSubscription => 'Pause Subscription';
+
+  @override
+  String get cancelSubscription => 'Cancel Subscription';
+
+  @override
+  String get featureClasses => '12 classes per month';
+
+  @override
+  String get featureStudios => 'Downtown + uptown studios';
+
+  @override
+  String get featureEquipment => 'Free mat + equipment rental';
+
+  @override
+  String get featurePriority => 'Priority booking';
+
+  @override
+  String get featurePause => '2 pause attempts per year';
+
+  @override
+  String get pastPauses => 'Past Pauses';
+
+  @override
+  String get remainingThisYear => 'Remaining This Year';
+
+  @override
+  String get pauseAttemptsRemaining => 'Pause attempts remaining';
+
+  @override
+  String get attemptCount => '1 of 2 attempts';
+
+  @override
+  String get basicPlan => 'Basic Plan';
+
+  @override
+  String get upgradedFromBasic => 'Upgraded from basic';
+
+  @override
+  String get initialSubscription => 'Initial Subscription';
+
+  @override
+  String sinceDate(Object date) {
+    return 'Since $date';
+  }
+
+  @override
+  String planDuration(Object start, Object end) {
+    return '$start - $end';
+  }
+
+  @override
+  String get activeStatus => 'Active';
+
+  @override
+  String get pauseDescription =>
+      'Temporarily pause your subscription and billing. Your plan benefits will resume when you return.';
+
+  @override
+  String get cannotPauseTitle => 'Cannot Pause Subscription';
+
+  @override
+  String get cannotPauseMessage =>
+      'You only have 7 freeze days remaining. Please select a shorter pause period or upgrade your plan.';
+
+  @override
+  String get selectPausePeriod => 'Select Pause Period';
+
+  @override
+  String get startDate => 'Start Date';
+
+  @override
+  String get endDate => 'End Date';
+
+  @override
+  String daysCount(Object count) {
+    return '$count Days';
+  }
+
+  @override
+  String get pauseAttemptsPerYear => '2 pause attempts per year';
+
+  @override
+  String get pauseAttempts => 'Pause attempts';
+
+  @override
+  String attemptRemaining(Object count) {
+    return '$count attempt remaining';
+  }
+
+  @override
+  String get duringPausePeriod => 'During Pause Period';
+
+  @override
+  String get noBillingCharges => 'No billing charges will occur';
+
+  @override
+  String get noBookingAllowed => 'You cannot book or attend classes';
+
+  @override
+  String get subscriptionExtended =>
+      'Your subscription will extend by the pause duration';
+
+  @override
+  String nextBillingDate(Object date, Object days) {
+    return 'Next billing date will be $date (extended by $days days)';
+  }
+
+  @override
+  String get creditsPreserved => 'Unused class credits will be preserved';
+
+  @override
+  String get confirmPause => 'Confirm Pause';
+
+  @override
+  String get classesUsed => 'Classes used';
+
+  @override
+  String get pauseUsed => 'Pause used';
+
+  @override
+  String get currentPlan => 'Current Plan';
+
+  @override
+  String get existingPlan => 'Existing Plan';
+
+  @override
+  String get noInvoicesYet => 'No invoices yet';
+
+  @override
+  String get invoiceHistorySubtitle => 'Your payment history will appear here.';
+
+  @override
+  String invoiceNumber(Object number) {
+    return 'Invoice #$number';
+  }
+
+  @override
+  String get noClassesYet => 'No classes yet';
+
+  @override
+  String get classInvoiceSubtitle =>
+      'Class purchase invoices will appear here.';
+
+  @override
+  String get noRefundsYet => 'No refunds yet';
+
+  @override
+  String get noRefundsSubtitle => 'You haven’t requested any refunds.';
+
+  @override
+  String get noSubscriptionsYet => 'No subscriptions yet';
+
+  @override
+  String get noSubscriptionsSubtitle =>
+      'Subscription invoices will show up here.';
+
+  @override
+  String get view => 'View';
+
+  @override
+  String get download => 'Download';
+
+  @override
+  String get all => 'All';
+
+  @override
+  String get subscriptions => 'Subscriptions';
+
+  @override
+  String get refunds => 'Refunds';
 }

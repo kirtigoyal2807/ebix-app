@@ -330,7 +330,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get monthlyProgress => 'التقدم الشهري';
 
   @override
-  String get classes => 'حصص';
+  String get classes => 'الحصص';
 
   @override
   String get totalTime => 'إجمالي الوقت';
@@ -694,13 +694,13 @@ class AppLocalizationsAr extends AppLocalizations {
       'استوديو ويست سايد غير مشمول في خطتك المميزة. قم بترقية خطتك أو ادفع لكل حصة للوصول إلى هذا الموقع.';
 
   @override
-  String get yourPlan => 'خطتك:';
+  String get yourPlan => 'خطتك';
 
   @override
   String get neededPlan => 'الخطة المطلوبة:';
 
   @override
-  String get premiumPlan => 'الخطة المميزة (وسط المدينة + أبتاون)';
+  String get premiumPlan => 'الخطة المميزة';
 
   @override
   String get elitePlan => 'خطة النخبة (جميع المواقع)';
@@ -1000,4 +1000,261 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get signature => 'التوقيع';
+
+  @override
+  String get accountTitle => 'الحساب';
+
+  @override
+  String get logout => 'تسجيل الخروج';
+
+  @override
+  String get appPreferences => 'تفضيلات التطبيق';
+
+  @override
+  String get language => 'اللغة';
+
+  @override
+  String get englishShort => 'الإنجليزية (EN)';
+
+  @override
+  String get homeBranch => 'الفرع الرئيسي';
+
+  @override
+  String get updatePreferredStudio => 'تحديث الاستوديو المفضل';
+
+  @override
+  String get appTheme => 'مظهر التطبيق';
+
+  @override
+  String get systemMode => 'وضع النظام';
+
+  @override
+  String get billingSubscriptions => 'الفواتير والاشتراكات';
+
+  @override
+  String get mySubscriptions => 'اشتراكاتي';
+
+  @override
+  String get viewManagePlans => 'عرض وإدارة الخطط';
+
+  @override
+  String get buySubscription => 'شراء اشتراك';
+
+  @override
+  String get purchaseNewPlan => 'شراء خطة جديدة';
+
+  @override
+  String get giftSubscription => 'إهداء اشتراك';
+
+  @override
+  String get sendGiftToSomeone => 'إرسال هدية لشخص ما';
+
+  @override
+  String get invoiceHistory => 'سجل الفواتير';
+
+  @override
+  String get viewBillingDocuments => 'عرض مستندات الفواتير';
+
+  @override
+  String get personalInfo => 'المعلومات الشخصية';
+
+  @override
+  String get personalData => 'البيانات الشخصية';
+
+  @override
+  String get personalDataSubtitle => 'الاسم، البريد الإلكتروني، الهاتف، الصورة';
+
+  @override
+  String get pushNotification => 'الإشعارات';
+
+  @override
+  String get manageAlertsReminders => 'إدارة التنبيهات والتذكيرات';
+
+  @override
+  String get basic => 'أساسي';
+
+  @override
+  String get mySubscription => 'اشتراكاتي';
+
+  @override
+  String get active => 'نشط';
+
+  @override
+  String get pricePerMonth => '89\$ / شهرياً';
+
+  @override
+  String get pauseHistory => 'سجل الإيقاف';
+
+  @override
+  String get changePlan => 'تغيير الخطة';
+
+  @override
+  String get pauseSubscription => 'إيقاف الاشتراك مؤقتًا';
+
+  @override
+  String get cancelSubscription => 'إلغاء الاشتراك';
+
+  @override
+  String get featureClasses => '12 حصة شهرياً';
+
+  @override
+  String get featureStudios => 'استوديوهات وسط المدينة + أبتاون';
+
+  @override
+  String get featureEquipment => 'حصيرة ومعدات مجانية';
+
+  @override
+  String get featurePriority => 'أولوية الحجز';
+
+  @override
+  String get featurePause => 'محاولتا إيقاف سنوياً';
+
+  @override
+  String get pastPauses => 'الإيقافات السابقة';
+
+  @override
+  String get remainingThisYear => 'المتبقي هذا العام';
+
+  @override
+  String get pauseAttemptsRemaining => 'محاولات الإيقاف المتبقية';
+
+  @override
+  String get attemptCount => '1 من 2 محاولات';
+
+  @override
+  String get basicPlan => 'الخطة الأساسية';
+
+  @override
+  String get upgradedFromBasic => 'تمت الترقية من الخطة الأساسية';
+
+  @override
+  String get initialSubscription => 'الاشتراك الأولي';
+
+  @override
+  String sinceDate(Object date) {
+    return 'منذ $date';
+  }
+
+  @override
+  String planDuration(Object start, Object end) {
+    return '$start - $end';
+  }
+
+  @override
+  String get activeStatus => 'نشط';
+
+  @override
+  String get pauseDescription =>
+      'قم بإيقاف اشتراكك والفوترة مؤقتًا. ستعود مزايا خطتك عند استئناف الاشتراك.';
+
+  @override
+  String get cannotPauseTitle => 'لا يمكن إيقاف الاشتراك';
+
+  @override
+  String get cannotPauseMessage =>
+      'لديك 7 أيام تجميد متبقية فقط. يرجى اختيار فترة إيقاف أقصر أو ترقية خطتك.';
+
+  @override
+  String get selectPausePeriod => 'اختر فترة الإيقاف';
+
+  @override
+  String get startDate => 'تاريخ البدء';
+
+  @override
+  String get endDate => 'تاريخ الانتهاء';
+
+  @override
+  String daysCount(Object count) {
+    return '$count يوم';
+  }
+
+  @override
+  String get pauseAttemptsPerYear => 'محاولتا إيقاف سنويًا';
+
+  @override
+  String get pauseAttempts => 'محاولات الإيقاف';
+
+  @override
+  String attemptRemaining(Object count) {
+    return 'متبقي $count محاولة';
+  }
+
+  @override
+  String get duringPausePeriod => 'خلال فترة الإيقاف';
+
+  @override
+  String get noBillingCharges => 'لن يتم فرض أي رسوم';
+
+  @override
+  String get noBookingAllowed => 'لا يمكنك حجز أو حضور أي حصص';
+
+  @override
+  String get subscriptionExtended => 'سيتم تمديد اشتراكك بمدة الإيقاف';
+
+  @override
+  String nextBillingDate(Object date, Object days) {
+    return 'سيكون تاريخ الفاتورة التالي $date (تم التمديد $days أيام)';
+  }
+
+  @override
+  String get creditsPreserved => 'سيتم الاحتفاظ بأرصدة الحصص غير المستخدمة';
+
+  @override
+  String get confirmPause => 'تأكيد الإيقاف';
+
+  @override
+  String get classesUsed => 'الحصص المستخدمة';
+
+  @override
+  String get pauseUsed => 'مرات الإيقاف المستخدمة';
+
+  @override
+  String get currentPlan => 'الخطة الحالية';
+
+  @override
+  String get existingPlan => 'الخطط السابقة';
+
+  @override
+  String get noInvoicesYet => 'لا توجد فواتير بعد';
+
+  @override
+  String get invoiceHistorySubtitle => 'سيظهر سجل المدفوعات هنا.';
+
+  @override
+  String invoiceNumber(Object number) {
+    return 'فاتورة رقم $number';
+  }
+
+  @override
+  String get noClassesYet => 'لا توجد حصص بعد';
+
+  @override
+  String get classInvoiceSubtitle => 'ستظهر فواتير شراء الحصص هنا.';
+
+  @override
+  String get noRefundsYet => 'لا توجد استردادات بعد';
+
+  @override
+  String get noRefundsSubtitle => 'لم تقم بطلب أي استرداد.';
+
+  @override
+  String get noSubscriptionsYet => 'لا توجد اشتراكات بعد';
+
+  @override
+  String get noSubscriptionsSubtitle => 'ستظهر فواتير الاشتراك هنا.';
+
+  @override
+  String get view => 'عرض';
+
+  @override
+  String get download => 'تحميل';
+
+  @override
+  String get all => 'الكل';
+
+  @override
+  String get subscriptions => 'الاشتراكات';
+
+  @override
+  String get refunds => 'المبالغ المستردة';
 }

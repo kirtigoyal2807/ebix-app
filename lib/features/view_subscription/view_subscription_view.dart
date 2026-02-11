@@ -1,27 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:pilates_app/config/theme/app_spacing.dart';
-import 'package:pilates_app/features/my_booking/view/cancel_booking_view.dart';
-import 'package:pilates_app/features/my_booking/view/current_booking_view.dart';
-import 'package:pilates_app/features/my_booking/view/past_booking_view.dart';
-import 'package:pilates_app/features/my_booking/view/upcoming_booking_view.dart';
-import 'package:pilates_app/features/my_booking/widget/tab_bar.dart';
+import 'package:pilates_app/features/view_subscription/view/existing_plan_view.dart';
+import 'package:pilates_app/features/view_subscription/widget/subscription_tab_bar.dart';
 
 import '../../config/theme/app_colors.dart';
+import '../../config/theme/app_spacing.dart';
 import '../../core/localization/localization_extension.dart';
 import '../../widgets/app_app_bar.dart';
+import 'view/current_plan_view.dart';
 
-class MyBookingView extends StatelessWidget {
-  const MyBookingView({super.key});
+class ViewSubscriptionView extends StatelessWidget {
+  const ViewSubscriptionView({super.key});
 
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return DefaultTabController(
-      length: 4,
+      length: 2,
       child: Scaffold(
-        backgroundColor: isDark
-            ? AppColors.homeBackground
-            : AppColors.whiteColor,
+        // backgroundColor: isDark
+        //     ? AppColors.homeBackground
+        //     : AppColors.whiteColor,
         appBar: AppAppBar(
           leading: Padding(
             padding: const EdgeInsets.only(left: AppSpacing.lmd),
@@ -31,7 +29,7 @@ class MyBookingView extends StatelessWidget {
             ),
           ),
           onBack: () => Navigator.of(context).pop(),
-          title: context.l10n.myBookings,
+          title:  context.l10n.mySubscription,
           isMoreMenu: false,
 
           bottomPreferredSize: PreferredSize(
@@ -42,7 +40,7 @@ class MyBookingView extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(
                     horizontal: AppSpacing.lg,
                   ),
-                  child: bookingTabBar(context: context, isDark: isDark),
+                  child: subscriptionTabBar(context: context, isDark: isDark),
                 ),
                 Divider(
                   height: 1,
@@ -53,17 +51,8 @@ class MyBookingView extends StatelessWidget {
             ),
           ),
         ),
-        body: TabBarView(
-          children: [
-            UpcomingBookingView(),
-            CurrentBookingView(),
-            PastBookingView(),
-            CancelBookingView(),
-          ],
-        ),
+        body: TabBarView(children: [CurrentPlanView(), ExistingPlanView()]),
       ),
     );
   }
 }
-
-enum BookingStatus { confirmed, waitListed, completed, cancelled }

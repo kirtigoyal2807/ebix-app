@@ -11,6 +11,7 @@ class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
   final PreferredSize? bottomPreferredSize;
   final Widget? leading;
 
+
   const AppAppBar({
     super.key,
     this.title,
@@ -19,6 +20,7 @@ class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.isMoreMenu = true,
     this.bottomPreferredSize,
     this.leading,
+
   });
 
   @override
@@ -30,8 +32,10 @@ class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
       backgroundColor: isDark ? AppColors.homeBackground : AppColors.whiteColor,
       scrolledUnderElevation: 0,
       // IMPORTANT
-      leading:leading??( onBack != null
-          ? IconButton(
+      leading:
+          leading ??
+          (onBack != null
+              ? IconButton(
                   icon: const Icon(Icons.arrow_back_ios_rounded, size: 20),
                   onPressed: onBack,
                 )
@@ -42,10 +46,11 @@ class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
           : null,
       centerTitle: true,
       elevation: 0,
-      actions: [
+      actions: actions??[
         (isMoreMenu ?? true)
             ? IconButton(icon: const Icon(Icons.more_horiz), onPressed: () {})
             : SizedBox(),
+
       ],
       bottom: bottomPreferredSize,
 
@@ -54,5 +59,7 @@ class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   @override
-  Size get preferredSize =>bottomPreferredSize?.preferredSize ?? const Size.fromHeight(kToolbarHeight);
+  Size get preferredSize =>
+      bottomPreferredSize?.preferredSize ??
+      const Size.fromHeight(kToolbarHeight);
 }

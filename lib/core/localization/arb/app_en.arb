@@ -414,7 +414,142 @@
   "declaration": "Declaration",
   "declarationText": "I declare that all information provided is true and accurate. I understand that any incorrect information may affect my safety during exercises.",
   "signature": "Signature",
-  "date": "Date"
+  "date": "Date",
+  "accountTitle":"Account",
+  "logout":"Logout",
+    "appPreferences": "App Preferences",
+    "language": "Language",
+    "englishShort": "English (EN)",
+    "homeBranch": "Home Branch",
+    "updatePreferredStudio": "Update preferred studio",
+    "appTheme": "App Theme",
+    "systemMode": "System Mode",
+      "billingSubscriptions": "Billing & Subscriptions",
+      "mySubscriptions": "My Subscriptions",
+      "viewManagePlans": "View and manage plans",
+      "buySubscription": "Buy Subscription",
+      "purchaseNewPlan": "Purchase a new plan",
+      "giftSubscription": "Gift Subscription",
+      "sendGiftToSomeone": "Send a gift to someone",
+      "invoiceHistory": "Invoice History",
+      "viewBillingDocuments": "View billing documents",
+        "personalInfo": "Personal Info",
+        "personalData": "Personal Data",
+        "personalDataSubtitle": "Name, email, phone, photo",
+        "pushNotification": "Push Notification",
+        "manageAlertsReminders": "Manage alerts & reminders",
+        "basic": "Basic",
+        "mySubscription": "My Subscription",
+        "active": "Active",
+        "premiumPlan": "Premium Plan",
+        "pricePerMonth": "89$ / Month",
+        "pauseHistory": "Pause History",
+        "changePlan": "Change Plan",
+        "pauseSubscription": "Pause Subscription",
+        "cancelSubscription": "Cancel Subscription",
+
+        "featureClasses": "12 classes per month",
+        "featureStudios": "Downtown + uptown studios",
+        "featureEquipment": "Free mat + equipment rental",
+        "featurePriority": "Priority booking",
+        "featurePause": "2 pause attempts per year",
+
+        "pastPauses": "Past Pauses",
+        "remainingThisYear": "Remaining This Year",
+        "pauseAttemptsRemaining": "Pause attempts remaining",
+        "attemptCount": "1 of 2 attempts",
+        "premiumPlan": "Premium Plan",
+        "basicPlan": "Basic Plan",
+        "upgradedFromBasic": "Upgraded from basic",
+        "initialSubscription": "Initial Subscription",
+        "sinceDate": "Since {date}",
+        "planDuration": "{start} - {end}",
+        "activeStatus": "Active",
+        "sinceDate": "Since {date}",
+        "@sinceDate": {
+          "placeholders": {
+            "date": {}
+          }
+        },
+        "planDuration": "{start} - {end}",
+        "@planDuration": {
+          "placeholders": {
+            "start": {},
+            "end": {}
+          }
+        },
+        "pauseSubscription": "Pause Subscription",
+        "pauseDescription": "Temporarily pause your subscription and billing. Your plan benefits will resume when you return.",
+
+        "cannotPauseTitle": "Cannot Pause Subscription",
+        "cannotPauseMessage": "You only have 7 freeze days remaining. Please select a shorter pause period or upgrade your plan.",
+
+        "selectPausePeriod": "Select Pause Period",
+        "startDate": "Start Date",
+        "endDate": "End Date",
+        "duration": "Duration",
+        "daysCount": "{count} Days",
+
+        "yourPlan": "Your Plan",
+        "pauseAttemptsPerYear": "2 pause attempts per year",
+        "remainingThisYear": "Remaining This Year",
+        "pauseAttempts": "Pause attempts",
+        "attemptRemaining": "{count} attempt remaining",
+
+        "duringPausePeriod": "During Pause Period",
+        "noBillingCharges": "No billing charges will occur",
+        "noBookingAllowed": "You cannot book or attend classes",
+        "subscriptionExtended": "Your subscription will extend by the pause duration",
+        "nextBillingDate": "Next billing date will be {date} (extended by {days} days)",
+        "creditsPreserved": "Unused class credits will be preserved",
+
+        "confirmPause": "Confirm Pause",
+        "cancelSubscription": "Cancel Subscription",
+        "daysCount": "{count} Days",
+        "@daysCount": {
+          "placeholders": { "count": {} }
+        },
+
+        "attemptRemaining": "{count} attempt remaining",
+        "@attemptRemaining": {
+          "placeholders": { "count": {} }
+        },
+
+        "nextBillingDate": "Next billing date will be {date} (extended by {days} days)",
+        "@nextBillingDate": {
+          "placeholders": {
+            "date": {},
+            "days": {}
+          }
+        },
+        "classesUsed": "Classes used",
+        "pauseUsed": "Pause used",
+        "currentPlan": "Current Plan",
+        "existingPlan": "Existing Plan",
+        "noInvoicesYet": "No invoices yet",
+        "invoiceHistorySubtitle": "Your payment history will appear here.",
+        "invoiceNumber": "Invoice #{number}",
+        "noClassesYet": "No classes yet",
+        "classInvoiceSubtitle": "Class purchase invoices will appear here.",
+        "noRefundsYet": "No refunds yet",
+        "noRefundsSubtitle": "You haven’t requested any refunds.",
+        "noSubscriptionsYet": "No subscriptions yet",
+        "noSubscriptionsSubtitle": "Subscription invoices will show up here.",
+        "view": "View",
+        "download": "Download",
+        "invoiceHistory": "Invoice History",
+        "all": "All",
+        "subscriptions": "Subscriptions",
+        "classes": "Classes",
+        "refunds": "Refunds"
+
+
+
+
+
+
+
+
 
 
 

@@ -1403,7 +1403,7 @@ abstract class AppLocalizations {
   /// No description provided for @yourPlan.
   ///
   /// In en, this message translates to:
-  /// **'Your Plan:'**
+  /// **'Your Plan'**
   String get yourPlan;
 
   /// No description provided for @neededPlan.
@@ -1415,7 +1415,7 @@ abstract class AppLocalizations {
   /// No description provided for @premiumPlan.
   ///
   /// In en, this message translates to:
-  /// **'Premium (Downtown + Uptown)'**
+  /// **'Premium Plan'**
   String get premiumPlan;
 
   /// No description provided for @elitePlan.
@@ -1981,6 +1981,492 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Signature'**
   String get signature;
+
+  /// No description provided for @accountTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Account'**
+  String get accountTitle;
+
+  /// No description provided for @logout.
+  ///
+  /// In en, this message translates to:
+  /// **'Logout'**
+  String get logout;
+
+  /// No description provided for @appPreferences.
+  ///
+  /// In en, this message translates to:
+  /// **'App Preferences'**
+  String get appPreferences;
+
+  /// No description provided for @language.
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get language;
+
+  /// No description provided for @englishShort.
+  ///
+  /// In en, this message translates to:
+  /// **'English (EN)'**
+  String get englishShort;
+
+  /// No description provided for @homeBranch.
+  ///
+  /// In en, this message translates to:
+  /// **'Home Branch'**
+  String get homeBranch;
+
+  /// No description provided for @updatePreferredStudio.
+  ///
+  /// In en, this message translates to:
+  /// **'Update preferred studio'**
+  String get updatePreferredStudio;
+
+  /// No description provided for @appTheme.
+  ///
+  /// In en, this message translates to:
+  /// **'App Theme'**
+  String get appTheme;
+
+  /// No description provided for @systemMode.
+  ///
+  /// In en, this message translates to:
+  /// **'System Mode'**
+  String get systemMode;
+
+  /// No description provided for @billingSubscriptions.
+  ///
+  /// In en, this message translates to:
+  /// **'Billing & Subscriptions'**
+  String get billingSubscriptions;
+
+  /// No description provided for @mySubscriptions.
+  ///
+  /// In en, this message translates to:
+  /// **'My Subscriptions'**
+  String get mySubscriptions;
+
+  /// No description provided for @viewManagePlans.
+  ///
+  /// In en, this message translates to:
+  /// **'View and manage plans'**
+  String get viewManagePlans;
+
+  /// No description provided for @buySubscription.
+  ///
+  /// In en, this message translates to:
+  /// **'Buy Subscription'**
+  String get buySubscription;
+
+  /// No description provided for @purchaseNewPlan.
+  ///
+  /// In en, this message translates to:
+  /// **'Purchase a new plan'**
+  String get purchaseNewPlan;
+
+  /// No description provided for @giftSubscription.
+  ///
+  /// In en, this message translates to:
+  /// **'Gift Subscription'**
+  String get giftSubscription;
+
+  /// No description provided for @sendGiftToSomeone.
+  ///
+  /// In en, this message translates to:
+  /// **'Send a gift to someone'**
+  String get sendGiftToSomeone;
+
+  /// No description provided for @invoiceHistory.
+  ///
+  /// In en, this message translates to:
+  /// **'Invoice History'**
+  String get invoiceHistory;
+
+  /// No description provided for @viewBillingDocuments.
+  ///
+  /// In en, this message translates to:
+  /// **'View billing documents'**
+  String get viewBillingDocuments;
+
+  /// No description provided for @personalInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Personal Info'**
+  String get personalInfo;
+
+  /// No description provided for @personalData.
+  ///
+  /// In en, this message translates to:
+  /// **'Personal Data'**
+  String get personalData;
+
+  /// No description provided for @personalDataSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Name, email, phone, photo'**
+  String get personalDataSubtitle;
+
+  /// No description provided for @pushNotification.
+  ///
+  /// In en, this message translates to:
+  /// **'Push Notification'**
+  String get pushNotification;
+
+  /// No description provided for @manageAlertsReminders.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage alerts & reminders'**
+  String get manageAlertsReminders;
+
+  /// No description provided for @basic.
+  ///
+  /// In en, this message translates to:
+  /// **'Basic'**
+  String get basic;
+
+  /// No description provided for @mySubscription.
+  ///
+  /// In en, this message translates to:
+  /// **'My Subscription'**
+  String get mySubscription;
+
+  /// No description provided for @active.
+  ///
+  /// In en, this message translates to:
+  /// **'Active'**
+  String get active;
+
+  /// No description provided for @pricePerMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'89\$ / Month'**
+  String get pricePerMonth;
+
+  /// No description provided for @pauseHistory.
+  ///
+  /// In en, this message translates to:
+  /// **'Pause History'**
+  String get pauseHistory;
+
+  /// No description provided for @changePlan.
+  ///
+  /// In en, this message translates to:
+  /// **'Change Plan'**
+  String get changePlan;
+
+  /// No description provided for @pauseSubscription.
+  ///
+  /// In en, this message translates to:
+  /// **'Pause Subscription'**
+  String get pauseSubscription;
+
+  /// No description provided for @cancelSubscription.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel Subscription'**
+  String get cancelSubscription;
+
+  /// No description provided for @featureClasses.
+  ///
+  /// In en, this message translates to:
+  /// **'12 classes per month'**
+  String get featureClasses;
+
+  /// No description provided for @featureStudios.
+  ///
+  /// In en, this message translates to:
+  /// **'Downtown + uptown studios'**
+  String get featureStudios;
+
+  /// No description provided for @featureEquipment.
+  ///
+  /// In en, this message translates to:
+  /// **'Free mat + equipment rental'**
+  String get featureEquipment;
+
+  /// No description provided for @featurePriority.
+  ///
+  /// In en, this message translates to:
+  /// **'Priority booking'**
+  String get featurePriority;
+
+  /// No description provided for @featurePause.
+  ///
+  /// In en, this message translates to:
+  /// **'2 pause attempts per year'**
+  String get featurePause;
+
+  /// No description provided for @pastPauses.
+  ///
+  /// In en, this message translates to:
+  /// **'Past Pauses'**
+  String get pastPauses;
+
+  /// No description provided for @remainingThisYear.
+  ///
+  /// In en, this message translates to:
+  /// **'Remaining This Year'**
+  String get remainingThisYear;
+
+  /// No description provided for @pauseAttemptsRemaining.
+  ///
+  /// In en, this message translates to:
+  /// **'Pause attempts remaining'**
+  String get pauseAttemptsRemaining;
+
+  /// No description provided for @attemptCount.
+  ///
+  /// In en, this message translates to:
+  /// **'1 of 2 attempts'**
+  String get attemptCount;
+
+  /// No description provided for @basicPlan.
+  ///
+  /// In en, this message translates to:
+  /// **'Basic Plan'**
+  String get basicPlan;
+
+  /// No description provided for @upgradedFromBasic.
+  ///
+  /// In en, this message translates to:
+  /// **'Upgraded from basic'**
+  String get upgradedFromBasic;
+
+  /// No description provided for @initialSubscription.
+  ///
+  /// In en, this message translates to:
+  /// **'Initial Subscription'**
+  String get initialSubscription;
+
+  /// No description provided for @sinceDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Since {date}'**
+  String sinceDate(Object date);
+
+  /// No description provided for @planDuration.
+  ///
+  /// In en, this message translates to:
+  /// **'{start} - {end}'**
+  String planDuration(Object start, Object end);
+
+  /// No description provided for @activeStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Active'**
+  String get activeStatus;
+
+  /// No description provided for @pauseDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Temporarily pause your subscription and billing. Your plan benefits will resume when you return.'**
+  String get pauseDescription;
+
+  /// No description provided for @cannotPauseTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Cannot Pause Subscription'**
+  String get cannotPauseTitle;
+
+  /// No description provided for @cannotPauseMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'You only have 7 freeze days remaining. Please select a shorter pause period or upgrade your plan.'**
+  String get cannotPauseMessage;
+
+  /// No description provided for @selectPausePeriod.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Pause Period'**
+  String get selectPausePeriod;
+
+  /// No description provided for @startDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Start Date'**
+  String get startDate;
+
+  /// No description provided for @endDate.
+  ///
+  /// In en, this message translates to:
+  /// **'End Date'**
+  String get endDate;
+
+  /// No description provided for @daysCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} Days'**
+  String daysCount(Object count);
+
+  /// No description provided for @pauseAttemptsPerYear.
+  ///
+  /// In en, this message translates to:
+  /// **'2 pause attempts per year'**
+  String get pauseAttemptsPerYear;
+
+  /// No description provided for @pauseAttempts.
+  ///
+  /// In en, this message translates to:
+  /// **'Pause attempts'**
+  String get pauseAttempts;
+
+  /// No description provided for @attemptRemaining.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} attempt remaining'**
+  String attemptRemaining(Object count);
+
+  /// No description provided for @duringPausePeriod.
+  ///
+  /// In en, this message translates to:
+  /// **'During Pause Period'**
+  String get duringPausePeriod;
+
+  /// No description provided for @noBillingCharges.
+  ///
+  /// In en, this message translates to:
+  /// **'No billing charges will occur'**
+  String get noBillingCharges;
+
+  /// No description provided for @noBookingAllowed.
+  ///
+  /// In en, this message translates to:
+  /// **'You cannot book or attend classes'**
+  String get noBookingAllowed;
+
+  /// No description provided for @subscriptionExtended.
+  ///
+  /// In en, this message translates to:
+  /// **'Your subscription will extend by the pause duration'**
+  String get subscriptionExtended;
+
+  /// No description provided for @nextBillingDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Next billing date will be {date} (extended by {days} days)'**
+  String nextBillingDate(Object date, Object days);
+
+  /// No description provided for @creditsPreserved.
+  ///
+  /// In en, this message translates to:
+  /// **'Unused class credits will be preserved'**
+  String get creditsPreserved;
+
+  /// No description provided for @confirmPause.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm Pause'**
+  String get confirmPause;
+
+  /// No description provided for @classesUsed.
+  ///
+  /// In en, this message translates to:
+  /// **'Classes used'**
+  String get classesUsed;
+
+  /// No description provided for @pauseUsed.
+  ///
+  /// In en, this message translates to:
+  /// **'Pause used'**
+  String get pauseUsed;
+
+  /// No description provided for @currentPlan.
+  ///
+  /// In en, this message translates to:
+  /// **'Current Plan'**
+  String get currentPlan;
+
+  /// No description provided for @existingPlan.
+  ///
+  /// In en, this message translates to:
+  /// **'Existing Plan'**
+  String get existingPlan;
+
+  /// No description provided for @noInvoicesYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No invoices yet'**
+  String get noInvoicesYet;
+
+  /// No description provided for @invoiceHistorySubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your payment history will appear here.'**
+  String get invoiceHistorySubtitle;
+
+  /// No description provided for @invoiceNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Invoice #{number}'**
+  String invoiceNumber(Object number);
+
+  /// No description provided for @noClassesYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No classes yet'**
+  String get noClassesYet;
+
+  /// No description provided for @classInvoiceSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Class purchase invoices will appear here.'**
+  String get classInvoiceSubtitle;
+
+  /// No description provided for @noRefundsYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No refunds yet'**
+  String get noRefundsYet;
+
+  /// No description provided for @noRefundsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'You haven’t requested any refunds.'**
+  String get noRefundsSubtitle;
+
+  /// No description provided for @noSubscriptionsYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No subscriptions yet'**
+  String get noSubscriptionsYet;
+
+  /// No description provided for @noSubscriptionsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscription invoices will show up here.'**
+  String get noSubscriptionsSubtitle;
+
+  /// No description provided for @view.
+  ///
+  /// In en, this message translates to:
+  /// **'View'**
+  String get view;
+
+  /// No description provided for @download.
+  ///
+  /// In en, this message translates to:
+  /// **'Download'**
+  String get download;
+
+  /// No description provided for @all.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get all;
+
+  /// No description provided for @subscriptions.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscriptions'**
+  String get subscriptions;
+
+  /// No description provided for @refunds.
+  ///
+  /// In en, this message translates to:
+  /// **'Refunds'**
+  String get refunds;
 }
 
 class _AppLocalizationsDelegate
