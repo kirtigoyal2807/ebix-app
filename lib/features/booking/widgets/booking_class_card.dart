@@ -130,7 +130,8 @@ class BookingClassCard extends StatelessWidget {
                                     border: Border.all(
                                       color: isDark
                                           ? AppColors.successBorderDark
-                                          : AppColors.featuredTagBackgroundColor,
+                                          : AppColors
+                                                .featuredTagBackgroundColor,
                                       width: 1,
                                     ),
                                   ),
@@ -255,8 +256,7 @@ class BookingClassCard extends StatelessWidget {
                     right: AppSpacing.md,
                     left: AppSpacing.md,
                     bottom: AppSpacing.md,
-                    top:  AppSpacing.sm,
-
+                    top: AppSpacing.sm,
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -312,7 +312,9 @@ class BookingClassCard extends StatelessWidget {
 
                       const SizedBox(height: AppSpacing.xs),
                       AppText(
-                        '$studio • $time • ${context.l10n.spotsLeft(spotsLeft)}',
+                        upgradeRequired
+                            ? '$studio • $time'
+                            : '$studio • $time • ${context.l10n.spotsLeft(spotsLeft)}',
                         style: (context) =>
                             AppTextStyles.captionText(context).copyWith(
                               fontSize: size.width * 0.03 > 14

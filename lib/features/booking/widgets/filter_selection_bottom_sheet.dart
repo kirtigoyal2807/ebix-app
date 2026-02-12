@@ -51,7 +51,9 @@ class FilterSelectionBottomSheet extends StatelessWidget {
                   IconButton(
                     icon: Icon(
                       Icons.close,
-                      color: isDark ? AppColors.whiteColor : AppColors.blackColor,
+                      color: isDark
+                          ? AppColors.whiteColor
+                          : AppColors.blackColor,
                     ),
                     onPressed: () => Navigator.of(context).pop(),
                   ),
@@ -114,7 +116,9 @@ class _OptionTile extends StatelessWidget {
           margin: const EdgeInsets.only(bottom: AppSpacing.xs),
           decoration: BoxDecoration(
             color: isSelected
-                ? (isDark ? AppColors.primaryDarkButton : AppColors.selectedLanguageBg)
+                ? (isDark
+                      ? AppColors.primaryDarkButton
+                      : AppColors.greyContainerBg)
                 : Colors.transparent,
             borderRadius: BorderRadius.circular(AppRadius.lg),
           ),

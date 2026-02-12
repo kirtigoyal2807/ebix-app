@@ -12,9 +12,10 @@ class HelpSupportBottomSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isRTL = Directionality.of(context) == TextDirection.rtl;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Material(
-      // color: Colors.white,
-      borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+      color: isDark ? AppColors.homeBackground : Colors.white,
+      borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
       child: SafeArea(
         top: false,
         child: Column(
@@ -53,10 +54,12 @@ class HelpSupportBottomSheet extends StatelessWidget {
                     ),
                   ),
 
-                  const SizedBox(height: AppSpacing.lg),
+                  const SizedBox(height: AppSpacing.xl),
 
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: AppSpacing.lg,
+                    ),
                     child: Column(
                       children: [
                         _HelpOption(
@@ -126,7 +129,7 @@ class _HelpOption extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return InkWell(
       onTap: onTap,
       child: Row(
@@ -136,7 +139,9 @@ class _HelpOption extends StatelessWidget {
             padding: const EdgeInsets.only(top: 2),
             child: Icon(
               icon,
-              color: theme.colorScheme.primary, // Brownish color from theme
+              color: isDark
+                  ? AppColors.languageIconDark
+                  : theme.colorScheme.primary, // Brownish color from theme
             ),
           ),
           const SizedBox(width: AppSpacing.lg),
@@ -146,7 +151,10 @@ class _HelpOption extends StatelessWidget {
               children: [
                 AppText(title, style: AppTextStyles.helpAndSupportItemLabel),
                 const SizedBox(height: AppSpacing.xs),
-                AppText(subtitle, style: AppTextStyles.helpAndSupportItemSubLabel),
+                AppText(
+                  subtitle,
+                  style: AppTextStyles.helpAndSupportItemSubLabel,
+                ),
               ],
             ),
           ),

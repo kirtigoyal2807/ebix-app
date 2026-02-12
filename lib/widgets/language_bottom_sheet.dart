@@ -66,7 +66,7 @@ class _LanguageBottomSheetState extends State<LanguageBottomSheet> {
                             Align(
                               alignment: Alignment.centerRight,
                               child: IconButton(
-                                icon: const Icon(Icons.close),
+                                icon: const Icon(Icons.close,color: AppColors.arrowIcon,),
                                 onPressed: () => Navigator.of(context).pop(),
                               ),
                             ),

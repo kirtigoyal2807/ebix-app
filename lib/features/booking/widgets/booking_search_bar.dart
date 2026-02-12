@@ -26,7 +26,7 @@ class BookingSearchBar extends StatelessWidget {
             Icons.search,
             color: isDark ? AppColors.darkGreyText : AppColors.greyText,
           ),
-          filled: true,
+          filled: false,
           hintText: context.l10n.searchClassesHint,
           hintStyle: AppTextStyles.textField(context).copyWith(color: AppColors.lightGrey),
           contentPadding: const EdgeInsets.symmetric(

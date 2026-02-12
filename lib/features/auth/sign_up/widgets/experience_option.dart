@@ -28,7 +28,7 @@ class ExperienceOption extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Material(
-      // color: Colors.white,
+      color: isDark ? AppColors.homeBackground:Colors.white,
       elevation: 4,
       shadowColor: Colors.black.withValues(alpha: 0.2),
       borderRadius: BorderRadius.circular(16),
@@ -45,6 +45,7 @@ class ExperienceOption extends StatelessWidget {
             vertical: AppSpacing.md + 2,
           ),
           decoration: BoxDecoration(
+
             borderRadius: BorderRadius.circular(AppRadius.md),
             border: Border.all(
               color: selected

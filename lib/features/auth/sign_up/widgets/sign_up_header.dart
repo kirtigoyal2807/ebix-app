@@ -24,7 +24,7 @@ class SignUpHeader extends StatelessWidget {
       children: [
         AppText(title, style: AppTextStyles.heading1),
         const SizedBox(height: AppSpacing.sm + 2),
-        AppText(subtitle, style: AppTextStyles.bodyText),
+        AppText(subtitle, style: AppTextStyles.bodyText,maxLines: 3,),
       ],
     );
   }

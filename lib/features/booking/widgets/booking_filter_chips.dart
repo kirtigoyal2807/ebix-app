@@ -63,7 +63,7 @@ class BookingFilterChips extends StatelessWidget {
                     'This Week',
                     'Next Week',
                     'This Weekend',
-                    'All Dates'
+                    'All Dates',
                   ],
                   selectedOption: state.selectedDate,
                   onSelect: cubit.setDate,
@@ -85,7 +85,7 @@ class BookingFilterChips extends StatelessWidget {
                     'Power Pilates',
                     'Mat Pilates',
                     'Reformer',
-                    'Gentle Strech'
+                    'Gentle Strech',
                   ],
                   selectedOption: state.selectedCategory,
                   onSelect: cubit.setCategory,
@@ -124,7 +124,7 @@ class BookingFilterChips extends StatelessWidget {
                     'Branch 2',
                     'Branch 3',
                     'Branch 4',
-                    'Branch 5'
+                    'Branch 5',
                   ],
                   selectedOption: state.selectedBranch,
                   onSelect: cubit.setBranch,
@@ -225,7 +225,9 @@ class _FilterChip extends StatelessWidget {
           borderRadius: BorderRadius.circular(AppRadius.xl),
           border: Border.all(
             color: isSelected
-                ? (isDark ? AppColors.darkGreyBorder : AppColors.splashBackgroundDark)
+                ? (isDark
+                      ? AppColors.darkGreyBorder
+                      : AppColors.splashBackgroundDark)
                 : (isDark ? AppColors.greyText : AppColors.buttonBorder),
           ),
         ),
@@ -236,7 +238,9 @@ class _FilterChip extends StatelessWidget {
               label,
               style: (context) => AppTextStyles.bodyTextSmall(context).copyWith(
                 color: isSelected
-                    ? (isDark ? AppColors.languageTextDark : AppColors.languageIcon)
+                    ? (isDark
+                          ? AppColors.languageTextDark
+                          : AppColors.languageIcon)
                     : (isDark ? AppColors.lightText : AppColors.darkText),
                 fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
               ),
@@ -248,7 +252,9 @@ class _FilterChip extends StatelessWidget {
                 child: Icon(
                   Icons.close,
                   size: 16,
-                  color: isDark ? AppColors.languageIconDark : AppColors.languageIcon,
+                  color: isDark
+                      ? AppColors.languageIconDark
+                      : AppColors.languageIcon,
                 ),
               )
             else

@@ -51,11 +51,11 @@ class _SignUpBranchViewState extends State<SignUpBranchView> {
                         children: [
                           TextSpan(
                             text: '${context.l10n.step} 4',
-                            style: AppTextStyles.caption(
-                              context,
-                            ).copyWith(color: isDark
-                                ? AppColors.languageTextDark
-                                : AppColors.languageIcon,),
+                            style: AppTextStyles.caption(context).copyWith(
+                              color: isDark
+                                  ? AppColors.languageTextDark
+                                  : AppColors.languageIcon,
+                            ),
                           ),
                           TextSpan(
                             text: ' ${context.l10n.offf} 4',
@@ -96,7 +96,6 @@ class _SignUpBranchViewState extends State<SignUpBranchView> {
                       selected: _selectedIndex == 1,
                       onTap: () => setState(() => _selectedIndex = 1),
                     ),
-
 
                     const SizedBox(height: AppSpacing.lg),
                   ],

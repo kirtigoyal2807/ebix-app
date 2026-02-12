@@ -28,10 +28,15 @@ class BranchOption extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final theme = Theme.of(context);
     final borderColor = selected
-        ? isDark ? AppColors.languageIconDark: AppColors.languageIconDark
-        : isDark ? AppColors.greyText: AppColors.whiteBorderColor;
+        ? isDark
+              ? AppColors.languageIconDark
+              : AppColors.languageIconDark
+        : isDark
+        ? AppColors.greyText
+        : AppColors.whiteBorderColor;
 
     return Material(
+      color: isDark ? AppColors.homeBackground : Colors.white,
       // color: Colors.transparent,
       child: InkWell(
         onTap: onTap,
@@ -44,10 +49,8 @@ class BranchOption extends StatelessWidget {
           padding: const EdgeInsets.all(AppSpacing.lg),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(AppRadius.md),
-            border: Border.all(
-              color: borderColor,
-              width: selected ? 1 : 1,
-            ),
+            border: Border.all(color: borderColor, width: selected ? 1 : 1),
+
             // color:Colors.white,
           ),
           child: Column(
@@ -70,10 +73,7 @@ class BranchOption extends StatelessWidget {
               const SizedBox(height: AppSpacing.xs),
 
               /// CITY
-              AppText(
-                city,
-                style: AppTextStyles.bodyTextSmall,
-              ),
+              AppText(city, style: AppTextStyles.bodyTextSmall),
 
               const SizedBox(height: AppSpacing.md),
 
@@ -86,10 +86,7 @@ class BranchOption extends StatelessWidget {
                     color: theme.hintColor,
                   ),
                   const SizedBox(width: 4),
-                  AppText(
-                    distance,
-                    style: AppTextStyles.bodyTextSmall,
-                  ),
+                  AppText(distance, style: AppTextStyles.bodyTextSmall),
                 ],
               ),
             ],
@@ -111,22 +108,37 @@ class _BranchTypeChip extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 10,
-        vertical: 4,
-      ),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
-          color: isDark ? (type == 'Premium' ? AppColors.languageIcon:AppColors.blueTagValue) : (type == 'Premium' ? AppColors.darkGreyBorder:AppColors.branchTagLightStandardBorder),
+          color: isDark
+              ? (type == 'Premium'
+                    ? AppColors.languageIcon
+                    : AppColors.blueTagValue)
+              : (type == 'Premium'
+                    ? AppColors.darkGreyBorder
+                    : AppColors.branchTagLightStandardBorder),
         ),
-        color: isDark? (type == 'Premium' ? AppColors.badgeBackground:  Color(0x299DCEFF)) :(type == 'Premium' ? AppColors.branchTagLight:AppColors.branchTagLightStandard),
+        color: isDark
+            ? (type == 'Premium'
+                  ? AppColors.badgeBackground
+                  : Color(0x299DCEFF))
+            : (type == 'Premium'
+                  ? AppColors.branchTagLight
+                  : AppColors.branchTagLightStandard),
       ),
       child: Text(
         type,
-          // style: AppTextStyles.headingSmall,
+        // style: AppTextStyles.headingSmall,
         style: AppTextStyles.headingSmall(context).copyWith(
-          color: isDark ? (type == 'Premium' ? AppColors.languageTextDark: AppColors.blueTagDarkText) : (type == 'Premium' ? AppColors.languageIcon: AppColors.blueTagText),
+          color: isDark
+              ? (type == 'Premium'
+                    ? AppColors.languageTextDark
+                    : AppColors.blueTagDarkText)
+              : (type == 'Premium'
+                    ? AppColors.languageIcon
+                    : AppColors.blueTagText),
         ),
       ),
     );

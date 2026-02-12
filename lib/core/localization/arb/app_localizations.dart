@@ -377,7 +377,7 @@ abstract class AppLocalizations {
   /// No description provided for @liveChat.
   ///
   /// In en, this message translates to:
-  /// **'Live Chat'**
+  /// **'Chat on WhatsApp'**
   String get liveChat;
 
   /// No description provided for @liveChatDesc.

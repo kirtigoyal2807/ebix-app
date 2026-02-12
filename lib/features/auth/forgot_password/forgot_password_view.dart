@@ -37,7 +37,7 @@ class ForgotPasswordView extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const SizedBox(height: AppSpacing.lg),
-                    
+
                     // Header
                     SignUpHeader(
                       title: context.l10n.enterEmailHeader,

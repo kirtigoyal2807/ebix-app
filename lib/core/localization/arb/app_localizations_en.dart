@@ -155,7 +155,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get finishSignUp => 'Complete Setup';
 
   @override
-  String get liveChat => 'Live Chat';
+  String get liveChat => 'Chat on WhatsApp';
 
   @override
   String get liveChatDesc => 'Chat with our team • Available 9 AM - 9 PM';

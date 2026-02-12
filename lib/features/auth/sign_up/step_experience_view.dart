@@ -112,7 +112,9 @@ class _SignUpExperienceViewState extends State<SignUpExperienceView> {
                     AppText(
                       context.l10n.dontWorry,
                       style: (context) => AppTextStyles.body(context).copyWith(
-                        color: isDark ? AppColors.darkGreyText : AppColors.greyText,
+                        fontWeight: FontWeight.w400,
+
+                        color: isDark ? AppColors.darkGreyText : Color(0xff79716B)
                       ),
                     ),
                   ],

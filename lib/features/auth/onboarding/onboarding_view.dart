@@ -162,7 +162,7 @@ class OnboardingView extends StatelessWidget {
                               Flexible(
                                 child: AppText(
                                   context.l10n.noExperienceNeeded,
-                                  style: AppTextStyles.captionText,
+                                  style: (context)=>AppTextStyles.captionText(context).copyWith(color: AppColors.lightGrey),
                                   textAlign: TextAlign.center,
                                 ),
                               ),
