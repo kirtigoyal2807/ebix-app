@@ -595,7 +595,8 @@
       "tax": "Tax (8%)",
       "totalPaid": "Total Paid",
       "paymentMethod": "Payment Method",
-      "nextBillingDateText": "Next Billing Date"
+      "nextBillingDateText": "Next Billing Date",
+      "name":"Name"
 
 }
 

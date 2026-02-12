@@ -43,7 +43,9 @@ class DeclarationView extends StatelessWidget {
                   // Title
                   AppText(
                     l10n.declaration,
-                    style: (style) => AppTextStyles.heading1(context),
+                    style: (style) => AppTextStyles.gelasioMedium(
+                      context,
+                    ).copyWith(fontSize: 24, height: 1.2),
                   ),
                   const SizedBox(height: AppSpacing.lg),
 
@@ -53,8 +55,8 @@ class DeclarationView extends StatelessWidget {
 
                   // Name Field
                   AppTextField(
-                    label: l10n.firstName, // "Name" from screenshot
-                    hint: l10n.firstName, // Placeholder
+                    label: l10n.name, // "Name" from screenshot
+                    hint: l10n.name, // Placeholder
                     // onChanged: (val) => cubit.updateDeclarationName(val),
                   ),
                   const SizedBox(height: AppSpacing.md),
@@ -82,7 +84,7 @@ class DeclarationView extends StatelessWidget {
           AppButton(
             label: l10n.continueTxt,
             onPressed: () {
-               cubit.nextStep();
+              cubit.nextStep();
             },
             buttonColor: AppColors.primaryBrown,
             expanded: true,

@@ -1402,4 +1402,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get nextBillingDateText => 'تاريخ الفوترة التالي';
+
+  @override
+  String get name => 'الاسم';
 }

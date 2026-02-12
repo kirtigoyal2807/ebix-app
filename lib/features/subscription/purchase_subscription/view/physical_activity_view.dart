@@ -75,7 +75,7 @@ class PhysicalActivityView extends StatelessWidget {
                         children: [
                           AppText(
                             l10n.ifYesHowManyTimes,
-                            style:(style)=> AppTextStyles.bodyText(context).copyWith(fontWeight: FontWeight.w500),
+                            style:(style)=> AppTextStyles.textFieldHeading(context).copyWith(fontWeight: FontWeight.w400,fontSize: 16,height: 1.4),
                           ),
                           const SizedBox(height: 16), // Use translation with parameter
                           _buildFrequencyOption(context, l10n.daysAWeek(2), PhysicalActivityFrequency.twoDays, state.activityFrequency, cubit.updateActivityFrequency),
@@ -138,6 +138,7 @@ class PhysicalActivityView extends StatelessWidget {
                 label,
                 style: (style) => AppTextStyles.bodyTextSmall(context).copyWith(
                   color: isDark ? AppColors.lightGrey : AppColors.lightGrey,
+                  fontWeight: FontWeight.w500
                 ),
               ),
             ),
@@ -195,11 +196,7 @@ class PhysicalActivityView extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return AppText(
       title,
-      style: (style) => AppTextStyles.bodyText(context).copyWith(
-        fontWeight: FontWeight.w500,
-        fontSize: 16,
-        color: isDark ? AppColors.lightText : AppColors.darkText,
-      ),
+      style: (style) => AppTextStyles.textFieldHeading(context).copyWith(fontWeight: FontWeight.w400,fontSize: 16,height: 1.4),
       maxLines: 4,
     );
   }

@@ -578,7 +578,8 @@
           "tax": "الضريبة (8٪)",
           "totalPaid": "إجمالي المدفوع",
           "paymentMethod": "طريقة الدفع",
-          "nextBillingDateText": "تاريخ الفوترة التالي"
+          "nextBillingDateText": "تاريخ الفوترة التالي",
+           "name": "الاسم"
 
 }
 

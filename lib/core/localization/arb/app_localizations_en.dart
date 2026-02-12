@@ -1414,4 +1414,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get nextBillingDateText => 'Next Billing Date';
+
+  @override
+  String get name => 'Name';
 }

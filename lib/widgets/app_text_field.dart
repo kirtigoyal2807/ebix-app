@@ -14,6 +14,7 @@ class AppTextField extends StatefulWidget {
   final String? errorText;
   final ValueChanged<String>? onChanged;
   final String? initialValue;
+  final int? maxLines;
 
   const AppTextField({
     super.key,
@@ -24,6 +25,7 @@ class AppTextField extends StatefulWidget {
     this.errorText,
     this.onChanged,
     this.initialValue,
+    this.maxLines
   });
 
   @override
@@ -69,6 +71,7 @@ class _AppTextFieldState extends State<AppTextField> {
           obscureText: _obscure,
           keyboardType: widget.keyboardType,
           style: AppTextStyles.textField(context),
+          maxLines:widget.maxLines ,
           decoration: InputDecoration(
             hintText: widget.hint,
             hintStyle: AppTextStyles.textField(

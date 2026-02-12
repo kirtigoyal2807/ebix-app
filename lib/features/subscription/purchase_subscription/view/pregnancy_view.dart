@@ -113,11 +113,15 @@ class PregnancyView extends StatelessWidget {
                   color: isSelected
                       ? AppColors.primaryBrown
                       : (isDark
-                      ? AppColors.greyText
-                      : AppColors.lightGreyBorder),
+                            ? AppColors.greyText
+                            : AppColors.lightGreyBorder),
                   width: 1,
                 ),
-                color: isSelected ? AppColors.primaryBrown : isDark? AppColors.homeBackground:Colors.white,
+                color: isSelected
+                    ? AppColors.primaryBrown
+                    : isDark
+                    ? AppColors.homeBackground
+                    : Colors.white,
               ),
               child: isSelected
                   ? const Icon(Icons.check, size: 14, color: Colors.white)
@@ -129,10 +133,11 @@ class PregnancyView extends StatelessWidget {
                 label,
                 style: (style) => AppTextStyles.bodyTextSmall(context).copyWith(
                   color: isDark ? AppColors.lightGrey : AppColors.lightGrey,
+                  fontWeight: FontWeight.w500,
+                  height: 1.5,
                 ),
               ),
             ),
-
           ],
         ),
       ),

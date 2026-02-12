@@ -49,7 +49,7 @@ class SafetyView extends StatelessWidget {
 
                   // Scrollable Terms Container
                   SizedBox(
-                    height: size.height * 0.5,
+                    height: size.height * 0.4,
                     // adjust if needed to match design
                     child: Container(
                       width: double.infinity,
@@ -96,7 +96,8 @@ class SafetyView extends StatelessWidget {
                                             context,
                                           ).copyWith(
                                             fontSize: 12,
-                                            fontWeight: FontWeight.w400,
+                                            fontWeight: FontWeight.w500,
+                                            height: 1.5
                                           ),
                                     ),
 
@@ -109,9 +110,11 @@ class SafetyView extends StatelessWidget {
                                             context,
                                           ).copyWith(
                                             fontSize: 12,
+                                            fontWeight: FontWeight.w400,
                                             color: isDark
                                                 ? AppColors.darkGreyText
                                                 : AppColors.greyText,
+                                            height: 1.5
                                           ),
                                       maxLines: 100,
                                     ),
@@ -128,8 +131,8 @@ class SafetyView extends StatelessWidget {
 
                   // Name Field
                   AppTextField(
-                    label: l10n.firstName, // "Name" from screenshot
-                    hint: l10n.firstName, // Placeholder
+                    label: l10n.name, // "Name" from screenshot
+                    hint: l10n.name, // Placeholder
                     // onChanged: (val) => cubit.updateDeclarationName(val),
                   ),
                   const SizedBox(height: AppSpacing.md),

@@ -95,7 +95,8 @@ class TermsAndConditionsView extends StatelessWidget {
                                             context,
                                           ).copyWith(
                                             fontSize: 12,
-                                            fontWeight: FontWeight.w400,
+                                            fontWeight: FontWeight.w500,
+                                            height: 1.5
                                           ),
                                     ),
                         
@@ -111,6 +112,7 @@ class TermsAndConditionsView extends StatelessWidget {
                                             color: isDark
                                                 ? AppColors.darkGreyText
                                                 : AppColors.greyText,
+                                            fontWeight: FontWeight.w400,
                                           ),
                                       maxLines: 100,
                                     ),

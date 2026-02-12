@@ -290,9 +290,10 @@ class MedicalHistoryView extends StatelessWidget {
     return AppText(
       title,
       style: (style) => AppTextStyles.bodyText(context).copyWith(
-        fontWeight: FontWeight.w500,
+        fontWeight: FontWeight.w400,
         fontSize: 16,
         color: isDark ? AppColors.lightText : AppColors.darkText,
+        height: 1.4,
       ),
       maxLines: 4,
     );
@@ -327,7 +328,11 @@ class MedicalHistoryView extends StatelessWidget {
                             : AppColors.lightGreyBorder),
                   width: 1,
                 ),
-                color: isChecked ? AppColors.primaryBrown : isDark? AppColors.homeBackground:Colors.white,
+                color: isChecked
+                    ? AppColors.primaryBrown
+                    : isDark
+                    ? AppColors.homeBackground
+                    : Colors.white,
               ),
               child: isChecked
                   ? const Icon(Icons.check, size: 14, color: Colors.white)
@@ -339,6 +344,7 @@ class MedicalHistoryView extends StatelessWidget {
                 label,
                 style: (style) => AppTextStyles.bodyTextSmall(context).copyWith(
                   color: isDark ? AppColors.lightGrey : AppColors.lightGrey,
+                  fontWeight: FontWeight.w500,
                 ),
               ),
             ),

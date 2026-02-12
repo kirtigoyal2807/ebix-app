@@ -43,21 +43,23 @@ class GoalsView extends StatelessWidget {
                   // Title
                   AppText(
                     l10n.goals,
-                    style:(style)=> AppTextStyles.headline(context),
+                    style:(style)=> AppTextStyles.gelasioMedium(context).copyWith(fontSize: 24,height: 1.2),
                   ),
                   const SizedBox(height: AppSpacing.lg),
 
                   // Question
                   _buildSectionHeader(context, l10n.whatIsYourGoal),
 
-                  const SizedBox(height: AppSpacing.md),
+                  // const SizedBox(height: AppSpacing.md),
                   
                   // Text Area for Goals
                   AppTextField(
                     hint: l10n.enterYourGoals,
                     label: '',
+
                     // onChanged: (val) => cubit.updateGoals(val),
-                    // maxLines: 8, label: '',
+                    maxLines: 8,
+                    // label: '',
                   ),
                   const SizedBox(height: 8),
                    Align(
@@ -93,7 +95,7 @@ class GoalsView extends StatelessWidget {
         fontSize: 16,
         color: isDark ? AppColors.lightText : AppColors.darkText,
       ),
-      maxLines: 4,
+      maxLines: 1,
     );
   }
 }
