@@ -86,20 +86,20 @@ class HomeView extends StatelessWidget {
         iconSize: size.width * 0.06 > 24 ? 24 : size.width * 0.06,
         items: [
           BottomNavigationBarItem(
-            icon: Icon(currentIndex == 0 ? Icons.home : Icons.home_outlined),
+            icon: Icon(currentIndex == 0 ? Icons.home_outlined : Icons.home_outlined),
             label: context.l10n.home,
           ),
           BottomNavigationBarItem(
             icon: Icon(
               currentIndex == 1
-                  ? Icons.fitness_center
-                  : Icons.fitness_center_outlined,
+                  ? Icons.self_improvement
+                  : Icons.self_improvement,
             ),
             label: context.l10n.classesNav,
           ),
           BottomNavigationBarItem(
             icon: Icon(
-              currentIndex == 2 ? Icons.explore : Icons.explore_outlined,
+              currentIndex == 2 ? Icons.manage_search : Icons.manage_search_outlined,
             ),
             label: context.l10n.explore,
           ),

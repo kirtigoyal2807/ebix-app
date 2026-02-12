@@ -26,23 +26,19 @@ class AllView extends StatelessWidget {
       child: Column(
         children: [
           InvoiceHistoryCard(
-            month: DateFormat.yMMMM(locale)
-                .format(DateTime(2026, 1)),
+            month: DateFormat.yMMMM(locale).format(DateTime(2026, 1)),
             title: "Premium Plan",
             amount: '\$89',
-            subTitle:context.l10n.invoiceNumber("INV-2026-001"),
-            date: DateFormat.yMMMd(locale)
-                .format(DateTime(2026, 1, 15)),
+            subTitle: context.l10n.invoiceNumber("INV-2026-001"),
+            date: DateFormat.yMMMd(locale).format(DateTime(2026, 1, 15)),
           ),
           SizedBox(height: AppSpacing.md),
           InvoiceHistoryCard(
-            month: DateFormat.yMMMM(locale)
-                .format(DateTime(2026, 2)),
+            month: DateFormat.yMMMM(locale).format(DateTime(2026, 2)),
             title: "Basic Plan",
             amount: '\$45',
             subTitle: context.l10n.invoiceNumber("#INV-2025-012"),
-            date: DateFormat.yMMMd(locale)
-                .format(DateTime(2026, 12, 15)),
+            date: DateFormat.yMMMd(locale).format(DateTime(2026, 12, 15)),
           ),
         ],
       ),

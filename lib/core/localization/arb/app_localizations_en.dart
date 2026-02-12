@@ -706,7 +706,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get neededPlan => 'Needed:';
 
   @override
-  String get premiumPlan => 'Premium Plan';
+  String get premiumPlan => 'Premium Plan (Monthly)';
 
   @override
   String get elitePlan => 'Elite Plan (All locations)';
@@ -1336,4 +1336,82 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get idNumber => 'ID Number';
+
+  @override
+  String get filters => 'Filters';
+
+  @override
+  String get sortBy => 'Sort by';
+
+  @override
+  String get dateRange => 'Date Range';
+
+  @override
+  String get newest => 'Date (Newest)';
+
+  @override
+  String get oldest => 'Date (Oldest)';
+
+  @override
+  String get priceHighToLow => 'Price (High to Low)';
+
+  @override
+  String get priceLowToHigh => 'Price (Low to High)';
+
+  @override
+  String get last30Days => 'Last 30 days';
+
+  @override
+  String get last3Months => 'Last 3 months';
+
+  @override
+  String get last6Months => 'Last 6 months';
+
+  @override
+  String get thisYear => 'This year';
+
+  @override
+  String get allTime => 'All time';
+
+  @override
+  String get welcomeToPilates => 'Welcome to Pilates!';
+
+  @override
+  String get membershipSetup => 'Your membership is all set up';
+
+  @override
+  String get creditsReady => 'Your first 12 credits are ready to use!';
+
+  @override
+  String get bookFirstClass => 'Book your first class and start your journey';
+
+  @override
+  String get startExploring => 'Start Exploring Classes';
+
+  @override
+  String get downloadInvoice => 'Download Invoice (PDF)';
+
+  @override
+  String get invoiceDetails => 'Invoice Details';
+
+  @override
+  String get invoiceDate => 'Date: January 23, 2026';
+
+  @override
+  String get setupFee => 'Setup Fee';
+
+  @override
+  String get discount => 'Discount (New Member)';
+
+  @override
+  String get tax => 'Tax (8%)';
+
+  @override
+  String get totalPaid => 'Total Paid';
+
+  @override
+  String get paymentMethod => 'Payment Method';
+
+  @override
+  String get nextBillingDateText => 'Next Billing Date';
 }

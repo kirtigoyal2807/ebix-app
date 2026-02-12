@@ -525,17 +525,7 @@
 "all": "الكل",
 "subscriptions": "الاشتراكات",
 "classes": "الحصص",
-"refunds": "المبالغ المستردة"
-
-
-
-
-
-
-
-
-
-
+"refunds": "المبالغ المستردة",
   "date": "التاريخ",
 
 
@@ -560,7 +550,36 @@
   "identityVerification": "التحقق من الهوية",
   "idType": "نوع الهوية",
   "selectIdType": "اختر نوع الهوية",
-  "idNumber": "رقم الهوية"
+  "idNumber": "رقم الهوية",
+  "filters": "الفلاتر",
+  "sortBy": "ترتيب حسب",
+  "dateRange": "نطاق التاريخ",
+    "newest": "التاريخ (الأحدث)",
+    "oldest": "التاريخ (الأقدم)",
+    "priceHighToLow": "السعر (من الأعلى إلى الأقل)",
+    "priceLowToHigh": "السعر (من الأقل إلى الأعلى)",
+      "last30Days": "آخر 30 يومًا",
+      "last3Months": "آخر 3 أشهر",
+      "last6Months": "آخر 6 أشهر",
+      "thisYear": "هذا العام",
+      "allTime": "كل الوقت",
+        "welcomeToPilates": "مرحبًا بك في البيلاتس!",
+        "membershipSetup": "تم إعداد عضويتك بالكامل",
+        "creditsReady": "أول 12 رصيدًا جاهزة للاستخدام!",
+        "bookFirstClass": "احجز أول حصة وابدأ رحلتك",
+        "startExploring": "ابدأ استكشاف الحصص",
+        "downloadInvoice": "تحميل الفاتورة (PDF)",
+         "invoiceDetails": "تفاصيل الفاتورة",
+
+          "invoiceDate": "التاريخ: 23 يناير 2026",
+          "premiumPlan": "الخطة المميزة (شهريًا)",
+          "setupFee": "رسوم الإعداد",
+          "discount": "خصم (عضو جديد)",
+          "tax": "الضريبة (8٪)",
+          "totalPaid": "إجمالي المدفوع",
+          "paymentMethod": "طريقة الدفع",
+          "nextBillingDateText": "تاريخ الفوترة التالي"
+
 }
 
 

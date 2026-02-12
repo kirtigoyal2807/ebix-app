@@ -1415,7 +1415,7 @@ abstract class AppLocalizations {
   /// No description provided for @premiumPlan.
   ///
   /// In en, this message translates to:
-  /// **'Premium Plan'**
+  /// **'Premium Plan (Monthly)'**
   String get premiumPlan;
 
   /// No description provided for @elitePlan.
@@ -2593,6 +2593,162 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'ID Number'**
   String get idNumber;
+
+  /// No description provided for @filters.
+  ///
+  /// In en, this message translates to:
+  /// **'Filters'**
+  String get filters;
+
+  /// No description provided for @sortBy.
+  ///
+  /// In en, this message translates to:
+  /// **'Sort by'**
+  String get sortBy;
+
+  /// No description provided for @dateRange.
+  ///
+  /// In en, this message translates to:
+  /// **'Date Range'**
+  String get dateRange;
+
+  /// No description provided for @newest.
+  ///
+  /// In en, this message translates to:
+  /// **'Date (Newest)'**
+  String get newest;
+
+  /// No description provided for @oldest.
+  ///
+  /// In en, this message translates to:
+  /// **'Date (Oldest)'**
+  String get oldest;
+
+  /// No description provided for @priceHighToLow.
+  ///
+  /// In en, this message translates to:
+  /// **'Price (High to Low)'**
+  String get priceHighToLow;
+
+  /// No description provided for @priceLowToHigh.
+  ///
+  /// In en, this message translates to:
+  /// **'Price (Low to High)'**
+  String get priceLowToHigh;
+
+  /// No description provided for @last30Days.
+  ///
+  /// In en, this message translates to:
+  /// **'Last 30 days'**
+  String get last30Days;
+
+  /// No description provided for @last3Months.
+  ///
+  /// In en, this message translates to:
+  /// **'Last 3 months'**
+  String get last3Months;
+
+  /// No description provided for @last6Months.
+  ///
+  /// In en, this message translates to:
+  /// **'Last 6 months'**
+  String get last6Months;
+
+  /// No description provided for @thisYear.
+  ///
+  /// In en, this message translates to:
+  /// **'This year'**
+  String get thisYear;
+
+  /// No description provided for @allTime.
+  ///
+  /// In en, this message translates to:
+  /// **'All time'**
+  String get allTime;
+
+  /// No description provided for @welcomeToPilates.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome to Pilates!'**
+  String get welcomeToPilates;
+
+  /// No description provided for @membershipSetup.
+  ///
+  /// In en, this message translates to:
+  /// **'Your membership is all set up'**
+  String get membershipSetup;
+
+  /// No description provided for @creditsReady.
+  ///
+  /// In en, this message translates to:
+  /// **'Your first 12 credits are ready to use!'**
+  String get creditsReady;
+
+  /// No description provided for @bookFirstClass.
+  ///
+  /// In en, this message translates to:
+  /// **'Book your first class and start your journey'**
+  String get bookFirstClass;
+
+  /// No description provided for @startExploring.
+  ///
+  /// In en, this message translates to:
+  /// **'Start Exploring Classes'**
+  String get startExploring;
+
+  /// No description provided for @downloadInvoice.
+  ///
+  /// In en, this message translates to:
+  /// **'Download Invoice (PDF)'**
+  String get downloadInvoice;
+
+  /// No description provided for @invoiceDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Invoice Details'**
+  String get invoiceDetails;
+
+  /// No description provided for @invoiceDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Date: January 23, 2026'**
+  String get invoiceDate;
+
+  /// No description provided for @setupFee.
+  ///
+  /// In en, this message translates to:
+  /// **'Setup Fee'**
+  String get setupFee;
+
+  /// No description provided for @discount.
+  ///
+  /// In en, this message translates to:
+  /// **'Discount (New Member)'**
+  String get discount;
+
+  /// No description provided for @tax.
+  ///
+  /// In en, this message translates to:
+  /// **'Tax (8%)'**
+  String get tax;
+
+  /// No description provided for @totalPaid.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Paid'**
+  String get totalPaid;
+
+  /// No description provided for @paymentMethod.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment Method'**
+  String get paymentMethod;
+
+  /// No description provided for @nextBillingDateText.
+  ///
+  /// In en, this message translates to:
+  /// **'Next Billing Date'**
+  String get nextBillingDateText;
 }
 
 class _AppLocalizationsDelegate

@@ -700,7 +700,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get neededPlan => 'الخطة المطلوبة:';
 
   @override
-  String get premiumPlan => 'الخطة المميزة';
+  String get premiumPlan => 'الخطة المميزة (شهريًا)';
 
   @override
   String get elitePlan => 'خطة النخبة (جميع المواقع)';
@@ -1324,4 +1324,82 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get idNumber => 'رقم الهوية';
+
+  @override
+  String get filters => 'الفلاتر';
+
+  @override
+  String get sortBy => 'ترتيب حسب';
+
+  @override
+  String get dateRange => 'نطاق التاريخ';
+
+  @override
+  String get newest => 'التاريخ (الأحدث)';
+
+  @override
+  String get oldest => 'التاريخ (الأقدم)';
+
+  @override
+  String get priceHighToLow => 'السعر (من الأعلى إلى الأقل)';
+
+  @override
+  String get priceLowToHigh => 'السعر (من الأقل إلى الأعلى)';
+
+  @override
+  String get last30Days => 'آخر 30 يومًا';
+
+  @override
+  String get last3Months => 'آخر 3 أشهر';
+
+  @override
+  String get last6Months => 'آخر 6 أشهر';
+
+  @override
+  String get thisYear => 'هذا العام';
+
+  @override
+  String get allTime => 'كل الوقت';
+
+  @override
+  String get welcomeToPilates => 'مرحبًا بك في البيلاتس!';
+
+  @override
+  String get membershipSetup => 'تم إعداد عضويتك بالكامل';
+
+  @override
+  String get creditsReady => 'أول 12 رصيدًا جاهزة للاستخدام!';
+
+  @override
+  String get bookFirstClass => 'احجز أول حصة وابدأ رحلتك';
+
+  @override
+  String get startExploring => 'ابدأ استكشاف الحصص';
+
+  @override
+  String get downloadInvoice => 'تحميل الفاتورة (PDF)';
+
+  @override
+  String get invoiceDetails => 'تفاصيل الفاتورة';
+
+  @override
+  String get invoiceDate => 'التاريخ: 23 يناير 2026';
+
+  @override
+  String get setupFee => 'رسوم الإعداد';
+
+  @override
+  String get discount => 'خصم (عضو جديد)';
+
+  @override
+  String get tax => 'الضريبة (8٪)';
+
+  @override
+  String get totalPaid => 'إجمالي المدفوع';
+
+  @override
+  String get paymentMethod => 'طريقة الدفع';
+
+  @override
+  String get nextBillingDateText => 'تاريخ الفوترة التالي';
 }

@@ -541,15 +541,7 @@
         "all": "All",
         "subscriptions": "Subscriptions",
         "classes": "Classes",
-        "refunds": "Refunds"
-
-
-
-
-
-
-
-
+        "refunds": "Refunds",
   "date": "Date",
 
 
@@ -575,7 +567,36 @@
   "identityVerification": "Identity Verification",
   "idType": "ID Type",
   "selectIdType": "Select ID Type",
-  "idNumber": "ID Number"
+  "idNumber": "ID Number",
+  "filters": "Filters",
+  "sortBy": "Sort by",
+  "dateRange": "Date Range",
+    "newest": "Date (Newest)",
+    "oldest": "Date (Oldest)",
+    "priceHighToLow": "Price (High to Low)",
+    "priceLowToHigh": "Price (Low to High)",
+  "last30Days": "Last 30 days",
+  "last3Months": "Last 3 months",
+  "last6Months": "Last 6 months",
+  "thisYear": "This year",
+  "allTime": "All time",
+    "welcomeToPilates": "Welcome to Pilates!",
+    "membershipSetup": "Your membership is all set up",
+    "creditsReady": "Your first 12 credits are ready to use!",
+    "bookFirstClass": "Book your first class and start your journey",
+    "startExploring": "Start Exploring Classes",
+    "downloadInvoice": "Download Invoice (PDF)",
+      "invoiceDetails": "Invoice Details",
+
+      "invoiceDate": "Date: January 23, 2026",
+      "premiumPlan": "Premium Plan (Monthly)",
+      "setupFee": "Setup Fee",
+      "discount": "Discount (New Member)",
+      "tax": "Tax (8%)",
+      "totalPaid": "Total Paid",
+      "paymentMethod": "Payment Method",
+      "nextBillingDateText": "Next Billing Date"
+
 }
 
 

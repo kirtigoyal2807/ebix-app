@@ -8,15 +8,13 @@ class InvoiceHistoryCubit extends Cubit<InvoiceHistoryState> {
     : super(
         InvoiceHistoryState(
           invoiceCategoryList: InvoiceCategory.values,
+
         ),
       );
-
 
   void setSelectedInvoiceCategory(InvoiceCategory category) {
     emit(state.copyWith(selectedInvoiceCategory: category));
   }
+
+
 }
-
-
-
-

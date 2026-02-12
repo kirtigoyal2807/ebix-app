@@ -6,6 +6,7 @@ import 'package:pilates_app/features/invoice_history/view/class_view.dart';
 import 'package:pilates_app/features/invoice_history/view/refund_view.dart';
 import 'package:pilates_app/features/invoice_history/view/subscriptions_view.dart';
 import 'package:pilates_app/features/invoice_history/widget/empty_data_view.dart';
+import 'package:pilates_app/features/invoice_history/widget/filtter_sheet.dart';
 import 'package:pilates_app/features/invoice_history/widget/invoice_category_buttons.dart';
 import 'package:pilates_app/widgets/app_app_bar.dart';
 
@@ -32,7 +33,21 @@ class InvoiceHistoryView extends StatelessWidget {
           ),
           isMoreMenu: false,
           actions: [
-            IconButton(icon: const Icon(Icons.filter_list), onPressed: () {}),
+            IconButton(
+              icon: const Icon(Icons.filter_list),
+              onPressed: () {
+                final isDark = Theme.of(context).brightness == Brightness.dark;
+                showModalBottomSheet(
+                  context: context,
+                  isScrollControlled: true,
+                  backgroundColor: Colors.transparent,
+                  barrierColor: isDark
+                      ? Colors.white.withValues(alpha: 0.2)
+                      : Colors.black.withValues(alpha: 0.2),
+                  builder: (_) => FilterSelectionBottomSheet(),
+                );
+              },
+            ),
           ],
         ),
         body: Padding(
