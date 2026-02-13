@@ -2755,6 +2755,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Name'**
   String get name;
+
+  /// No description provided for @planDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Plan Details'**
+  String get planDetails;
+
+  /// No description provided for @reviewYourSelection.
+  ///
+  /// In en, this message translates to:
+  /// **'Review Your Selection'**
+  String get reviewYourSelection;
+
+  /// No description provided for @confirmPlanDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm your plan details'**
+  String get confirmPlanDetails;
+
+  /// No description provided for @classesPerMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'Classes per month'**
+  String get classesPerMonth;
+
+  /// No description provided for @validAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Valid at'**
+  String get validAt;
+
+  /// No description provided for @haveVoucherCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Have a voucher code?'**
+  String get haveVoucherCode;
+
+  /// No description provided for @enterVoucherCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter voucher code'**
+  String get enterVoucherCode;
+
+  /// No description provided for @apply.
+  ///
+  /// In en, this message translates to:
+  /// **'Apply'**
+  String get apply;
+
+  /// No description provided for @acceptedPaymentMethods.
+  ///
+  /// In en, this message translates to:
+  /// **'Accepted methods of payment'**
+  String get acceptedPaymentMethods;
 }
 
 class _AppLocalizationsDelegate

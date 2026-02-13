@@ -1417,4 +1417,31 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get name => 'Name';
+
+  @override
+  String get planDetails => 'Plan Details';
+
+  @override
+  String get reviewYourSelection => 'Review Your Selection';
+
+  @override
+  String get confirmPlanDetails => 'Confirm your plan details';
+
+  @override
+  String get classesPerMonth => 'Classes per month';
+
+  @override
+  String get validAt => 'Valid at';
+
+  @override
+  String get haveVoucherCode => 'Have a voucher code?';
+
+  @override
+  String get enterVoucherCode => 'Enter voucher code';
+
+  @override
+  String get apply => 'Apply';
+
+  @override
+  String get acceptedPaymentMethods => 'Accepted methods of payment';
 }

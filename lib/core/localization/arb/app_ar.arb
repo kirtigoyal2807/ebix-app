@@ -579,7 +579,20 @@
           "totalPaid": "إجمالي المدفوع",
           "paymentMethod": "طريقة الدفع",
           "nextBillingDateText": "تاريخ الفوترة التالي",
-           "name": "الاسم"
+           "name": "الاسم",
+           "planDetails": "تفاصيل الخطة",
+
+             "reviewYourSelection": "راجع اختيارك",
+             "confirmPlanDetails": "تأكيد تفاصيل خطتك",
+             "classesPerMonth": "عدد الحصص شهريًا:",
+             "validAt": "صالح في:",
+             "haveVoucherCode": "هل لديك رمز قسيمة؟",
+             "enterVoucherCode": "أدخل رمز القسيمة",
+             "apply": "تطبيق",
+             "acceptedPaymentMethods": "طرق الدفع المقبولة:"
+
+
+
 
 }
 

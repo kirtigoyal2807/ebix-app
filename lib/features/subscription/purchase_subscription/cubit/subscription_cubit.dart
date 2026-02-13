@@ -34,7 +34,7 @@ class SubscriptionCubit extends Cubit<SubscriptionState> {
     // Step 7: Safety
     // Step 8: Terms & Conditions
     // Step 9: Required Information
-    if (state.currentStep < 9) {
+    if (state.currentStep < 10) {
       emit(state.copyWith(currentStep: state.currentStep + 1));
     } else {
       // Finish flow (e.g. navigate to payment)
@@ -46,13 +46,18 @@ class SubscriptionCubit extends Cubit<SubscriptionState> {
       emit(state.copyWith(currentStep: state.currentStep - 1));
     }
   }
-  
+
   // Health Info Updates - Step 1
   void updateName(String val) => emit(state.copyWith(name: val));
+
   void updateAge(String val) => emit(state.copyWith(age: val));
+
   void updateHeight(String val) => emit(state.copyWith(height: val));
+
   void updateWeight(String val) => emit(state.copyWith(weight: val));
+
   void updatePhone(String val) => emit(state.copyWith(phoneNumber: val));
+
   void updateEmail(String val) => emit(state.copyWith(email: val));
 
   // Medical History Updates - Step 2 (Generic helper for checkbox maps)
@@ -61,7 +66,7 @@ class SubscriptionCubit extends Cubit<SubscriptionState> {
     newMap[key] = val ?? false;
     emit(state.copyWith(chronicConditions: newMap));
   }
-  
+
   void updateSurgeryInjury(String key, bool? val) {
     final newMap = Map<String, bool>.from(state.surgeriesInjuries);
     newMap[key] = val ?? false;
@@ -87,8 +92,11 @@ class SubscriptionCubit extends Cubit<SubscriptionState> {
   }
 
   // Physical Activity Updates - Step 3
-  void updateExerciseRegularly(String val) => emit(state.copyWith(exerciseRegularly: val));
-  void updateActivityFrequency(PhysicalActivityFrequency val) => emit(state.copyWith(activityFrequency: val));
+  void updateExerciseRegularly(String val) =>
+      emit(state.copyWith(exerciseRegularly: val));
+
+  void updateActivityFrequency(PhysicalActivityFrequency val) =>
+      emit(state.copyWith(activityFrequency: val));
 
   // Pregnancy Updates - Step 4
   void updateIsPregnant(bool val) => emit(state.copyWith(isPregnant: val));
@@ -97,17 +105,30 @@ class SubscriptionCubit extends Cubit<SubscriptionState> {
   void updateGoals(String val) => emit(state.copyWith(goals: val));
 
   // Declaration Updates - Step 6
-  void updateDeclarationName(String val) => emit(state.copyWith(declarationName: val));
-  void updateDeclarationSignature(String val) => emit(state.copyWith(declarationSignature: val));
-  void updateDeclarationDate(String val) => emit(state.copyWith(declarationDate: val));
+  void updateDeclarationName(String val) =>
+      emit(state.copyWith(declarationName: val));
+
+  void updateDeclarationSignature(String val) =>
+      emit(state.copyWith(declarationSignature: val));
+
+  void updateDeclarationDate(String val) =>
+      emit(state.copyWith(declarationDate: val));
 
   // Terms & Conditions Updates - Step 8
-  void toggleTermsAccepted(bool val) => emit(state.copyWith(isTermsAccepted: val));
+  void toggleTermsAccepted(bool val) =>
+      emit(state.copyWith(isTermsAccepted: val));
 
   // Required Information Updates - Step 9
-  void updateEmergencyContactName(String val) => emit(state.copyWith(emergencyContactName: val));
-  void updateEmergencyContactRelationship(String val) => emit(state.copyWith(emergencyContactRelationship: val));
-  void updateEmergencyContactPhone(String val) => emit(state.copyWith(emergencyContactPhone: val));
+  void updateEmergencyContactName(String val) =>
+      emit(state.copyWith(emergencyContactName: val));
+
+  void updateEmergencyContactRelationship(String val) =>
+      emit(state.copyWith(emergencyContactRelationship: val));
+
+  void updateEmergencyContactPhone(String val) =>
+      emit(state.copyWith(emergencyContactPhone: val));
+
   void updateIdType(String val) => emit(state.copyWith(idType: val));
+
   void updateIdNumber(String val) => emit(state.copyWith(idNumber: val));
 }

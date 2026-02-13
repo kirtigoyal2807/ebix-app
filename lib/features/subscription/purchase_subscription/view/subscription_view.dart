@@ -6,6 +6,7 @@ import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/core/localization/arb/app_localizations.dart';
 import 'package:pilates_app/features/subscription/purchase_subscription/cubit/subscription_cubit.dart';
+import 'package:pilates_app/features/subscription/purchase_subscription/view/review_screen_view.dart';
 import 'package:pilates_app/features/subscription/purchase_subscription/view/widgets/branch_selector.dart';
 import 'package:pilates_app/features/subscription/purchase_subscription/view/widgets/gift_toggle_card.dart';
 import 'package:pilates_app/features/subscription/purchase_subscription/view/widgets/plan_card.dart';
@@ -58,6 +59,8 @@ class _SubscriptionViewContent extends StatelessWidget {
         } else if (state.currentStep == 8) {
           appBarTitle = l10n.termsAndConditions;
         } else if (state.currentStep == 9) {
+          appBarTitle = l10n.planDetails;
+        }  else if (state.currentStep == 10) {
           appBarTitle = l10n.requiredInformation;
         } else {
           appBarTitle = l10n.subscriptionTitle;
@@ -89,6 +92,7 @@ class _SubscriptionViewContent extends StatelessWidget {
                 const DeclarationView(), // Step 6
                 const SafetyView(),
                 const TermsAndConditionsView(),
+                const ReviewScreenView(),
                 const RequiredInformationView(),
               ],
             ),

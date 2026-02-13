@@ -596,7 +596,19 @@
       "totalPaid": "Total Paid",
       "paymentMethod": "Payment Method",
       "nextBillingDateText": "Next Billing Date",
-      "name":"Name"
+      "name":"Name",
+      "planDetails": "Plan Details",
+        "reviewYourSelection": "Review Your Selection",
+        "confirmPlanDetails": "Confirm your plan details",
+        "classesPerMonth": "Classes per month",
+        "validAt": "Valid at",
+        "haveVoucherCode": "Have a voucher code?",
+        "enterVoucherCode": "Enter voucher code",
+        "apply": "Apply",
+        "acceptedPaymentMethods": "Accepted methods of payment"
+
+
+
 
 }
 

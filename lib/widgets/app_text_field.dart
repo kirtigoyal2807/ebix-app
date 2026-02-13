@@ -7,7 +7,7 @@ import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'app_text.dart';
 
 class AppTextField extends StatefulWidget {
-  final String label;
+  final String? label;
   final String hint;
   final bool obscure;
   final TextInputType keyboardType;
@@ -18,14 +18,14 @@ class AppTextField extends StatefulWidget {
 
   const AppTextField({
     super.key,
-    required this.label,
+    this.label,
     required this.hint,
     this.obscure = false,
     this.keyboardType = TextInputType.text,
     this.errorText,
     this.onChanged,
     this.initialValue,
-    this.maxLines
+    this.maxLines,
   });
 
   @override
@@ -59,9 +59,9 @@ class _AppTextFieldState extends State<AppTextField> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         /// LABEL
-        AppText(widget.label, style: AppTextStyles.textFieldHeading),
-
-        const SizedBox(height: AppSpacing.sm),
+        if (widget.label != null)
+          AppText(widget.label ?? "", style: AppTextStyles.textFieldHeading),
+        if (widget.label != null) const SizedBox(height: AppSpacing.sm),
 
         /// TEXT FIELD
         TextFormField(
@@ -71,7 +71,7 @@ class _AppTextFieldState extends State<AppTextField> {
           obscureText: _obscure,
           keyboardType: widget.keyboardType,
           style: AppTextStyles.textField(context),
-          maxLines:widget.maxLines ,
+          maxLines: widget.maxLines,
           decoration: InputDecoration(
             hintText: widget.hint,
             hintStyle: AppTextStyles.textField(

@@ -1405,4 +1405,31 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get name => 'الاسم';
+
+  @override
+  String get planDetails => 'تفاصيل الخطة';
+
+  @override
+  String get reviewYourSelection => 'راجع اختيارك';
+
+  @override
+  String get confirmPlanDetails => 'تأكيد تفاصيل خطتك';
+
+  @override
+  String get classesPerMonth => 'عدد الحصص شهريًا:';
+
+  @override
+  String get validAt => 'صالح في:';
+
+  @override
+  String get haveVoucherCode => 'هل لديك رمز قسيمة؟';
+
+  @override
+  String get enterVoucherCode => 'أدخل رمز القسيمة';
+
+  @override
+  String get apply => 'تطبيق';
+
+  @override
+  String get acceptedPaymentMethods => 'طرق الدفع المقبولة:';
 }
