@@ -76,7 +76,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get lastName => 'Last Name';
 
   @override
-  String get email => 'Email Address';
+  String get email => 'Email';
 
   @override
   String get createPassword => 'Create a password and add your phone';
@@ -706,7 +706,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get neededPlan => 'Needed:';
 
   @override
-  String get premiumPlan => 'Premium Plan (Monthly)';
+  String get premiumPlan => 'Premium Plan';
 
   @override
   String get elitePlan => 'Elite Plan (All locations)';
@@ -1444,4 +1444,88 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get acceptedPaymentMethods => 'Accepted methods of payment';
+
+  @override
+  String get giftSentSuccessfully => 'Gift Sent Successfully';
+
+  @override
+  String get giftProcessedMessage =>
+      'Your gift subscription has been processed';
+
+  @override
+  String get deliverySummary => 'Delivery Summary';
+
+  @override
+  String get recipientName => 'Recipient Name';
+
+  @override
+  String get deliveryMethod => 'Delivery Method';
+
+  @override
+  String get deliveryMethodInstant => 'Email (Instant)';
+
+  @override
+  String get giftStatus => 'Gift Status';
+
+  @override
+  String get delivered => 'Delivered';
+
+  @override
+  String get redemptionEmailMessage =>
+      'An email with redemption instructions has been sent to the recipient. They\'ll receive a unique code to activate their subscription.';
+
+  @override
+  String get startExploringClasses => 'Start Exploring Classes';
+
+  @override
+  String get sendAnotherGift => 'Send Another Gift';
+
+  @override
+  String get giftCard => 'Gift Card';
+
+  @override
+  String get message => 'Message';
+
+  @override
+  String get giftMessageLine1 => 'Hi Taha,\nHave a great month ahead.';
+
+  @override
+  String get giftMessageLine2 => 'Happy New Year 2027';
+
+  @override
+  String get recipientDetails => 'Recipient Details';
+
+  @override
+  String get recipientNameHint => 'Recipient Name';
+
+  @override
+  String get recipientEmail => 'Recipient Email';
+
+  @override
+  String get recipientEmailHint => 'email@gmail.com';
+
+  @override
+  String get recipientPhoneOptional => 'Recipient Phone Number (Optional)';
+
+  @override
+  String get phoneHint => 'XXXXXXXXXXX';
+
+  @override
+  String get deliveryOptions => 'Delivery Options';
+
+  @override
+  String get instantDelivery => 'Instant Delivery';
+
+  @override
+  String get scheduledDelivery1 => 'Scheduled Delivery';
+
+  @override
+  String get personalMessageOptional => 'Personal Message (Optional)';
+
+  @override
+  String get personalMessageHint =>
+      'Hi Taha,\n\nHave a great month ahead. Happy New Year 2027';
+
+  @override
+  String get charactersCount => '40/128 characters';
 }

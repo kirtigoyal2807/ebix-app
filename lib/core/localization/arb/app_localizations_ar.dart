@@ -73,7 +73,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get lastName => 'اسم العائلة';
 
   @override
-  String get email => 'عنوان البريد الإلكتروني';
+  String get email => 'البريد الإلكتروني';
 
   @override
   String get createPassword => 'أنشئ كلمة مرور وأضف رقم هاتفك';
@@ -700,7 +700,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get neededPlan => 'الخطة المطلوبة:';
 
   @override
-  String get premiumPlan => 'الخطة المميزة (شهريًا)';
+  String get premiumPlan => 'الخطة المميزة';
 
   @override
   String get elitePlan => 'خطة النخبة (جميع المواقع)';
@@ -1044,7 +1044,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get purchaseNewPlan => 'شراء خطة جديدة';
 
   @override
-  String get giftSubscription => 'إهداء اشتراك';
+  String get giftSubscription => 'اشتراك كهدية';
 
   @override
   String get sendGiftToSomeone => 'إرسال هدية لشخص ما';
@@ -1432,4 +1432,87 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get acceptedPaymentMethods => 'طرق الدفع المقبولة:';
+
+  @override
+  String get giftSentSuccessfully => 'تم إرسال الهدية بنجاح';
+
+  @override
+  String get giftProcessedMessage => 'تمت معالجة اشتراك الهدية الخاص بك';
+
+  @override
+  String get deliverySummary => 'ملخص التسليم';
+
+  @override
+  String get recipientName => 'اسم المستلم';
+
+  @override
+  String get deliveryMethod => 'طريقة التسليم';
+
+  @override
+  String get deliveryMethodInstant => 'البريد الإلكتروني (فوري)';
+
+  @override
+  String get giftStatus => 'حالة الهدية';
+
+  @override
+  String get delivered => 'تم التسليم';
+
+  @override
+  String get redemptionEmailMessage =>
+      'تم إرسال بريد إلكتروني يحتوي على تعليمات الاسترداد إلى المستلم. سيتلقى رمزًا فريدًا لتفعيل اشتراكه.';
+
+  @override
+  String get startExploringClasses => 'ابدأ استكشاف الحصص';
+
+  @override
+  String get sendAnotherGift => 'إرسال هدية أخرى';
+
+  @override
+  String get giftCard => 'بطاقة هدية';
+
+  @override
+  String get message => 'رسالة';
+
+  @override
+  String get giftMessageLine1 => 'مرحبًا طه،\nأتمنى لك شهرًا رائعًا.';
+
+  @override
+  String get giftMessageLine2 => 'سنة جديدة سعيدة 2027';
+
+  @override
+  String get recipientDetails => 'تفاصيل المستلم';
+
+  @override
+  String get recipientNameHint => 'اسم المستلم';
+
+  @override
+  String get recipientEmail => 'البريد الإلكتروني للمستلم';
+
+  @override
+  String get recipientEmailHint => 'email@gmail.com';
+
+  @override
+  String get recipientPhoneOptional => 'رقم هاتف المستلم (اختياري)';
+
+  @override
+  String get phoneHint => 'XXXXXXXXXXX';
+
+  @override
+  String get deliveryOptions => 'خيارات التسليم';
+
+  @override
+  String get instantDelivery => 'تسليم فوري';
+
+  @override
+  String get scheduledDelivery1 => 'تسليم مجدول';
+
+  @override
+  String get personalMessageOptional => 'رسالة شخصية (اختياري)';
+
+  @override
+  String get personalMessageHint =>
+      'مرحبًا طه،\n\nأتمنى لك شهرًا رائعًا. سنة جديدة سعيدة 2027';
+
+  @override
+  String get charactersCount => '40/128 حرفًا';
 }

@@ -24,6 +24,8 @@ import 'package:pilates_app/widgets/app_app_bar.dart';
 import 'package:pilates_app/widgets/app_button.dart';
 import 'package:pilates_app/widgets/app_text.dart';
 
+import '../../subscription_as_gift/gift_subscription_view.dart';
+
 class SubscriptionView extends StatelessWidget {
   const SubscriptionView({super.key});
 
@@ -44,7 +46,7 @@ class _SubscriptionViewContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    
+
     return BlocBuilder<SubscriptionCubit, SubscriptionState>(
       // Listen to currentStep usage
       builder: (context, state) {
@@ -60,14 +62,16 @@ class _SubscriptionViewContent extends StatelessWidget {
           appBarTitle = l10n.termsAndConditions;
         } else if (state.currentStep == 9) {
           appBarTitle = l10n.planDetails;
-        }  else if (state.currentStep == 10) {
+        } else if (state.currentStep == 10) {
           appBarTitle = l10n.requiredInformation;
         } else {
           appBarTitle = l10n.subscriptionTitle;
         }
 
         return Scaffold(
-          backgroundColor: isDark ? AppColors.homeBackground : AppColors.whiteColor,
+          backgroundColor: isDark
+              ? AppColors.homeBackground
+              : AppColors.whiteColor,
           appBar: AppAppBar(
             title: appBarTitle,
             isMoreMenu: false,
@@ -124,31 +128,31 @@ class _PlanSelectionStep extends StatelessWidget {
           l10n.featureDowntownUptown,
           l10n.featureFreeMatEquipment,
           l10n.featurePriorityBooking,
-        ]
+        ],
       },
       {
         'id': 'basic',
         'title': l10n.basicPlanTitle,
         'price': '49\$',
-        'badge': l10n.starter, 
+        'badge': l10n.starter,
         'isPopular': false,
         'features': [
           l10n.feature8Classes,
           l10n.featureDowntownOnly,
           l10n.featureFreeMat,
-        ]
+        ],
       },
       {
         'id': 'unlimited',
         'title': l10n.unlimitedPlanTitle,
         'price': '149\$',
-        'badge': null, 
+        'badge': null,
         'features': [
           l10n.featureUnlimitedClasses,
           l10n.featureAllStudios,
           l10n.featureFreeMatEquipment,
           l10n.featurePriorityGuest,
-        ]
+        ],
       },
     ];
 
@@ -162,92 +166,117 @@ class _PlanSelectionStep extends StatelessWidget {
               children: [
                 // Header
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: AppSpacing.lg,
+                  ),
                   child: AppText(
                     l10n.chooseYourPlan,
-                    style: (context) => AppTextStyles.gelasioMedium(context).copyWith(fontSize: 24),
+                    style: (context) => AppTextStyles.gelasioMedium(
+                      context,
+                    ).copyWith(fontSize: 24),
                   ),
                 ),
                 const SizedBox(height: 4),
                 Padding(
-                   padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
-                   child: AppText(
-                     l10n.selectPlanSubtitle,
-                     style: (context) => AppTextStyles.bodyText(context),
-                   ),
-                 ),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: AppSpacing.lg,
+                  ),
+                  child: AppText(
+                    l10n.selectPlanSubtitle,
+                    style: (context) => AppTextStyles.bodyText(context),
+                  ),
+                ),
                 const SizedBox(height: AppSpacing.md),
 
-                 // Gift Toggle
-                 BlocBuilder<SubscriptionCubit, SubscriptionState>(
-                   buildWhen: (p, c) => p.isGift != c.isGift,
-                   builder: (context, state) {
-                     return Padding(
-                       padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
-                       child: GiftToggleCard(
-                         isGift: state.isGift,
-                         onToggle: (val) => cubit.toggleGift(val),
-                       ),
-                     );
-                   },
-                 ),
-                 const SizedBox(height: AppSpacing.md),
+                // Gift Toggle
+                BlocBuilder<SubscriptionCubit, SubscriptionState>(
+                  buildWhen: (p, c) => p.isGift != c.isGift,
+                  builder: (context, state) {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: AppSpacing.lg,
+                      ),
+                      child: GiftToggleCard(
+                        isGift: state.isGift,
+                        onToggle: (val) => cubit.toggleGift(val),
+                      ),
+                    );
+                  },
+                ),
+                const SizedBox(height: AppSpacing.md),
 
-                 // Branch Selector
-                 BlocBuilder<SubscriptionCubit, SubscriptionState>(
-                   buildWhen: (p, c) => p.selectedBranchId != c.selectedBranchId,
-                   builder: (context, state) {
-                     return BranchSelector(
-                       branches: const ['Branch A', 'Branch B', 'Branch C', 'Branch D'],
-                       selectedBranchId: state.selectedBranchId,
-                       onSelect: (branchId) => cubit.selectBranch(branchId),
-                     );
-                   },
-                 ),
-                 const SizedBox(height: AppSpacing.md),
+                // Branch Selector
+                BlocBuilder<SubscriptionCubit, SubscriptionState>(
+                  buildWhen: (p, c) => p.selectedBranchId != c.selectedBranchId,
+                  builder: (context, state) {
+                    return BranchSelector(
+                      branches: const [
+                        'Branch A',
+                        'Branch B',
+                        'Branch C',
+                        'Branch D',
+                      ],
+                      selectedBranchId: state.selectedBranchId,
+                      onSelect: (branchId) => cubit.selectBranch(branchId),
+                    );
+                  },
+                ),
+                const SizedBox(height: AppSpacing.md),
 
-                 // Plans List
-                 BlocBuilder<SubscriptionCubit, SubscriptionState>(
-                   buildWhen: (p, c) => p.selectedPlanId != c.selectedPlanId,
-                   builder: (context, state) {
-                     return Padding(
-                       padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
-                       child: Column(
-                         children: plans.map((plan) {
-                           return PlanCard(
-                             id: plan['id'],
-                             title: plan['title'],
-                             price: plan['price'],
-                             isSelected: state.selectedPlanId == plan['id'],
-                             isPopular: plan['isPopular'] ?? false,
-                             badgeText: plan['badge'],
-                             onTap: () {
-                               cubit.selectPlan(plan['id']);
-                               showModalBottomSheet(
-                                 context: context,
-                                 isScrollControlled: true,
-                                 backgroundColor: Colors.transparent,
-                                 builder: (context) => PlanDetailsModal(plan: plan),
-                               );
-                             },
-                           );
-                         }).toList(),
-                       ),
-                     );
-                   },
-                 ),
+                // Plans List
+                BlocBuilder<SubscriptionCubit, SubscriptionState>(
+                  buildWhen: (p, c) => p.selectedPlanId != c.selectedPlanId,
+                  builder: (context, state) {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: AppSpacing.lg,
+                      ),
+                      child: Column(
+                        children: plans.map((plan) {
+                          return PlanCard(
+                            id: plan['id'],
+                            title: plan['title'],
+                            price: plan['price'],
+                            isSelected: state.selectedPlanId == plan['id'],
+                            isPopular: plan['isPopular'] ?? false,
+                            badgeText: plan['badge'],
+                            onTap: () {
+                              cubit.selectPlan(plan['id']);
+                              showModalBottomSheet(
+                                context: context,
+                                isScrollControlled: true,
+                                backgroundColor: Colors.transparent,
+                                builder: (context) =>
+                                    PlanDetailsModal(plan: plan),
+                              );
+                            },
+                          );
+                        }).toList(),
+                      ),
+                    );
+                  },
+                ),
               ],
             ),
           ),
         ),
-        
+
         // Fixed Bottom Button
         Padding(
           padding: const EdgeInsets.all(24),
           child: AppButton(
             label: l10n.continueTxt,
             onPressed: () {
-               cubit.nextStep();
+              if (cubit.state.isGift == true) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const GiftSubscriptionView(),
+                  ),
+                );
+              } else {
+                cubit.nextStep();
+              }
             },
             buttonColor: AppColors.primaryBrown,
             expanded: true,

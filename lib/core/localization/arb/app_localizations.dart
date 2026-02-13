@@ -227,7 +227,7 @@ abstract class AppLocalizations {
   /// No description provided for @email.
   ///
   /// In en, this message translates to:
-  /// **'Email Address'**
+  /// **'Email'**
   String get email;
 
   /// No description provided for @createPassword.
@@ -1415,7 +1415,7 @@ abstract class AppLocalizations {
   /// No description provided for @premiumPlan.
   ///
   /// In en, this message translates to:
-  /// **'Premium Plan (Monthly)'**
+  /// **'Premium Plan'**
   String get premiumPlan;
 
   /// No description provided for @elitePlan.
@@ -2809,6 +2809,168 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Accepted methods of payment'**
   String get acceptedPaymentMethods;
+
+  /// No description provided for @giftSentSuccessfully.
+  ///
+  /// In en, this message translates to:
+  /// **'Gift Sent Successfully'**
+  String get giftSentSuccessfully;
+
+  /// No description provided for @giftProcessedMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Your gift subscription has been processed'**
+  String get giftProcessedMessage;
+
+  /// No description provided for @deliverySummary.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivery Summary'**
+  String get deliverySummary;
+
+  /// No description provided for @recipientName.
+  ///
+  /// In en, this message translates to:
+  /// **'Recipient Name'**
+  String get recipientName;
+
+  /// No description provided for @deliveryMethod.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivery Method'**
+  String get deliveryMethod;
+
+  /// No description provided for @deliveryMethodInstant.
+  ///
+  /// In en, this message translates to:
+  /// **'Email (Instant)'**
+  String get deliveryMethodInstant;
+
+  /// No description provided for @giftStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Gift Status'**
+  String get giftStatus;
+
+  /// No description provided for @delivered.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivered'**
+  String get delivered;
+
+  /// No description provided for @redemptionEmailMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'An email with redemption instructions has been sent to the recipient. They\'ll receive a unique code to activate their subscription.'**
+  String get redemptionEmailMessage;
+
+  /// No description provided for @startExploringClasses.
+  ///
+  /// In en, this message translates to:
+  /// **'Start Exploring Classes'**
+  String get startExploringClasses;
+
+  /// No description provided for @sendAnotherGift.
+  ///
+  /// In en, this message translates to:
+  /// **'Send Another Gift'**
+  String get sendAnotherGift;
+
+  /// No description provided for @giftCard.
+  ///
+  /// In en, this message translates to:
+  /// **'Gift Card'**
+  String get giftCard;
+
+  /// No description provided for @message.
+  ///
+  /// In en, this message translates to:
+  /// **'Message'**
+  String get message;
+
+  /// No description provided for @giftMessageLine1.
+  ///
+  /// In en, this message translates to:
+  /// **'Hi Taha,\nHave a great month ahead.'**
+  String get giftMessageLine1;
+
+  /// No description provided for @giftMessageLine2.
+  ///
+  /// In en, this message translates to:
+  /// **'Happy New Year 2027'**
+  String get giftMessageLine2;
+
+  /// No description provided for @recipientDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Recipient Details'**
+  String get recipientDetails;
+
+  /// No description provided for @recipientNameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Recipient Name'**
+  String get recipientNameHint;
+
+  /// No description provided for @recipientEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Recipient Email'**
+  String get recipientEmail;
+
+  /// No description provided for @recipientEmailHint.
+  ///
+  /// In en, this message translates to:
+  /// **'email@gmail.com'**
+  String get recipientEmailHint;
+
+  /// No description provided for @recipientPhoneOptional.
+  ///
+  /// In en, this message translates to:
+  /// **'Recipient Phone Number (Optional)'**
+  String get recipientPhoneOptional;
+
+  /// No description provided for @phoneHint.
+  ///
+  /// In en, this message translates to:
+  /// **'XXXXXXXXXXX'**
+  String get phoneHint;
+
+  /// No description provided for @deliveryOptions.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivery Options'**
+  String get deliveryOptions;
+
+  /// No description provided for @instantDelivery.
+  ///
+  /// In en, this message translates to:
+  /// **'Instant Delivery'**
+  String get instantDelivery;
+
+  /// No description provided for @scheduledDelivery1.
+  ///
+  /// In en, this message translates to:
+  /// **'Scheduled Delivery'**
+  String get scheduledDelivery1;
+
+  /// No description provided for @personalMessageOptional.
+  ///
+  /// In en, this message translates to:
+  /// **'Personal Message (Optional)'**
+  String get personalMessageOptional;
+
+  /// No description provided for @personalMessageHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Hi Taha,\n\nHave a great month ahead. Happy New Year 2027'**
+  String get personalMessageHint;
+
+  /// No description provided for @charactersCount.
+  ///
+  /// In en, this message translates to:
+  /// **'40/128 characters'**
+  String get charactersCount;
 }
 
 class _AppLocalizationsDelegate
