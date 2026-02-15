@@ -99,6 +99,7 @@ class AppColors {
   static const warningColor = Color(0xFFFDC700);
   static const redText = Color(0xFFDC3E42);
   static const switchInactiveDark = Color(0xFF140D09);
+
   static const goldBackground = Color(0xFFFDC7003B);
 
   static const lightExpireCard = Color(0xFF641723);
@@ -115,4 +116,6 @@ class AppColors {
   static const subscriptionCardGradient2 = Color(0xff9A7E6D);
 
   static const containerGreyBg = Color(0xffFAF9F9);
+
+  static  final bottomSheetShadow =   Color(0xff292524).withValues(alpha: 0.7);
 }

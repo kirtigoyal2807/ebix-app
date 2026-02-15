@@ -97,7 +97,7 @@ class SuccessMembershipView extends StatelessWidget {
                                 color: isDark
                                     ? AppColors.lightText
                                     : AppColors.successColor,
-                                fontWeight: FontWeight.w500,
+                                fontWeight: FontWeight.w600,
                                 height: 1.55,
                                 fontSize: 12,
                               ),

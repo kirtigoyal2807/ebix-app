@@ -5,6 +5,8 @@ import '../../../config/theme/app_colors.dart';
 import '../../../config/theme/app_text_styles.dart';
 import '../../../core/localization/localization_extension.dart';
 import '../../../widgets/app_text.dart';
+import '../../../widgets/language_bottom_sheet.dart';
+import '../../../widgets/theme_bottom_sheet.dart';
 import 'account_info_tile.dart';
 
 class AppPreference extends StatelessWidget {
@@ -27,12 +29,14 @@ class AppPreference extends StatelessWidget {
         ),
         SizedBox(height: AppSpacing.lmd),
         AccountInfoTile(
+          onTap: () {
+            _showLanguageSelector(context);
+          },
           icon: isDark
               ? "assets/images/svg/account/ic_dark_language.svg"
               : "assets/images/svg/account/ic_language.svg",
           title: context.l10n.language,
           subtitle: context.l10n.englishShort,
-
         ),
         SizedBox(height: AppSpacing.lmd),
         AccountInfoTile(
@@ -44,14 +48,38 @@ class AppPreference extends StatelessWidget {
         ),
         SizedBox(height: AppSpacing.lmd),
         AccountInfoTile(
+          onTap: () {
+            _showThemeSelector(context);
+          },
           icon: isDark
               ? "assets/images/svg/account/ic_dark_theme.svg"
               : "assets/images/svg/account/ic_app_theme.svg",
           title: context.l10n.appTheme,
           subtitle: context.l10n.systemMode,
         ),
-
       ],
+    );
+  }
+
+  void _showLanguageSelector(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      barrierColor:     AppColors.bottomSheetShadow,
+      // backgroundColor: Colors.transparent,
+      builder: (_) => const LanguageBottomSheet(),
+    );
+  }
+
+  void _showThemeSelector(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      barrierColor:     AppColors.bottomSheetShadow,
+      // backgroundColor: Colors.transparent,
+      builder: (_) => const ThemeBottomSheet(),
     );
   }
 }

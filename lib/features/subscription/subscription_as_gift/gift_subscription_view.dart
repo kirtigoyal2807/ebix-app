@@ -19,7 +19,13 @@ class GiftSubscriptionView extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     return Scaffold(
-      appBar: AppAppBar(title: l10n.giftSubscription, isMoreMenu: false),
+      appBar: AppAppBar(
+        title: l10n.giftSubscription,
+        isMoreMenu: false,
+        onBack: () {
+          Navigator.of(context).pop();
+        },
+      ),
       body: Padding(
         padding: EdgeInsets.only(
           // vertical: AppSpacing.md,

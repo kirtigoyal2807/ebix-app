@@ -21,9 +21,7 @@ class HomeHeader extends StatelessWidget {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      barrierColor: isDark
-          ? Colors.white.withValues(alpha: 0.2)
-          : Colors.black.withValues(alpha: 0.2),
+      barrierColor:     AppColors.bottomSheetShadow,
       builder: (_) => const LanguageBottomSheet(),
     );
   }

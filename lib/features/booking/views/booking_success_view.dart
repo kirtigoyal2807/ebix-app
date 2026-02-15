@@ -149,10 +149,13 @@ class BookingSuccessScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              const Icon(
+              SizedBox(width: 10),
+              Icon(
                 Icons.warning_amber_rounded,
                 size: 16,
-                color: AppColors.languageIcon,
+                color: isDark
+                    ? AppColors.languageIconDark
+                    : AppColors.languageIcon,
               ),
               const SizedBox(width: AppSpacing.xs),
               Expanded(

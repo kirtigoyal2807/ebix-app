@@ -36,7 +36,7 @@ class PilatesApp extends StatelessWidget {
 
             theme: AppTheme.light(),
             darkTheme: AppTheme.dark(),
-            themeMode: ThemeMode.system,
+            themeMode: state.themeMode,
 
             home: const AuthRootView(),
           );

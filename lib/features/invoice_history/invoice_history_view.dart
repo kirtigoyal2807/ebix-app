@@ -10,6 +10,7 @@ import 'package:pilates_app/features/invoice_history/widget/filtter_sheet.dart';
 import 'package:pilates_app/features/invoice_history/widget/invoice_category_buttons.dart';
 import 'package:pilates_app/widgets/app_app_bar.dart';
 
+import '../../config/theme/app_colors.dart';
 import '../../core/localization/localization_extension.dart';
 import 'cubit/invoice_history_cubit.dart';
 import 'cubit/invoice_history_state.dart';
@@ -41,9 +42,7 @@ class InvoiceHistoryView extends StatelessWidget {
                   context: context,
                   isScrollControlled: true,
                   backgroundColor: Colors.transparent,
-                  barrierColor: isDark
-                      ? Colors.white.withValues(alpha: 0.2)
-                      : Colors.black.withValues(alpha: 0.2),
+                  barrierColor:     AppColors.bottomSheetShadow,
                   builder: (_) => FilterSelectionBottomSheet(),
                 );
               },

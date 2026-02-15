@@ -74,7 +74,7 @@ class WelcomeToPilateView extends StatelessWidget {
                           l10n.invoiceDetails,
                           style: (context) => AppTextStyles.textFieldHeading(
                             context,
-                          ).copyWith(fontSize: 12),
+                          ).copyWith(fontSize: 14),
                         ),
                         SvgPicture.asset(
                           isDark
@@ -138,7 +138,7 @@ class WelcomeToPilateView extends StatelessWidget {
                     const SizedBox(height: AppSpacing.md),
 
                     _buildRow(l10n.paymentMethod, "•••• 3456", isDark),
-                    const SizedBox(height: AppSpacing.md),
+                    const SizedBox(height: AppSpacing.xs),
                     _buildRow(l10n.nextBillingDateText, "Feb 23, 2026", isDark),
                   ],
                 ),
@@ -173,7 +173,7 @@ class WelcomeToPilateView extends StatelessWidget {
                                 color: isDark
                                     ? AppColors.lightText
                                     : AppColors.greyText,
-                                fontWeight: FontWeight.w500,
+                                fontWeight: FontWeight.w600,
                                 height: 1.55,
                                 fontSize: 12,
                               ),

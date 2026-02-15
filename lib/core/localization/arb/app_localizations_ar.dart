@@ -1515,4 +1515,91 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get charactersCount => '40/128 حرفًا';
+
+  @override
+  String get selectTheme => 'اختر المظهر';
+
+  @override
+  String get lightTheme => 'المظهر الفاتح';
+
+  @override
+  String get darkTheme => 'المظهر الداكن';
+
+  @override
+  String get systemTheme => 'استخدام مظهر الجهاز';
+
+  @override
+  String get switchTheme => 'تغيير المظهر';
+
+  @override
+  String get myActivity => 'نشاطي';
+
+  @override
+  String get progressDashboard => 'لوحة التقدم';
+
+  @override
+  String get progressDashboardSubtitle => 'تابع رحلتك في اللياقة';
+
+  @override
+  String get myBookingsSubtitle => 'عرض سجل الحجوزات';
+
+  @override
+  String get challenges => 'التحديات';
+
+  @override
+  String get challengesSubtitle => 'انضم إلى التحديات النشطة';
+
+  @override
+  String get rewardsCatalog => 'كتالوج المكافآت';
+
+  @override
+  String get rewardsCatalogSubtitle => 'استبدل نقاطك';
+
+  @override
+  String get achievements => 'الإنجازات';
+
+  @override
+  String get achievementsSubtitle => 'عرض شاراتك';
+
+  @override
+  String get redeemGiftCard => 'استبدال بطاقة هدية';
+
+  @override
+  String get redeemGiftCardSubtitle => 'أدخل الرمز لاستبدال البطاقة';
+
+  @override
+  String get referralProgram => 'برنامج الإحالة';
+
+  @override
+  String get referralProgramSubtitle => 'ادعُ الأصدقاء واكسب';
+
+  @override
+  String get helpAbout => 'المساعدة والمعلومات';
+
+  @override
+  String get helpSupport => 'المساعدة والدعم';
+
+  @override
+  String get helpSupportSubtitle => 'الأسئلة الشائعة والتواصل معنا';
+
+  @override
+  String get termsConditions => 'الشروط والأحكام';
+
+  @override
+  String get termsConditionsSubtitle => 'الشروط القانونية للخدمة';
+
+  @override
+  String get privacyPolicy => 'سياسة الخصوصية';
+
+  @override
+  String get privacyPolicySubtitle => 'كيف نتعامل مع بياناتك';
+
+  @override
+  String get discover => 'اكتشف';
+
+  @override
+  String get browseTrainers => 'تصفح المدربين';
+
+  @override
+  String get meetOurTrainers => 'تعرف على مدربينا';
 }

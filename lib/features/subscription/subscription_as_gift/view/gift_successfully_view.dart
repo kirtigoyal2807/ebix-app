@@ -73,7 +73,7 @@ class GiftSuccessfullyView extends StatelessWidget {
                     l10n.deliverySummary,
                     style: (context) => AppTextStyles.bodyText(
                       context,
-                    ).copyWith(fontWeight: FontWeight.w500),
+                    ).copyWith(fontWeight: FontWeight.w600),
                   ),
 
                   const SizedBox(height: 46),
@@ -135,7 +135,7 @@ class GiftSuccessfullyView extends StatelessWidget {
                             color: isDark
                                 ? AppColors.lightGreyColor
                                 : AppColors.greyText,
-                            fontWeight: FontWeight.w500,
+                            fontWeight: FontWeight.w600,
                             height: 1.55,
                             fontSize: 12,
                           ),
@@ -185,6 +185,7 @@ class GiftSuccessfullyView extends StatelessWidget {
                     context: context,
                     isScrollControlled: true,
                     backgroundColor: Colors.transparent,
+                    barrierColor:     AppColors.bottomSheetShadow,
                     builder: (context) => PlanDetailsModal(
                       plan: plan,
                       appLabel: l10n.continueTxt,

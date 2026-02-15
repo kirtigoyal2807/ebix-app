@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pilates_app/config/theme/app_colors.dart';
 import 'package:pilates_app/config/theme/app_radius.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
@@ -27,11 +28,12 @@ class PlanCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final borderColor = isSelected 
-        ? AppColors.primaryBrown 
+    final borderColor = isSelected
+        ? AppColors.primaryBrown
         : (isDark ? AppColors.borderDark : AppColors.lightGreyBorder);
 
-    return LayoutBuilder( // To ensure container doesn't overflow or break
+    return LayoutBuilder(
+      // To ensure container doesn't overflow or break
       builder: (context, constraints) {
         return GestureDetector(
           onTap: onTap,
@@ -56,34 +58,56 @@ class PlanCard extends StatelessWidget {
                       title,
                       style: (context) => AppTextStyles.body(context).copyWith(
                         fontSize: 16,
-                        color: isDark ? AppColors.lightText : AppColors.darkText,
+                        color: isDark
+                            ? AppColors.lightText
+                            : AppColors.darkText,
                       ),
                     ),
                     if (badgeText != null)
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 4,
+                        ),
                         decoration: BoxDecoration(
-                          color: (isDark ? const Color(0x3BFDC700) : AppColors.goldStarColor), // Gold for popular
+                          color: (isDark
+                              ? const Color(0x3BFDC700)
+                              : AppColors.goldStarColor), // Gold for popular
                           borderRadius: BorderRadius.circular(20),
                           // border: isPopular ? null : Border.all(color: AppColors.lightGreyBorder),
                         ),
                         child: AppText(
                           badgeText!,
-                          style: (context) => AppTextStyles.body(context).copyWith(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w500,
-                            color: (isDark ? AppColors.upgradeDarkLockBackgroundColor : AppColors.darkText),
-                          ),
+                          style: (context) =>
+                              AppTextStyles.body(context).copyWith(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w500,
+                                color: (isDark
+                                    ? AppColors.upgradeDarkLockBackgroundColor
+                                    : AppColors.darkText),
+                              ),
                         ),
                       ),
                   ],
                 ),
                 const SizedBox(height: 12),
-                AppText(
-                  price + ' / Month',
-                  style: (context) => AppTextStyles.body(context).copyWith(
-                    fontSize: 18,
-                  ),
+
+                Row(
+                  children: [
+                    AppText(
+                      price,
+                      style: (context) =>
+                          AppTextStyles.body(context).copyWith(fontSize: 18),
+                    ),
+                    SvgPicture.asset(
+                      "assets/images/svg/ic_Saudi_Riyal_Symbol.svg",
+                    ),
+                    AppText(
+                      ' / Month',
+                      style: (context) =>
+                          AppTextStyles.body(context).copyWith(fontSize: 18),
+                    ),
+                  ],
                 ),
               ],
             ),

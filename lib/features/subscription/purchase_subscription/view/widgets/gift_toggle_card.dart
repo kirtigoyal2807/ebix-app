@@ -23,7 +23,9 @@ class GiftToggleCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: isDark ? AppColors.trainerBlackBackgroundColor : AppColors.seekBarLight,
+        color: isDark
+            ? AppColors.trainerBlackBackgroundColor
+            : AppColors.seekBarLight,
         borderRadius: BorderRadius.circular(16),
       ),
       child: Row(
@@ -41,37 +43,59 @@ class GiftToggleCard extends StatelessWidget {
               children: [
                 AppText(
                   AppLocalizations.of(context)?.buyAsGift ?? 'Buy as Gift',
-                  style:  AppTextStyles.textFieldHeading,
+                  style: AppTextStyles.textFieldHeading,
                 ),
                 const SizedBox(height: 4),
                 AppText(
-                   AppLocalizations.of(context)?.perfectForFriends ?? 'Perfect for friends & family',
-                  style: (context) => AppTextStyles.bodyTextSmall(context).copyWith(fontSize: 12),
+                  AppLocalizations.of(context)?.perfectForFriends ??
+                      'Perfect for friends & family',
+                  style: (context) => AppTextStyles.bodyTextSmall(
+                    context,
+                  ).copyWith(fontSize: 12),
                 ),
               ],
             ),
           ),
-    Transform.scale(
-    scale: 0.8, // 👈 reduce overall size (try 0.7–0.9)
-    child: Switch.adaptive(
-    value: isGift,
-    onChanged: onToggle,
+          Transform.scale(
+            scale: 0.8, // 👈 reduce overall size (try 0.7–0.9)
+            child: Switch.adaptive(
+              value: isGift,
+              onChanged: onToggle,
 
-    // Remove outline / ripple / hover
-    overlayColor: MaterialStateProperty.all(Colors.transparent),
-    splashRadius: 0,
+              // Remove outline / ripple / hover
+              overlayColor: MaterialStateProperty.all(Colors.transparent),
+              splashRadius: 0,
 
-    inactiveThumbColor: isDark ? AppColors.primary : AppColors.whiteColor,
-    activeThumbColor: isDark ? AppColors.primary : AppColors.whiteColor,
+              inactiveThumbColor: isDark
+                  ? AppColors.primary
+                  : AppColors.whiteColor,
+              activeThumbColor: isDark
+                  ? AppColors.primary
+                  : AppColors.whiteColor,
 
-    inactiveTrackColor: AppColors.switchInactiveDark,
-    activeTrackColor: isDark
-    ? AppColors.switchInactiveDark
-        : AppColors.primary,
+              inactiveTrackColor: isDark
+                  ? AppColors.switchInactiveDark
+                  : AppColors.buttonBorder,
+              activeTrackColor: isDark
+                  ? AppColors.switchInactiveDark
+                  : AppColors.primary,
 
-    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap, // 👈 removes extra padding
-    ),
-    ),
+              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+
+              // 👈 removes extra padding
+              trackOutlineColor: MaterialStateProperty.resolveWith((states) {
+                if (states.contains(MaterialState.selected)) {
+                  return isDark
+                      ? AppColors.switchInactiveDark
+                      : AppColors.primary;
+                }
+                return isDark
+                    ? AppColors.switchInactiveDark
+                    : AppColors.buttonBorder;
+              }),
+              trackOutlineWidth: MaterialStateProperty.all(1.5),
+            ),
+          ),
         ],
       ),
     );

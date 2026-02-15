@@ -600,7 +600,47 @@
   "scheduledDelivery1": "Scheduled Delivery",
   "personalMessageOptional": "Personal Message (Optional)",
   "personalMessageHint": "Hi Taha,\n\nHave a great month ahead. Happy New Year 2027",
-  "charactersCount": "40/128 characters"
+  "charactersCount": "40/128 characters",
+  "selectTheme": "Select Theme",
+  "lightTheme": "Light Theme",
+  "darkTheme": "Dark Theme",
+  "systemTheme": "Use device theme",
+  "switchTheme": "Switch Theme",
+  "myActivity": "My Activity",
+
+  "progressDashboard": "Progress Dashboard",
+  "progressDashboardSubtitle": "Track your fitness journey",
+
+  "myBookings": "My Bookings",
+  "myBookingsSubtitle": "View bookings history",
+
+  "challenges": "Challenges",
+  "challengesSubtitle": "Join active challenges",
+
+  "rewardsCatalog": "Rewards Catalog",
+  "rewardsCatalogSubtitle": "Redeem your points",
+
+  "achievements": "Achievements",
+  "achievementsSubtitle": "View your badges",
+
+  "redeemGiftCard": "Redeem Gift Card",
+  "redeemGiftCardSubtitle": "Enter code to redeem card",
+
+  "referralProgram": "Referral Program",
+  "referralProgramSubtitle": "Invite friends & earn",
+  "helpAbout": "Help & About",
+
+  "helpSupport": "Help & Support",
+  "helpSupportSubtitle": "FAQs and Contact Us",
+
+  "termsConditions": "Terms & Conditions",
+  "termsConditionsSubtitle": "Legal terms of service",
+
+  "privacyPolicy": "Privacy Policy",
+  "privacyPolicySubtitle": "How we handle your data",
+  "discover": "Discover",
+  "browseTrainers": "Browse Trainers",
+  "meetOurTrainers": "Meet our trainers"
 }
 
 

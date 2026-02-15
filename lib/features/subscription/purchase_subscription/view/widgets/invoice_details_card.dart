@@ -49,7 +49,7 @@ class InvoiceDetailsCard extends StatelessWidget {
                     context.l10n.invoiceDetails,
                     style: (context) => AppTextStyles.textFieldHeading(
                       context,
-                    ).copyWith(fontSize: 12),
+                    ).copyWith(fontSize: 14,height: 1.55),
                   ),
                   SvgPicture.asset(
                     isDark
@@ -117,7 +117,7 @@ class InvoiceDetailsCard extends StatelessWidget {
               const SizedBox(height: AppSpacing.md),
 
               _buildRow(context.l10n.paymentMethod, "•••• 3456", isDark),
-              const SizedBox(height: AppSpacing.md),
+              const SizedBox(height: AppSpacing.xs),
               _buildRow(
                 context.l10n.nextBillingDateText,
                 "Feb 23, 2026",

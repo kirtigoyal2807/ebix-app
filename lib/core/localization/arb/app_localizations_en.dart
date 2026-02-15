@@ -1528,4 +1528,91 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get charactersCount => '40/128 characters';
+
+  @override
+  String get selectTheme => 'Select Theme';
+
+  @override
+  String get lightTheme => 'Light Theme';
+
+  @override
+  String get darkTheme => 'Dark Theme';
+
+  @override
+  String get systemTheme => 'Use device theme';
+
+  @override
+  String get switchTheme => 'Switch Theme';
+
+  @override
+  String get myActivity => 'My Activity';
+
+  @override
+  String get progressDashboard => 'Progress Dashboard';
+
+  @override
+  String get progressDashboardSubtitle => 'Track your fitness journey';
+
+  @override
+  String get myBookingsSubtitle => 'View bookings history';
+
+  @override
+  String get challenges => 'Challenges';
+
+  @override
+  String get challengesSubtitle => 'Join active challenges';
+
+  @override
+  String get rewardsCatalog => 'Rewards Catalog';
+
+  @override
+  String get rewardsCatalogSubtitle => 'Redeem your points';
+
+  @override
+  String get achievements => 'Achievements';
+
+  @override
+  String get achievementsSubtitle => 'View your badges';
+
+  @override
+  String get redeemGiftCard => 'Redeem Gift Card';
+
+  @override
+  String get redeemGiftCardSubtitle => 'Enter code to redeem card';
+
+  @override
+  String get referralProgram => 'Referral Program';
+
+  @override
+  String get referralProgramSubtitle => 'Invite friends & earn';
+
+  @override
+  String get helpAbout => 'Help & About';
+
+  @override
+  String get helpSupport => 'Help & Support';
+
+  @override
+  String get helpSupportSubtitle => 'FAQs and Contact Us';
+
+  @override
+  String get termsConditions => 'Terms & Conditions';
+
+  @override
+  String get termsConditionsSubtitle => 'Legal terms of service';
+
+  @override
+  String get privacyPolicy => 'Privacy Policy';
+
+  @override
+  String get privacyPolicySubtitle => 'How we handle your data';
+
+  @override
+  String get discover => 'Discover';
+
+  @override
+  String get browseTrainers => 'Browse Trainers';
+
+  @override
+  String get meetOurTrainers => 'Meet our trainers';
 }

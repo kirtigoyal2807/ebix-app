@@ -41,6 +41,7 @@ flutter:
     - assets/images/png/
     - assets/images/svg/account/
     - assets/images/svg/invoice_history/
+    - assets/images/svg/explore/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

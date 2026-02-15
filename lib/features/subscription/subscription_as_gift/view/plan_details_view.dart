@@ -6,22 +6,25 @@ import 'package:pilates_app/features/subscription/subscription_as_gift/view/welc
 
 import 'package:pilates_app/widgets/app_app_bar.dart';
 
-
 import '../../../../config/theme/app_colors.dart';
 import '../../../../core/localization/arb/app_localizations.dart';
 import '../../../../widgets/app_button.dart';
 import '../../purchase_subscription/view/review_screen_details_view.dart';
-
 
 class PlanDetailsView extends StatelessWidget {
   const PlanDetailsView({super.key});
 
   @override
   Widget build(BuildContext context) {
-
     final l10n = AppLocalizations.of(context);
     return Scaffold(
-      appBar: AppAppBar(title: l10n.planDetails, isMoreMenu: false),
+      appBar: AppAppBar(
+        title: l10n.planDetails,
+        isMoreMenu: false,
+        onBack: () {
+          Navigator.of(context).pop();
+        },
+      ),
       body: Padding(
         padding: EdgeInsets.only(
           // vertical: AppSpacing.md,

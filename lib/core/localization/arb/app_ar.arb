@@ -581,7 +581,47 @@
   "scheduledDelivery1": "تسليم مجدول",
   "personalMessageOptional": "رسالة شخصية (اختياري)",
   "personalMessageHint": "مرحبًا طه،\n\nأتمنى لك شهرًا رائعًا. سنة جديدة سعيدة 2027",
-  "charactersCount": "40/128 حرفًا"
+  "charactersCount": "40/128 حرفًا",
+  "selectTheme": "اختر المظهر",
+  "lightTheme": "المظهر الفاتح",
+  "darkTheme": "المظهر الداكن",
+  "systemTheme": "استخدام مظهر الجهاز",
+  "switchTheme": "تغيير المظهر",
+  "myActivity": "نشاطي",
+
+  "progressDashboard": "لوحة التقدم",
+  "progressDashboardSubtitle": "تابع رحلتك في اللياقة",
+
+  "myBookings": "حجوزاتي",
+  "myBookingsSubtitle": "عرض سجل الحجوزات",
+
+  "challenges": "التحديات",
+  "challengesSubtitle": "انضم إلى التحديات النشطة",
+
+  "rewardsCatalog": "كتالوج المكافآت",
+  "rewardsCatalogSubtitle": "استبدل نقاطك",
+
+  "achievements": "الإنجازات",
+  "achievementsSubtitle": "عرض شاراتك",
+
+  "redeemGiftCard": "استبدال بطاقة هدية",
+  "redeemGiftCardSubtitle": "أدخل الرمز لاستبدال البطاقة",
+
+  "referralProgram": "برنامج الإحالة",
+  "referralProgramSubtitle": "ادعُ الأصدقاء واكسب",
+  "helpAbout": "المساعدة والمعلومات",
+
+  "helpSupport": "المساعدة والدعم",
+  "helpSupportSubtitle": "الأسئلة الشائعة والتواصل معنا",
+
+  "termsConditions": "الشروط والأحكام",
+  "termsConditionsSubtitle": "الشروط القانونية للخدمة",
+
+  "privacyPolicy": "سياسة الخصوصية",
+  "privacyPolicySubtitle": "كيف نتعامل مع بياناتك",
+  "discover": "اكتشف",
+  "browseTrainers": "تصفح المدربين",
+  "meetOurTrainers": "تعرف على مدربينا"
 }
 
 

@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:ui';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'auth_state.dart';
 import 'auth_flow.dart';
@@ -50,5 +51,9 @@ class AuthCubit extends Cubit<AuthState> {
   // Language
   void changeLanguage(Locale locale) {
     emit(state.copyWith(locale: locale));
+  }
+
+  void changeTheme(ThemeMode mode) {
+    emit(state.copyWith(themeMode: mode));
   }
 }

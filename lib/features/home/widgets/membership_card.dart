@@ -6,6 +6,7 @@ import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/core/localization/localization_extension.dart';
 import 'package:pilates_app/widgets/app_text.dart';
+import '../../subscription/purchase_subscription/view/subscription_view.dart';
 import '../cubit/home_state.dart';
 
 class MembershipCard extends StatelessWidget {
@@ -106,7 +107,14 @@ class MembershipCard extends StatelessWidget {
                           ),
                           const SizedBox(height: AppSpacing.md),
                           ElevatedButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => SubscriptionView(),
+                                ),
+                              );
+                            },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: isDark
                                   ? AppColors.seekBarLight
@@ -204,7 +212,12 @@ class MembershipCard extends StatelessWidget {
             ),
           ),
           ElevatedButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => SubscriptionView()),
+              );
+            },
             style: ElevatedButton.styleFrom(
               backgroundColor: isDark
                   ? AppColors.seekBarLight

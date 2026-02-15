@@ -79,7 +79,8 @@ class _SubscriptionViewContent extends StatelessWidget {
               if (state.currentStep > 0) {
                 context.read<SubscriptionCubit>().previousStep();
               } else {
-                context.pop();
+                Navigator.of(context).pop();
+                // context.pop();
               }
             },
           ),
@@ -120,7 +121,7 @@ class _PlanSelectionStep extends StatelessWidget {
       {
         'id': 'premium',
         'title': l10n.premiumPlanTitle,
-        'price': '89\$',
+        'price': '89',
         'badge': l10n.mostPopular,
         'isPopular': true,
         'features': [
@@ -133,7 +134,7 @@ class _PlanSelectionStep extends StatelessWidget {
       {
         'id': 'basic',
         'title': l10n.basicPlanTitle,
-        'price': '49\$',
+        'price': '49',
         'badge': l10n.starter,
         'isPopular': false,
         'features': [
@@ -145,7 +146,7 @@ class _PlanSelectionStep extends StatelessWidget {
       {
         'id': 'unlimited',
         'title': l10n.unlimitedPlanTitle,
-        'price': '149\$',
+        'price': '149',
         'badge': null,
         'features': [
           l10n.featureUnlimitedClasses,
@@ -246,6 +247,7 @@ class _PlanSelectionStep extends StatelessWidget {
                                 context: context,
                                 isScrollControlled: true,
                                 backgroundColor: Colors.transparent,
+                                barrierColor:     AppColors.bottomSheetShadow,
                                 builder: (context) =>
                                     PlanDetailsModal(plan: plan),
                               );

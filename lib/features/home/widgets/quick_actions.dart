@@ -32,10 +32,7 @@ class QuickActions extends StatelessWidget {
           children: [
             GestureDetector(
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => MyBookingView()),
-                );
+
               },
               child: _buildActionItem(
                 context,
@@ -50,10 +47,7 @@ class QuickActions extends StatelessWidget {
             SizedBox(width: gap),
             GestureDetector(
               onTap: (){
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => SubscriptionView()),
-                );
+
               },
               child: _buildActionItem(
                 context,

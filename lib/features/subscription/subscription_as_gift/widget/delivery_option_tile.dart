@@ -43,7 +43,7 @@ class DeliveryOptionTile extends StatelessWidget {
           ),
 
           isSelected
-              ? SvgPicture.asset("assets/images/svg/ic_radio_check.svg")
+              ? SvgPicture.asset( isDark ? "assets/images/svg/ic_dark_radio_check.svg":"assets/images/svg/ic_radio_check.svg")
               : Icon(
                   Icons.radio_button_off,
                   color: AppColors.buttonBorder,

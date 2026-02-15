@@ -31,7 +31,7 @@ class ReceiptDetails extends StatelessWidget {
 
           SizedBox(height: AppSpacing.md),
 
-          AppTextField(label: l10n.fullName, hint: l10n.recipientNameHint),
+          AppTextField(label: l10n.recipientNameHint, hint: l10n.recipientNameHint),
           SizedBox(height: AppSpacing.md),
           AppTextField(
             label: l10n.recipientEmail,

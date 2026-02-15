@@ -2971,6 +2971,180 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'40/128 characters'**
   String get charactersCount;
+
+  /// No description provided for @selectTheme.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Theme'**
+  String get selectTheme;
+
+  /// No description provided for @lightTheme.
+  ///
+  /// In en, this message translates to:
+  /// **'Light Theme'**
+  String get lightTheme;
+
+  /// No description provided for @darkTheme.
+  ///
+  /// In en, this message translates to:
+  /// **'Dark Theme'**
+  String get darkTheme;
+
+  /// No description provided for @systemTheme.
+  ///
+  /// In en, this message translates to:
+  /// **'Use device theme'**
+  String get systemTheme;
+
+  /// No description provided for @switchTheme.
+  ///
+  /// In en, this message translates to:
+  /// **'Switch Theme'**
+  String get switchTheme;
+
+  /// No description provided for @myActivity.
+  ///
+  /// In en, this message translates to:
+  /// **'My Activity'**
+  String get myActivity;
+
+  /// No description provided for @progressDashboard.
+  ///
+  /// In en, this message translates to:
+  /// **'Progress Dashboard'**
+  String get progressDashboard;
+
+  /// No description provided for @progressDashboardSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Track your fitness journey'**
+  String get progressDashboardSubtitle;
+
+  /// No description provided for @myBookingsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'View bookings history'**
+  String get myBookingsSubtitle;
+
+  /// No description provided for @challenges.
+  ///
+  /// In en, this message translates to:
+  /// **'Challenges'**
+  String get challenges;
+
+  /// No description provided for @challengesSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Join active challenges'**
+  String get challengesSubtitle;
+
+  /// No description provided for @rewardsCatalog.
+  ///
+  /// In en, this message translates to:
+  /// **'Rewards Catalog'**
+  String get rewardsCatalog;
+
+  /// No description provided for @rewardsCatalogSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Redeem your points'**
+  String get rewardsCatalogSubtitle;
+
+  /// No description provided for @achievements.
+  ///
+  /// In en, this message translates to:
+  /// **'Achievements'**
+  String get achievements;
+
+  /// No description provided for @achievementsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'View your badges'**
+  String get achievementsSubtitle;
+
+  /// No description provided for @redeemGiftCard.
+  ///
+  /// In en, this message translates to:
+  /// **'Redeem Gift Card'**
+  String get redeemGiftCard;
+
+  /// No description provided for @redeemGiftCardSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter code to redeem card'**
+  String get redeemGiftCardSubtitle;
+
+  /// No description provided for @referralProgram.
+  ///
+  /// In en, this message translates to:
+  /// **'Referral Program'**
+  String get referralProgram;
+
+  /// No description provided for @referralProgramSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Invite friends & earn'**
+  String get referralProgramSubtitle;
+
+  /// No description provided for @helpAbout.
+  ///
+  /// In en, this message translates to:
+  /// **'Help & About'**
+  String get helpAbout;
+
+  /// No description provided for @helpSupport.
+  ///
+  /// In en, this message translates to:
+  /// **'Help & Support'**
+  String get helpSupport;
+
+  /// No description provided for @helpSupportSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'FAQs and Contact Us'**
+  String get helpSupportSubtitle;
+
+  /// No description provided for @termsConditions.
+  ///
+  /// In en, this message translates to:
+  /// **'Terms & Conditions'**
+  String get termsConditions;
+
+  /// No description provided for @termsConditionsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Legal terms of service'**
+  String get termsConditionsSubtitle;
+
+  /// No description provided for @privacyPolicy.
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy Policy'**
+  String get privacyPolicy;
+
+  /// No description provided for @privacyPolicySubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'How we handle your data'**
+  String get privacyPolicySubtitle;
+
+  /// No description provided for @discover.
+  ///
+  /// In en, this message translates to:
+  /// **'Discover'**
+  String get discover;
+
+  /// No description provided for @browseTrainers.
+  ///
+  /// In en, this message translates to:
+  /// **'Browse Trainers'**
+  String get browseTrainers;
+
+  /// No description provided for @meetOurTrainers.
+  ///
+  /// In en, this message translates to:
+  /// **'Meet our trainers'**
+  String get meetOurTrainers;
 }
 
 class _AppLocalizationsDelegate

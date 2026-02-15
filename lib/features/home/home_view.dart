@@ -6,6 +6,7 @@ import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/core/localization/localization_extension.dart';
 import 'package:pilates_app/widgets/app_text.dart';
 import '../account/account_view.dart';
+import '../explore/explore_view.dart';
 import 'cubit/home_cubit.dart';
 import 'cubit/home_state.dart';
 import 'widgets/home_header.dart';
@@ -37,7 +38,7 @@ class HomeView extends StatelessWidget {
               children: [
                 const HomeContentView(),
                 const BookingView(),
-                const Center(child: Text('Explore')),
+                const ExploreView(),
                 const AccountView()
               ],
             ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pilates_app/config/theme/app_colors.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
@@ -82,21 +83,41 @@ class PlanDetailsModal extends StatelessWidget {
             ),
           ),
           const SizedBox(height: AppSpacing.sm),
-          AppText(
-            '${plan['price']} / Month',
-            style: (context) => AppTextStyles.boldBody(context).copyWith(
-              fontSize: 32,
-              fontWeight: FontWeight.w500,
-              color: isDark
-                  ? AppColors.languageTextDark
-                  : AppColors.languageIcon, // Light brown/gold
-            ),
+
+          Row(
+            children: [
+              AppText(
+                '${plan['price']}',
+                style: (context) => AppTextStyles.boldBody(context).copyWith(
+                  fontSize: 32,
+                  fontWeight: FontWeight.w500,
+                  color: isDark
+                      ? AppColors.languageTextDark
+                      : AppColors.languageIcon, // Light brown/gold
+                ),
+              ),
+              SvgPicture.asset(
+                "assets/images/svg/ic_Saudi_Riyal_Symbol.svg",
+                height: 24,
+                width: 24,
+              ),
+              AppText(
+                ' / Month',
+                style: (context) => AppTextStyles.boldBody(context).copyWith(
+                  fontSize: 32,
+                  fontWeight: FontWeight.w500,
+                  color: isDark
+                      ? AppColors.languageTextDark
+                      : AppColors.languageIcon, // Light brown/gold
+                ),
+              ),
+            ],
           ),
           const SizedBox(height: AppSpacing.lg),
           if (plan['features'] != null)
             Container(
               // margin: const EdgeInsets.all(20),
-              padding: const EdgeInsets.symmetric(vertical: 20,horizontal: 16),
+              padding: const EdgeInsets.symmetric(vertical: 16,horizontal: 20),
               // height: (20),
               decoration: BoxDecoration(
                 color: isDark
@@ -130,6 +151,7 @@ class PlanDetailsModal extends StatelessWidget {
                                       ? AppColors.lightText
                                       : AppColors.greyText,
                                   fontSize: 12,
+                              height: 1.2
                                 ),
                           ),
                         ),

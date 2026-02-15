@@ -11,7 +11,6 @@ import '../../../../widgets/app_text.dart';
 import '../../../../widgets/app_text_field.dart';
 import '../../../../widgets/dotted_underline.dart';
 
-
 class ReviewScreenDetailsView extends StatelessWidget {
   const ReviewScreenDetailsView({super.key});
 
@@ -19,7 +18,7 @@ class ReviewScreenDetailsView extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final l10n = AppLocalizations.of(context)!;
-    return   Expanded(
+    return Expanded(
       child: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -41,9 +40,7 @@ class ReviewScreenDetailsView extends StatelessWidget {
                 color: isDark ? AppColors.homeBackground : Colors.white,
                 borderRadius: BorderRadius.circular(AppRadius.md),
                 border: Border.all(
-                  color: isDark
-                      ? AppColors.greyText
-                      : AppColors.buttonBorder,
+                  color: isDark ? AppColors.greyText : AppColors.buttonBorder,
                   width: 1,
                 ),
                 // boxShadow: [
@@ -67,12 +64,13 @@ class ReviewScreenDetailsView extends StatelessWidget {
                       borderRadius: BorderRadius.circular(AppRadius.base),
                     ),
                     child: AppText(
-                       l10n.active,
+                      l10n.active,
                       style: (context) =>
                           AppTextStyles.bodyText(context).copyWith(
                             color: Colors.white,
                             fontWeight: FontWeight.w500,
                             fontSize: 12,
+                            height: 1.8,
                           ),
                     ),
                   ),
@@ -90,7 +88,7 @@ class ReviewScreenDetailsView extends StatelessWidget {
                   ),
                   SizedBox(height: AppSpacing.md),
                   AppText(
-                 l10n.pricePerMonth,
+                    l10n.pricePerMonth,
                     style: (context) =>
                         AppTextStyles.bodyText(context).copyWith(
                           color: isDark
@@ -105,22 +103,26 @@ class ReviewScreenDetailsView extends StatelessWidget {
                   _buildClassDetailRow(
                     label: "${l10n.startDate}:",
                     value: "${l10n.today} (Feb 12, 2026)",
+                    isDark: isDark
                   ),
                   const SizedBox(height: AppSpacing.sm),
                   _buildClassDetailRow(
                     label: "${l10n.classesPerMonth}:",
                     value: "12",
+                      isDark: isDark
                   ),
                   const SizedBox(height: AppSpacing.sm),
                   _buildClassDetailRow(
                     label: "${l10n.validAt}:",
                     value: l10n.featureStudios,
+                      isDark: isDark
                   ),
                   const SizedBox(height: AppSpacing.sm),
                   _buildClassDetailRow(
                     label: "${l10n.nextBillingDateText}:",
                     value: "March 12, 2026",
                     isBorder: false,
+                      isDark: isDark
                   ),
                 ],
               ),
@@ -134,9 +136,7 @@ class ReviewScreenDetailsView extends StatelessWidget {
                 color: isDark ? AppColors.homeBackground : Colors.white,
                 borderRadius: BorderRadius.circular(AppRadius.md),
                 border: Border.all(
-                  color: isDark
-                      ? AppColors.greyText
-                      : AppColors.buttonBorder,
+                  color: isDark ? AppColors.greyText : AppColors.buttonBorder,
                   width: 1,
                 ),
               ),
@@ -159,9 +159,8 @@ class ReviewScreenDetailsView extends StatelessWidget {
             const SizedBox(height: AppSpacing.lg),
             AppText(
               "${l10n.acceptedPaymentMethods}:",
-              style: (context) => AppTextStyles.bodyTextSmall(
-                context,
-              ).copyWith(height: 1.2),
+              style: (context) =>
+                  AppTextStyles.bodyTextSmall(context).copyWith(height: 1.2),
             ),
             const SizedBox(height: AppSpacing.md),
             Row(
@@ -194,18 +193,19 @@ class ReviewScreenDetailsView extends StatelessWidget {
     );
   }
 
-
   Widget _buildClassDetailRow({
     required String label,
     required String value,
+    required bool isDark,
     bool isMultiLine = false,
     bool isBorder = true,
   }) {
+
     return SizedBox(
       width: double.infinity,
       child: CustomPaint(
         painter: isBorder
-            ? DashedUnderlinePainter(color: AppColors.buttonBorder)
+            ? DashedUnderlinePainter(color:isDark?AppColors.greyText: AppColors.buttonBorder)
             : null,
         child: Padding(
           padding: EdgeInsets.only(bottom: isBorder ? AppSpacing.sm : 0),

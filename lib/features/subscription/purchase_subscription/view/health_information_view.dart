@@ -50,16 +50,16 @@ class HealthInformationView extends StatelessWidget {
 
                   // Fields
                   AppTextField(
-                    label: l10n.firstName,
+                    label: l10n.name,
                     // Using "Name" from screenshot, but l10n has First Name. Adjust if needed.
-                    hint: 'Name',
+                    hint: l10n.name,
                     // onChanged: (val) => cubit.updateName(val),
                   ),
                   const SizedBox(height: AppSpacing.md),
 
                   AppTextField(
                     label: l10n.age,
-                    hint: 'Age',
+                    hint:  l10n.age,
                     keyboardType: TextInputType.number,
                     // onChanged: (val) => cubit.updateAge(val),
                   ),
@@ -90,7 +90,7 @@ class HealthInformationView extends StatelessWidget {
 
                   AppTextField(
                     label: l10n.emailTab, // "Email"
-                    hint: 'Email',
+                    hint: l10n.emailTab,
                     keyboardType: TextInputType.emailAddress,
                     // onChanged: (val) => cubit.updateEmail(val),
                   ),

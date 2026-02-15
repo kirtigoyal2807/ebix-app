@@ -401,9 +401,7 @@ class MyBookingClassCard extends StatelessWidget {
                         context: context,
                         isScrollControlled: true,
                         backgroundColor: Colors.transparent,
-                        barrierColor: isDark
-                            ? Colors.white.withValues(alpha: 0.2)
-                            : Colors.black.withValues(alpha: 0.2),
+                        barrierColor:     AppColors.bottomSheetShadow,
                         builder: (_) => ConfirmationSheet(
                           confirmationText: context.l10n.cancelClassConfirm,
                           buttonText: context.l10n.cancelClassYes,
@@ -452,9 +450,7 @@ class MyBookingClassCard extends StatelessWidget {
                   context: context,
                   isScrollControlled: true,
                   backgroundColor: Colors.transparent,
-                  barrierColor: isDark
-                      ? Colors.white.withValues(alpha: 0.2)
-                      : Colors.black.withValues(alpha: 0.2),
+                  barrierColor:     AppColors.bottomSheetShadow,
                   builder: (_) => ConfirmationSheet(
                     confirmationText: context.l10n.leaveWaitlistConfirm,
                     buttonText: context.l10n.leaveWaitlistYes,
@@ -504,9 +500,7 @@ class MyBookingClassCard extends StatelessWidget {
                       context: context,
                       isScrollControlled: true,
                       backgroundColor: Colors.transparent,
-                      barrierColor: isDark
-                          ? Colors.white.withValues(alpha: 0.2)
-                          : Colors.black.withValues(alpha: 0.2),
+                      barrierColor:     AppColors.bottomSheetShadow,
                       builder: (_) => const RateSheet(),
                     );
                   },
