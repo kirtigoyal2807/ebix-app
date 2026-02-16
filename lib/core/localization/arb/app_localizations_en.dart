@@ -1615,4 +1615,28 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get meetOurTrainers => 'Meet our trainers';
+
+  @override
+  String get relationshipParent => 'Parent';
+
+  @override
+  String get relationshipSpouse => 'Spouse';
+
+  @override
+  String get relationshipSibling => 'Sibling';
+
+  @override
+  String get relationshipFriend => 'Friend';
+
+  @override
+  String get relationshipOther => 'Other';
+
+  @override
+  String get idTypeNationalId => 'National ID';
+
+  @override
+  String get idTypePassport => 'Passport';
+
+  @override
+  String get idTypeDriverLicense => 'Driver License';
 }

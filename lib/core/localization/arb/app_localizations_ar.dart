@@ -1602,4 +1602,28 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get meetOurTrainers => 'تعرف على مدربينا';
+
+  @override
+  String get relationshipParent => 'الوالد/الوالدة';
+
+  @override
+  String get relationshipSpouse => 'الزوج/الزوجة';
+
+  @override
+  String get relationshipSibling => 'الأخ/الأخت';
+
+  @override
+  String get relationshipFriend => 'صديق';
+
+  @override
+  String get relationshipOther => 'آخر';
+
+  @override
+  String get idTypeNationalId => 'الهوية الوطنية';
+
+  @override
+  String get idTypePassport => 'جواز السفر';
+
+  @override
+  String get idTypeDriverLicense => 'رخصة القيادة';
 }

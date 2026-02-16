@@ -640,7 +640,15 @@
   "privacyPolicySubtitle": "How we handle your data",
   "discover": "Discover",
   "browseTrainers": "Browse Trainers",
-  "meetOurTrainers": "Meet our trainers"
+  "meetOurTrainers": "Meet our trainers",
+  "relationshipParent": "Parent",
+  "relationshipSpouse": "Spouse",
+  "relationshipSibling": "Sibling",
+  "relationshipFriend": "Friend",
+  "relationshipOther": "Other",
+  "idTypeNationalId": "National ID",
+  "idTypePassport": "Passport",
+  "idTypeDriverLicense": "Driver License"
 }
 
 

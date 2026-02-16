@@ -3145,6 +3145,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Meet our trainers'**
   String get meetOurTrainers;
+
+  /// No description provided for @relationshipParent.
+  ///
+  /// In en, this message translates to:
+  /// **'Parent'**
+  String get relationshipParent;
+
+  /// No description provided for @relationshipSpouse.
+  ///
+  /// In en, this message translates to:
+  /// **'Spouse'**
+  String get relationshipSpouse;
+
+  /// No description provided for @relationshipSibling.
+  ///
+  /// In en, this message translates to:
+  /// **'Sibling'**
+  String get relationshipSibling;
+
+  /// No description provided for @relationshipFriend.
+  ///
+  /// In en, this message translates to:
+  /// **'Friend'**
+  String get relationshipFriend;
+
+  /// No description provided for @relationshipOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get relationshipOther;
+
+  /// No description provided for @idTypeNationalId.
+  ///
+  /// In en, this message translates to:
+  /// **'National ID'**
+  String get idTypeNationalId;
+
+  /// No description provided for @idTypePassport.
+  ///
+  /// In en, this message translates to:
+  /// **'Passport'**
+  String get idTypePassport;
+
+  /// No description provided for @idTypeDriverLicense.
+  ///
+  /// In en, this message translates to:
+  /// **'Driver License'**
+  String get idTypeDriverLicense;
 }
 
 class _AppLocalizationsDelegate

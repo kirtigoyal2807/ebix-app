@@ -621,7 +621,15 @@
   "privacyPolicySubtitle": "كيف نتعامل مع بياناتك",
   "discover": "اكتشف",
   "browseTrainers": "تصفح المدربين",
-  "meetOurTrainers": "تعرف على مدربينا"
+  "meetOurTrainers": "تعرف على مدربينا",
+  "relationshipParent": "الوالد/الوالدة",
+  "relationshipSpouse": "الزوج/الزوجة",
+  "relationshipSibling": "الأخ/الأخت",
+  "relationshipFriend": "صديق",
+  "relationshipOther": "آخر",
+  "idTypeNationalId": "الهوية الوطنية",
+  "idTypePassport": "جواز السفر",
+  "idTypeDriverLicense": "رخصة القيادة"
 }
 
 
