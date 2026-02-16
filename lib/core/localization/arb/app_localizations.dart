@@ -224,11 +224,11 @@ abstract class AppLocalizations {
   /// **'Last Name'**
   String get lastName;
 
-  /// No description provided for @email.
+  /// No description provided for @emailAddress.
   ///
   /// In en, this message translates to:
-  /// **'Email'**
-  String get email;
+  /// **'Email Address'**
+  String get emailAddress;
 
   /// No description provided for @createPassword.
   ///
@@ -499,6 +499,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Confirm'**
   String get confirm;
+
+  /// No description provided for @email.
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get email;
 
   /// No description provided for @phoneNumber.
   ///
@@ -2921,7 +2927,7 @@ abstract class AppLocalizations {
   /// No description provided for @recipientEmailHint.
   ///
   /// In en, this message translates to:
-  /// **'email@gmail.com'**
+  /// **'Enter your email'**
   String get recipientEmailHint;
 
   /// No description provided for @recipientPhoneOptional.
@@ -3145,6 +3151,198 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Meet our trainers'**
   String get meetOurTrainers;
+
+  /// No description provided for @changeProfilePicture.
+  ///
+  /// In en, this message translates to:
+  /// **'Change Profile Picture'**
+  String get changeProfilePicture;
+
+  /// No description provided for @emergencyContactName.
+  ///
+  /// In en, this message translates to:
+  /// **'Emergency Contact Name'**
+  String get emergencyContactName;
+
+  /// No description provided for @emergencyContactPhoneNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Emergency Contact Phone Number'**
+  String get emergencyContactPhoneNumber;
+
+  /// No description provided for @parent.
+  ///
+  /// In en, this message translates to:
+  /// **'Parent'**
+  String get parent;
+
+  /// No description provided for @spouse.
+  ///
+  /// In en, this message translates to:
+  /// **'Spouse'**
+  String get spouse;
+
+  /// No description provided for @sibling.
+  ///
+  /// In en, this message translates to:
+  /// **'Sibling'**
+  String get sibling;
+
+  /// No description provided for @friend.
+  ///
+  /// In en, this message translates to:
+  /// **'Friend'**
+  String get friend;
+
+  /// No description provided for @other.
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get other;
+
+  /// No description provided for @nationalId.
+  ///
+  /// In en, this message translates to:
+  /// **'National ID'**
+  String get nationalId;
+
+  /// No description provided for @passport.
+  ///
+  /// In en, this message translates to:
+  /// **'Passport'**
+  String get passport;
+
+  /// No description provided for @driverLicense.
+  ///
+  /// In en, this message translates to:
+  /// **'Driver License'**
+  String get driverLicense;
+
+  /// No description provided for @editDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Details'**
+  String get editDetails;
+
+  /// No description provided for @pushNotifications.
+  ///
+  /// In en, this message translates to:
+  /// **'Push Notifications'**
+  String get pushNotifications;
+
+  /// No description provided for @allNotifications.
+  ///
+  /// In en, this message translates to:
+  /// **'All Notifications'**
+  String get allNotifications;
+
+  /// No description provided for @classNotifications.
+  ///
+  /// In en, this message translates to:
+  /// **'Class Notifications'**
+  String get classNotifications;
+
+  /// No description provided for @beforeClassStarts.
+  ///
+  /// In en, this message translates to:
+  /// **'Before Class Starts'**
+  String get beforeClassStarts;
+
+  /// No description provided for @beforeClassStartsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Get notified 30 min before'**
+  String get beforeClassStartsSubtitle;
+
+  /// No description provided for @dayBeforeReminder.
+  ///
+  /// In en, this message translates to:
+  /// **'Day Before Reminder'**
+  String get dayBeforeReminder;
+
+  /// No description provided for @dayBeforeReminderSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Reminder 24 hours before'**
+  String get dayBeforeReminderSubtitle;
+
+  /// No description provided for @subscriptionBilling.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscription & Billing'**
+  String get subscriptionBilling;
+
+  /// No description provided for @paymentConfirmations.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment Confirmations'**
+  String get paymentConfirmations;
+
+  /// No description provided for @paymentConfirmationsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Successful transactions'**
+  String get paymentConfirmationsSubtitle;
+
+  /// No description provided for @renewalReminders.
+  ///
+  /// In en, this message translates to:
+  /// **'Renewal Reminders'**
+  String get renewalReminders;
+
+  /// No description provided for @renewalRemindersSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'3 days before renewal'**
+  String get renewalRemindersSubtitle;
+
+  /// No description provided for @marketingUpdates.
+  ///
+  /// In en, this message translates to:
+  /// **'Marketing & Updates'**
+  String get marketingUpdates;
+
+  /// No description provided for @promotionsOffers.
+  ///
+  /// In en, this message translates to:
+  /// **'Promotions & Offers'**
+  String get promotionsOffers;
+
+  /// No description provided for @promotionsOffersSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Special deals and discounts'**
+  String get promotionsOffersSubtitle;
+
+  /// No description provided for @appUpdates.
+  ///
+  /// In en, this message translates to:
+  /// **'App Updates'**
+  String get appUpdates;
+
+  /// No description provided for @appUpdatesSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'New features and improvements'**
+  String get appUpdatesSubtitle;
+
+  /// No description provided for @challengesRewards.
+  ///
+  /// In en, this message translates to:
+  /// **'Challenges & Rewards'**
+  String get challengesRewards;
+
+  /// No description provided for @newChallenges.
+  ///
+  /// In en, this message translates to:
+  /// **'New Challenges'**
+  String get newChallenges;
+
+  /// No description provided for @newChallengesSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'When new challenges available'**
+  String get newChallengesSubtitle;
 }
 
 class _AppLocalizationsDelegate

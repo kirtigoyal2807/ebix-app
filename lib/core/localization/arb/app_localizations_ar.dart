@@ -73,7 +73,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get lastName => 'اسم العائلة';
 
   @override
-  String get email => 'البريد الإلكتروني';
+  String get emailAddress => 'البريد الإلكتروني';
 
   @override
   String get createPassword => 'أنشئ كلمة مرور وأضف رقم هاتفك';
@@ -214,7 +214,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String get confirm => 'يتأكد';
 
   @override
-  String get phoneNumber => 'رقم التليفون';
+  String get email => 'البريد الإلكتروني';
+
+  @override
+  String get phoneNumber => 'رقم الهاتف';
 
   @override
   String get searchCountry => 'البحث عن الدولة...';
@@ -1308,10 +1311,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String get fullName => 'الاسم الكامل';
 
   @override
-  String get relationship => 'العلاقة';
+  String get relationship => 'صلة القرابة';
 
   @override
-  String get selectRelationship => 'اختر العلاقة';
+  String get selectRelationship => 'اختر صلة القرابة';
 
   @override
   String get identityVerification => 'التحقق من الهوية';
@@ -1489,7 +1492,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get recipientEmail => 'البريد الإلكتروني للمستلم';
 
   @override
-  String get recipientEmailHint => 'email@gmail.com';
+  String get recipientEmailHint => 'أدخل بريدك الإلكتروني';
 
   @override
   String get recipientPhoneOptional => 'رقم هاتف المستلم (اختياري)';
@@ -1602,4 +1605,100 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get meetOurTrainers => 'تعرف على مدربينا';
+
+  @override
+  String get changeProfilePicture => 'تغيير صورة الملف الشخصي';
+
+  @override
+  String get emergencyContactName => 'اسم جهة الاتصال في الطوارئ';
+
+  @override
+  String get emergencyContactPhoneNumber => 'رقم هاتف جهة الاتصال في الطوارئ';
+
+  @override
+  String get parent => 'أب / أم';
+
+  @override
+  String get spouse => 'زوج / زوجة';
+
+  @override
+  String get sibling => 'أخ / أخت';
+
+  @override
+  String get friend => 'صديق';
+
+  @override
+  String get other => 'أخرى';
+
+  @override
+  String get nationalId => 'الهوية الوطنية';
+
+  @override
+  String get passport => 'جواز السفر';
+
+  @override
+  String get driverLicense => 'رخصة القيادة';
+
+  @override
+  String get editDetails => 'تعديل البيانات';
+
+  @override
+  String get pushNotifications => 'الإشعارات';
+
+  @override
+  String get allNotifications => 'جميع الإشعارات';
+
+  @override
+  String get classNotifications => 'إشعارات الحصص';
+
+  @override
+  String get beforeClassStarts => 'قبل بدء الحصة';
+
+  @override
+  String get beforeClassStartsSubtitle => 'تلقي إشعار قبل 30 دقيقة';
+
+  @override
+  String get dayBeforeReminder => 'تذكير قبل يوم';
+
+  @override
+  String get dayBeforeReminderSubtitle => 'تذكير قبل 24 ساعة';
+
+  @override
+  String get subscriptionBilling => 'الاشتراك والفواتير';
+
+  @override
+  String get paymentConfirmations => 'تأكيدات الدفع';
+
+  @override
+  String get paymentConfirmationsSubtitle => 'العمليات الناجحة';
+
+  @override
+  String get renewalReminders => 'تذكيرات التجديد';
+
+  @override
+  String get renewalRemindersSubtitle => 'قبل 3 أيام من التجديد';
+
+  @override
+  String get marketingUpdates => 'التسويق والتحديثات';
+
+  @override
+  String get promotionsOffers => 'العروض والتخفيضات';
+
+  @override
+  String get promotionsOffersSubtitle => 'عروض وخصومات خاصة';
+
+  @override
+  String get appUpdates => 'تحديثات التطبيق';
+
+  @override
+  String get appUpdatesSubtitle => 'ميزات وتحسينات جديدة';
+
+  @override
+  String get challengesRewards => 'التحديات والمكافآت';
+
+  @override
+  String get newChallenges => 'تحديات جديدة';
+
+  @override
+  String get newChallengesSubtitle => 'عند توفر تحديات جديدة';
 }

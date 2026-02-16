@@ -21,7 +21,7 @@
   "changeLanguage": "Select Language",
   "firstName": "First name",
   "lastName": "Last name",
-  "email": "Email address",
+  "emailAddress": "Email address",
   "createPassword": "Create password",
   "passwordHint": "Use at least 8 characters with a mix of letters and numbers",
   "password": "Password",
@@ -640,7 +640,57 @@
   "privacyPolicySubtitle": "How we handle your data",
   "discover": "Discover",
   "browseTrainers": "Browse Trainers",
-  "meetOurTrainers": "Meet our trainers"
+  "meetOurTrainers": "Meet our trainers",
+  "personalData": "Personal Data",
+  "changeProfilePicture": "Change Profile Picture",
+  "firstName": "First Name",
+  "lastName": "Last Name",
+  "emailAddress": "Email Address",
+  "recipientEmailHint": "Enter your email",
+  "phoneNumber": "Phone Number",
+  "fullName": "Full Name",
+  "emergencyContactName": "Emergency Contact Name",
+  "emergencyContactPhoneNumber": "Emergency Contact Phone Number",
+  "relationship": "Relationship",
+  "selectRelationship": "Select Relationship",
+  "parent": "Parent",
+  "spouse": "Spouse",
+  "sibling": "Sibling",
+  "friend": "Friend",
+  "other": "Other",
+  "idType": "ID Type",
+  "selectIdType": "Select ID Type",
+  "nationalId": "National ID",
+  "passport": "Passport",
+  "driverLicense": "Driver License",
+  "idNumber": "ID Number",
+  "editDetails": "Edit Details",
+
+  "pushNotifications": "Push Notifications",
+
+  "allNotifications": "All Notifications",
+
+  "classNotifications": "Class Notifications",
+  "beforeClassStarts": "Before Class Starts",
+  "beforeClassStartsSubtitle": "Get notified 30 min before",
+  "dayBeforeReminder": "Day Before Reminder",
+  "dayBeforeReminderSubtitle": "Reminder 24 hours before",
+
+  "subscriptionBilling": "Subscription & Billing",
+  "paymentConfirmations": "Payment Confirmations",
+  "paymentConfirmationsSubtitle": "Successful transactions",
+  "renewalReminders": "Renewal Reminders",
+  "renewalRemindersSubtitle": "3 days before renewal",
+
+  "marketingUpdates": "Marketing & Updates",
+  "promotionsOffers": "Promotions & Offers",
+  "promotionsOffersSubtitle": "Special deals and discounts",
+  "appUpdates": "App Updates",
+  "appUpdatesSubtitle": "New features and improvements",
+
+  "challengesRewards": "Challenges & Rewards",
+  "newChallenges": "New Challenges",
+  "newChallengesSubtitle": "When new challenges available"
 }
 
 

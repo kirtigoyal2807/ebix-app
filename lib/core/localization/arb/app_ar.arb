@@ -21,7 +21,7 @@
   "changeLanguage": "اختيار اللغة",
   "firstName": "الاسم الأول",
   "lastName": "اسم العائلة",
-  "email": "عنوان البريد الإلكتروني",
+  "emailAddress": "عنوان البريد الإلكتروني",
   "createPassword": "إنشاء كلمة مرور",
   "passwordHint": "استخدم 8 أحرف على الأقل مع مزيج من الحروف والأرقام",
   "password": "كلمة المرور",
@@ -621,7 +621,58 @@
   "privacyPolicySubtitle": "كيف نتعامل مع بياناتك",
   "discover": "اكتشف",
   "browseTrainers": "تصفح المدربين",
-  "meetOurTrainers": "تعرف على مدربينا"
+  "meetOurTrainers": "تعرف على مدربينا",
+
+  "personalData": "البيانات الشخصية",
+  "changeProfilePicture": "تغيير صورة الملف الشخصي",
+  "firstName": "الاسم الأول",
+  "lastName": "اسم العائلة",
+  "emailAddress": "البريد الإلكتروني",
+  "recipientEmailHint": "أدخل بريدك الإلكتروني",
+  "phoneNumber": "رقم الهاتف",
+  "fullName": "الاسم الكامل",
+  "emergencyContactName": "اسم جهة الاتصال في الطوارئ",
+  "emergencyContactPhoneNumber": "رقم هاتف جهة الاتصال في الطوارئ",
+  "relationship": "صلة القرابة",
+  "selectRelationship": "اختر صلة القرابة",
+  "parent": "أب / أم",
+  "spouse": "زوج / زوجة",
+  "sibling": "أخ / أخت",
+  "friend": "صديق",
+  "other": "أخرى",
+  "idType": "نوع الهوية",
+  "selectIdType": "اختر نوع الهوية",
+  "nationalId": "الهوية الوطنية",
+  "passport": "جواز السفر",
+  "driverLicense": "رخصة القيادة",
+  "idNumber": "رقم الهوية",
+  "editDetails": "تعديل البيانات",
+  "pushNotifications": "الإشعارات",
+
+  "allNotifications": "جميع الإشعارات",
+
+  "classNotifications": "إشعارات الحصص",
+  "beforeClassStarts": "قبل بدء الحصة",
+  "beforeClassStartsSubtitle": "تلقي إشعار قبل 30 دقيقة",
+  "dayBeforeReminder": "تذكير قبل يوم",
+  "dayBeforeReminderSubtitle": "تذكير قبل 24 ساعة",
+
+  "subscriptionBilling": "الاشتراك والفواتير",
+  "paymentConfirmations": "تأكيدات الدفع",
+  "paymentConfirmationsSubtitle": "العمليات الناجحة",
+  "renewalReminders": "تذكيرات التجديد",
+  "renewalRemindersSubtitle": "قبل 3 أيام من التجديد",
+
+  "marketingUpdates": "التسويق والتحديثات",
+  "promotionsOffers": "العروض والتخفيضات",
+  "promotionsOffersSubtitle": "عروض وخصومات خاصة",
+  "appUpdates": "تحديثات التطبيق",
+  "appUpdatesSubtitle": "ميزات وتحسينات جديدة",
+
+  "challengesRewards": "التحديات والمكافآت",
+  "newChallenges": "تحديات جديدة",
+  "newChallengesSubtitle": "عند توفر تحديات جديدة"
+
 }
 
 

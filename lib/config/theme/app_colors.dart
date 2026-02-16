@@ -118,4 +118,5 @@ class AppColors {
   static const containerGreyBg = Color(0xffFAF9F9);
 
   static  final bottomSheetShadow =   Color(0xff292524).withValues(alpha: 0.7);
+  static  final divider =   Color(0xffDFE1E7);
 }

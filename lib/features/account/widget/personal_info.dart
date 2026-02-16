@@ -5,6 +5,8 @@ import '../../../config/theme/app_colors.dart';
 import '../../../config/theme/app_text_styles.dart';
 import '../../../core/localization/localization_extension.dart';
 import '../../../widgets/app_text.dart';
+import '../view/personal_view.dart';
+import '../view/push_notification_view.dart';
 import 'account_info_tile.dart';
 
 class PersonalInfo extends StatelessWidget {
@@ -30,16 +32,28 @@ class PersonalInfo extends StatelessWidget {
           icon: isDark
               ? "assets/images/svg/account/ic_dark_personal_data.svg"
               : "assets/images/svg/account/ic_personal_data.svg",
-          title:  context.l10n.personalData,
-          subtitle:  context.l10n.personalDataSubtitle,
+          title: context.l10n.personalData,
+          subtitle: context.l10n.personalDataSubtitle,
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => PersonalView()),
+            );
+          },
         ),
         SizedBox(height: AppSpacing.lmd),
         AccountInfoTile(
           icon: isDark
               ? "assets/images/svg/account/ic_dark_push_notification.svg"
               : "assets/images/svg/account/ic_push_notification.svg",
-          title:  context.l10n.pushNotification,
-          subtitle:  context.l10n.manageAlertsReminders,
+          title: context.l10n.pushNotification,
+          subtitle: context.l10n.manageAlertsReminders,
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => PushNotificationView()),
+            );
+          },
         ),
       ],
     );

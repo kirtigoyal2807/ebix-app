@@ -76,7 +76,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get lastName => 'Last Name';
 
   @override
-  String get email => 'Email';
+  String get emailAddress => 'Email Address';
 
   @override
   String get createPassword => 'Create a password and add your phone';
@@ -216,6 +216,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get confirm => 'Confirm';
+
+  @override
+  String get email => 'Email';
 
   @override
   String get phoneNumber => 'Phone Number';
@@ -1502,7 +1505,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get recipientEmail => 'Recipient Email';
 
   @override
-  String get recipientEmailHint => 'email@gmail.com';
+  String get recipientEmailHint => 'Enter your email';
 
   @override
   String get recipientPhoneOptional => 'Recipient Phone Number (Optional)';
@@ -1615,4 +1618,100 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get meetOurTrainers => 'Meet our trainers';
+
+  @override
+  String get changeProfilePicture => 'Change Profile Picture';
+
+  @override
+  String get emergencyContactName => 'Emergency Contact Name';
+
+  @override
+  String get emergencyContactPhoneNumber => 'Emergency Contact Phone Number';
+
+  @override
+  String get parent => 'Parent';
+
+  @override
+  String get spouse => 'Spouse';
+
+  @override
+  String get sibling => 'Sibling';
+
+  @override
+  String get friend => 'Friend';
+
+  @override
+  String get other => 'Other';
+
+  @override
+  String get nationalId => 'National ID';
+
+  @override
+  String get passport => 'Passport';
+
+  @override
+  String get driverLicense => 'Driver License';
+
+  @override
+  String get editDetails => 'Edit Details';
+
+  @override
+  String get pushNotifications => 'Push Notifications';
+
+  @override
+  String get allNotifications => 'All Notifications';
+
+  @override
+  String get classNotifications => 'Class Notifications';
+
+  @override
+  String get beforeClassStarts => 'Before Class Starts';
+
+  @override
+  String get beforeClassStartsSubtitle => 'Get notified 30 min before';
+
+  @override
+  String get dayBeforeReminder => 'Day Before Reminder';
+
+  @override
+  String get dayBeforeReminderSubtitle => 'Reminder 24 hours before';
+
+  @override
+  String get subscriptionBilling => 'Subscription & Billing';
+
+  @override
+  String get paymentConfirmations => 'Payment Confirmations';
+
+  @override
+  String get paymentConfirmationsSubtitle => 'Successful transactions';
+
+  @override
+  String get renewalReminders => 'Renewal Reminders';
+
+  @override
+  String get renewalRemindersSubtitle => '3 days before renewal';
+
+  @override
+  String get marketingUpdates => 'Marketing & Updates';
+
+  @override
+  String get promotionsOffers => 'Promotions & Offers';
+
+  @override
+  String get promotionsOffersSubtitle => 'Special deals and discounts';
+
+  @override
+  String get appUpdates => 'App Updates';
+
+  @override
+  String get appUpdatesSubtitle => 'New features and improvements';
+
+  @override
+  String get challengesRewards => 'Challenges & Rewards';
+
+  @override
+  String get newChallenges => 'New Challenges';
+
+  @override
+  String get newChallengesSubtitle => 'When new challenges available';
 }
