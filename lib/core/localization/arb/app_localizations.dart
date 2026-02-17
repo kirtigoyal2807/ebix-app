@@ -3343,6 +3343,168 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'When new challenges available'**
   String get newChallengesSubtitle;
+
+  /// No description provided for @redeemGiftCardTxt.
+  ///
+  /// In en, this message translates to:
+  /// **'Redeem Gift Card'**
+  String get redeemGiftCardTxt;
+
+  /// No description provided for @enterGiftCardCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter Gift Card Code'**
+  String get enterGiftCardCode;
+
+  /// No description provided for @enterRedeemCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter Redeem Code'**
+  String get enterRedeemCode;
+
+  /// No description provided for @invalidGiftCardCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid gift card code'**
+  String get invalidGiftCardCode;
+
+  /// No description provided for @redeemGift.
+  ///
+  /// In en, this message translates to:
+  /// **'Redeem Gift'**
+  String get redeemGift;
+
+  /// No description provided for @giftReceivedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'You received a gift card'**
+  String get giftReceivedTitle;
+
+  /// No description provided for @viewGift.
+  ///
+  /// In en, this message translates to:
+  /// **'View Gift'**
+  String get viewGift;
+
+  /// No description provided for @giftRedeemedSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Gift card redeemed successfully'**
+  String get giftRedeemedSuccess;
+
+  /// No description provided for @receivedGiftTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'ve Received a Gift!'**
+  String get receivedGiftTitle;
+
+  /// No description provided for @receivedGiftSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Ayesha sent you a Pilates membership'**
+  String get receivedGiftSubtitle;
+
+  /// No description provided for @redeemYourGift.
+  ///
+  /// In en, this message translates to:
+  /// **'Redeem Your Gift'**
+  String get redeemYourGift;
+
+  /// No description provided for @yourGiftIncludes.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Gift Includes'**
+  String get yourGiftIncludes;
+
+  /// No description provided for @redemptionCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Redemption Code'**
+  String get redemptionCode;
+
+  /// No description provided for @birthdayMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Happy Birthday Sarah! I thought you\'d love trying Pilates. Looking forward to taking classes together! 💪'**
+  String get birthdayMessage;
+
+  /// No description provided for @giftSender.
+  ///
+  /// In en, this message translates to:
+  /// **'— Ayesha'**
+  String get giftSender;
+
+  /// No description provided for @termsIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'By downloading, installing, or using the app, you agree to comply with these Terms of Use and our Privacy Policy. If you do not agree with any part of these terms, please do not use the app. You must be at least 13 years old (or the legal age in your jurisdiction) to use this app. By using the app, you confirm that you meet the minimum age requirement.'**
+  String get termsIntro;
+
+  /// No description provided for @termsMedicalDisclaimer.
+  ///
+  /// In en, this message translates to:
+  /// **'Our content is for general wellness and informational purposes only. It is not a substitute for professional medical advice, diagnosis, or treatment. Always consult a qualified healthcare provider if you have any health concerns.'**
+  String get termsMedicalDisclaimer;
+
+  /// No description provided for @termsAccountResponsibility.
+  ///
+  /// In en, this message translates to:
+  /// **'If you create an account, you are responsible for maintaining its confidentiality. Notify us immediately if you suspect unauthorized access or use.'**
+  String get termsAccountResponsibility;
+
+  /// No description provided for @privacyIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'At our app, we value your privacy and are committed to protecting your personal information. This Privacy Policy explains how we collect, use, and protect your data when you use our app. By accessing or using the app, you agree to the practices described in this policy.'**
+  String get privacyIntro;
+
+  /// No description provided for @privacyInfoTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Information We Collect'**
+  String get privacyInfoTitle;
+
+  /// No description provided for @privacyInfoBody.
+  ///
+  /// In en, this message translates to:
+  /// **'We may collect personal details such as your name, email address, phone number, usage data, and device information to improve your experience and provide our services effectively.'**
+  String get privacyInfoBody;
+
+  /// No description provided for @privacyUsageTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'How We Use Your Information'**
+  String get privacyUsageTitle;
+
+  /// No description provided for @privacyUsageBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Your information is used to provide and improve the app, personalize your experience, communicate with you, process transactions, and ensure the security of our services.'**
+  String get privacyUsageBody;
+
+  /// No description provided for @privacySharingTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Data Sharing and Disclosure'**
+  String get privacySharingTitle;
+
+  /// No description provided for @privacySharingBody.
+  ///
+  /// In en, this message translates to:
+  /// **'We do not sell your personal information. We may share data with trusted service providers, legal authorities when required, or in cases necessary to protect our rights and users.'**
+  String get privacySharingBody;
+
+  /// No description provided for @privacyRightsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Data Protection Rights'**
+  String get privacyRightsTitle;
+
+  /// No description provided for @privacyRightsBody.
+  ///
+  /// In en, this message translates to:
+  /// **'You have the right to access, update, or delete your personal information. You may also request data portability or withdraw consent where applicable by contacting our support team.'**
+  String get privacyRightsBody;
 }
 
 class _AppLocalizationsDelegate

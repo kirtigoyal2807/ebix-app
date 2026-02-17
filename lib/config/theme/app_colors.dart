@@ -119,4 +119,6 @@ class AppColors {
 
   static  final bottomSheetShadow =   Color(0xff292524).withValues(alpha: 0.7);
   static  final divider =   Color(0xffDFE1E7);
+
+  static final placeHolderText = Color(0xff79716B);
 }

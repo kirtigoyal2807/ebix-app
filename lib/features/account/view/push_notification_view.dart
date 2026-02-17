@@ -40,7 +40,7 @@ class PushNotificationView extends StatelessWidget {
                     titleText(text: l10n.allNotifications),
                     SizedBox(height: AppSpacing.md),
                     SwitchWidget(
-                      title:l10n.allNotifications,
+                      title: l10n.allNotifications,
 
                       switchValue: state.allNotification,
                       onChanged: (bool p1) {
@@ -54,7 +54,7 @@ class PushNotificationView extends StatelessWidget {
                     SizedBox(height: AppSpacing.md),
                     SwitchWidget(
                       title: l10n.beforeClassStarts,
-                      subTitle:l10n.beforeClassStartsSubtitle,
+                      subTitle: l10n.beforeClassStartsSubtitle,
 
                       switchValue: state.beforeClassStart,
                       onChanged: (bool p1) {
@@ -65,7 +65,10 @@ class PushNotificationView extends StatelessWidget {
                     ),
 
                     SizedBox(height: AppSpacing.md),
-                    Divider(height: 1, color: isDark? AppColors.greyText:AppColors.divider),
+                    Divider(
+                      height: 1,
+                      color: isDark ? AppColors.greyText : AppColors.divider,
+                    ),
                     SizedBox(height: AppSpacing.md),
                     SwitchWidget(
                       title: l10n.dayBeforeReminder,
@@ -84,7 +87,7 @@ class PushNotificationView extends StatelessWidget {
                     titleText(text: l10n.subscriptionBilling),
                     SizedBox(height: AppSpacing.md),
                     SwitchWidget(
-                      title:l10n.paymentConfirmations,
+                      title: l10n.paymentConfirmations,
                       subTitle: l10n.paymentConfirmationsSubtitle,
 
                       switchValue: state.paymentConfirmation,
@@ -96,7 +99,10 @@ class PushNotificationView extends StatelessWidget {
                     ),
 
                     SizedBox(height: AppSpacing.md),
-                    Divider(height: 1, color: isDark? AppColors.greyText:AppColors.divider),
+                    Divider(
+                      height: 1,
+                      color: isDark ? AppColors.greyText : AppColors.divider,
+                    ),
                     SizedBox(height: AppSpacing.md),
 
                     SwitchWidget(
@@ -128,7 +134,10 @@ class PushNotificationView extends StatelessWidget {
                     ),
 
                     SizedBox(height: AppSpacing.md),
-                    Divider(height: 1, color:isDark? AppColors.greyText: AppColors.divider),
+                    Divider(
+                      height: 1,
+                      color: isDark ? AppColors.greyText : AppColors.divider,
+                    ),
                     SizedBox(height: AppSpacing.md),
 
                     SwitchWidget(

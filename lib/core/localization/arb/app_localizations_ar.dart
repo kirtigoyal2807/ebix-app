@@ -1701,4 +1701,94 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get newChallengesSubtitle => 'عند توفر تحديات جديدة';
+
+  @override
+  String get redeemGiftCardTxt => 'استرداد بطاقة الهدية';
+
+  @override
+  String get enterGiftCardCode => 'أدخل رمز بطاقة الهدية';
+
+  @override
+  String get enterRedeemCode => 'أدخل رمز الاسترداد';
+
+  @override
+  String get invalidGiftCardCode => 'رمز بطاقة الهدية غير صالح';
+
+  @override
+  String get redeemGift => 'استرداد الهدية';
+
+  @override
+  String get giftReceivedTitle => 'لقد استلمت بطاقة هدية';
+
+  @override
+  String get viewGift => 'عرض الهدية';
+
+  @override
+  String get giftRedeemedSuccess => 'تم استرداد بطاقة الهدية بنجاح';
+
+  @override
+  String get receivedGiftTitle => 'لقد تلقيت هدية!';
+
+  @override
+  String get receivedGiftSubtitle => 'أرسلت لك عائشة عضوية بيلاتس';
+
+  @override
+  String get redeemYourGift => 'استرد هديتك';
+
+  @override
+  String get yourGiftIncludes => 'تتضمن هديتك';
+
+  @override
+  String get redemptionCode => 'رمز الاسترداد';
+
+  @override
+  String get birthdayMessage =>
+      'عيد ميلاد سعيد يا سارة! ظننت أنك ستحبين تجربة البيلاتس. أتطلع لحضور الدروس معًا! 💪';
+
+  @override
+  String get giftSender => '— عائشة';
+
+  @override
+  String get termsIntro =>
+      'من خلال تنزيل التطبيق أو تثبيته أو استخدامه، فإنك توافق على الالتزام بشروط الاستخدام وسياسة الخصوصية الخاصة بنا. إذا كنت لا توافق على أي جزء من هذه الشروط، يرجى عدم استخدام التطبيق. يجب أن يكون عمرك 13 عامًا على الأقل (أو السن القانوني في بلدك) لاستخدام هذا التطبيق. باستخدامك للتطبيق، فإنك تؤكد أنك تستوفي الحد الأدنى للعمر المطلوب.';
+
+  @override
+  String get termsMedicalDisclaimer =>
+      'المحتوى المقدم هو لأغراض العافية العامة والمعلومات فقط، ولا يُعد بديلاً عن الاستشارة الطبية المتخصصة أو التشخيص أو العلاج. يُرجى دائمًا استشارة مقدم رعاية صحية مؤهل إذا كانت لديك أي مخاوف صحية.';
+
+  @override
+  String get termsAccountResponsibility =>
+      'إذا قمت بإنشاء حساب، فأنت مسؤول عن الحفاظ على سريته. يرجى إخطارنا فورًا إذا كنت تشك في أي وصول أو استخدام غير مصرح به.';
+
+  @override
+  String get privacyIntro =>
+      'في تطبيقنا، نُقدّر خصوصيتك ونلتزم بحماية معلوماتك الشخصية. توضح سياسة الخصوصية هذه كيفية جمع بياناتك واستخدامها وحمايتها عند استخدامك للتطبيق. من خلال الوصول إلى التطبيق أو استخدامه، فإنك توافق على الممارسات الموضحة في هذه السياسة.';
+
+  @override
+  String get privacyInfoTitle => 'المعلومات التي نجمعها';
+
+  @override
+  String get privacyInfoBody =>
+      'قد نقوم بجمع بيانات شخصية مثل الاسم والبريد الإلكتروني ورقم الهاتف وبيانات الاستخدام ومعلومات الجهاز لتحسين تجربتك وتقديم خدماتنا بشكل فعال.';
+
+  @override
+  String get privacyUsageTitle => 'كيفية استخدام معلوماتك';
+
+  @override
+  String get privacyUsageBody =>
+      'نستخدم معلوماتك لتقديم التطبيق وتحسينه، وتخصيص تجربتك، والتواصل معك، ومعالجة العمليات، وضمان أمان خدماتنا.';
+
+  @override
+  String get privacySharingTitle => 'مشاركة البيانات والإفصاح عنها';
+
+  @override
+  String get privacySharingBody =>
+      'نحن لا نبيع معلوماتك الشخصية. قد نشارك البيانات مع مزودي خدمات موثوقين أو الجهات القانونية عند الحاجة أو في الحالات اللازمة لحماية حقوقنا ومستخدمينا.';
+
+  @override
+  String get privacyRightsTitle => 'حقوقك في حماية البيانات';
+
+  @override
+  String get privacyRightsBody =>
+      'لديك الحق في الوصول إلى معلوماتك الشخصية أو تحديثها أو حذفها. كما يمكنك طلب نقل بياناتك أو سحب موافقتك حيثما ينطبق ذلك من خلال التواصل مع فريق الدعم لدينا.';
 }

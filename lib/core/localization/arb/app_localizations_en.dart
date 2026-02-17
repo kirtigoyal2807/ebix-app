@@ -1714,4 +1714,94 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get newChallengesSubtitle => 'When new challenges available';
+
+  @override
+  String get redeemGiftCardTxt => 'Redeem Gift Card';
+
+  @override
+  String get enterGiftCardCode => 'Enter Gift Card Code';
+
+  @override
+  String get enterRedeemCode => 'Enter Redeem Code';
+
+  @override
+  String get invalidGiftCardCode => 'Invalid gift card code';
+
+  @override
+  String get redeemGift => 'Redeem Gift';
+
+  @override
+  String get giftReceivedTitle => 'You received a gift card';
+
+  @override
+  String get viewGift => 'View Gift';
+
+  @override
+  String get giftRedeemedSuccess => 'Gift card redeemed successfully';
+
+  @override
+  String get receivedGiftTitle => 'You\'ve Received a Gift!';
+
+  @override
+  String get receivedGiftSubtitle => 'Ayesha sent you a Pilates membership';
+
+  @override
+  String get redeemYourGift => 'Redeem Your Gift';
+
+  @override
+  String get yourGiftIncludes => 'Your Gift Includes';
+
+  @override
+  String get redemptionCode => 'Redemption Code';
+
+  @override
+  String get birthdayMessage =>
+      'Happy Birthday Sarah! I thought you\'d love trying Pilates. Looking forward to taking classes together! 💪';
+
+  @override
+  String get giftSender => '— Ayesha';
+
+  @override
+  String get termsIntro =>
+      'By downloading, installing, or using the app, you agree to comply with these Terms of Use and our Privacy Policy. If you do not agree with any part of these terms, please do not use the app. You must be at least 13 years old (or the legal age in your jurisdiction) to use this app. By using the app, you confirm that you meet the minimum age requirement.';
+
+  @override
+  String get termsMedicalDisclaimer =>
+      'Our content is for general wellness and informational purposes only. It is not a substitute for professional medical advice, diagnosis, or treatment. Always consult a qualified healthcare provider if you have any health concerns.';
+
+  @override
+  String get termsAccountResponsibility =>
+      'If you create an account, you are responsible for maintaining its confidentiality. Notify us immediately if you suspect unauthorized access or use.';
+
+  @override
+  String get privacyIntro =>
+      'At our app, we value your privacy and are committed to protecting your personal information. This Privacy Policy explains how we collect, use, and protect your data when you use our app. By accessing or using the app, you agree to the practices described in this policy.';
+
+  @override
+  String get privacyInfoTitle => 'Information We Collect';
+
+  @override
+  String get privacyInfoBody =>
+      'We may collect personal details such as your name, email address, phone number, usage data, and device information to improve your experience and provide our services effectively.';
+
+  @override
+  String get privacyUsageTitle => 'How We Use Your Information';
+
+  @override
+  String get privacyUsageBody =>
+      'Your information is used to provide and improve the app, personalize your experience, communicate with you, process transactions, and ensure the security of our services.';
+
+  @override
+  String get privacySharingTitle => 'Data Sharing and Disclosure';
+
+  @override
+  String get privacySharingBody =>
+      'We do not sell your personal information. We may share data with trusted service providers, legal authorities when required, or in cases necessary to protect our rights and users.';
+
+  @override
+  String get privacyRightsTitle => 'Your Data Protection Rights';
+
+  @override
+  String get privacyRightsBody =>
+      'You have the right to access, update, or delete your personal information. You may also request data portability or withdraw consent where applicable by contacting our support team.';
 }

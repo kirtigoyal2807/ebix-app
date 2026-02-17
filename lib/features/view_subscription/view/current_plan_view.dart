@@ -106,6 +106,7 @@ class CurrentPlanView extends StatelessWidget {
                         dashWidth: 3,
                         dashSpace: 3,
                       ),
+
                     ),
                   ),
                   SizedBox(height: AppSpacing.md),
