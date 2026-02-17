@@ -737,6 +737,15 @@
   "privacyRightsBody":
   "You have the right to access, update, or delete your personal information. You may also request data portability or withdraw consent where applicable by contacting our support team."
 
+  "meetOurTrainers": "Meet our trainers",
+  "relationshipParent": "Parent",
+  "relationshipSpouse": "Spouse",
+  "relationshipSibling": "Sibling",
+  "relationshipFriend": "Friend",
+  "relationshipOther": "Other",
+  "idTypeNationalId": "National ID",
+  "idTypePassport": "Passport",
+  "idTypeDriverLicense": "Driver License"
 }
 
 

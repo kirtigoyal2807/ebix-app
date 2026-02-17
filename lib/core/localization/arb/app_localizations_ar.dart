@@ -1791,4 +1791,28 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get privacyRightsBody =>
       'لديك الحق في الوصول إلى معلوماتك الشخصية أو تحديثها أو حذفها. كما يمكنك طلب نقل بياناتك أو سحب موافقتك حيثما ينطبق ذلك من خلال التواصل مع فريق الدعم لدينا.';
+
+  @override
+  String get relationshipParent => 'الوالد/الوالدة';
+
+  @override
+  String get relationshipSpouse => 'الزوج/الزوجة';
+
+  @override
+  String get relationshipSibling => 'الأخ/الأخت';
+
+  @override
+  String get relationshipFriend => 'صديق';
+
+  @override
+  String get relationshipOther => 'آخر';
+
+  @override
+  String get idTypeNationalId => 'الهوية الوطنية';
+
+  @override
+  String get idTypePassport => 'جواز السفر';
+
+  @override
+  String get idTypeDriverLicense => 'رخصة القيادة';
 }

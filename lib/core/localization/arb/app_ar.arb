@@ -717,6 +717,15 @@
   "لديك الحق في الوصول إلى معلوماتك الشخصية أو تحديثها أو حذفها. كما يمكنك طلب نقل بياناتك أو سحب موافقتك حيثما ينطبق ذلك من خلال التواصل مع فريق الدعم لدينا."
 
 
+  "meetOurTrainers": "تعرف على مدربينا",
+  "relationshipParent": "الوالد/الوالدة",
+  "relationshipSpouse": "الزوج/الزوجة",
+  "relationshipSibling": "الأخ/الأخت",
+  "relationshipFriend": "صديق",
+  "relationshipOther": "آخر",
+  "idTypeNationalId": "الهوية الوطنية",
+  "idTypePassport": "جواز السفر",
+  "idTypeDriverLicense": "رخصة القيادة"
 }
 
 

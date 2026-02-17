@@ -113,9 +113,27 @@ class RequiredInformationView extends StatelessWidget {
                         hint: l10n.selectRelationship,
                         value: state.emergencyContactRelationship,
                         items: ['Parent', 'Spouse', 'Sibling', 'Friend', 'Other'].map((e) {
+                          String label = e;
+                          switch (e) {
+                            case 'Parent':
+                              label = l10n.relationshipParent;
+                              break;
+                            case 'Spouse':
+                              label = l10n.relationshipSpouse;
+                              break;
+                            case 'Sibling':
+                              label = l10n.relationshipSibling;
+                              break;
+                            case 'Friend':
+                              label = l10n.relationshipFriend;
+                              break;
+                            case 'Other':
+                              label = l10n.relationshipOther;
+                              break;
+                          }
                           return DropdownMenuItem(
                             value: e,
-                            child: Text(e, style: AppTextStyles.textField(context)),
+                            child: Text(label, style: AppTextStyles.textField(context)),
                           );
                         }).toList(),
                         onChanged: (val) {
@@ -163,9 +181,21 @@ class RequiredInformationView extends StatelessWidget {
                         hint: l10n.selectIdType,
                          value: state.idType,
                         items: ['National ID', 'Passport', 'Driver License'].map((e) {
+                          String label = e;
+                          switch (e) {
+                            case 'National ID':
+                              label = l10n.idTypeNationalId;
+                              break;
+                            case 'Passport':
+                              label = l10n.idTypePassport;
+                              break;
+                            case 'Driver License':
+                              label = l10n.idTypeDriverLicense;
+                              break;
+                          }
                           return DropdownMenuItem(
                             value: e,
-                             child: Text(e, style: AppTextStyles.textField(context)),
+                             child: Text(label, style: AppTextStyles.textField(context)),
                           );
                         }).toList(),
                          onChanged: (val) {

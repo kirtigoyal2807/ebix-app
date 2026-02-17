@@ -1804,4 +1804,28 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get privacyRightsBody =>
       'You have the right to access, update, or delete your personal information. You may also request data portability or withdraw consent where applicable by contacting our support team.';
+
+  @override
+  String get relationshipParent => 'Parent';
+
+  @override
+  String get relationshipSpouse => 'Spouse';
+
+  @override
+  String get relationshipSibling => 'Sibling';
+
+  @override
+  String get relationshipFriend => 'Friend';
+
+  @override
+  String get relationshipOther => 'Other';
+
+  @override
+  String get idTypeNationalId => 'National ID';
+
+  @override
+  String get idTypePassport => 'Passport';
+
+  @override
+  String get idTypeDriverLicense => 'Driver License';
 }
