@@ -725,7 +725,22 @@
   "relationshipOther": "آخر",
   "idTypeNationalId": "الهوية الوطنية",
   "idTypePassport": "جواز السفر",
-  "idTypeDriverLicense": "رخصة القيادة"
+  "idTypeDriverLicense": "رخصة القيادة",
+  "validUntil": "صالح حتى",
+  "buildStrength": "بناء القوة",
+  "buildStrengthDesc": "قوة، أجهزة ريفورمر، تمارين الكور",
+
+  "findMindfulness": "التركيز الذهني",
+  "findMindfulnessDesc": "تدفق، تأمل، هدوء",
+
+  "improveFlexibility": "تحسين المرونة",
+  "improveFlexibilityDesc": "تمدد، حركة، نطاق مرونة",
+
+  "generalFitness": "لياقة عامة",
+  "generalFitnessDesc": "توازن وصحة شاملة",
+
+  "monthlyTarget": "الهدف الشهري"
+
 }
 
 

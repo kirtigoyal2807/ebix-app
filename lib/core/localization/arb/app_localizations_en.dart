@@ -1828,4 +1828,34 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get idTypeDriverLicense => 'Driver License';
+
+  @override
+  String get validUntil => 'Valid Until';
+
+  @override
+  String get buildStrength => 'Build Strength';
+
+  @override
+  String get buildStrengthDesc => 'Power, reformer, core work';
+
+  @override
+  String get findMindfulness => 'Find Mindfulness';
+
+  @override
+  String get findMindfulnessDesc => 'Flow, meditation, calm';
+
+  @override
+  String get improveFlexibility => 'Improve Flexibility';
+
+  @override
+  String get improveFlexibilityDesc => 'Stretch, mobility, range';
+
+  @override
+  String get generalFitness => 'General Fitness';
+
+  @override
+  String get generalFitnessDesc => 'Balanced, all-around wellness';
+
+  @override
+  String get monthlyTarget => 'Monthly Target';
 }

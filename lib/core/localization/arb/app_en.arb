@@ -607,35 +607,25 @@
   "systemTheme": "Use device theme",
   "switchTheme": "Switch Theme",
   "myActivity": "My Activity",
-
   "progressDashboard": "Progress Dashboard",
   "progressDashboardSubtitle": "Track your fitness journey",
-
   "myBookings": "My Bookings",
   "myBookingsSubtitle": "View bookings history",
-
   "challenges": "Challenges",
   "challengesSubtitle": "Join active challenges",
-
   "rewardsCatalog": "Rewards Catalog",
   "rewardsCatalogSubtitle": "Redeem your points",
-
   "achievements": "Achievements",
   "achievementsSubtitle": "View your badges",
-
   "redeemGiftCard": "Redeem Gift Card",
   "redeemGiftCardSubtitle": "Enter code to redeem card",
-
   "referralProgram": "Referral Program",
   "referralProgramSubtitle": "Invite friends & earn",
   "helpAbout": "Help & About",
-
   "helpSupport": "Help & Support",
   "helpSupportSubtitle": "FAQs and Contact Us",
-
   "termsConditions": "Terms & Conditions",
   "termsConditionsSubtitle": "Legal terms of service",
-
   "privacyPolicy": "Privacy Policy",
   "privacyPolicySubtitle": "How we handle your data",
   "discover": "Discover",
@@ -665,29 +655,23 @@
   "driverLicense": "Driver License",
   "idNumber": "ID Number",
   "editDetails": "Edit Details",
-
   "pushNotifications": "Push Notifications",
-
   "allNotifications": "All Notifications",
-
   "classNotifications": "Class Notifications",
   "beforeClassStarts": "Before Class Starts",
   "beforeClassStartsSubtitle": "Get notified 30 min before",
   "dayBeforeReminder": "Day Before Reminder",
   "dayBeforeReminderSubtitle": "Reminder 24 hours before",
-
   "subscriptionBilling": "Subscription & Billing",
   "paymentConfirmations": "Payment Confirmations",
   "paymentConfirmationsSubtitle": "Successful transactions",
   "renewalReminders": "Renewal Reminders",
   "renewalRemindersSubtitle": "3 days before renewal",
-
   "marketingUpdates": "Marketing & Updates",
   "promotionsOffers": "Promotions & Offers",
   "promotionsOffersSubtitle": "Special deals and discounts",
   "appUpdates": "App Updates",
   "appUpdatesSubtitle": "New features and improvements",
-
   "challengesRewards": "Challenges & Rewards",
   "newChallenges": "New Challenges",
   "newChallengesSubtitle": "When new challenges available",
@@ -699,44 +683,25 @@
   "giftReceivedTitle": "You received a gift card",
   "viewGift": "View Gift",
   "giftRedeemedSuccess": "Gift card redeemed successfully",
-
   "receivedGiftTitle": "You've Received a Gift!",
   "receivedGiftSubtitle": "Ayesha sent you a Pilates membership",
   "redeemYourGift": "Redeem Your Gift",
   "yourGiftIncludes": "Your Gift Includes",
   "redemptionCode": "Redemption Code",
-
-  "birthdayMessage":
-  "Happy Birthday Sarah! I thought you'd love trying Pilates. Looking forward to taking classes together! 💪",
+  "birthdayMessage": "Happy Birthday Sarah! I thought you'd love trying Pilates. Looking forward to taking classes together! 💪",
   "giftSender": "— Ayesha",
-
-  "termsIntro":
-  "By downloading, installing, or using the app, you agree to comply with these Terms of Use and our Privacy Policy. If you do not agree with any part of these terms, please do not use the app. You must be at least 13 years old (or the legal age in your jurisdiction) to use this app. By using the app, you confirm that you meet the minimum age requirement.",
-
-  "termsMedicalDisclaimer":
-  "Our content is for general wellness and informational purposes only. It is not a substitute for professional medical advice, diagnosis, or treatment. Always consult a qualified healthcare provider if you have any health concerns.",
-
-  "termsAccountResponsibility":
-  "If you create an account, you are responsible for maintaining its confidentiality. Notify us immediately if you suspect unauthorized access or use.",
-  "privacyIntro":
-  "At our app, we value your privacy and are committed to protecting your personal information. This Privacy Policy explains how we collect, use, and protect your data when you use our app. By accessing or using the app, you agree to the practices described in this policy.",
-
+  "termsIntro": "By downloading, installing, or using the app, you agree to comply with these Terms of Use and our Privacy Policy. If you do not agree with any part of these terms, please do not use the app. You must be at least 13 years old (or the legal age in your jurisdiction) to use this app. By using the app, you confirm that you meet the minimum age requirement.",
+  "termsMedicalDisclaimer": "Our content is for general wellness and informational purposes only. It is not a substitute for professional medical advice, diagnosis, or treatment. Always consult a qualified healthcare provider if you have any health concerns.",
+  "termsAccountResponsibility": "If you create an account, you are responsible for maintaining its confidentiality. Notify us immediately if you suspect unauthorized access or use.",
+  "privacyIntro": "At our app, we value your privacy and are committed to protecting your personal information. This Privacy Policy explains how we collect, use, and protect your data when you use our app. By accessing or using the app, you agree to the practices described in this policy.",
   "privacyInfoTitle": "Information We Collect",
-  "privacyInfoBody":
-  "We may collect personal details such as your name, email address, phone number, usage data, and device information to improve your experience and provide our services effectively.",
-
+  "privacyInfoBody": "We may collect personal details such as your name, email address, phone number, usage data, and device information to improve your experience and provide our services effectively.",
   "privacyUsageTitle": "How We Use Your Information",
-  "privacyUsageBody":
-  "Your information is used to provide and improve the app, personalize your experience, communicate with you, process transactions, and ensure the security of our services.",
-
+  "privacyUsageBody": "Your information is used to provide and improve the app, personalize your experience, communicate with you, process transactions, and ensure the security of our services.",
   "privacySharingTitle": "Data Sharing and Disclosure",
-  "privacySharingBody":
-  "We do not sell your personal information. We may share data with trusted service providers, legal authorities when required, or in cases necessary to protect our rights and users.",
-
+  "privacySharingBody": "We do not sell your personal information. We may share data with trusted service providers, legal authorities when required, or in cases necessary to protect our rights and users.",
   "privacyRightsTitle": "Your Data Protection Rights",
-  "privacyRightsBody":
-  "You have the right to access, update, or delete your personal information. You may also request data portability or withdraw consent where applicable by contacting our support team.",
-
+  "privacyRightsBody": "You have the right to access, update, or delete your personal information. You may also request data portability or withdraw consent where applicable by contacting our support team.",
   "meetOurTrainers": "Meet our trainers",
   "relationshipParent": "Parent",
   "relationshipSpouse": "Spouse",
@@ -745,7 +710,17 @@
   "relationshipOther": "Other",
   "idTypeNationalId": "National ID",
   "idTypePassport": "Passport",
-  "idTypeDriverLicense": "Driver License"
+  "idTypeDriverLicense": "Driver License",
+  "validUntil": "Valid Until",
+  "buildStrength": "Build Strength",
+  "buildStrengthDesc": "Power, reformer, core work",
+  "findMindfulness": "Find Mindfulness",
+  "findMindfulnessDesc": "Flow, meditation, calm",
+  "improveFlexibility": "Improve Flexibility",
+  "improveFlexibilityDesc": "Stretch, mobility, range",
+  "generalFitness": "General Fitness",
+  "generalFitnessDesc": "Balanced, all-around wellness",
+  "monthlyTarget": "Monthly Target"
 }
 
 

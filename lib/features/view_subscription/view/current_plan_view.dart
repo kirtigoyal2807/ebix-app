@@ -118,69 +118,205 @@ class CurrentPlanView extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: AppSpacing.md),
-                  _buildRow(label: context.l10n.featureClasses, isDark: isDark),
-                  _buildRow(label: context.l10n.featureStudios, isDark: isDark),
                   _buildRow(
-                    label: context.l10n.featureEquipment,
+                    label: context.l10n.validUntil,
+                    subtitle: "Mar 15, 2025",
                     isDark: isDark,
                   ),
-                  _buildRow(
-                    label: context.l10n.featurePriority,
-                    isDark: isDark,
-                  ),
-                  _buildRow(label: context.l10n.featurePause, isDark: isDark),
                   SizedBox(height: AppSpacing.sm),
-                  ProgressBarCard(),
+                  _buildRow(
+                    label: context.l10n.classesUsed,
+                    subtitle: "12 / 15",
+                    isDark: isDark,
+                  ),
+                  SizedBox(height: AppSpacing.sm),
+                  _buildRow(
+                    label: context.l10n.pauseUsed,
+                    subtitle: "1 / 3",
+                    isDark: isDark,
+                  ),
+                  // _buildRow(label: context.l10n.featureStudios, isDark: isDark),
+                  // _buildRow(
+                  //   label: context.l10n.featureEquipment,
+                  //   isDark: isDark,
+                  // ),
+                  // _buildRow(
+                  //   label: context.l10n.featurePriority,
+                  //   isDark: isDark,
+                  // ),
+                  // _buildRow(label: context.l10n.featurePause, isDark: isDark),
+                  // SizedBox(height: AppSpacing.sm),
+                  // ProgressBarCard(),
                 ],
               ),
             ),
             SizedBox(height: AppSpacing.lg),
-            AppText(
-              context.l10n.pauseHistory,
-              style: (context) => AppTextStyles.gelasioRegular(context),
-            ),
-            SizedBox(height: AppSpacing.base),
+
             Container(
-              padding: EdgeInsets.all(AppSpacing.md),
               decoration: BoxDecoration(
-                color: isDark
-                    ? AppColors.primaryDarkButton
-                    : AppColors.containerGreyBg,
-                borderRadius: BorderRadius.circular(AppRadius.md),
                 border: Border.all(
-                  color: isDark ? AppColors.greyText : AppColors.buttonBorder,
+                  color: AppColors.buttonBorder, // your border color
                   width: 1,
                 ),
+                borderRadius: BorderRadius.circular(12),
               ),
-              child: Column(
-                children: [
-                  _buildPauseRow(
-                    label: context.l10n.pastPauses,
-                    subtitle: "Dec 20 - Dec 27, 2025",
-                    content: "7 days",
-                    contentColor: isDark
-                        ? AppColors.lightText
-                        : AppColors.darkText,
-                    isDark: isDark,
+              child: Theme(
+                data: Theme.of(context).copyWith(
+                  dividerColor: Colors.transparent, // removes inside line
+                ),
+                child: ExpansionTile(
+                  tilePadding: const EdgeInsets.symmetric(horizontal: 16),
+                  childrenPadding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 8,
                   ),
-                  SizedBox(height: AppSpacing.md),
-                  Divider(
-                    color: isDark ? AppColors.greyText : AppColors.buttonBorder,
-                    height: 1,
+
+                  title: AppText(
+                    context.l10n.planDetails,
+                    style: (context) => AppTextStyles.gelasioRegular(context),
                   ),
-                  SizedBox(height: AppSpacing.md),
-                  _buildPauseRow(
-                    label: context.l10n.remainingThisYear,
-                    subtitle: context.l10n.pauseAttemptsRemaining,
-                    content: context.l10n.attemptCount,
-                    contentColor: isDark
-                        ? AppColors.successBorderDark
-                        : AppColors.successColor,
-                    isDark: isDark,
-                  ),
-                ],
+
+                  children: [
+                    _buildCheckRow(
+                      label: context.l10n.featureClasses,
+                      isDark: isDark,
+                    ),
+                    _buildCheckRow(
+                      label: context.l10n.featureStudios,
+                      isDark: isDark,
+                    ),
+                    _buildCheckRow(
+                      label: context.l10n.featureEquipment,
+                      isDark: isDark,
+                    ),
+                    _buildCheckRow(
+                      label: context.l10n.featurePriority,
+                      isDark: isDark,
+                    ),
+                    _buildCheckRow(
+                      label: context.l10n.featurePause,
+                      isDark: isDark,
+                    ),
+                  ],
+                ),
               ),
             ),
+            SizedBox(height: AppSpacing.md),
+
+            Container(
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: AppColors.buttonBorder, // your border color
+                  width: 1,
+                ),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Theme(
+                data: Theme.of(context).copyWith(
+                  dividerColor: Colors.transparent, // removes inside line
+                ),
+                child: ExpansionTile(
+                  tilePadding: const EdgeInsets.symmetric(horizontal: 16),
+                  childrenPadding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 8,
+                  ),
+
+                  title: AppText(
+                    context.l10n.pauseHistory,
+                    style: (context) => AppTextStyles.gelasioRegular(context),
+                  ),
+
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        AppText(
+                          "Dec 20 - Dec 27, 2025",
+                          style: (context) =>
+                              AppTextStyles.bodyText(context).copyWith(
+                                color: isDark
+                                    ? AppColors.darkGreyText
+                                    : AppColors.lightGrey,
+                                height: 1.2,
+                              ),
+                        ),
+                        AppText(
+                          "7 days",
+                          style: (context) =>
+                              AppTextStyles.bodyText(context).copyWith(
+                                color: isDark
+                                    ? AppColors.lightText
+                                    : AppColors.darkText,
+                                fontWeight: FontWeight.w500,
+                                // height: 2,
+                              ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: AppSpacing.md),
+                    Divider(
+                      color: isDark
+                          ? AppColors.greyText
+                          : AppColors.buttonBorder,
+                      height: 1,
+                    ),
+                    SizedBox(height: AppSpacing.md),
+                    _buildPauseRow(
+                      label: context.l10n.remainingThisYear,
+                      subtitle: context.l10n.pauseAttemptsRemaining,
+                      content: context.l10n.attemptCount,
+                      contentColor: isDark
+                          ? AppColors.successBorderDark
+                          : AppColors.successColor,
+                      isDark: isDark,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+
+            // Container(
+            //   padding: EdgeInsets.all(AppSpacing.md),
+            //   decoration: BoxDecoration(
+            //     color: isDark
+            //         ? AppColors.primaryDarkButton
+            //         : AppColors.containerGreyBg,
+            //     borderRadius: BorderRadius.circular(AppRadius.md),
+            //     border: Border.all(
+            //       color: isDark ? AppColors.greyText : AppColors.buttonBorder,
+            //       width: 1,
+            //     ),
+            //   ),
+            //   child: Column(
+            //     children: [
+            //       _buildPauseRow(
+            //         label: context.l10n.pastPauses,
+            //         subtitle: "Dec 20 - Dec 27, 2025",
+            //         content: "7 days",
+            //         contentColor: isDark
+            //             ? AppColors.lightText
+            //             : AppColors.darkText,
+            //         isDark: isDark,
+            //       ),
+            //       SizedBox(height: AppSpacing.md),
+            //       Divider(
+            //         color: isDark ? AppColors.greyText : AppColors.buttonBorder,
+            //         height: 1,
+            //       ),
+            //       SizedBox(height: AppSpacing.md),
+            //       _buildPauseRow(
+            //         label: context.l10n.remainingThisYear,
+            //         subtitle: context.l10n.pauseAttemptsRemaining,
+            //         content: context.l10n.attemptCount,
+            //         contentColor: isDark
+            //             ? AppColors.successBorderDark
+            //             : AppColors.successColor,
+            //         isDark: isDark,
+            //       ),
+            //     ],
+            //   ),
+            // ),
             SizedBox(height: AppSpacing.lg),
             AppButton(
               label: context.l10n.changePlan,
@@ -241,7 +377,37 @@ class CurrentPlanView extends StatelessWidget {
     );
   }
 
-  Widget _buildRow({required String label, required bool isDark}) {
+  Widget _buildRow({
+    required String label,
+    required String subtitle,
+    required bool isDark,
+  }) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        AppText(
+          label,
+          style: (context) => AppTextStyles.bodyText(context).copyWith(
+            fontSize: 12,
+            color: isDark ? AppColors.lightText : AppColors.lightGreyText,
+            height: 1.2,
+          ),
+        ),
+
+        AppText(
+          subtitle,
+          style: (context) => AppTextStyles.bodyText(context).copyWith(
+            fontSize: 12,
+            color: isDark ? AppColors.lightText : Colors.white,
+            height: 1.2,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildCheckRow({required String label, required bool isDark}) {
     return Padding(
       padding: const EdgeInsets.only(bottom: AppSpacing.sm),
       child: Row(
@@ -249,7 +415,7 @@ class CurrentPlanView extends StatelessWidget {
         children: [
           Icon(
             Icons.done,
-            color: isDark ? AppColors.lightText : Colors.white,
+            color: isDark ? AppColors.lightText : AppColors.languageIcon,
             size: 16,
           ),
           SizedBox(width: AppSpacing.xs),
@@ -257,7 +423,7 @@ class CurrentPlanView extends StatelessWidget {
             label,
             style: (context) => AppTextStyles.bodyText(context).copyWith(
               fontSize: 12,
-              color: isDark ? AppColors.lightText : Colors.white,
+              color: isDark ? AppColors.lightText : AppColors.darkText,
               height: 1.2,
             ),
           ),

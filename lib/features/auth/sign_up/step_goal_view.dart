@@ -3,24 +3,29 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pilates_app/config/theme/app_colors.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
+import 'package:pilates_app/features/auth/sign_up/widgets/experience_option.dart';
+import 'package:pilates_app/features/auth/sign_up/widgets/monthly_target_slider.dart';
 import 'package:pilates_app/widgets/app_app_bar.dart';
 import 'package:pilates_app/widgets/app_button.dart';
 import 'package:pilates_app/widgets/app_scaffold.dart';
 import 'package:pilates_app/widgets/app_text.dart';
+import 'package:pilates_app/widgets/app_text_field.dart';
+import 'package:pilates_app/widgets/app_dropdown.dart';
+import 'package:pilates_app/widgets/phone_number_field.dart';
+
 import '../../../core/localization/localization_extension.dart';
 import '../cubit/auth_cubit.dart';
 import 'widgets/sign_up_header.dart';
 import 'widgets/sign_up_progress.dart';
-import 'widgets/experience_option.dart';
 
-class SignUpExperienceView extends StatefulWidget {
-  const SignUpExperienceView({super.key});
+class SignUpGoalView extends StatefulWidget {
+  const SignUpGoalView({super.key});
 
   @override
-  State<SignUpExperienceView> createState() => _SignUpExperienceViewState();
+  State<SignUpGoalView> createState() => _SignUpGoalViewState();
 }
 
-class _SignUpExperienceViewState extends State<SignUpExperienceView> {
+class _SignUpGoalViewState extends State<SignUpGoalView> {
   int _selectedIndex = 0;
 
   @override
@@ -30,28 +35,32 @@ class _SignUpExperienceViewState extends State<SignUpExperienceView> {
     return AppScaffold(
       appBar: AppAppBar(
         onBack: () => context.read<AuthCubit>().previousSignUpStep(),
-        title: context.l10n.experience,
+        title: context.l10n.goals,
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(
-          horizontal: AppSpacing.lg,
+          // horizontal: AppSpacing.lg,
           vertical: AppSpacing.md,
         ),
         child: Column(
           children: [
             Expanded(
               child: SingleChildScrollView(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: AppSpacing.lg,
+                  // vertical: AppSpacing.md,
+                ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Progress
-                    const SignUpProgress(currentStep: 2, totalSteps: 5),
+                    // Progress bar
+                    const SignUpProgress(currentStep: 3, totalSteps: 5),
                     const SizedBox(height: AppSpacing.sm),
                     RichText(
                       text: TextSpan(
                         children: [
                           TextSpan(
-                            text: '${context.l10n.step} 3',
+                            text: '${context.l10n.step} 4',
                             style: AppTextStyles.caption(context).copyWith(
                               color: isDark
                                   ? AppColors.languageTextDark
@@ -65,58 +74,60 @@ class _SignUpExperienceViewState extends State<SignUpExperienceView> {
                         ],
                       ),
                     ),
-                    const SizedBox(height: AppSpacing.xxl),
 
-                    // Header
-                    // SignUpHeader(
-                    //   title: context.l10n.experienceTitle,
-                    //   subtitle: context.l10n.experienceSubtitle,
-                    //   step: 2,
-                    //   totalSteps: 4,
-                    // ),
-                    AppText(
-                      context.l10n.experienceTitle,
-                      style: AppTextStyles.heading1,
-                    ),
-
-                    // const SizedBox(height: AppSpacing.sm + 2),
                     const SizedBox(height: AppSpacing.lg),
 
-                    // Options
                     ExperienceOption(
-                      title: context.l10n.experienceBeginner,
-                      description: context.l10n.experienceBeginnerDesc,
+                      title: context.l10n.buildStrength,
+                      description: context.l10n.buildStrengthDesc,
                       selected: _selectedIndex == 0,
                       iconPath: isDark
-                          ? "assets/images/svg/ic_beginner_dark.svg"
-                          : "assets/images/svg/ic_beginner.svg",
+                          ? "assets/images/svg/goal/ic_dark_build_strength.svg"
+                          : "assets/images/svg/goal/ic_build_strength.svg",
                       onTap: () => setState(() => _selectedIndex = 0),
                     ),
-
-                    const SizedBox(height: AppSpacing.md),
+                    const SizedBox(height: AppSpacing.base),
 
                     ExperienceOption(
-                      title: context.l10n.experienceIntermediate,
-                      description: context.l10n.experienceIntermediateDesc,
+                      title: context.l10n.findMindfulness,
+                      description: context.l10n.findMindfulnessDesc,
                       selected: _selectedIndex == 1,
                       iconPath: isDark
-                          ? "assets/images/svg/ic_intermediate_dark.svg"
-                          : "assets/images/svg/ic_intermediate.svg",
+                          ? "assets/images/svg/goal/ic_find_dark_minsfulness.svg"
+                          : "assets/images/svg/goal/ic_find_minsfulness.svg",
                       onTap: () => setState(() => _selectedIndex = 1),
+                    ),
+                    const SizedBox(height: AppSpacing.base),
+                    ExperienceOption(
+                      title: context.l10n.improveFlexibility,
+                      description: context.l10n.improveFlexibilityDesc,
+                      selected: _selectedIndex == 2,
+                      iconPath: isDark
+                          ? "assets/images/svg/goal/ic_dark_improve_flexibility.svg"
+                          : "assets/images/svg/goal/ic_improve_flexibility.svg",
+                      onTap: () => setState(() => _selectedIndex = 2),
+                    ),
+                    const SizedBox(height: AppSpacing.base),
+                    ExperienceOption(
+                      title: context.l10n.generalFitness,
+                      description: context.l10n.generalFitnessDesc,
+                      selected: _selectedIndex == 3,
+                      iconPath: isDark
+                          ? "assets/images/svg/goal/ic_dark_general_fitness.svg"
+                          : "assets/images/svg/goal/ic_general_fitness.svg",
+                      onTap: () => setState(() => _selectedIndex = 3),
+                    ),
+                    const SizedBox(height: AppSpacing.lg),
+                    AppText(
+                      context.l10n.monthlyTarget,
+                      style: (context) =>
+                          AppTextStyles.gelasioRegular(context).copyWith(),
                     ),
 
                     const SizedBox(height: AppSpacing.md),
-
-                    ExperienceOption(
-                      title: context.l10n.experienceAdvanced,
-                      description: context.l10n.experienceAdvancedDesc,
-                      selected: _selectedIndex == 2,
-                      iconPath: isDark
-                          ? "assets/images/svg/ic_advance_dark.svg"
-                          : "assets/images/svg/ic_advance.svg",
-                      onTap: () => setState(() => _selectedIndex = 2),
-                    ),
+                    MonthlyTargetSlider(),
                     const SizedBox(height: AppSpacing.lg),
+
                     AppText(
                       context.l10n.dontWorry,
                       style: (context) => AppTextStyles.body(context).copyWith(
@@ -127,15 +138,19 @@ class _SignUpExperienceViewState extends State<SignUpExperienceView> {
                             : Color(0xff79716B),
                       ),
                     ),
+                    const SizedBox(height: AppSpacing.lg),
                   ],
                 ),
               ),
             ),
 
-            // Continue
-            AppButton(
-              label: context.l10n.continueTxt,
-              onPressed: () => context.read<AuthCubit>().nextSignUpStep(),
+            // Continue button
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+              child: AppButton(
+                label: context.l10n.continueTxt,
+                onPressed: () => context.read<AuthCubit>().nextSignUpStep(),
+              ),
             ),
           ],
         ),

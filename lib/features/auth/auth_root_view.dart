@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pilates_app/features/auth/sign_in/sign_in_view.dart';
 import 'package:pilates_app/features/auth/sign_up/step_branch_view.dart';
 import 'package:pilates_app/features/auth/sign_up/step_experience_view.dart';
+import 'package:pilates_app/features/auth/sign_up/step_goal_view.dart';
 import 'package:pilates_app/features/auth/sign_up/step_otp_view.dart';
 import 'package:pilates_app/features/auth/sign_up/step_personal_info_view.dart';
 import 'package:pilates_app/features/auth/splash/splash_view.dart';
@@ -35,7 +36,10 @@ class AuthRootView extends StatelessWidget {
               case 2:
                 return const SignUpExperienceView();
               case 3:
+                return const SignUpGoalView();
+              case 4:
                 return const SignUpBranchView();
+
               default:
                 return const SizedBox();
             }

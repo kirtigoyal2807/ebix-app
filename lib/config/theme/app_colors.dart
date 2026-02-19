@@ -121,4 +121,5 @@ class AppColors {
   static  final divider =   Color(0xffDFE1E7);
 
   static final placeHolderText = Color(0xff79716B);
+  static final goalTrackColor = Color(0xffF5F4F4);
 }

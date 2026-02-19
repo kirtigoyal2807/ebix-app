@@ -3553,6 +3553,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Driver License'**
   String get idTypeDriverLicense;
+
+  /// No description provided for @validUntil.
+  ///
+  /// In en, this message translates to:
+  /// **'Valid Until'**
+  String get validUntil;
+
+  /// No description provided for @buildStrength.
+  ///
+  /// In en, this message translates to:
+  /// **'Build Strength'**
+  String get buildStrength;
+
+  /// No description provided for @buildStrengthDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Power, reformer, core work'**
+  String get buildStrengthDesc;
+
+  /// No description provided for @findMindfulness.
+  ///
+  /// In en, this message translates to:
+  /// **'Find Mindfulness'**
+  String get findMindfulness;
+
+  /// No description provided for @findMindfulnessDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Flow, meditation, calm'**
+  String get findMindfulnessDesc;
+
+  /// No description provided for @improveFlexibility.
+  ///
+  /// In en, this message translates to:
+  /// **'Improve Flexibility'**
+  String get improveFlexibility;
+
+  /// No description provided for @improveFlexibilityDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Stretch, mobility, range'**
+  String get improveFlexibilityDesc;
+
+  /// No description provided for @generalFitness.
+  ///
+  /// In en, this message translates to:
+  /// **'General Fitness'**
+  String get generalFitness;
+
+  /// No description provided for @generalFitnessDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Balanced, all-around wellness'**
+  String get generalFitnessDesc;
+
+  /// No description provided for @monthlyTarget.
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly Target'**
+  String get monthlyTarget;
 }
 
 class _AppLocalizationsDelegate

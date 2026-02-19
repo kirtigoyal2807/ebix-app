@@ -1815,4 +1815,34 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get idTypeDriverLicense => 'رخصة القيادة';
+
+  @override
+  String get validUntil => 'صالح حتى';
+
+  @override
+  String get buildStrength => 'بناء القوة';
+
+  @override
+  String get buildStrengthDesc => 'قوة، أجهزة ريفورمر، تمارين الكور';
+
+  @override
+  String get findMindfulness => 'التركيز الذهني';
+
+  @override
+  String get findMindfulnessDesc => 'تدفق، تأمل، هدوء';
+
+  @override
+  String get improveFlexibility => 'تحسين المرونة';
+
+  @override
+  String get improveFlexibilityDesc => 'تمدد، حركة، نطاق مرونة';
+
+  @override
+  String get generalFitness => 'لياقة عامة';
+
+  @override
+  String get generalFitnessDesc => 'توازن وصحة شاملة';
+
+  @override
+  String get monthlyTarget => 'الهدف الشهري';
 }

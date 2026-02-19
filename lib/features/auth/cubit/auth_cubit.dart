@@ -28,7 +28,7 @@ class AuthCubit extends Cubit<AuthState> {
 
   // Sign Up flow (5 steps)
   void nextSignUpStep() {
-    if (state.signUpStep < 3) {
+    if (state.signUpStep < 4) {
       emit(state.copyWith(signUpStep: state.signUpStep + 1));
     }
   }

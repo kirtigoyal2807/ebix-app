@@ -38,7 +38,7 @@ class SignUpOtpView extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // Progress
-                    const SignUpProgress(currentStep: 1, totalSteps: 4),
+                    const SignUpProgress(currentStep: 1, totalSteps: 5),
                     const SizedBox(height: AppSpacing.sm),
                     RichText(
                       text: TextSpan(
@@ -52,7 +52,7 @@ class SignUpOtpView extends StatelessWidget {
                             ),
                           ),
                           TextSpan(
-                            text: ' ${context.l10n.offf} 4',
+                            text: ' ${context.l10n.offf} 5',
                             style: AppTextStyles.caption(context),
                           ),
                         ],

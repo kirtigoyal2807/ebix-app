@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:pilates_app/config/theme/app_colors.dart';
 import 'package:pilates_app/config/theme/app_radius.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
@@ -50,11 +51,11 @@ class BranchOption extends StatelessWidget {
       focusColor: Colors.transparent,
       borderRadius: BorderRadius.circular(AppRadius.md),
       child: Container(
-        padding: const EdgeInsets.all(AppSpacing.lg),
+        // padding: const EdgeInsets.all(AppSpacing.lg),
         decoration: BoxDecoration(
           color: isDark ? AppColors.homeBackground : Colors.white,
           borderRadius: BorderRadius.circular(AppRadius.md),
-          border: Border.all(color: borderColor, width: selected ? 1 : 1),
+          // border: Border.all(color: borderColor, width: selected ? 1 : 1),
           boxShadow: isDark
               ? [
                   BoxShadow(
@@ -93,35 +94,104 @@ class BranchOption extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            /// TOP ROW: TITLE + CHIP
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Expanded(
-                  child: AppText(title, style: AppTextStyles.textFieldHeading),
-                ),
-                _BranchTypeChip(type: type),
-              ],
+            ClipRRect(
+              borderRadius: BorderRadiusGeometry.only(
+                topLeft: Radius.circular(AppRadius.md),
+                topRight: Radius.circular(AppRadius.md),
+              ),
+              child: Image.asset(
+                "assets/images/png/ic_branch.png",
+                fit: BoxFit.fill,
+                width: MediaQuery.of(context).size.width,
+                height: 127,
+              ),
             ),
 
-            const SizedBox(height: AppSpacing.xs),
+            /// TOP ROW: TITLE + CHIP
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                vertical: AppSpacing.base,
+                horizontal: AppSpacing.md,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            AppText(
+                              title,
+                              style: AppTextStyles.textFieldHeading,
+                            ),
+                            const SizedBox(height: AppSpacing.xs),
 
-            /// CITY
-            AppText(city, style: AppTextStyles.bodyTextSmall),
+                            /// CITY
+                            AppText(
+                              city,
+                              style: (context) => AppTextStyles.bodyTextSmall(
+                                context,
+                              ).copyWith(fontSize: 12, height: 1.4),
+                            ),
+                          ],
+                        ),
+                      ),
+                      if (selected)
+                        Container(
+                          width: 20,
+                          height: 20,
+                          decoration: BoxDecoration(
+                            color: (isDark
+                                ? AppColors.languageIconDark
+                                : AppColors.languageIcon),
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                          child: Center(
+                            child: SvgPicture.asset(
+                              "assets/images/svg/ic_checkbox_white.svg",
+                              width: 10,
+                              height: 10,
+                              fit: BoxFit.contain,
+                              // colorFilter: ColorFilter.mode(
+                              //   selected ? theme.colorScheme.primary : theme.hintColor,
+                              //   BlendMode.srcIn,
+                              // ),
+                              alignment: Alignment.center,
+                            ),
+                          ),
+                          // child: const Icon(Icons.check, color: Colors.white, size: 14),
+                        )
+                      else
+                        const SizedBox(width: 20),
+                    ],
+                  ),
 
-            const SizedBox(height: AppSpacing.md),
+                  const SizedBox(height: AppSpacing.md),
 
-            /// DISTANCE
-            Row(
-              children: [
-                Icon(
-                  Icons.location_on_outlined,
-                  size: 16,
-                  color: theme.hintColor,
-                ),
-                const SizedBox(width: 4),
-                AppText(distance, style: AppTextStyles.bodyTextSmall),
-              ],
+                  /// DISTANCE
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.location_on_outlined,
+                        size: 16,
+                        color: theme.hintColor,
+                      ),
+                      const SizedBox(width: 4),
+                      AppText(
+                        distance,
+                        style: (context) => AppTextStyles.bodyTextSmall(
+                          context,
+                        ).copyWith(fontSize: 12, height: 1.4),
+                      ),
+                      Spacer(),
+                      _BranchTypeChip(type: type),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ],
         ),

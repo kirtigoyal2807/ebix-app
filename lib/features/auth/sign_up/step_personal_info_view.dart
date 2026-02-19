@@ -47,7 +47,7 @@ class _SignUpPersonalInfoViewState extends State<SignUpPersonalInfoView> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // Progress bar
-                    const SignUpProgress(currentStep: 0, totalSteps: 4),
+                    const SignUpProgress(currentStep: 0, totalSteps: 5),
                     const SizedBox(height: AppSpacing.sm),
                     RichText(
                       text: TextSpan(
@@ -61,7 +61,7 @@ class _SignUpPersonalInfoViewState extends State<SignUpPersonalInfoView> {
                             ),
                           ),
                           TextSpan(
-                            text: ' ${context.l10n.offf} 4',
+                            text: ' ${context.l10n.offf} 5',
                             style: AppTextStyles.caption(context),
                           ),
                         ],

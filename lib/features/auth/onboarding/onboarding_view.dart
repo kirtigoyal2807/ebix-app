@@ -30,10 +30,10 @@ class OnboardingView extends StatelessWidget {
       context: context,
       isScrollControlled: true,
       barrierColor:
-      // isDark
-      //     ?
-    AppColors.bottomSheetShadow,
-          // : Colors.black.withValues(alpha: 0.2),
+          // isDark
+          //     ?
+          AppColors.bottomSheetShadow,
+      // : Colors.black.withValues(alpha: 0.2),
       // backgroundColor: Colors.transparent,
       builder: (_) => const LanguageBottomSheet(),
     );
@@ -44,7 +44,7 @@ class OnboardingView extends StatelessWidget {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      barrierColor:     AppColors.bottomSheetShadow,
+      barrierColor: AppColors.bottomSheetShadow,
       // backgroundColor: Colors.transparent, // keep transparent here
       // backgroundColor: Colors.transparent,
       builder: (_) => const HelpSupportBottomSheet(),
@@ -100,7 +100,11 @@ class OnboardingView extends StatelessWidget {
                       ),
                       child: Column(
                         children: [
-                          SizedBox(height: isSmallScreen ? AppSpacing.md : AppSpacing.xl),
+                          SizedBox(
+                            height: isSmallScreen
+                                ? AppSpacing.md
+                                : AppSpacing.xl,
+                          ),
 
                           // Pilates mat illustration
                           Padding(
@@ -110,13 +114,17 @@ class OnboardingView extends StatelessWidget {
                             child: SvgPicture.asset(
                               isDark
                                   ? 'assets/images/svg/ic_onboarding_dark.svg'
-                                  : 'assets/images/svg/ic_onboarding.svg',
+                                  : 'assets/images/svg/ic_new_on_boarding.svg',
                               height: screenHeight * 0.32,
                               fit: BoxFit.contain,
                             ),
                           ),
 
-                          SizedBox(height: isSmallScreen ? AppSpacing.lg : AppSpacing.xxl),
+                          SizedBox(
+                            height: isSmallScreen
+                                ? AppSpacing.lg
+                                : AppSpacing.xxl,
+                          ),
 
                           // Main title
                           Padding(
@@ -135,7 +143,9 @@ class OnboardingView extends StatelessWidget {
                           // Description
                           Padding(
                             padding: EdgeInsets.symmetric(
-                              horizontal: isSmallScreen ? AppSpacing.md : AppSpacing.xxl,
+                              horizontal: isSmallScreen
+                                  ? AppSpacing.md
+                                  : AppSpacing.xxl,
                             ),
                             child: AppText(
                               context.l10n.onboarding_desc_2,
@@ -162,14 +172,20 @@ class OnboardingView extends StatelessWidget {
                               Flexible(
                                 child: AppText(
                                   context.l10n.noExperienceNeeded,
-                                  style: (context)=>AppTextStyles.captionText(context).copyWith(color: AppColors.lightGrey),
+                                  style: (context) => AppTextStyles.captionText(
+                                    context,
+                                  ).copyWith(color: AppColors.lightGrey),
                                   textAlign: TextAlign.center,
                                 ),
                               ),
                             ],
                           ),
 
-                          SizedBox(height: isSmallScreen ? AppSpacing.md : AppSpacing.xl + AppSpacing.lg),
+                          SizedBox(
+                            height: isSmallScreen
+                                ? AppSpacing.md
+                                : AppSpacing.xl + AppSpacing.lg,
+                          ),
                         ],
                       ),
                     ),
@@ -224,7 +240,10 @@ class OnboardingView extends StatelessWidget {
             ),
             decoration: BoxDecoration(
               // color: Colors.white,
-              border: Border.all(color:isDark ? AppColors.greyText: AppColors.buttonBorder, width: 1),
+              border: Border.all(
+                color: isDark ? AppColors.greyText : AppColors.buttonBorder,
+                width: 1,
+              ),
               borderRadius: BorderRadius.circular(AppRadius.pillRadius),
             ),
             child: Row(
@@ -264,7 +283,10 @@ class OnboardingView extends StatelessWidget {
         ),
         decoration: BoxDecoration(
           // color: Colors.white,
-          border: Border.all(color:isDark ? AppColors.greyText: AppColors.buttonBorder, width: 1),
+          border: Border.all(
+            color: isDark ? AppColors.greyText : AppColors.buttonBorder,
+            width: 1,
+          ),
           borderRadius: BorderRadius.circular(AppRadius.pillRadius),
         ),
         child: Row(
