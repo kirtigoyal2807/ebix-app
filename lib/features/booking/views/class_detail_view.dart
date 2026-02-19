@@ -54,27 +54,27 @@ class ClassDetailView extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Padding(
-                      padding: EdgeInsets.symmetric(horizontal:AppSpacing.lg ),
+                      padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
                       child: ClassDetailHeader(),
                     ),
                     SizedBox(height: AppSpacing.lg),
                     Padding(
-                      padding: EdgeInsets.symmetric(horizontal:AppSpacing.lg ),
+                      padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
                       child: ClassInfoGrid(),
                     ),
                     SizedBox(height: AppSpacing.lg),
                     Padding(
-                      padding: EdgeInsets.symmetric(horizontal:AppSpacing.lg ),
+                      padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
                       child: ClassLocationCard(),
                     ),
                     SizedBox(height: AppSpacing.lg),
                     Padding(
-                      padding: EdgeInsets.symmetric(horizontal:AppSpacing.lg ),
+                      padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
                       child: ClassAboutSection(),
                     ),
                     SizedBox(height: AppSpacing.lg),
                     Padding(
-                      padding: EdgeInsets.symmetric(horizontal:AppSpacing.lg ),
+                      padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
                       child: ClassWhatToBring(),
                     ),
                     SizedBox(height: AppSpacing.lg),

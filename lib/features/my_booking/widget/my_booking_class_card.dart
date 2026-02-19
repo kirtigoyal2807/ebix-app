@@ -10,6 +10,7 @@ import 'package:pilates_app/features/my_booking/widget/rate_sheet.dart';
 import 'package:pilates_app/widgets/app_button.dart';
 import 'package:pilates_app/widgets/app_text.dart';
 
+import '../../../widgets/app_shadow.dart';
 import '../my_booking_view.dart';
 import 'confirmation_sheet.dart';
 
@@ -46,308 +47,326 @@ class MyBookingClassCard extends StatelessWidget {
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
-      child: Material(
-        color: isDark ? AppColors.homeBackground : Colors.white,
+      // child: Material(
+      // color: isDark ? AppColors.homeBackground : Colors.white,
+      // borderRadius: BorderRadius.circular(AppRadius.lg),
+      child: InkWell(
+        onTap: () {},
         borderRadius: BorderRadius.circular(AppRadius.lg),
-        child: InkWell(
-          onTap: () {},
-          borderRadius: BorderRadius.circular(AppRadius.lg),
-          child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(AppRadius.lg),
-              border: Border.all(
-                color: isDark ? AppColors.greyText : AppColors.buttonBorder,
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(AppRadius.lg),
+            color: isDark ? AppColors.homeBackground : Colors.white,
+
+            border: Border.all(
+              color: isDark ? AppColors.greyText : AppColors.buttonBorder,
+            ),
+            boxShadow: [
+              AppShadows.lightShadow,
+              AppShadows.mediumShadow,
+              AppShadows.mediumHeavyShadow,
+              BoxShadow(
+                color: AppColors.shadowColor.withValues(alpha: 0.01),
+                offset: const Offset(0, 64),
+                blurRadius: 25,
+                spreadRadius: 0,
               ),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Image part with tags
-                ClipRRect(
-                  borderRadius: const BorderRadius.vertical(
-                    top: Radius.circular(AppRadius.lg),
-                  ),
-                  child:
-                      // SvgPicture.asset(
-                      //   'assets/images/svg/ic_yoga.svg',
-                      //   height: size.height * 0.22,
-                      //   // width: width * 0.6,
-                      //   fit: BoxFit.fill,
-                      // ),
-                      Image.asset(
-                        "assets/images/demo images/Class Image.png",
-                        height: size.height * 0.18,
-                        // width: width * 0.6,
-                        fit: BoxFit.fill,
-                      ),
+              BoxShadow(
+                color: AppColors.shadowColor.withValues(alpha: 0.00),
+                offset: const Offset(0, 99),
+                blurRadius: 28,
+                spreadRadius: 0,
+              ),
+            ],
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Image part with tags
+              ClipRRect(
+                borderRadius: const BorderRadius.vertical(
+                  top: Radius.circular(AppRadius.lg),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(
-                    right: AppSpacing.md,
-                    left: AppSpacing.md,
-                    top: AppSpacing.base,
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        child: Row(
-                          children: [
-                            if (bookingStatus == BookingStatus.confirmed ||
-                                bookingStatus == BookingStatus.completed)
-                              Flexible(
-                                child: Container(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: AppSpacing.sm,
-                                    vertical: AppSpacing.xs,
-                                  ),
-                                  margin: const EdgeInsets.only(
-                                    right: AppSpacing.xs,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: isDark
-                                        ? AppColors.successColor.withValues(
-                                            alpha: 0.36,
-                                          )
-                                        : AppColors.featuredTagBackgroundColor,
-                                    borderRadius: BorderRadius.circular(16),
-                                    border: Border.all(
-                                      color: isDark
-                                          ? AppColors.successBorderDark
-                                          : AppColors.lightGreenBorder,
-                                      width: 1,
-                                    ),
-                                  ),
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Icon(
-                                        Icons.check,
-                                        color: isDark
-                                            ? AppColors.lightGreyColor
-                                            : AppColors.successColor,
-                                        size: 12,
-                                      ),
-                                      const SizedBox(width: AppSpacing.xs),
-                                      Flexible(
-                                        child: AppText(
-                                          bookingStatus ==
-                                                  BookingStatus.confirmed
-                                              ? context.l10n.confirmed
-                                              : context.l10n.completed,
-                                          style: (context) =>
-                                              AppTextStyles.boldBody(
-                                                context,
-                                              ).copyWith(
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.w500,
-                                                color: isDark
-                                                    ? AppColors.lightGreyColor
-                                                    : AppColors.GreyColor,
-                                              ),
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            if (bookingStatus == BookingStatus.waitListed)
-                              Flexible(
-                                child: Container(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: AppSpacing.sm,
-                                    vertical: AppSpacing.xs,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: isDark
-                                        ? AppColors.upgradeDarkBackgroundColor
-                                              .withValues(alpha: 0.11)
-                                        : AppColors.upgradeLightBackgroundColor,
-                                    borderRadius: BorderRadius.circular(16),
-                                    border: Border.all(
-                                      color: isDark
-                                          ? AppColors
-                                                .upgradeDarkLockBackgroundColor
-                                          : AppColors.warningColor,
-                                      width: 1,
-                                    ),
-                                  ),
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Icon(
-                                        Icons.error_outline,
-                                        color: AppColors.goldStarColor,
-                                        size: 14,
-                                      ),
-                                      const SizedBox(width: 4),
-                                      Flexible(
-                                        child: AppText(
-                                          context.l10n.waitlisted,
-                                          style: (context) =>
-                                              AppTextStyles.boldBody(
-                                                context,
-                                              ).copyWith(
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.w500,
-                                                color: isDark
-                                                    ? AppColors
-                                                          .upgradeDarkLockBackgroundColor
-                                                    : AppColors
-                                                          .upgradeDarkLockBackgroundColor,
-                                              ),
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            if (bookingStatus == BookingStatus.cancelled)
-                              Flexible(
-                                child: Container(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: AppSpacing.sm,
-                                    vertical: AppSpacing.xs,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: isDark
-                                        ? AppColors.redLight.withValues(
-                                            alpha: 0.16,
-                                          )
-                                        : AppColors.cardLightBackground,
-                                    borderRadius: BorderRadius.circular(16),
-                                    border: Border.all(
-                                      color: isDark
-                                          ? AppColors.redLight
-                                          : AppColors.redBorder,
-                                      width: 1,
-                                    ),
-                                  ),
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Icon(
-                                        Icons.close,
-                                        color: isDark
-                                            ? AppColors.redText
-                                            : AppColors.redLight,
-                                        size: 12,
-                                      ),
-                                      const SizedBox(width: 4),
-                                      Flexible(
-                                        child: AppText(
-                                          context.l10n.cancelled,
-                                          style: (context) =>
-                                              AppTextStyles.boldBody(
-                                                context,
-                                              ).copyWith(
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.w500,
-                                                color: isDark
-                                                    ? AppColors.redText
-                                                    : AppColors.redLight,
-                                              ),
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(width: AppSpacing.xs),
-                      if (bookingStatus == BookingStatus.confirmed ||
-                          bookingStatus == BookingStatus.waitListed)
-                        Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            const Icon(
-                              Icons.star,
-                              color: Color(0xFFEAB308),
-                              size: 16,
-                            ),
-                            const SizedBox(width: 4),
-                            AppText(
-                              rating.toString(),
-                              style: (context) =>
-                                  AppTextStyles.boldBody(context).copyWith(
-                                    color: isDark
-                                        ? AppColors.lightText
-                                        : AppColors.darkText,
-                                  ),
-                            ),
-                          ],
-                        ),
-                    ],
-                  ),
+                child:
+                    // SvgPicture.asset(
+                    //   'assets/images/svg/ic_yoga.svg',
+                    //   height: size.height * 0.22,
+                    //   // width: width * 0.6,
+                    //   fit: BoxFit.fill,
+                    // ),
+                    Image.asset(
+                      "assets/images/demo images/Class Image.png",
+                      height: size.height * 0.18,
+                      // width: width * 0.6,
+                      fit: BoxFit.fill,
+                    ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(
+                  right: AppSpacing.md,
+                  left: AppSpacing.md,
+                  top: AppSpacing.base,
                 ),
-
-                // Info part
-                Padding(
-                  padding: const EdgeInsets.only(
-                    right: AppSpacing.md,
-                    left: AppSpacing.md,
-                    bottom: AppSpacing.md,
-                    top: AppSpacing.sm,
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      RichText(
-                        text: TextSpan(
-                          text: '$title ',
-                          style: AppTextStyles.boldBody(context).copyWith(
-                            fontSize: size.width * 0.04 > 16
-                                ? 16
-                                : size.width * 0.04,
-                            color: isDark
-                                ? AppColors.lightText
-                                : AppColors.darkText,
-                            fontWeight: FontWeight.w500,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: Row(
+                        children: [
+                          if (bookingStatus == BookingStatus.confirmed ||
+                              bookingStatus == BookingStatus.completed)
+                            Flexible(
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: AppSpacing.sm,
+                                  vertical: AppSpacing.xs,
+                                ),
+                                margin: const EdgeInsets.only(
+                                  right: AppSpacing.xs,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: isDark
+                                      ? AppColors.successColor.withValues(
+                                          alpha: 0.36,
+                                        )
+                                      : AppColors.featuredTagBackgroundColor,
+                                  borderRadius: BorderRadius.circular(16),
+                                  border: Border.all(
+                                    color: isDark
+                                        ? AppColors.successBorderDark
+                                        : AppColors.lightGreenBorder,
+                                    width: 1,
+                                  ),
+                                ),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Icon(
+                                      Icons.check,
+                                      color: isDark
+                                          ? AppColors.lightGreyColor
+                                          : AppColors.successColor,
+                                      size: 12,
+                                    ),
+                                    const SizedBox(width: AppSpacing.xs),
+                                    Flexible(
+                                      child: AppText(
+                                        bookingStatus == BookingStatus.confirmed
+                                            ? context.l10n.confirmed
+                                            : context.l10n.completed,
+                                        style: (context) =>
+                                            AppTextStyles.boldBody(
+                                              context,
+                                            ).copyWith(
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.w500,
+                                              color: isDark
+                                                  ? AppColors.lightGreyColor
+                                                  : AppColors.GreyColor,
+                                            ),
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          if (bookingStatus == BookingStatus.waitListed)
+                            Flexible(
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: AppSpacing.sm,
+                                  vertical: AppSpacing.xs,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: isDark
+                                      ? AppColors.upgradeDarkBackgroundColor
+                                            .withValues(alpha: 0.11)
+                                      : AppColors.upgradeLightBackgroundColor,
+                                  borderRadius: BorderRadius.circular(16),
+                                  border: Border.all(
+                                    color: isDark
+                                        ? AppColors
+                                              .upgradeDarkLockBackgroundColor
+                                        : AppColors.warningColor,
+                                    width: 1,
+                                  ),
+                                ),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Icon(
+                                      Icons.error_outline,
+                                      color: AppColors.goldStarColor,
+                                      size: 14,
+                                    ),
+                                    const SizedBox(width: 4),
+                                    Flexible(
+                                      child: AppText(
+                                        context.l10n.waitlisted,
+                                        style: (context) =>
+                                            AppTextStyles.boldBody(
+                                              context,
+                                            ).copyWith(
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.w500,
+                                              color: isDark
+                                                  ? AppColors
+                                                        .upgradeDarkLockBackgroundColor
+                                                  : AppColors
+                                                        .upgradeDarkLockBackgroundColor,
+                                            ),
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          if (bookingStatus == BookingStatus.cancelled)
+                            Flexible(
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: AppSpacing.sm,
+                                  vertical: AppSpacing.xs,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: isDark
+                                      ? AppColors.redLight.withValues(
+                                          alpha: 0.16,
+                                        )
+                                      : AppColors.cardLightBackground,
+                                  borderRadius: BorderRadius.circular(16),
+                                  border: Border.all(
+                                    color: isDark
+                                        ? AppColors.redLight
+                                        : AppColors.redBorder,
+                                    width: 1,
+                                  ),
+                                ),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Icon(
+                                      Icons.close,
+                                      color: isDark
+                                          ? AppColors.redText
+                                          : AppColors.redLight,
+                                      size: 12,
+                                    ),
+                                    const SizedBox(width: 4),
+                                    Flexible(
+                                      child: AppText(
+                                        context.l10n.cancelled,
+                                        style: (context) =>
+                                            AppTextStyles.boldBody(
+                                              context,
+                                            ).copyWith(
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.w500,
+                                              color: isDark
+                                                  ? AppColors.redText
+                                                  : AppColors.redLight,
+                                            ),
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(width: AppSpacing.xs),
+                    if (bookingStatus == BookingStatus.confirmed ||
+                        bookingStatus == BookingStatus.waitListed)
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const Icon(
+                            Icons.star,
+                            color: Color(0xFFEAB308),
+                            size: 16,
                           ),
-                          children: [
-                            TextSpan(
-                              text: "${context.l10n.withKey} ",
-                              style: AppTextStyles.bodyText(context).copyWith(
-                                fontSize: size.width * 0.04 > 16
-                                    ? 16
-                                    : size.width * 0.04,
-                                // highlight
-                              ),
-                            ),
-                            TextSpan(
-                              text: context.l10n.withTrainer(trainerName),
-                              style: AppTextStyles.boldBody(context).copyWith(
-                                fontSize: size.width * 0.04 > 16
-                                    ? 16
-                                    : size.width * 0.04,
-                                color: isDark
-                                    ? AppColors.lightText
-                                    : AppColors.darkText,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                          ],
-                        ),
+                          const SizedBox(width: 4),
+                          AppText(
+                            rating.toString(),
+                            style: (context) =>
+                                AppTextStyles.boldBody(context).copyWith(
+                                  color: isDark
+                                      ? AppColors.lightText
+                                      : AppColors.darkText,
+                                ),
+                          ),
+                        ],
                       ),
-
-                      const SizedBox(height: AppSpacing.sm),
-                      infoContent(context: context, isDark: isDark),
-                    ],
-                  ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+
+              // Info part
+              Padding(
+                padding: const EdgeInsets.only(
+                  right: AppSpacing.md,
+                  left: AppSpacing.md,
+                  bottom: AppSpacing.md,
+                  top: AppSpacing.sm,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    RichText(
+                      text: TextSpan(
+                        text: '$title ',
+                        style: AppTextStyles.boldBody(context).copyWith(
+                          fontSize: size.width * 0.04 > 16
+                              ? 16
+                              : size.width * 0.04,
+                          color: isDark
+                              ? AppColors.lightText
+                              : AppColors.darkText,
+                          fontWeight: FontWeight.w500,
+                        ),
+                        children: [
+                          TextSpan(
+                            text: "${context.l10n.withKey} ",
+                            style: AppTextStyles.bodyText(context).copyWith(
+                              fontSize: size.width * 0.04 > 16
+                                  ? 16
+                                  : size.width * 0.04,
+                              // highlight
+                            ),
+                          ),
+                          TextSpan(
+                            text: context.l10n.withTrainer(trainerName),
+                            style: AppTextStyles.boldBody(context).copyWith(
+                              fontSize: size.width * 0.04 > 16
+                                  ? 16
+                                  : size.width * 0.04,
+                              color: isDark
+                                  ? AppColors.lightText
+                                  : AppColors.darkText,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    const SizedBox(height: AppSpacing.sm),
+                    infoContent(context: context, isDark: isDark),
+                  ],
+                ),
+              ),
+            ],
           ),
         ),
       ),
+      // ),
     );
   }
 
@@ -401,7 +420,7 @@ class MyBookingClassCard extends StatelessWidget {
                         context: context,
                         isScrollControlled: true,
                         backgroundColor: Colors.transparent,
-                        barrierColor:     AppColors.bottomSheetShadow,
+                        barrierColor: AppColors.bottomSheetShadow,
                         builder: (_) => ConfirmationSheet(
                           confirmationText: context.l10n.cancelClassConfirm,
                           buttonText: context.l10n.cancelClassYes,
@@ -450,7 +469,7 @@ class MyBookingClassCard extends StatelessWidget {
                   context: context,
                   isScrollControlled: true,
                   backgroundColor: Colors.transparent,
-                  barrierColor:     AppColors.bottomSheetShadow,
+                  barrierColor: AppColors.bottomSheetShadow,
                   builder: (_) => ConfirmationSheet(
                     confirmationText: context.l10n.leaveWaitlistConfirm,
                     buttonText: context.l10n.leaveWaitlistYes,
@@ -500,7 +519,7 @@ class MyBookingClassCard extends StatelessWidget {
                       context: context,
                       isScrollControlled: true,
                       backgroundColor: Colors.transparent,
-                      barrierColor:     AppColors.bottomSheetShadow,
+                      barrierColor: AppColors.bottomSheetShadow,
                       builder: (_) => const RateSheet(),
                     );
                   },

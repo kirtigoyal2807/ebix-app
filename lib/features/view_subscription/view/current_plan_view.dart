@@ -12,7 +12,6 @@ import '../../../widgets/app_button.dart';
 import '../../../widgets/app_shadow.dart';
 import '../../../widgets/dotted_underline.dart';
 
-
 class CurrentPlanView extends StatelessWidget {
   const CurrentPlanView({super.key});
 
@@ -47,8 +46,18 @@ class CurrentPlanView extends StatelessWidget {
                   AppShadows.lightShadow,
                   AppShadows.mediumShadow,
                   AppShadows.mediumHeavyShadow,
-                  AppShadows.heavyShadow,
-                  AppShadows.extraHeavyShadow,
+                  BoxShadow(
+                    color: AppColors.shadowColor.withValues(alpha: 0.01),
+                    offset: const Offset(0, 64),
+                    blurRadius: 25,
+                    spreadRadius: 0,
+                  ),
+                  BoxShadow(
+                    color: AppColors.shadowColor.withValues(alpha: 0.00),
+                    offset: const Offset(0, 99),
+                    blurRadius: 28,
+                    spreadRadius: 0,
+                  ),
                 ],
               ),
               child: Column(
@@ -88,8 +97,8 @@ class CurrentPlanView extends StatelessWidget {
                   ),
                   SizedBox(height: AppSpacing.md),
                   AppText(
-                      context.l10n.pricePerMonth,
-                      style: (context) =>
+                    context.l10n.pricePerMonth,
+                    style: (context) =>
                         AppTextStyles.bodyText(context).copyWith(
                           color: AppColors.seekBarLight,
                           fontWeight: FontWeight.w500,
@@ -106,19 +115,20 @@ class CurrentPlanView extends StatelessWidget {
                         dashWidth: 3,
                         dashSpace: 3,
                       ),
-
                     ),
                   ),
                   SizedBox(height: AppSpacing.md),
-                  _buildRow(label: context.l10n.featureClasses
-                      , isDark: isDark),
-                  _buildRow(label:  context.l10n.featureStudios, isDark: isDark),
+                  _buildRow(label: context.l10n.featureClasses, isDark: isDark),
+                  _buildRow(label: context.l10n.featureStudios, isDark: isDark),
                   _buildRow(
                     label: context.l10n.featureEquipment,
                     isDark: isDark,
                   ),
-                  _buildRow(label:  context.l10n.featurePriority, isDark: isDark),
-                  _buildRow(label:  context.l10n.featurePause, isDark: isDark),
+                  _buildRow(
+                    label: context.l10n.featurePriority,
+                    isDark: isDark,
+                  ),
+                  _buildRow(label: context.l10n.featurePause, isDark: isDark),
                   SizedBox(height: AppSpacing.sm),
                   ProgressBarCard(),
                 ],
@@ -126,7 +136,7 @@ class CurrentPlanView extends StatelessWidget {
             ),
             SizedBox(height: AppSpacing.lg),
             AppText(
-                context.l10n.pauseHistory,
+              context.l10n.pauseHistory,
               style: (context) => AppTextStyles.gelasioRegular(context),
             ),
             SizedBox(height: AppSpacing.base),
@@ -145,7 +155,7 @@ class CurrentPlanView extends StatelessWidget {
               child: Column(
                 children: [
                   _buildPauseRow(
-                    label:  context.l10n.pastPauses,
+                    label: context.l10n.pastPauses,
                     subtitle: "Dec 20 - Dec 27, 2025",
                     content: "7 days",
                     contentColor: isDark
@@ -160,9 +170,9 @@ class CurrentPlanView extends StatelessWidget {
                   ),
                   SizedBox(height: AppSpacing.md),
                   _buildPauseRow(
-                    label:  context.l10n.remainingThisYear,
-                    subtitle:  context.l10n.pauseAttemptsRemaining,
-                    content:  context.l10n.attemptCount,
+                    label: context.l10n.remainingThisYear,
+                    subtitle: context.l10n.pauseAttemptsRemaining,
+                    content: context.l10n.attemptCount,
                     contentColor: isDark
                         ? AppColors.successBorderDark
                         : AppColors.successColor,
@@ -173,7 +183,7 @@ class CurrentPlanView extends StatelessWidget {
             ),
             SizedBox(height: AppSpacing.lg),
             AppButton(
-              label:  context.l10n.changePlan,
+              label: context.l10n.changePlan,
               onPressed: () {},
               variant: AppButtonVariant.primary,
             ),
@@ -192,7 +202,7 @@ class CurrentPlanView extends StatelessWidget {
                 ],
               ),
               child: AppButton(
-                label:  context.l10n.pauseSubscription,
+                label: context.l10n.pauseSubscription,
                 onPressed: () {
                   Navigator.push(
                     context,
@@ -217,7 +227,7 @@ class CurrentPlanView extends StatelessWidget {
                     vertical: (AppSpacing.buttonHeight - 30) / 2,
                   ),
                   child: AppText(
-                      context.l10n.cancelSubscription,
+                    context.l10n.cancelSubscription,
                     style: (context) => AppTextStyles.button(
                       context,
                     ).copyWith(color: AppColors.redLight),

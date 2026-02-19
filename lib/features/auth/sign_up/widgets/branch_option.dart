@@ -5,6 +5,8 @@ import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/widgets/app_text.dart';
 
+import '../../../../widgets/app_shadow.dart';
+
 class BranchOption extends StatelessWidget {
   final String title;
   final String city;
@@ -35,65 +37,97 @@ class BranchOption extends StatelessWidget {
         ? AppColors.greyText
         : AppColors.whiteBorderColor;
 
-    return Material(
-      color: isDark ? AppColors.homeBackground : Colors.white,
-      // color: Colors.transparent,
-      child: InkWell(
-        onTap: onTap,
-        splashColor: Colors.transparent,
-        highlightColor: Colors.transparent,
-        hoverColor: Colors.transparent,
-        focusColor: Colors.transparent,
-        borderRadius: BorderRadius.circular(AppRadius.md),
-        child: Container(
-          padding: const EdgeInsets.all(AppSpacing.lg),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(AppRadius.md),
-            border: Border.all(color: borderColor, width: selected ? 1 : 1),
-
-            // color:Colors.white,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              /// TOP ROW: TITLE + CHIP
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: AppText(
-                      title,
-                      style: AppTextStyles.textFieldHeading,
-                    ),
+    return
+    // Material(
+    // color: isDark ? AppColors.homeBackground : Colors.white,
+    // color: Colors.transparent,
+    // child:
+    InkWell(
+      onTap: onTap,
+      splashColor: Colors.transparent,
+      highlightColor: Colors.transparent,
+      hoverColor: Colors.transparent,
+      focusColor: Colors.transparent,
+      borderRadius: BorderRadius.circular(AppRadius.md),
+      child: Container(
+        padding: const EdgeInsets.all(AppSpacing.lg),
+        decoration: BoxDecoration(
+          color: isDark ? AppColors.homeBackground : Colors.white,
+          borderRadius: BorderRadius.circular(AppRadius.md),
+          border: Border.all(color: borderColor, width: selected ? 1 : 1),
+          boxShadow: isDark
+              ? [
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.06),
+                    offset: const Offset(0, 4),
+                    blurRadius: 8,
+                    spreadRadius: 0,
                   ),
-                  _BranchTypeChip(type: type),
-                ],
-              ),
-
-              const SizedBox(height: AppSpacing.xs),
-
-              /// CITY
-              AppText(city, style: AppTextStyles.bodyTextSmall),
-
-              const SizedBox(height: AppSpacing.md),
-
-              /// DISTANCE
-              Row(
-                children: [
-                  Icon(
-                    Icons.location_on_outlined,
-                    size: 16,
-                    color: theme.hintColor,
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.04),
+                    offset: const Offset(0, 0),
+                    blurRadius: 4,
+                    spreadRadius: 0,
                   ),
-                  const SizedBox(width: 4),
-                  AppText(distance, style: AppTextStyles.bodyTextSmall),
+                ]
+              : [
+                  AppShadows.lightShadow,
+                  AppShadows.mediumShadow,
+                  AppShadows.mediumHeavyShadow,
+                  BoxShadow(
+                    color: AppColors.shadowColor.withValues(alpha: 0.01),
+                    offset: const Offset(0, 64),
+                    blurRadius: 25,
+                    spreadRadius: 0,
+                  ),
+                  BoxShadow(
+                    color: AppColors.shadowColor.withValues(alpha: 0.00),
+                    offset: const Offset(0, 99),
+                    blurRadius: 28,
+                    spreadRadius: 0,
+                  ),
                 ],
-              ),
-            ],
-          ),
+
+          // color:Colors.white,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            /// TOP ROW: TITLE + CHIP
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: AppText(title, style: AppTextStyles.textFieldHeading),
+                ),
+                _BranchTypeChip(type: type),
+              ],
+            ),
+
+            const SizedBox(height: AppSpacing.xs),
+
+            /// CITY
+            AppText(city, style: AppTextStyles.bodyTextSmall),
+
+            const SizedBox(height: AppSpacing.md),
+
+            /// DISTANCE
+            Row(
+              children: [
+                Icon(
+                  Icons.location_on_outlined,
+                  size: 16,
+                  color: theme.hintColor,
+                ),
+                const SizedBox(width: 4),
+                AppText(distance, style: AppTextStyles.bodyTextSmall),
+              ],
+            ),
+          ],
         ),
       ),
     );
+    // );
   }
 }
 

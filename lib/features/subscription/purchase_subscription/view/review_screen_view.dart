@@ -27,7 +27,7 @@ class ReviewScreenView extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(
         vertical: AppSpacing.lg,
-        horizontal: AppSpacing.lg,
+        // horizontal: AppSpacing.lg,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -41,16 +41,22 @@ class ReviewScreenView extends StatelessWidget {
             buildWhen: (previous, current) =>
                 previous.isTermsAccepted != current.isTermsAccepted,
             builder: (context, state) {
-              return AppButton(
-                label: l10n.continueToPayment,
-                onPressed: state.isTermsAccepted
-                    ? () {
-                        // Navigate to payment or finish flow
-                        cubit.nextStep(); // Or handle payment logic
-                      }
-                    : null, // Disable if not accepted
-                buttonColor: AppColors.primaryBrown,
-                expanded: true,
+              return Padding(
+                padding: const EdgeInsets.symmetric(
+
+                  horizontal: AppSpacing.lg,
+                ),
+                child: AppButton(
+                  label: l10n.continueToPayment,
+                  onPressed: state.isTermsAccepted
+                      ? () {
+                          // Navigate to payment or finish flow
+                          cubit.nextStep(); // Or handle payment logic
+                        }
+                      : null, // Disable if not accepted
+                  buttonColor: AppColors.primaryBrown,
+                  expanded: true,
+                ),
               );
             },
           ),

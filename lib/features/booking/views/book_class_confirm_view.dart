@@ -89,12 +89,37 @@ class BookClassConfirmView extends StatelessWidget {
           color: isDark ? AppColors.greyText : AppColors.buttonBorder,
           width: 0.5,
         ),
-        boxShadow: [
+        boxShadow: isDark
+            ? [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.06),
+            offset: const Offset(0, 4),
+            blurRadius: 8,
+            spreadRadius: 0,
+          ),
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.04),
+            offset: const Offset(0, 0),
+            blurRadius: 4,
+            spreadRadius: 0,
+          ),
+        ]
+            : [
           AppShadows.lightShadow,
           AppShadows.mediumShadow,
           AppShadows.mediumHeavyShadow,
-          AppShadows.heavyShadow,
-          AppShadows.extraHeavyShadow,
+          BoxShadow(
+            color: AppColors.shadowColor.withValues(alpha: 0.01),
+            offset: const Offset(0, 64),
+            blurRadius: 25,
+            spreadRadius: 0,
+          ),
+          BoxShadow(
+            color: AppColors.shadowColor.withValues(alpha: 0.00),
+            offset: const Offset(0, 99),
+            blurRadius: 28,
+            spreadRadius: 0,
+          ),
         ],
       ),
       child: Row(

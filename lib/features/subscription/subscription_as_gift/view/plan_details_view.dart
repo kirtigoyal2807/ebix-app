@@ -28,27 +28,33 @@ class PlanDetailsView extends StatelessWidget {
       body: Padding(
         padding: EdgeInsets.only(
           // vertical: AppSpacing.md,
-          left: AppSpacing.lg,
-          right: AppSpacing.lg,
+          // left: AppSpacing.lg,
+          // right: AppSpacing.lg,
           bottom: AppSpacing.xl,
         ),
         child: Column(
           children: [
             ReviewScreenDetailsView(),
 
-            AppButton(
-              label: l10n.continueToPayment,
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => WelcomeToPilateView(),
-                  ),
-                );
-              },
+            Padding(
+              padding: const EdgeInsets.symmetric(
 
-              buttonColor: AppColors.primaryBrown,
-              expanded: true,
+                horizontal: AppSpacing.lg,
+              ),
+              child: AppButton(
+                label: l10n.continueToPayment,
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => WelcomeToPilateView(),
+                    ),
+                  );
+                },
+
+                buttonColor: AppColors.primaryBrown,
+                expanded: true,
+              ),
             ),
           ],
         ),

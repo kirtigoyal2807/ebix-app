@@ -247,7 +247,7 @@ class _PlanSelectionStep extends StatelessWidget {
                                 context: context,
                                 isScrollControlled: true,
                                 backgroundColor: Colors.transparent,
-                                barrierColor:     AppColors.bottomSheetShadow,
+                                barrierColor: AppColors.bottomSheetShadow,
                                 builder: (context) =>
                                     PlanDetailsModal(plan: plan),
                               );

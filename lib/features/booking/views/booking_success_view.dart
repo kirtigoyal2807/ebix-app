@@ -245,8 +245,18 @@ class BookingSuccessScreen extends StatelessWidget {
           AppShadows.lightShadow,
           AppShadows.mediumShadow,
           AppShadows.mediumHeavyShadow,
-          AppShadows.heavyShadow,
-          AppShadows.extraHeavyShadow,
+          BoxShadow(
+            color: AppColors.shadowColor.withValues(alpha: 0.01),
+            offset: const Offset(0, 64),
+            blurRadius: 25,
+            spreadRadius: 0,
+          ),
+          BoxShadow(
+            color: AppColors.shadowColor.withValues(alpha: 0.00),
+            offset: const Offset(0, 99),
+            blurRadius: 28,
+            spreadRadius: 0,
+          ),
         ],
       ),
       child: Column(

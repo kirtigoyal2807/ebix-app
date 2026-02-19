@@ -52,11 +52,11 @@ class _SignUpExperienceViewState extends State<SignUpExperienceView> {
                         children: [
                           TextSpan(
                             text: '${context.l10n.step} 3',
-                            style: AppTextStyles.caption(
-                              context,
-                            ).copyWith(color: isDark
-                                ? AppColors.languageTextDark
-                                : AppColors.languageIcon,),
+                            style: AppTextStyles.caption(context).copyWith(
+                              color: isDark
+                                  ? AppColors.languageTextDark
+                                  : AppColors.languageIcon,
+                            ),
                           ),
                           TextSpan(
                             text: ' ${context.l10n.offf} 4',
@@ -74,10 +74,12 @@ class _SignUpExperienceViewState extends State<SignUpExperienceView> {
                     //   step: 2,
                     //   totalSteps: 4,
                     // ),
+                    AppText(
+                      context.l10n.experienceTitle,
+                      style: AppTextStyles.heading1,
+                    ),
 
-                    AppText(context.l10n.experienceTitle, style: AppTextStyles.heading1),
                     // const SizedBox(height: AppSpacing.sm + 2),
-
                     const SizedBox(height: AppSpacing.lg),
 
                     // Options
@@ -85,7 +87,9 @@ class _SignUpExperienceViewState extends State<SignUpExperienceView> {
                       title: context.l10n.experienceBeginner,
                       description: context.l10n.experienceBeginnerDesc,
                       selected: _selectedIndex == 0,
-                      iconPath: isDark ? "assets/images/svg/ic_beginner_dark.svg":"assets/images/svg/ic_beginner.svg",
+                      iconPath: isDark
+                          ? "assets/images/svg/ic_beginner_dark.svg"
+                          : "assets/images/svg/ic_beginner.svg",
                       onTap: () => setState(() => _selectedIndex = 0),
                     ),
 
@@ -95,7 +99,9 @@ class _SignUpExperienceViewState extends State<SignUpExperienceView> {
                       title: context.l10n.experienceIntermediate,
                       description: context.l10n.experienceIntermediateDesc,
                       selected: _selectedIndex == 1,
-                      iconPath: isDark ? "assets/images/svg/ic_intermediate_dark.svg":"assets/images/svg/ic_intermediate.svg",
+                      iconPath: isDark
+                          ? "assets/images/svg/ic_intermediate_dark.svg"
+                          : "assets/images/svg/ic_intermediate.svg",
                       onTap: () => setState(() => _selectedIndex = 1),
                     ),
 
@@ -105,7 +111,9 @@ class _SignUpExperienceViewState extends State<SignUpExperienceView> {
                       title: context.l10n.experienceAdvanced,
                       description: context.l10n.experienceAdvancedDesc,
                       selected: _selectedIndex == 2,
-                      iconPath: isDark ? "assets/images/svg/ic_advance_dark.svg":"assets/images/svg/ic_advance.svg",
+                      iconPath: isDark
+                          ? "assets/images/svg/ic_advance_dark.svg"
+                          : "assets/images/svg/ic_advance.svg",
                       onTap: () => setState(() => _selectedIndex = 2),
                     ),
                     const SizedBox(height: AppSpacing.lg),
@@ -114,7 +122,9 @@ class _SignUpExperienceViewState extends State<SignUpExperienceView> {
                       style: (context) => AppTextStyles.body(context).copyWith(
                         fontWeight: FontWeight.w400,
 
-                        color: isDark ? AppColors.darkGreyText : Color(0xff79716B)
+                        color: isDark
+                            ? AppColors.darkGreyText
+                            : Color(0xff79716B),
                       ),
                     ),
                   ],

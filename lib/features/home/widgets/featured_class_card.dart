@@ -7,6 +7,8 @@ import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/core/localization/localization_extension.dart';
 import 'package:pilates_app/widgets/app_text.dart';
 
+import '../../../widgets/app_shadow.dart';
+
 class FeaturedClassCard extends StatelessWidget {
   const FeaturedClassCard({super.key});
 
@@ -24,6 +26,23 @@ class FeaturedClassCard extends StatelessWidget {
         border: Border.all(
           color: isDark ? AppColors.greyText : AppColors.buttonBorder,
         ),
+        boxShadow: [
+          AppShadows.lightShadow,
+          AppShadows.mediumShadow,
+          AppShadows.mediumHeavyShadow,
+          BoxShadow(
+            color: AppColors.shadowColor.withValues(alpha: 0.01),
+            offset: const Offset(0, 64),
+            blurRadius: 25,
+            spreadRadius: 0,
+          ),
+          BoxShadow(
+            color: AppColors.shadowColor.withValues(alpha: 0.00),
+            offset: const Offset(0, 99),
+            blurRadius: 28,
+            spreadRadius: 0,
+          ),
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
