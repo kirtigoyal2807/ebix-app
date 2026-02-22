@@ -44,7 +44,7 @@ class ClassReviewsSection extends StatelessWidget {
             ],
           ),
         ),
-        const SizedBox(height: AppSpacing.md),
+        const SizedBox(height: AppSpacing.base),
 
         // Reviews Summary
         Padding(
@@ -107,7 +107,7 @@ class ClassReviewsSection extends StatelessWidget {
             ),
           ),
         ),
-        const SizedBox(height: AppSpacing.lg),
+        const SizedBox(height: AppSpacing.base),
 
         // Review Cards - Horizontal
         SizedBox(

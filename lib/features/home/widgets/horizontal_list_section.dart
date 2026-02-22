@@ -87,7 +87,8 @@ class TopTrainersSection extends StatelessWidget {
     ];
 
     final itemWidth = size.width * 0.38 > 140 ? 140.0 : size.width * 0.38;
-    final itemHeight = itemWidth * 1.3 > 180 ? 180.0 : itemWidth * 1.3;
+    final itemHeight =163.0;
+    // itemWidth * 1.3 > 180 ? 180.0 : itemWidth * 1.3;
 
     return Column(
       children: [
@@ -116,7 +117,9 @@ class TopTrainersSection extends StatelessWidget {
                     AppText(
                       trainers[index]['name']!,
                       style: (context) => AppTextStyles.heading1(context).copyWith(
-                        fontSize: size.width * 0.035 > 14 ? 14 : size.width * 0.035,
+                        fontSize: 16,
+                        height: 1.2,
+                        // fontSize: size.width * 0.035 > 14 ? 14 : size.width * 0.035,
                         color: isDark
                             ? AppColors.lightText
                             : AppColors.darkText,
@@ -124,10 +127,14 @@ class TopTrainersSection extends StatelessWidget {
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
+                    SizedBox(
+                      height: 2,
+                    ),
                     AppText(
                       trainers[index]['type']!,
                       style: (context) => AppTextStyles.captionText(context).copyWith(
-                        fontSize: size.width * 0.03 > 12 ? 12 : size.width * 0.03,
+                        fontSize: 12,
+                        // fontSize: size.width * 0.03 > 12 ? 12 : size.width * 0.03,
                         color: isDark
                             ? AppColors.languageIconDark
                             : AppColors.lightGrey,
@@ -135,7 +142,7 @@ class TopTrainersSection extends StatelessWidget {
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
-                    const SizedBox(height: AppSpacing.md),
+                    const SizedBox(height: AppSpacing.base),
                     AppText(
                       context.l10n.viewClasses,
                       style: (context) => AppTextStyles.captionText(context).copyWith(
@@ -143,7 +150,8 @@ class TopTrainersSection extends StatelessWidget {
                             ? AppColors.versionColor
                             : AppColors.languageIcon,
                         fontWeight: FontWeight.bold,
-                        fontSize: size.width * 0.03 > 14 ? 14 : size.width * 0.03,
+                        fontSize: 14
+                        // fontSize: size.width * 0.03 > 14 ? 14 : size.width * 0.03,
                       ),
                     ),
                   ],

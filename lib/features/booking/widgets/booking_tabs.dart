@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:pilates_app/config/theme/app_colors.dart';
+import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/core/localization/localization_extension.dart';
 import 'package:pilates_app/widgets/app_text.dart';
@@ -17,6 +19,7 @@ class BookingTabs extends StatelessWidget {
     return BlocBuilder<BookingCubit, BookingState>(
       builder: (context, state) {
         return Container(
+          margin: EdgeInsets.only(top: AppSpacing.sm),
           decoration: BoxDecoration(
             border: Border(
               bottom: BorderSide(
@@ -85,7 +88,7 @@ class _TabItem extends StatelessWidget {
           child: Center(
             child: AppText(
               label,
-              style: (context) => AppTextStyles.boldBody(context).copyWith(
+              style: (context) => GoogleFonts.inter(
                 fontSize: 16,
                 fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
                 color: isSelected
@@ -94,6 +97,15 @@ class _TabItem extends StatelessWidget {
                           : AppColors.languageIcon)
                     : inactiveColor,
               ),
+              //     AppTextStyles.boldBody(context).copyWith(
+              //   fontSize: 16,
+              //   fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
+              //   color: isSelected
+              //       ? (isDark
+              //             ? AppColors.languageTextDark
+              //             : AppColors.languageIcon)
+              //       : inactiveColor,
+              // ),
             ),
           ),
         ),

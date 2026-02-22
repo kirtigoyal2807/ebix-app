@@ -89,9 +89,11 @@ class PlanCard extends StatelessWidget {
                           vertical: 4,
                         ),
                         decoration: BoxDecoration(
-                          color: (isDark
-                              ? const Color(0x3BFDC700)
-                              : AppColors.goldStarColor), // Gold for popular
+                          color: (
+                              // isDark
+                              // ? const Color(0x3BFDC700)
+                              // :
+                          AppColors.goldStarColor), // Gold for popular
                           borderRadius: BorderRadius.circular(20),
                           // border: isPopular ? null : Border.all(color: AppColors.lightGreyBorder),
                         ),
@@ -102,7 +104,7 @@ class PlanCard extends StatelessWidget {
                                 fontSize: 12,
                                 fontWeight: FontWeight.w500,
                                 color: (isDark
-                                    ? AppColors.upgradeDarkLockBackgroundColor
+                                    ? AppColors.blackColor
                                     : AppColors.darkText),
                               ),
                         ),

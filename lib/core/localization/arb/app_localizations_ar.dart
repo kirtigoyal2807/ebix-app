@@ -1823,26 +1823,639 @@ class AppLocalizationsAr extends AppLocalizations {
   String get buildStrength => 'بناء القوة';
 
   @override
-  String get buildStrengthDesc => 'قوة، أجهزة ريفورمر، تمارين الكور';
+  String get buildStrengthDesc => 'ركز على تمارين بناء العضلات وتقويتها';
 
   @override
-  String get findMindfulness => 'التركيز الذهني';
+  String get findMindfulness => 'ابحث عن اليقظة الذهنية';
 
   @override
-  String get findMindfulnessDesc => 'تدفق، تأمل، هدوء';
+  String get findMindfulnessDesc =>
+      'مارس تمارين تربط العقل بالجسم لتحقيق التوازن النفسي';
 
   @override
   String get improveFlexibility => 'تحسين المرونة';
 
   @override
-  String get improveFlexibilityDesc => 'تمدد، حركة، نطاق مرونة';
+  String get improveFlexibilityDesc => 'عزز نطاق حركتك من خلال تمارين التمدد';
 
   @override
   String get generalFitness => 'لياقة عامة';
 
   @override
-  String get generalFitnessDesc => 'توازن وصحة شاملة';
+  String get generalFitnessDesc => 'نهج متوازن للصحة العامة والعافية';
 
   @override
   String get monthlyTarget => 'الهدف الشهري';
+
+  @override
+  String get pilatesPrimaryFocusTitle =>
+      'ما الذي يجعلك تختار البيلاتس؟ اختر هدفك الأساسي';
+
+  @override
+  String get yourJourney_title => 'رحلتك';
+
+  @override
+  String get yourJourney_achievement_content => '٧ أخرى لاكتشاف مسارك';
+
+  @override
+  String get yourJourney_achievements_earned => 'الإنجازات المحققة';
+
+  @override
+  String get yourJourney_on_your_path => 'في مسارك';
+
+  @override
+  String get yourJourney_consistency_title => 'استمرارية التدفق';
+
+  @override
+  String get yourJourney_consistency_subtitle => 'شارة التقدم';
+
+  @override
+  String get yourJourney_consistency_content =>
+      'حضرت الفصول لمدة ١٢ يوماً متتالياً، بناء ممارسة مستدامة';
+
+  @override
+  String get yourJourney_consistency_date => 'تم الحصول عليها في ٢٦ يناير ٢٠٢٦';
+
+  @override
+  String get yourJourney_foundation_title => 'بناء الأساس';
+
+  @override
+  String get yourJourney_foundation_subtitle => 'شارة إنجاز';
+
+  @override
+  String get yourJourney_foundation_content =>
+      'وصلت إلى أول ١٠ فصول لك، بناء أساس قوي';
+
+  @override
+  String get yourJourney_foundation_date => 'تم الحصول عليها في ٢٠ يناير ٢٠٢٦';
+
+  @override
+  String get yourJourney_monthly_title => 'التفاني الشهري';
+
+  @override
+  String get yourJourney_monthly_subtitle => 'شارة إنجاز';
+
+  @override
+  String get yourJourney_monthly_content => 'أكمل ١٦ فصلاً في شهر واحد';
+
+  @override
+  String get yourJourney_monthly_date => '٤ فصول متبقية';
+
+  @override
+  String get yourJourney_community_title => 'روح المجتمع';
+
+  @override
+  String get yourJourney_community_subtitle => 'شارة خاصة';
+
+  @override
+  String get yourJourney_community_content =>
+      'احضر ١٠ جلسات جماعية، التواصل مع المجتمع';
+
+  @override
+  String get yourJourney_community_date => '٤ فصول متبقية';
+
+  @override
+  String get yourJourney_your_progress => 'تقدمك';
+
+  @override
+  String get yourJourney_progress_count => '١٢ من ١٦ فصلاً';
+
+  @override
+  String get yourJourney_points => '٥٠+ نقطة';
+
+  @override
+  String get achievement_your_achievements => 'إنجازاتك';
+
+  @override
+  String get achievement_content => 'بناء رحلتك التدريبية';
+
+  @override
+  String get achievement_consistency_title => 'استمرارية التدفق';
+
+  @override
+  String get achievement_consistency_subtitle => '١٢ يوماً متتالياً';
+
+  @override
+  String get achievement_foundation_title => 'بناء الأساس';
+
+  @override
+  String get achievement_foundation_subtitle => 'فصول مكتملة ١٢ يوماً متتالياً';
+
+  @override
+  String get achievement_monthly_title => 'التفاني الشهري';
+
+  @override
+  String get achievement_monthly_subtitle => '١٢ / ١٦ فصل';
+
+  @override
+  String get achievement_view_all_button => 'عرض جميع الإنجازات';
+
+  @override
+  String get edit_goal_title => 'تعديل هدفك';
+
+  @override
+  String get edit_goal_current_goal => 'الهدف الحالي';
+
+  @override
+  String get edit_goal_intermediate_level => 'مستوى متوسط';
+
+  @override
+  String get edit_goal_choose_focus => 'اختر تركيزك';
+
+  @override
+  String get edit_goal_save_changes => 'حفظ التغييرات';
+
+  @override
+  String get edit_goal_tip_label => 'نصيحة: ';
+
+  @override
+  String get edit_goal_tip_content =>
+      'هدفك يخصص تتبع تقدمك. يمكنك تغييره في أي وقت ليتناسب مع رحلة لياقتك المتطورة.';
+
+  @override
+  String get edit_goal_tap_hint => 'اضغط على زر التعديل لتغيير هدفك في أي وقت';
+
+  @override
+  String get goal_progress_title => 'تقدم هدف يناير';
+
+  @override
+  String get goal_progress_percentage => '٧٥٪';
+
+  @override
+  String get goal_progress_complete => 'مكتمل';
+
+  @override
+  String get goal_progress_sessions => '١٢ من ١٦ جلسة تأمل';
+
+  @override
+  String get goal_progress_remaining => '٤ جلسات متبقية للوصول إلى هدفك';
+
+  @override
+  String get progress_tab_overview => 'نظرة عامة';
+
+  @override
+  String get progress_tab_history => 'السجل';
+
+  @override
+  String get progress_tab_achievements => 'الإنجازات';
+
+  @override
+  String get weekly_activity_title => 'النشاط الأسبوعي';
+
+  @override
+  String get weekly_activity_minutes => '٪s دقيقة';
+
+  @override
+  String get weekly_activity_mindful_movement => 'الحركة الواعية: ';
+
+  @override
+  String get weekly_activity_summary => '6 دقيقة • 280 جلسات';
+
+  @override
+  String get weekly_day_monday => 'إ';
+
+  @override
+  String get weekly_day_tuesday => 'ث';
+
+  @override
+  String get weekly_day_wednesday => 'أ';
+
+  @override
+  String get weekly_day_thursday => 'خ';
+
+  @override
+  String get weekly_day_friday => 'ج';
+
+  @override
+  String get weekly_day_saturday => 'س';
+
+  @override
+  String get weekly_day_sunday => 'ح';
+
+  @override
+  String get mind_practice_title => 'ممارستك الواعية';
+
+  @override
+  String get mind_practice_mindful_movement => 'الحركة الواعية';
+
+  @override
+  String get mind_practice_morning_sessions => 'جلسات الصباح';
+
+  @override
+  String get mind_practice_flow_instructors => 'مدربو التدفق';
+
+  @override
+  String get mind_practice_inner_peace => 'السلام الداخلي';
+
+  @override
+  String get mind_practice_mindful_value => '٨.٥ ساعة';
+
+  @override
+  String get mind_practice_morning_value => '٥';
+
+  @override
+  String get mind_practice_instructors_value => '٤';
+
+  @override
+  String get mind_practice_peace_value => '٪٢٥+';
+
+  @override
+  String get session_history_title => 'سجل الجلسات';
+
+  @override
+  String get session_history_classes => 'الفصول';
+
+  @override
+  String get session_history_total_time => 'الوقت الإجمالي';
+
+  @override
+  String get session_history_points => 'النقاط';
+
+  @override
+  String get session_history_all_time => 'السجل الكامل';
+
+  @override
+  String get session_history_this_month => 'يناير ٢٠٢٦';
+
+  @override
+  String get session_history_last_30_days => 'آخر ٣٠ يوماً';
+
+  @override
+  String get session_history_classes_value => '٤٢';
+
+  @override
+  String get session_history_time_value => '٣١ ساعة';
+
+  @override
+  String get session_history_points_value => '١٠٥٠';
+
+  @override
+  String get session_history_this_month_txt => 'هذا الشهر';
+
+  @override
+  String get session_card_class_name => 'تدفق القوة الأساسية';
+
+  @override
+  String get session_card_instructor => 'مع سارة تشن';
+
+  @override
+  String get session_card_status_completed => 'مكتمل';
+
+  @override
+  String get session_card_today => 'اليوم';
+
+  @override
+  String get session_card_duration => '٤٥ دقيقة';
+
+  @override
+  String get session_card_points => '٢٥+ نقطة';
+
+  @override
+  String get session_history_view_full => 'عرض السجل الكامل';
+
+  @override
+  String get progress_tracking_title => 'التقدم والتتبع';
+
+  @override
+  String get february_streak => 'سلسلة فبراير';
+
+  @override
+  String get studio_legend => 'أسطورة الاستوديو';
+
+  @override
+  String get first_step => 'الخطوة الأولى';
+
+  @override
+  String get early_bird => 'الطائر المبكر';
+
+  @override
+  String get lotus_blossom => 'زهرة اللوتس';
+
+  @override
+  String get core_strength => 'قوة الجذع';
+
+  @override
+  String get week_warrior => 'محارب الأسبوع';
+
+  @override
+  String get balance_master => 'سيد التوازن';
+
+  @override
+  String get earned => 'تم الحصول عليه';
+
+  @override
+  String get locked => 'مقفل';
+
+  @override
+  String badge_complete_classes(Object count, Object month) {
+    return 'Complete $count classes in $month';
+  }
+
+  @override
+  String badge_earned_on(Object date) {
+    return 'تم الحصول عليه في $date';
+  }
+
+  @override
+  String get share_badge => 'مشاركة الشارة';
+
+  @override
+  String get badge_bronze => 'برونزي';
+
+  @override
+  String get badge_silver => 'فضي';
+
+  @override
+  String get badge_gold => 'ذهبي';
+
+  @override
+  String get badge_collection => 'مجموعة الشارات';
+
+  @override
+  String get challenge_detail => 'تفاصيل التحدي';
+
+  @override
+  String get twenty_classes_month => '20 حصة هذا الشهر';
+
+  @override
+  String get complete_classes_feb => 'أكمل 20 حصة في فبراير';
+
+  @override
+  String get your_progress => 'تقدمك';
+
+  @override
+  String get leaderboard => 'لوحة المتصدرين';
+
+  @override
+  String get you => 'أنت';
+
+  @override
+  String get rewards => 'المكافآت';
+
+  @override
+  String get classes_completed => 'حصة مكتملة';
+
+  @override
+  String percent_complete(Object percent) {
+    return 'مكتمل $percent٪';
+  }
+
+  @override
+  String more_classes_to_go(Object count) {
+    return 'متبقي $count حصة';
+  }
+
+  @override
+  String rank_number(Object rank) {
+    return 'الترتيب #$rank';
+  }
+
+  @override
+  String days_left(Object days) {
+    return 'متبقي $days يوم';
+  }
+
+  @override
+  String points_short(int points) {
+    return '$points نقطة';
+  }
+
+  @override
+  String points(Object points) {
+    return '$points نقطة';
+  }
+
+  @override
+  String get benefit_gold_badge => 'شارة ذهبية';
+
+  @override
+  String get benefit_feb_champion => 'بطل فبراير';
+
+  @override
+  String benefit_bonus_points(Object points) {
+    return '$points نقطة إضافية';
+  }
+
+  @override
+  String get benefit_redeem_rewards => 'استبدلها بالمكافآت';
+
+  @override
+  String benefit_discount(Object percent) {
+    return 'خصم $percent٪ على الاشتراك';
+  }
+
+  @override
+  String get benefit_next_billing => 'فاتورة الشهر القادم';
+
+  @override
+  String days_only(Object days) {
+    return '$days يوم';
+  }
+
+  @override
+  String people_joined(Object count) {
+    return 'انضم $count';
+  }
+
+  @override
+  String get join_challenge => 'انضم إلى التحدي';
+
+  @override
+  String get core_strength_challenge => 'تحدي قوة الجذع';
+
+  @override
+  String core_strength_subtitle(Object count) {
+    return 'أكمل $count حصة تركز على تمارين الجذع';
+  }
+
+  @override
+  String get challenge_details => 'تفاصيل التحدي';
+
+  @override
+  String challenge_description(Object count, Object month) {
+    return 'أكمل $count حصة قبل نهاية $month. تابع تقدمك يوميًا وتنافس مع الأعضاء الآخرين!';
+  }
+
+  @override
+  String get what_you_will_earn => 'ماذا ستحصل عليه';
+
+  @override
+  String get my_active_challenges => 'تحدياتي النشطة';
+
+  @override
+  String get new_challenges => 'تحديات جديدة';
+
+  @override
+  String get challenge_20_classes_title => '20 حصة هذا الشهر';
+
+  @override
+  String challenge_20_classes_subtitle(Object count, Object month) {
+    return 'أكملت $count حصة في $month';
+  }
+
+  @override
+  String get challenge_streak_title => 'تحدي 7 أيام متتالية';
+
+  @override
+  String challenge_streak_subtitle(Object days) {
+    return 'احضر حصة لمدة $days أيام متتالية';
+  }
+
+  @override
+  String get challenge_core_title => 'تحدي قوة الجذع';
+
+  @override
+  String challenge_core_subtitle(Object count) {
+    return 'أكمل $count حصة تركز على تمارين الجذع';
+  }
+
+  @override
+  String get challenge_spring_title => 'انطلق نحو اللياقة في الربيع';
+
+  @override
+  String challenge_spring_subtitle(Object count) {
+    return 'أكمل $count حصة هذا الموسم';
+  }
+
+  @override
+  String get redeem_reward => 'استبدال المكافأة';
+
+  @override
+  String get redemption_details => 'تفاصيل الاستبدال';
+
+  @override
+  String get confirm_redemption => 'تأكيد الاستبدال';
+
+  @override
+  String get priority_booking_week => 'حجز أولوية - أسبوع';
+
+  @override
+  String get priority_booking_desc => 'احجز الحصص قبل 48 ساعة لمدة 7 أيام';
+
+  @override
+  String get current_balance => 'الرصيد الحالي';
+
+  @override
+  String get this_reward => 'هذه المكافأة';
+
+  @override
+  String get after_redemption => 'بعد الاستبدال';
+
+  @override
+  String get redeem_warning =>
+      'باستبدال هذه المكافأة، فإنك توافق على أن النقاط غير قابلة للاسترداد. المكافآت غير قابلة للتحويل وتخضع للتوفر.';
+
+  @override
+  String get rewards_history => 'سجل المكافآت';
+
+  @override
+  String get studio_water_bottle => 'زجاجة مياه الاستوديو';
+
+  @override
+  String get free_class_pass => 'بطاقة حصة مجانية';
+
+  @override
+  String redeemed_on(Object date) {
+    return 'تم الاستبدال في $date';
+  }
+
+  @override
+  String get your_balance => 'رصيدك';
+
+  @override
+  String get current_tier => 'المستوى الحالي';
+
+  @override
+  String get silver_member => 'عضو فضي';
+
+  @override
+  String get progress_to_gold => 'التقدم نحو المستوى الذهبي';
+
+  @override
+  String points_to_go(Object points) {
+    return 'متبقي $points نقطة';
+  }
+
+  @override
+  String get your_silver_benefits => 'مزايا المستوى الفضي';
+
+  @override
+  String get showing_rewards_from => 'عرض المكافآت من';
+
+  @override
+  String get change => 'تغيير';
+
+  @override
+  String get available_rewards => 'المكافآت المتاحة';
+
+  @override
+  String get exclusive_workshop => 'دخول ورشة حصرية';
+
+  @override
+  String get exclusive_workshop_desc => 'ماستر كلاس تقنيات متقدمة';
+
+  @override
+  String get guest_pass_3 => 'بطاقة ضيف (3 حصص)';
+
+  @override
+  String get guest_pass_desc => 'أحضر أصدقاءك إلى 3 حصص';
+
+  @override
+  String get meditation_session => 'جلسة تأمل';
+
+  @override
+  String get meditation_session_desc => 'جلسة تأمل خاصة لمدة 30 دقيقة';
+
+  @override
+  String get experiences => 'التجارب';
+
+  @override
+  String get discounts => 'الخصومات';
+
+  @override
+  String get redeem_how_to_collect => 'كيفية الاستلام';
+
+  @override
+  String get redeem_collect_desc =>
+      'استلم زجاجة الماء من مكتب الاستقبال خلال زيارتك القادمة. اعرض شاشة التأكيد هذه.';
+
+  @override
+  String get redeem_valid_for => 'مدة الصلاحية';
+
+  @override
+  String get redeem_valid_desc =>
+      'هذه المكافأة صالحة لمدة 30 يومًا من تاريخ الاسترداد.';
+
+  @override
+  String get redeem_available_at => 'متوفر في';
+
+  @override
+  String get redeem_available_desc => 'جميع الفروع';
+
+  @override
+  String get reward_redeem => 'استرداد';
+
+  @override
+  String get collected => 'تم الاستلام';
+
+  @override
+  String get select_branch => 'اختر الفرع';
+
+  @override
+  String get featurePriorityBookingDesc => 'احجز الحصص قبل 24 ساعة';
+
+  @override
+  String get featureMerchDiscount => 'خصم على المنتجات';
+
+  @override
+  String get featureMerchDiscountDesc => 'خصم 10٪ على جميع منتجات الاستوديو';
+
+  @override
+  String get featureGuestPass => 'بطاقة ضيف شهرية';
+
+  @override
+  String get featureGuestPassDesc => 'أحضر صديقًا مرة واحدة شهريًا';
+
+  @override
+  String get viewAllTiers => 'عرض جميع المستويات';
 }

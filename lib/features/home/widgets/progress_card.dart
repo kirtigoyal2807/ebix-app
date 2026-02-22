@@ -72,10 +72,9 @@ class ProgressCard extends StatelessWidget {
           const SizedBox(height: AppSpacing.xs),
           AppText(
             context.l10n.bookFirstClassDesc,
-            style:(context) => AppTextStyles.bodyTextSmall(context).copyWith(
-              fontSize: 12,
-              height: 1.55
-            ),
+            style: (context) => AppTextStyles.bodyTextSmall(
+              context,
+            ).copyWith(fontSize: 12, height: 1.55),
             textAlign: TextAlign.center,
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
@@ -139,11 +138,16 @@ class ProgressCard extends StatelessWidget {
                 child: AppText(
                   context.l10n.monthlyProgress,
                   style: (context) => AppTextStyles.heading1(context).copyWith(
-                    fontSize: size.width * 0.035 > 16 ? 16 : size.width * 0.035,
+                    fontSize: 16,
+                    // fontSize: size.width * 0.035 > 16 ? 16 : size.width * 0.035,
                   ),
                 ),
               ),
-               Icon(Icons.chevron_right, color: isDark ? AppColors.lightGrey:AppColors.darkGreyText, size: 24),
+              Icon(
+                Icons.chevron_right,
+                color: isDark ? AppColors.lightGrey : AppColors.darkGreyText,
+                size: 24,
+              ),
             ],
           ),
           const SizedBox(height: AppSpacing.md),
@@ -178,17 +182,22 @@ class ProgressCard extends StatelessWidget {
             borderRadius: BorderRadius.circular(AppRadius.pillRadius),
             child: LinearProgressIndicator(
               value: progress,
-              backgroundColor: isDark ? AppColors.lightBlackColor: AppColors.darkGreyBorder,
-              color: isDark ? AppColors.languageIconDark:AppColors.languageIcon,
+              backgroundColor: isDark
+                  ? AppColors.lightBlackColor
+                  : AppColors.darkGreyBorder,
+              color: isDark
+                  ? AppColors.languageIconDark
+                  : AppColors.languageIcon,
               minHeight: 8,
             ),
           ),
           const SizedBox(height: AppSpacing.sm),
           AppText(
             context.l10n.ofClassesThisMonth(goalClasses),
-            style: (context) => AppTextStyles.helpAndSupportItemSubLabel(context).copyWith(
-              fontSize: size.width * 0.03 > 14 ? 14 : size.width * 0.03,
-            ),
+            style: (context) =>
+                AppTextStyles.helpAndSupportItemSubLabel(context).copyWith(
+                  fontSize: size.width * 0.03 > 14 ? 14 : size.width * 0.03,
+                ),
           ),
         ],
       ),
@@ -203,18 +212,20 @@ class ProgressCard extends StatelessWidget {
       children: [
         AppText(
           value,
-          style: (context) => AppTextStyles.helpAndSupportItemLabel(context).copyWith(
-            fontSize: size.width * 0.045 > 18 ? 18 : size.width * 0.045,
-          ),
+          style: (context) =>
+              AppTextStyles.helpAndSupportItemLabel(context).copyWith(
+                fontSize: size.width * 0.045 > 18 ? 18 : size.width * 0.045,
+              ),
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
         ),
         AppText(
           label,
-          style: (context) => AppTextStyles.captionText(
-            context,
-          ).copyWith(fontSize: size.width * 0.03 > 12 ? 12 : size.width * 0.03,
-          color: isDark ? AppColors.arrowIcon:AppColors.greyText,fontWeight: FontWeight.w400),
+          style: (context) => AppTextStyles.captionText(context).copyWith(
+            fontSize: size.width * 0.03 > 12 ? 12 : size.width * 0.03,
+            color: isDark ? AppColors.arrowIcon : AppColors.greyText,
+            fontWeight: FontWeight.w400,
+          ),
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
         ),

@@ -1,0 +1,241 @@
+import 'package:flutter/material.dart';
+import 'package:pilates_app/config/theme/app_colors.dart';
+import 'package:pilates_app/config/theme/app_radius.dart';
+import 'package:pilates_app/config/theme/app_spacing.dart';
+import 'package:pilates_app/widgets/app_app_bar.dart';
+import 'package:pilates_app/widgets/app_text.dart';
+
+import '../../../../config/theme/app_text_styles.dart';
+import '../../../../core/localization/localization_extension.dart';
+import '../../../../widgets/app_button.dart';
+import '../widget/redemption_details.dart';
+
+class RedeemRewardView extends StatelessWidget {
+  const RedeemRewardView({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final isDark = Theme
+        .of(context)
+        .brightness == Brightness.dark;
+    return Scaffold(
+      appBar: AppAppBar(
+        title: context.l10n.redeem_reward,
+        onBack: () => Navigator.of(context).pop(),
+        isMoreMenu: false,
+      ),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsetsGeometry.symmetric(
+            vertical: AppSpacing.md,
+            horizontal: AppSpacing.lg,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _BookingCard(isDark: isDark, context:context),
+              SizedBox(height: AppSpacing.lg),
+              _pointCard(isDark: isDark, context: context),
+              SizedBox(height: AppSpacing.lg),
+              AppText(
+                context.l10n.redemption_details,
+                style: (context) =>
+                    AppTextStyles.gelasioRegular(
+                      context,
+                    ).copyWith(height: 1.55),
+              ),
+              SizedBox(height: AppSpacing.sm),
+              RedemptionDetails(),
+              SizedBox(height: AppSpacing.md),
+              _messageCard(isDark: isDark, context: context),
+              SizedBox(height: AppSpacing.lg),
+              AppButton(
+                label: context.l10n.confirm_redemption,
+                onPressed: () {},
+                variant: AppButtonVariant.primary,
+              ),
+              const SizedBox(height: AppSpacing.sm),
+              Container(
+                decoration: BoxDecoration(
+                  color: isDark ? AppColors.homeBackground : Colors.white,
+                  borderRadius: BorderRadius.circular(AppRadius.xl),
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppColors.shadowColor.withValues(alpha: 0.06),
+                      offset: const Offset(0, 1),
+                      blurRadius: 2,
+                      spreadRadius: 0,
+                    ),
+                  ],
+                ),
+                child: AppButton(
+                  label: context.l10n.cancel,
+                  onPressed: () {},
+                  variant: AppButtonVariant.secondary,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  _BookingCard({required bool isDark, required BuildContext context}) {
+    return Container(
+      width: double.infinity,
+      padding: EdgeInsets.symmetric(
+        vertical: AppSpacing.lmd,
+        horizontal: AppSpacing.lg,
+      ),
+      decoration: BoxDecoration(
+        color: isDark ? AppColors.primaryDarkButton : AppColors.seekBarLight,
+        borderRadius: BorderRadius.circular(AppRadius.md),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          AppText(
+            context.l10n.priority_booking_week,
+            style: (context) =>
+                AppTextStyles.appBarTitle(
+                  context,
+                ).copyWith(fontWeight: FontWeight.w600),
+          ),
+          SizedBox(height: AppSpacing.sm),
+          AppText(
+            context.l10n.priority_booking_desc,
+            style: (context) =>
+                AppTextStyles.bodyText(context).copyWith(height: 1),
+          ),
+          SizedBox(height: AppSpacing.md),
+          Container(
+            padding: EdgeInsetsGeometry.symmetric(
+              horizontal: AppSpacing.sm,
+              vertical: AppSpacing.xi,
+            ),
+            decoration: BoxDecoration(
+              color: isDark ? AppColors.progressBGColor : AppColors.whiteColor,
+              borderRadius: BorderRadius.circular(AppRadius.lg),
+            ),
+            child: AppText(
+              context.l10n.points(20),
+              style: (context) =>
+                  AppTextStyles.body(context).copyWith(
+                    color: isDark ? AppColors.lightText : AppColors
+                        .languageIcon,
+                  ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  _pointCard({required bool isDark, required BuildContext context}) {
+    return Container(
+      width: double.infinity,
+      padding: EdgeInsets.symmetric(
+        vertical: AppSpacing.lmd,
+        horizontal: AppSpacing.lmd,
+      ),
+      decoration: BoxDecoration(
+        color: isDark ? AppColors.homeBackground : AppColors.whiteColor,
+        borderRadius: BorderRadius.circular(AppRadius.md),
+        border: Border.all(
+          color: isDark ? AppColors.greyText : AppColors.buttonBorder,
+          width: 1,
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              AppText(
+                context.l10n.current_balance,
+                style: (context) =>
+                    AppTextStyles.bodyText(context).copyWith(height: 1.4),
+              ),
+              AppText(
+                context.l10n.points(1250),
+
+                style: (context) =>
+                    AppTextStyles.body(context).copyWith(height: 1.55),
+              ),
+            ],
+          ),
+          SizedBox(height: 10),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              AppText(
+                context.l10n.this_reward,
+                style: (context) =>
+                    AppTextStyles.bodyText(context).copyWith(height: 1.4),
+              ),
+              AppText(
+                "-${context.l10n.points(200)}",
+                style: (context) =>
+                    AppTextStyles.body(
+                      context,
+                    ).copyWith(height: 1.55, color: AppColors.redLight),
+              ),
+            ],
+          ),
+          SizedBox(height: 10),
+          Divider(
+            color: isDark ? AppColors.greyText : AppColors.buttonBorder,
+            height: 1,
+          ),
+          SizedBox(height: 10),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              AppText(
+                context.l10n.after_redemption,
+                style: (context) =>
+                    AppTextStyles.textFieldHeading(
+                      context,
+                    ).copyWith(height: 1.4),
+              ),
+              AppText(
+                context.l10n.points(1050),
+
+                style: (context) =>
+                    AppTextStyles.textFieldHeading(
+                      context,
+                    ).copyWith(height: 1.55),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  _messageCard({required bool isDark, required BuildContext context}) {
+    return Container(
+      padding: EdgeInsets.all(AppSpacing.md),
+      decoration: BoxDecoration(
+        color: isDark
+            ? AppColors.warningColor.withValues(alpha: 0.11)
+            : AppColors.upgradeLightBackgroundColor,
+        borderRadius: BorderRadius.circular(AppRadius.base),
+      ),
+      child: AppText(
+        context.l10n.redeem_warning,
+        style: (context) =>
+            AppTextStyles.bodyLightText(context).copyWith(
+              fontSize: 12,
+              height: 1.55,
+              color: isDark
+                  ? AppColors.upgradeDarkLockBackgroundColor
+                  : AppColors.lightGrey,
+            ),
+        maxLines: 3,
+      ),
+    );
+  }
+}

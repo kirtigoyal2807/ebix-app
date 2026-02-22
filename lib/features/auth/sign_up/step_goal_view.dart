@@ -75,7 +75,16 @@ class _SignUpGoalViewState extends State<SignUpGoalView> {
                       ),
                     ),
 
+                    const SizedBox(height: AppSpacing.xxl),
+
+
+                    AppText(
+                      context.l10n.pilatesPrimaryFocusTitle,
+                      style: AppTextStyles.heading1,
+                    ),
+
                     const SizedBox(height: AppSpacing.lg),
+
 
                     ExperienceOption(
                       title: context.l10n.buildStrength,

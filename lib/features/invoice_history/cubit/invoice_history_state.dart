@@ -5,13 +5,10 @@ class InvoiceHistoryState extends Equatable {
   final List<InvoiceCategory> invoiceCategoryList;
   final InvoiceCategory selectedInvoiceCategory;
 
-
-
   InvoiceHistoryState({
     required this.invoiceCategoryList,
 
-    this.selectedInvoiceCategory =InvoiceCategory.all,
-
+    this.selectedInvoiceCategory = InvoiceCategory.all,
   });
 
   InvoiceHistoryState copyWith({
@@ -25,7 +22,6 @@ class InvoiceHistoryState extends Equatable {
       invoiceCategoryList: invoiceCategoryList ?? this.invoiceCategoryList,
       selectedInvoiceCategory:
           selectedInvoiceCategory ?? this.selectedInvoiceCategory,
-
     );
   }
 
@@ -33,10 +29,4 @@ class InvoiceHistoryState extends Equatable {
   List<Object> get props => [invoiceCategoryList, selectedInvoiceCategory];
 }
 
-
-enum InvoiceCategory {
-  all,
-  subscriptions,
-  classes,
-  refunds,
-}
+enum InvoiceCategory { all, subscriptions, classes, refunds }

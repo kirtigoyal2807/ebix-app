@@ -43,6 +43,8 @@ flutter:
     - assets/images/svg/invoice_history/
     - assets/images/svg/explore/
     - assets/images/svg/goal/
+    - assets/images/svg/progress_tracking/
+    - assets/images/svg/challenges/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

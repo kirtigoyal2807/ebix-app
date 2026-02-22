@@ -1836,26 +1836,645 @@ class AppLocalizationsEn extends AppLocalizations {
   String get buildStrength => 'Build Strength';
 
   @override
-  String get buildStrengthDesc => 'Power, reformer, core work';
+  String get buildStrengthDesc =>
+      'Focus on muscle-building and strengthening exercises';
 
   @override
   String get findMindfulness => 'Find Mindfulness';
 
   @override
-  String get findMindfulnessDesc => 'Flow, meditation, calm';
+  String get findMindfulnessDesc =>
+      'Practice mind-body exercises for mental balance';
 
   @override
   String get improveFlexibility => 'Improve Flexibility';
 
   @override
-  String get improveFlexibilityDesc => 'Stretch, mobility, range';
+  String get improveFlexibilityDesc =>
+      'Enhance your range of motion through stretching';
 
   @override
   String get generalFitness => 'General Fitness';
 
   @override
-  String get generalFitnessDesc => 'Balanced, all-around wellness';
+  String get generalFitnessDesc =>
+      'A balanced approach to overall health and wellness';
 
   @override
   String get monthlyTarget => 'Monthly Target';
+
+  @override
+  String get pilatesPrimaryFocusTitle =>
+      'What brings you to Pilates? Select your primary focus';
+
+  @override
+  String get yourJourney_title => 'Your Journey';
+
+  @override
+  String get yourJourney_achievement_content => '7 more to discover your path';
+
+  @override
+  String get yourJourney_achievements_earned => 'Achievements Earned';
+
+  @override
+  String get yourJourney_on_your_path => 'On Your Path';
+
+  @override
+  String get yourJourney_consistency_title => 'Consistency Flow';
+
+  @override
+  String get yourJourney_consistency_subtitle => 'Progress Badge';
+
+  @override
+  String get yourJourney_consistency_content =>
+      'Attended classes 12 days in a row, building a sustainable practice';
+
+  @override
+  String get yourJourney_consistency_date => 'Earned January 26, 2026';
+
+  @override
+  String get yourJourney_foundation_title => 'Foundation Builder';
+
+  @override
+  String get yourJourney_foundation_subtitle => 'Milestone Badge';
+
+  @override
+  String get yourJourney_foundation_content =>
+      'Reached your first 10 classes, establishing a strong foundation';
+
+  @override
+  String get yourJourney_foundation_date => 'Earned January 20, 2026';
+
+  @override
+  String get yourJourney_monthly_title => 'Monthly Dedication';
+
+  @override
+  String get yourJourney_monthly_subtitle => 'Milestone Badge';
+
+  @override
+  String get yourJourney_monthly_content =>
+      'Complete 16 classes in a single month';
+
+  @override
+  String get yourJourney_monthly_date => '4 classes remaining';
+
+  @override
+  String get yourJourney_community_title => 'Community Spirit';
+
+  @override
+  String get yourJourney_community_subtitle => 'Special Badge';
+
+  @override
+  String get yourJourney_community_content =>
+      'Attend 10 group sessions, connecting with the community';
+
+  @override
+  String get yourJourney_community_date => '4 classes remaining';
+
+  @override
+  String get yourJourney_your_progress => 'Your Progress';
+
+  @override
+  String get yourJourney_progress_count => '12 of 16 classes';
+
+  @override
+  String get yourJourney_points => '+50 pts';
+
+  @override
+  String get achievement_your_achievements => 'Your Achievements';
+
+  @override
+  String get achievement_content => 'Building your practice journey';
+
+  @override
+  String get achievement_consistency_title => 'Consistency Flow';
+
+  @override
+  String get achievement_consistency_subtitle => '12 days in a row';
+
+  @override
+  String get achievement_foundation_title => 'Foundation Builder';
+
+  @override
+  String get achievement_foundation_subtitle =>
+      'Completed Classes 12 days in a row';
+
+  @override
+  String get achievement_monthly_title => 'Monthly Dedication';
+
+  @override
+  String get achievement_monthly_subtitle => '12 / 16 classes';
+
+  @override
+  String get achievement_view_all_button => 'View All Achievements';
+
+  @override
+  String get edit_goal_title => 'Edit Your Goal';
+
+  @override
+  String get edit_goal_current_goal => 'Current Goal';
+
+  @override
+  String get edit_goal_intermediate_level => 'Intermediate Level';
+
+  @override
+  String get edit_goal_choose_focus => 'Choose Your Focus';
+
+  @override
+  String get edit_goal_save_changes => 'Save Changes';
+
+  @override
+  String get edit_goal_tip_label => 'Tip: ';
+
+  @override
+  String get edit_goal_tip_content =>
+      'Your goal personalizes your progress tracking. You can change it anytime to match your evolving fitness journey.';
+
+  @override
+  String get edit_goal_tap_hint =>
+      'Tap the edit button to change your goal anytime';
+
+  @override
+  String get goal_progress_title => 'January Goal Progress';
+
+  @override
+  String get goal_progress_percentage => '75%';
+
+  @override
+  String get goal_progress_complete => 'Complete';
+
+  @override
+  String get goal_progress_sessions => '12 of 16 mindful sessions';
+
+  @override
+  String get goal_progress_remaining => '4 more to reach your goal';
+
+  @override
+  String get progress_tab_overview => 'Overview';
+
+  @override
+  String get progress_tab_history => 'History';
+
+  @override
+  String get progress_tab_achievements => 'Achievements';
+
+  @override
+  String get weekly_activity_title => 'Weekly Activity';
+
+  @override
+  String get weekly_activity_minutes => '%sm';
+
+  @override
+  String get weekly_activity_mindful_movement => 'Mindful Movement: ';
+
+  @override
+  String get weekly_activity_summary => '280 minutes • 6 sessions';
+
+  @override
+  String get weekly_day_monday => 'M';
+
+  @override
+  String get weekly_day_tuesday => 'T';
+
+  @override
+  String get weekly_day_wednesday => 'W';
+
+  @override
+  String get weekly_day_thursday => 'T';
+
+  @override
+  String get weekly_day_friday => 'F';
+
+  @override
+  String get weekly_day_saturday => 'S';
+
+  @override
+  String get weekly_day_sunday => 'S';
+
+  @override
+  String get mind_practice_title => 'Your Mindful Practice';
+
+  @override
+  String get mind_practice_mindful_movement => 'Mindful Movement';
+
+  @override
+  String get mind_practice_morning_sessions => 'Morning Sessions';
+
+  @override
+  String get mind_practice_flow_instructors => 'Flow Instructors';
+
+  @override
+  String get mind_practice_inner_peace => 'Inner Peace';
+
+  @override
+  String get mind_practice_mindful_value => '8.5 hr';
+
+  @override
+  String get mind_practice_morning_value => '5';
+
+  @override
+  String get mind_practice_instructors_value => '4';
+
+  @override
+  String get mind_practice_peace_value => '+25%';
+
+  @override
+  String get session_history_title => 'Session History';
+
+  @override
+  String get session_history_classes => 'Classes';
+
+  @override
+  String get session_history_total_time => 'Total Time';
+
+  @override
+  String get session_history_points => 'Points';
+
+  @override
+  String get session_history_all_time => 'All Time History';
+
+  @override
+  String get session_history_this_month => 'January 2026';
+
+  @override
+  String get session_history_last_30_days => 'Last 30 Days';
+
+  @override
+  String get session_history_classes_value => '42';
+
+  @override
+  String get session_history_time_value => '31h';
+
+  @override
+  String get session_history_points_value => '1050';
+
+  @override
+  String get session_history_this_month_txt => 'This Month';
+
+  @override
+  String get session_card_class_name => 'Core Strength Flow';
+
+  @override
+  String get session_card_instructor => 'with Sarah Chen';
+
+  @override
+  String get session_card_status_completed => 'Completed';
+
+  @override
+  String get session_card_today => 'Today';
+
+  @override
+  String get session_card_duration => '45 Min';
+
+  @override
+  String get session_card_points => '+25 pts';
+
+  @override
+  String get session_history_view_full => 'View Full History';
+
+  @override
+  String get progress_tracking_title => 'Progress & Tracking';
+
+  @override
+  String get february_streak => 'February Streak';
+
+  @override
+  String get studio_legend => 'Studio Legend';
+
+  @override
+  String get first_step => 'First Step';
+
+  @override
+  String get early_bird => 'Early Bird';
+
+  @override
+  String get lotus_blossom => 'Lotus Blossom';
+
+  @override
+  String get core_strength => 'Core Strength';
+
+  @override
+  String get week_warrior => 'Week Warrior';
+
+  @override
+  String get balance_master => 'Balance Master';
+
+  @override
+  String get earned => 'Earned';
+
+  @override
+  String get locked => 'Locked';
+
+  @override
+  String badge_complete_classes(Object count, Object month) {
+    return 'Complete $count classes in $month';
+  }
+
+  @override
+  String badge_earned_on(Object date) {
+    return 'Earned on $date';
+  }
+
+  @override
+  String get share_badge => 'Share This Badge';
+
+  @override
+  String get badge_bronze => 'Bronze';
+
+  @override
+  String get badge_silver => 'Silver';
+
+  @override
+  String get badge_gold => 'Gold';
+
+  @override
+  String get badge_collection => 'Badge Collection';
+
+  @override
+  String get challenge_detail => 'Challenge Detail';
+
+  @override
+  String get twenty_classes_month => '20 Classes This Month';
+
+  @override
+  String get complete_classes_feb => 'Complete 20 classes in February';
+
+  @override
+  String get your_progress => 'Your Progress';
+
+  @override
+  String get leaderboard => 'Leaderboard';
+
+  @override
+  String get you => 'You';
+
+  @override
+  String get rewards => 'Rewards';
+
+  @override
+  String get classes_completed => 'classes completed';
+
+  @override
+  String percent_complete(Object percent) {
+    return '$percent% complete';
+  }
+
+  @override
+  String more_classes_to_go(Object count) {
+    return '$count more classes to go';
+  }
+
+  @override
+  String rank_number(Object rank) {
+    return 'Rank #$rank';
+  }
+
+  @override
+  String days_left(Object days) {
+    return '$days days left';
+  }
+
+  @override
+  String points_short(int points) {
+    return '$points pts';
+  }
+
+  @override
+  String points(Object points) {
+    return '$points pts';
+  }
+
+  @override
+  String get benefit_gold_badge => 'Gold Badge';
+
+  @override
+  String get benefit_feb_champion => 'February Champion';
+
+  @override
+  String benefit_bonus_points(Object points) {
+    return '$points Bonus Points';
+  }
+
+  @override
+  String get benefit_redeem_rewards => 'Redeem for rewards';
+
+  @override
+  String benefit_discount(Object percent) {
+    return '$percent% Subscription Discount';
+  }
+
+  @override
+  String get benefit_next_billing => 'Next month\'s billing';
+
+  @override
+  String days_only(Object days) {
+    return '$days days';
+  }
+
+  @override
+  String people_joined(Object count) {
+    return '$count joined';
+  }
+
+  @override
+  String get join_challenge => 'Join Challenge';
+
+  @override
+  String get core_strength_challenge => 'Core Strength Challenge';
+
+  @override
+  String core_strength_subtitle(Object count) {
+    return 'Master $count core-focused classes';
+  }
+
+  @override
+  String get challenge_details => 'Challenge Details';
+
+  @override
+  String challenge_description(Object count, Object month) {
+    return 'Complete $count classes before the end of $month. Track your progress daily and compete with other members!';
+  }
+
+  @override
+  String get what_you_will_earn => 'What You’ll Earn';
+
+  @override
+  String get my_active_challenges => 'My Active Challenges';
+
+  @override
+  String get new_challenges => 'New Challenges';
+
+  @override
+  String get challenge_20_classes_title => '20 Classes This Month';
+
+  @override
+  String challenge_20_classes_subtitle(Object count, Object month) {
+    return 'Completed $count classes in $month';
+  }
+
+  @override
+  String get challenge_streak_title => '7-Day Streak Builder';
+
+  @override
+  String challenge_streak_subtitle(Object days) {
+    return 'Attend class $days days in a row';
+  }
+
+  @override
+  String get challenge_core_title => 'Core Strength Challenge';
+
+  @override
+  String challenge_core_subtitle(Object count) {
+    return 'Master $count core-focused classes';
+  }
+
+  @override
+  String get challenge_spring_title => 'Spring Into Fitness';
+
+  @override
+  String challenge_spring_subtitle(Object count) {
+    return 'Complete $count classes this season';
+  }
+
+  @override
+  String get redeem_reward => 'Redeem Reward';
+
+  @override
+  String get redemption_details => 'Redemption Details';
+
+  @override
+  String get confirm_redemption => 'Confirm Redemption';
+
+  @override
+  String get priority_booking_week => 'Priority Booking - Week';
+
+  @override
+  String get priority_booking_desc => 'Book classes 48hrs early for 7 days';
+
+  @override
+  String get current_balance => 'Current Balance';
+
+  @override
+  String get this_reward => 'This Reward';
+
+  @override
+  String get after_redemption => 'After Redemption';
+
+  @override
+  String get redeem_warning =>
+      'By redeeming this reward, you agree that points cannot be refunded. Rewards are non-transferable and subject to availability.';
+
+  @override
+  String get rewards_history => 'Rewards History';
+
+  @override
+  String get studio_water_bottle => 'Studio Water Bottle';
+
+  @override
+  String get free_class_pass => 'Free Class Pass';
+
+  @override
+  String redeemed_on(Object date) {
+    return 'Redeemed $date';
+  }
+
+  @override
+  String get your_balance => 'Your Balance';
+
+  @override
+  String get current_tier => 'Current Tier';
+
+  @override
+  String get silver_member => 'Silver Member';
+
+  @override
+  String get progress_to_gold => 'Progress to Gold';
+
+  @override
+  String points_to_go(Object points) {
+    return '$points pts to go';
+  }
+
+  @override
+  String get your_silver_benefits => 'Your Silver Benefits';
+
+  @override
+  String get showing_rewards_from => 'Showing rewards from';
+
+  @override
+  String get change => 'Change';
+
+  @override
+  String get available_rewards => 'Available Rewards';
+
+  @override
+  String get exclusive_workshop => 'Exclusive Workshop Access';
+
+  @override
+  String get exclusive_workshop_desc => 'Advanced techniques masterclass';
+
+  @override
+  String get guest_pass_3 => 'Guest Pass (3-Pack)';
+
+  @override
+  String get guest_pass_desc => 'Bring friends to 3 classes';
+
+  @override
+  String get meditation_session => 'Meditation Session';
+
+  @override
+  String get meditation_session_desc => 'Private 30-min guided meditation';
+
+  @override
+  String get experiences => 'Experiences';
+
+  @override
+  String get discounts => 'Discounts';
+
+  @override
+  String get redeem_how_to_collect => 'How to Collect';
+
+  @override
+  String get redeem_collect_desc =>
+      'Pick up your water bottle at the front desk during your next visit. Show this confirmation screen.';
+
+  @override
+  String get redeem_valid_for => 'Valid For';
+
+  @override
+  String get redeem_valid_desc =>
+      'This reward is valid for 30 days from redemption date.';
+
+  @override
+  String get redeem_available_at => 'Available At';
+
+  @override
+  String get redeem_available_desc => 'All branch locations';
+
+  @override
+  String get reward_redeem => 'Redeem';
+
+  @override
+  String get collected => 'Collected';
+
+  @override
+  String get select_branch => 'Select Branch';
+
+  @override
+  String get featurePriorityBookingDesc => 'Book classes 24hrs in advance';
+
+  @override
+  String get featureMerchDiscount => 'Merch Discount';
+
+  @override
+  String get featureMerchDiscountDesc => '10% off all studio merchandise';
+
+  @override
+  String get featureGuestPass => 'Monthly Guest Pass';
+
+  @override
+  String get featureGuestPassDesc => 'Bring a friend once per month';
+
+  @override
+  String get viewAllTiers => 'View All Tiers';
 }

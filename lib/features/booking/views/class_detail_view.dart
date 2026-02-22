@@ -62,7 +62,7 @@ class ClassDetailView extends StatelessWidget {
                       padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
                       child: ClassInfoGrid(),
                     ),
-                    SizedBox(height: AppSpacing.lg),
+                    SizedBox(height: AppSpacing.md),
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
                       child: ClassLocationCard(),

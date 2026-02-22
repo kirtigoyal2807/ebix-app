@@ -55,7 +55,7 @@ class SubscriptionState extends Equatable {
   const SubscriptionState({
     this.status = SubscriptionStatus.initial,
     this.selectedPlanId = 'premium',
-    this.selectedBranchId = 'branchA',
+    this.selectedBranchId = 'Branch A',
     this.isGift = false,
     this.currentStep = 0,
     this.name = '',

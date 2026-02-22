@@ -65,7 +65,7 @@ class AccountView extends StatelessWidget {
                         context.l10n.logout,
                         style: AppTextStyles.button(context).copyWith(
                           fontSize: 16,
-                          color: isDark ? Colors.black : Colors.white,
+                          color:  Colors.white,
                         ),
                       ),
                     ],

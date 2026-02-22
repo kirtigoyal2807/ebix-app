@@ -720,7 +720,264 @@
   "improveFlexibilityDesc": "Stretch, mobility, range",
   "generalFitness": "General Fitness",
   "generalFitnessDesc": "Balanced, all-around wellness",
-  "monthlyTarget": "Monthly Target"
+  "monthlyTarget": "Monthly Target",
+  "pilatesPrimaryFocusTitle":
+  "What brings you to Pilates? Select your primary focus",
+
+
+
+  "yourJourney_title": "Your Journey",
+
+  "yourJourney_achievement_content": "7 more to discover your path",
+  "yourJourney_achievements_earned": "Achievements Earned",
+  "yourJourney_on_your_path": "On Your Path",
+
+  "yourJourney_consistency_title": "Consistency Flow",
+  "yourJourney_consistency_subtitle": "Progress Badge",
+  "yourJourney_consistency_content": "Attended classes 12 days in a row, building a sustainable practice",
+  "yourJourney_consistency_date": "Earned January 26, 2026",
+
+  "yourJourney_foundation_title": "Foundation Builder",
+  "yourJourney_foundation_subtitle": "Milestone Badge",
+  "yourJourney_foundation_content": "Reached your first 10 classes, establishing a strong foundation",
+  "yourJourney_foundation_date": "Earned January 20, 2026",
+
+  "yourJourney_monthly_title": "Monthly Dedication",
+  "yourJourney_monthly_subtitle": "Milestone Badge",
+  "yourJourney_monthly_content": "Complete 16 classes in a single month",
+  "yourJourney_monthly_date": "4 classes remaining",
+
+  "yourJourney_community_title": "Community Spirit",
+  "yourJourney_community_subtitle": "Special Badge",
+  "yourJourney_community_content": "Attend 10 group sessions, connecting with the community",
+  "yourJourney_community_date": "4 classes remaining",
+
+  "yourJourney_your_progress": "Your Progress",
+  "yourJourney_progress_count": "12 of 16 classes",
+  "yourJourney_points": "+50 pts",
+  "achievement_your_achievements": "Your Achievements",
+  "achievement_content": "Building your practice journey",
+  "achievement_consistency_title": "Consistency Flow",
+  "achievement_consistency_subtitle": "12 days in a row",
+  "achievement_foundation_title": "Foundation Builder",
+  "achievement_foundation_subtitle": "Completed Classes 12 days in a row",
+  "achievement_monthly_title": "Monthly Dedication",
+  "achievement_monthly_subtitle": "12 / 16 classes",
+  "achievement_view_all_button": "View All Achievements",
+  "edit_goal_title": "Edit Your Goal",
+  "edit_goal_current_goal": "Current Goal",
+  "edit_goal_intermediate_level": "Intermediate Level",
+  "edit_goal_choose_focus": "Choose Your Focus",
+  "edit_goal_save_changes": "Save Changes",
+  "edit_goal_tip_label": "Tip: ",
+  "edit_goal_tip_content": "Your goal personalizes your progress tracking. You can change it anytime to match your evolving fitness journey.",
+
+
+  "buildStrength": "Build Strength",
+  "buildStrengthDesc": "Focus on muscle-building and strengthening exercises",
+  "findMindfulness": "Find Mindfulness",
+  "findMindfulnessDesc": "Practice mind-body exercises for mental balance",
+  "improveFlexibility": "Improve Flexibility",
+  "improveFlexibilityDesc": "Enhance your range of motion through stretching",
+  "generalFitness": "General Fitness",
+  "generalFitnessDesc": "A balanced approach to overall health and wellness",
+
+
+  "monthlyTarget": "Monthly Target",
+  "edit_goal_tap_hint": "Tap the edit button to change your goal anytime",
+  "goal_progress_title": "January Goal Progress",
+  "goal_progress_percentage": "75%",
+  "goal_progress_complete": "Complete",
+  "goal_progress_sessions": "12 of 16 mindful sessions",
+  "goal_progress_remaining": "4 more to reach your goal",
+  "progress_tab_overview": "Overview",
+  "progress_tab_history": "History",
+  "progress_tab_achievements": "Achievements",
+  "weekly_activity_title": "Weekly Activity",
+  "weekly_activity_minutes": "%sm",
+  "weekly_activity_mindful_movement": "Mindful Movement: ",
+  "weekly_activity_summary": "280 minutes • 6 sessions",
+
+  "weekly_day_monday": "M",
+  "weekly_day_tuesday": "T",
+  "weekly_day_wednesday": "W",
+  "weekly_day_thursday": "T",
+  "weekly_day_friday": "F",
+  "weekly_day_saturday": "S",
+  "weekly_day_sunday": "S",
+
+  "mind_practice_title": "Your Mindful Practice",
+  "mind_practice_mindful_movement": "Mindful Movement",
+  "mind_practice_morning_sessions": "Morning Sessions",
+  "mind_practice_flow_instructors": "Flow Instructors",
+  "mind_practice_inner_peace": "Inner Peace",
+
+
+  "mind_practice_mindful_value": "8.5 hr",
+  "mind_practice_morning_value": "5",
+  "mind_practice_instructors_value": "4",
+  "mind_practice_peace_value": "+25%",
+
+  "session_history_title": "Session History",
+  "session_history_classes": "Classes",
+  "session_history_total_time": "Total Time",
+  "session_history_points": "Points",
+  "session_history_all_time": "All Time History",
+  "session_history_this_month": "January 2026",
+  "session_history_last_30_days": "Last 30 Days",
+
+
+  "session_history_classes_value": "42",
+  "session_history_time_value": "31h",
+  "session_history_points_value": "1050",
+  "session_history_this_month_txt": "This Month",
+
+
+  "session_card_class_name": "Core Strength Flow",
+  "session_card_instructor": "with Sarah Chen",
+  "session_card_status_completed": "Completed",
+  "session_card_today": "Today",
+  "session_card_duration": "45 Min",
+  "session_card_points": "+25 pts",
+  "session_history_view_full": "View Full History",
+  "progress_tracking_title": "Progress & Tracking",
+
+  "february_streak": "February Streak",
+  "studio_legend": "Studio Legend",
+  "first_step": "First Step",
+  "early_bird": "Early Bird",
+  "lotus_blossom": "Lotus Blossom",
+  "core_strength": "Core Strength",
+  "week_warrior": "Week Warrior",
+  "balance_master": "Balance Master",
+  "earned": "Earned",
+  "locked": "Locked",
+  "badge_complete_classes": "Complete {count} classes in {month}",
+  "badge_earned_on": "Earned on {date}",
+  "share_badge": "Share This Badge",
+  "badge_bronze": "Bronze",
+  "badge_silver": "Silver",
+  "badge_gold": "Gold",
+  "badge_collection": "Badge Collection",
+  "challenge_detail": "Challenge Detail",
+  "twenty_classes_month": "20 Classes This Month",
+  "complete_classes_feb": "Complete 20 classes in February",
+  "your_progress": "Your Progress",
+  "leaderboard": "Leaderboard",
+  "you": "You",
+  "rewards": "Rewards",
+  "classes_completed": "classes completed",
+  "percent_complete": "{percent}% complete",
+  "more_classes_to_go": "{count} more classes to go",
+  "percent_complete": "{percent}% complete",
+  "rank_number": "Rank #{rank}",
+  "days_left": "{days} days left",
+  "points_short": "+{points} pts",
+  "points": "{points} pts",
+  "benefit_gold_badge": "Gold Badge",
+  "benefit_feb_champion": "February Champion",
+  "benefit_bonus_points": "{points} Bonus Points",
+  "benefit_redeem_rewards": "Redeem for rewards",
+  "benefit_discount": "{percent}% Subscription Discount",
+  "benefit_next_billing": "Next month's billing",
+  "days_only": "{days} days",
+  "people_joined": "{count} joined",
+  "join_challenge": "Join Challenge",
+  "core_strength_challenge": "Core Strength Challenge",
+  "core_strength_subtitle": "Master {count} core-focused classes",
+  "challenge_details": "Challenge Details",
+  "challenge_description": "Complete {count} classes before the end of {month}. Track your progress daily and compete with other members!",
+  "what_you_will_earn": "What You’ll Earn",
+  "my_active_challenges": "My Active Challenges",
+  "new_challenges": "New Challenges",
+
+  "challenge_20_classes_title": "20 Classes This Month",
+  "challenge_20_classes_subtitle": "Completed {count} classes in {month}",
+
+  "challenge_streak_title": "7-Day Streak Builder",
+  "challenge_streak_subtitle": "Attend class {days} days in a row",
+
+  "challenge_core_title": "Core Strength Challenge",
+  "challenge_core_subtitle": "Master {count} core-focused classes",
+
+  "challenge_spring_title": "Spring Into Fitness",
+  "challenge_spring_subtitle": "Complete {count} classes this season",
+  "redeem_reward": "Redeem Reward",
+  "redemption_details": "Redemption Details",
+  "confirm_redemption": "Confirm Redemption",
+
+  "priority_booking_week": "Priority Booking - Week",
+  "priority_booking_desc": "Book classes 48hrs early for 7 days",
+
+  "current_balance": "Current Balance",
+  "this_reward": "This Reward",
+  "after_redemption": "After Redemption",
+
+  "redeem_warning": "By redeeming this reward, you agree that points cannot be refunded. Rewards are non-transferable and subject to availability.",
+  "rewards_history": "Rewards History",
+
+  "studio_water_bottle": "Studio Water Bottle",
+  "free_class_pass": "Free Class Pass",
+
+  "redeemed_on": "Redeemed {date}",
+
+  "your_balance": "Your Balance",
+  "current_tier": "Current Tier",
+  "silver_member": "Silver Member",
+  "progress_to_gold": "Progress to Gold",
+  "points_to_go": "{points} pts to go",
+
+  "your_silver_benefits": "Your Silver Benefits",
+
+  "showing_rewards_from": "Showing rewards from",
+  "change": "Change",
+
+  "available_rewards": "Available Rewards",
+
+  "priority_booking_week": "Priority Booking - Week",
+  "priority_booking_desc": "Book classes 48hrs early for 7 days",
+
+  "exclusive_workshop": "Exclusive Workshop Access",
+  "exclusive_workshop_desc": "Advanced techniques masterclass",
+
+  "guest_pass_3": "Guest Pass (3-Pack)",
+  "guest_pass_desc": "Bring friends to 3 classes",
+
+  "meditation_session": "Meditation Session",
+  "meditation_session_desc": "Private 30-min guided meditation",
+
+  "experiences": "Experiences",
+  "discounts": "Discounts",
+  "redeem_how_to_collect": "How to Collect",
+  "redeem_collect_desc": "Pick up your water bottle at the front desk during your next visit. Show this confirmation screen.",
+
+  "redeem_valid_for": "Valid For",
+  "redeem_valid_desc": "This reward is valid for 30 days from redemption date.",
+
+  "redeem_available_at": "Available At",
+  "redeem_available_desc": "All branch locations",
+  "reward_redeem": "Redeem",
+  "points_short": "{points} pts",
+  "@points_short": {
+    "placeholders": {
+      "points": {
+        "type": "int"
+      }
+    }
+  },
+  "collected": "Collected",
+  "select_branch": "Select Branch",
+
+  "featurePriorityBookingDesc": "Book classes 24hrs in advance",
+
+  "featureMerchDiscount": "Merch Discount",
+  "featureMerchDiscountDesc": "10% off all studio merchandise",
+
+  "featureGuestPass": "Monthly Guest Pass",
+  "featureGuestPassDesc": "Bring a friend once per month",
+
+  "viewAllTiers": "View All Tiers"
+
 }
 
 

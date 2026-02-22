@@ -182,7 +182,7 @@ class FeaturedClassCard extends StatelessWidget {
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
-                const SizedBox(height: AppSpacing.sm),
+                const SizedBox(height: AppSpacing.md),
                 ElevatedButton(
                   onPressed: () {},
                   style: ElevatedButton.styleFrom(

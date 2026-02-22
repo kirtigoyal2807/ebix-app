@@ -3569,7 +3569,7 @@ abstract class AppLocalizations {
   /// No description provided for @buildStrengthDesc.
   ///
   /// In en, this message translates to:
-  /// **'Power, reformer, core work'**
+  /// **'Focus on muscle-building and strengthening exercises'**
   String get buildStrengthDesc;
 
   /// No description provided for @findMindfulness.
@@ -3581,7 +3581,7 @@ abstract class AppLocalizations {
   /// No description provided for @findMindfulnessDesc.
   ///
   /// In en, this message translates to:
-  /// **'Flow, meditation, calm'**
+  /// **'Practice mind-body exercises for mental balance'**
   String get findMindfulnessDesc;
 
   /// No description provided for @improveFlexibility.
@@ -3593,7 +3593,7 @@ abstract class AppLocalizations {
   /// No description provided for @improveFlexibilityDesc.
   ///
   /// In en, this message translates to:
-  /// **'Stretch, mobility, range'**
+  /// **'Enhance your range of motion through stretching'**
   String get improveFlexibilityDesc;
 
   /// No description provided for @generalFitness.
@@ -3605,7 +3605,7 @@ abstract class AppLocalizations {
   /// No description provided for @generalFitnessDesc.
   ///
   /// In en, this message translates to:
-  /// **'Balanced, all-around wellness'**
+  /// **'A balanced approach to overall health and wellness'**
   String get generalFitnessDesc;
 
   /// No description provided for @monthlyTarget.
@@ -3613,6 +3613,1134 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Monthly Target'**
   String get monthlyTarget;
+
+  /// No description provided for @pilatesPrimaryFocusTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'What brings you to Pilates? Select your primary focus'**
+  String get pilatesPrimaryFocusTitle;
+
+  /// No description provided for @yourJourney_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Journey'**
+  String get yourJourney_title;
+
+  /// No description provided for @yourJourney_achievement_content.
+  ///
+  /// In en, this message translates to:
+  /// **'7 more to discover your path'**
+  String get yourJourney_achievement_content;
+
+  /// No description provided for @yourJourney_achievements_earned.
+  ///
+  /// In en, this message translates to:
+  /// **'Achievements Earned'**
+  String get yourJourney_achievements_earned;
+
+  /// No description provided for @yourJourney_on_your_path.
+  ///
+  /// In en, this message translates to:
+  /// **'On Your Path'**
+  String get yourJourney_on_your_path;
+
+  /// No description provided for @yourJourney_consistency_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Consistency Flow'**
+  String get yourJourney_consistency_title;
+
+  /// No description provided for @yourJourney_consistency_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Progress Badge'**
+  String get yourJourney_consistency_subtitle;
+
+  /// No description provided for @yourJourney_consistency_content.
+  ///
+  /// In en, this message translates to:
+  /// **'Attended classes 12 days in a row, building a sustainable practice'**
+  String get yourJourney_consistency_content;
+
+  /// No description provided for @yourJourney_consistency_date.
+  ///
+  /// In en, this message translates to:
+  /// **'Earned January 26, 2026'**
+  String get yourJourney_consistency_date;
+
+  /// No description provided for @yourJourney_foundation_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Foundation Builder'**
+  String get yourJourney_foundation_title;
+
+  /// No description provided for @yourJourney_foundation_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Milestone Badge'**
+  String get yourJourney_foundation_subtitle;
+
+  /// No description provided for @yourJourney_foundation_content.
+  ///
+  /// In en, this message translates to:
+  /// **'Reached your first 10 classes, establishing a strong foundation'**
+  String get yourJourney_foundation_content;
+
+  /// No description provided for @yourJourney_foundation_date.
+  ///
+  /// In en, this message translates to:
+  /// **'Earned January 20, 2026'**
+  String get yourJourney_foundation_date;
+
+  /// No description provided for @yourJourney_monthly_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly Dedication'**
+  String get yourJourney_monthly_title;
+
+  /// No description provided for @yourJourney_monthly_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Milestone Badge'**
+  String get yourJourney_monthly_subtitle;
+
+  /// No description provided for @yourJourney_monthly_content.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete 16 classes in a single month'**
+  String get yourJourney_monthly_content;
+
+  /// No description provided for @yourJourney_monthly_date.
+  ///
+  /// In en, this message translates to:
+  /// **'4 classes remaining'**
+  String get yourJourney_monthly_date;
+
+  /// No description provided for @yourJourney_community_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Community Spirit'**
+  String get yourJourney_community_title;
+
+  /// No description provided for @yourJourney_community_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Special Badge'**
+  String get yourJourney_community_subtitle;
+
+  /// No description provided for @yourJourney_community_content.
+  ///
+  /// In en, this message translates to:
+  /// **'Attend 10 group sessions, connecting with the community'**
+  String get yourJourney_community_content;
+
+  /// No description provided for @yourJourney_community_date.
+  ///
+  /// In en, this message translates to:
+  /// **'4 classes remaining'**
+  String get yourJourney_community_date;
+
+  /// No description provided for @yourJourney_your_progress.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Progress'**
+  String get yourJourney_your_progress;
+
+  /// No description provided for @yourJourney_progress_count.
+  ///
+  /// In en, this message translates to:
+  /// **'12 of 16 classes'**
+  String get yourJourney_progress_count;
+
+  /// No description provided for @yourJourney_points.
+  ///
+  /// In en, this message translates to:
+  /// **'+50 pts'**
+  String get yourJourney_points;
+
+  /// No description provided for @achievement_your_achievements.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Achievements'**
+  String get achievement_your_achievements;
+
+  /// No description provided for @achievement_content.
+  ///
+  /// In en, this message translates to:
+  /// **'Building your practice journey'**
+  String get achievement_content;
+
+  /// No description provided for @achievement_consistency_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Consistency Flow'**
+  String get achievement_consistency_title;
+
+  /// No description provided for @achievement_consistency_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'12 days in a row'**
+  String get achievement_consistency_subtitle;
+
+  /// No description provided for @achievement_foundation_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Foundation Builder'**
+  String get achievement_foundation_title;
+
+  /// No description provided for @achievement_foundation_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed Classes 12 days in a row'**
+  String get achievement_foundation_subtitle;
+
+  /// No description provided for @achievement_monthly_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly Dedication'**
+  String get achievement_monthly_title;
+
+  /// No description provided for @achievement_monthly_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'12 / 16 classes'**
+  String get achievement_monthly_subtitle;
+
+  /// No description provided for @achievement_view_all_button.
+  ///
+  /// In en, this message translates to:
+  /// **'View All Achievements'**
+  String get achievement_view_all_button;
+
+  /// No description provided for @edit_goal_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Your Goal'**
+  String get edit_goal_title;
+
+  /// No description provided for @edit_goal_current_goal.
+  ///
+  /// In en, this message translates to:
+  /// **'Current Goal'**
+  String get edit_goal_current_goal;
+
+  /// No description provided for @edit_goal_intermediate_level.
+  ///
+  /// In en, this message translates to:
+  /// **'Intermediate Level'**
+  String get edit_goal_intermediate_level;
+
+  /// No description provided for @edit_goal_choose_focus.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose Your Focus'**
+  String get edit_goal_choose_focus;
+
+  /// No description provided for @edit_goal_save_changes.
+  ///
+  /// In en, this message translates to:
+  /// **'Save Changes'**
+  String get edit_goal_save_changes;
+
+  /// No description provided for @edit_goal_tip_label.
+  ///
+  /// In en, this message translates to:
+  /// **'Tip: '**
+  String get edit_goal_tip_label;
+
+  /// No description provided for @edit_goal_tip_content.
+  ///
+  /// In en, this message translates to:
+  /// **'Your goal personalizes your progress tracking. You can change it anytime to match your evolving fitness journey.'**
+  String get edit_goal_tip_content;
+
+  /// No description provided for @edit_goal_tap_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap the edit button to change your goal anytime'**
+  String get edit_goal_tap_hint;
+
+  /// No description provided for @goal_progress_title.
+  ///
+  /// In en, this message translates to:
+  /// **'January Goal Progress'**
+  String get goal_progress_title;
+
+  /// No description provided for @goal_progress_percentage.
+  ///
+  /// In en, this message translates to:
+  /// **'75%'**
+  String get goal_progress_percentage;
+
+  /// No description provided for @goal_progress_complete.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete'**
+  String get goal_progress_complete;
+
+  /// No description provided for @goal_progress_sessions.
+  ///
+  /// In en, this message translates to:
+  /// **'12 of 16 mindful sessions'**
+  String get goal_progress_sessions;
+
+  /// No description provided for @goal_progress_remaining.
+  ///
+  /// In en, this message translates to:
+  /// **'4 more to reach your goal'**
+  String get goal_progress_remaining;
+
+  /// No description provided for @progress_tab_overview.
+  ///
+  /// In en, this message translates to:
+  /// **'Overview'**
+  String get progress_tab_overview;
+
+  /// No description provided for @progress_tab_history.
+  ///
+  /// In en, this message translates to:
+  /// **'History'**
+  String get progress_tab_history;
+
+  /// No description provided for @progress_tab_achievements.
+  ///
+  /// In en, this message translates to:
+  /// **'Achievements'**
+  String get progress_tab_achievements;
+
+  /// No description provided for @weekly_activity_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Weekly Activity'**
+  String get weekly_activity_title;
+
+  /// No description provided for @weekly_activity_minutes.
+  ///
+  /// In en, this message translates to:
+  /// **'%sm'**
+  String get weekly_activity_minutes;
+
+  /// No description provided for @weekly_activity_mindful_movement.
+  ///
+  /// In en, this message translates to:
+  /// **'Mindful Movement: '**
+  String get weekly_activity_mindful_movement;
+
+  /// No description provided for @weekly_activity_summary.
+  ///
+  /// In en, this message translates to:
+  /// **'280 minutes • 6 sessions'**
+  String get weekly_activity_summary;
+
+  /// No description provided for @weekly_day_monday.
+  ///
+  /// In en, this message translates to:
+  /// **'M'**
+  String get weekly_day_monday;
+
+  /// No description provided for @weekly_day_tuesday.
+  ///
+  /// In en, this message translates to:
+  /// **'T'**
+  String get weekly_day_tuesday;
+
+  /// No description provided for @weekly_day_wednesday.
+  ///
+  /// In en, this message translates to:
+  /// **'W'**
+  String get weekly_day_wednesday;
+
+  /// No description provided for @weekly_day_thursday.
+  ///
+  /// In en, this message translates to:
+  /// **'T'**
+  String get weekly_day_thursday;
+
+  /// No description provided for @weekly_day_friday.
+  ///
+  /// In en, this message translates to:
+  /// **'F'**
+  String get weekly_day_friday;
+
+  /// No description provided for @weekly_day_saturday.
+  ///
+  /// In en, this message translates to:
+  /// **'S'**
+  String get weekly_day_saturday;
+
+  /// No description provided for @weekly_day_sunday.
+  ///
+  /// In en, this message translates to:
+  /// **'S'**
+  String get weekly_day_sunday;
+
+  /// No description provided for @mind_practice_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Mindful Practice'**
+  String get mind_practice_title;
+
+  /// No description provided for @mind_practice_mindful_movement.
+  ///
+  /// In en, this message translates to:
+  /// **'Mindful Movement'**
+  String get mind_practice_mindful_movement;
+
+  /// No description provided for @mind_practice_morning_sessions.
+  ///
+  /// In en, this message translates to:
+  /// **'Morning Sessions'**
+  String get mind_practice_morning_sessions;
+
+  /// No description provided for @mind_practice_flow_instructors.
+  ///
+  /// In en, this message translates to:
+  /// **'Flow Instructors'**
+  String get mind_practice_flow_instructors;
+
+  /// No description provided for @mind_practice_inner_peace.
+  ///
+  /// In en, this message translates to:
+  /// **'Inner Peace'**
+  String get mind_practice_inner_peace;
+
+  /// No description provided for @mind_practice_mindful_value.
+  ///
+  /// In en, this message translates to:
+  /// **'8.5 hr'**
+  String get mind_practice_mindful_value;
+
+  /// No description provided for @mind_practice_morning_value.
+  ///
+  /// In en, this message translates to:
+  /// **'5'**
+  String get mind_practice_morning_value;
+
+  /// No description provided for @mind_practice_instructors_value.
+  ///
+  /// In en, this message translates to:
+  /// **'4'**
+  String get mind_practice_instructors_value;
+
+  /// No description provided for @mind_practice_peace_value.
+  ///
+  /// In en, this message translates to:
+  /// **'+25%'**
+  String get mind_practice_peace_value;
+
+  /// No description provided for @session_history_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Session History'**
+  String get session_history_title;
+
+  /// No description provided for @session_history_classes.
+  ///
+  /// In en, this message translates to:
+  /// **'Classes'**
+  String get session_history_classes;
+
+  /// No description provided for @session_history_total_time.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Time'**
+  String get session_history_total_time;
+
+  /// No description provided for @session_history_points.
+  ///
+  /// In en, this message translates to:
+  /// **'Points'**
+  String get session_history_points;
+
+  /// No description provided for @session_history_all_time.
+  ///
+  /// In en, this message translates to:
+  /// **'All Time History'**
+  String get session_history_all_time;
+
+  /// No description provided for @session_history_this_month.
+  ///
+  /// In en, this message translates to:
+  /// **'January 2026'**
+  String get session_history_this_month;
+
+  /// No description provided for @session_history_last_30_days.
+  ///
+  /// In en, this message translates to:
+  /// **'Last 30 Days'**
+  String get session_history_last_30_days;
+
+  /// No description provided for @session_history_classes_value.
+  ///
+  /// In en, this message translates to:
+  /// **'42'**
+  String get session_history_classes_value;
+
+  /// No description provided for @session_history_time_value.
+  ///
+  /// In en, this message translates to:
+  /// **'31h'**
+  String get session_history_time_value;
+
+  /// No description provided for @session_history_points_value.
+  ///
+  /// In en, this message translates to:
+  /// **'1050'**
+  String get session_history_points_value;
+
+  /// No description provided for @session_history_this_month_txt.
+  ///
+  /// In en, this message translates to:
+  /// **'This Month'**
+  String get session_history_this_month_txt;
+
+  /// No description provided for @session_card_class_name.
+  ///
+  /// In en, this message translates to:
+  /// **'Core Strength Flow'**
+  String get session_card_class_name;
+
+  /// No description provided for @session_card_instructor.
+  ///
+  /// In en, this message translates to:
+  /// **'with Sarah Chen'**
+  String get session_card_instructor;
+
+  /// No description provided for @session_card_status_completed.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed'**
+  String get session_card_status_completed;
+
+  /// No description provided for @session_card_today.
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get session_card_today;
+
+  /// No description provided for @session_card_duration.
+  ///
+  /// In en, this message translates to:
+  /// **'45 Min'**
+  String get session_card_duration;
+
+  /// No description provided for @session_card_points.
+  ///
+  /// In en, this message translates to:
+  /// **'+25 pts'**
+  String get session_card_points;
+
+  /// No description provided for @session_history_view_full.
+  ///
+  /// In en, this message translates to:
+  /// **'View Full History'**
+  String get session_history_view_full;
+
+  /// No description provided for @progress_tracking_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Progress & Tracking'**
+  String get progress_tracking_title;
+
+  /// No description provided for @february_streak.
+  ///
+  /// In en, this message translates to:
+  /// **'February Streak'**
+  String get february_streak;
+
+  /// No description provided for @studio_legend.
+  ///
+  /// In en, this message translates to:
+  /// **'Studio Legend'**
+  String get studio_legend;
+
+  /// No description provided for @first_step.
+  ///
+  /// In en, this message translates to:
+  /// **'First Step'**
+  String get first_step;
+
+  /// No description provided for @early_bird.
+  ///
+  /// In en, this message translates to:
+  /// **'Early Bird'**
+  String get early_bird;
+
+  /// No description provided for @lotus_blossom.
+  ///
+  /// In en, this message translates to:
+  /// **'Lotus Blossom'**
+  String get lotus_blossom;
+
+  /// No description provided for @core_strength.
+  ///
+  /// In en, this message translates to:
+  /// **'Core Strength'**
+  String get core_strength;
+
+  /// No description provided for @week_warrior.
+  ///
+  /// In en, this message translates to:
+  /// **'Week Warrior'**
+  String get week_warrior;
+
+  /// No description provided for @balance_master.
+  ///
+  /// In en, this message translates to:
+  /// **'Balance Master'**
+  String get balance_master;
+
+  /// No description provided for @earned.
+  ///
+  /// In en, this message translates to:
+  /// **'Earned'**
+  String get earned;
+
+  /// No description provided for @locked.
+  ///
+  /// In en, this message translates to:
+  /// **'Locked'**
+  String get locked;
+
+  /// No description provided for @badge_complete_classes.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete {count} classes in {month}'**
+  String badge_complete_classes(Object count, Object month);
+
+  /// No description provided for @badge_earned_on.
+  ///
+  /// In en, this message translates to:
+  /// **'Earned on {date}'**
+  String badge_earned_on(Object date);
+
+  /// No description provided for @share_badge.
+  ///
+  /// In en, this message translates to:
+  /// **'Share This Badge'**
+  String get share_badge;
+
+  /// No description provided for @badge_bronze.
+  ///
+  /// In en, this message translates to:
+  /// **'Bronze'**
+  String get badge_bronze;
+
+  /// No description provided for @badge_silver.
+  ///
+  /// In en, this message translates to:
+  /// **'Silver'**
+  String get badge_silver;
+
+  /// No description provided for @badge_gold.
+  ///
+  /// In en, this message translates to:
+  /// **'Gold'**
+  String get badge_gold;
+
+  /// No description provided for @badge_collection.
+  ///
+  /// In en, this message translates to:
+  /// **'Badge Collection'**
+  String get badge_collection;
+
+  /// No description provided for @challenge_detail.
+  ///
+  /// In en, this message translates to:
+  /// **'Challenge Detail'**
+  String get challenge_detail;
+
+  /// No description provided for @twenty_classes_month.
+  ///
+  /// In en, this message translates to:
+  /// **'20 Classes This Month'**
+  String get twenty_classes_month;
+
+  /// No description provided for @complete_classes_feb.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete 20 classes in February'**
+  String get complete_classes_feb;
+
+  /// No description provided for @your_progress.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Progress'**
+  String get your_progress;
+
+  /// No description provided for @leaderboard.
+  ///
+  /// In en, this message translates to:
+  /// **'Leaderboard'**
+  String get leaderboard;
+
+  /// No description provided for @you.
+  ///
+  /// In en, this message translates to:
+  /// **'You'**
+  String get you;
+
+  /// No description provided for @rewards.
+  ///
+  /// In en, this message translates to:
+  /// **'Rewards'**
+  String get rewards;
+
+  /// No description provided for @classes_completed.
+  ///
+  /// In en, this message translates to:
+  /// **'classes completed'**
+  String get classes_completed;
+
+  /// No description provided for @percent_complete.
+  ///
+  /// In en, this message translates to:
+  /// **'{percent}% complete'**
+  String percent_complete(Object percent);
+
+  /// No description provided for @more_classes_to_go.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} more classes to go'**
+  String more_classes_to_go(Object count);
+
+  /// No description provided for @rank_number.
+  ///
+  /// In en, this message translates to:
+  /// **'Rank #{rank}'**
+  String rank_number(Object rank);
+
+  /// No description provided for @days_left.
+  ///
+  /// In en, this message translates to:
+  /// **'{days} days left'**
+  String days_left(Object days);
+
+  /// No description provided for @points_short.
+  ///
+  /// In en, this message translates to:
+  /// **'{points} pts'**
+  String points_short(int points);
+
+  /// No description provided for @points.
+  ///
+  /// In en, this message translates to:
+  /// **'{points} pts'**
+  String points(Object points);
+
+  /// No description provided for @benefit_gold_badge.
+  ///
+  /// In en, this message translates to:
+  /// **'Gold Badge'**
+  String get benefit_gold_badge;
+
+  /// No description provided for @benefit_feb_champion.
+  ///
+  /// In en, this message translates to:
+  /// **'February Champion'**
+  String get benefit_feb_champion;
+
+  /// No description provided for @benefit_bonus_points.
+  ///
+  /// In en, this message translates to:
+  /// **'{points} Bonus Points'**
+  String benefit_bonus_points(Object points);
+
+  /// No description provided for @benefit_redeem_rewards.
+  ///
+  /// In en, this message translates to:
+  /// **'Redeem for rewards'**
+  String get benefit_redeem_rewards;
+
+  /// No description provided for @benefit_discount.
+  ///
+  /// In en, this message translates to:
+  /// **'{percent}% Subscription Discount'**
+  String benefit_discount(Object percent);
+
+  /// No description provided for @benefit_next_billing.
+  ///
+  /// In en, this message translates to:
+  /// **'Next month\'s billing'**
+  String get benefit_next_billing;
+
+  /// No description provided for @days_only.
+  ///
+  /// In en, this message translates to:
+  /// **'{days} days'**
+  String days_only(Object days);
+
+  /// No description provided for @people_joined.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} joined'**
+  String people_joined(Object count);
+
+  /// No description provided for @join_challenge.
+  ///
+  /// In en, this message translates to:
+  /// **'Join Challenge'**
+  String get join_challenge;
+
+  /// No description provided for @core_strength_challenge.
+  ///
+  /// In en, this message translates to:
+  /// **'Core Strength Challenge'**
+  String get core_strength_challenge;
+
+  /// No description provided for @core_strength_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Master {count} core-focused classes'**
+  String core_strength_subtitle(Object count);
+
+  /// No description provided for @challenge_details.
+  ///
+  /// In en, this message translates to:
+  /// **'Challenge Details'**
+  String get challenge_details;
+
+  /// No description provided for @challenge_description.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete {count} classes before the end of {month}. Track your progress daily and compete with other members!'**
+  String challenge_description(Object count, Object month);
+
+  /// No description provided for @what_you_will_earn.
+  ///
+  /// In en, this message translates to:
+  /// **'What You’ll Earn'**
+  String get what_you_will_earn;
+
+  /// No description provided for @my_active_challenges.
+  ///
+  /// In en, this message translates to:
+  /// **'My Active Challenges'**
+  String get my_active_challenges;
+
+  /// No description provided for @new_challenges.
+  ///
+  /// In en, this message translates to:
+  /// **'New Challenges'**
+  String get new_challenges;
+
+  /// No description provided for @challenge_20_classes_title.
+  ///
+  /// In en, this message translates to:
+  /// **'20 Classes This Month'**
+  String get challenge_20_classes_title;
+
+  /// No description provided for @challenge_20_classes_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed {count} classes in {month}'**
+  String challenge_20_classes_subtitle(Object count, Object month);
+
+  /// No description provided for @challenge_streak_title.
+  ///
+  /// In en, this message translates to:
+  /// **'7-Day Streak Builder'**
+  String get challenge_streak_title;
+
+  /// No description provided for @challenge_streak_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Attend class {days} days in a row'**
+  String challenge_streak_subtitle(Object days);
+
+  /// No description provided for @challenge_core_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Core Strength Challenge'**
+  String get challenge_core_title;
+
+  /// No description provided for @challenge_core_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Master {count} core-focused classes'**
+  String challenge_core_subtitle(Object count);
+
+  /// No description provided for @challenge_spring_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Spring Into Fitness'**
+  String get challenge_spring_title;
+
+  /// No description provided for @challenge_spring_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete {count} classes this season'**
+  String challenge_spring_subtitle(Object count);
+
+  /// No description provided for @redeem_reward.
+  ///
+  /// In en, this message translates to:
+  /// **'Redeem Reward'**
+  String get redeem_reward;
+
+  /// No description provided for @redemption_details.
+  ///
+  /// In en, this message translates to:
+  /// **'Redemption Details'**
+  String get redemption_details;
+
+  /// No description provided for @confirm_redemption.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm Redemption'**
+  String get confirm_redemption;
+
+  /// No description provided for @priority_booking_week.
+  ///
+  /// In en, this message translates to:
+  /// **'Priority Booking - Week'**
+  String get priority_booking_week;
+
+  /// No description provided for @priority_booking_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Book classes 48hrs early for 7 days'**
+  String get priority_booking_desc;
+
+  /// No description provided for @current_balance.
+  ///
+  /// In en, this message translates to:
+  /// **'Current Balance'**
+  String get current_balance;
+
+  /// No description provided for @this_reward.
+  ///
+  /// In en, this message translates to:
+  /// **'This Reward'**
+  String get this_reward;
+
+  /// No description provided for @after_redemption.
+  ///
+  /// In en, this message translates to:
+  /// **'After Redemption'**
+  String get after_redemption;
+
+  /// No description provided for @redeem_warning.
+  ///
+  /// In en, this message translates to:
+  /// **'By redeeming this reward, you agree that points cannot be refunded. Rewards are non-transferable and subject to availability.'**
+  String get redeem_warning;
+
+  /// No description provided for @rewards_history.
+  ///
+  /// In en, this message translates to:
+  /// **'Rewards History'**
+  String get rewards_history;
+
+  /// No description provided for @studio_water_bottle.
+  ///
+  /// In en, this message translates to:
+  /// **'Studio Water Bottle'**
+  String get studio_water_bottle;
+
+  /// No description provided for @free_class_pass.
+  ///
+  /// In en, this message translates to:
+  /// **'Free Class Pass'**
+  String get free_class_pass;
+
+  /// No description provided for @redeemed_on.
+  ///
+  /// In en, this message translates to:
+  /// **'Redeemed {date}'**
+  String redeemed_on(Object date);
+
+  /// No description provided for @your_balance.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Balance'**
+  String get your_balance;
+
+  /// No description provided for @current_tier.
+  ///
+  /// In en, this message translates to:
+  /// **'Current Tier'**
+  String get current_tier;
+
+  /// No description provided for @silver_member.
+  ///
+  /// In en, this message translates to:
+  /// **'Silver Member'**
+  String get silver_member;
+
+  /// No description provided for @progress_to_gold.
+  ///
+  /// In en, this message translates to:
+  /// **'Progress to Gold'**
+  String get progress_to_gold;
+
+  /// No description provided for @points_to_go.
+  ///
+  /// In en, this message translates to:
+  /// **'{points} pts to go'**
+  String points_to_go(Object points);
+
+  /// No description provided for @your_silver_benefits.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Silver Benefits'**
+  String get your_silver_benefits;
+
+  /// No description provided for @showing_rewards_from.
+  ///
+  /// In en, this message translates to:
+  /// **'Showing rewards from'**
+  String get showing_rewards_from;
+
+  /// No description provided for @change.
+  ///
+  /// In en, this message translates to:
+  /// **'Change'**
+  String get change;
+
+  /// No description provided for @available_rewards.
+  ///
+  /// In en, this message translates to:
+  /// **'Available Rewards'**
+  String get available_rewards;
+
+  /// No description provided for @exclusive_workshop.
+  ///
+  /// In en, this message translates to:
+  /// **'Exclusive Workshop Access'**
+  String get exclusive_workshop;
+
+  /// No description provided for @exclusive_workshop_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Advanced techniques masterclass'**
+  String get exclusive_workshop_desc;
+
+  /// No description provided for @guest_pass_3.
+  ///
+  /// In en, this message translates to:
+  /// **'Guest Pass (3-Pack)'**
+  String get guest_pass_3;
+
+  /// No description provided for @guest_pass_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Bring friends to 3 classes'**
+  String get guest_pass_desc;
+
+  /// No description provided for @meditation_session.
+  ///
+  /// In en, this message translates to:
+  /// **'Meditation Session'**
+  String get meditation_session;
+
+  /// No description provided for @meditation_session_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Private 30-min guided meditation'**
+  String get meditation_session_desc;
+
+  /// No description provided for @experiences.
+  ///
+  /// In en, this message translates to:
+  /// **'Experiences'**
+  String get experiences;
+
+  /// No description provided for @discounts.
+  ///
+  /// In en, this message translates to:
+  /// **'Discounts'**
+  String get discounts;
+
+  /// No description provided for @redeem_how_to_collect.
+  ///
+  /// In en, this message translates to:
+  /// **'How to Collect'**
+  String get redeem_how_to_collect;
+
+  /// No description provided for @redeem_collect_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick up your water bottle at the front desk during your next visit. Show this confirmation screen.'**
+  String get redeem_collect_desc;
+
+  /// No description provided for @redeem_valid_for.
+  ///
+  /// In en, this message translates to:
+  /// **'Valid For'**
+  String get redeem_valid_for;
+
+  /// No description provided for @redeem_valid_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'This reward is valid for 30 days from redemption date.'**
+  String get redeem_valid_desc;
+
+  /// No description provided for @redeem_available_at.
+  ///
+  /// In en, this message translates to:
+  /// **'Available At'**
+  String get redeem_available_at;
+
+  /// No description provided for @redeem_available_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'All branch locations'**
+  String get redeem_available_desc;
+
+  /// No description provided for @reward_redeem.
+  ///
+  /// In en, this message translates to:
+  /// **'Redeem'**
+  String get reward_redeem;
+
+  /// No description provided for @collected.
+  ///
+  /// In en, this message translates to:
+  /// **'Collected'**
+  String get collected;
+
+  /// No description provided for @select_branch.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Branch'**
+  String get select_branch;
+
+  /// No description provided for @featurePriorityBookingDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Book classes 24hrs in advance'**
+  String get featurePriorityBookingDesc;
+
+  /// No description provided for @featureMerchDiscount.
+  ///
+  /// In en, this message translates to:
+  /// **'Merch Discount'**
+  String get featureMerchDiscount;
+
+  /// No description provided for @featureMerchDiscountDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'10% off all studio merchandise'**
+  String get featureMerchDiscountDesc;
+
+  /// No description provided for @featureGuestPass.
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly Guest Pass'**
+  String get featureGuestPass;
+
+  /// No description provided for @featureGuestPassDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Bring a friend once per month'**
+  String get featureGuestPassDesc;
+
+  /// No description provided for @viewAllTiers.
+  ///
+  /// In en, this message translates to:
+  /// **'View All Tiers'**
+  String get viewAllTiers;
 }
 
 class _AppLocalizationsDelegate

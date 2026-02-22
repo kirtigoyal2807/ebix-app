@@ -162,83 +162,7 @@ class InvoiceDetailsCard extends StatelessWidget {
   }
 }
 
-// class ReceiptClipper extends CustomClipper<Path> {
-//   @override
-//   Path getClip(Size size) {
-//     const double topRadius = 12;
-//
-//     const double cutRadius = 12; // smaller cuts
-//     const int cutCount = 9; // number of cuts
-//     const double horizontalPadding = 20; // space at start & end
-//
-//     final path = Path();
-//
-//     // ---- Top Left Rounded ----
-//     path.moveTo(0, topRadius);
-//     path.quadraticBezierTo(0, 0, topRadius, 0);
-//
-//     // ---- Top Line ----
-//     path.lineTo(size.width - topRadius, 0);
-//
-//     // ---- Top Right Rounded ----
-//     path.quadraticBezierTo(size.width, 0, size.width, topRadius);
-//
-//     // ---- Right Side ----
-//     path.lineTo(size.width, size.height - cutRadius);
-//
-//     // ---- Bottom Right Flat Space ----
-//     path.lineTo(size.width - horizontalPadding, size.height - cutRadius);
-//
-//     // ---- Bottom Cuts ----
-//     double availableWidth = size.width - (horizontalPadding * 2);
-//     double sectionWidth = availableWidth / cutCount;
-//
-//     for (int i = cutCount; i > 0; i--) {
-//       double centerX =
-//           horizontalPadding + (sectionWidth * i) - sectionWidth / 2;
-//
-//       path.arcTo(
-//         Rect.fromCircle(
-//           center: Offset(centerX, size.height),
-//           radius: cutRadius,
-//         ),
-//         0,
-//         -3.1416,
-//         false,
-//       );
-//     }
-//
-//     // ---- Bottom Left Flat Space ----
-//     path.lineTo(horizontalPadding, size.height - cutRadius);
-//
-//     // ---- Left Side ----
-//     path.lineTo(0, size.height - cutRadius);
-//
-//     path.close();
-//
-//     return path;
-//   }
-//
-//   @override
-//   bool shouldReclip(CustomClipper<Path> oldClipper) => false;
-// }
 
-// class ReceiptBorderPainter extends CustomPainter {
-//   @override
-//   void paint(Canvas canvas, Size size) {
-//     final path = ReceiptClipper().getClip(size);
-//
-//     final paint = Paint()
-//       ..color = Colors.grey.shade300
-//       ..style = PaintingStyle.stroke
-//       ..strokeWidth = 1;
-//
-//     canvas.drawPath(path, paint);
-//   }
-//
-//   @override
-//   bool shouldRepaint(CustomPainter oldDelegate) => false;
-// }
 
 class ReceiptClipper extends CustomClipper<Path> {
   @override
@@ -323,7 +247,7 @@ class ReceiptBorderPainter extends CustomPainter {
     final path = ReceiptClipper().getClip(size);
 
     final paint = Paint()
-      ..color = Colors.grey.shade300
+      ..color = Colors.transparent
       ..style = PaintingStyle.stroke
       ..strokeWidth = 1.5
       ..strokeJoin = StrokeJoin.round

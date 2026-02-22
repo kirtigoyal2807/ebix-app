@@ -47,7 +47,7 @@ class ClassDetailHeader extends StatelessWidget {
                 context.l10n.powerPilates,
                 style: (context) => AppTextStyles.heading1(
                   context,
-                ).copyWith(fontSize: 24, fontWeight: FontWeight.w500),
+                ).copyWith(fontSize: 24, fontWeight: FontWeight.w500,height: 1.55),
               ),
             ),
             Row(

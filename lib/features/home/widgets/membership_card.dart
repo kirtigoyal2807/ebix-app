@@ -58,8 +58,8 @@ class MembershipCard extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.symmetric(
-              horizontal: AppSpacing.lmd,
-              vertical: AppSpacing.lmd,
+              horizontal: AppSpacing.md,
+              vertical: AppSpacing.md,
             ),
             child: Column(
               children: [
@@ -76,7 +76,7 @@ class MembershipCard extends StatelessWidget {
                         // height: size.height * 0.05,
                       ),
                     ),
-                    const SizedBox(width: AppSpacing.sm),
+                    const SizedBox(width: AppSpacing.base),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -91,6 +91,7 @@ class MembershipCard extends StatelessWidget {
                                     AppTextStyles.heading1(context).copyWith(
                                       color: AppColors.seekBarLight,
                                       fontSize: 16,
+                                      height: 1
                                     ),
                               ),
                               SizedBox(height: AppSpacing.sm),

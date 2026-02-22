@@ -225,7 +225,7 @@ class BookingClassCard extends StatelessWidget {
                                             AppTextStyles.boldBody(
                                               context,
                                             ).copyWith(
-                                              fontSize: 10,
+                                              fontSize: 12,
                                               color: isDark
                                                   ? AppColors
                                                         .upgradeDarkLockBackgroundColor

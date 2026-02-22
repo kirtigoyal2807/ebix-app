@@ -135,7 +135,7 @@ class _PlanSelectionStep extends StatelessWidget {
         'id': 'basic',
         'title': l10n.basicPlanTitle,
         'price': '49',
-        'badge': l10n.starter,
+        'badge': null,
         'isPopular': false,
         'features': [
           l10n.feature8Classes,

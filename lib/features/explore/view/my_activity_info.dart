@@ -7,7 +7,10 @@ import '../../../config/theme/app_text_styles.dart';
 import '../../../core/localization/localization_extension.dart';
 import '../../../widgets/app_text.dart';
 import '../../account/widget/account_info_tile.dart';
+import '../../challenges_reward_flow/challenges/challenges_view.dart';
+import '../../challenges_reward_flow/reward_collection/reward_view.dart';
 import '../../my_booking/my_booking_view.dart';
+import '../../progress_tracking_flow/progress_tracking_view.dart';
 
 class MyActivityInfo extends StatelessWidget {
   const MyActivityInfo({super.key});
@@ -29,6 +32,12 @@ class MyActivityInfo extends StatelessWidget {
         ),
         SizedBox(height: AppSpacing.lmd),
         AccountInfoTile(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => ProgressTrackingView()),
+            );
+          },
           icon: isDark
               ? "assets/images/svg/explore/ic_dark_progress_dashBoard.svg"
               : "assets/images/svg/explore/ic_progress_dashBoard.svg",
@@ -51,6 +60,12 @@ class MyActivityInfo extends StatelessWidget {
         ),
         SizedBox(height: AppSpacing.lmd),
         AccountInfoTile(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => ChallengesView()),
+            );
+          },
           icon: isDark
               ? "assets/images/svg/explore/ic_dark_challenges.svg"
               : "assets/images/svg/explore/ic_challenges.svg",
@@ -59,6 +74,12 @@ class MyActivityInfo extends StatelessWidget {
         ),
         SizedBox(height: AppSpacing.lmd),
         AccountInfoTile(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => RewardView()),
+            );
+          },
           icon: isDark
               ? "assets/images/svg/explore/ic_dark_reward_catelog.svg"
               : "assets/images/svg/explore/ic_reward_catelog.svg",

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pilates_app/config/theme/app_colors.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
@@ -39,7 +40,7 @@ class HomeView extends StatelessWidget {
                 const HomeContentView(),
                 const BookingView(),
                 const ExploreView(),
-                const AccountView()
+                const AccountView(),
               ],
             ),
             bottomNavigationBar: _buildBottomNavBar(
@@ -55,7 +56,10 @@ class HomeView extends StatelessWidget {
   Widget _buildBottomNavBar(BuildContext context, int currentIndex) {
     final size = MediaQuery.sizeOf(context);
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final activeColor = AppColors.splashBackgroundDark;
+    // final activeColor = AppColors.splashBackgroundDark;
+    final activeColor = isDark
+        ? AppColors.languageIconDark
+        : AppColors.languageIcon;
     final inactiveColor = isDark ? Colors.grey : Colors.grey.shade400;
 
     return Container(
@@ -87,7 +91,26 @@ class HomeView extends StatelessWidget {
         iconSize: size.width * 0.06 > 24 ? 24 : size.width * 0.06,
         items: [
           BottomNavigationBarItem(
-            icon: Icon(currentIndex == 0 ? Icons.home_outlined : Icons.home_outlined),
+            icon: Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: AppSpacing.xs,
+                vertical: 3,
+              ),
+              child: SvgPicture.asset(
+                "assets/images/svg/ic_home.svg",
+                color: currentIndex == 0
+                    ? (isDark
+                          ? AppColors.languageIconDark
+                          : AppColors.languageIcon)
+                    : AppColors.darkGreyText,
+                height: 18,
+                width: 16,
+              ),
+            ),
+            // Icon(
+            //   currentIndex == 0 ? Icons.home_outlined : Icons.home_outlined,
+            //
+            // ),
             label: context.l10n.home,
           ),
           BottomNavigationBarItem(
@@ -95,17 +118,36 @@ class HomeView extends StatelessWidget {
               currentIndex == 1
                   ? Icons.self_improvement
                   : Icons.self_improvement,
+              color: currentIndex == 1
+                  ? (isDark
+                        ? AppColors.languageIconDark
+                        : AppColors.languageIcon)
+                  : AppColors.darkGreyText,
             ),
             label: context.l10n.classesNav,
           ),
           BottomNavigationBarItem(
             icon: Icon(
-              currentIndex == 2 ? Icons.manage_search : Icons.manage_search_outlined,
+              currentIndex == 2
+                  ? Icons.manage_search
+                  : Icons.manage_search_outlined,
+              color: currentIndex == 2
+                  ? (isDark
+                        ? AppColors.languageIconDark
+                        : AppColors.languageIcon)
+                  : AppColors.darkGreyText,
             ),
             label: context.l10n.explore,
           ),
           BottomNavigationBarItem(
-            icon: Icon(currentIndex == 3 ? Icons.person : Icons.person_outline),
+            icon: Icon(
+              currentIndex == 3 ? Icons.person : Icons.person_outline,
+              color: currentIndex == 3
+                  ? (isDark
+                        ? AppColors.languageIconDark
+                        : AppColors.languageIcon)
+                  : AppColors.darkGreyText,
+            ),
             label: context.l10n.account,
           ),
         ],
@@ -132,7 +174,7 @@ class HomeContentView extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     HomeHeader(userName: state.userName),
-                    const SizedBox(height: AppSpacing.md),
+                    const SizedBox(height: AppSpacing.lg),
 
                     const SpringChallengeCard(),
                     const SizedBox(height: AppSpacing.lg),
@@ -164,7 +206,7 @@ class HomeContentView extends StatelessWidget {
                     const SizedBox(height: AppSpacing.md),
                     MembershipCard(status: HomeUserStatus.existing),
 
-                    const SizedBox(height: AppSpacing.lmd),
+                    const SizedBox(height: AppSpacing.lg),
 
                     Padding(
                       padding: const EdgeInsets.symmetric(
@@ -222,9 +264,10 @@ class HomeContentView extends StatelessWidget {
                                   color: isDark
                                       ? AppColors.languageTextDark
                                       : AppColors.languageIcon,
-                                  fontSize: size.width * 0.03 > 14
-                                      ? 14
-                                      : size.width * 0.03,
+                                  fontSize: 14,
+                                  // fontSize: size.width * 0.03 > 14
+                                  //     ? 14
+                                  //     : size.width * 0.03,
                                 ),
                           ),
                         ],
@@ -240,7 +283,7 @@ class HomeContentView extends StatelessWidget {
                     const SizedBox(height: AppSpacing.md),
 
                     MembershipCard(status: state.status),
-                    const SizedBox(height: AppSpacing.md),
+                    const SizedBox(height: AppSpacing.lg),
 
                     Padding(
                       padding: const EdgeInsets.symmetric(
@@ -262,7 +305,7 @@ class HomeContentView extends StatelessWidget {
                     ),
                     const SizedBox(height: AppSpacing.md),
                     const FeaturedClassCard(),
-                    const SizedBox(height: AppSpacing.md),
+                    const SizedBox(height: AppSpacing.lg),
                     Padding(
                       padding: const EdgeInsets.symmetric(
                         horizontal: AppSpacing.lg,
@@ -302,7 +345,7 @@ class HomeContentView extends StatelessWidget {
                     ),
                     const SizedBox(height: AppSpacing.md),
                     const ClassTypesSection(),
-                    const SizedBox(height: AppSpacing.md),
+                    const SizedBox(height: AppSpacing.lg),
                     Padding(
                       padding: const EdgeInsets.symmetric(
                         horizontal: AppSpacing.lg,

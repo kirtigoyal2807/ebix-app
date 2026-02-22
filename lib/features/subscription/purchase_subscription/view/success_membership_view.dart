@@ -27,7 +27,7 @@ class SuccessMembershipView extends StatelessWidget {
           ),
           decoration: BoxDecoration(
             gradient: const LinearGradient(
-              begin: Alignment.topRight,
+              begin: Alignment.topCenter,
               end: Alignment.bottomLeft,
               stops: [0.1514, 1.0], // 15.14% → 0.1514, 105.62% clamped to 1.0
               colors: [Color(0xFF3D281A), Color(0xFF9A7E6D)],

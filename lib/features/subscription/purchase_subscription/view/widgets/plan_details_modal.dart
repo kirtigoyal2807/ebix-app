@@ -37,9 +37,11 @@ class PlanDetailsModal extends StatelessWidget {
                   ),
                   decoration: BoxDecoration(
                     color: plan['isPopular'] == true
-                        ? (isDark
-                              ? const Color(0x3BFDC700)
-                              : AppColors.goldStarColor)
+                        ? (
+                        // isDark
+                        //       ? const Color(0x3BFDC700)
+                        //       :
+                        AppColors.goldStarColor)
                         : (isDark
                               ? const Color(0x3BFDC700)
                               : AppColors.goldStarColor),
@@ -51,7 +53,7 @@ class PlanDetailsModal extends StatelessWidget {
                       fontSize: 12,
                       fontWeight: FontWeight.w500,
                       color: (isDark
-                          ? AppColors.upgradeDarkLockBackgroundColor
+                          ? AppColors.blackColor
                           : AppColors.darkText),
                     ),
                   ),

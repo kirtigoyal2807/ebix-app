@@ -64,7 +64,7 @@ class _BookingBodyState extends State<BookingBody> {
                       const SizedBox(height: AppSpacing.lg),
                       const BookingSubscriptionCard(),
                       const SizedBox(height: AppSpacing.lg),
-                      Divider(color: AppColors.buttonBorder, height: 1),
+                      Divider(color: isDark ? AppColors.greyText:AppColors.buttonBorder, height: 1),
                       const SizedBox(height: AppSpacing.lg),
                       BookingClassCard(
                         title: 'Power Pilates',

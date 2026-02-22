@@ -739,8 +739,258 @@
   "generalFitness": "لياقة عامة",
   "generalFitnessDesc": "توازن وصحة شاملة",
 
-  "monthlyTarget": "الهدف الشهري"
+  "monthlyTarget": "الهدف الشهري",
 
+  "pilatesPrimaryFocusTitle":
+  "ما الذي يجعلك تختار البيلاتس؟ اختر هدفك الأساسي",
+  "yourJourney_title": "رحلتك",
+  "yourJourney_achievement_content": "٧ أخرى لاكتشاف مسارك",
+  "yourJourney_achievements_earned": "الإنجازات المحققة",
+  "yourJourney_on_your_path": "في مسارك",
+
+  "yourJourney_consistency_title": "استمرارية التدفق",
+  "yourJourney_consistency_subtitle": "شارة التقدم",
+  "yourJourney_consistency_content": "حضرت الفصول لمدة ١٢ يوماً متتالياً، بناء ممارسة مستدامة",
+  "yourJourney_consistency_date": "تم الحصول عليها في ٢٦ يناير ٢٠٢٦",
+
+  "yourJourney_foundation_title": "بناء الأساس",
+  "yourJourney_foundation_subtitle": "شارة إنجاز",
+  "yourJourney_foundation_content": "وصلت إلى أول ١٠ فصول لك، بناء أساس قوي",
+  "yourJourney_foundation_date": "تم الحصول عليها في ٢٠ يناير ٢٠٢٦",
+
+  "yourJourney_monthly_title": "التفاني الشهري",
+  "yourJourney_monthly_subtitle": "شارة إنجاز",
+  "yourJourney_monthly_content": "أكمل ١٦ فصلاً في شهر واحد",
+  "yourJourney_monthly_date": "٤ فصول متبقية",
+
+  "yourJourney_community_title": "روح المجتمع",
+  "yourJourney_community_subtitle": "شارة خاصة",
+  "yourJourney_community_content": "احضر ١٠ جلسات جماعية، التواصل مع المجتمع",
+  "yourJourney_community_date": "٤ فصول متبقية",
+
+  "yourJourney_your_progress": "تقدمك",
+  "yourJourney_progress_count": "١٢ من ١٦ فصلاً",
+  "yourJourney_points": "٥٠+ نقطة",
+  "achievement_your_achievements": "إنجازاتك",
+  "achievement_content": "بناء رحلتك التدريبية",
+  "achievement_consistency_title": "استمرارية التدفق",
+  "achievement_consistency_subtitle": "١٢ يوماً متتالياً",
+  "achievement_foundation_title": "بناء الأساس",
+  "achievement_foundation_subtitle": "فصول مكتملة ١٢ يوماً متتالياً",
+  "achievement_monthly_title": "التفاني الشهري",
+  "achievement_monthly_subtitle": "١٢ / ١٦ فصل",
+  "achievement_view_all_button": "عرض جميع الإنجازات",
+
+  "edit_goal_title": "تعديل هدفك",
+  "edit_goal_current_goal": "الهدف الحالي",
+  "edit_goal_intermediate_level": "مستوى متوسط",
+  "edit_goal_choose_focus": "اختر تركيزك",
+  "edit_goal_save_changes": "حفظ التغييرات",
+  "edit_goal_tip_label": "نصيحة: ",
+  "edit_goal_tip_content": "هدفك يخصص تتبع تقدمك. يمكنك تغييره في أي وقت ليتناسب مع رحلة لياقتك المتطورة.",
+
+
+  "buildStrength": "بناء القوة",
+  "buildStrengthDesc": "ركز على تمارين بناء العضلات وتقويتها",
+  "findMindfulness": "ابحث عن اليقظة الذهنية",
+  "findMindfulnessDesc": "مارس تمارين تربط العقل بالجسم لتحقيق التوازن النفسي",
+  "improveFlexibility": "تحسين المرونة",
+  "improveFlexibilityDesc": "عزز نطاق حركتك من خلال تمارين التمدد",
+  "generalFitness": "لياقة عامة",
+  "generalFitnessDesc": "نهج متوازن للصحة العامة والعافية",
+
+
+  "monthlyTarget": "الهدف الشهري",
+  "edit_goal_tap_hint": "اضغط على زر التعديل لتغيير هدفك في أي وقت",
+  "goal_progress_title": "تقدم هدف يناير",
+  "goal_progress_percentage": "٧٥٪",
+  "goal_progress_complete": "مكتمل",
+  "goal_progress_sessions": "١٢ من ١٦ جلسة تأمل",
+  "goal_progress_remaining": "٤ جلسات متبقية للوصول إلى هدفك",
+  "progress_tab_overview": "نظرة عامة",
+  "progress_tab_history": "السجل",
+  "progress_tab_achievements": "الإنجازات",
+
+  "weekly_activity_title": "النشاط الأسبوعي",
+  "weekly_activity_minutes": "٪s دقيقة",
+  "weekly_activity_mindful_movement": "الحركة الواعية: ",
+  "weekly_activity_summary": "6 دقيقة • 280 جلسات",
+
+  "weekly_day_monday": "إ",
+  "weekly_day_tuesday": "ث",
+  "weekly_day_wednesday": "أ",
+  "weekly_day_thursday": "خ",
+  "weekly_day_friday": "ج",
+  "weekly_day_saturday": "س",
+  "weekly_day_sunday": "ح",
+
+  "mind_practice_title": "ممارستك الواعية",
+  "mind_practice_mindful_movement": "الحركة الواعية",
+  "mind_practice_morning_sessions": "جلسات الصباح",
+  "mind_practice_flow_instructors": "مدربو التدفق",
+  "mind_practice_inner_peace": "السلام الداخلي",
+
+
+  "mind_practice_mindful_value": "٨.٥ ساعة",
+  "mind_practice_morning_value": "٥",
+  "mind_practice_instructors_value": "٤",
+  "mind_practice_peace_value": "٪٢٥+",
+
+  "session_history_title": "سجل الجلسات",
+  "session_history_classes": "الفصول",
+  "session_history_total_time": "الوقت الإجمالي",
+  "session_history_points": "النقاط",
+  "session_history_all_time": "السجل الكامل",
+  "session_history_this_month": "يناير ٢٠٢٦",
+  "session_history_last_30_days": "آخر ٣٠ يوماً",
+
+
+  "session_history_classes_value": "٤٢",
+  "session_history_time_value": "٣١ ساعة",
+  "session_history_points_value": "١٠٥٠",
+  "session_history_this_month_txt": "هذا الشهر",
+
+  "session_card_class_name": "تدفق القوة الأساسية",
+  "session_card_instructor": "مع سارة تشن",
+  "session_card_status_completed": "مكتمل",
+  "session_card_today": "اليوم",
+  "session_card_duration": "٤٥ دقيقة",
+  "session_card_points": "٢٥+ نقطة",
+  "session_history_view_full": "عرض السجل الكامل",
+  "progress_tracking_title": "التقدم والتتبع",
+  "february_streak": "سلسلة فبراير",
+  "studio_legend": "أسطورة الاستوديو",
+  "first_step": "الخطوة الأولى",
+  "early_bird": "الطائر المبكر",
+  "lotus_blossom": "زهرة اللوتس",
+  "core_strength": "قوة الجذع",
+  "week_warrior": "محارب الأسبوع",
+  "balance_master": "سيد التوازن",
+  "earned": "تم الحصول عليه",
+  "locked": "مقفل",
+  "badge_earned_on": "تم الحصول عليه في {date}",
+  "share_badge": "مشاركة الشارة",
+  "badge_bronze": "برونزي",
+  "badge_silver": "فضي",
+  "badge_gold": "ذهبي",
+  "badge_collection": "مجموعة الشارات",
+  "challenge_detail": "تفاصيل التحدي",
+  "twenty_classes_month": "20 حصة هذا الشهر",
+  "complete_classes_feb": "أكمل 20 حصة في فبراير",
+  "your_progress": "تقدمك",
+  "leaderboard": "لوحة المتصدرين",
+  "you": "أنت",
+  "rewards": "المكافآت",
+  "classes_completed": "حصة مكتملة",
+  "percent_complete": "مكتمل {percent}٪",
+  "more_classes_to_go": "متبقي {count} حصة",
+  "percent_complete": "مكتمل {percent}٪",
+  "rank_number": "الترتيب #{rank}",
+  "days_left": "متبقي {days} يوم",
+  "points_short": "+{points} نقطة",
+  "points": "{points} نقطة",
+  "benefit_gold_badge": "شارة ذهبية",
+  "benefit_feb_champion": "بطل فبراير",
+  "benefit_bonus_points": "{points} نقطة إضافية",
+  "benefit_redeem_rewards": "استبدلها بالمكافآت",
+  "benefit_discount": "خصم {percent}٪ على الاشتراك",
+  "benefit_next_billing": "فاتورة الشهر القادم",
+  "days_only": "{days} يوم",
+  "people_joined": "انضم {count}",
+  "join_challenge": "انضم إلى التحدي",
+  "core_strength_challenge": "تحدي قوة الجذع",
+  "core_strength_subtitle": "أكمل {count} حصة تركز على تمارين الجذع",
+  "challenge_details": "تفاصيل التحدي",
+  "challenge_description": "أكمل {count} حصة قبل نهاية {month}. تابع تقدمك يوميًا وتنافس مع الأعضاء الآخرين!",
+  "what_you_will_earn": "ماذا ستحصل عليه",
+  "my_active_challenges": "تحدياتي النشطة",
+  "new_challenges": "تحديات جديدة",
+
+  "challenge_20_classes_title": "20 حصة هذا الشهر",
+  "challenge_20_classes_subtitle": "أكملت {count} حصة في {month}",
+
+  "challenge_streak_title": "تحدي 7 أيام متتالية",
+  "challenge_streak_subtitle": "احضر حصة لمدة {days} أيام متتالية",
+
+  "challenge_core_title": "تحدي قوة الجذع",
+  "challenge_core_subtitle": "أكمل {count} حصة تركز على تمارين الجذع",
+
+  "challenge_spring_title": "انطلق نحو اللياقة في الربيع",
+  "challenge_spring_subtitle": "أكمل {count} حصة هذا الموسم",
+  "redeem_reward": "استبدال المكافأة",
+  "redemption_details": "تفاصيل الاستبدال",
+  "confirm_redemption": "تأكيد الاستبدال",
+
+  "priority_booking_week": "الحجز المسبق - أسبوع",
+  "priority_booking_desc": "احجز الحصص قبل 48 ساعة لمدة 7 أيام",
+
+  "current_balance": "الرصيد الحالي",
+  "this_reward": "هذه المكافأة",
+  "after_redemption": "بعد الاستبدال",
+
+
+  "redeem_warning": "باستبدال هذه المكافأة، فإنك توافق على أن النقاط غير قابلة للاسترداد. المكافآت غير قابلة للتحويل وتخضع للتوفر.",
+  "rewards_history": "سجل المكافآت",
+
+  "studio_water_bottle": "زجاجة مياه الاستوديو",
+  "free_class_pass": "بطاقة حصة مجانية",
+
+  "redeemed_on": "تم الاستبدال في {date}",
+  "your_balance": "رصيدك",
+  "current_tier": "المستوى الحالي",
+  "silver_member": "عضو فضي",
+  "progress_to_gold": "التقدم نحو المستوى الذهبي",
+  "points_to_go": "متبقي {points} نقطة",
+
+  "your_silver_benefits": "مزايا المستوى الفضي",
+
+  "showing_rewards_from": "عرض المكافآت من",
+  "change": "تغيير",
+
+  "available_rewards": "المكافآت المتاحة",
+
+  "priority_booking_week": "حجز أولوية - أسبوع",
+  "priority_booking_desc": "احجز الحصص قبل 48 ساعة لمدة 7 أيام",
+
+  "exclusive_workshop": "دخول ورشة حصرية",
+  "exclusive_workshop_desc": "ماستر كلاس تقنيات متقدمة",
+
+  "guest_pass_3": "بطاقة ضيف (3 حصص)",
+  "guest_pass_desc": "أحضر أصدقاءك إلى 3 حصص",
+
+  "meditation_session": "جلسة تأمل",
+  "meditation_session_desc": "جلسة تأمل خاصة لمدة 30 دقيقة",
+  "experiences": "التجارب",
+  "discounts": "الخصومات",
+  "redeem_how_to_collect": "كيفية الاستلام",
+  "redeem_collect_desc": "استلم زجاجة الماء من مكتب الاستقبال خلال زيارتك القادمة. اعرض شاشة التأكيد هذه.",
+
+  "redeem_valid_for": "مدة الصلاحية",
+  "redeem_valid_desc": "هذه المكافأة صالحة لمدة 30 يومًا من تاريخ الاسترداد.",
+
+  "redeem_available_at": "متوفر في",
+  "redeem_available_desc": "جميع الفروع",
+  "reward_redeem": "استرداد",
+  "points_short": "{points} نقطة",
+  "@points_short": {
+    "placeholders": {
+      "points": {
+        "type": "int"
+      }
+    }
+  },
+  "collected": "تم الاستلام",
+  "select_branch": "اختر الفرع",
+
+  "featurePriorityBookingDesc": "احجز الحصص قبل 24 ساعة",
+
+  "featureMerchDiscount": "خصم على المنتجات",
+  "featureMerchDiscountDesc": "خصم 10٪ على جميع منتجات الاستوديو",
+
+  "featureGuestPass": "بطاقة ضيف شهرية",
+  "featureGuestPassDesc": "أحضر صديقًا مرة واحدة شهريًا",
+
+  "viewAllTiers": "عرض جميع المستويات"
 }
 
 
