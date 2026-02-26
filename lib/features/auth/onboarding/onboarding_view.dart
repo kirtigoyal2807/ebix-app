@@ -112,9 +112,10 @@ class OnboardingView extends StatelessWidget {
                               horizontal: AppSpacing.base,
                             ),
                             child: SvgPicture.asset(
-                              isDark
-                                  ? 'assets/images/svg/ic_onboarding_dark.svg'
-                                  : 'assets/images/svg/ic_new_on_boarding.svg',
+                              // isDark
+                              //     ? 'assets/images/svg/ic_onboarding_dark.svg'
+                              //     :
+                              'assets/images/svg/ic_new_on_boarding.svg',
                               height: screenHeight * 0.32,
                               fit: BoxFit.contain,
                             ),
@@ -151,6 +152,7 @@ class OnboardingView extends StatelessWidget {
                               context.l10n.onboarding_desc_2,
                               style: AppTextStyles.bodyText,
                               textAlign: TextAlign.center,
+                              maxLines: 3,
                             ),
                           ),
 

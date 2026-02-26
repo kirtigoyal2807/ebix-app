@@ -67,8 +67,8 @@ class ScoreCard extends StatelessWidget {
               AppText(
                 name,
                 style: (context) => AppTextStyles.textField(
-                  context,
-                ).copyWith(fontWeight: FontWeight.w500, height: 1.2),
+                  context,fontWeight: FontWeight.w500,
+                ).copyWith( height: 1.2),
               ),
               SizedBox(height: AppSpacing.xs),
               AppText(

@@ -202,7 +202,7 @@ class BookingSuccessScreen extends StatelessWidget {
             children: [
               AppText(
                 l10n.yourPosition,
-                style: (context) => AppTextStyles.captionText(context).copyWith(
+                style: (context) => AppTextStyles.captionText(context,fontWeight: FontWeight.w500).copyWith(
                   color: isDark ? AppColors.darkGreyText : AppColors.lightGrey,
                 ),
               ),
@@ -270,8 +270,9 @@ class BookingSuccessScreen extends StatelessWidget {
           const SizedBox(height: AppSpacing.lmd),
 
           _buildClassDetailRow(
-            label: l10n.classFee,
+            label: l10n.classTxt,
             value: 'Core Strength & Balance',
+            isDark: isDark
           ),
 
           const SizedBox(height: AppSpacing.sm),
@@ -279,6 +280,7 @@ class BookingSuccessScreen extends StatelessWidget {
           _buildClassDetailRow(
             label: l10n.instructor,
             value: 'Fatima Al-Hashmi',
+              isDark: isDark
           ),
 
           const SizedBox(height: AppSpacing.sm),
@@ -286,11 +288,12 @@ class BookingSuccessScreen extends StatelessWidget {
           _buildClassDetailRow(
             label: l10n.date,
             value: 'Today, January 21, 2026',
+              isDark: isDark
           ),
 
           const SizedBox(height: AppSpacing.sm),
 
-          _buildClassDetailRow(label: l10n.time, value: '6:00 PM - 7:00 PM'),
+          _buildClassDetailRow(label: l10n.time, value: '6:00 PM - 7:00 PM',  isDark: isDark),
 
           const SizedBox(height: AppSpacing.sm),
 
@@ -299,6 +302,7 @@ class BookingSuccessScreen extends StatelessWidget {
             value: 'Downtown Studio, 123 Main Street, Suite 200',
             isMultiLine: true,
             isBorder: false,
+              isDark: isDark
           ),
         ],
       ),
@@ -310,12 +314,13 @@ class BookingSuccessScreen extends StatelessWidget {
     required String value,
     bool isMultiLine = false,
     bool isBorder = true,
+    required bool isDark,
   }) {
     return SizedBox(
       width: double.infinity,
       child: CustomPaint(
         painter: isBorder
-            ? DashedUnderlinePainter(color: AppColors.buttonBorder)
+            ? DashedUnderlinePainter(color: isDark  ?AppColors.greyText : AppColors.buttonBorder)
             : null,
         child: Padding(
           padding: EdgeInsets.only(bottom: isBorder ? AppSpacing.sm : 0),
@@ -327,7 +332,7 @@ class BookingSuccessScreen extends StatelessWidget {
               SizedBox(
                 width: 100,
                 child: AppText(
-                  label,
+                  "$label:",
                   style: (context) => AppTextStyles.textFieldHeading(context),
                 ),
               ),

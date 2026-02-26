@@ -26,7 +26,7 @@ class BookingFilterChips extends StatelessWidget {
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      barrierColor:     AppColors.bottomSheetShadow,
+      barrierColor: AppColors.bottomSheetShadow,
       builder: (_) => FilterSelectionBottomSheet(
         title: title,
         options: options,
@@ -234,14 +234,17 @@ class _FilterChip extends StatelessWidget {
           children: [
             AppText(
               label,
-              style: (context) => AppTextStyles.bodyTextSmall(context).copyWith(
-                color: isSelected
-                    ? (isDark
-                          ? AppColors.languageTextDark
-                          : AppColors.languageIcon)
-                    : (isDark ? AppColors.lightText : AppColors.darkText),
-                fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
-              ),
+              style: (context) =>
+                  AppTextStyles.bodyTextSmall(
+                    context,
+                    fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
+                  ).copyWith(
+                    color: isSelected
+                        ? (isDark
+                              ? AppColors.languageTextDark
+                              : AppColors.languageIcon)
+                        : (isDark ? AppColors.lightText : AppColors.darkText),
+                  ),
             ),
             const SizedBox(width: AppSpacing.xs),
             if (isSelected)

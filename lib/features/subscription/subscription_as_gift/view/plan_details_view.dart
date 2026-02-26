@@ -17,6 +17,7 @@ class PlanDetailsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
       appBar: AppAppBar(
         title: l10n.planDetails,
@@ -52,7 +53,7 @@ class PlanDetailsView extends StatelessWidget {
                   );
                 },
 
-                buttonColor: AppColors.primaryBrown,
+                buttonColor:isDark ?AppColors.primary: AppColors.primaryBrown,
                 expanded: true,
               ),
             ),

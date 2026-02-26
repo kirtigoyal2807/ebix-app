@@ -34,11 +34,15 @@ class ClassReviewsSection extends StatelessWidget {
               ),
               AppText(
                 context.l10n.seeAll,
-                style: (context) => AppTextStyles.captionText(context).copyWith(
+                style: (context) => AppTextStyles.captionText(context,fontWeight: FontWeight.w500).copyWith(
                   color: isDark
                       ? AppColors.languageTextDark
                       : AppColors.languageIcon,
-                  fontSize: size.width * 0.03 > 14 ? 14 : size.width * 0.03,
+                  fontSize:
+                  // size.width * 0.03 >
+                  //     14 ?
+                  14
+                      // : size.width * 0.03,
                 ),
               ),
             ],

@@ -137,16 +137,19 @@ class BookClassConfirmView extends StatelessWidget {
                 _buildDetailRow(
                   icon: Icons.location_on_outlined,
                   text: 'Downtown Studio',
+                  isDark: isDark
                 ),
                 const SizedBox(height: AppSpacing.sm),
                 _buildDetailRow(
                   icon: Icons.watch_later_outlined,
                   text: 'Today, 6:00 PM',
+                    isDark: isDark
                 ),
                 const SizedBox(height: AppSpacing.sm),
                 _buildDetailRow(
                   icon: Icons.person_outline,
                   text: 'Aisha Sherin',
+                    isDark: isDark
                 ),
               ],
             ),
@@ -176,10 +179,10 @@ class BookClassConfirmView extends StatelessWidget {
     );
   }
 
-  Widget _buildDetailRow({required IconData icon, required String text}) {
+  Widget _buildDetailRow({required IconData icon, required String text,required bool isDark}) {
     return Row(
       children: [
-        Icon(icon, color: AppColors.languageIcon, size: 16),
+        Icon(icon, color: isDark?  AppColors.languageIconDark:AppColors.languageIcon, size: 16),
         const SizedBox(width: 4),
         AppText(text, style: (context) => AppTextStyles.bodyTextSmall(context)),
       ],

@@ -55,7 +55,7 @@ class RedemptionDetails extends StatelessWidget {
       children: [
         Icon(
           Icons.check_circle_outline_rounded,
-          size: 20,
+          size: 24,
           color:isDark ? AppColors.successBorderDark: AppColors.successColor,
         ),
         SizedBox(width: AppSpacing.sm),
@@ -68,12 +68,14 @@ class RedemptionDetails extends StatelessWidget {
                 style: (context) => AppTextStyles.body(context).copyWith(
                   color: isDark ? AppColors.lightText : AppColors.darkText,
                 ),
+
               ),
               SizedBox(height: AppSpacing.xs),
               AppText(
                 subtitle,
                 style: (context) =>
                     AppTextStyles.bodyLightText(context).copyWith(fontSize: 12,height: 1.40),
+                maxLines: 3,
               ),
             ],
           ),

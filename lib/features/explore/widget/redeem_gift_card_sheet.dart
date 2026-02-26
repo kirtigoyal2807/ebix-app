@@ -24,68 +24,81 @@ class RedeemGiftCardSheet extends StatelessWidget {
       borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
       child: SafeArea(
         top: false,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: AppSpacing.lg,
-            vertical: AppSpacing.lg,
+        child: AnimatedPadding(
+          duration: const Duration(milliseconds: 150),
+          curve: Curves.easeOut,
+          padding: EdgeInsets.only(
+            bottom: MediaQuery.of(context).viewInsets.bottom,
           ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: AppSpacing.lg,
+                vertical: AppSpacing.lg,
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Expanded(
-                    child: AppText(
-                      context.l10n.redeemGiftCard,
-                      style: AppTextStyles.bottomSheetTitle,
+                  Row(
+                    children: [
+                      Expanded(
+                        child: AppText(
+                          context.l10n.redeemGiftCard,
+                          style: AppTextStyles.bottomSheetTitle,
+                        ),
+                      ),
+                      IconButton(
+                        icon: Icon(
+                          Icons.close,
+                          color: isDark
+                              ? AppColors.whiteColor
+                              : AppColors.blackColor,
+                        ),
+                        onPressed: () => Navigator.of(context).pop(),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: AppSpacing.xl),
+                  Center(
+                    child: ClipOval(
+                      child: SizedBox(
+                        height: 192,
+                        width: 192,
+                        child: SvgPicture.asset(
+                          isDark
+                              ? "assets/images/svg/ic_dark_gift_card.svg"
+                              : "assets/images/svg/ic_gift_card.svg",
+                          fit: BoxFit.cover, // important
+                        ),
+                      ),
                     ),
                   ),
-                  IconButton(
-                    icon: Icon(
-                      Icons.close,
-                      color: isDark
-                          ? AppColors.whiteColor
-                          : AppColors.blackColor,
-                    ),
-                    onPressed: () => Navigator.of(context).pop(),
+
+                  const SizedBox(height: AppSpacing.lg),
+                  AppTextField(
+                    hint: context.l10n.enterGiftCardCode,
+                    label: context.l10n.enterRedeemCode,
+                    // errorText: context.l10n.invalidGiftCardCode,
+                  ),
+                  const SizedBox(height: AppSpacing.xl),
+                  AppButton(
+                    label: context.l10n.redeemGift,
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                      showModalBottomSheet(
+                        context: context,
+                        isScrollControlled: true,
+                        backgroundColor: Colors.transparent,
+                        barrierColor: AppColors.bottomSheetShadow,
+                        builder: (_) => GiftRedeemSuccessSheet(),
+                      );
+                    },
+                    variant: AppButtonVariant.primary,
                   ),
                 ],
               ),
-              const SizedBox(height: AppSpacing.xl),
-              Center(
-                child: SvgPicture.asset(
-                  isDark?
-                      "assets/images/svg/ic_dark_gift_card.svg"
-                      :
-                  "assets/images/svg/ic_gift_card.svg",
-                  height: 192,
-                  width: 192,
-                ),
-              ),
-
-              const SizedBox(height: AppSpacing.lg),
-              AppTextField(
-                hint: context.l10n.enterGiftCardCode,
-                label: context.l10n.enterRedeemCode,
-                errorText: context.l10n.invalidGiftCardCode,
-              ),
-              const SizedBox(height: AppSpacing.xl),
-              AppButton(
-                label: context.l10n.redeemGift,
-                onPressed: () {
-                  Navigator.of(context).pop();
-                  showModalBottomSheet(
-                    context: context,
-                    isScrollControlled: true,
-                    backgroundColor: Colors.transparent,
-                    barrierColor: AppColors.bottomSheetShadow,
-                    builder: (_) => GiftRedeemSuccessSheet(),
-                  );
-                },
-                variant: AppButtonVariant.primary,
-              ),
-            ],
+            ),
           ),
         ),
       ),

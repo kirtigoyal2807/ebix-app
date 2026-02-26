@@ -404,7 +404,7 @@ class PauseSubscriptionView extends StatelessWidget {
             Icon(
               Icons.calendar_today_outlined,
               color: AppColors.darkGreyText,
-              size: 24,
+              size: 20,
             ),
           ],
         ),

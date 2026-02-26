@@ -37,23 +37,26 @@ class GoalProgress extends StatelessWidget {
             child: Stack(
               alignment: Alignment.center,
               children: [
-                CircularProgressIndicator(
-                  value: 0.75,
-                  backgroundColor: isDark
-                      ? AppColors.progressBGColor
-                      : AppColors.darkGreyBorder,
+                Transform.rotate(
+                  angle: 3.1416,
+                  child: CircularProgressIndicator(
+                    value: 0.75,
+                    backgroundColor: isDark
+                        ? AppColors.progressBGColor
+                        : AppColors.darkGreyBorder,
 
-                  constraints: BoxConstraints(
-                    minHeight: 167,
-                    minWidth: 167,
-                    maxHeight: 167,
-                    maxWidth: 167,
-                  ),
-                  strokeWidth: 16,
-                  valueColor: AlwaysStoppedAnimation(
-                    isDark
-                        ? AppColors.languageIconDark
-                        : AppColors.languageIcon, // your progress color
+                    constraints: BoxConstraints(
+                      minHeight: 167,
+                      minWidth: 167,
+                      maxHeight: 167,
+                      maxWidth: 167,
+                    ),
+                    strokeWidth: 16,
+                    valueColor: AlwaysStoppedAnimation(
+                      isDark
+                          ? AppColors.languageIconDark
+                          : AppColors.languageIcon, // your progress color
+                    ),
                   ),
                 ),
 

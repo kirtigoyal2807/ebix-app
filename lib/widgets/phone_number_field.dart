@@ -86,7 +86,8 @@ class _PhoneNumberFieldState extends State<PhoneNumberField> {
                 onChanged: (CountryCode countryCode) {
                   widget.onCountryChanged?.call(countryCode);
                 },
-                initialSelection: widget.countryCode.replaceFirst('+', ''),
+                initialSelection:"+966",
+                // widget.countryCode.replaceFirst('+', ''),
                 showCountryOnly: false,
                 showOnlyCountryWhenClosed: false,
                 alignLeft: false,

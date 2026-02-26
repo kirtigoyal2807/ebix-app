@@ -59,7 +59,7 @@ class BranchNotInPlanSheet extends StatelessWidget {
             child: Column(
               children: [
                 _PlanRow(
-                  label: context.l10n.yourPlan,
+                  label: "${context.l10n.yourPlan}:",
                   value: context.l10n.premiumPlan,
                 ),
                 SizedBox(height: AppSpacing.sm),

@@ -97,7 +97,7 @@ class _SignUpPersonalInfoViewState extends State<SignUpPersonalInfoView> {
                     const SizedBox(height: AppSpacing.md),
 
                     AppTextField(
-                      label: context.l10n.email,
+                      label: context.l10n.emailAddress,
                       hint: 'Ayesha@gmail.com',
                       keyboardType: TextInputType.emailAddress,
                     ),

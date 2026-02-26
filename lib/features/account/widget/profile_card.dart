@@ -18,6 +18,15 @@ class ProfileCard extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(AppRadius.md),
         // color: AppColors.splashBackgroundDark,
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            AppColors.subscriptionCardGradient1,
+            AppColors.subscriptionCardGradient2,
+          ],
+          stops: [0.15, 1.0],
+        ),
       ),
       child: Stack(
         children: [
@@ -68,11 +77,11 @@ class ProfileCard extends StatelessWidget {
           //     ),
           //   ),
           // ),
-          SvgPicture.asset(
-            "assets/images/svg/ic_account_card_bg.svg",
-            width: double.infinity,
-            fit: BoxFit.fill,
-          ),
+          // SvgPicture.asset(
+          //   "assets/images/svg/ic_account_card_bg.svg",
+          //   width: double.infinity,
+          //   fit: BoxFit.fill,
+          // ),
 
           /// CONTENT
           Padding(

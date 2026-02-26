@@ -41,42 +41,60 @@ class ClassDetailHeader extends StatelessWidget {
         // Title and Rating
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
-              child: AppText(
-                context.l10n.powerPilates,
-                style: (context) => AppTextStyles.heading1(
-                  context,
-                ).copyWith(fontSize: 24, fontWeight: FontWeight.w500,height: 1.55),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  AppText(
+                    context.l10n.powerPilates,
+                    style: (context) => AppTextStyles.heading1(
+                      context,
+                    ).copyWith(fontSize: 24, fontWeight: FontWeight.w500,height: 1.55),
+                  ),
+
+                  const SizedBox(height: AppSpacing.xs),
+                  AppText(
+                    context.l10n.classDescriptionShort,
+                    style: (context) => AppTextStyles.bodyText(context),
+                  ),
+                ],
               ),
             ),
-            Row(
-              children: [
-                const Icon(
-                  Icons.star,
-                  color: AppColors.goldStarColor,
-                  size: 20,
-                ),
-                const SizedBox(width: 4),
-                AppText(
-                  '4.5',
-                  style: (context) => AppTextStyles.boldBody(context).copyWith(
-                    fontSize: 16,
-                    color: isDark ? AppColors.lightText : AppColors.darkText,
+            Padding(
+              padding: const EdgeInsets.only(top: 12),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(
+                    Icons.star,
+                    color: AppColors.goldStarColor,
+                    size: 20,
                   ),
-                ),
-              ],
+                  const SizedBox(width: 4),
+                  AppText(
+                    '4.5',
+                    style: (context) => AppTextStyles.boldBody(context).copyWith(
+                      fontSize: 18,
+                      color: isDark ? AppColors.lightText : AppColors.darkText,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ],
         ),
-        const SizedBox(height: AppSpacing.xs),
-        Padding(
-          padding: const EdgeInsets.only(right: AppSpacing.xxl),
-          child: AppText(
-            context.l10n.classDescriptionShort,
-            style: (context) => AppTextStyles.bodyText(context),
-          ),
-        ),
+        // const SizedBox(height: AppSpacing.xs),
+        // Padding(
+        //   padding: const EdgeInsets.only(right: AppSpacing.xxl),
+        //   child: AppText(
+        //     context.l10n.classDescriptionShort,
+        //     style: (context) => AppTextStyles.bodyText(context),
+        //   ),
+        // ),
       ],
     );
   }

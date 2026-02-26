@@ -103,7 +103,7 @@ class HealthInformationView extends StatelessWidget {
           AppButton(
             label: l10n.continueTxt,
             onPressed: () => cubit.nextStep(),
-            buttonColor: AppColors.primaryBrown,
+            buttonColor: isDark ?AppColors.primary:AppColors.primaryBrown,
             expanded: true,
           ),
         ],

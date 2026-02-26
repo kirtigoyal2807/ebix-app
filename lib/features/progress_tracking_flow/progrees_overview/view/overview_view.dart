@@ -90,6 +90,7 @@ class OverviewView extends StatelessWidget {
 
                 Row(
                   spacing: 2,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SvgPicture.asset(
                       "assets/images/svg/ic_tip.svg",
@@ -97,12 +98,14 @@ class OverviewView extends StatelessWidget {
                       width: 24,
                       color: AppColors.languageIconDark,
                     ),
-                    AppText(
-                      context.l10n.edit_goal_tap_hint,
-                      style: (context) => AppTextStyles.body(context).copyWith(
-                        color: AppColors.lightGrey,
-                        height: 1,
-                        fontSize: 12,
+                    Expanded(
+                      child: AppText(
+                        context.l10n.edit_goal_tap_hint,
+                        style: (context) => AppTextStyles.body(context).copyWith(
+                          color: AppColors.lightGrey,
+                          height: 1,
+                          fontSize: 12,
+                        ),
                       ),
                     ),
                   ],

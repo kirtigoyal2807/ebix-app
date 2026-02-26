@@ -79,7 +79,7 @@ class SliverBenefitCard extends StatelessWidget {
       children: [
         Icon(
           Icons.check_circle_outline_rounded,
-          size: 20,
+          size: 24,
           color: isDark ? AppColors.successBorderDark: AppColors.successColor,
         ),
         SizedBox(width: 10),

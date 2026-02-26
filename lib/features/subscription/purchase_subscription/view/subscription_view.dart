@@ -115,6 +115,7 @@ class _PlanSelectionStep extends StatelessWidget {
   Widget build(BuildContext context) {
     final cubit = context.read<SubscriptionCubit>();
     final l10n = AppLocalizations.of(context)!;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     // Plans data (unchanged)
     final List<Map<String, dynamic>> plans = [
@@ -280,7 +281,7 @@ class _PlanSelectionStep extends StatelessWidget {
                 cubit.nextStep();
               }
             },
-            buttonColor: AppColors.primaryBrown,
+            buttonColor:isDark ?AppColors.primary:AppColors.primaryBrown,
             expanded: true,
           ),
         ),

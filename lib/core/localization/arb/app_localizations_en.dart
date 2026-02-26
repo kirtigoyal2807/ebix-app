@@ -338,7 +338,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get monthlyProgress => 'Monthly Progress';
 
   @override
-  String get classes => 'Classes';
+  String get classTxt => 'Class';
 
   @override
   String get totalTime => 'Total Time';
@@ -1271,6 +1271,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get subscriptions => 'Subscriptions';
 
   @override
+  String get classes => 'Classes';
+
+  @override
   String get refunds => 'Refunds';
 
   @override
@@ -1401,6 +1404,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get invoiceDate => 'Date: January 23, 2026';
 
   @override
+  String get premiumPlanMonthly => 'Premium Plan (Monthly)';
+
+  @override
   String get setupFee => 'Setup Fee';
 
   @override
@@ -1505,7 +1511,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get recipientEmail => 'Recipient Email';
 
   @override
-  String get recipientEmailHint => 'Enter your email';
+  String get recipientEmailHintGmail => 'email@gmail.com';
 
   @override
   String get recipientPhoneOptional => 'Recipient Phone Number (Optional)';
@@ -1621,6 +1627,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get changeProfilePicture => 'Change Profile Picture';
+
+  @override
+  String get recipientEmailHint => 'Enter your email';
 
   @override
   String get emergencyContactName => 'Emergency Contact Name';
@@ -1836,29 +1845,25 @@ class AppLocalizationsEn extends AppLocalizations {
   String get buildStrength => 'Build Strength';
 
   @override
-  String get buildStrengthDesc =>
-      'Focus on muscle-building and strengthening exercises';
+  String get buildStrengthDesc => 'Power, reformer, core work';
 
   @override
   String get findMindfulness => 'Find Mindfulness';
 
   @override
-  String get findMindfulnessDesc =>
-      'Practice mind-body exercises for mental balance';
+  String get findMindfulnessDesc => 'Flow, meditation, calm';
 
   @override
   String get improveFlexibility => 'Improve Flexibility';
 
   @override
-  String get improveFlexibilityDesc =>
-      'Enhance your range of motion through stretching';
+  String get improveFlexibilityDesc => 'Stretch, mobility, range';
 
   @override
   String get generalFitness => 'General Fitness';
 
   @override
-  String get generalFitnessDesc =>
-      'A balanced approach to overall health and wellness';
+  String get generalFitnessDesc => 'Balanced, all-around wellness';
 
   @override
   String get monthlyTarget => 'Monthly Target';

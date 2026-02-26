@@ -106,14 +106,14 @@ class JoinWaitlistView extends StatelessWidget {
               children: [
                 AppText(
                   "Core Strength & Balance",
-                  style: (context) => AppTextStyles.gelasioMedium(context),
+                  style: (context) => AppTextStyles.gelasioMedium(context).copyWith(height: 1.2),
                 ),
                 const SizedBox(height: AppSpacing.md),
-                _buildDetailRow(Icons.location_on_outlined, "Downtown Studio"),
+                _buildDetailRow(Icons.location_on_outlined, "Downtown Studio",isDark),
                 const SizedBox(height: AppSpacing.sm),
-                _buildDetailRow(Icons.watch_later_outlined, "Today, 6:00 PM"),
+                _buildDetailRow(Icons.watch_later_outlined, "Today, 6:00 PM",isDark),
                 const SizedBox(height: AppSpacing.sm),
-                _buildDetailRow(Icons.person_outline, "Fatima Al-Hashmi"),
+                _buildDetailRow(Icons.person_outline, "Fatima Al-Hashmi",isDark),
               ],
             ),
           ),
@@ -122,10 +122,10 @@ class JoinWaitlistView extends StatelessWidget {
     );
   }
 
-  Widget _buildDetailRow(IconData icon, String text) {
+  Widget _buildDetailRow(IconData icon, String text,bool isDark) {
     return Row(
       children: [
-        Icon(icon, size: 16, color: AppColors.languageIcon),
+        Icon(icon, size: 16, color:  isDark ?AppColors.languageIconDark: AppColors.languageIcon),
         const SizedBox(width: 4),
         AppText(text, style: (context) => AppTextStyles.bodyTextSmall(context)),
       ],

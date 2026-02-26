@@ -260,7 +260,7 @@ class HomeContentView extends StatelessWidget {
                           AppText(
                             context.l10n.seeAll,
                             style: (context) =>
-                                AppTextStyles.captionText(context).copyWith(
+                                AppTextStyles.captionText(context,fontWeight: FontWeight.w500).copyWith(
                                   color: isDark
                                       ? AppColors.languageTextDark
                                       : AppColors.languageIcon,
@@ -280,9 +280,7 @@ class HomeContentView extends StatelessWidget {
                       totalHours: state.totalHours,
                       goalClasses: state.goalClasses,
                     ),
-                    const SizedBox(height: AppSpacing.md),
 
-                    MembershipCard(status: state.status),
                     const SizedBox(height: AppSpacing.lg),
 
                     Padding(
@@ -331,13 +329,15 @@ class HomeContentView extends StatelessWidget {
                           AppText(
                             context.l10n.seeAll,
                             style: (context) =>
-                                AppTextStyles.captionText(context).copyWith(
+                                AppTextStyles.captionText(context,fontWeight: FontWeight.w500).copyWith(
                                   color: isDark
                                       ? AppColors.languageTextDark
                                       : AppColors.languageIcon,
-                                  fontSize: size.width * 0.03 > 14
-                                      ? 14
-                                      : size.width * 0.03,
+                                  fontSize:
+                                  // size.width * 0.03 > 14
+                                  //     ?
+                                  14
+                                      // : size.width * 0.03,
                                 ),
                           ),
                         ],
@@ -371,13 +371,15 @@ class HomeContentView extends StatelessWidget {
                           AppText(
                             context.l10n.seeAll,
                             style: (context) =>
-                                AppTextStyles.captionText(context).copyWith(
+                                AppTextStyles.captionText(context,fontWeight: FontWeight.w500).copyWith(
                                   color: isDark
                                       ? AppColors.languageTextDark
                                       : AppColors.languageIcon,
-                                  fontSize: size.width * 0.03 > 14
-                                      ? 14
-                                      : size.width * 0.03,
+                                  fontSize:
+                                  // size.width * 0.03 > 14
+                                  //     ?
+                                  14
+                                      // : size.width * 0.03,
                                 ),
                           ),
                         ],

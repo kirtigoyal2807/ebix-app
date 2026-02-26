@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pilates_app/config/theme/app_colors.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
@@ -63,6 +64,7 @@ class HelpSupportBottomSheet extends StatelessWidget {
                     child: Column(
                       children: [
                         _HelpOption(
+                          svgImage: "assets/images/svg/explore/ic_chat.svg",
                           icon: Icons.chat_bubble_outline,
                           title: context.l10n.liveChat,
                           subtitle: context.l10n.liveChatDesc,
@@ -73,6 +75,7 @@ class HelpSupportBottomSheet extends StatelessWidget {
                         const SizedBox(height: AppSpacing.md),
 
                         _HelpOption(
+                          svgImage: "assets/images/svg/explore/Ic_email.svg",
                           icon: Icons.alternate_email,
                           title: context.l10n.emailSupport,
                           subtitle: context.l10n.emailSupportDesc,
@@ -84,6 +87,7 @@ class HelpSupportBottomSheet extends StatelessWidget {
                         const SizedBox(height: AppSpacing.md),
 
                         _HelpOption(
+                           svgImage: "assets/images/svg/explore/ic_phone.svg",
                           icon: Icons.phone_outlined,
                           title: context.l10n.phoneSupport,
                           subtitle: context.l10n.phoneSupportDesc,
@@ -118,12 +122,14 @@ class _HelpOption extends StatelessWidget {
   final String title;
   final String subtitle;
   final VoidCallback onTap;
+  final String? svgImage;
 
   const _HelpOption({
     required this.icon,
     required this.title,
     required this.subtitle,
     required this.onTap,
+    this.svgImage
   });
 
   @override
@@ -137,11 +143,17 @@ class _HelpOption extends StatelessWidget {
         children: [
           Padding(
             padding: const EdgeInsets.only(top: 2),
-            child: Icon(
+            child:
+            svgImage != null ?
+                SvgPicture.asset(svgImage??"", color: isDark
+                    ? AppColors.languageIconDark
+                    : AppColors.languageIcon)
+                :
+            Icon(
               icon,
               color: isDark
                   ? AppColors.languageIconDark
-                  : theme.colorScheme.primary, // Brownish color from theme
+                  : AppColors.languageIcon, // Brownish color from theme
             ),
           ),
           const SizedBox(width: AppSpacing.lg),

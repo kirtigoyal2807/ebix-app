@@ -39,12 +39,12 @@ class RewardCard extends StatelessWidget {
         children: [
           AppText(
             title,
-            style: (context) => AppTextStyles.experienceButton(context),
+            style: (context) => AppTextStyles.experienceButton(context).copyWith(height: 1.4),
           ),
           SizedBox(height: AppSpacing.xs),
           AppText(
             subTitle,
-            style: (context) => AppTextStyles.bodyLightText(context),
+            style: (context) => AppTextStyles.bodyLightText(context).copyWith(height: 1.4),
           ),
           SizedBox(height: AppSpacing.lmd),
 

@@ -34,8 +34,8 @@ class InvoiceHistoryCard extends StatelessWidget {
         AppText(
           month,
           style: (context) => AppTextStyles.bodyText(
-            context,
-          ).copyWith(fontWeight: FontWeight.w500, color: AppColors.lightGrey),
+            context,fontWeight: FontWeight.w500,
+          ).copyWith(color: AppColors.lightGrey),
         ),
         SizedBox(height: AppSpacing.sm),
         Container(

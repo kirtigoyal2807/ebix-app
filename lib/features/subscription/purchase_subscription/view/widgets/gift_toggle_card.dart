@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:pilates_app/config/theme/app_colors.dart';
@@ -58,42 +59,16 @@ class GiftToggleCard extends StatelessWidget {
           ),
           Transform.scale(
             scale: 0.8, // 👈 reduce overall size (try 0.7–0.9)
-            child: Switch.adaptive(
+            child: CupertinoSwitch(
               value: isGift,
               onChanged: onToggle,
-
-              // Remove outline / ripple / hover
-              overlayColor: MaterialStateProperty.all(Colors.transparent),
-              splashRadius: 0,
-
-              inactiveThumbColor: isDark
-                  ? AppColors.primary
-                  : AppColors.whiteColor,
-              activeThumbColor: isDark
-                  ? AppColors.primary
-                  : AppColors.whiteColor,
-
-              inactiveTrackColor: isDark
+              activeColor:
+                  isDark ? AppColors.switchInactiveDark : AppColors.primary,
+              trackColor: isDark
                   ? AppColors.switchInactiveDark
                   : AppColors.buttonBorder,
-              activeTrackColor: isDark
-                  ? AppColors.switchInactiveDark
-                  : AppColors.primary,
-
-              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-
-              // 👈 removes extra padding
-              trackOutlineColor: MaterialStateProperty.resolveWith((states) {
-                if (states.contains(MaterialState.selected)) {
-                  return isDark
-                      ? AppColors.switchInactiveDark
-                      : AppColors.primary;
-                }
-                return isDark
-                    ? AppColors.switchInactiveDark
-                    : AppColors.buttonBorder;
-              }),
-              trackOutlineWidth: MaterialStateProperty.all(1.5),
+              thumbColor:
+                  isDark ? AppColors.primary : AppColors.whiteColor,
             ),
           ),
         ],

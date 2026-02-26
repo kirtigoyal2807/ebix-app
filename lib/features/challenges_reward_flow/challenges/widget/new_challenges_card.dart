@@ -128,7 +128,7 @@ class NewChallengesCard extends StatelessWidget {
                     borderRadius: BorderRadius.circular(AppRadius.base),
                   ),
                   child: AppText(
-                    context.l10n.points_short(point.round()),
+                    "+${context.l10n.points_short(point.toInt())}",
 
                     style: (context) =>
                         AppTextStyles.splashVersion(context).copyWith(

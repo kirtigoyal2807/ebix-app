@@ -728,11 +728,11 @@ abstract class AppLocalizations {
   /// **'Monthly Progress'**
   String get monthlyProgress;
 
-  /// No description provided for @classes.
+  /// No description provided for @classTxt.
   ///
   /// In en, this message translates to:
-  /// **'Classes'**
-  String get classes;
+  /// **'Class'**
+  String get classTxt;
 
   /// No description provided for @totalTime.
   ///
@@ -2468,6 +2468,12 @@ abstract class AppLocalizations {
   /// **'Subscriptions'**
   String get subscriptions;
 
+  /// No description provided for @classes.
+  ///
+  /// In en, this message translates to:
+  /// **'Classes'**
+  String get classes;
+
   /// No description provided for @refunds.
   ///
   /// In en, this message translates to:
@@ -2720,6 +2726,12 @@ abstract class AppLocalizations {
   /// **'Date: January 23, 2026'**
   String get invoiceDate;
 
+  /// No description provided for @premiumPlanMonthly.
+  ///
+  /// In en, this message translates to:
+  /// **'Premium Plan (Monthly)'**
+  String get premiumPlanMonthly;
+
   /// No description provided for @setupFee.
   ///
   /// In en, this message translates to:
@@ -2924,11 +2936,11 @@ abstract class AppLocalizations {
   /// **'Recipient Email'**
   String get recipientEmail;
 
-  /// No description provided for @recipientEmailHint.
+  /// No description provided for @recipientEmailHintGmail.
   ///
   /// In en, this message translates to:
-  /// **'Enter your email'**
-  String get recipientEmailHint;
+  /// **'email@gmail.com'**
+  String get recipientEmailHintGmail;
 
   /// No description provided for @recipientPhoneOptional.
   ///
@@ -3157,6 +3169,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Change Profile Picture'**
   String get changeProfilePicture;
+
+  /// No description provided for @recipientEmailHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your email'**
+  String get recipientEmailHint;
 
   /// No description provided for @emergencyContactName.
   ///
@@ -3569,7 +3587,7 @@ abstract class AppLocalizations {
   /// No description provided for @buildStrengthDesc.
   ///
   /// In en, this message translates to:
-  /// **'Focus on muscle-building and strengthening exercises'**
+  /// **'Power, reformer, core work'**
   String get buildStrengthDesc;
 
   /// No description provided for @findMindfulness.
@@ -3581,7 +3599,7 @@ abstract class AppLocalizations {
   /// No description provided for @findMindfulnessDesc.
   ///
   /// In en, this message translates to:
-  /// **'Practice mind-body exercises for mental balance'**
+  /// **'Flow, meditation, calm'**
   String get findMindfulnessDesc;
 
   /// No description provided for @improveFlexibility.
@@ -3593,7 +3611,7 @@ abstract class AppLocalizations {
   /// No description provided for @improveFlexibilityDesc.
   ///
   /// In en, this message translates to:
-  /// **'Enhance your range of motion through stretching'**
+  /// **'Stretch, mobility, range'**
   String get improveFlexibilityDesc;
 
   /// No description provided for @generalFitness.
@@ -3605,7 +3623,7 @@ abstract class AppLocalizations {
   /// No description provided for @generalFitnessDesc.
   ///
   /// In en, this message translates to:
-  /// **'A balanced approach to overall health and wellness'**
+  /// **'Balanced, all-around wellness'**
   String get generalFitnessDesc;
 
   /// No description provided for @monthlyTarget.

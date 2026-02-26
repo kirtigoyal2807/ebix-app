@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/widgets/app_text.dart';
@@ -46,44 +47,66 @@ class SwitchWidget extends StatelessWidget {
           ],
         ),
 
+
         Transform.scale(
           scale: 0.8, // 👈 reduce overall size (try 0.7–0.9)
-          child: Switch.adaptive(
+          child: CupertinoSwitch(
             value: switchValue,
             onChanged: onChanged,
-
-            // Remove outline / ripple / hover
-            overlayColor: MaterialStateProperty.all(Colors.transparent),
-            splashRadius: 0,
-
-            inactiveThumbColor: isDark
-                ? AppColors.primary
-                : AppColors.whiteColor,
-            activeThumbColor: isDark ? AppColors.seekBarLight : AppColors.whiteColor,
-
+            // activeColor:
+            // isDark ? AppColors.switchInactiveDark : AppColors.primary,
+            inactiveThumbColor:   isDark ? AppColors.primary : AppColors.whiteColor,
             inactiveTrackColor: isDark
                 ? Color(0xff1C1917)
                 : AppColors.buttonBorder,
-            activeTrackColor: isDark
+            activeTrackColor:  isDark
                 ? AppColors.primary
                 : AppColors.primary,
-
-            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-
-            // 👈 removes extra padding
-            trackOutlineColor: MaterialStateProperty.resolveWith((states) {
-              if (states.contains(MaterialState.selected)) {
-                return isDark
-                    ? AppColors.switchInactiveDark
-                    : AppColors.primary;
-              }
-              return isDark
-                  ? AppColors.switchInactiveDark
-                  : AppColors.buttonBorder;
-            }),
-            trackOutlineWidth: MaterialStateProperty.all(1.5),
+            // trackColor: isDark
+            //     ? AppColors.switchInactiveDark
+            //     : AppColors.buttonBorder,
+            thumbColor:
+            isDark ? AppColors.lightText : AppColors.whiteColor,
           ),
         ),
+        // Transform.scale(
+        //   scale: 0.8, // 👈 reduce overall size (try 0.7–0.9)
+        //   child: Switch.adaptive(
+        //     value: switchValue,
+        //     onChanged: onChanged,
+        //
+        //     // Remove outline / ripple / hover
+        //     overlayColor: MaterialStateProperty.all(Colors.transparent),
+        //     splashRadius: 0,
+        //
+        //     inactiveThumbColor: isDark
+        //         ? AppColors.primary
+        //         : AppColors.whiteColor,
+        //     activeThumbColor: isDark ? AppColors.seekBarLight : AppColors.whiteColor,
+        //
+        //     inactiveTrackColor: isDark
+        //         ? Color(0xff1C1917)
+        //         : AppColors.buttonBorder,
+        //     activeTrackColor: isDark
+        //         ? AppColors.primary
+        //         : AppColors.primary,
+        //
+        //     materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+        //
+        //     // 👈 removes extra padding
+        //     trackOutlineColor: MaterialStateProperty.resolveWith((states) {
+        //       if (states.contains(MaterialState.selected)) {
+        //         return isDark
+        //             ? AppColors.switchInactiveDark
+        //             : AppColors.primary;
+        //       }
+        //       return isDark
+        //           ? AppColors.switchInactiveDark
+        //           : AppColors.buttonBorder;
+        //     }),
+        //     trackOutlineWidth: MaterialStateProperty.all(1.5),
+        //   ),
+        // ),
       ],
     );
   }

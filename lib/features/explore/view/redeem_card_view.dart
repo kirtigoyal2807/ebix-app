@@ -61,58 +61,60 @@ class RedeemCardView extends StatelessWidget {
           centerTitle: true,
           elevation: 0,
         ),
-        body: Padding(
-          padding: EdgeInsetsGeometry.symmetric(
-            vertical: AppSpacing.md,
-            horizontal: AppSpacing.lg,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              SvgPicture.asset(
-                "assets/images/svg/ic_gift.svg",
-                height: 64,
-                width: 64,
-              ),
-              SizedBox(height: AppSpacing.md),
-
-              AppText(
-                  context.l10n.receivedGiftTitle,
-                style: (context) =>
-                    AppTextStyles.gelasioMedium(context).copyWith(
-                      color: isDark ? AppColors.lightText : Colors.white,
-                      height: 1.55,
-                    ),
-              ),
-
-              SizedBox(height: AppSpacing.xs),
-              AppText(
-                context.l10n.receivedGiftSubtitle,
-                style: (context) => AppTextStyles.bodyText(context).copyWith(
-                  color: isDark
-                      ? AppColors.darkGreyText
-                      : AppColors.selectedLanguageBg,
-                  height: 1.55,
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsetsGeometry.symmetric(
+              vertical: AppSpacing.md,
+              horizontal: AppSpacing.lg,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                SvgPicture.asset(
+                  "assets/images/svg/ic_gift.svg",
+                  height: 64,
+                  width: 64,
                 ),
-              ),
-              SizedBox(height: AppSpacing.lg),
-              _messageCard(context: context),
-              SizedBox(height: AppSpacing.lg),
-              AppButton(
-                label: context.l10n.redeemYourGift,
-                onPressed: () {
-                  showModalBottomSheet(
-                    context: context,
-                    isScrollControlled: true,
-                    backgroundColor: Colors.transparent,
-                    barrierColor: AppColors.bottomSheetShadow,
-                    builder: (_) => RedeemGiftCardSheet(),
-                  );
-                },
-                variant: AppButtonVariant.primary,
-              ),
-            ],
+                SizedBox(height: AppSpacing.md),
+          
+                AppText(
+                    context.l10n.receivedGiftTitle,
+                  style: (context) =>
+                      AppTextStyles.gelasioMedium(context).copyWith(
+                        color: isDark ? AppColors.lightText : Colors.white,
+                        height: 1.55,
+                      ),
+                ),
+          
+                SizedBox(height: AppSpacing.xs),
+                AppText(
+                  context.l10n.receivedGiftSubtitle,
+                  style: (context) => AppTextStyles.bodyText(context).copyWith(
+                    color: isDark
+                        ? AppColors.darkGreyText
+                        : AppColors.selectedLanguageBg,
+                    height: 1.55,
+                  ),
+                ),
+                SizedBox(height: AppSpacing.lg),
+                _messageCard(context: context),
+                SizedBox(height: AppSpacing.lg),
+                AppButton(
+                  label: context.l10n.redeemYourGift,
+                  onPressed: () {
+                    showModalBottomSheet(
+                      context: context,
+                      isScrollControlled: true,
+                      backgroundColor: Colors.transparent,
+                      barrierColor: AppColors.bottomSheetShadow,
+                      builder: (_) => RedeemGiftCardSheet(),
+                    );
+                  },
+                  variant: AppButtonVariant.primary,
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -138,8 +140,8 @@ class RedeemCardView extends StatelessWidget {
           AppText(
             context.l10n.message,
             style: (context) => AppTextStyles.bodyText(
-              context,
-            ).copyWith(fontWeight: FontWeight.w500, height: 1.2),
+              context,fontWeight: FontWeight.w500,
+            ).copyWith(height: 1.2),
           ),
           SizedBox(height: AppSpacing.md),
           Container(
@@ -181,8 +183,8 @@ class RedeemCardView extends StatelessWidget {
           AppText(
             context.l10n.yourGiftIncludes,
             style: (context) => AppTextStyles.bodyText(
-              context,
-            ).copyWith(fontWeight: FontWeight.w500, height: 1.2),
+              context,fontWeight: FontWeight.w500,
+            ).copyWith( height: 1.2),
           ),
           SizedBox(height: AppSpacing.md),
           _checkedRow(context: context, feature: context.l10n.featureClasses),

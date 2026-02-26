@@ -195,7 +195,7 @@ class TermsAndConditionsView extends StatelessWidget {
                         cubit.nextStep(); // Or handle payment logic
                       }
                     : null, // Disable if not accepted
-                buttonColor: AppColors.primaryBrown,
+                buttonColor:isDark ?AppColors.primary: AppColors.primaryBrown,
                 expanded: true,
               );
             },

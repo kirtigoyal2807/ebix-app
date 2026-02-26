@@ -87,7 +87,7 @@ class InvoiceDetailsCard extends StatelessWidget {
 
               const SizedBox(height: 64),
 
-              _buildRow(context.l10n.premiumPlan, "\$89.00", isDark),
+              _buildRow(context.l10n.premiumPlanMonthly, "\$89.00", isDark),
               const SizedBox(height: AppSpacing.xs),
               _buildRow(context.l10n.setupFee, "\$0.00", isDark),
               const SizedBox(height: AppSpacing.xs),

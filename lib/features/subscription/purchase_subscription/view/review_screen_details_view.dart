@@ -87,9 +87,9 @@ class ReviewScreenDetailsView extends StatelessWidget {
                       child: AppText(
                         l10n.active,
                         style: (context) =>
-                            AppTextStyles.bodyText(context).copyWith(
+                            AppTextStyles.bodyText(context,       fontWeight: FontWeight.w500,).copyWith(
                               color: Colors.white,
-                              fontWeight: FontWeight.w500,
+
                               fontSize: 12,
                               height: 1.8,
                             ),
@@ -99,11 +99,11 @@ class ReviewScreenDetailsView extends StatelessWidget {
                     AppText(
                       l10n.premiumPlan,
                       style: (context) =>
-                          AppTextStyles.bodyText(context).copyWith(
+                          AppTextStyles.bodyText(context,     fontWeight: FontWeight.w500,).copyWith(
                             color: isDark
                                 ? AppColors.lightText
                                 : AppColors.darkText,
-                            fontWeight: FontWeight.w500,
+
                             fontSize: 24,
                           ),
                     ),
@@ -111,11 +111,11 @@ class ReviewScreenDetailsView extends StatelessWidget {
                     AppText(
                       l10n.pricePerMonth,
                       style: (context) =>
-                          AppTextStyles.bodyText(context).copyWith(
+                          AppTextStyles.bodyText(context,  fontWeight: FontWeight.w500,).copyWith(
                             color: isDark
                                 ? AppColors.languageTextDark
                                 : AppColors.languageIcon,
-                            fontWeight: FontWeight.w500,
+
                             fontSize: 18,
                             height: 0,
                           ),
@@ -167,8 +167,8 @@ class ReviewScreenDetailsView extends StatelessWidget {
                     AppText(
                       l10n.haveVoucherCode,
                       style: (context) => AppTextStyles.gelasioRegular(
-                        context,
-                      ).copyWith(fontWeight: FontWeight.w500, height: 1.2),
+                        context,fontWeight: FontWeight.w500,
+                      ).copyWith( height: 1.2),
                     ),
                     SizedBox(height: AppSpacing.md),
                     AppTextField(hint: l10n.enterVoucherCode),

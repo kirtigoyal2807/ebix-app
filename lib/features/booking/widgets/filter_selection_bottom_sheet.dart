@@ -109,9 +109,11 @@ class _OptionTile extends StatelessWidget {
         onTap: onTap,
         borderRadius: BorderRadius.circular(AppRadius.lg),
         child: Container(
-          padding: const EdgeInsets.symmetric(
-            horizontal: AppSpacing.base,
-            vertical: AppSpacing.md,
+          padding: const EdgeInsets.only(
+            left: AppSpacing.base,
+            right: AppSpacing.lmd,
+            top: AppSpacing.md,
+            bottom: AppSpacing.md,
           ),
           margin: const EdgeInsets.only(bottom: AppSpacing.xs),
           decoration: BoxDecoration(

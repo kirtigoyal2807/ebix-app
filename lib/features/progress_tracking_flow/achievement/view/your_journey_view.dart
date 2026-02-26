@@ -182,11 +182,11 @@ class YourJourneyView extends StatelessWidget {
                             AppText(
                               context.l10n.yourJourney_progress_count,
                               style: (context) =>
-                                  AppTextStyles.captionText(context).copyWith(
+                                  AppTextStyles.captionText(context, fontWeight: FontWeight.w600,).copyWith(
                                     color: isDark
                                         ? AppColors.languageTextDark
                                         : AppColors.languageIcon,
-                                    fontWeight: FontWeight.w600,
+
                                   ),
                             ),
                           ],
@@ -215,7 +215,7 @@ class YourJourneyView extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     AppText(
-                      context.l10n.yourJourney_consistency_date,
+                      date,
                       style: (content) => AppTextStyles.captionText(
                         content,
                       ).copyWith(color: AppColors.lightGrey),

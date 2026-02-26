@@ -27,7 +27,7 @@ class AchievementView extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           AppText(
-            context.l10n.yourJourney_your_progress,
+            context.l10n.achievement_your_achievements,
             style: (context) => AppTextStyles.gelasioRegular(context),
           ),
           SizedBox(height: AppSpacing.base),
@@ -135,7 +135,7 @@ class AchievementView extends StatelessWidget {
                             : AppColors.goalTrackColor,
                         valueColor: AlwaysStoppedAnimation<Color>(
                           isDark
-                              ? AppColors.subscriptionCardGradient2
+                              ? AppColors.progressBGColor
                               : AppColors.languageIconDark,
                         ),
                       ),

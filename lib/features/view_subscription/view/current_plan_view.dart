@@ -75,12 +75,10 @@ class CurrentPlanView extends StatelessWidget {
                     ),
                     child: AppText(
                       context.l10n.active,
-                      style: (context) =>
-                          AppTextStyles.bodyText(context).copyWith(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w500,
-                            fontSize: 12,
-                          ),
+                      style: (context) => AppTextStyles.bodyText(
+                        context,
+                        fontWeight: FontWeight.w500,
+                      ).copyWith(color: Colors.white, fontSize: 12),
                     ),
                   ),
 
@@ -88,9 +86,12 @@ class CurrentPlanView extends StatelessWidget {
                   AppText(
                     context.l10n.premiumPlan,
                     style: (context) =>
-                        AppTextStyles.bodyText(context).copyWith(
-                          color: isDark ? AppColors.lightText : Colors.white,
+                        AppTextStyles.bodyText(
+                          context,
                           fontWeight: FontWeight.w500,
+                        ).copyWith(
+                          color: isDark ? AppColors.lightText : Colors.white,
+
                           fontSize: 24,
                           height: 0,
                         ),
@@ -99,9 +100,12 @@ class CurrentPlanView extends StatelessWidget {
                   AppText(
                     context.l10n.pricePerMonth,
                     style: (context) =>
-                        AppTextStyles.bodyText(context).copyWith(
-                          color: AppColors.seekBarLight,
+                        AppTextStyles.bodyText(
+                          context,
                           fontWeight: FontWeight.w500,
+                        ).copyWith(
+                          color: AppColors.seekBarLight,
+
                           fontSize: 18,
                           height: 0,
                         ),
@@ -155,7 +159,8 @@ class CurrentPlanView extends StatelessWidget {
             Container(
               decoration: BoxDecoration(
                 border: Border.all(
-                  color: AppColors.buttonBorder, // your border color
+                  color: isDark ? AppColors.greyText : AppColors.buttonBorder,
+                  // your border color
                   width: 1,
                 ),
                 borderRadius: BorderRadius.circular(12),
@@ -165,7 +170,10 @@ class CurrentPlanView extends StatelessWidget {
                   dividerColor: Colors.transparent, // removes inside line
                 ),
                 child: ExpansionTile(
+                  iconColor: isDark ? AppColors.lightGrey : AppColors.darkText,
+
                   tilePadding: const EdgeInsets.symmetric(horizontal: 16),
+
                   childrenPadding: const EdgeInsets.symmetric(
                     horizontal: 16,
                     vertical: 8,
@@ -206,7 +214,8 @@ class CurrentPlanView extends StatelessWidget {
             Container(
               decoration: BoxDecoration(
                 border: Border.all(
-                  color: AppColors.buttonBorder, // your border color
+                  color: isDark ? AppColors.greyText : AppColors.buttonBorder,
+                  // your border color
                   width: 1,
                 ),
                 borderRadius: BorderRadius.circular(12),
@@ -217,6 +226,7 @@ class CurrentPlanView extends StatelessWidget {
                 ),
                 child: ExpansionTile(
                   tilePadding: const EdgeInsets.symmetric(horizontal: 16),
+                  iconColor: isDark ? AppColors.lightGrey : AppColors.darkText,
                   childrenPadding: const EdgeInsets.symmetric(
                     horizontal: 16,
                     vertical: 8,
@@ -244,11 +254,14 @@ class CurrentPlanView extends StatelessWidget {
                         AppText(
                           "7 days",
                           style: (context) =>
-                              AppTextStyles.bodyText(context).copyWith(
+                              AppTextStyles.bodyText(
+                                context,
+                                fontWeight: FontWeight.w500,
+                              ).copyWith(
                                 color: isDark
                                     ? AppColors.lightText
                                     : AppColors.darkText,
-                                fontWeight: FontWeight.w500,
+
                                 // height: 2,
                               ),
                         ),
@@ -415,7 +428,7 @@ class CurrentPlanView extends StatelessWidget {
         children: [
           Icon(
             Icons.done,
-            color: isDark ? AppColors.lightText : AppColors.languageIcon,
+            color: isDark ? AppColors.languageIconDark : AppColors.languageIcon,
             size: 16,
           ),
           SizedBox(width: AppSpacing.xs),
@@ -468,11 +481,15 @@ class CurrentPlanView extends StatelessWidget {
         ),
         AppText(
           content,
-          style: (context) => AppTextStyles.bodyText(context).copyWith(
-            color: contentColor,
-            fontWeight: FontWeight.w500,
-            // height: 2,
-          ),
+          style: (context) =>
+              AppTextStyles.bodyText(
+                context,
+                fontWeight: FontWeight.w500,
+              ).copyWith(
+                color: contentColor,
+
+                // height: 2,
+              ),
         ),
       ],
     );

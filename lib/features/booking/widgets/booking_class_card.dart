@@ -148,7 +148,7 @@ class BookingClassCard extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(16),
                                   border: Border.all(
                                     color: isDark
-                                        ? AppColors.successBorderDark
+                                        ? Colors.transparent
                                         : AppColors.featuredTagBackgroundColor,
                                     width: 1,
                                   ),
@@ -199,8 +199,7 @@ class BookingClassCard extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(16),
                                   border: Border.all(
                                     color: isDark
-                                        ? AppColors
-                                              .upgradeDarkLockBackgroundColor
+                                        ? Colors.transparent
                                         : AppColors
                                               .upgradeDarkLockBackgroundColor,
                                     width: 1,

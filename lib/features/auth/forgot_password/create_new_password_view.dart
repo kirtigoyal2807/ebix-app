@@ -47,6 +47,7 @@ class CreateNewPasswordView extends StatelessWidget {
                       label: context.l10n.password,
                       hint: "********",
                       obscure: true,
+                      maxLines: 1,
                     ),
 
                     const SizedBox(height: AppSpacing.lg),
@@ -56,6 +57,7 @@ class CreateNewPasswordView extends StatelessWidget {
                       label: context.l10n.confirmPassword,
                       hint: "********",
                       obscure: true,
+                      maxLines: 1,
                     ),
                   ],
                 ),

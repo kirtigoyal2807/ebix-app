@@ -109,7 +109,7 @@ class WelcomeToPilateView extends StatelessWidget {
 
                     const SizedBox(height: 64),
 
-                    _buildRow(l10n.premiumPlan, "\$89.00", isDark),
+                    _buildRow(l10n.premiumPlanMonthly, "\$89.00", isDark),
                     const SizedBox(height: AppSpacing.xs),
                     _buildRow(l10n.setupFee, "\$0.00", isDark),
                     const SizedBox(height: AppSpacing.xs),

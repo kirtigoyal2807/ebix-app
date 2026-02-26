@@ -85,7 +85,7 @@ class SignUpOtpView extends StatelessWidget {
                         text: TextSpan(
                           children: [
                             TextSpan(
-                              text: context.l10n.didntReceiveCode,
+                              text: "${context.l10n.didntReceiveCode} ",
                               style: AppTextStyles.caption(context).copyWith(
                                 color: isDark
                                     ? AppColors.darkGreyText
@@ -94,6 +94,7 @@ class SignUpOtpView extends StatelessWidget {
                                 height: 1.4,
                               ),
                             ),
+
                             TextSpan(
                               text: context.l10n.resendCode,
                               style: AppTextStyles.boldBody(context),

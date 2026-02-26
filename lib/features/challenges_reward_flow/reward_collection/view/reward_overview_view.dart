@@ -152,7 +152,7 @@ class RewardOverviewView extends StatelessWidget {
               value: 0.6,
               minHeight: 6,
               backgroundColor: isDark
-                  ? AppColors.primaryDarkContainer
+                  ? Color(0xff1C1917)
                   : AppColors.darkGreyBorder,
               valueColor: AlwaysStoppedAnimation<Color>(
                 isDark
@@ -169,7 +169,8 @@ class RewardOverviewView extends StatelessWidget {
   _currentBranch({
     required BuildContext context,
     required BuildContext cubitContext,
-  }) {
+  })
+  {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       margin: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
@@ -185,58 +186,60 @@ class RewardOverviewView extends StatelessWidget {
           width: 1,
         ),
       ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Icon(Icons.home_outlined, color: AppColors.languageIcon, size: 24),
-          SizedBox(width: 10),
-
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                AppText(
-                  context.l10n.showing_rewards_from,
-                  style: (context) => AppTextStyles.textFieldHeading(
-                    context,
-                  ).copyWith(color: AppColors.placeHolderText),
-                ),
-                SizedBox(height: AppSpacing.xs),
-                AppText(
-                  "Branch 1",
-                  style: (context) => AppTextStyles.textFieldHeading(
-                    context,
-                  ).copyWith(height: 1.55, fontSize: 16),
-                ),
-              ],
-            ),
-          ),
-
-          Align(
-            alignment: Alignment.center,
-            child: GestureDetector(
-              onTap: () {
-                final rewardCubit = context.read<RewardCubit>();
-                showModalBottomSheet(
-                  context: context,
-                  isScrollControlled: true,
-                  barrierColor: AppColors.bottomSheetShadow,
-                  // backgroundColor: Colors.transparent,
-                  builder: (_) => BlocProvider.value(
-                    value: rewardCubit,
-                    child: SelectBranchSheet(),
+      child: IntrinsicHeight(
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Icon(Icons.home_outlined, color: AppColors.languageIcon, size: 24),
+            SizedBox(width: 10),
+        
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  AppText(
+                    context.l10n.showing_rewards_from,
+                    style: (context) => AppTextStyles.textFieldHeading(
+                      context,
+                    ).copyWith(color: AppColors.placeHolderText),
                   ),
-                );
-              },
-              child: AppText(
-                context.l10n.change,
-                style: (context) => AppTextStyles.body(context)
-                    .copyWith(height: 1.55)
-                    .copyWith(color: AppColors.languageIcon),
+                  SizedBox(height: AppSpacing.xs),
+                  AppText(
+                    "Branch 1",
+                    style: (context) => AppTextStyles.textFieldHeading(
+                      context,
+                    ).copyWith(height: 1.55, fontSize: 16),
+                  ),
+                ],
               ),
             ),
-          ),
-        ],
+        
+            Align(
+              alignment: Alignment.center,
+              child: GestureDetector(
+                onTap: () {
+                  final rewardCubit = context.read<RewardCubit>();
+                  showModalBottomSheet(
+                    context: context,
+                    isScrollControlled: true,
+                    barrierColor: AppColors.bottomSheetShadow,
+                    // backgroundColor: Colors.transparent,
+                    builder: (_) => BlocProvider.value(
+                      value: rewardCubit,
+                      child: SelectBranchSheet(),
+                    ),
+                  );
+                },
+                child: AppText(
+                  context.l10n.change,
+                  style: (context) => AppTextStyles.body(context)
+                      .copyWith(height: 1.55)
+                      .copyWith(color: AppColors.languageIcon),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -12,12 +12,12 @@ PreferredSizeWidget subscriptionTabBar({
   return TabBar(
     isScrollable: false,
     labelStyle: AppTextStyles.body(
-      context,
-    ).copyWith(fontWeight: FontWeight.w600, fontSize: 16),
+      context,fontWeight: FontWeight.w600,
+    ).copyWith( fontSize: 16),
     unselectedLabelColor: AppColors.lightGrey,
     unselectedLabelStyle: AppTextStyles.caption(
-      context,
-    ).copyWith(fontWeight: FontWeight.w400, fontSize: 16),
+      context,fontWeight: FontWeight.w400,
+    ).copyWith( fontSize: 16),
     dividerColor: Colors.transparent,
     dividerHeight: 1,
     indicatorColor: isDark ? AppColors.darkGreyBorder : AppColors.primary,

@@ -67,6 +67,7 @@ class SessionHistoryCard extends StatelessWidget {
                         color: isDark
                             ? AppColors.successBorderDark
                             : AppColors.successColor,
+                        height: 1.8
                       ),
                 ),
               ),

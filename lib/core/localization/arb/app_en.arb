@@ -116,7 +116,7 @@
   "yourProgress": "Your Progress",
   "seeAll": "See All",
   "monthlyProgress": "Monthly Progress",
-  "classes": "Classes",
+  "classTxt": "Class",
   "totalTime": "Total Time",
   "goal": "Goal",
   "ofClassesThisMonth": "of {count} classes this month",
@@ -550,7 +550,7 @@
   "downloadInvoice": "Download Invoice (PDF)",
   "invoiceDetails": "Invoice Details",
   "invoiceDate": "Date: January 23, 2026",
-  "premiumPlan": "Premium Plan (Monthly)",
+  "premiumPlanMonthly": "Premium Plan (Monthly)",
   "setupFee": "Setup Fee",
   "discount": "Discount (New Member)",
   "tax": "Tax (8%)",
@@ -592,7 +592,7 @@
   "fullName": "Full Name",
   "recipientNameHint": "Recipient Name",
   "recipientEmail": "Recipient Email",
-  "recipientEmailHint": "email@gmail.com",
+  "recipientEmailHintGmail": "email@gmail.com",
   "recipientPhoneOptional": "Recipient Phone Number (Optional)",
   "phoneHint": "XXXXXXXXXXX",
   "deliveryOptions": "Delivery Options",
@@ -773,14 +773,7 @@
   "edit_goal_tip_content": "Your goal personalizes your progress tracking. You can change it anytime to match your evolving fitness journey.",
 
 
-  "buildStrength": "Build Strength",
-  "buildStrengthDesc": "Focus on muscle-building and strengthening exercises",
-  "findMindfulness": "Find Mindfulness",
-  "findMindfulnessDesc": "Practice mind-body exercises for mental balance",
-  "improveFlexibility": "Improve Flexibility",
-  "improveFlexibilityDesc": "Enhance your range of motion through stretching",
-  "generalFitness": "General Fitness",
-  "generalFitnessDesc": "A balanced approach to overall health and wellness",
+
 
 
   "monthlyTarget": "Monthly Target",

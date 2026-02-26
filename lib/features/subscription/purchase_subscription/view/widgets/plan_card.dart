@@ -122,6 +122,7 @@ class PlanCard extends StatelessWidget {
                     ),
                     SvgPicture.asset(
                       "assets/images/svg/ic_Saudi_Riyal_Symbol.svg",
+                      color: isDark ? AppColors.languageTextDark : AppColors.languageIcon,
                     ),
                     AppText(
                       ' / Month',

@@ -277,7 +277,7 @@ class MedicalHistoryView extends StatelessWidget {
               // Logic for finishing or next step
               cubit.nextStep(); // For now
             },
-            buttonColor: AppColors.primaryBrown,
+            buttonColor:isDark ?AppColors.primary: AppColors.primaryBrown,
             expanded: true,
           ),
         ],
@@ -342,9 +342,9 @@ class MedicalHistoryView extends StatelessWidget {
             Expanded(
               child: AppText(
                 label,
-                style: (style) => AppTextStyles.bodyTextSmall(context).copyWith(
+                style: (style) => AppTextStyles.bodyTextSmall(context,   fontWeight: FontWeight.w500,).copyWith(
                   color: isDark ? AppColors.lightGrey : AppColors.lightGrey,
-                  fontWeight: FontWeight.w500,
+
                 ),
               ),
             ),

@@ -333,7 +333,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get monthlyProgress => 'التقدم الشهري';
 
   @override
-  String get classes => 'الحصص';
+  String get classTxt => 'حصص';
 
   @override
   String get totalTime => 'إجمالي الوقت';
@@ -1259,6 +1259,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get subscriptions => 'الاشتراكات';
 
   @override
+  String get classes => 'الحصص';
+
+  @override
   String get refunds => 'المبالغ المستردة';
 
   @override
@@ -1389,6 +1392,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get invoiceDate => 'التاريخ: 23 يناير 2026';
 
   @override
+  String get premiumPlanMonthly => 'الخطة المميزة';
+
+  @override
   String get setupFee => 'رسوم الإعداد';
 
   @override
@@ -1492,7 +1498,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get recipientEmail => 'البريد الإلكتروني للمستلم';
 
   @override
-  String get recipientEmailHint => 'أدخل بريدك الإلكتروني';
+  String get recipientEmailHintGmail => 'email@gmail.com';
 
   @override
   String get recipientPhoneOptional => 'رقم هاتف المستلم (اختياري)';
@@ -1608,6 +1614,9 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get changeProfilePicture => 'تغيير صورة الملف الشخصي';
+
+  @override
+  String get recipientEmailHint => 'أدخل بريدك الإلكتروني';
 
   @override
   String get emergencyContactName => 'اسم جهة الاتصال في الطوارئ';
@@ -1823,26 +1832,25 @@ class AppLocalizationsAr extends AppLocalizations {
   String get buildStrength => 'بناء القوة';
 
   @override
-  String get buildStrengthDesc => 'ركز على تمارين بناء العضلات وتقويتها';
+  String get buildStrengthDesc => 'قوة، أجهزة ريفورمر، تمارين الكور';
 
   @override
-  String get findMindfulness => 'ابحث عن اليقظة الذهنية';
+  String get findMindfulness => 'التركيز الذهني';
 
   @override
-  String get findMindfulnessDesc =>
-      'مارس تمارين تربط العقل بالجسم لتحقيق التوازن النفسي';
+  String get findMindfulnessDesc => 'تدفق، تأمل، هدوء';
 
   @override
   String get improveFlexibility => 'تحسين المرونة';
 
   @override
-  String get improveFlexibilityDesc => 'عزز نطاق حركتك من خلال تمارين التمدد';
+  String get improveFlexibilityDesc => 'تمدد، حركة، نطاق مرونة';
 
   @override
   String get generalFitness => 'لياقة عامة';
 
   @override
-  String get generalFitnessDesc => 'نهج متوازن للصحة العامة والعافية';
+  String get generalFitnessDesc => 'توازن وصحة شاملة';
 
   @override
   String get monthlyTarget => 'الهدف الشهري';

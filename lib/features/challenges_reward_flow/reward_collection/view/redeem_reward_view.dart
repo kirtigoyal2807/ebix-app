@@ -15,9 +15,7 @@ class RedeemRewardView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme
-        .of(context)
-        .brightness == Brightness.dark;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
       appBar: AppAppBar(
         title: context.l10n.redeem_reward,
@@ -33,16 +31,15 @@ class RedeemRewardView extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _BookingCard(isDark: isDark, context:context),
+              _BookingCard(isDark: isDark, context: context),
               SizedBox(height: AppSpacing.lg),
               _pointCard(isDark: isDark, context: context),
               SizedBox(height: AppSpacing.lg),
               AppText(
                 context.l10n.redemption_details,
-                style: (context) =>
-                    AppTextStyles.gelasioRegular(
-                      context,
-                    ).copyWith(height: 1.55),
+                style: (context) => AppTextStyles.gelasioRegular(
+                  context,
+                ).copyWith(height: 1.55),
               ),
               SizedBox(height: AppSpacing.sm),
               RedemptionDetails(),
@@ -97,10 +94,10 @@ class RedeemRewardView extends StatelessWidget {
         children: [
           AppText(
             context.l10n.priority_booking_week,
-            style: (context) =>
-                AppTextStyles.appBarTitle(
-                  context,
-                ).copyWith(fontWeight: FontWeight.w600),
+            style: (context) => AppTextStyles.appBarTitle(
+              context,
+              fontWeight: FontWeight.w600,
+            ).copyWith(),
           ),
           SizedBox(height: AppSpacing.sm),
           AppText(
@@ -110,21 +107,21 @@ class RedeemRewardView extends StatelessWidget {
           ),
           SizedBox(height: AppSpacing.md),
           Container(
-            padding: EdgeInsetsGeometry.symmetric(
-              horizontal: AppSpacing.sm,
-              vertical: AppSpacing.xi,
+            padding: EdgeInsetsGeometry.only(
+              left: AppSpacing.sm,
+              right: AppSpacing.base,
+              top: AppSpacing.xi,
+              bottom: AppSpacing.xi,
             ),
             decoration: BoxDecoration(
               color: isDark ? AppColors.progressBGColor : AppColors.whiteColor,
               borderRadius: BorderRadius.circular(AppRadius.lg),
             ),
             child: AppText(
-              context.l10n.points(20),
-              style: (context) =>
-                  AppTextStyles.body(context).copyWith(
-                    color: isDark ? AppColors.lightText : AppColors
-                        .languageIcon,
-                  ),
+              context.l10n.points(200),
+              style: (context) => AppTextStyles.body(context).copyWith(
+                color: isDark ? AppColors.lightText : AppColors.languageIcon,
+              ),
             ),
           ),
         ],
@@ -177,10 +174,9 @@ class RedeemRewardView extends StatelessWidget {
               ),
               AppText(
                 "-${context.l10n.points(200)}",
-                style: (context) =>
-                    AppTextStyles.body(
-                      context,
-                    ).copyWith(height: 1.55, color: AppColors.redLight),
+                style: (context) => AppTextStyles.body(
+                  context,
+                ).copyWith(height: 1.55, color: AppColors.redLight),
               ),
             ],
           ),
@@ -195,18 +191,16 @@ class RedeemRewardView extends StatelessWidget {
             children: [
               AppText(
                 context.l10n.after_redemption,
-                style: (context) =>
-                    AppTextStyles.textFieldHeading(
-                      context,
-                    ).copyWith(height: 1.4),
+                style: (context) => AppTextStyles.textFieldHeading(
+                  context,
+                ).copyWith(height: 1.4),
               ),
               AppText(
                 context.l10n.points(1050),
 
-                style: (context) =>
-                    AppTextStyles.textFieldHeading(
-                      context,
-                    ).copyWith(height: 1.55),
+                style: (context) => AppTextStyles.textFieldHeading(
+                  context,
+                ).copyWith(height: 1.55),
               ),
             ],
           ),
@@ -226,14 +220,13 @@ class RedeemRewardView extends StatelessWidget {
       ),
       child: AppText(
         context.l10n.redeem_warning,
-        style: (context) =>
-            AppTextStyles.bodyLightText(context).copyWith(
-              fontSize: 12,
-              height: 1.55,
-              color: isDark
-                  ? AppColors.upgradeDarkLockBackgroundColor
-                  : AppColors.lightGrey,
-            ),
+        style: (context) => AppTextStyles.bodyLightText(context).copyWith(
+          fontSize: 12,
+          height: 1.55,
+          color: isDark
+              ? AppColors.upgradeDarkLockBackgroundColor
+              : AppColors.lightGrey,
+        ),
         maxLines: 3,
       ),
     );

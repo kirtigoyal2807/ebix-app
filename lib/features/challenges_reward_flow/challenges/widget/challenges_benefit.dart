@@ -30,18 +30,18 @@ class ChallengesBenefit extends StatelessWidget {
           _buildRow(
             isDark: isDark,
             title: context.l10n.benefit_gold_badge,
-            subtitle:  context.l10n.benefit_feb_champion,
+            subtitle: context.l10n.benefit_feb_champion,
           ),
           SizedBox(height: AppSpacing.base),
           _buildRow(
             isDark: isDark,
-            title: context.l10n.benefit_bonus_points( 500),
+            title: context.l10n.benefit_bonus_points(500),
             subtitle: context.l10n.benefit_redeem_rewards,
           ),
           SizedBox(height: AppSpacing.base),
           _buildRow(
             isDark: isDark,
-            title: context.l10n.benefit_discount( 15),
+            title: context.l10n.benefit_discount(15),
             subtitle: context.l10n.benefit_next_billing,
           ),
         ],
@@ -59,7 +59,7 @@ class ChallengesBenefit extends StatelessWidget {
       children: [
         Icon(
           Icons.check_circle_outline_rounded,
-          size: 20,
+          size: 24,
           color: isDark ? AppColors.successBorderDark : AppColors.successColor,
         ),
         SizedBox(width: 10),

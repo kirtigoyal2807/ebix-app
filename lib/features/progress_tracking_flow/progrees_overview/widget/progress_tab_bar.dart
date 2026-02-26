@@ -13,8 +13,8 @@ PreferredSizeWidget progressTabBar({
     labelStyle: AppTextStyles.body(context),
     unselectedLabelColor: AppColors.lightGrey,
     unselectedLabelStyle: AppTextStyles.caption(
-      context,
-    ).copyWith(fontWeight: FontWeight.w400),
+      context,fontWeight: FontWeight.w400
+    ).copyWith(),
     dividerColor: Colors.transparent,
     dividerHeight: 1,
     indicatorColor: isDark ? AppColors.darkGreyBorder : AppColors.primary,

@@ -158,6 +158,7 @@ class _BranchOption extends StatelessWidget {
                       context,
                     ).copyWith(fontSize: 14, height: 1.2),
                   ),
+                  SizedBox(height: AppSpacing.xs,),
                   AppText(
                     subTitle,
                     style: (context) => AppTextStyles.bodyText(
@@ -177,7 +178,7 @@ class _BranchOption extends StatelessWidget {
                       // isDark
                       // ? AppColors.languageIconDark
                       // :
-                      AppColors.languageIcon),
+                      AppColors.primary),
                   borderRadius: BorderRadius.circular(6),
                 ),
                 child: Center(
@@ -186,6 +187,7 @@ class _BranchOption extends StatelessWidget {
                     width: 10,
                     height: 10,
                     fit: BoxFit.contain,
+
                     // colorFilter: ColorFilter.mode(
                     //   selected ? theme.colorScheme.primary : theme.hintColor,
                     //   BlendMode.srcIn,

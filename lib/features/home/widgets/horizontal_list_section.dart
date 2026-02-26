@@ -87,7 +87,7 @@ class TopTrainersSection extends StatelessWidget {
     ];
 
     final itemWidth = size.width * 0.38 > 140 ? 140.0 : size.width * 0.38;
-    final itemHeight =163.0;
+    final itemHeight =168.0;
     // itemWidth * 1.3 > 180 ? 180.0 : itemWidth * 1.3;
 
     return Column(

@@ -31,11 +31,11 @@ class AppTextStyles {
     );
   }
 
-  static TextStyle body(BuildContext context) {
+  static TextStyle body(BuildContext context,{FontWeight? fontWeight}) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return GoogleFonts.inter(
       fontSize: 14,
-      fontWeight: FontWeight.w500,
+      fontWeight:fontWeight?? FontWeight.w500,
       color: isDark ? AppColors.languageTextDark : AppColors.languageIcon,
     );
   }
@@ -49,21 +49,21 @@ class AppTextStyles {
     );
   }
 
-  static TextStyle bodyText(BuildContext context) {
+  static TextStyle bodyText(BuildContext context,{FontWeight? fontWeight}) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return GoogleFonts.inter(
       fontSize: 14,
-      fontWeight: FontWeight.w400,
+      fontWeight: fontWeight??FontWeight.w400,
       color: isDark ? AppColors.darkGreyText : AppColors.greyText,
       height: 1.4,
     );
   }
 
-  static TextStyle bodyTextSmall(BuildContext context) {
+  static TextStyle bodyTextSmall(BuildContext context,{FontWeight? fontWeight}) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return GoogleFonts.inter(
       fontSize: 14,
-      fontWeight: FontWeight.w400,
+      fontWeight: fontWeight??FontWeight.w400,
       color: isDark ? AppColors.darkGreyText : AppColors.greyText,
       height: 1,
     );
@@ -79,20 +79,20 @@ class AppTextStyles {
     );
   }
 
-  static TextStyle caption(BuildContext context) {
+  static TextStyle caption(BuildContext context,{FontWeight? fontWeight}) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return GoogleFonts.inter(
       fontSize: 14,
-      fontWeight: FontWeight.w500,
+      fontWeight:fontWeight?? FontWeight.w500,
       color: AppColors.lightGrey,
     );
   }
 
-  static TextStyle captionText(BuildContext context) {
+  static TextStyle captionText(BuildContext context,{FontWeight? fontWeight}) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return GoogleFonts.inter(
       fontSize: 12,
-      fontWeight: FontWeight.w400,
+      fontWeight: fontWeight??FontWeight.w400,
       color: isDark ? AppColors.lightDarkGrey : AppColors.lightGreyText,
     );
   }
@@ -106,31 +106,31 @@ class AppTextStyles {
     );
   }
 
-  static TextStyle textFieldHeading(BuildContext context) {
+  static TextStyle textFieldHeading(BuildContext context,{FontWeight? fontWeight}) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return GoogleFonts.inter(
       fontSize: 14,
-      fontWeight: FontWeight.w500,
+      fontWeight:fontWeight?? FontWeight.w500,
       color: isDark ? AppColors.lightText : AppColors.darkText,
       height: 1.55,
     );
   }
 
-  static TextStyle textField(BuildContext context) {
+  static TextStyle textField(BuildContext context,{FontWeight? fontWeight}) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return GoogleFonts.inter(
       fontSize: 16,
-      fontWeight: FontWeight.w400,
+      fontWeight: fontWeight??FontWeight.w400,
       color: isDark ? AppColors.lightText : AppColors.darkText,
       height: 1.6,
     );
   }
 
-  static TextStyle appBarTitle(BuildContext context) {
+  static TextStyle appBarTitle(BuildContext context,{FontWeight? fontWeight}) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return GoogleFonts.inter(
       fontSize: 18,
-      fontWeight: FontWeight.w500,
+      fontWeight:fontWeight?? FontWeight.w500,
       color: isDark ? AppColors.lightText : AppColors.darkText,
       height: 1.4,
     );
@@ -245,11 +245,11 @@ class AppTextStyles {
     );
   }
 
-  static TextStyle gelasioRegular(BuildContext context) {
+  static TextStyle gelasioRegular(BuildContext context,{FontWeight? fontWeight}) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return GoogleFonts.gelasio(
       fontSize: 18,
-      fontWeight: FontWeight.w400,
+      fontWeight: fontWeight??FontWeight.w400,
       color: isDark ? AppColors.lightText : AppColors.darkText,
       height: 1.1,
       // letterSpacing: -2,

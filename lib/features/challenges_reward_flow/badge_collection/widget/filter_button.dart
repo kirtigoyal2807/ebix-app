@@ -20,6 +20,7 @@ class FilterButton extends StatelessWidget {
       builder: (context, state) {
         return SizedBox(
           height: 28,
+
           child: ListView.separated(
             itemCount: state.badgeList.length,
             shrinkWrap: true,
@@ -35,6 +36,8 @@ class FilterButton extends StatelessWidget {
                   );
                 },
                 child: Container(
+                  width: 74,
+                  alignment: Alignment.center,
                   padding: const EdgeInsets.symmetric(
                     horizontal: AppSpacing.base,
                     vertical: AppSpacing.xs,

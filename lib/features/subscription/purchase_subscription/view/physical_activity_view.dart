@@ -75,7 +75,7 @@ class PhysicalActivityView extends StatelessWidget {
                         children: [
                           AppText(
                             l10n.ifYesHowManyTimes,
-                            style:(style)=> AppTextStyles.textFieldHeading(context).copyWith(fontWeight: FontWeight.w400,fontSize: 16,height: 1.4),
+                            style:(style)=> AppTextStyles.textFieldHeading(context,fontWeight: FontWeight.w400,).copyWith(fontSize: 16,height: 1.4),
                           ),
                           const SizedBox(height: 16), // Use translation with parameter
                           _buildFrequencyOption(context, l10n.daysAWeek(2), PhysicalActivityFrequency.twoDays, state.activityFrequency, cubit.updateActivityFrequency),
@@ -93,7 +93,7 @@ class PhysicalActivityView extends StatelessWidget {
           AppButton(
             label: l10n.continueTxt,
             onPressed: () => cubit.nextStep(),
-            buttonColor: AppColors.primaryBrown,
+            buttonColor:isDark ?AppColors.primary: AppColors.primaryBrown,
             expanded: true,
           ),
         ],
@@ -165,13 +165,13 @@ class PhysicalActivityView extends StatelessWidget {
         child: Row(
           children: [
              Container(
-              width: 24,
-              height: 24,
+              width: 20,
+              height: 20,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(6),
                 border: Border.all(
-                  color: isSelected ? AppColors.primaryBrown : (isDark ? AppColors.lightGrey : AppColors.lightGreyBorder),
-                  width: 1.5,
+                  color: isSelected ? AppColors.primaryBrown : (isDark ? AppColors.greyText : AppColors.lightGreyBorder),
+                  width: 1,
                 ),
                 color: isSelected ? AppColors.primaryBrown : Colors.transparent,
               ),
@@ -183,7 +183,7 @@ class PhysicalActivityView extends StatelessWidget {
             AppText(
               label,
               style:(style)=> AppTextStyles.bodyTextSmall(context).copyWith(
-                color: isDark ? AppColors.lightText : AppColors.greyText,
+                color: isDark ? AppColors.greyText : AppColors.greyText,
               ),
             ),
           ],
@@ -196,7 +196,7 @@ class PhysicalActivityView extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return AppText(
       title,
-      style: (style) => AppTextStyles.textFieldHeading(context).copyWith(fontWeight: FontWeight.w400,fontSize: 16,height: 1.4),
+      style: (style) => AppTextStyles.textFieldHeading(context,fontWeight: FontWeight.w400,).copyWith(fontSize: 16,height: 1.4),
       maxLines: 4,
     );
   }

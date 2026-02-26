@@ -102,6 +102,7 @@ class PlanDetailsModal extends StatelessWidget {
                 "assets/images/svg/ic_Saudi_Riyal_Symbol.svg",
                 height: 24,
                 width: 24,
+               color:    isDark ? AppColors.languageTextDark : AppColors.languageIcon
               ),
               AppText(
                 ' / Month',
@@ -167,7 +168,7 @@ class PlanDetailsModal extends StatelessWidget {
           AppButton(
             label: appLabel??'Subscribe Now',
             onPressed: () {},
-            buttonColor: AppColors.primaryBrown,
+            buttonColor:isDark ?AppColors.primary: AppColors.primaryBrown,
             expanded: true,
           ),
           const SizedBox(height: 16),

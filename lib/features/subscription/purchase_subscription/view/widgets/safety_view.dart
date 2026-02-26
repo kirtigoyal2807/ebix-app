@@ -169,7 +169,7 @@ class SafetyView extends StatelessWidget {
                         // Navigate to payment or finish flow
                         cubit.nextStep(); // Or handle payment logic
                       }, // Disable if not accepted
-                buttonColor: AppColors.primaryBrown,
+                buttonColor:isDark ?AppColors.primary: AppColors.primaryBrown,
                 expanded: true,
               );
             },

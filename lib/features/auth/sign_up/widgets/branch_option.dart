@@ -32,11 +32,11 @@ class BranchOption extends StatelessWidget {
     final theme = Theme.of(context);
     final borderColor = selected
         ? isDark
-              ? AppColors.languageIconDark
-              : AppColors.languageIconDark
+              ? AppColors.greyText
+              : Colors.transparent
         : isDark
         ? AppColors.greyText
-        : AppColors.whiteBorderColor;
+        : Colors.transparent;
 
     return
     // Material(
@@ -55,7 +55,7 @@ class BranchOption extends StatelessWidget {
         decoration: BoxDecoration(
           color: isDark ? AppColors.homeBackground : Colors.white,
           borderRadius: BorderRadius.circular(AppRadius.md),
-          // border: Border.all(color: borderColor, width: selected ? 1 : 1),
+          border: Border.all(color: borderColor, width: selected ? 1 : 1),
           boxShadow: isDark
               ? [
                   BoxShadow(
@@ -145,9 +145,10 @@ class BranchOption extends StatelessWidget {
                           height: 20,
                           decoration: BoxDecoration(
                             color: (isDark
-                                ? AppColors.languageIconDark
+                                ? AppColors.primary
                                 : AppColors.languageIcon),
                             borderRadius: BorderRadius.circular(6),
+                            border: Border.all(color: isDark?AppColors.darkGreyBorder: Colors.transparent,width: 1)
                           ),
                           child: Center(
                             child: SvgPicture.asset(

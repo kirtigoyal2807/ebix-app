@@ -39,9 +39,9 @@ class ClassWhatToBring extends StatelessWidget {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Padding(
-                    padding: EdgeInsets.only(top: 8.0),
-                    child: Icon(Icons.circle, size: 6, color: AppColors.greyText),
+                    Padding(
+                    padding: EdgeInsets.only(top: 8.0,left: 8),
+                    child: Icon(Icons.circle, size: 6, color:isDark ? AppColors.darkGreyText :  AppColors.greyText),
                   ),
                   const SizedBox(width: AppSpacing.sm),
                   Expanded(

@@ -85,7 +85,7 @@ class _LanguageBottomSheetState extends State<LanguageBottomSheet> {
                           children: [
                             _LanguageOption(
                               flag: '🇺🇸',
-                              title: 'English',
+                              title: 'English (US)',
                               locale: const Locale('en'),
                               selected: _selectedLocale.languageCode == 'en',
                               onTap: () {

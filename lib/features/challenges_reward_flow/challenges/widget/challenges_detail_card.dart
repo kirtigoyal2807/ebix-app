@@ -76,7 +76,7 @@ class ChallengesDetailCard extends StatelessWidget {
                       ),
                       decoration: BoxDecoration(
                         color: isDark
-                            ? AppColors.primaryDarkButton
+                            ? Colors.transparent
                             : AppColors.greyContainerBg,
                         borderRadius: BorderRadius.circular(AppRadius.base),
                       ),
@@ -138,8 +138,7 @@ class ChallengesDetailCard extends StatelessWidget {
                         borderRadius: BorderRadius.circular(AppRadius.base),
                       ),
                       child: AppText(
-                        context.l10n.points_short(point.round()),
-
+                        "+${context.l10n.points_short(point.toInt())}",
                         style: (context) =>
                             AppTextStyles.splashVersion(context).copyWith(
                               color: isDark

@@ -49,7 +49,7 @@ class ActiveChallengesCard extends StatelessWidget {
           children: [
             Row(
               children: [
-                SvgPicture.asset(imageIcon, height: 40, width: 40),
+                SvgPicture.asset(imageIcon, height: 48, width: 48),
                 SizedBox(width: AppSpacing.md),
                 Expanded(
                   child: Column(
@@ -126,7 +126,7 @@ class ActiveChallengesCard extends StatelessWidget {
                     borderRadius: BorderRadius.circular(AppRadius.base),
                   ),
                   child: AppText(
-                    context.l10n.points_short(point.toInt()),
+                    "+${context.l10n.points_short(point.toInt())}",
                     style: (context) =>
                         AppTextStyles.splashVersion(context).copyWith(
                           color: isDark

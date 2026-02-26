@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:pilates_app/config/theme/app_colors.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
@@ -78,9 +79,20 @@ class _SignInViewState extends State<SignInView> {
                                 children: [
                                   AppText(
                                     context.l10n.emailTab,
-                                    style: (context) => AppTextStyles.boldBody(
-                                      context,
-                                    ).copyWith(fontSize: 16),
+                                    style: (context) => GoogleFonts.inter(
+                                      fontSize: 16,
+                                      fontWeight: _selectedTab == 0
+                                          ? FontWeight.w600
+                                          : FontWeight.w400,
+                                      color: _selectedTab == 0
+                                          ? (isDark
+                                                ? AppColors.languageTextDark
+                                                : AppColors.languageIcon)
+                                          : (AppColors.lightGrey),
+                                    ),
+                                    // AppTextStyles.boldBody(
+                                    //   context,
+                                    // ).copyWith(fontSize: 16),
                                   ),
                                   const SizedBox(height: 8),
                                   Container(
@@ -102,9 +114,17 @@ class _SignInViewState extends State<SignInView> {
                                 children: [
                                   AppText(
                                     context.l10n.phoneTab,
-                                    style: (context) => AppTextStyles.boldBody(
-                                      context,
-                                    ).copyWith(fontSize: 16),
+                                    style: (context) =>  GoogleFonts.inter(
+                                      fontSize: 16,
+                                      fontWeight: _selectedTab == 1
+                                          ? FontWeight.w600
+                                          : FontWeight.w400,
+                                      color: _selectedTab == 1
+                                          ? (isDark
+                                          ? AppColors.languageTextDark
+                                          : AppColors.languageIcon)
+                                          : (AppColors.lightGrey),
+                                    ),
                                   ),
                                   const SizedBox(height: 8),
                                   Container(
@@ -139,7 +159,7 @@ class _SignInViewState extends State<SignInView> {
                           horizontal: AppSpacing.lg,
                         ),
                         child: AppTextField(
-                          label: context.l10n.emailOrPhone,
+                          label: context.l10n.email,
                           hint: 'user@gmail.com',
                           keyboardType: TextInputType.emailAddress,
                         ),
@@ -154,6 +174,7 @@ class _SignInViewState extends State<SignInView> {
                           hint: '**********',
                           obscure: true,
                           keyboardType: TextInputType.visiblePassword,
+                          maxLines: 1,
                         ),
                       ),
                       const SizedBox(height: AppSpacing.sm),

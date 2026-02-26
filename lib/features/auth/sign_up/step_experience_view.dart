@@ -77,6 +77,7 @@ class _SignUpExperienceViewState extends State<SignUpExperienceView> {
                     AppText(
                       context.l10n.experienceTitle,
                       style: AppTextStyles.heading1,
+                      maxLines: 3,
                     ),
 
                     // const SizedBox(height: AppSpacing.sm + 2),

@@ -32,7 +32,7 @@ class BadgeCollectionView extends StatelessWidget {
               vertical: AppSpacing.md,
               horizontal: AppSpacing.lg,
             ),
-          
+
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -97,13 +97,14 @@ class BadgeCollectionView extends StatelessWidget {
             value,
             style: (context) => AppTextStyles.bottomSheetTitle(
               context,
-            ).copyWith(fontWeight: FontWeight.w600, height: 1.55),
+            ).copyWith(fontWeight: FontWeight.w600, height: 1.55, fontSize: 24),
           ),
-          SizedBox(height: AppSpacing.xs),
+          SizedBox(height: 2),
           AppText(
             label,
-            style: (context) =>
-                AppTextStyles.caption(context).copyWith(height: 1.55),
+            style: (context) => AppTextStyles.caption(
+              context,
+            ).copyWith(height: 1.55, fontSize: 12),
           ),
         ],
       ),

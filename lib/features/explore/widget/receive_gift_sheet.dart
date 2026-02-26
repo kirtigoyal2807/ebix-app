@@ -50,13 +50,17 @@ class ReceiveGiftSheet extends StatelessWidget {
               ),
               // const SizedBox(height: AppSpacing.xl),
               Center(
-                child: SvgPicture.asset(
-                  isDark?
-                  "assets/images/svg/ic_dark_gift_card.svg"
-                      :
-                  "assets/images/svg/ic_gift_card.svg",
-                  height: 192,
-                  width: 192,
+                child: ClipOval(
+                  child: SizedBox(
+                    height: 192,
+                    width: 192,
+                    child: SvgPicture.asset(
+                      isDark
+                          ? "assets/images/svg/ic_dark_gift_card.svg"
+                          : "assets/images/svg/ic_gift_card.svg",
+                      fit: BoxFit.cover, // important
+                    ),
+                  ),
                 ),
               ),
 

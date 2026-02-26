@@ -51,9 +51,18 @@ class ChallengesDetailView extends StatelessWidget {
               SizedBox(height: AppSpacing.md),
               _progressCard(context: context),
               SizedBox(height: AppSpacing.xl),
-              AppText(
-                context.l10n.leaderboard,
-                style: (context) => AppTextStyles.gelasioRegular(context),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  AppText(
+                    context.l10n.leaderboard,
+                    style: (context) => AppTextStyles.gelasioRegular(context),
+                  ),
+                  AppText(
+                    context.l10n.seeAll,
+                    style: (context) => AppTextStyles.body(context),
+                  ),
+                ],
               ),
               SizedBox(height: AppSpacing.md),
               ScoreCard(

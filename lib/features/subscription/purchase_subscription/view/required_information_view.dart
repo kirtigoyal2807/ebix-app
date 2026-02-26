@@ -36,7 +36,7 @@ class RequiredInformationView extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.all(AppSpacing.md),
                     decoration: BoxDecoration(
-                      color: isDark ? AppColors.upgradeDarkBackgroundColor
+                      color: isDark ? AppColors.warningColor
                           .withValues(alpha: 0.11) : AppColors.upgradeLightBackgroundColor, // Custom colors to match screenshot
                       borderRadius: BorderRadius.circular(16),
                     ),
@@ -44,7 +44,7 @@ class RequiredInformationView extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Icon(
-                          Icons.lock_outline_rounded,
+                          Icons.enhanced_encryption_outlined,
                           color: isDark ? AppColors.upgradeDarkLockBackgroundColor : AppColors.lightRedColor, // Gold/Brown
                           size: 18,
                         ),
@@ -231,7 +231,7 @@ class RequiredInformationView extends StatelessWidget {
                cubit.nextStep();
                Navigator.push(context, MaterialPageRoute(builder: (context) => SuccessMembershipView(),));
             },
-            buttonColor: AppColors.primaryBrown,
+            buttonColor:isDark ?AppColors.primary: AppColors.primaryBrown,
             expanded: true,
           ),
         ],

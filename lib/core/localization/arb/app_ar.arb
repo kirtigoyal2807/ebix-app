@@ -116,7 +116,7 @@
   "yourProgress": "تقدمك",
   "seeAll": "عرض الكل",
   "monthlyProgress": "التقدم الشهري",
-  "classes": "حصص",
+  "classTxt": "حصص",
   "totalTime": "إجمالي الوقت",
   "goal": "الهدف",
   "ofClassesThisMonth": "من {count} حصص هذا الشهر",
@@ -427,7 +427,7 @@
   "remainingThisYear": "المتبقي هذا العام",
   "pauseAttemptsRemaining": "محاولات الإيقاف المتبقية",
   "attemptCount": "1 من 2 محاولات",
-  "premiumPlan": "الخطة المميزة",
+  "premiumPlanMonthly": "الخطة المميزة",
   "basicPlan": "الخطة الأساسية",
   "upgradedFromBasic": "تمت الترقية من الخطة الأساسية",
   "initialSubscription": "الاشتراك الأولي",
@@ -573,7 +573,7 @@
   "fullName": "الاسم الكامل",
   "recipientNameHint": "اسم المستلم",
   "recipientEmail": "البريد الإلكتروني للمستلم",
-  "recipientEmailHint": "email@gmail.com",
+  "recipientEmailHintGmail": "email@gmail.com",
   "recipientPhoneOptional": "رقم هاتف المستلم (اختياري)",
   "phoneHint": "XXXXXXXXXXX",
   "deliveryOptions": "خيارات التسليم",
@@ -790,14 +790,7 @@
   "edit_goal_tip_content": "هدفك يخصص تتبع تقدمك. يمكنك تغييره في أي وقت ليتناسب مع رحلة لياقتك المتطورة.",
 
 
-  "buildStrength": "بناء القوة",
-  "buildStrengthDesc": "ركز على تمارين بناء العضلات وتقويتها",
-  "findMindfulness": "ابحث عن اليقظة الذهنية",
-  "findMindfulnessDesc": "مارس تمارين تربط العقل بالجسم لتحقيق التوازن النفسي",
-  "improveFlexibility": "تحسين المرونة",
-  "improveFlexibilityDesc": "عزز نطاق حركتك من خلال تمارين التمدد",
-  "generalFitness": "لياقة عامة",
-  "generalFitnessDesc": "نهج متوازن للصحة العامة والعافية",
+
 
 
   "monthlyTarget": "الهدف الشهري",

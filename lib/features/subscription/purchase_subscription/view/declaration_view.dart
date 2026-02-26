@@ -86,7 +86,7 @@ class DeclarationView extends StatelessWidget {
             onPressed: () {
               cubit.nextStep();
             },
-            buttonColor: AppColors.primaryBrown,
+            buttonColor:isDark ?AppColors.primary: AppColors.primaryBrown,
             expanded: true,
           ),
         ],
@@ -99,7 +99,7 @@ class DeclarationView extends StatelessWidget {
     return AppText(
       title,
       style: (style) => AppTextStyles.bodyText(context).copyWith(
-        fontWeight: FontWeight.w500,
+        // fontWeight: FontWeight.w500,
         fontSize: 16,
         color: isDark ? AppColors.lightText : AppColors.darkText,
       ),

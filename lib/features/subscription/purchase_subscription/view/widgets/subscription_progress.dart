@@ -25,7 +25,7 @@ class SubscriptionProgress extends StatelessWidget {
         minHeight: 6,
         backgroundColor: isDark ? AppColors.primaryDarkButton : AppColors.seekBarLight,
         valueColor: AlwaysStoppedAnimation<Color>(
-          isDark ?AppColors.languageIconDark:AppColors.languageIconDark,
+          isDark ?AppColors.languageIconDark:AppColors.languageTextDark,
         ),
       ),
     );
