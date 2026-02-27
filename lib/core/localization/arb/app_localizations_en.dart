@@ -2482,4 +2482,61 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get viewAllTiers => 'View All Tiers';
+
+  @override
+  String get yourReferralCode => 'Your Referral Code';
+
+  @override
+  String get shareCodeWithFriends => 'Share this code with friends';
+
+  @override
+  String get copyCode => 'Copy Code';
+
+  @override
+  String get shareViaWhatsapp => 'Share via WhatsApp';
+
+  @override
+  String get inviteDirectly => 'Invite Directly';
+
+  @override
+  String get sendPersonalInvitation =>
+      'Send a personal invitation to your friends';
+
+  @override
+  String get friendsName => 'Friend’s Name';
+
+  @override
+  String get sendInvitation => 'Send Invitation';
+
+  @override
+  String get howItWorks => 'How it works';
+
+  @override
+  String get shareYourCode => 'Share Your Code';
+
+  @override
+  String get shareYourCodeDesc =>
+      'Send your unique referral code to friends and family';
+
+  @override
+  String get theySignUp => 'They Sign Up';
+
+  @override
+  String get theySignUpDesc =>
+      'Friend uses your code when subscribing to any plan';
+
+  @override
+  String get youBothGetRewards => 'You Both Get Rewards';
+
+  @override
+  String get youBothGetRewardsDesc =>
+      'You earn 500 points, they get 20% off first month';
+
+  @override
+  String get recentReferrals => 'Recent Referrals';
+
+  @override
+  String joinedDaysAgo(int days) {
+    return 'Joined $days days ago';
+  }
 }

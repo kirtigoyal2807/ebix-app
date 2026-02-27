@@ -40,11 +40,11 @@ class AppTextStyles {
     );
   }
 
-  static TextStyle boldBody(BuildContext context) {
+  static TextStyle boldBody(BuildContext context,{FontWeight? fontWeight}) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return GoogleFonts.inter(
       fontSize: 14,
-      fontWeight: FontWeight.w600,
+      fontWeight:fontWeight?? FontWeight.w600,
       color: isDark ? AppColors.languageTextDark : AppColors.languageIcon,
     );
   }

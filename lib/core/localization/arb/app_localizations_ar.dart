@@ -2466,4 +2466,59 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get viewAllTiers => 'عرض جميع المستويات';
+
+  @override
+  String get yourReferralCode => 'رمز الإحالة الخاص بك';
+
+  @override
+  String get shareCodeWithFriends => 'شارك هذا الرمز مع أصدقائك';
+
+  @override
+  String get copyCode => 'نسخ الرمز';
+
+  @override
+  String get shareViaWhatsapp => 'المشاركة عبر واتساب';
+
+  @override
+  String get inviteDirectly => 'دعوة مباشرة';
+
+  @override
+  String get sendPersonalInvitation => 'أرسل دعوة شخصية إلى أصدقائك';
+
+  @override
+  String get friendsName => 'اسم الصديق';
+
+  @override
+  String get sendInvitation => 'إرسال الدعوة';
+
+  @override
+  String get howItWorks => 'كيف يعمل';
+
+  @override
+  String get shareYourCode => 'شارك رمزك';
+
+  @override
+  String get shareYourCodeDesc =>
+      'أرسل رمز الإحالة الخاص بك إلى الأصدقاء والعائلة';
+
+  @override
+  String get theySignUp => 'يقومون بالتسجيل';
+
+  @override
+  String get theySignUpDesc => 'يستخدم الصديق رمزك عند الاشتراك في أي خطة';
+
+  @override
+  String get youBothGetRewards => 'تحصلان على مكافآت';
+
+  @override
+  String get youBothGetRewardsDesc =>
+      'تحصل على 500 نقطة، ويحصل هو على خصم 20٪ لأول شهر';
+
+  @override
+  String get recentReferrals => 'الإحالات الأخيرة';
+
+  @override
+  String joinedDaysAgo(int days) {
+    return 'انضم منذ $days أيام';
+  }
 }

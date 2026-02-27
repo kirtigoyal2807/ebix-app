@@ -4759,6 +4759,108 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'View All Tiers'**
   String get viewAllTiers;
+
+  /// No description provided for @yourReferralCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Referral Code'**
+  String get yourReferralCode;
+
+  /// No description provided for @shareCodeWithFriends.
+  ///
+  /// In en, this message translates to:
+  /// **'Share this code with friends'**
+  String get shareCodeWithFriends;
+
+  /// No description provided for @copyCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy Code'**
+  String get copyCode;
+
+  /// No description provided for @shareViaWhatsapp.
+  ///
+  /// In en, this message translates to:
+  /// **'Share via WhatsApp'**
+  String get shareViaWhatsapp;
+
+  /// No description provided for @inviteDirectly.
+  ///
+  /// In en, this message translates to:
+  /// **'Invite Directly'**
+  String get inviteDirectly;
+
+  /// No description provided for @sendPersonalInvitation.
+  ///
+  /// In en, this message translates to:
+  /// **'Send a personal invitation to your friends'**
+  String get sendPersonalInvitation;
+
+  /// No description provided for @friendsName.
+  ///
+  /// In en, this message translates to:
+  /// **'Friend’s Name'**
+  String get friendsName;
+
+  /// No description provided for @sendInvitation.
+  ///
+  /// In en, this message translates to:
+  /// **'Send Invitation'**
+  String get sendInvitation;
+
+  /// No description provided for @howItWorks.
+  ///
+  /// In en, this message translates to:
+  /// **'How it works'**
+  String get howItWorks;
+
+  /// No description provided for @shareYourCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Share Your Code'**
+  String get shareYourCode;
+
+  /// No description provided for @shareYourCodeDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Send your unique referral code to friends and family'**
+  String get shareYourCodeDesc;
+
+  /// No description provided for @theySignUp.
+  ///
+  /// In en, this message translates to:
+  /// **'They Sign Up'**
+  String get theySignUp;
+
+  /// No description provided for @theySignUpDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Friend uses your code when subscribing to any plan'**
+  String get theySignUpDesc;
+
+  /// No description provided for @youBothGetRewards.
+  ///
+  /// In en, this message translates to:
+  /// **'You Both Get Rewards'**
+  String get youBothGetRewards;
+
+  /// No description provided for @youBothGetRewardsDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'You earn 500 points, they get 20% off first month'**
+  String get youBothGetRewardsDesc;
+
+  /// No description provided for @recentReferrals.
+  ///
+  /// In en, this message translates to:
+  /// **'Recent Referrals'**
+  String get recentReferrals;
+
+  /// No description provided for @joinedDaysAgo.
+  ///
+  /// In en, this message translates to:
+  /// **'Joined {days} days ago'**
+  String joinedDaysAgo(int days);
 }
 
 class _AppLocalizationsDelegate

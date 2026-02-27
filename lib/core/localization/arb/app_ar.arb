@@ -983,7 +983,44 @@
   "featureGuestPass": "بطاقة ضيف شهرية",
   "featureGuestPassDesc": "أحضر صديقًا مرة واحدة شهريًا",
 
-  "viewAllTiers": "عرض جميع المستويات"
+  "viewAllTiers": "عرض جميع المستويات",
+
+
+
+  "yourReferralCode": "رمز الإحالة الخاص بك",
+  "shareCodeWithFriends": "شارك هذا الرمز مع أصدقائك",
+  "copyCode": "نسخ الرمز",
+  "shareViaWhatsapp": "المشاركة عبر واتساب",
+
+  "inviteDirectly": "دعوة مباشرة",
+  "sendPersonalInvitation": "أرسل دعوة شخصية إلى أصدقائك",
+  "friendsName": "اسم الصديق",
+
+  "sendInvitation": "إرسال الدعوة",
+
+  "howItWorks": "كيف يعمل",
+
+  "shareYourCode": "شارك رمزك",
+  "shareYourCodeDesc": "أرسل رمز الإحالة الخاص بك إلى الأصدقاء والعائلة",
+
+  "theySignUp": "يقومون بالتسجيل",
+  "theySignUpDesc": "يستخدم الصديق رمزك عند الاشتراك في أي خطة",
+
+  "youBothGetRewards": "تحصلان على مكافآت",
+  "youBothGetRewardsDesc": "تحصل على 500 نقطة، ويحصل هو على خصم 20٪ لأول شهر",
+
+  "recentReferrals": "الإحالات الأخيرة",
+
+
+  "joinedDaysAgo": "انضم منذ {days} أيام",
+  "@joinedDaysAgo": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  }
+
 }
 
 

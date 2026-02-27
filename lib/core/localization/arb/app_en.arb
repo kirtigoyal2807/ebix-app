@@ -969,7 +969,44 @@
   "featureGuestPass": "Monthly Guest Pass",
   "featureGuestPassDesc": "Bring a friend once per month",
 
-  "viewAllTiers": "View All Tiers"
+  "viewAllTiers": "View All Tiers",
+
+
+
+  "yourReferralCode": "Your Referral Code",
+  "shareCodeWithFriends": "Share this code with friends",
+  "copyCode": "Copy Code",
+  "shareViaWhatsapp": "Share via WhatsApp",
+
+  "inviteDirectly": "Invite Directly",
+  "sendPersonalInvitation": "Send a personal invitation to your friends",
+  "friendsName": "Friend’s Name",
+
+  "sendInvitation": "Send Invitation",
+
+  "howItWorks": "How it works",
+
+  "shareYourCode": "Share Your Code",
+  "shareYourCodeDesc": "Send your unique referral code to friends and family",
+
+  "theySignUp": "They Sign Up",
+  "theySignUpDesc": "Friend uses your code when subscribing to any plan",
+
+  "youBothGetRewards": "You Both Get Rewards",
+  "youBothGetRewardsDesc": "You earn 500 points, they get 20% off first month",
+
+  "recentReferrals": "Recent Referrals",
+
+
+  "joinedDaysAgo": "Joined {days} days ago",
+  "@joinedDaysAgo": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  }
+
 
 }
 

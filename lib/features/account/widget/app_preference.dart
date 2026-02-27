@@ -7,6 +7,7 @@ import '../../../core/localization/localization_extension.dart';
 import '../../../widgets/app_text.dart';
 import '../../../widgets/language_bottom_sheet.dart';
 import '../../../widgets/theme_bottom_sheet.dart';
+import '../view/change_home_branch.dart';
 import 'account_info_tile.dart';
 
 class AppPreference extends StatelessWidget {
@@ -40,6 +41,12 @@ class AppPreference extends StatelessWidget {
         ),
         SizedBox(height: AppSpacing.lmd),
         AccountInfoTile(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => ChangeHomeBranch()),
+            );
+          },
           icon: isDark
               ? "assets/images/svg/account/ic_dark_home.svg"
               : "assets/images/svg/account/ic_home.svg",
@@ -66,7 +73,7 @@ class AppPreference extends StatelessWidget {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      barrierColor:     AppColors.bottomSheetShadow,
+      barrierColor: AppColors.bottomSheetShadow,
       // backgroundColor: Colors.transparent,
       builder: (_) => const LanguageBottomSheet(),
     );
@@ -77,7 +84,7 @@ class AppPreference extends StatelessWidget {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      barrierColor:     AppColors.bottomSheetShadow,
+      barrierColor: AppColors.bottomSheetShadow,
       // backgroundColor: Colors.transparent,
       builder: (_) => const ThemeBottomSheet(),
     );

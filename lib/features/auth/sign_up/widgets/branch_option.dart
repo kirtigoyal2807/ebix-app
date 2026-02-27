@@ -15,6 +15,7 @@ class BranchOption extends StatelessWidget {
   final String type; // Premium / Standard
   final bool selected;
   final VoidCallback onTap;
+  final bool isOnBoarding;
 
   const BranchOption({
     super.key,
@@ -24,6 +25,7 @@ class BranchOption extends StatelessWidget {
     required this.type,
     required this.selected,
     required this.onTap,
+    this.isOnBoarding = true,
   });
 
   @override
@@ -144,11 +146,18 @@ class BranchOption extends StatelessWidget {
                           width: 20,
                           height: 20,
                           decoration: BoxDecoration(
-                            color: (isDark
-                                ? AppColors.primary
-                                : AppColors.languageIcon),
+                            color: isOnBoarding
+                                ? (isDark
+                                      ? AppColors.primary
+                                      : AppColors.languageIcon)
+                                : AppColors.primary,
                             borderRadius: BorderRadius.circular(6),
-                            border: Border.all(color: isDark?AppColors.darkGreyBorder: Colors.transparent,width: 1)
+                            border: Border.all(
+                              color: isDark && isOnBoarding
+                                  ? AppColors.darkGreyBorder
+                                  : Colors.transparent,
+                              width: 1,
+                            ),
                           ),
                           child: Center(
                             child: SvgPicture.asset(
@@ -188,7 +197,49 @@ class BranchOption extends StatelessWidget {
                         ).copyWith(fontSize: 12, height: 1.4),
                       ),
                       Spacer(),
-                      _BranchTypeChip(type: type),
+
+                      isOnBoarding
+                          ? _BranchTypeChip(type: type)
+                          : Container(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: AppSpacing.xi,
+                                vertical: 2,
+                              ),
+                              decoration: BoxDecoration(
+                                color: isDark
+                                    ? AppColors.successColor.withValues(
+                                        alpha: 0.36,
+                                      )
+                                    : AppColors.featuredTagBackgroundColor,
+                                borderRadius: BorderRadius.circular(
+                                  AppRadius.base,
+                                ),
+                              ),
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    Icons.done,
+                                    color: isDark
+                                        ? AppColors.successBorderDark
+                                        : AppColors.GreyColor,
+                                    size: 11,
+                                  ),
+                                  SizedBox(width: 5),
+                                  AppText(
+                                    "In Your Plan",
+                                    style: (context) =>
+                                        AppTextStyles.splashVersion(
+                                          context,
+                                        ).copyWith(
+                                          color: isDark
+                                              ? AppColors.successBorderDark
+                                              : AppColors.GreyColor,
+                                          height: 1.8,
+                                        ),
+                                  ),
+                                ],
+                              ),
+                            ),
                     ],
                   ),
                 ],

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/features/explore/view/redeem_card_view.dart';
+import 'package:pilates_app/features/explore/view/referral_program_view.dart';
 
 import '../../../config/theme/app_colors.dart';
 import '../../../config/theme/app_text_styles.dart';
@@ -110,6 +111,12 @@ class MyActivityInfo extends StatelessWidget {
         ),
         SizedBox(height: AppSpacing.lmd),
         AccountInfoTile(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => ReferralProgramView()),
+            );
+          },
           icon: isDark
               ? "assets/images/svg/explore/Ic_dark_referral_program.svg"
               : "assets/images/svg/explore/Ic_referral_program.svg",
