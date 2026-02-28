@@ -4861,6 +4861,210 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Joined {days} days ago'**
   String joinedDaysAgo(int days);
+
+  /// No description provided for @changeHomeBranch.
+  ///
+  /// In en, this message translates to:
+  /// **'Change Home Branch'**
+  String get changeHomeBranch;
+
+  /// No description provided for @updateHomeBranch.
+  ///
+  /// In en, this message translates to:
+  /// **'Update Home Branch'**
+  String get updateHomeBranch;
+
+  /// No description provided for @searchTrainers.
+  ///
+  /// In en, this message translates to:
+  /// **'Search trainers...'**
+  String get searchTrainers;
+
+  /// No description provided for @allTrainers.
+  ///
+  /// In en, this message translates to:
+  /// **'All Trainers'**
+  String get allTrainers;
+
+  /// No description provided for @matPilates.
+  ///
+  /// In en, this message translates to:
+  /// **'Mat Pilates'**
+  String get matPilates;
+
+  /// No description provided for @reformer.
+  ///
+  /// In en, this message translates to:
+  /// **'Reformer'**
+  String get reformer;
+
+  /// No description provided for @seniorFriendly.
+  ///
+  /// In en, this message translates to:
+  /// **'Senior Friendly'**
+  String get seniorFriendly;
+
+  /// No description provided for @trainerNameDemo.
+  ///
+  /// In en, this message translates to:
+  /// **'Aisha Sherin'**
+  String get trainerNameDemo;
+
+  /// No description provided for @powerPilatesSpecialist.
+  ///
+  /// In en, this message translates to:
+  /// **'Power Pilates Specialist'**
+  String get powerPilatesSpecialist;
+
+  /// No description provided for @yearsExperience.
+  ///
+  /// In en, this message translates to:
+  /// **'{years} yrs exp.'**
+  String yearsExperience(Object years);
+
+  /// No description provided for @matCertified.
+  ///
+  /// In en, this message translates to:
+  /// **'Mat Certified'**
+  String get matCertified;
+
+  /// No description provided for @trainerDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Specializes in building core strength and helping clients achieve their fitness goals.'**
+  String get trainerDescription;
+
+  /// No description provided for @downtownStudio.
+  ///
+  /// In en, this message translates to:
+  /// **'Downtown Studio'**
+  String get downtownStudio;
+
+  /// No description provided for @classesThisWeek.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} classes this week'**
+  String classesThisWeek(Object count);
+
+  /// No description provided for @trainerDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Trainer Details'**
+  String get trainerDetails;
+
+  /// No description provided for @reviews.
+  ///
+  /// In en, this message translates to:
+  /// **'Reviews'**
+  String get reviews;
+
+  /// No description provided for @classesTaught.
+  ///
+  /// In en, this message translates to:
+  /// **'Classes Taught'**
+  String get classesTaught;
+
+  /// No description provided for @returnRate.
+  ///
+  /// In en, this message translates to:
+  /// **'Return Rate'**
+  String get returnRate;
+
+  /// No description provided for @about.
+  ///
+  /// In en, this message translates to:
+  /// **'About'**
+  String get about;
+
+  /// No description provided for @trainerAboutDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Aisha brings over 8 years of experience in Pilates instruction, specializing in power flows that build strength and flexibility. She discovered Pilates after a sports injury and fell in love with the transformative power of controlled movement. Her classes are known for their perfect balance of challenge and mindfulness, helping students of all levels achieve their fitness goals while developing a deeper mind-body connection.'**
+  String get trainerAboutDescription;
+
+  /// No description provided for @teachingStyle.
+  ///
+  /// In en, this message translates to:
+  /// **'Teaching Style'**
+  String get teachingStyle;
+
+  /// No description provided for @dynamicTxt.
+  ///
+  /// In en, this message translates to:
+  /// **'Dynamic'**
+  String get dynamicTxt;
+
+  /// No description provided for @motivating.
+  ///
+  /// In en, this message translates to:
+  /// **'Motivating'**
+  String get motivating;
+
+  /// No description provided for @detailOriented.
+  ///
+  /// In en, this message translates to:
+  /// **'Detail Oriented'**
+  String get detailOriented;
+
+  /// No description provided for @challenging.
+  ///
+  /// In en, this message translates to:
+  /// **'Challenging'**
+  String get challenging;
+
+  /// No description provided for @supporting.
+  ///
+  /// In en, this message translates to:
+  /// **'Supporting'**
+  String get supporting;
+
+  /// No description provided for @upcomingClasses.
+  ///
+  /// In en, this message translates to:
+  /// **'Upcoming Classes'**
+  String get upcomingClasses;
+
+  /// No description provided for @viewAllAishaClasses.
+  ///
+  /// In en, this message translates to:
+  /// **'View All Aisha’s Classes'**
+  String get viewAllAishaClasses;
+
+  /// No description provided for @browseAllClasses.
+  ///
+  /// In en, this message translates to:
+  /// **'Browse All Classes'**
+  String get browseAllClasses;
+
+  /// No description provided for @certificationsTraining.
+  ///
+  /// In en, this message translates to:
+  /// **'Certifications & Training'**
+  String get certificationsTraining;
+
+  /// No description provided for @pmaCertifiedInstructor.
+  ///
+  /// In en, this message translates to:
+  /// **'PMA Certified Pilates Instructor'**
+  String get pmaCertifiedInstructor;
+
+  /// No description provided for @matPilatesLevel3.
+  ///
+  /// In en, this message translates to:
+  /// **'Mat Pilates Level III Certification'**
+  String get matPilatesLevel3;
+
+  /// No description provided for @sportsRehabilitationTraining.
+  ///
+  /// In en, this message translates to:
+  /// **'Sports Rehabilitation Training'**
+  String get sportsRehabilitationTraining;
+
+  /// No description provided for @anatomyBiomechanicsCertificate.
+  ///
+  /// In en, this message translates to:
+  /// **'Anatomy & Biomechanics Certificate'**
+  String get anatomyBiomechanicsCertificate;
 }
 
 class _AppLocalizationsDelegate

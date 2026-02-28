@@ -2539,4 +2539,113 @@ class AppLocalizationsEn extends AppLocalizations {
   String joinedDaysAgo(int days) {
     return 'Joined $days days ago';
   }
+
+  @override
+  String get changeHomeBranch => 'Change Home Branch';
+
+  @override
+  String get updateHomeBranch => 'Update Home Branch';
+
+  @override
+  String get searchTrainers => 'Search trainers...';
+
+  @override
+  String get allTrainers => 'All Trainers';
+
+  @override
+  String get matPilates => 'Mat Pilates';
+
+  @override
+  String get reformer => 'Reformer';
+
+  @override
+  String get seniorFriendly => 'Senior Friendly';
+
+  @override
+  String get trainerNameDemo => 'Aisha Sherin';
+
+  @override
+  String get powerPilatesSpecialist => 'Power Pilates Specialist';
+
+  @override
+  String yearsExperience(Object years) {
+    return '$years yrs exp.';
+  }
+
+  @override
+  String get matCertified => 'Mat Certified';
+
+  @override
+  String get trainerDescription =>
+      'Specializes in building core strength and helping clients achieve their fitness goals.';
+
+  @override
+  String get downtownStudio => 'Downtown Studio';
+
+  @override
+  String classesThisWeek(Object count) {
+    return '$count classes this week';
+  }
+
+  @override
+  String get trainerDetails => 'Trainer Details';
+
+  @override
+  String get reviews => 'Reviews';
+
+  @override
+  String get classesTaught => 'Classes Taught';
+
+  @override
+  String get returnRate => 'Return Rate';
+
+  @override
+  String get about => 'About';
+
+  @override
+  String get trainerAboutDescription =>
+      'Aisha brings over 8 years of experience in Pilates instruction, specializing in power flows that build strength and flexibility. She discovered Pilates after a sports injury and fell in love with the transformative power of controlled movement. Her classes are known for their perfect balance of challenge and mindfulness, helping students of all levels achieve their fitness goals while developing a deeper mind-body connection.';
+
+  @override
+  String get teachingStyle => 'Teaching Style';
+
+  @override
+  String get dynamicTxt => 'Dynamic';
+
+  @override
+  String get motivating => 'Motivating';
+
+  @override
+  String get detailOriented => 'Detail Oriented';
+
+  @override
+  String get challenging => 'Challenging';
+
+  @override
+  String get supporting => 'Supporting';
+
+  @override
+  String get upcomingClasses => 'Upcoming Classes';
+
+  @override
+  String get viewAllAishaClasses => 'View All Aisha’s Classes';
+
+  @override
+  String get browseAllClasses => 'Browse All Classes';
+
+  @override
+  String get certificationsTraining => 'Certifications & Training';
+
+  @override
+  String get pmaCertifiedInstructor => 'PMA Certified Pilates Instructor';
+
+  @override
+  String get matPilatesLevel3 => 'Mat Pilates Level III Certification';
+
+  @override
+  String get sportsRehabilitationTraining => 'Sports Rehabilitation Training';
+
+  @override
+  String get anatomyBiomechanicsCertificate =>
+      'Anatomy & Biomechanics Certificate';
 }

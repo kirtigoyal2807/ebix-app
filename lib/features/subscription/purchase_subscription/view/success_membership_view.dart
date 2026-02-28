@@ -8,6 +8,7 @@ import 'package:pilates_app/widgets/app_button.dart';
 import 'package:pilates_app/widgets/app_text.dart';
 
 import '../../../../core/localization/localization_extension.dart';
+import '../../subscription_as_gift/view/gift_successfully_view.dart';
 
 class SuccessMembershipView extends StatelessWidget {
   const SuccessMembershipView({super.key});
@@ -123,7 +124,14 @@ class SuccessMembershipView extends StatelessWidget {
               SizedBox(height: 27),
               AppButton(
                 label: context.l10n.startExploring,
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const GiftSuccessfullyView(),
+                    ),
+                  );
+                },
                 variant: AppButtonVariant.primary,
               ),
 

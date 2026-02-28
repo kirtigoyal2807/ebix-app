@@ -187,11 +187,11 @@ class AppTextStyles {
     );
   }
 
-  static TextStyle bottomSheetTitle(BuildContext context) {
+  static TextStyle bottomSheetTitle(BuildContext context,{FontWeight? fontWeight}) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return GoogleFonts.inter(
       fontSize: 18,
-      fontWeight: FontWeight.w500,
+      fontWeight:fontWeight?? FontWeight.w500,
       color: isDark ? AppColors.lightText : AppColors.darkText,
       letterSpacing: 0.16,
       height: 1.2,

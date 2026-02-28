@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
+import 'package:pilates_app/core/localization/localization_extension.dart';
 import 'package:pilates_app/widgets/app_app_bar.dart';
 import 'package:pilates_app/widgets/app_button.dart';
 
@@ -19,7 +20,7 @@ class _ChangeHomeBranchState extends State<ChangeHomeBranch> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppAppBar(
-        title: "Change Home Branch",
+        title: context.l10n.changeHomeBranch,
         onBack: () => Navigator.of(context).pop(),
         isMoreMenu: false,
       ),
@@ -77,7 +78,7 @@ class _ChangeHomeBranchState extends State<ChangeHomeBranch> {
                 ),
               ),
             ),
-            AppButton(label: "Update Home Branch",variant: AppButtonVariant.primary,onPressed: () {
+            AppButton(label: context.l10n.updateHomeBranch,variant: AppButtonVariant.primary,onPressed: () {
 
             },)
           ],

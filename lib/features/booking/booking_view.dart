@@ -4,6 +4,7 @@ import 'package:pilates_app/config/theme/app_colors.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/core/localization/localization_extension.dart';
+import 'package:pilates_app/features/booking/views/trainer_view.dart';
 import 'package:pilates_app/widgets/app_text.dart';
 import 'cubit/booking_cubit.dart';
 import 'cubit/booking_state.dart';
@@ -48,9 +49,7 @@ class _BookingBodyState extends State<BookingBody> {
               child: BlocBuilder<BookingCubit, BookingState>(
                 builder: (context, state) {
                   if (state.selectedTab == BookingTab.trainers) {
-                    return const Center(
-                      child: Text('Trainers List coming soon...'),
-                    );
+                    return TrainerView();
                   }
 
                   return ListView(

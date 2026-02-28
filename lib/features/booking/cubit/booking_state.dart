@@ -12,6 +12,8 @@ class BookingState extends Equatable {
   final String selectedCategory;
   final String selectedGender;
   final ClassDetailStatus classDetailStatus;
+  final List<TrainerType> trainerTypeList;
+  final TrainerType selectedTrainerType;
 
   const BookingState({
     this.selectedTab = BookingTab.classes,
@@ -21,6 +23,8 @@ class BookingState extends Equatable {
     this.selectedCategory = 'All Categories',
     this.selectedGender = 'All Gender',
     this.classDetailStatus = ClassDetailStatus.initial,
+    this.selectedTrainerType = TrainerType.allTrainers,
+    required this.trainerTypeList,
   });
 
   BookingState copyWith({
@@ -31,6 +35,7 @@ class BookingState extends Equatable {
     String? selectedCategory,
     String? selectedGender,
     ClassDetailStatus? classDetailStatus,
+    TrainerType? selectedTrainerType,
   }) {
     return BookingState(
       selectedTab: selectedTab ?? this.selectedTab,
@@ -40,6 +45,8 @@ class BookingState extends Equatable {
       selectedCategory: selectedCategory ?? this.selectedCategory,
       selectedGender: selectedGender ?? this.selectedGender,
       classDetailStatus: classDetailStatus ?? this.classDetailStatus,
+      selectedTrainerType: selectedTrainerType ?? this.selectedTrainerType,
+      trainerTypeList: trainerTypeList
     );
   }
 
@@ -52,5 +59,9 @@ class BookingState extends Equatable {
     selectedCategory,
     selectedGender,
     classDetailStatus,
+    selectedTrainerType,
+    trainerTypeList,
   ];
 }
+
+enum TrainerType { allTrainers, matPilates, reformer, seniorFriendly }

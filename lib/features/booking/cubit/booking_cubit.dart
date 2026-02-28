@@ -2,7 +2,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'booking_state.dart';
 
 class BookingCubit extends Cubit<BookingState> {
-  BookingCubit() : super(const BookingState());
+  BookingCubit() : super(  BookingState(
+
+    trainerTypeList: TrainerType.values
+  ));
 
   void setTab(BookingTab tab) {
     emit(state.copyWith(selectedTab: tab));
@@ -38,5 +41,9 @@ class BookingCubit extends Cubit<BookingState> {
 
   void bookClass() {
     // Add booking logic here
+  }
+
+  void setTrainer(TrainerType trainerType){
+    emit(state.copyWith(selectedTrainerType: trainerType));
   }
 }

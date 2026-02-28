@@ -2521,4 +2521,113 @@ class AppLocalizationsAr extends AppLocalizations {
   String joinedDaysAgo(int days) {
     return 'انضم منذ $days أيام';
   }
+
+  @override
+  String get changeHomeBranch => 'تغيير الفرع الرئيسي';
+
+  @override
+  String get updateHomeBranch => 'تحديث الفرع الرئيسي';
+
+  @override
+  String get searchTrainers => 'ابحث عن المدربين...';
+
+  @override
+  String get allTrainers => 'جميع المدربين';
+
+  @override
+  String get matPilates => 'مات بيلاتس';
+
+  @override
+  String get reformer => 'ريفورمر';
+
+  @override
+  String get seniorFriendly => 'مناسب لكبار السن';
+
+  @override
+  String get trainerNameDemo => 'عائشة شيرين';
+
+  @override
+  String get powerPilatesSpecialist => 'أخصائية باور بيلاتس';
+
+  @override
+  String yearsExperience(Object years) {
+    return '$years سنوات خبرة';
+  }
+
+  @override
+  String get matCertified => 'معتمد مات بيلاتس';
+
+  @override
+  String get trainerDescription =>
+      'متخصصة في تقوية عضلات البطن ومساعدة العملاء على تحقيق أهدافهم الرياضية.';
+
+  @override
+  String get downtownStudio => 'استوديو وسط المدينة';
+
+  @override
+  String classesThisWeek(Object count) {
+    return '$count حصة هذا الأسبوع';
+  }
+
+  @override
+  String get trainerDetails => 'تفاصيل المدرب';
+
+  @override
+  String get reviews => 'التقييمات';
+
+  @override
+  String get classesTaught => 'عدد الحصص المقدّمة';
+
+  @override
+  String get returnRate => 'معدل العودة';
+
+  @override
+  String get about => 'نبذة';
+
+  @override
+  String get trainerAboutDescription =>
+      'تمتلك عائشة أكثر من 8 سنوات من الخبرة في تدريب البيلاتس، متخصصة في التمارين الديناميكية التي تبني القوة والمرونة. اكتشفت البيلاتس بعد إصابة رياضية وأحبت القوة التحويلية للحركة المتحكم بها. تشتهر حصصها بالتوازن المثالي بين التحدي والوعي الذهني، مما يساعد المتدربين من جميع المستويات على تحقيق أهدافهم البدنية وتطوير اتصال أعمق بين العقل والجسم.';
+
+  @override
+  String get teachingStyle => 'أسلوب التدريب';
+
+  @override
+  String get dynamicTxt => 'ديناميكي';
+
+  @override
+  String get motivating => 'محفّز';
+
+  @override
+  String get detailOriented => 'يهتم بالتفاصيل';
+
+  @override
+  String get challenging => 'يتسم بالتحدي';
+
+  @override
+  String get supporting => 'داعِم';
+
+  @override
+  String get upcomingClasses => 'الحصص القادمة';
+
+  @override
+  String get viewAllAishaClasses => 'عرض جميع حصص عائشة';
+
+  @override
+  String get browseAllClasses => 'تصفح جميع الحصص';
+
+  @override
+  String get certificationsTraining => 'الشهادات والتدريب';
+
+  @override
+  String get pmaCertifiedInstructor => 'مدرب بيلاتس معتمد من PMA';
+
+  @override
+  String get matPilatesLevel3 => 'شهادة مات بيلاتس المستوى الثالث';
+
+  @override
+  String get sportsRehabilitationTraining => 'تدريب إعادة التأهيل الرياضي';
+
+  @override
+  String get anatomyBiomechanicsCertificate =>
+      'شهادة التشريح والميكانيكا الحيوية';
 }

@@ -190,21 +190,34 @@ class ReviewScreenDetailsView extends StatelessWidget {
                 children: [
                   SvgPicture.asset(
                     isDark
+                        ? "assets/images/svg/ic_dark_cs_mada.svg"
+                        : "assets/images/svg/ic_cs_mada.svg",
+                  ),
+                  SizedBox(width: AppSpacing.sm),
+                  SvgPicture.asset(
+                    isDark
+                        ? "assets/images/svg/ic_dark_tabby.svg"
+                        : "assets/images/svg/ic_tabby.svg",
+                  ),
+                  SizedBox(width: AppSpacing.sm),
+                  SvgPicture.asset(
+                    isDark
+                        ? "assets/images/svg/ic_dark_master.svg"
+                        : "assets/images/svg/ic_master.svg",
+                  ),
+                  SizedBox(width: AppSpacing.sm),
+                  SvgPicture.asset(
+                    isDark
                         ? "assets/images/svg/ic_dark_visa.svg"
                         : "assets/images/svg/ic_visa.svg",
-                  ),
-                  SizedBox(width: AppSpacing.sm),
+                  ), SizedBox(width: AppSpacing.sm),
                   SvgPicture.asset(
                     isDark
-                        ? "assets/images/svg/ic_dark_stripe.svg"
-                        : "assets/images/svg/ic_stripe.svg",
+                        ? "assets/images/svg/ic_dark_tamara.svg"
+                        : "assets/images/svg/ic_tamara.svg",
                   ),
-                  SizedBox(width: AppSpacing.sm),
-                  SvgPicture.asset(
-                    isDark
-                        ? "assets/images/svg/ic_dark_klarna.svg"
-                        : "assets/images/svg/ic_klarna.svg",
-                  ),
+
+
                 ],
               ),
               const SizedBox(height: 90),

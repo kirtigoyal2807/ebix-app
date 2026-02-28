@@ -8,7 +8,8 @@ import 'package:pilates_app/core/localization/localization_extension.dart';
 import '../cubit/booking_cubit.dart';
 
 class BookingSearchBar extends StatelessWidget {
-  const BookingSearchBar({super.key});
+  final String? hintText;
+  const BookingSearchBar({super.key,this.hintText});
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +28,7 @@ class BookingSearchBar extends StatelessWidget {
             color: isDark ? AppColors.darkGreyText : AppColors.darkGreyText,
           ),
           filled: false,
-          hintText: context.l10n.searchClassesHint,
+          hintText:hintText?? context.l10n.searchClassesHint,
           hintStyle: AppTextStyles.textField(context).copyWith(color: AppColors.lightGrey),
           contentPadding: const EdgeInsets.symmetric(
             horizontal: 14,

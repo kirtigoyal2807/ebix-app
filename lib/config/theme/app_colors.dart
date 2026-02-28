@@ -123,4 +123,9 @@ class AppColors {
   static final placeHolderText = Color(0xff79716B);
   static final goalTrackColor = Color(0xffF5F4F4);
   static final progressBGColor = Color(0xff443F3B);
+
+
+  static final lightBlue = Color(0xffDCEBF5);
+  static final darkBlue = Color(0xff124061);
+  static final darkLightBlue = Color(0xff173447);
 }

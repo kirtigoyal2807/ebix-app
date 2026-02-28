@@ -10,6 +10,7 @@ import '../../../../config/theme/app_colors.dart';
 import '../../../../core/localization/arb/app_localizations.dart';
 import '../../../../widgets/app_button.dart';
 import '../../purchase_subscription/view/review_screen_details_view.dart';
+import '../../purchase_subscription/view/success_membership_view.dart';
 
 class PlanDetailsView extends StatelessWidget {
   const PlanDetailsView({super.key});
@@ -38,22 +39,27 @@ class PlanDetailsView extends StatelessWidget {
             ReviewScreenDetailsView(),
 
             Padding(
-              padding: const EdgeInsets.symmetric(
-
-                horizontal: AppSpacing.lg,
-              ),
+              padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
               child: AppButton(
                 label: l10n.continueToPayment,
                 onPressed: () {
+                  // Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(
+                  //     builder: (context) => WelcomeToPilateView(),
+                  //   ),
+                  // );
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => WelcomeToPilateView(),
+                      builder: (context) => SuccessMembershipView(),
                     ),
                   );
                 },
 
-                buttonColor:isDark ?AppColors.primary: AppColors.primaryBrown,
+                buttonColor: isDark
+                    ? AppColors.primary
+                    : AppColors.primaryBrown,
                 expanded: true,
               ),
             ),

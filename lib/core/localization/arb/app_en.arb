@@ -1005,7 +1005,52 @@
         "type": "int"
       }
     }
-  }
+  },
+  "changeHomeBranch": "Change Home Branch",
+  "updateHomeBranch": "Update Home Branch",
+  "searchTrainers": "Search trainers...",
+  "allTrainers": "All Trainers",
+  "matPilates": "Mat Pilates",
+  "reformer": "Reformer",
+  "seniorFriendly": "Senior Friendly",
+  "trainerNameDemo": "Aisha Sherin",
+  "powerPilatesSpecialist": "Power Pilates Specialist",
+  "yearsExperience": "{years} yrs exp.",
+  "@yearsExperience": {
+    "placeholders": {
+      "years": {}
+    }
+  },
+  "matCertified": "Mat Certified",
+
+  "trainerDescription": "Specializes in building core strength and helping clients achieve their fitness goals.",
+  "downtownStudio": "Downtown Studio",
+  "classesThisWeek": "{count} classes this week",
+  "@classesThisWeek": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "trainerDetails": "Trainer Details",
+  "reviews": "Reviews",
+  "classesTaught": "Classes Taught",
+  "returnRate": "Return Rate",
+  "about": "About",
+  "trainerAboutDescription": "Aisha brings over 8 years of experience in Pilates instruction, specializing in power flows that build strength and flexibility. She discovered Pilates after a sports injury and fell in love with the transformative power of controlled movement. Her classes are known for their perfect balance of challenge and mindfulness, helping students of all levels achieve their fitness goals while developing a deeper mind-body connection.",
+  "teachingStyle": "Teaching Style",
+  "dynamicTxt": "Dynamic",
+  "motivating": "Motivating",
+  "detailOriented": "Detail Oriented",
+  "challenging": "Challenging",
+  "supporting": "Supporting",
+  "upcomingClasses": "Upcoming Classes",
+  "viewAllAishaClasses": "View All Aisha’s Classes",
+  "browseAllClasses": "Browse All Classes",
+  "certificationsTraining": "Certifications & Training",
+  "pmaCertifiedInstructor": "PMA Certified Pilates Instructor",
+  "matPilatesLevel3": "Mat Pilates Level III Certification",
+  "sportsRehabilitationTraining": "Sports Rehabilitation Training",
+  "anatomyBiomechanicsCertificate": "Anatomy & Biomechanics Certificate"
 
 
 }

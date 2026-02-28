@@ -6,6 +6,7 @@ import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/widgets/app_text.dart';
 
+import '../../../../core/localization/localization_extension.dart';
 import '../../../../widgets/app_shadow.dart';
 
 class BranchOption extends StatelessWidget {
@@ -226,7 +227,7 @@ class BranchOption extends StatelessWidget {
                                   ),
                                   SizedBox(width: 5),
                                   AppText(
-                                    "In Your Plan",
+                                      context.l10n.branchTitle,
                                     style: (context) =>
                                         AppTextStyles.splashVersion(
                                           context,

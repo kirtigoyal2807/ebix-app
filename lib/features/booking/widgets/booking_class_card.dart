@@ -197,13 +197,13 @@ class BookingClassCard extends StatelessWidget {
                                             .withValues(alpha: 0.11)
                                       : AppColors.upgradeLightBackgroundColor,
                                   borderRadius: BorderRadius.circular(16),
-                                  border: Border.all(
-                                    color: isDark
-                                        ? Colors.transparent
-                                        : AppColors
-                                              .upgradeDarkLockBackgroundColor,
-                                    width: 1,
-                                  ),
+                                  // border: Border.all(
+                                  //   color: isDark
+                                  //       ? Colors.transparent
+                                  //       : AppColors
+                                  //             .upgradeDarkLockBackgroundColor,
+                                  //   width: 1,
+                                  // ),
                                 ),
                                 child: Row(
                                   mainAxisSize: MainAxisSize.min,

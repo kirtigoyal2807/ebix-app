@@ -1019,7 +1019,41 @@
         "type": "int"
       }
     }
-  }
+  },
+  "changeHomeBranch": "تغيير الفرع الرئيسي",
+  "updateHomeBranch": "تحديث الفرع الرئيسي",
+  "searchTrainers": "ابحث عن المدربين...",
+  "allTrainers": "جميع المدربين",
+  "matPilates": "مات بيلاتس",
+  "reformer": "ريفورمر",
+  "seniorFriendly": "مناسب لكبار السن",
+  "trainerNameDemo": "عائشة شيرين",
+  "powerPilatesSpecialist": "أخصائية باور بيلاتس",
+  "yearsExperience": "{years} سنوات خبرة",
+  "matCertified": "معتمد مات بيلاتس",
+  "trainerDescription": "متخصصة في تقوية عضلات البطن ومساعدة العملاء على تحقيق أهدافهم الرياضية.",
+  "downtownStudio": "استوديو وسط المدينة",
+  "classesThisWeek": "{count} حصة هذا الأسبوع",
+  "trainerDetails": "تفاصيل المدرب",
+  "reviews": "التقييمات",
+  "classesTaught": "عدد الحصص المقدّمة",
+  "returnRate": "معدل العودة",
+  "about": "نبذة",
+  "trainerAboutDescription": "تمتلك عائشة أكثر من 8 سنوات من الخبرة في تدريب البيلاتس، متخصصة في التمارين الديناميكية التي تبني القوة والمرونة. اكتشفت البيلاتس بعد إصابة رياضية وأحبت القوة التحويلية للحركة المتحكم بها. تشتهر حصصها بالتوازن المثالي بين التحدي والوعي الذهني، مما يساعد المتدربين من جميع المستويات على تحقيق أهدافهم البدنية وتطوير اتصال أعمق بين العقل والجسم.",
+  "teachingStyle": "أسلوب التدريب",
+  "dynamicTxt": "ديناميكي",
+  "motivating": "محفّز",
+  "detailOriented": "يهتم بالتفاصيل",
+  "challenging": "يتسم بالتحدي",
+  "supporting": "داعِم",
+  "upcomingClasses": "الحصص القادمة",
+  "viewAllAishaClasses": "عرض جميع حصص عائشة",
+  "browseAllClasses": "تصفح جميع الحصص",
+  "certificationsTraining": "الشهادات والتدريب",
+  "pmaCertifiedInstructor": "مدرب بيلاتس معتمد من PMA",
+  "matPilatesLevel3": "شهادة مات بيلاتس المستوى الثالث",
+  "sportsRehabilitationTraining": "تدريب إعادة التأهيل الرياضي",
+  "anatomyBiomechanicsCertificate": "شهادة التشريح والميكانيكا الحيوية"
 
 }
 
