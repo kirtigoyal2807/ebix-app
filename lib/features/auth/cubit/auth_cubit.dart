@@ -12,7 +12,7 @@ class AuthCubit extends Cubit<AuthState> {
 
   // Splash logic
   void _startSplash() {
-    Timer(const Duration(seconds: 2), () {
+    Timer(const Duration(seconds: 4), () {
       emit(state.copyWith(flow: AuthFlow.onboarding));
     });
   }

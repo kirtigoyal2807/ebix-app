@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:lottie/lottie.dart';
 
 import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/widgets/app_shadow.dart';
@@ -37,16 +38,17 @@ class BookingSuccessScreen extends StatelessWidget {
           children: [
             const SizedBox(height: AppSpacing.xl),
 
-            Container(
-              height: 100,
-              width: 100,
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                color: AppColors.successColor,
-                borderRadius: BorderRadius.circular(AppRadius.pillRadius),
-              ),
-              child: const Icon(Icons.done, color: Colors.white, size: 80),
-            ),
+            // Container(
+            //   height: 100,
+            //   width: 100,
+            //   alignment: Alignment.center,
+            //   decoration: BoxDecoration(
+            //     color: AppColors.successColor,
+            //     borderRadius: BorderRadius.circular(AppRadius.pillRadius),
+            //   ),
+            //   child: const Icon(Icons.done, color: Colors.white, size: 80),
+            // ),
+            Lottie.asset("assets/json/tick.json",height: 100,width: 100,repeat: false),
 
             const SizedBox(height: AppSpacing.md),
 

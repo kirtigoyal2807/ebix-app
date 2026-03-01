@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:pilates_app/config/theme/app_colors.dart';
 import 'package:pilates_app/config/theme/app_radius.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
@@ -38,17 +39,18 @@ class SuccessMembershipView extends StatelessWidget {
             ),
             child: Column(
               children: [
-                Container(
-                  height: 64,
-                  width: 64,
-                  decoration: BoxDecoration(
-                    color: isDark
-                        ? AppColors.successColor.withValues(alpha: 0.61)
-                        : AppColors.successColor,
-                    shape: BoxShape.circle,
-                  ),
-                  child: Icon(Icons.check, color: Colors.white, size: 48),
-                ),
+                // Container(
+                //   height: 64,
+                //   width: 64,
+                //   decoration: BoxDecoration(
+                //     color: isDark
+                //         ? AppColors.successColor.withValues(alpha: 0.61)
+                //         : AppColors.successColor,
+                //     shape: BoxShape.circle,
+                //   ),
+                //   child: Icon(Icons.check, color: Colors.white, size: 48),
+                // ),
+                Lottie.asset("assets/json/tick.json",height: 100,width: 100,repeat: false),
 
                 SizedBox(height: AppSpacing.md),
 
