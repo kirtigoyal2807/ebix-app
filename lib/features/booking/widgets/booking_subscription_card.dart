@@ -44,7 +44,7 @@ class BookingSubscriptionCard extends StatelessWidget {
             child: AppText(
               'Your Plan: Premium (Downtown + Uptown)', // Replace with dynamic if needed
               style: (context) => AppTextStyles.helpAndSupportItemLabel(context).copyWith(
-                fontSize: size.width * 0.035 > 16 ? 16 : size.width * 0.035,
+                fontSize: size.width * 0.035 > 14 ? 14 : size.width * 0.035,
                 color: isDark ?AppColors.lightText:AppColors.lightText,
                 fontWeight: FontWeight.w500
               ),
