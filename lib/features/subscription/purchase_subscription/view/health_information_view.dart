@@ -59,7 +59,7 @@ class HealthInformationView extends StatelessWidget {
 
                   AppTextField(
                     label: l10n.age,
-                    hint:  l10n.age,
+                    hint: l10n.age,
                     keyboardType: TextInputType.number,
                     // onChanged: (val) => cubit.updateAge(val),
                   ),
@@ -103,7 +103,7 @@ class HealthInformationView extends StatelessWidget {
           AppButton(
             label: l10n.continueTxt,
             onPressed: () => cubit.nextStep(),
-            buttonColor: isDark ?AppColors.primary:AppColors.primaryBrown,
+            buttonColor: isDark ? AppColors.primary : AppColors.primaryBrown,
             expanded: true,
           ),
         ],

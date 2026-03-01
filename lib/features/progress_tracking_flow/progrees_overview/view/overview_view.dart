@@ -90,7 +90,7 @@ class OverviewView extends StatelessWidget {
 
                 Row(
                   spacing: 2,
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     SvgPicture.asset(
                       "assets/images/svg/ic_tip.svg",

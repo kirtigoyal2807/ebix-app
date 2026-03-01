@@ -12,8 +12,16 @@ import '../../../config/theme/app_radius.dart';
 import '../../../config/theme/app_spacing.dart';
 import '../../../widgets/app_shadow.dart';
 
-class AchievementView extends StatelessWidget {
+class AchievementView extends StatefulWidget {
   const AchievementView({super.key});
+
+  @override
+  State<AchievementView> createState() => _AchievementViewState();
+}
+
+class _AchievementViewState extends State<AchievementView> {
+
+  int _selected =0;
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +42,14 @@ class AchievementView extends StatelessWidget {
           AchievementCard(content:context.l10n.achievement_content),
           SizedBox(height: AppSpacing.lg),
           _buildCard(
+            onTap: () {
+              _selected =0;
+              setState(() {
+
+              });
+            },
             isDark: isDark,
+              isSelected: _selected ==0,
             image: isDark
                 ? "assets/images/svg/progress_tracking/ic_dark_consistency_flow.svg"
                 : "assets/images/svg/progress_tracking/ic_consistency_flow.svg",
@@ -43,6 +58,13 @@ class AchievementView extends StatelessWidget {
           ),
           SizedBox(height: AppSpacing.md),
           _buildCard(
+            onTap: () {
+              _selected =1;
+              setState(() {
+
+              });
+            },
+            isSelected: _selected ==1,
             isDark: isDark,
             image: isDark
                 ? "assets/images/svg/progress_tracking/ic_dark_foundation_builder.svg"
@@ -52,6 +74,13 @@ class AchievementView extends StatelessWidget {
           ),
           SizedBox(height: AppSpacing.md),
           _buildCard(
+            onTap: () {
+              _selected =2;
+              setState(() {
+
+              });
+            },
+            isSelected: _selected ==2,
             isDark: isDark,
             image: isDark
                 ? "assets/images/svg/progress_tracking/ic_dark_monthly_dedication.svg"
@@ -78,74 +107,79 @@ class AchievementView extends StatelessWidget {
 
   _buildCard({
     required bool isDark,
+    required bool isSelected,
     required String image,
     required String title,
     required String subtitle,
+    required void Function()? onTap,
     bool isShowProgress = false,
   }) {
-    return Container(
-      padding: EdgeInsets.symmetric(
-        vertical: AppSpacing.lmd,
-        horizontal: AppSpacing.md,
-      ),
-      decoration: BoxDecoration(
-        color: isDark ? AppColors.homeBackground : Colors.white,
-        border: Border.all(
-          color: isDark ? AppColors.greyText : AppColors.buttonBorder,
-          width: 1,
+    return GestureDetector(
+       onTap: onTap,
+      child: Container(
+        padding: EdgeInsets.symmetric(
+          vertical: AppSpacing.lmd,
+          horizontal: AppSpacing.md,
         ),
-        borderRadius: BorderRadius.circular(AppRadius.md),
-      ),
-      child: Row(
-        crossAxisAlignment: isShowProgress
-            ? CrossAxisAlignment.start
-            : CrossAxisAlignment.center,
-        children: [
-          SvgPicture.asset(image, height: 40, width: 40),
-          SizedBox(width: AppSpacing.md),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                AppText(
-                  title,
-                  style: (context) => AppTextStyles.textFieldHeading(
-                    context,
-                  ).copyWith(height: 1),
-                ),
-                SizedBox(height: AppSpacing.xs),
-                AppText(
-                  subtitle,
-                  style: (context) =>
-                      AppTextStyles.bodyText(context).copyWith(height: 1),
-                ),
+        decoration: BoxDecoration(
+          color: (isDark ? AppColors.homeBackground : Colors.white),
+          border: Border.all(
+            color: isSelected?( isDark?AppColors.darkGreyBorder : AppColors.primary): (isDark ? AppColors.greyText : AppColors.buttonBorder),
+            width: 1,
+          ),
+          borderRadius: BorderRadius.circular(AppRadius.md),
+        ),
+        child: Row(
+          crossAxisAlignment: isShowProgress
+              ? CrossAxisAlignment.start
+              : CrossAxisAlignment.center,
+          children: [
+            SvgPicture.asset(image, height: 40, width: 40),
+            SizedBox(width: AppSpacing.md),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  AppText(
+                    title,
+                    style: (context) => AppTextStyles.textFieldHeading(
+                      context,
+                    ).copyWith(height: 1),
+                  ),
+                  SizedBox(height: AppSpacing.xs),
+                  AppText(
+                    subtitle,
+                    style: (context) =>
+                        AppTextStyles.bodyText(context).copyWith(height: 1),
+                  ),
 
-                Visibility(
-                  visible: isShowProgress,
-                  child: Padding(
-                    padding: EdgeInsets.only(top: AppSpacing.base),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(AppRadius.sm),
-                      child: LinearProgressIndicator(
-                        value: 0.6,
-                        minHeight: 6,
-                        backgroundColor: isDark
-                            ? AppColors.primaryDarkButton
-                            : AppColors.goalTrackColor,
-                        valueColor: AlwaysStoppedAnimation<Color>(
-                          isDark
-                              ? AppColors.progressBGColor
-                              : AppColors.languageIconDark,
+                  Visibility(
+                    visible: isShowProgress,
+                    child: Padding(
+                      padding: EdgeInsets.only(top: AppSpacing.base),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(AppRadius.sm),
+                        child: LinearProgressIndicator(
+                          value: 0.6,
+                          minHeight: 6,
+                          backgroundColor: isDark
+                              ? AppColors.primaryDarkButton
+                              : AppColors.goalTrackColor,
+                          valueColor: AlwaysStoppedAnimation<Color>(
+                            isDark
+                                ? AppColors.progressBGColor
+                                : AppColors.languageIconDark,
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

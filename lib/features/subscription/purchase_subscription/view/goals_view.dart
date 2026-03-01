@@ -43,7 +43,9 @@ class GoalsView extends StatelessWidget {
                   // Title
                   AppText(
                     l10n.goals,
-                    style:(style)=> AppTextStyles.gelasioMedium(context).copyWith(fontSize: 24,height: 1.2),
+                    style: (style) => AppTextStyles.gelasioMedium(
+                      context,
+                    ).copyWith(fontSize: 24, height: 1.2),
                   ),
                   const SizedBox(height: AppSpacing.lg),
 
@@ -51,26 +53,31 @@ class GoalsView extends StatelessWidget {
                   _buildSectionHeader(context, l10n.whatIsYourGoal),
 
                   // const SizedBox(height: AppSpacing.md),
-                  
-                  // Text Area for Goals
-                  AppTextField(
-                    hint: l10n.enterYourGoals,
-                    label: '',
 
-                    // onChanged: (val) => cubit.updateGoals(val),
-                    maxLines: 8,
-                    // label: '',
-                  ),
-                  const SizedBox(height: 8),
-                   Align(
-                    alignment: Alignment.centerRight,
-                    child: AppText(
-                      '0/200', // Placeholder counter, can be dynamic
-                       style:(style)=> AppTextStyles.captionText(context).copyWith(
-                        color: isDark ? AppColors.lightGrey : AppColors.greyText,
+                  // Text Area for Goals
+                  Stack(
+                    children: [
+                      AppTextField(
+                        hint: l10n.enterYourGoals,
+                        label: '',
+                        maxLength: 200,
+
+                        // onChanged: (val) => cubit.updateGoals(val),
+                        maxLines: 8,
+                        // label: '',
                       ),
-                    ),
+                    ],
                   ),
+                  // const SizedBox(height: 8),
+                  //  Align(
+                  //   alignment: Alignment.centerRight,
+                  //   child: AppText(
+                  //     '0/200', // Placeholder counter, can be dynamic
+                  //      style:(style)=> AppTextStyles.captionText(context).copyWith(
+                  //       color: isDark ? AppColors.lightGrey : AppColors.greyText,
+                  //     ),
+                  //   ),
+                  // ),
                 ],
               ),
             ),
@@ -78,7 +85,7 @@ class GoalsView extends StatelessWidget {
           AppButton(
             label: l10n.continueTxt,
             onPressed: () => cubit.nextStep(),
-            buttonColor:isDark ?AppColors.primary: AppColors.primaryBrown,
+            buttonColor: isDark ? AppColors.primary : AppColors.primaryBrown,
             expanded: true,
           ),
         ],

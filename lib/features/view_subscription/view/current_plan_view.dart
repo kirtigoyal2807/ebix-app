@@ -33,8 +33,8 @@ class CurrentPlanView extends StatelessWidget {
                 borderRadius: BorderRadius.circular(AppRadius.md),
 
                 gradient: const LinearGradient(
-                  begin: Alignment.topRight,
-                  end: Alignment.bottomLeft,
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
                   stops: [0.1514, 1.0],
                   colors: [
                     AppColors.subscriptionCardGradient1,
