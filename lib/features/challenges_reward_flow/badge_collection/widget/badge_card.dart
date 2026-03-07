@@ -29,7 +29,7 @@ class BadgeCard extends StatelessWidget {
             mainAxisSpacing: AppSpacing.md,
             crossAxisSpacing: AppSpacing.md,
           ),
-          itemCount: state.badgeDataList?.length,
+          itemCount: state.badgeDataList.length,
           physics: NeverScrollableScrollPhysics(),
           shrinkWrap: true,
           itemBuilder: (context, index) {
@@ -42,7 +42,7 @@ class BadgeCard extends StatelessWidget {
                   barrierColor: AppColors.bottomSheetShadow,
 
                   builder: (_) => BadgeSheetBottomSheet(
-                    imageIcon: item.image,
+                    imageIcon: isDark ? item.darkImage : item.image,
                     title: getBadgeName(context, item.badgeName),
                   ),
                 );
@@ -63,7 +63,11 @@ class BadgeCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    SvgPicture.asset(item.image, height: 56, width: 56),
+                    SvgPicture.asset(
+                      isDark ? item.darkImage : item.image,
+                      height: 56,
+                      width: 56,
+                    ),
                     SizedBox(height: AppSpacing.md),
                     AppText(
                       getBadgeName(context, item.badgeName),

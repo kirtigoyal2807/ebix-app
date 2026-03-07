@@ -147,6 +147,7 @@ class MyBookingClassCard extends StatelessWidget {
                                           ? AppColors.lightGreyColor
                                           : AppColors.successColor,
                                       size: 12,
+                                      fontWeight: FontWeight.bold,
                                     ),
                                     const SizedBox(width: AppSpacing.xs),
                                     Flexible(
@@ -330,6 +331,7 @@ class MyBookingClassCard extends StatelessWidget {
                               ? AppColors.lightText
                               : AppColors.darkText,
                           fontWeight: FontWeight.w500,
+                            height: 1
                         ),
                         children: [
                           TextSpan(
@@ -338,6 +340,7 @@ class MyBookingClassCard extends StatelessWidget {
                               fontSize: size.width * 0.04 > 16
                                   ? 16
                                   : size.width * 0.04,
+                                height: 1
                               // highlight
                             ),
                           ),
@@ -351,6 +354,7 @@ class MyBookingClassCard extends StatelessWidget {
                                   ? AppColors.lightText
                                   : AppColors.darkText,
                               fontWeight: FontWeight.w500,
+                              height: 1
                             ),
                           ),
                         ],
@@ -446,6 +450,7 @@ class MyBookingClassCard extends StatelessWidget {
               style: (context) => AppTextStyles.captionText(context).copyWith(
                 fontSize: size.width * 0.03 > 14 ? 14 : size.width * 0.03,
                 color: isDark ? AppColors.darkGreyText : AppColors.greyText,
+                height: 1.2
               ),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
@@ -457,6 +462,7 @@ class MyBookingClassCard extends StatelessWidget {
               style: (context) => AppTextStyles.captionText(context).copyWith(
                 fontSize: size.width * 0.03 > 14 ? 14 : size.width * 0.03,
                 color: isDark ? AppColors.darkGreyText : AppColors.greyText,
+                  height: 1.2
               ),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
@@ -492,6 +498,7 @@ class MyBookingClassCard extends StatelessWidget {
               style: (context) => AppTextStyles.captionText(context).copyWith(
                 fontSize: size.width * 0.03 > 14 ? 14 : size.width * 0.03,
                 color: isDark ? AppColors.darkGreyText : AppColors.greyText,
+                  height: 1.2
               ),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
@@ -502,6 +509,7 @@ class MyBookingClassCard extends StatelessWidget {
               style: (context) => AppTextStyles.captionText(context).copyWith(
                 fontSize: size.width * 0.03 > 14 ? 14 : size.width * 0.03,
                 color: isDark ? AppColors.darkGreyText : AppColors.greyText,
+                  height: 1.2
               ),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
@@ -584,6 +592,7 @@ class MyBookingClassCard extends StatelessWidget {
               style: (context) => AppTextStyles.captionText(context).copyWith(
                 fontSize: size.width * 0.03 > 14 ? 14 : size.width * 0.03,
                 color: isDark ? AppColors.darkGreyText : AppColors.greyText,
+                  height: 1.2
               ),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
@@ -599,6 +608,7 @@ class MyBookingClassCard extends StatelessWidget {
               style: (context) => AppTextStyles.captionText(context).copyWith(
                 fontSize: size.width * 0.03 > 14 ? 14 : size.width * 0.03,
                 color: isDark ? AppColors.darkGreyText : AppColors.lightGrey,
+                  height: 1.2
               ),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,

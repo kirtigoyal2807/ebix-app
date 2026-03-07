@@ -163,8 +163,8 @@ class BookClassConfirmView extends StatelessWidget {
             ),
             child: ClipRRect(
               borderRadius: const BorderRadius.vertical(
-                top: Radius.circular(AppRadius.lg),
-                bottom: Radius.circular(AppRadius.lg),
+                top: Radius.circular(AppRadius.md),
+                bottom: Radius.circular(AppRadius.md),
               ),
               child: Image.asset(
                 "assets/images/demo images/yoga.png",

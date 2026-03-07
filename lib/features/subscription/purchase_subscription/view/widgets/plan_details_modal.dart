@@ -9,8 +9,9 @@ import 'package:pilates_app/widgets/app_text.dart';
 class PlanDetailsModal extends StatelessWidget {
   final Map<String, dynamic> plan;
   final String? appLabel;
+  void Function()? onSubscribe;
 
-  const PlanDetailsModal({super.key, required this.plan,this.appLabel});
+    PlanDetailsModal({super.key, required this.plan,this.appLabel,this.onSubscribe});
 
   @override
   Widget build(BuildContext context) {
@@ -167,7 +168,7 @@ class PlanDetailsModal extends StatelessWidget {
           const SizedBox(height: 32),
           AppButton(
             label: appLabel??'Subscribe Now',
-            onPressed: () {},
+            onPressed: onSubscribe,
             buttonColor:isDark ?AppColors.primary: AppColors.primaryBrown,
             expanded: true,
           ),

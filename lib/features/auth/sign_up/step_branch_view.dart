@@ -30,6 +30,7 @@ class _SignUpBranchViewState extends State<SignUpBranchView> {
       appBar: AppAppBar(
         onBack: () => context.read<AuthCubit>().previousSignUpStep(),
         title: context.l10n.selectedBranch,
+        isMoreMenu: false,
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(

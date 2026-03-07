@@ -310,6 +310,7 @@ class HomeContentView extends StatelessWidget {
                       ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Expanded(
                             child: AppText(
@@ -336,7 +337,8 @@ class HomeContentView extends StatelessWidget {
                                   fontSize:
                                   // size.width * 0.03 > 14
                                   //     ?
-                                  14
+                                  14,
+                                      height: 1.2
                                       // : size.width * 0.03,
                                 ),
                           ),
@@ -352,6 +354,7 @@ class HomeContentView extends StatelessWidget {
                       ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Expanded(
                             child: AppText(
@@ -378,7 +381,8 @@ class HomeContentView extends StatelessWidget {
                                   fontSize:
                                   // size.width * 0.03 > 14
                                   //     ?
-                                  14
+                                  14,
+                                      height: 1.2
                                       // : size.width * 0.03,
                                 ),
                           ),

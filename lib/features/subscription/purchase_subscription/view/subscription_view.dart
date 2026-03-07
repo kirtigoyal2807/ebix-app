@@ -249,8 +249,13 @@ class _PlanSelectionStep extends StatelessWidget {
                                 isScrollControlled: true,
                                 backgroundColor: Colors.transparent,
                                 barrierColor: AppColors.bottomSheetShadow,
-                                builder: (context) =>
-                                    PlanDetailsModal(plan: plan),
+                                builder: (context) => PlanDetailsModal(
+                                  plan: plan,
+                                  onSubscribe: () {
+                                    Navigator.pop(context);
+                                    cubit.nextStep();
+                                  },
+                                ),
                               );
                             },
                           );
@@ -281,7 +286,7 @@ class _PlanSelectionStep extends StatelessWidget {
                 cubit.nextStep();
               }
             },
-            buttonColor:isDark ?AppColors.primary:AppColors.primaryBrown,
+            buttonColor: isDark ? AppColors.primary : AppColors.primaryBrown,
             expanded: true,
           ),
         ),

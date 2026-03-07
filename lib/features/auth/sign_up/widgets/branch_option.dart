@@ -154,9 +154,7 @@ class BranchOption extends StatelessWidget {
                                 : AppColors.primary,
                             borderRadius: BorderRadius.circular(6),
                             border: Border.all(
-                              color: isDark && isOnBoarding
-                                  ? AppColors.darkGreyBorder
-                                  : Colors.transparent,
+                              color: Colors.transparent,
                               width: 1,
                             ),
                           ),
@@ -227,7 +225,7 @@ class BranchOption extends StatelessWidget {
                                   ),
                                   SizedBox(width: 5),
                                   AppText(
-                                      context.l10n.branchTitle,
+                                    context.l10n.branchTitle,
                                     style: (context) =>
                                         AppTextStyles.splashVersion(
                                           context,

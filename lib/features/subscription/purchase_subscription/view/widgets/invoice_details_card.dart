@@ -49,7 +49,7 @@ class InvoiceDetailsCard extends StatelessWidget {
                     context.l10n.invoiceDetails,
                     style: (context) => AppTextStyles.textFieldHeading(
                       context,
-                    ).copyWith(fontSize: 14,height: 1.55),
+                    ).copyWith(fontSize: 14, height: 1.55),
                   ),
                   SvgPicture.asset(
                     isDark
@@ -162,7 +162,82 @@ class InvoiceDetailsCard extends StatelessWidget {
   }
 }
 
-
+// class ReceiptClipper extends CustomClipper<Path> {
+//   @override
+//   Path getClip(Size size) {
+//     const double topRadius = 12;
+//     const double bottomRadius = 12;
+//     const double cutRadius = 12;
+//     const int cutCount = 9;
+//     const double horizontalPadding = 20;
+//
+//     final path = Path();
+//
+//     // ---- Top Left Rounded ----
+//     path.moveTo(0, topRadius);
+//     path.quadraticBezierTo(0, 0, topRadius, 0);
+//
+//     // ---- Top Line ----
+//     path.lineTo(size.width - topRadius, 0);
+//
+//     // ---- Top Right Rounded ----
+//     path.quadraticBezierTo(size.width, 0, size.width, topRadius);
+//
+//     // ---- Right Side ----
+//     path.lineTo(size.width, size.height - cutRadius - bottomRadius);
+//
+//     // ---- Bottom Right Rounded ----
+//     path.quadraticBezierTo(
+//       size.width,
+//       size.height - cutRadius,
+//       size.width - bottomRadius,
+//       size.height - cutRadius,
+//     );
+//
+//     // ---- Bottom Right Flat Space ----
+//     path.lineTo(size.width - horizontalPadding, size.height - cutRadius);
+//
+//     // ---- Bottom Cuts ----
+//     double availableWidth = size.width - (horizontalPadding * 2);
+//     double sectionWidth = availableWidth / cutCount;
+//
+//     for (int i = cutCount; i > 0; i--) {
+//       double centerX =
+//           horizontalPadding + (sectionWidth * i) - sectionWidth / 2;
+//
+//       path.arcTo(
+//         Rect.fromCircle(
+//           center: Offset(centerX, size.height),
+//           radius: cutRadius,
+//         ),
+//         0,
+//         -3.1416,
+//         false,
+//       );
+//     }
+//
+//     // ---- Bottom Left Flat Space ----
+//     path.lineTo(horizontalPadding, size.height - cutRadius);
+//
+//     // ---- Bottom Left Rounded ----
+//     path.quadraticBezierTo(
+//       0,
+//       size.height - cutRadius,
+//       0,
+//       size.height - cutRadius - bottomRadius,
+//     );
+//
+//     // ---- Left Side ----
+//     path.lineTo(0, topRadius);
+//
+//     path.close();
+//
+//     return path;
+//   }
+//
+//   @override
+//   bool shouldReclip(CustomClipper<Path> oldClipper) => false;
+// }
 
 class ReceiptClipper extends CustomClipper<Path> {
   @override
@@ -171,7 +246,6 @@ class ReceiptClipper extends CustomClipper<Path> {
     const double bottomRadius = 12;
     const double cutRadius = 12;
     const int cutCount = 9;
-    const double horizontalPadding = 20;
 
     final path = Path();
 
@@ -190,22 +264,23 @@ class ReceiptClipper extends CustomClipper<Path> {
 
     // ---- Bottom Right Rounded ----
     path.quadraticBezierTo(
-      size.width,
+      size.width-8,
       size.height - cutRadius,
       size.width - bottomRadius,
       size.height - cutRadius,
     );
 
-    // ---- Bottom Right Flat Space ----
-    path.lineTo(size.width - horizontalPadding, size.height - cutRadius);
 
-    // ---- Bottom Cuts ----
-    double availableWidth = size.width - (horizontalPadding * 2);
+
+
+
+    // ---- Bottom Cuts Area ----
+    double availableWidth = size.width - (bottomRadius * 2);
     double sectionWidth = availableWidth / cutCount;
 
     for (int i = cutCount; i > 0; i--) {
       double centerX =
-          horizontalPadding + (sectionWidth * i) - sectionWidth / 2;
+          bottomRadius + (sectionWidth * i) - sectionWidth / 2;
 
       path.arcTo(
         Rect.fromCircle(
@@ -217,9 +292,6 @@ class ReceiptClipper extends CustomClipper<Path> {
         false,
       );
     }
-
-    // ---- Bottom Left Flat Space ----
-    path.lineTo(horizontalPadding, size.height - cutRadius);
 
     // ---- Bottom Left Rounded ----
     path.quadraticBezierTo(

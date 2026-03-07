@@ -19,7 +19,7 @@ class BookingTabs extends StatelessWidget {
     return BlocBuilder<BookingCubit, BookingState>(
       builder: (context, state) {
         return Container(
-          margin: EdgeInsets.only(top: AppSpacing.sm),
+          margin: EdgeInsets.only(top: AppSpacing.lmd),
           decoration: BoxDecoration(
             border: Border(
               bottom: BorderSide(

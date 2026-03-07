@@ -12,6 +12,8 @@ import '../../../config/theme/app_text_styles.dart';
 import '../../../core/localization/arb/app_localizations.dart';
 import '../../../widgets/app_button.dart';
 import '../../../widgets/dotted_underline.dart';
+import '../../home/home_view.dart';
+import '../../my_booking/my_booking_view.dart';
 import '../cubit/booking_cubit.dart';
 import '../cubit/booking_state.dart';
 import 'class_detail_view.dart';
@@ -48,7 +50,12 @@ class BookingSuccessScreen extends StatelessWidget {
             //   ),
             //   child: const Icon(Icons.done, color: Colors.white, size: 80),
             // ),
-            Lottie.asset("assets/json/tick.json",height: 100,width: 100,repeat: false),
+            Lottie.asset(
+              "assets/json/tick.json",
+              height: 100,
+              width: 100,
+              repeat: false,
+            ),
 
             const SizedBox(height: AppSpacing.md),
 
@@ -204,9 +211,15 @@ class BookingSuccessScreen extends StatelessWidget {
             children: [
               AppText(
                 l10n.yourPosition,
-                style: (context) => AppTextStyles.captionText(context,fontWeight: FontWeight.w500).copyWith(
-                  color: isDark ? AppColors.darkGreyText : AppColors.lightGrey,
-                ),
+                style: (context) =>
+                    AppTextStyles.captionText(
+                      context,
+                      fontWeight: FontWeight.w500,
+                    ).copyWith(
+                      color: isDark
+                          ? AppColors.darkGreyText
+                          : AppColors.lightGrey,
+                    ),
               ),
               const SizedBox(height: AppSpacing.md),
               AppText(
@@ -243,23 +256,23 @@ class BookingSuccessScreen extends StatelessWidget {
         border: Border.all(
           color: isDark ? AppColors.greyText : AppColors.buttonBorder,
         ),
-        boxShadow: [
-          AppShadows.lightShadow,
-          AppShadows.mediumShadow,
-          AppShadows.mediumHeavyShadow,
-          BoxShadow(
-            color: AppColors.shadowColor.withValues(alpha: 0.01),
-            offset: const Offset(0, 64),
-            blurRadius: 25,
-            spreadRadius: 0,
-          ),
-          BoxShadow(
-            color: AppColors.shadowColor.withValues(alpha: 0.00),
-            offset: const Offset(0, 99),
-            blurRadius: 28,
-            spreadRadius: 0,
-          ),
-        ],
+        // boxShadow: [
+        //   AppShadows.lightShadow,
+        //   AppShadows.mediumShadow,
+        //   AppShadows.mediumHeavyShadow,
+        //   BoxShadow(
+        //     color: AppColors.shadowColor.withValues(alpha: 0.01),
+        //     offset: const Offset(0, 64),
+        //     blurRadius: 25,
+        //     spreadRadius: 0,
+        //   ),
+        //   BoxShadow(
+        //     color: AppColors.shadowColor.withValues(alpha: 0.00),
+        //     offset: const Offset(0, 99),
+        //     blurRadius: 28,
+        //     spreadRadius: 0,
+        //   ),
+        // ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -274,7 +287,7 @@ class BookingSuccessScreen extends StatelessWidget {
           _buildClassDetailRow(
             label: l10n.classTxt,
             value: 'Core Strength & Balance',
-            isDark: isDark
+            isDark: isDark,
           ),
 
           const SizedBox(height: AppSpacing.sm),
@@ -282,7 +295,7 @@ class BookingSuccessScreen extends StatelessWidget {
           _buildClassDetailRow(
             label: l10n.instructor,
             value: 'Fatima Al-Hashmi',
-              isDark: isDark
+            isDark: isDark,
           ),
 
           const SizedBox(height: AppSpacing.sm),
@@ -290,12 +303,16 @@ class BookingSuccessScreen extends StatelessWidget {
           _buildClassDetailRow(
             label: l10n.date,
             value: 'Today, January 21, 2026',
-              isDark: isDark
+            isDark: isDark,
           ),
 
           const SizedBox(height: AppSpacing.sm),
 
-          _buildClassDetailRow(label: l10n.time, value: '6:00 PM - 7:00 PM',  isDark: isDark),
+          _buildClassDetailRow(
+            label: l10n.time,
+            value: '6:00 PM - 7:00 PM',
+            isDark: isDark,
+          ),
 
           const SizedBox(height: AppSpacing.sm),
 
@@ -304,7 +321,7 @@ class BookingSuccessScreen extends StatelessWidget {
             value: 'Downtown Studio, 123 Main Street, Suite 200',
             isMultiLine: true,
             isBorder: false,
-              isDark: isDark
+            isDark: isDark,
           ),
         ],
       ),
@@ -322,7 +339,9 @@ class BookingSuccessScreen extends StatelessWidget {
       width: double.infinity,
       child: CustomPaint(
         painter: isBorder
-            ? DashedUnderlinePainter(color: isDark  ?AppColors.greyText : AppColors.buttonBorder)
+            ? DashedUnderlinePainter(
+                color: isDark ? AppColors.greyText : AppColors.buttonBorder,
+              )
             : null,
         child: Padding(
           padding: EdgeInsets.only(bottom: isBorder ? AppSpacing.sm : 0),
@@ -427,16 +446,22 @@ class BookingSuccessScreen extends StatelessWidget {
                     // );
                     final cubit = BlocProvider.of<BookingCubit>(context);
                     cubit.loadClassDetails();
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (newContext) => BlocProvider.value(
-                          value: cubit,
-                          child: ClassDetailView(
-                            classState: ClassState.waitList,
-                          ),
-                        ),
-                      ),
+
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => MyBookingView()),
                     );
+
+                    // Navigator.of(context).push(
+                    //   MaterialPageRoute(
+                    //     builder: (newContext) => BlocProvider.value(
+                    //       value: cubit,
+                    //       child: ClassDetailView(
+                    //         classState: ClassState.waitList,
+                    //       ),
+                    //     ),
+                    //   ),
+                    // );
                   },
                   variant: AppButtonVariant.primary,
                 );
@@ -459,7 +484,9 @@ class BookingSuccessScreen extends StatelessWidget {
             ),
             child: AppButton(
               label: l10n.browseMoreClasses,
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeView(),));
+              },
               variant: AppButtonVariant.secondary,
             ),
           ),

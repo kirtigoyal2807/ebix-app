@@ -40,14 +40,14 @@ class GiftRedeemSuccessSheet extends StatelessWidget {
                       style: AppTextStyles.bottomSheetTitle,
                     ),
                   ),
-                  IconButton(
-                    icon: Icon(
+                  GestureDetector(
+                    child: Icon(
                       Icons.close,
                       color: isDark
                           ? AppColors.whiteColor
                           : AppColors.blackColor,
                     ),
-                    onPressed: () => Navigator.of(context).pop(),
+                    onTap: () => Navigator.of(context).pop(),
                   ),
                 ],
               ),
@@ -57,7 +57,9 @@ class GiftRedeemSuccessSheet extends StatelessWidget {
                 width: 100,
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
-                  color: isDark ? AppColors.successColor.withValues(alpha: 0.61): AppColors.successColor,
+                  color: isDark
+                      ? AppColors.successColor.withValues(alpha: 0.61)
+                      : AppColors.successColor,
                   borderRadius: BorderRadius.circular(AppRadius.pillRadius),
                 ),
                 child: const Icon(Icons.done, color: Colors.white, size: 80),
@@ -65,10 +67,13 @@ class GiftRedeemSuccessSheet extends StatelessWidget {
 
               const SizedBox(height: AppSpacing.md),
               AppText(
-                  context.l10n.giftRedeemedSuccess,
-                style: (context) => AppTextStyles.gelasioMedium(
-                  context,
-                ).copyWith(fontSize: 24, color:isDark ? AppColors.lightText: Color(0xff0D0D12),height: 1.2),
+                context.l10n.giftRedeemedSuccess,
+                style: (context) =>
+                    AppTextStyles.gelasioMedium(context).copyWith(
+                      fontSize: 24,
+                      color: isDark ? AppColors.lightText : Color(0xff0D0D12),
+                      height: 1.2,
+                    ),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: AppSpacing.xl),

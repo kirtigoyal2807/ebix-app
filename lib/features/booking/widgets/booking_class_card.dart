@@ -162,6 +162,7 @@ class BookingClassCard extends StatelessWidget {
                                           ? AppColors.lightGreyColor
                                           : AppColors.GreyColor,
                                       size: 12,
+                                      fontWeight: FontWeight.bold,
                                     ),
                                     const SizedBox(width: AppSpacing.xs),
                                     Flexible(

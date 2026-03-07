@@ -21,17 +21,15 @@ class RedeemCardView extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: AppColors.homeBackground,
-        gradient: isDark
-            ? null
-            : const LinearGradient(
-                begin: Alignment(-0.2, -1.0), // approximate for 168.39°
-                end: Alignment(0.8, 1.0),
-                colors: [
-                  AppColors.subscriptionCardGradient1,
-                  AppColors.subscriptionCardGradient2,
-                ],
-                stops: [0.1514, 1.0], // 15.14% → 1.0 (105% clamped)
-              ),
+        gradient: const LinearGradient(
+          begin: Alignment(-0.2, -1.0), // approximate for 168.39°
+          end: Alignment(0.8, 1.0),
+          colors: [
+            AppColors.subscriptionCardGradient1,
+            AppColors.subscriptionCardGradient2,
+          ],
+          stops: [0.1514, 1.0], // 15.14% → 1.0 (105% clamped)
+        ),
       ),
       child: Scaffold(
         backgroundColor: Colors.transparent,
@@ -77,16 +75,16 @@ class RedeemCardView extends StatelessWidget {
                   width: 64,
                 ),
                 SizedBox(height: AppSpacing.md),
-          
+
                 AppText(
-                    context.l10n.receivedGiftTitle,
+                  context.l10n.receivedGiftTitle,
                   style: (context) =>
                       AppTextStyles.gelasioMedium(context).copyWith(
                         color: isDark ? AppColors.lightText : Colors.white,
                         height: 1.55,
                       ),
                 ),
-          
+
                 SizedBox(height: AppSpacing.xs),
                 AppText(
                   context.l10n.receivedGiftSubtitle,
@@ -126,7 +124,7 @@ class RedeemCardView extends StatelessWidget {
     return Container(
       padding: EdgeInsets.all(AppSpacing.md),
       decoration: BoxDecoration(
-        color: isDark ? AppColors.homeBackground : Colors.white,
+        color: isDark ? AppColors.trainerBlackBackgroundColor : Colors.white,
         borderRadius: BorderRadius.circular(AppRadius.base),
         border: Border.all(
           color: isDark ? AppColors.greyText : AppColors.buttonBorder,
@@ -140,7 +138,8 @@ class RedeemCardView extends StatelessWidget {
           AppText(
             context.l10n.message,
             style: (context) => AppTextStyles.bodyText(
-              context,fontWeight: FontWeight.w500,
+              context,
+              fontWeight: FontWeight.w500,
             ).copyWith(height: 1.2),
           ),
           SizedBox(height: AppSpacing.md),
@@ -148,7 +147,7 @@ class RedeemCardView extends StatelessWidget {
             padding: EdgeInsets.all(AppSpacing.md),
             decoration: BoxDecoration(
               color: isDark
-                  ? AppColors.primaryDarkButton
+                  ? AppColors.subscriptionCardGradient1
                   : AppColors.containerGreyBg,
               borderRadius: BorderRadius.circular(AppRadius.base),
             ),
@@ -161,7 +160,7 @@ class RedeemCardView extends StatelessWidget {
                   style: (context) =>
                       AppTextStyles.captionText(context).copyWith(
                         color: isDark
-                            ? AppColors.darkGreyText
+                            ? AppColors.lightText
                             : AppColors.lightGrey,
                         height: 1.5,
                       ),
@@ -169,12 +168,14 @@ class RedeemCardView extends StatelessWidget {
                 ),
                 SizedBox(height: AppSpacing.sm),
                 AppText(
-                context.l10n.giftSender,
-                  style: (context) => AppTextStyles.captionText(
-                    context,
-                  ).copyWith(color: isDark
-                      ? AppColors.darkGreyText
-                      :  AppColors.lightGrey, height: 1.5),
+                  context.l10n.giftSender,
+                  style: (context) =>
+                      AppTextStyles.captionText(context).copyWith(
+                        color: isDark
+                            ? AppColors.darkGreyText
+                            : AppColors.lightGrey,
+                        height: 1.5,
+                      ),
                 ),
               ],
             ),
@@ -183,8 +184,9 @@ class RedeemCardView extends StatelessWidget {
           AppText(
             context.l10n.yourGiftIncludes,
             style: (context) => AppTextStyles.bodyText(
-              context,fontWeight: FontWeight.w500,
-            ).copyWith( height: 1.2),
+              context,
+              fontWeight: FontWeight.w500,
+            ).copyWith(height: 1.2),
           ),
           SizedBox(height: AppSpacing.md),
           _checkedRow(context: context, feature: context.l10n.featureClasses),
@@ -197,12 +199,15 @@ class RedeemCardView extends StatelessWidget {
           SizedBox(height: AppSpacing.sm),
           _checkedRow(context: context, feature: context.l10n.featurePriority),
           SizedBox(height: AppSpacing.xl),
-          Divider(color:isDark ? AppColors.greyText: AppColors.buttonBorder, height: 1),
+          Divider(
+            color: isDark ? AppColors.greyText : AppColors.buttonBorder,
+            height: 1,
+          ),
           SizedBox(height: AppSpacing.xl),
 
           CustomPaint(
             painter: DashedUnderlinePainter(
-              color: AppColors.primary,
+              color: AppColors.languageIcon,
               dashWidth: 3,
               dashSpace: 3,
               top: true,
@@ -214,15 +219,21 @@ class RedeemCardView extends StatelessWidget {
               padding: EdgeInsets.symmetric(vertical: AppSpacing.md),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(AppRadius.md),
-                color: isDark ? AppColors.trainerBlackBackgroundColor: AppColors.selectedLanguageBg,
+                color: isDark
+                    ? AppColors.primaryDarkContainer
+                    : AppColors.selectedLanguageBg,
               ),
               child: Column(
                 children: [
                   AppText(
                     context.l10n.redemptionCode,
-                    style: (context) => AppTextStyles.bodyText(
-                      context,
-                    ).copyWith(color: AppColors.placeHolderText, height: 1),
+                    style: (context) =>
+                        AppTextStyles.bodyText(context).copyWith(
+                          color: isDark
+                              ? AppColors.darkGreyText
+                              : AppColors.placeHolderText,
+                          height: 1,
+                        ),
                   ),
                   SizedBox(height: AppSpacing.md),
                   AppText(
@@ -255,7 +266,7 @@ class RedeemCardView extends StatelessWidget {
           child: AppText(
             feature,
             style: (style) => AppTextStyles.bodyTextSmall(context).copyWith(
-              color: isDark ? AppColors.darkGreyText : AppColors.lightGrey,
+              color: isDark ? AppColors.lightText : AppColors.lightGrey,
               fontSize: 12,
               height: 1.2,
             ),

@@ -129,7 +129,7 @@ class ExperienceOption extends StatelessWidget {
                 height: 20,
                 decoration: BoxDecoration(
                   color: (isDark
-                      ? AppColors.languageIconDark
+                      ? AppColors.primary
                       : AppColors.languageIcon),
                   borderRadius: BorderRadius.circular(6),
                 ),

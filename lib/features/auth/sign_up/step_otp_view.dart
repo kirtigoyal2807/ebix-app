@@ -24,6 +24,7 @@ class SignUpOtpView extends StatelessWidget {
       appBar: AppAppBar(
         onBack: () => context.read<AuthCubit>().previousSignUpStep(),
         title: context.l10n.verification,
+        isMoreMenu: false,
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(

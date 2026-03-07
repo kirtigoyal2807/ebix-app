@@ -38,23 +38,25 @@ class TrainerCard extends StatelessWidget {
             color: isDark ? AppColors.greyText : AppColors.buttonBorder,
             width: 0.5,
           ),
-          boxShadow: [
-            AppShadows.lightShadow,
-            AppShadows.mediumShadow,
-            AppShadows.mediumHeavyShadow,
-            BoxShadow(
-              color: AppColors.shadowColor.withValues(alpha: 0.01),
-              offset: const Offset(0, 64),
-              blurRadius: 25,
-              spreadRadius: 0,
-            ),
-            BoxShadow(
-              color: AppColors.shadowColor.withValues(alpha: 0.00),
-              offset: const Offset(0, 99),
-              blurRadius: 28,
-              spreadRadius: 0,
-            ),
-          ],
+          boxShadow: isDark
+              ? []
+              : [
+                  AppShadows.lightShadow,
+                  AppShadows.mediumShadow,
+                  AppShadows.mediumHeavyShadow,
+                  BoxShadow(
+                    color: AppColors.shadowColor.withValues(alpha: 0.01),
+                    offset: const Offset(0, 64),
+                    blurRadius: 25,
+                    spreadRadius: 0,
+                  ),
+                  BoxShadow(
+                    color: AppColors.shadowColor.withValues(alpha: 0.00),
+                    offset: const Offset(0, 99),
+                    blurRadius: 28,
+                    spreadRadius: 0,
+                  ),
+                ],
         ),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -112,15 +114,19 @@ class TrainerCard extends StatelessWidget {
                   Wrap(
                     direction: Axis.horizontal,
                     spacing: AppSpacing.sm,
+                    runSpacing: AppSpacing.sm,
                     children: [
-                      TagChip(label:  context.l10n.yearsExperience(8), fontSize: 12),
-                      TagChip(label:  context.l10n.matCertified, fontSize: 12),
-                      TagChip(label:  context.l10n.reformer, fontSize: 12),
+                      TagChip(
+                        label: context.l10n.yearsExperience(8),
+                        fontSize: 12,
+                      ),
+                      TagChip(label: context.l10n.matCertified, fontSize: 12),
+                      TagChip(label: context.l10n.reformer, fontSize: 12),
                     ],
                   ),
                   SizedBox(height: AppSpacing.sm),
                   AppText(
-                      context.l10n.trainerDescription,
+                    context.l10n.trainerDescription,
                     style: (context) => AppTextStyles.bodyTextSmall(
                       context,
                     ).copyWith(fontSize: 12, height: 1.4),
@@ -134,7 +140,7 @@ class TrainerCard extends StatelessWidget {
                           : AppColors.languageIcon,
                       size: 16,
                     ),
-                    label:  context.l10n.downtownStudio,
+                    label: context.l10n.downtownStudio,
                     isDark: isDark,
                   ),
                   SizedBox(height: AppSpacing.sm),
@@ -147,7 +153,7 @@ class TrainerCard extends StatelessWidget {
                           ? AppColors.languageIconDark
                           : AppColors.languageIcon,
                     ),
-                    label:  context.l10n.classesThisWeek(32),
+                    label: context.l10n.classesThisWeek(32),
                     isDark: isDark,
                   ),
                 ],

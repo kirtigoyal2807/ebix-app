@@ -2,11 +2,13 @@
 
 class BadgeModel {
   final String image;
+  final String darkImage;
   final BadgeData badgeName;
   final BadgeStatus status;
 
   BadgeModel({
     required this.image,
+    required this.darkImage,
     required this.badgeName,
     required this.status,
   });

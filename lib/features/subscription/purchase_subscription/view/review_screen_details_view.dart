@@ -47,7 +47,9 @@ class ReviewScreenDetailsView extends StatelessWidget {
                     width: 1,
                   ),
 
-                  boxShadow: [
+                  boxShadow:
+                  isDark?[]:
+                  [
                     AppShadows.lightShadow,
                     AppShadows.mediumShadow,
                     AppShadows.mediumHeavyShadow,

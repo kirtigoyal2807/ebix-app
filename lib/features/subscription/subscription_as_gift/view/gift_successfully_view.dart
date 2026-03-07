@@ -9,6 +9,7 @@ import 'package:pilates_app/widgets/app_text.dart';
 
 import '../../../../config/theme/app_text_styles.dart';
 import '../../../../core/localization/arb/app_localizations.dart';
+import '../../../../widgets/dotted_underline.dart';
 import '../../purchase_subscription/view/widgets/plan_details_modal.dart';
 
 class GiftSuccessfullyView extends StatelessWidget {
@@ -78,17 +79,31 @@ class GiftSuccessfullyView extends StatelessWidget {
                   const SizedBox(height: 46),
 
                   _buildRow(l10n.recipientName, "Sarah", isDark),
+
                   const SizedBox(height: AppSpacing.sm),
-                  Divider(
-                    color: isDark ? AppColors.greyText : AppColors.buttonBorder,
-                    height: 1,
+                  SizedBox(
+                    width: double.infinity,
+                    child: CustomPaint(
+                      painter: DashedUnderlinePainter(
+                        color:  isDark ? AppColors.greyText : AppColors.buttonBorder,
+                        dashWidth: 3,
+                        dashSpace: 3,
+                      ),
+                    ),
                   ),
+
                   const SizedBox(height: AppSpacing.sm),
                   _buildRow(l10n.email, "Sarah@gmail.com", isDark),
                   const SizedBox(height: AppSpacing.sm),
-                  Divider(
-                    color: isDark ? AppColors.greyText : AppColors.buttonBorder,
-                    height: 1,
+                  SizedBox(
+                    width: double.infinity,
+                    child: CustomPaint(
+                      painter: DashedUnderlinePainter(
+                        color:  isDark ? AppColors.greyText : AppColors.buttonBorder,
+                        dashWidth: 3,
+                        dashSpace: 3,
+                      ),
+                    ),
                   ),
                   const SizedBox(height: AppSpacing.sm),
                   _buildRow(
@@ -97,9 +112,15 @@ class GiftSuccessfullyView extends StatelessWidget {
                     isDark,
                   ),
                   const SizedBox(height: AppSpacing.sm),
-                  Divider(
-                    color: isDark ? AppColors.greyText : AppColors.buttonBorder,
-                    height: 1,
+                  SizedBox(
+                    width: double.infinity,
+                    child: CustomPaint(
+                      painter: DashedUnderlinePainter(
+                        color:  isDark ? AppColors.greyText : AppColors.buttonBorder,
+                        dashWidth: 3,
+                        dashSpace: 3,
+                      ),
+                    ),
                   ),
                   const SizedBox(height: AppSpacing.sm),
                   _buildRow(l10n.giftStatus, l10n.delivered, isDark),
@@ -124,6 +145,7 @@ class GiftSuccessfullyView extends StatelessWidget {
                     color: isDark
                         ? AppColors.successBorderDark
                         : Color(0xff1C1B1F),
+                    fontWeight: FontWeight.bold,
                   ),
                   SizedBox(width: AppSpacing.sm),
                   Expanded(
@@ -167,29 +189,33 @@ class GiftSuccessfullyView extends StatelessWidget {
               child: AppButton(
                 label: l10n.sendAnotherGift,
                 onPressed: () {
-                  final plan = {
-                    'id': 'premium',
-                    'title': l10n.premiumPlanTitle,
-                    'price': '89\$',
-                    'badge': l10n.mostPopular,
-                    'isPopular': true,
-                    'features': [
-                      l10n.feature12Classes,
-                      l10n.featureDowntownUptown,
-                      l10n.featureFreeMatEquipment,
-                      l10n.featurePriorityBooking,
-                    ],
-                  };
-                  showModalBottomSheet(
-                    context: context,
-                    isScrollControlled: true,
-                    backgroundColor: Colors.transparent,
-                    barrierColor:     AppColors.bottomSheetShadow,
-                    builder: (context) => PlanDetailsModal(
-                      plan: plan,
-                      appLabel: l10n.continueTxt,
-                    ),
-                  );
+                  Navigator.pop(context);
+                  Navigator.pop(context);
+                  Navigator.pop(context);
+                  Navigator.pop(context);
+                  // final plan = {
+                  //   'id': 'premium',
+                  //   'title': l10n.premiumPlanTitle,
+                  //   'price': '89\$',
+                  //   'badge': l10n.mostPopular,
+                  //   'isPopular': true,
+                  //   'features': [
+                  //     l10n.feature12Classes,
+                  //     l10n.featureDowntownUptown,
+                  //     l10n.featureFreeMatEquipment,
+                  //     l10n.featurePriorityBooking,
+                  //   ],
+                  // };
+                  // showModalBottomSheet(
+                  //   context: context,
+                  //   isScrollControlled: true,
+                  //   backgroundColor: Colors.transparent,
+                  //   barrierColor:     AppColors.bottomSheetShadow,
+                  //   builder: (context) => PlanDetailsModal(
+                  //     plan: plan,
+                  //     appLabel: l10n.continueTxt,
+                  //   ),
+                  // );
                 },
                 variant: AppButtonVariant.secondary,
               ),
@@ -214,7 +240,7 @@ class GiftSuccessfullyView extends StatelessWidget {
           style: (context) => AppTextStyles.textFieldHeading(context).copyWith(
             fontSize: 12,
             fontWeight: FontWeight.w400,
-            color: isDark ? AppColors.darkGreyText : AppColors.lightGrey,
+            color: isDark ? AppColors.lightGrey : AppColors.lightGrey,
             height: 1.2,
           ),
         ),

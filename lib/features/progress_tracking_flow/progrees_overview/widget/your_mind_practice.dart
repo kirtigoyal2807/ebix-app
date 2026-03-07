@@ -112,8 +112,8 @@ class YourMindPractice extends StatelessWidget {
           ),
           SizedBox(height: AppSpacing.sm),
           AppText(
-            subTitle,
-            style: (context) => AppTextStyles.bodyTextSmall(context),
+            subTitle.replaceFirst(' ', '\n'),
+            style: (context) => AppTextStyles.bodyTextSmall(context).copyWith(height: 1.2),
           ),
         ],
       ),

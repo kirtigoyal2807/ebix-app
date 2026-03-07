@@ -37,14 +37,14 @@ class ReceiveGiftSheet extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
 
-                  IconButton(
-                    icon: Icon(
+                  GestureDetector(
+                    child: Icon(
                       Icons.close,
                       color: isDark
                           ? AppColors.whiteColor
                           : AppColors.blackColor,
                     ),
-                    onPressed: () => Navigator.of(context).pop(),
+                    onTap: () => Navigator.of(context).pop(),
                   ),
                 ],
               ),

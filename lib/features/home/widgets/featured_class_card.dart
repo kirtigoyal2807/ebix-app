@@ -8,6 +8,7 @@ import 'package:pilates_app/core/localization/localization_extension.dart';
 import 'package:pilates_app/widgets/app_text.dart';
 
 import '../../../widgets/app_shadow.dart';
+import '../../booking/views/book_class_confirm_view.dart';
 
 class FeaturedClassCard extends StatelessWidget {
   const FeaturedClassCard({super.key});
@@ -184,7 +185,13 @@ class FeaturedClassCard extends StatelessWidget {
                 ),
                 const SizedBox(height: AppSpacing.md),
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (_) => const BookClassConfirmView(),
+                      ),
+                    );
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.splashBackgroundDark,
                     foregroundColor: Colors.white,

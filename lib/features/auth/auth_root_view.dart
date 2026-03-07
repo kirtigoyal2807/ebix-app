@@ -23,8 +23,11 @@ class AuthRootView extends StatelessWidget {
       builder: (context, state) {
         switch (state.flow) {
           case AuthFlow.splash:
-            return    Lottie.asset("assets/json/splash_screen.json",repeat: false);
-            // return const SplashView();
+            return Lottie.asset(
+              "assets/json/splash_screen.json",
+              repeat: false,
+            );
+          // return const SplashView();
 
           case AuthFlow.onboarding:
             return const OnboardingView();

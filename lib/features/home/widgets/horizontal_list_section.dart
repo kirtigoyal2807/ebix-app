@@ -7,6 +7,8 @@ import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/core/localization/localization_extension.dart';
 import 'package:pilates_app/widgets/app_text.dart';
 
+import '../../booking/views/trainer_details_view.dart';
+
 class ClassTypesSection extends StatelessWidget {
   const ClassTypesSection({super.key});
 
@@ -143,15 +145,23 @@ class TopTrainersSection extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                     ),
                     const SizedBox(height: AppSpacing.base),
-                    AppText(
-                      context.l10n.viewClasses,
-                      style: (context) => AppTextStyles.captionText(context).copyWith(
-                        color: isDark
-                            ? AppColors.versionColor
-                            : AppColors.languageIcon,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 14
-                        // fontSize: size.width * 0.03 > 14 ? 14 : size.width * 0.03,
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => TrainerDetailsView()),
+                        );
+                      },
+                      child: AppText(
+                        context.l10n.viewClasses,
+                        style: (context) => AppTextStyles.captionText(context).copyWith(
+                          color: isDark
+                              ? AppColors.versionColor
+                              : AppColors.languageIcon,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14
+                          // fontSize: size.width * 0.03 > 14 ? 14 : size.width * 0.03,
+                        ),
                       ),
                     ),
                   ],

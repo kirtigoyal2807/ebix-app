@@ -145,6 +145,7 @@ class TermsAndConditionsView extends StatelessWidget {
                                 cubit.toggleTermsAccepted(val ?? false);
                               },
                               activeColor: AppColors.primaryBrown,
+                              checkColor: isDark?AppColors.lightText:AppColors.darkText,
                               side: BorderSide(
                                 color: isDark
                                     ? AppColors.greyText

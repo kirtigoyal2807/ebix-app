@@ -216,19 +216,19 @@ class TrainerDetailsView extends StatelessWidget {
                             ),
                       ),
                     ),
-                    AppText(
-                      context.l10n.seeAll,
-                      style: (context) =>
-                          AppTextStyles.captionText(
-                            context,
-                            fontWeight: FontWeight.w500,
-                          ).copyWith(
-                            color: isDark
-                                ? AppColors.languageTextDark
-                                : AppColors.languageIcon,
-                            fontSize: 14,
-                          ),
-                    ),
+                    // AppText(
+                    //   context.l10n.seeAll,
+                    //   style: (context) =>
+                    //       AppTextStyles.captionText(
+                    //         context,
+                    //         fontWeight: FontWeight.w500,
+                    //       ).copyWith(
+                    //         color: isDark
+                    //             ? AppColors.languageTextDark
+                    //             : AppColors.languageIcon,
+                    //         fontSize: 14,
+                    //       ),
+                    // ),
                   ],
                 ),
               ),
@@ -252,35 +252,35 @@ class TrainerDetailsView extends StatelessWidget {
                 upgradeRequired: true,
               ),
               const SizedBox(height: AppSpacing.lg),
-              Container(
-                margin: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
-                decoration: BoxDecoration(
-                  color: isDark ? AppColors.homeBackground : Colors.white,
-                  borderRadius: BorderRadius.circular(AppRadius.xl),
-                  boxShadow: [
-                    BoxShadow(
-                      color: AppColors.shadowColor.withValues(alpha: 0.06),
-                      offset: const Offset(0, 1),
-                      blurRadius: 2,
-                      spreadRadius: 0,
-                    ),
-                  ],
-                ),
-                child: AppButton(
-                  label: context.l10n.viewAllAishaClasses,
-                  onPressed: () {},
-                  variant: AppButtonVariant.secondary,
-                ),
-              ),
-              const SizedBox(height: AppSpacing.sm),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
-                child: AppButton(
-                  label: context.l10n.browseAllClasses,
-                  onPressed: () {},
-                  variant: AppButtonVariant.primary,
-                ),
-              ),
+              // Container(
+              //   margin: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+              //   decoration: BoxDecoration(
+              //     color: isDark ? AppColors.homeBackground : Colors.white,
+              //     borderRadius: BorderRadius.circular(AppRadius.xl),
+              //     boxShadow: [
+              //       BoxShadow(
+              //         color: AppColors.shadowColor.withValues(alpha: 0.06),
+              //         offset: const Offset(0, 1),
+              //         blurRadius: 2,
+              //         spreadRadius: 0,
+              //       ),
+              //     ],
+              //   ),
+              //   child: AppButton(
+              //     label: context.l10n.viewAllAishaClasses,
+              //     onPressed: () {},
+              //     variant: AppButtonVariant.secondary,
+              //   ),
+              // ),
+              // const SizedBox(height: AppSpacing.sm),
+              // Padding(
+              //   padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+              //   child: AppButton(
+              //     label: context.l10n.browseAllClasses,
+              //     onPressed: () {},
+              //     variant: AppButtonVariant.primary,
+              //   ),
+              // ),
             ],
           ),
         ),
@@ -315,11 +315,15 @@ class TrainerDetailsView extends StatelessWidget {
               ).copyWith(height: 1.55),
             ),
             SizedBox(height: AppSpacing.xs),
-            AppText(
-              label,
-              style: (context) => AppTextStyles.caption(
-                context,
-              ).copyWith(height: 1.30, fontSize: 12),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xl),
+              child: AppText(
+                label,
+                style: (context) => AppTextStyles.caption(
+                  context,
+                ).copyWith(height: 1.30, fontSize: 12),
+                textAlign: TextAlign.center,
+              ),
             ),
           ],
         ),
@@ -367,26 +371,23 @@ class TrainerDetailsView extends StatelessWidget {
   }
 
   Widget _buildRow({required String label, required bool isDark}) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: AppSpacing.sm),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          AppText(
-            "• ",
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        AppText(
+          "• ",
+          style: (context) =>
+              AppTextStyles.bodyText(context).copyWith(height: 1.55),
+        ),
+
+        Expanded(
+          child: AppText(
+            label,
             style: (context) =>
                 AppTextStyles.bodyText(context).copyWith(height: 1.55),
           ),
-
-          Expanded(
-            child: AppText(
-              label,
-              style: (context) =>
-                  AppTextStyles.bodyText(context).copyWith(height: 1.55),
-            ),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 

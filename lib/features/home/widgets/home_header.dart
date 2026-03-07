@@ -21,7 +21,7 @@ class HomeHeader extends StatelessWidget {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      barrierColor:     AppColors.bottomSheetShadow,
+      barrierColor: AppColors.bottomSheetShadow,
       builder: (_) => const LanguageBottomSheet(),
     );
   }
@@ -50,8 +50,10 @@ class HomeHeader extends StatelessWidget {
               isDark
                   ? 'assets/images/png/ic_home_top_dark.png'
                   : 'assets/images/png/ic_home_top_light.png',
-              height: size.height * 0.33,
-              // width: size.width * 0.5,
+              // height: 222,
+              // size.height * 0.33,
+              width: size.width,
+              // * 0.5,
               fit: BoxFit.fill,
             ),
           ),

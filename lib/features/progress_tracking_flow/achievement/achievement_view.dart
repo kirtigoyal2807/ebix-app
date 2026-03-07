@@ -21,7 +21,7 @@ class AchievementView extends StatefulWidget {
 
 class _AchievementViewState extends State<AchievementView> {
 
-  int _selected =0;
+
 
   @override
   Widget build(BuildContext context) {
@@ -43,13 +43,10 @@ class _AchievementViewState extends State<AchievementView> {
           SizedBox(height: AppSpacing.lg),
           _buildCard(
             onTap: () {
-              _selected =0;
-              setState(() {
 
-              });
             },
             isDark: isDark,
-              isSelected: _selected ==0,
+              isSelected:false,
             image: isDark
                 ? "assets/images/svg/progress_tracking/ic_dark_consistency_flow.svg"
                 : "assets/images/svg/progress_tracking/ic_consistency_flow.svg",
@@ -59,12 +56,9 @@ class _AchievementViewState extends State<AchievementView> {
           SizedBox(height: AppSpacing.md),
           _buildCard(
             onTap: () {
-              _selected =1;
-              setState(() {
 
-              });
             },
-            isSelected: _selected ==1,
+            isSelected:false,
             isDark: isDark,
             image: isDark
                 ? "assets/images/svg/progress_tracking/ic_dark_foundation_builder.svg"
@@ -75,12 +69,9 @@ class _AchievementViewState extends State<AchievementView> {
           SizedBox(height: AppSpacing.md),
           _buildCard(
             onTap: () {
-              _selected =2;
-              setState(() {
 
-              });
             },
-            isSelected: _selected ==2,
+            isSelected:false,
             isDark: isDark,
             image: isDark
                 ? "assets/images/svg/progress_tracking/ic_dark_monthly_dedication.svg"

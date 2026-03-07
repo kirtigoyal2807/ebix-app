@@ -6,6 +6,8 @@ import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/core/localization/localization_extension.dart';
 import 'package:pilates_app/widgets/app_text.dart';
 
+import '../views/trainer_details_view.dart';
+
 class ClassInfoGrid extends StatelessWidget {
   const ClassInfoGrid({super.key});
 
@@ -16,10 +18,19 @@ class ClassInfoGrid extends StatelessWidget {
         Row(
           children: [
             Expanded(
-              child: _InfoCard(
-                label: context.l10n.instructor,
-                value: context.l10n.trainerAishaSherin,
-                showAvatar: true,
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => TrainerDetailsView()),
+                  );
+                },
+                child: _InfoCard(
+
+                  label: context.l10n.instructor,
+                  value: context.l10n.trainerAishaSherin,
+                  showAvatar: true,
+                ),
               ),
             ),
             const SizedBox(width: AppSpacing.md),

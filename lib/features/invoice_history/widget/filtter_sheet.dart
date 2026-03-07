@@ -30,9 +30,11 @@ class FilterSelectionBottomSheet extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: AppSpacing.lg,
-                  vertical: AppSpacing.lg,
+                padding: const EdgeInsets.only(
+                  left: AppSpacing.lg,
+                  top: AppSpacing.lg,
+                  bottom: AppSpacing.lg,
+                  right: AppSpacing.base
                 ),
                 child: Row(
                   children: [

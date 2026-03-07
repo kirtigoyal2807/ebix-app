@@ -47,7 +47,7 @@ class SessionHistoryButton extends StatelessWidget {
                         : isSelected
                         ? AppColors.seekBarLight
                         : isDark
-                        ? Colors.transparent
+                        ? AppColors.primaryDarkButton
                         : AppColors.greyContainerBg,
                     borderRadius: BorderRadius.circular(AppRadius.base),
                   ),

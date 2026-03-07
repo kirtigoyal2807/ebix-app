@@ -33,6 +33,7 @@ class _SignUpPersonalInfoViewState extends State<SignUpPersonalInfoView> {
       appBar: AppAppBar(
         onBack: () => context.read<AuthCubit>().previousSignUpStep(),
         title: context.l10n.signUp,
+        isMoreMenu: false,
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(

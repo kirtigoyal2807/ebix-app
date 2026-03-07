@@ -14,7 +14,7 @@ class ChallengesDetailCard extends StatelessWidget {
 
   final int? people;
   final int days;
-  final double point;
+  final int point;
 
   const ChallengesDetailCard({
     super.key,
@@ -76,7 +76,7 @@ class ChallengesDetailCard extends StatelessWidget {
                       ),
                       decoration: BoxDecoration(
                         color: isDark
-                            ? Colors.transparent
+                            ? AppColors.primaryDarkButton
                             : AppColors.greyContainerBg,
                         borderRadius: BorderRadius.circular(AppRadius.base),
                       ),
@@ -133,7 +133,7 @@ class ChallengesDetailCard extends StatelessWidget {
                       ),
                       decoration: BoxDecoration(
                         color: isDark
-                            ? AppColors.switchInactiveDark
+                            ? AppColors.primaryDarkButton
                             : AppColors.greyContainerBg,
                         borderRadius: BorderRadius.circular(AppRadius.base),
                       ),

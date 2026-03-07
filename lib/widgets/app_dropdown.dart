@@ -42,70 +42,76 @@ class AppDropDown<T> extends StatelessWidget {
         const SizedBox(height: AppSpacing.sm),
 
         /// DROPDOWN
-        DropdownButtonFormField<T>(
-          value: value,
-          isDense: true,
-          items: items,
-          onChanged: onChanged,
-          isExpanded: true,
-          style: AppTextStyles.textField(context),
-          hint: Text(
-            hint,
-            style: AppTextStyles.textField(context).copyWith(
-              color: AppColors.lightGrey,
-            ),
-          ),
-          icon: Padding(
-            padding: const EdgeInsets.only(right: 12),
-            child: Icon(
-              Icons.keyboard_arrow_down,
-              color: isDark ? AppColors.lightGrey : AppColors.arrowIcon,
-              size: 24,
-            ),
-          ),
-          decoration: InputDecoration(
-            isDense: true,
-            // hintText: hint,
-            hintStyle: AppTextStyles.textField(context).copyWith(color: AppColors.lightGrey),
-            contentPadding: const EdgeInsets.symmetric(
-              horizontal: 14,
-              vertical: 14,
-            ),
+        ButtonTheme(
+          alignedDropdown: true,
+          child: DropdownButtonFormField<T>(
+            value: value,
 
-            /// BORDER
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(AppRadius.md),
-              borderSide: BorderSide(
-                color: hasError
-                    ? (isDark ? AppColors.redDark : AppColors.redLight)
-                    : theme.dividerColor,
+            isDense: true,
+            items: items,
+            onChanged: onChanged,
+            isExpanded: true,
+
+            style: AppTextStyles.textField(context),
+            hint: Text(
+              hint,
+              style: AppTextStyles.textField(context).copyWith(
+                color: AppColors.lightGrey,
               ),
             ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(AppRadius.md),
-              borderSide: BorderSide(
-                color: hasError
-                    ? Colors.red
-                    : theme.colorScheme.primary,
-                width: 1.5,
+            icon: Padding(
+              padding: const EdgeInsets.only(right: 12),
+              child: Icon(
+                Icons.keyboard_arrow_down,
+                color: isDark ? AppColors.lightGrey : AppColors.arrowIcon,
+                size: 24,
               ),
             ),
-            errorBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(AppRadius.md),
-              borderSide: BorderSide(
-                color: isDark ? AppColors.redDark : AppColors.redLight,
+            decoration: InputDecoration(
+
+              isDense: true,
+              // hintText: hint,
+              hintStyle: AppTextStyles.textField(context).copyWith(color: AppColors.lightGrey),
+              contentPadding: const EdgeInsets.symmetric(
+                horizontal: 14,
+                vertical: 14,
+              ),
+
+              /// BORDER
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(AppRadius.md),
+                borderSide: BorderSide(
+                  color: hasError
+                      ? (isDark ? AppColors.redDark : AppColors.redLight)
+                      : theme.dividerColor,
+                ),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(AppRadius.md),
+                borderSide: BorderSide(
+                  color: hasError
+                      ? Colors.red
+                      : theme.colorScheme.primary,
+                  width: 1.5,
+                ),
+              ),
+              errorBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(AppRadius.md),
+                borderSide: BorderSide(
+                  color: isDark ? AppColors.redDark : AppColors.redLight,
+                ),
+              ),
+              focusedErrorBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(AppRadius.md),
+                borderSide: BorderSide(
+                  color: isDark ? AppColors.redDark : AppColors.redLight,
+                  width: 1.5,
+                ),
               ),
             ),
-            focusedErrorBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(AppRadius.md),
-              borderSide: BorderSide(
-                color: isDark ? AppColors.redDark : AppColors.redLight,
-                width: 1.5,
-              ),
-            ),
+            dropdownColor: isDark ? AppColors.surfaceDark : AppColors.surfaceLight,
+            borderRadius: BorderRadius.circular(AppRadius.md),
           ),
-          dropdownColor: isDark ? AppColors.surfaceDark : AppColors.surfaceLight,
-          borderRadius: BorderRadius.circular(AppRadius.md),
         ),
 
         /// ERROR MESSAGE

@@ -58,10 +58,10 @@ class ChallengesDetailView extends StatelessWidget {
                     context.l10n.leaderboard,
                     style: (context) => AppTextStyles.gelasioRegular(context),
                   ),
-                  AppText(
-                    context.l10n.seeAll,
-                    style: (context) => AppTextStyles.body(context),
-                  ),
+                  // AppText(
+                  //   context.l10n.seeAll,
+                  //   style: (context) => AppTextStyles.body(context),
+                  // ),
                 ],
               ),
               SizedBox(height: AppSpacing.md),
