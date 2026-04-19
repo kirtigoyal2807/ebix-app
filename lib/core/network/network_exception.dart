@@ -2,6 +2,8 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 
+import 'api_envelope.dart';
+
 /// Failure type for mapping to user-facing messages (e.g. l10n) in Cubits.
 enum NetworkFailureType {
   timeout,
@@ -10,6 +12,12 @@ enum NetworkFailureType {
   badResponse,
   badCertificate,
   unknown,
+
+  /// HTTP 401 or API rejection of credentials.
+  unauthenticated,
+
+  /// HTTP 422, 400 (validation), or envelope `success: false` with field errors.
+  validation,
 }
 
 /// Normalized error from Dio / HTTP / platform failures.
@@ -22,6 +30,7 @@ class NetworkException implements Exception {
     this.dioExceptionType,
     this.cause,
     this.stackTrace,
+    this.fieldErrors,
   });
 
   final NetworkFailureType type;
@@ -31,6 +40,40 @@ class NetworkException implements Exception {
   final DioExceptionType? dioExceptionType;
   final Object? cause;
   final StackTrace? stackTrace;
+
+  /// API `errors` map: field -> messages (standard envelope).
+  final Map<String, List<String>>? fieldErrors;
+
+  /// Business envelope reported `success: false` (any HTTP status with parseable body).
+  factory NetworkException.fromApiEnvelope({
+    required int? statusCode,
+    required String message,
+    Map<String, List<String>>? fieldErrors,
+    dynamic responseData,
+  }) {
+    final hasFieldErrors = fieldErrors != null && fieldErrors.isNotEmpty;
+    final type = _typeForHttpCode(statusCode, validationHint: hasFieldErrors);
+    return NetworkException(
+      type: type,
+      message: message,
+      statusCode: statusCode,
+      responseData: responseData,
+      fieldErrors: fieldErrors,
+    );
+  }
+
+  static NetworkFailureType _typeForHttpCode(
+    int? code, {
+    bool validationHint = false,
+  }) {
+    if (code == 401) return NetworkFailureType.unauthenticated;
+    if (code == 422 || code == 400) {
+      return NetworkFailureType.validation;
+    }
+    if (code == 409) return NetworkFailureType.badResponse;
+    if (validationHint) return NetworkFailureType.validation;
+    return NetworkFailureType.badResponse;
+  }
 
   factory NetworkException.fromDioException(
     DioException e, [
@@ -75,14 +118,13 @@ class NetworkException implements Exception {
         );
       case DioExceptionType.badResponse:
         final response = e.response;
-        return NetworkException(
-          type: NetworkFailureType.badResponse,
-          message: e.message,
+        return _fromHttpResponse(
           statusCode: response?.statusCode,
-          responseData: response?.data,
+          data: response?.data,
           dioExceptionType: type,
           cause: e,
           stackTrace: st,
+          fallbackMessage: e.message,
         );
       case DioExceptionType.unknown:
         final err = e.error;
@@ -103,6 +145,49 @@ class NetworkException implements Exception {
           stackTrace: st,
         );
     }
+  }
+
+  static NetworkException _fromHttpResponse({
+    required int? statusCode,
+    required dynamic data,
+    required DioExceptionType? dioExceptionType,
+    required Object? cause,
+    required StackTrace? stackTrace,
+    required String? fallbackMessage,
+  }) {
+    final envelope = ApiEnvelopeParser.tryParse(data);
+    if (envelope != null && !envelope.success) {
+      return NetworkException.fromApiEnvelope(
+        statusCode: statusCode,
+        message: envelope.message,
+        fieldErrors: envelope.fieldErrors,
+        responseData: data,
+      );
+    }
+    if (envelope != null && envelope.success) {
+      return NetworkException(
+        type: NetworkFailureType.badResponse,
+        message: envelope.message.isNotEmpty
+            ? envelope.message
+            : (fallbackMessage ?? 'HTTP $statusCode'),
+        statusCode: statusCode,
+        responseData: data,
+        dioExceptionType: dioExceptionType,
+        cause: cause,
+        stackTrace: stackTrace,
+      );
+    }
+
+    final type = _typeForHttpCode(statusCode);
+    return NetworkException(
+      type: type,
+      message: fallbackMessage ?? 'HTTP $statusCode',
+      statusCode: statusCode,
+      responseData: data,
+      dioExceptionType: dioExceptionType,
+      cause: cause,
+      stackTrace: stackTrace,
+    );
   }
 
   factory NetworkException.fromUnknown(Object error, [StackTrace? st]) {

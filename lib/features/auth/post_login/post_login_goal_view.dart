@@ -14,18 +14,18 @@ import 'package:pilates_app/widgets/app_button.dart';
 import 'package:pilates_app/widgets/app_scaffold.dart';
 import 'package:pilates_app/widgets/app_text.dart';
 
-import 'widgets/sign_up_progress.dart';
-
-class SignUpGoalView extends StatefulWidget {
-  const SignUpGoalView({super.key});
+/// Sends `POST /auth/goal` with [AuthState.postLoginExperience] + [goal] + [monthlyGoal]
+/// (JWT from login via [DioClient]).
+class PostLoginGoalView extends StatefulWidget {
+  const PostLoginGoalView({super.key});
 
   @override
-  State<SignUpGoalView> createState() => _SignUpGoalViewState();
+  State<PostLoginGoalView> createState() => _PostLoginGoalViewState();
 }
 
-class _SignUpGoalViewState extends State<SignUpGoalView> {
+class _PostLoginGoalViewState extends State<PostLoginGoalView> {
   int _selectedIndex = 0;
-  int _monthlyClasses = 8;
+  int _monthlyClasses = 12;
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +54,7 @@ class _SignUpGoalViewState extends State<SignUpGoalView> {
         return AppScaffold(
           appBar: AppAppBar(
             onBack: () {
-              context.read<AuthCubit>().previousSignUpStep();
+              context.read<AuthCubit>().backPostLoginSetup();
             },
             title: context.l10n.goals,
             isMoreMenu: false,
@@ -73,27 +73,7 @@ class _SignUpGoalViewState extends State<SignUpGoalView> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const SignUpProgress(currentStep: 3, totalSteps: 5),
-                        const SizedBox(height: AppSpacing.sm),
-                        RichText(
-                          text: TextSpan(
-                            children: [
-                              TextSpan(
-                                text: '${context.l10n.step} 4',
-                                style: AppTextStyles.caption(context).copyWith(
-                                  color: isDark
-                                      ? AppColors.languageTextDark
-                                      : AppColors.languageIcon,
-                                ),
-                              ),
-                              TextSpan(
-                                text: ' ${context.l10n.offf} 5',
-                                style: AppTextStyles.caption(context),
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(height: AppSpacing.xxl),
+                        const SizedBox(height: AppSpacing.lg),
                         AppText(
                           context.l10n.pilatesPrimaryFocusTitle,
                           style: AppTextStyles.heading1,
@@ -194,16 +174,15 @@ class _SignUpGoalViewState extends State<SignUpGoalView> {
                   ),
                 ),
                 Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+                  padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
                   child: AppButton(
-                    key: const ValueKey('sign_up_goal_submit'),
+                    key: const ValueKey('post_login_goal_submit'),
                     label: context.l10n.continueTxt,
                     isLoading: loading,
                     onPressed: loading
                         ? null
                         : () {
-                            context.read<AuthCubit>().submitSignUpGoalAndAdvance(
+                            context.read<AuthCubit>().submitPostLoginGoal(
                                   goal: PostLoginGoalApi.ordered[_selectedIndex],
                                   monthlyGoal: _monthlyClasses,
                                 );

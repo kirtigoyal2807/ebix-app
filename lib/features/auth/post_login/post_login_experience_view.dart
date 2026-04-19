@@ -3,24 +3,26 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pilates_app/config/theme/app_colors.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
+import 'package:pilates_app/core/localization/localization_extension.dart';
+import 'package:pilates_app/features/auth/cubit/auth_cubit.dart';
 import 'package:pilates_app/features/auth/post_login/post_login_api_values.dart';
+import 'package:pilates_app/features/auth/sign_up/widgets/experience_option.dart';
 import 'package:pilates_app/widgets/app_app_bar.dart';
 import 'package:pilates_app/widgets/app_button.dart';
 import 'package:pilates_app/widgets/app_scaffold.dart';
 import 'package:pilates_app/widgets/app_text.dart';
-import '../../../core/localization/localization_extension.dart';
-import '../cubit/auth_cubit.dart';
-import 'widgets/sign_up_progress.dart';
-import 'widgets/experience_option.dart';
 
-class SignUpExperienceView extends StatefulWidget {
-  const SignUpExperienceView({super.key});
+/// Persists `experience` on the [AuthCubit] and opens the goals screen.
+/// The HTTP call is `POST /auth/goal` on [PostLoginGoalView] (with goal + monthlyGoal).
+class PostLoginExperienceView extends StatefulWidget {
+  const PostLoginExperienceView({super.key});
 
   @override
-  State<SignUpExperienceView> createState() => _SignUpExperienceViewState();
+  State<PostLoginExperienceView> createState() =>
+      _PostLoginExperienceViewState();
 }
 
-class _SignUpExperienceViewState extends State<SignUpExperienceView> {
+class _PostLoginExperienceViewState extends State<PostLoginExperienceView> {
   int _selectedIndex = 0;
 
   static const _api = [
@@ -35,7 +37,9 @@ class _SignUpExperienceViewState extends State<SignUpExperienceView> {
 
     return AppScaffold(
       appBar: AppAppBar(
-        onBack: () => context.read<AuthCubit>().previousSignUpStep(),
+        onBack: () {
+          context.read<AuthCubit>().backPostLoginSetup();
+        },
         title: context.l10n.experience,
         isMoreMenu: false,
       ),
@@ -51,27 +55,7 @@ class _SignUpExperienceViewState extends State<SignUpExperienceView> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const SignUpProgress(currentStep: 2, totalSteps: 5),
-                    const SizedBox(height: AppSpacing.sm),
-                    RichText(
-                      text: TextSpan(
-                        children: [
-                          TextSpan(
-                            text: '${context.l10n.step} 3',
-                            style: AppTextStyles.caption(context).copyWith(
-                              color: isDark
-                                  ? AppColors.languageTextDark
-                                  : AppColors.languageIcon,
-                            ),
-                          ),
-                          TextSpan(
-                            text: ' ${context.l10n.offf} 5',
-                            style: AppTextStyles.caption(context),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: AppSpacing.xxl),
+                    const SizedBox(height: AppSpacing.lg),
                     AppText(
                       context.l10n.experienceTitle,
                       style: AppTextStyles.heading1,
@@ -122,10 +106,10 @@ class _SignUpExperienceViewState extends State<SignUpExperienceView> {
               ),
             ),
             AppButton(
-              key: const ValueKey('sign_up_experience_continue'),
+              key: const ValueKey('post_login_experience_continue'),
               label: context.l10n.continueTxt,
               onPressed: () {
-                context.read<AuthCubit>().continueSignUpExperience(
+                context.read<AuthCubit>().continuePostLoginExperience(
                       _api[_selectedIndex],
                     );
               },

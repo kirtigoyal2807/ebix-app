@@ -1053,8 +1053,18 @@
   "pmaCertifiedInstructor": "مدرب بيلاتس معتمد من PMA",
   "matPilatesLevel3": "شهادة مات بيلاتس المستوى الثالث",
   "sportsRehabilitationTraining": "تدريب إعادة التأهيل الرياضي",
-  "anatomyBiomechanicsCertificate": "شهادة التشريح والميكانيكا الحيوية"
-
+  "anatomyBiomechanicsCertificate": "شهادة التشريح والميكانيكا الحيوية",
+  "loginOtpSent": "تم إرسال رمز التحقق. تحقق من هاتفك.",
+  "loginErrorGeneric": "حدث خطأ ما. يُرجى المحاولة مرة أخرى.",
+  "pleaseEnterEmail": "يُرجى إدخال بريدك الإلكتروني",
+  "pleaseEnterPassword": "يُرجى إدخال كلمة المرور",
+  "pleaseEnterPhone": "يُرجى إدخال رقم الهاتف",
+  "registerOtpSent": "تم إرسال رمز التحقق. تحقق من بريدك الإلكتروني أو هاتفك.",
+  "passwordTooShort": "يجب أن تتكون كلمة المرور من 8 أحرف على الأقل",
+  "pleaseEnterFirstName": "يُرجى إدخال اسمك الأول",
+  "forgotPasswordCodeSent": "تم إرسال رمز مكوّن من 6 أرقام إلى بريدك الإلكتروني.",
+  "passwordMismatch": "كلمتا المرور غير متطابقتين",
+  "passwordResetSuccess": "تم تحديث كلمة المرور. سجّل الدخول بكلمة المرور الجديدة."
 }
 
 

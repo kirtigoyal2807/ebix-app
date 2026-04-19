@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
+import 'package:pilates_app/core/localization/localization_extension.dart';
+import 'package:pilates_app/features/auth/post_login/post_login_experience_view.dart';
+import 'package:pilates_app/features/auth/post_login/post_login_goal_view.dart';
 import 'package:pilates_app/features/auth/sign_in/sign_in_view.dart';
 import 'package:pilates_app/features/auth/sign_up/step_branch_view.dart';
 import 'package:pilates_app/features/auth/sign_up/step_experience_view.dart';
 import 'package:pilates_app/features/auth/sign_up/step_goal_view.dart';
 import 'package:pilates_app/features/auth/sign_up/step_otp_view.dart';
 import 'package:pilates_app/features/auth/sign_up/step_personal_info_view.dart';
-import 'package:pilates_app/features/auth/splash/splash_view.dart';
 import 'cubit/auth_cubit.dart';
 import 'cubit/auth_state.dart';
 import 'cubit/auth_flow.dart';
@@ -19,101 +21,62 @@ class AuthRootView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AuthCubit, AuthState>(
-      builder: (context, state) {
-        switch (state.flow) {
-          case AuthFlow.splash:
-            return Lottie.asset(
-              "assets/json/splash_screen.json",
-              repeat: false,
-            );
-          // return const SplashView();
-
-          case AuthFlow.onboarding:
-            return const OnboardingView();
-
-          case AuthFlow.signUp:
-            switch (state.signUpStep) {
-              case 0:
-                return const SignUpPersonalInfoView();
-              case 1:
-                return const SignUpOtpView();
-              case 2:
-                return const SignUpExperienceView();
-              case 3:
-                return const SignUpGoalView();
-              case 4:
-                return const SignUpBranchView();
-
-              default:
-                return const SizedBox();
-            }
-
-          case AuthFlow.signIn:
-            return const SignInView();
-
-          case AuthFlow.authenticated:
-            return const HomeView();
-        }
+    return BlocListener<AuthCubit, AuthState>(
+      listenWhen: (previous, current) =>
+          current.showRegisterOtpSuccess && !previous.showRegisterOtpSuccess,
+      listener: (context, state) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(context.l10n.registerOtpSent)),
+        );
+        context.read<AuthCubit>().clearRegisterOtpSuccessBanner();
       },
-    );
-  }
-}
+      child: BlocBuilder<AuthCubit, AuthState>(
+        builder: (context, state) {
+          switch (state.flow) {
+            case AuthFlow.splash:
+              return Lottie.asset(
+                "assets/json/splash_screen.json",
+                repeat: false,
+              );
 
-class _SplashPlaceholder extends StatelessWidget {
-  const _SplashPlaceholder();
+            case AuthFlow.onboarding:
+              return const OnboardingView();
 
-  @override
-  Widget build(BuildContext context) {
-    return const Scaffold(body: Center(child: Text('Splash')));
-  }
-}
+            case AuthFlow.signUp:
+              switch (state.signUpStep) {
+                case 0:
+                  return const SignUpPersonalInfoView();
+                case 1:
+                  return const SignUpOtpView();
+                case 2:
+                  return const SignUpExperienceView();
+                case 3:
+                  return const SignUpGoalView();
+                case 4:
+                  return const SignUpBranchView();
 
-class _OnboardingPlaceholder extends StatelessWidget {
-  const _OnboardingPlaceholder();
+                default:
+                  return const SizedBox();
+              }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: ElevatedButton(
-          onPressed: () => context.read<AuthCubit>().goToSignUp(),
-          child: const Text('Go to Sign Up'),
-        ),
+            case AuthFlow.signIn:
+              return const SignInView();
+
+            case AuthFlow.postLoginSetup:
+              switch (state.postLoginStep) {
+                case 0:
+                  return const PostLoginExperienceView();
+                case 1:
+                  return const PostLoginGoalView();
+                default:
+                  return const SizedBox();
+              }
+
+            case AuthFlow.authenticated:
+              return const HomeView();
+          }
+        },
       ),
     );
-  }
-}
-
-class _SignUpPlaceholder extends StatelessWidget {
-  final int step;
-
-  const _SignUpPlaceholder({required this.step});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text('Sign Up Step ${step + 1}'),
-            ElevatedButton(
-              onPressed: () => context.read<AuthCubit>().nextSignUpStep(),
-              child: const Text('Next'),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _SignInPlaceholder extends StatelessWidget {
-  const _SignInPlaceholder();
-
-  @override
-  Widget build(BuildContext context) {
-    return const Scaffold(body: Center(child: Text('Sign In')));
   }
 }

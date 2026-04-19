@@ -2648,4 +2648,39 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get anatomyBiomechanicsCertificate =>
       'Anatomy & Biomechanics Certificate';
+
+  @override
+  String get loginOtpSent => 'Verification code sent. Check your phone.';
+
+  @override
+  String get loginErrorGeneric => 'Something went wrong. Please try again.';
+
+  @override
+  String get pleaseEnterEmail => 'Please enter your email';
+
+  @override
+  String get pleaseEnterPassword => 'Please enter your password';
+
+  @override
+  String get pleaseEnterPhone => 'Please enter your phone number';
+
+  @override
+  String get registerOtpSent =>
+      'Verification code sent. Check your email or phone.';
+
+  @override
+  String get passwordTooShort => 'Password must be at least 8 characters';
+
+  @override
+  String get pleaseEnterFirstName => 'Please enter your first name';
+
+  @override
+  String get forgotPasswordCodeSent => 'A 6-digit code was sent to your email.';
+
+  @override
+  String get passwordMismatch => 'Passwords do not match';
+
+  @override
+  String get passwordResetSuccess =>
+      'Your password was updated. Sign in with your new password.';
 }

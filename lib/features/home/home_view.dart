@@ -7,6 +7,8 @@ import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/core/localization/localization_extension.dart';
 import 'package:pilates_app/widgets/app_text.dart';
 import '../account/account_view.dart';
+import '../auth/cubit/auth_cubit.dart';
+import '../auth/cubit/auth_state.dart';
 import '../explore/explore_view.dart';
 import 'cubit/home_cubit.dart';
 import 'cubit/home_state.dart';
@@ -173,9 +175,16 @@ class HomeContentView extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    HomeHeader(userName: state.userName),
+                    BlocBuilder<AuthCubit, AuthState>(
+                      builder: (context, authState) {
+                        final fromProfile = authState.user?.greetingName ?? '';
+                        final displayName = fromProfile.isNotEmpty
+                            ? fromProfile
+                            : state.userName;
+                        return HomeHeader(userName: displayName);
+                      },
+                    ),
                     const SizedBox(height: AppSpacing.lg),
-
                     const SpringChallengeCard(),
                     const SizedBox(height: AppSpacing.lg),
                     const QuickActions(),

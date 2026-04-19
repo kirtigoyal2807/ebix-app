@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 
+import 'api_envelope.dart';
 import 'api_result.dart';
 import 'network_exception.dart';
 
@@ -160,6 +161,26 @@ abstract class BaseRepository {
     final raw = response.data;
 
     try {
+      final envelope = ApiEnvelopeParser.tryParse(raw);
+      if (envelope != null) {
+        if (!envelope.success) {
+          return ApiFailure(
+            NetworkException.fromApiEnvelope(
+              statusCode: code,
+              message: envelope.message.isEmpty ? 'Request failed' : envelope.message,
+              fieldErrors: envelope.fieldErrors,
+              responseData: raw,
+            ),
+          );
+        }
+        final payload = envelope.data;
+        if (fromJson != null) {
+          return ApiSuccess(fromJson(payload), statusCode: code);
+        }
+        final asT = payload as T;
+        return ApiSuccess(asT, statusCode: code);
+      }
+
       if (fromJson != null) {
         return ApiSuccess(fromJson(raw), statusCode: code);
       }

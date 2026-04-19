@@ -2630,4 +2630,40 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get anatomyBiomechanicsCertificate =>
       'شهادة التشريح والميكانيكا الحيوية';
+
+  @override
+  String get loginOtpSent => 'تم إرسال رمز التحقق. تحقق من هاتفك.';
+
+  @override
+  String get loginErrorGeneric => 'حدث خطأ ما. يُرجى المحاولة مرة أخرى.';
+
+  @override
+  String get pleaseEnterEmail => 'يُرجى إدخال بريدك الإلكتروني';
+
+  @override
+  String get pleaseEnterPassword => 'يُرجى إدخال كلمة المرور';
+
+  @override
+  String get pleaseEnterPhone => 'يُرجى إدخال رقم الهاتف';
+
+  @override
+  String get registerOtpSent =>
+      'تم إرسال رمز التحقق. تحقق من بريدك الإلكتروني أو هاتفك.';
+
+  @override
+  String get passwordTooShort => 'يجب أن تتكون كلمة المرور من 8 أحرف على الأقل';
+
+  @override
+  String get pleaseEnterFirstName => 'يُرجى إدخال اسمك الأول';
+
+  @override
+  String get forgotPasswordCodeSent =>
+      'تم إرسال رمز مكوّن من 6 أرقام إلى بريدك الإلكتروني.';
+
+  @override
+  String get passwordMismatch => 'كلمتا المرور غير متطابقتين';
+
+  @override
+  String get passwordResetSuccess =>
+      'تم تحديث كلمة المرور. سجّل الدخول بكلمة المرور الجديدة.';
 }

@@ -1,0 +1,36 @@
+---
+description: How to add and call HTTP APIs — Dio, BaseRepository, ApiResult, Cubits, tests
+alwaysApply: true
+---
+
+# API & network architecture (pilates-app)
+
+Use this for **every** new endpoint or API change. **Never** call `Dio` from widgets/Cubits; only feature **repositories** extend `BaseRepository` and perform HTTP.
+
+## Wiring
+
+- **`DioClient`** (`lib/core/network/dio_client.dart`) builds the shared `Dio` (`ApiConfig.baseUrl`, headers, timeouts, auth/locale).
+- **`main.dart`**: create one `dio` → inject into repositories (e.g. `AuthRepository(dio)`).
+
+## Repository (`extends BaseRepository`)
+
+- Methods return `Future<ApiResult<T>>` and use `get` / `post` / `put` / `patch` / `delete` with a **relative path**, optional `data` / `queryParameters`, and `fromJson` when parsing envelope `data`.
+- Envelope `{ success, message, data?, errors? }` is handled in **`BaseRepository`** (`api_envelope.dart`); do not re-parse in features.
+- Typed responses: `fromJson: (json) => Model.fromJson(json as Map<String, dynamic>)`. Fire-and-forget success: `ApiResult<bool>` with `fromJson: (_) => true`.
+- Trim strings in request bodies where it matters (e.g. email).
+
+## Cubit
+
+- `emit` loading + clear that flow’s `errorMessage` / `fieldErrors`.
+- `final result = await _repository.method(...)` then **`switch (result)`** — `ApiSuccess` → update state; `ApiFailure(:final exception)` → `exception.message`, map **`exception.fieldErrors`** to `Map<String, String>` (first message per field; keys often **`.toLowerCase()`** to match API).
+
+## UI
+
+- **BlocBuilder / BlocConsumer** only; no direct HTTP. User-visible copy: **l10n**, not raw API strings unless intentionally passed through state.
+
+## Tests
+
+- **Fake repo**: `FakeXRepository extends XRepository` + `@override` returning `ApiResult` (see `test/features/auth/fake_auth_repository.dart`).
+- **Request contract**: `createTestDio` + interceptor (see `test/core/network/test_repository.dart`, `auth_repository_*_test.dart`).
+
+**Do not:** bypass `BaseRepository` for app code; duplicate envelope parsing; call Dio from presentation layer.

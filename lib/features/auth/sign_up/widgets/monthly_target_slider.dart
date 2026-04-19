@@ -3,21 +3,44 @@ import 'package:pilates_app/config/theme/app_colors.dart';
 import 'package:pilates_app/config/theme/app_radius.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
+import 'package:pilates_app/core/localization/localization_extension.dart';
 import 'package:pilates_app/widgets/app_text.dart';
 
 import '../../../../widgets/app_shadow.dart';
 
 class MonthlyTargetSlider extends StatefulWidget {
-  const MonthlyTargetSlider({super.key});
+  const MonthlyTargetSlider({
+    super.key,
+    this.initialMonthlyClasses = 8,
+    this.onMonthlyClassesChanged,
+  });
+
+  /// Snapped to {4, 8, 12, 16, 20, 24}.
+  final int initialMonthlyClasses;
+
+  /// Called when the value snaps to a new step.
+  final ValueChanged<int>? onMonthlyClassesChanged;
 
   @override
   State<MonthlyTargetSlider> createState() => _MonthlyTargetSliderState();
 }
 
 class _MonthlyTargetSliderState extends State<MonthlyTargetSlider> {
-  double value = 8;
+  static const List<int> steps = [4, 8, 12, 16, 20, 24];
 
-  final List<int> steps = [4, 8, 12, 16, 20, 24];
+  late double value;
+
+  @override
+  void initState() {
+    super.initState();
+    value = _nearestStep(widget.initialMonthlyClasses.toDouble()).toDouble();
+  }
+
+  int _nearestStep(double raw) {
+    return steps.reduce(
+      (a, b) => (raw - a).abs() <= (raw - b).abs() ? a : b,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +81,7 @@ class _MonthlyTargetSliderState extends State<MonthlyTargetSlider> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               AppText(
-                "Classes per month",
+                context.l10n.classesPerMonth,
                 style: (context) =>
                     AppTextStyles.textField(context).copyWith(height: 1),
               ),
@@ -98,7 +121,9 @@ class _MonthlyTargetSliderState extends State<MonthlyTargetSlider> {
               divisions: 5,
               value: value,
               onChanged: (v) {
-                setState(() => value = v);
+                final nearest = _nearestStep(v);
+                setState(() => value = nearest.toDouble());
+                widget.onMonthlyClassesChanged?.call(nearest);
               },
             ),
           ),

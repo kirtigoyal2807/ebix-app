@@ -17,6 +17,9 @@ class AppTextField extends StatefulWidget {
   final int? maxLines;
   final int? maxLength;
 
+  /// When set, the parent owns disposal. Otherwise an internal controller is used.
+  final TextEditingController? controller;
+
   const AppTextField({
     super.key,
     this.label,
@@ -28,6 +31,7 @@ class AppTextField extends StatefulWidget {
     this.initialValue,
     this.maxLines,
     this.maxLength,
+    this.controller,
   });
 
   @override
@@ -37,20 +41,24 @@ class AppTextField extends StatefulWidget {
 class _AppTextFieldState extends State<AppTextField> {
   late bool _obscure;
   late final FocusNode _focusNode;
+  late final TextEditingController _ownedController;
   late final TextEditingController _controller;
 
   @override
   void initState() {
+    super.initState();
     _obscure = widget.obscure;
     _focusNode = FocusNode();
-    _controller = TextEditingController(text: widget.initialValue ?? "");
-    super.initState();
+    _ownedController = TextEditingController(text: widget.initialValue ?? '');
+    _controller = widget.controller ?? _ownedController;
   }
 
   @override
   void dispose() {
     _focusNode.dispose();
-    _controller.dispose();
+    if (widget.controller == null) {
+      _ownedController.dispose();
+    }
     super.dispose();
   }
 

@@ -5065,6 +5065,72 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Anatomy & Biomechanics Certificate'**
   String get anatomyBiomechanicsCertificate;
+
+  /// No description provided for @loginOtpSent.
+  ///
+  /// In en, this message translates to:
+  /// **'Verification code sent. Check your phone.'**
+  String get loginOtpSent;
+
+  /// No description provided for @loginErrorGeneric.
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong. Please try again.'**
+  String get loginErrorGeneric;
+
+  /// No description provided for @pleaseEnterEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your email'**
+  String get pleaseEnterEmail;
+
+  /// No description provided for @pleaseEnterPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your password'**
+  String get pleaseEnterPassword;
+
+  /// No description provided for @pleaseEnterPhone.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your phone number'**
+  String get pleaseEnterPhone;
+
+  /// No description provided for @registerOtpSent.
+  ///
+  /// In en, this message translates to:
+  /// **'Verification code sent. Check your email or phone.'**
+  String get registerOtpSent;
+
+  /// No description provided for @passwordTooShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Password must be at least 8 characters'**
+  String get passwordTooShort;
+
+  /// No description provided for @pleaseEnterFirstName.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your first name'**
+  String get pleaseEnterFirstName;
+
+  /// No description provided for @forgotPasswordCodeSent.
+  ///
+  /// In en, this message translates to:
+  /// **'A 6-digit code was sent to your email.'**
+  String get forgotPasswordCodeSent;
+
+  /// No description provided for @passwordMismatch.
+  ///
+  /// In en, this message translates to:
+  /// **'Passwords do not match'**
+  String get passwordMismatch;
+
+  /// No description provided for @passwordResetSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Your password was updated. Sign in with your new password.'**
+  String get passwordResetSuccess;
 }
 
 class _AppLocalizationsDelegate

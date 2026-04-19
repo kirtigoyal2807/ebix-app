@@ -1050,9 +1050,18 @@
   "pmaCertifiedInstructor": "PMA Certified Pilates Instructor",
   "matPilatesLevel3": "Mat Pilates Level III Certification",
   "sportsRehabilitationTraining": "Sports Rehabilitation Training",
-  "anatomyBiomechanicsCertificate": "Anatomy & Biomechanics Certificate"
-
-
+  "anatomyBiomechanicsCertificate": "Anatomy & Biomechanics Certificate",
+  "loginOtpSent": "Verification code sent. Check your phone.",
+  "loginErrorGeneric": "Something went wrong. Please try again.",
+  "pleaseEnterEmail": "Please enter your email",
+  "pleaseEnterPassword": "Please enter your password",
+  "pleaseEnterPhone": "Please enter your phone number",
+  "registerOtpSent": "Verification code sent. Check your email or phone.",
+  "passwordTooShort": "Password must be at least 8 characters",
+  "pleaseEnterFirstName": "Please enter your first name",
+  "forgotPasswordCodeSent": "A 6-digit code was sent to your email.",
+  "passwordMismatch": "Passwords do not match",
+  "passwordResetSuccess": "Your password was updated. Sign in with your new password."
 }
 
 
