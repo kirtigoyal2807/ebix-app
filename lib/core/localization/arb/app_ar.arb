@@ -1064,7 +1064,11 @@
   "pleaseEnterFirstName": "يُرجى إدخال اسمك الأول",
   "forgotPasswordCodeSent": "تم إرسال رمز مكوّن من 6 أرقام إلى بريدك الإلكتروني.",
   "passwordMismatch": "كلمتا المرور غير متطابقتين",
-  "passwordResetSuccess": "تم تحديث كلمة المرور. سجّل الدخول بكلمة المرور الجديدة."
+  "passwordResetSuccess": "تم تحديث كلمة المرور. سجّل الدخول بكلمة المرور الجديدة.",
+  "branchesCouldNotLoad": "تعذّر تحميل الفروع. حاول مرة أخرى.",
+  "noBranchesAvailable": "لا توجد فروع متاحة.",
+  "pleaseSelectBranch": "يُرجى اختيار فرع للمتابعة.",
+  "retry": "إعادة المحاولة"
 }
 
 

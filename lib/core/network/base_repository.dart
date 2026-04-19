@@ -10,6 +10,9 @@ abstract class BaseRepository {
 
   final Dio _dio;
 
+  /// For requests that need the full JSON body (e.g. [meta] next to envelope [data]).
+  Dio get httpClient => _dio;
+
   Future<ApiResult<T>> get<T>(
     String path, {
     Map<String, dynamic>? queryParameters,

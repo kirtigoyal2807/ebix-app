@@ -2666,4 +2666,16 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get passwordResetSuccess =>
       'تم تحديث كلمة المرور. سجّل الدخول بكلمة المرور الجديدة.';
+
+  @override
+  String get branchesCouldNotLoad => 'تعذّر تحميل الفروع. حاول مرة أخرى.';
+
+  @override
+  String get noBranchesAvailable => 'لا توجد فروع متاحة.';
+
+  @override
+  String get pleaseSelectBranch => 'يُرجى اختيار فرع للمتابعة.';
+
+  @override
+  String get retry => 'إعادة المحاولة';
 }

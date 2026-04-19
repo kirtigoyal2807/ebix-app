@@ -2683,4 +2683,16 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get passwordResetSuccess =>
       'Your password was updated. Sign in with your new password.';
+
+  @override
+  String get branchesCouldNotLoad => 'Could not load branches. Try again.';
+
+  @override
+  String get noBranchesAvailable => 'No branches available.';
+
+  @override
+  String get pleaseSelectBranch => 'Please select a branch to continue.';
+
+  @override
+  String get retry => 'Retry';
 }

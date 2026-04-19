@@ -7,7 +7,10 @@ import 'package:pilates_app/features/auth/cubit/auth_cubit.dart';
 import 'package:pilates_app/features/auth/cubit/auth_flow.dart';
 import 'package:pilates_app/features/auth/cubit/auth_state.dart';
 import 'package:pilates_app/features/auth/data/models/auth_user.dart';
+import 'package:pilates_app/features/auth/data/models/branch.dart';
+import 'package:pilates_app/features/auth/data/models/branches_list_result.dart';
 import 'package:pilates_app/features/auth/data/models/login_email_result.dart';
+import 'package:pilates_app/features/auth/data/models/pagination_meta.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'fake_auth_repository.dart';
@@ -126,6 +129,165 @@ void main() {
 
       expect(cubit.state.signUpStep, 2);
       expect(cubit.state.signUpExperience, isEmpty);
+      await cubit.close();
+    });
+  });
+
+  group('AuthCubit sign-up branches', () {
+    test('loadSignUpBranches loads list and pagination', () async {
+      fakeRepo.listBranchesResult = ApiSuccess<BranchesListResult>(
+        BranchesListResult(
+          branches: const [
+            Branch(
+              id: 2,
+              title: 'Central',
+              city: 'Riyadh',
+              distance: '2 km',
+              typeLabel: 'Premium',
+            ),
+          ],
+          pagination: const PaginationMeta(
+            currentPage: 1,
+            lastPage: 2,
+            perPage: 50,
+            total: 60,
+          ),
+        ),
+      );
+      final cubit = buildCubit(
+        seed: AuthState.initial().copyWith(
+          flow: AuthFlow.signUp,
+          signUpStep: 4,
+        ),
+      );
+
+      await cubit.loadSignUpBranches();
+
+      expect(
+        cubit.state.signUpBranchesLoadStatus,
+        SignUpBranchesLoadStatus.loaded,
+      );
+      expect(cubit.state.signUpBranches, hasLength(1));
+      expect(cubit.state.signUpBranches.first.id, 2);
+      expect(cubit.state.signUpBranchesPagination?.total, 60);
+      expect(fakeRepo.listBranchesCalls, 1);
+      expect(fakeRepo.lastListBranchesQuery!['page'], 1);
+      expect(fakeRepo.lastListBranchesQuery!['per_page'], 50);
+      await cubit.close();
+    });
+
+    test('loadSignUpBranches failure sets failure status', () async {
+      fakeRepo.listBranchesResult = ApiFailure<BranchesListResult>(
+        NetworkException(
+          type: NetworkFailureType.unknown,
+          message: 'network down',
+        ),
+      );
+      final cubit = buildCubit(
+        seed: AuthState.initial().copyWith(
+          flow: AuthFlow.signUp,
+          signUpStep: 4,
+        ),
+      );
+
+      await cubit.loadSignUpBranches();
+
+      expect(
+        cubit.state.signUpBranchesLoadStatus,
+        SignUpBranchesLoadStatus.failure,
+      );
+      expect(cubit.state.signUpBranchesErrorMessage, 'network down');
+      await cubit.close();
+    });
+
+    test('loadSignUpBranches does nothing when not on branch step', () async {
+      final cubit = buildCubit(
+        seed: AuthState.initial().copyWith(
+          flow: AuthFlow.signUp,
+          signUpStep: 3,
+        ),
+      );
+
+      await cubit.loadSignUpBranches();
+
+      expect(fakeRepo.listBranchesCalls, 0);
+      await cubit.close();
+    });
+
+    test('submitSignUpHomeBranchAndFinish calls API and completes sign-up',
+        () async {
+      fakeRepo.setHomeBranchResult = const ApiSuccess<bool>(true);
+      final cubit = buildCubit(
+        seed: AuthState.initial().copyWith(
+          flow: AuthFlow.signUp,
+          signUpStep: 4,
+          selectedSignUpBranchId: 7,
+          signUpBranchesLoadStatus: SignUpBranchesLoadStatus.loaded,
+          signUpBranches: const [
+            Branch(
+              id: 7,
+              title: 'X',
+              city: 'Y',
+              distance: '1',
+              typeLabel: 'Standard',
+            ),
+          ],
+        ),
+      );
+
+      await cubit.submitSignUpHomeBranchAndFinish();
+
+      expect(cubit.state.flow, AuthFlow.authenticated);
+      expect(fakeRepo.setHomeBranchCalls, 1);
+      expect(fakeRepo.lastHomeBranchId, 7);
+      await cubit.close();
+    });
+
+    test('submitSignUpHomeBranchAndFinish does nothing without selection',
+        () async {
+      fakeRepo.setHomeBranchResult = const ApiSuccess<bool>(true);
+      final cubit = buildCubit(
+        seed: AuthState.initial().copyWith(
+          flow: AuthFlow.signUp,
+          signUpStep: 4,
+          selectedSignUpBranchId: null,
+        ),
+      );
+
+      await cubit.submitSignUpHomeBranchAndFinish();
+
+      expect(fakeRepo.setHomeBranchCalls, 0);
+      await cubit.close();
+    });
+
+    test('previousSignUpStep from branch step clears branch state', () async {
+      final cubit = buildCubit(
+        seed: AuthState.initial().copyWith(
+          flow: AuthFlow.signUp,
+          signUpStep: 4,
+          signUpBranchesLoadStatus: SignUpBranchesLoadStatus.loaded,
+          signUpBranches: const [
+            Branch(
+              id: 1,
+              title: 'A',
+              city: 'B',
+              distance: '1',
+              typeLabel: 'Standard',
+            ),
+          ],
+          selectedSignUpBranchId: 1,
+        ),
+      );
+
+      cubit.previousSignUpStep();
+
+      expect(cubit.state.signUpStep, 3);
+      expect(cubit.state.signUpBranches, isEmpty);
+      expect(cubit.state.selectedSignUpBranchId, isNull);
+      expect(
+        cubit.state.signUpBranchesLoadStatus,
+        SignUpBranchesLoadStatus.idle,
+      );
       await cubit.close();
     });
   });

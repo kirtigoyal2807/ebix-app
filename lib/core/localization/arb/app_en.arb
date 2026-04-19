@@ -1061,7 +1061,11 @@
   "pleaseEnterFirstName": "Please enter your first name",
   "forgotPasswordCodeSent": "A 6-digit code was sent to your email.",
   "passwordMismatch": "Passwords do not match",
-  "passwordResetSuccess": "Your password was updated. Sign in with your new password."
+  "passwordResetSuccess": "Your password was updated. Sign in with your new password.",
+  "branchesCouldNotLoad": "Could not load branches. Try again.",
+  "noBranchesAvailable": "No branches available.",
+  "pleaseSelectBranch": "Please select a branch to continue.",
+  "retry": "Retry"
 }
 
 

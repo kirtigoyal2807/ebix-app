@@ -5131,6 +5131,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Your password was updated. Sign in with your new password.'**
   String get passwordResetSuccess;
+
+  /// No description provided for @branchesCouldNotLoad.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load branches. Try again.'**
+  String get branchesCouldNotLoad;
+
+  /// No description provided for @noBranchesAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'No branches available.'**
+  String get noBranchesAvailable;
+
+  /// No description provided for @pleaseSelectBranch.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select a branch to continue.'**
+  String get pleaseSelectBranch;
+
+  /// No description provided for @retry.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get retry;
 }
 
 class _AppLocalizationsDelegate

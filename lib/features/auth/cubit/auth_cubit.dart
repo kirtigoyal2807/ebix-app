@@ -8,6 +8,7 @@ import 'package:pilates_app/core/network/network_exception.dart';
 import 'package:pilates_app/core/network/auth_locale_bridge.dart';
 import 'package:pilates_app/core/storage/token_storage.dart';
 import 'package:pilates_app/features/auth/data/auth_repository.dart';
+import 'package:pilates_app/features/auth/data/models/branches_list_result.dart';
 import 'package:pilates_app/features/auth/data/models/login_email_result.dart';
 import 'package:pilates_app/features/auth/data/models/register_gender.dart';
 
@@ -87,7 +88,8 @@ class AuthCubit extends Cubit<AuthState> {
             signUpExperience: '',
           )
           .clearedForgotPasswordFlow()
-          .clearedPostLoginProfile(),
+          .clearedPostLoginProfile()
+          .clearedSignUpBranchUi(),
     );
   }
 
@@ -199,6 +201,22 @@ class AuthCubit extends Cubit<AuthState> {
   void previousSignUpStep() {
     if (state.signUpStep > 0) {
       final ns = state.signUpStep - 1;
+      if (state.signUpStep == 4 && ns == 3) {
+        emit(
+          state.copyWith(
+            signUpStep: 3,
+            signUpBranchesLoadStatus: SignUpBranchesLoadStatus.idle,
+            signUpBranches: [],
+            signUpBranchesPagination: null,
+            signUpBranchesErrorMessage: '',
+            signUpHomeBranchStatus: SignUpHomeBranchStatus.idle,
+            signUpHomeBranchErrorMessage: '',
+            signUpHomeBranchFieldErrors: {},
+            clearSelectedSignUpBranchId: true,
+          ),
+        );
+        return;
+      }
       emit(
         state.copyWith(
           signUpStep: ns,
@@ -221,19 +239,106 @@ class AuthCubit extends Cubit<AuthState> {
               signUpExperience: '',
             )
             .clearedForgotPasswordFlow()
-            .clearedPostLoginProfile(),
+            .clearedPostLoginProfile()
+            .clearedSignUpBranchUi(),
       );
     }
   }
 
-  void completeSignUp() {
-    emit(state
-        .copyWith(
-          flow: AuthFlow.authenticated,
-          signUpExperience: '',
-        )
-        .clearedForgotPasswordFlow()
-        .clearedPostLoginProfile());
+  /// `GET /branches` when sign-up is on the branch step (loads once per visit).
+  Future<void> loadSignUpBranches() async {
+    if (state.flow != AuthFlow.signUp || state.signUpStep != 4) {
+      return;
+    }
+    emit(
+      state.copyWith(
+        signUpBranchesLoadStatus: SignUpBranchesLoadStatus.loading,
+        signUpBranchesErrorMessage: '',
+      ),
+    );
+
+    final result = await _authRepository.listBranches(
+      queryParameters: const {'page': 1, 'per_page': 50},
+    );
+
+    switch (result) {
+      case ApiSuccess<BranchesListResult>(:final data):
+        emit(
+          state.copyWith(
+            signUpBranchesLoadStatus: SignUpBranchesLoadStatus.loaded,
+            signUpBranches: data.branches,
+            signUpBranchesPagination: data.pagination,
+          ),
+        );
+      case ApiFailure<BranchesListResult>(:final exception):
+        emit(
+          state.copyWith(
+            signUpBranchesLoadStatus: SignUpBranchesLoadStatus.failure,
+            signUpBranchesErrorMessage: exception.message ?? '',
+          ),
+        );
+    }
+  }
+
+  void selectSignUpBranch(int branchId) {
+    emit(state.copyWith(selectedSignUpBranchId: branchId));
+  }
+
+  /// `POST /auth/home-branch` then complete registration (home).
+  Future<void> submitSignUpHomeBranchAndFinish() async {
+    if (state.flow != AuthFlow.signUp || state.signUpStep != 4) {
+      return;
+    }
+    final id = state.selectedSignUpBranchId;
+    if (id == null) {
+      return;
+    }
+
+    emit(
+      state.copyWith(
+        signUpHomeBranchStatus: SignUpHomeBranchStatus.loading,
+        signUpHomeBranchErrorMessage: '',
+        signUpHomeBranchFieldErrors: {},
+      ),
+    );
+
+    final result = await _authRepository.setHomeBranch(homeBranchId: id);
+
+    switch (result) {
+      case ApiSuccess<bool>():
+        emit(
+          state
+              .copyWith(
+                flow: AuthFlow.authenticated,
+                signUpExperience: '',
+              )
+              .clearedForgotPasswordFlow()
+              .clearedPostLoginProfile()
+              .clearedSignUpBranchUi(),
+        );
+      case ApiFailure<bool>(:final exception):
+        emit(
+          state.copyWith(
+            signUpHomeBranchStatus: SignUpHomeBranchStatus.idle,
+            signUpHomeBranchErrorMessage: exception.message ?? '',
+            signUpHomeBranchFieldErrors: _mapFieldErrors(exception),
+          ),
+        );
+    }
+  }
+
+  @visibleForTesting
+  void completeSignUpForTesting() {
+    emit(
+      state
+          .copyWith(
+            flow: AuthFlow.authenticated,
+            signUpExperience: '',
+          )
+          .clearedForgotPasswordFlow()
+          .clearedPostLoginProfile()
+          .clearedSignUpBranchUi(),
+    );
   }
 
   // After email login — experience → goals → POST /auth/goal → home

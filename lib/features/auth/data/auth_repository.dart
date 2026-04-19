@@ -1,7 +1,14 @@
-import 'package:pilates_app/core/network/api_result.dart';
-import 'package:pilates_app/core/network/base_repository.dart';
+import 'package:dio/dio.dart';
 
+import 'package:pilates_app/core/network/api_result.dart';
+import 'package:pilates_app/core/network/api_envelope.dart';
+import 'package:pilates_app/core/network/base_repository.dart';
+import 'package:pilates_app/core/network/network_exception.dart';
+
+import 'models/branches_list_result.dart';
+import 'models/branch.dart';
 import 'models/login_email_result.dart';
+import 'models/pagination_meta.dart';
 import 'models/register_gender.dart';
 
 /// Pilates API — auth endpoints.
@@ -105,6 +112,105 @@ class AuthRepository extends BaseRepository {
         'email': email.trim(),
         'password': password,
       },
+      fromJson: (_) => true,
+    );
+  }
+
+  /// Public list — supports pagination/filter query params per API.
+  Future<ApiResult<BranchesListResult>> listBranches({
+    Map<String, dynamic>? queryParameters,
+  }) async {
+    try {
+      final response = await httpClient.get<dynamic>(
+        '/branches',
+        queryParameters: queryParameters,
+      );
+      final code = response.statusCode;
+      if (code == null) {
+        return ApiFailure(
+          NetworkException(
+            type: NetworkFailureType.badResponse,
+            message: 'Missing status code',
+            responseData: response.data,
+          ),
+        );
+      }
+      if (code < 200 || code >= 300) {
+        return ApiFailure(
+          NetworkException(
+            type: NetworkFailureType.badResponse,
+            message: 'HTTP $code',
+            statusCode: code,
+            responseData: response.data,
+          ),
+        );
+      }
+      final raw = response.data;
+      PaginationMeta? pagination;
+      if (raw is Map<String, dynamic>) {
+        final meta = raw['meta'];
+        if (meta is Map<String, dynamic>) {
+          final p = meta['pagination'];
+          if (p is Map<String, dynamic>) {
+            pagination = PaginationMeta.fromJson(p);
+          }
+        }
+      }
+
+      final envelope = ApiEnvelopeParser.tryParse(raw);
+      if (envelope != null) {
+        if (!envelope.success) {
+          return ApiFailure(
+            NetworkException.fromApiEnvelope(
+              statusCode: code,
+              message: envelope.message.isEmpty ? 'Request failed' : envelope.message,
+              fieldErrors: envelope.fieldErrors,
+              responseData: raw,
+            ),
+          );
+        }
+        final branches = _parseBranchesList(envelope.data);
+        return ApiSuccess(
+          BranchesListResult(branches: branches, pagination: pagination),
+          statusCode: code,
+        );
+      }
+
+      final branches = _parseBranchesList(raw);
+      return ApiSuccess(
+        BranchesListResult(branches: branches, pagination: pagination),
+        statusCode: code,
+      );
+    } on DioException catch (e, st) {
+      return ApiFailure(NetworkException.fromDioException(e, st));
+    } catch (e, st) {
+      return ApiFailure(NetworkException.fromUnknown(e, st));
+    }
+  }
+
+  static List<Branch> _parseBranchesList(dynamic payload) {
+    final list = _coerceList(payload);
+    if (list == null) return [];
+    return list.map((e) {
+      final map = Map<String, dynamic>.from(e as Map);
+      return Branch.fromJson(map);
+    }).toList();
+  }
+
+  static List<dynamic>? _coerceList(dynamic payload) {
+    if (payload is List<dynamic>) return payload;
+    if (payload is Map) {
+      final d = payload['data'] ?? payload['items'] ?? payload['branches'];
+      if (d is List<dynamic>) return d;
+    }
+    return null;
+  }
+
+  /// Saved preferred branch — JWT customer.
+  Future<ApiResult<bool>> setHomeBranch({required int homeBranchId}) {
+    return post<bool>(
+      '/auth/home-branch',
+      data: {'homeBranchId': homeBranchId},
       fromJson: (_) => true,
     );
   }

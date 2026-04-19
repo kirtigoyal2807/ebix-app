@@ -1,6 +1,8 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:pilates_app/features/auth/data/models/auth_user.dart';
+import 'package:pilates_app/features/auth/data/models/branch.dart';
+import 'package:pilates_app/features/auth/data/models/pagination_meta.dart';
 
 import 'auth_flow.dart';
 
@@ -11,6 +13,10 @@ enum RegisterUiStatus { idle, loading }
 enum ForgotPasswordUiStatus { idle, loading }
 
 enum PostLoginGoalUiStatus { idle, loading }
+
+enum SignUpBranchesLoadStatus { idle, loading, loaded, failure }
+
+enum SignUpHomeBranchStatus { idle, loading }
 
 class AuthState extends Equatable {
   final AuthFlow flow;
@@ -59,6 +65,16 @@ class AuthState extends Equatable {
   /// Sign-up step 2→3: API `experience` for [submitUserGoal] on [SignUpGoalView].
   final String signUpExperience;
 
+  /// Sign-up branch step: `GET /branches` + `POST /auth/home-branch`.
+  final SignUpBranchesLoadStatus signUpBranchesLoadStatus;
+  final List<Branch> signUpBranches;
+  final PaginationMeta? signUpBranchesPagination;
+  final String signUpBranchesErrorMessage;
+  final SignUpHomeBranchStatus signUpHomeBranchStatus;
+  final String signUpHomeBranchErrorMessage;
+  final Map<String, String> signUpHomeBranchFieldErrors;
+  final int? selectedSignUpBranchId;
+
   const AuthState({
     required this.flow,
     required this.signUpStep,
@@ -84,6 +100,14 @@ class AuthState extends Equatable {
     required this.postLoginGoalErrorMessage,
     required this.postLoginGoalFieldErrors,
     required this.signUpExperience,
+    required this.signUpBranchesLoadStatus,
+    required this.signUpBranches,
+    this.signUpBranchesPagination,
+    required this.signUpBranchesErrorMessage,
+    required this.signUpHomeBranchStatus,
+    required this.signUpHomeBranchErrorMessage,
+    required this.signUpHomeBranchFieldErrors,
+    this.selectedSignUpBranchId,
   });
 
   factory AuthState.initial() {
@@ -112,6 +136,14 @@ class AuthState extends Equatable {
       postLoginGoalErrorMessage: '',
       postLoginGoalFieldErrors: {},
       signUpExperience: '',
+      signUpBranchesLoadStatus: SignUpBranchesLoadStatus.idle,
+      signUpBranches: [],
+      signUpBranchesPagination: null,
+      signUpBranchesErrorMessage: '',
+      signUpHomeBranchStatus: SignUpHomeBranchStatus.idle,
+      signUpHomeBranchErrorMessage: '',
+      signUpHomeBranchFieldErrors: {},
+      selectedSignUpBranchId: null,
     );
   }
 
@@ -141,6 +173,16 @@ class AuthState extends Equatable {
     String? postLoginGoalErrorMessage,
     Map<String, String>? postLoginGoalFieldErrors,
     String? signUpExperience,
+    SignUpBranchesLoadStatus? signUpBranchesLoadStatus,
+    List<Branch>? signUpBranches,
+    PaginationMeta? signUpBranchesPagination,
+    bool clearSignUpBranchesPagination = false,
+    String? signUpBranchesErrorMessage,
+    SignUpHomeBranchStatus? signUpHomeBranchStatus,
+    String? signUpHomeBranchErrorMessage,
+    Map<String, String>? signUpHomeBranchFieldErrors,
+    int? selectedSignUpBranchId,
+    bool clearSelectedSignUpBranchId = false,
   }) {
     return AuthState(
       flow: flow ?? this.flow,
@@ -176,6 +218,23 @@ class AuthState extends Equatable {
       postLoginGoalFieldErrors:
           postLoginGoalFieldErrors ?? this.postLoginGoalFieldErrors,
       signUpExperience: signUpExperience ?? this.signUpExperience,
+      signUpBranchesLoadStatus:
+          signUpBranchesLoadStatus ?? this.signUpBranchesLoadStatus,
+      signUpBranches: signUpBranches ?? this.signUpBranches,
+      signUpBranchesPagination: clearSignUpBranchesPagination
+          ? null
+          : (signUpBranchesPagination ?? this.signUpBranchesPagination),
+      signUpBranchesErrorMessage:
+          signUpBranchesErrorMessage ?? this.signUpBranchesErrorMessage,
+      signUpHomeBranchStatus:
+          signUpHomeBranchStatus ?? this.signUpHomeBranchStatus,
+      signUpHomeBranchErrorMessage:
+          signUpHomeBranchErrorMessage ?? this.signUpHomeBranchErrorMessage,
+      signUpHomeBranchFieldErrors:
+          signUpHomeBranchFieldErrors ?? this.signUpHomeBranchFieldErrors,
+      selectedSignUpBranchId: clearSelectedSignUpBranchId
+          ? null
+          : (selectedSignUpBranchId ?? this.selectedSignUpBranchId),
     );
   }
 
@@ -198,6 +257,19 @@ class AuthState extends Equatable {
       postLoginGoalUiStatus: PostLoginGoalUiStatus.idle,
       postLoginGoalErrorMessage: '',
       postLoginGoalFieldErrors: {},
+    );
+  }
+
+  AuthState clearedSignUpBranchUi() {
+    return copyWith(
+      signUpBranchesLoadStatus: SignUpBranchesLoadStatus.idle,
+      signUpBranches: [],
+      clearSignUpBranchesPagination: true,
+      signUpBranchesErrorMessage: '',
+      signUpHomeBranchStatus: SignUpHomeBranchStatus.idle,
+      signUpHomeBranchErrorMessage: '',
+      signUpHomeBranchFieldErrors: {},
+      clearSelectedSignUpBranchId: true,
     );
   }
 
@@ -227,5 +299,13 @@ class AuthState extends Equatable {
         postLoginGoalErrorMessage,
         postLoginGoalFieldErrors,
         signUpExperience,
+        signUpBranchesLoadStatus,
+        signUpBranches,
+        signUpBranchesPagination,
+        signUpBranchesErrorMessage,
+        signUpHomeBranchStatus,
+        signUpHomeBranchErrorMessage,
+        signUpHomeBranchFieldErrors,
+        selectedSignUpBranchId,
       ];
 }
