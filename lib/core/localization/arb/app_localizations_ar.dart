@@ -598,6 +598,10 @@ class AppLocalizationsAr extends AppLocalizations {
       'أوافق على سياسة الإلغاء وأفهم أنه يمكنني الإلغاء قبل بدء الحصة بـ 4 ساعات.';
 
   @override
+  String get acceptPolicyToContinue =>
+      'يرجى الموافقة على سياسة الإلغاء للمتابعة.';
+
+  @override
   String get viewMyBooking => 'عرض حجوزاتي';
 
   @override

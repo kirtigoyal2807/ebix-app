@@ -604,6 +604,10 @@ class AppLocalizationsEn extends AppLocalizations {
       'I agree to the cancellation policy and understand that I can cancel up to 4 hours before the class starts.';
 
   @override
+  String get acceptPolicyToContinue =>
+      'Please accept the cancellation policy to continue.';
+
+  @override
   String get viewMyBooking => 'View My Booking';
 
   @override

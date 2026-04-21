@@ -8,6 +8,7 @@ import 'package:pilates_app/core/localization/localization_extension.dart';
 import 'package:pilates_app/widgets/app_text.dart';
 
 import '../../../widgets/app_shadow.dart';
+import '../../booking/data/class_booking_preview.dart';
 import '../../booking/views/book_class_confirm_view.dart';
 
 class FeaturedClassCard extends StatelessWidget {
@@ -188,7 +189,16 @@ class FeaturedClassCard extends StatelessWidget {
                   onPressed: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (_) => const BookClassConfirmView(),
+                        builder: (_) => BookClassConfirmView(
+                          calendarEventId: BookingDemoCalendarEvent.id,
+                          preview: ClassBookingPreview(
+                            title: context.l10n.powerPilates,
+                            trainerName: context.l10n.trainerAishaSherin,
+                            studio: context.l10n.branchDowntown,
+                            time:
+                                '${context.l10n.today}, 6:00 PM',
+                          ),
+                        ),
                       ),
                     );
                   },

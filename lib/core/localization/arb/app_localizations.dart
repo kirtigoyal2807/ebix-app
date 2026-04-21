@@ -1226,6 +1226,12 @@ abstract class AppLocalizations {
   /// **'I agree to the cancellation policy and understand that I can cancel up to 4 hours before the class starts.'**
   String get cancelPolicyDescription;
 
+  /// No description provided for @acceptPolicyToContinue.
+  ///
+  /// In en, this message translates to:
+  /// **'Please accept the cancellation policy to continue.'**
+  String get acceptPolicyToContinue;
+
   /// No description provided for @viewMyBooking.
   ///
   /// In en, this message translates to:

@@ -39,10 +39,6 @@ class BookingCubit extends Cubit<BookingState> {
     });
   }
 
-  void bookClass() {
-    // Add booking logic here
-  }
-
   void setTrainer(TrainerType trainerType){
     emit(state.copyWith(selectedTrainerType: trainerType));
   }

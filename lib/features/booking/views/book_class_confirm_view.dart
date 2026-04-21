@@ -14,10 +14,19 @@ import '../../../core/localization/arb/app_localizations.dart';
 import '../../../widgets/app_button.dart';
 import '../cubit/confirm_booking_cubit.dart';
 import '../cubit/confirm_booking_state.dart';
+import '../data/class_booking_preview.dart';
+import '../data/classes_repository.dart';
 import 'booking_success_view.dart';
 
 class BookClassConfirmView extends StatelessWidget {
-  const BookClassConfirmView({super.key});
+  const BookClassConfirmView({
+    super.key,
+    required this.calendarEventId,
+    required this.preview,
+  });
+
+  final String calendarEventId;
+  final ClassBookingPreview preview;
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +42,10 @@ class BookClassConfirmView extends StatelessWidget {
         isMoreMenu: false,
       ),
       body: BlocProvider(
-        create: (context) => ConfirmBookingCubit(),
+        create: (context) => ConfirmBookingCubit(
+          context.read<ClassesRepository>(),
+          calendarEventId: calendarEventId,
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -49,23 +61,66 @@ class BookClassConfirmView extends StatelessWidget {
             const SizedBox(height: AppSpacing.lg),
 
             _buildPolicyAgreement(l10n: l10n, isDark: isDark),
+            BlocBuilder<ConfirmBookingCubit, ConfirmBookingState>(
+              buildWhen: (prev, next) => prev.errorMessage != next.errorMessage,
+              builder: (context, state) {
+                final msg = state.errorMessage;
+                if (msg == null || msg.isEmpty) {
+                  return const SizedBox.shrink();
+                }
+                return Padding(
+                  padding: const EdgeInsets.fromLTRB(
+                    AppSpacing.lg,
+                    AppSpacing.md,
+                    AppSpacing.lg,
+                    0,
+                  ),
+                  child: AppText(
+                    msg,
+                    style: (context) => AppTextStyles.bodyTextSmall(context)
+                        .copyWith(color: AppColors.lightRedColor),
+                  ),
+                );
+              },
+            ),
             const Spacer(),
 
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
-              child: AppButton(
-                label: l10n.confirmBooking,
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const BookingSuccessScreen(
-                        successPage: SuccessPage.booking,
-                      ),
-                    ),
+              child: BlocBuilder<ConfirmBookingCubit, ConfirmBookingState>(
+                builder: (context, state) {
+                  return AppButton(
+                    label: l10n.confirmBooking,
+                    isLoading: state.isSubmitting,
+                    onPressed: state.isSubmitting
+                        ? null
+                        : () async {
+                            final cubit = context.read<ConfirmBookingCubit>();
+                            if (!cubit.state.agreePolicy) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(l10n.acceptPolicyToContinue),
+                                ),
+                              );
+                              return;
+                            }
+                            final ok = await cubit.submitBooking();
+                            if (!context.mounted) return;
+                            if (ok) {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      const BookingSuccessScreen(
+                                    successPage: SuccessPage.booking,
+                                  ),
+                                ),
+                              );
+                            }
+                          },
+                    variant: AppButtonVariant.primary,
                   );
                 },
-                variant: AppButtonVariant.primary,
               ),
             ),
             const SizedBox(height: 34),
@@ -91,36 +146,36 @@ class BookClassConfirmView extends StatelessWidget {
         ),
         boxShadow: isDark
             ? [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.06),
-            offset: const Offset(0, 4),
-            blurRadius: 8,
-            spreadRadius: 0,
-          ),
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.04),
-            offset: const Offset(0, 0),
-            blurRadius: 4,
-            spreadRadius: 0,
-          ),
-        ]
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: 0.06),
+                  offset: const Offset(0, 4),
+                  blurRadius: 8,
+                  spreadRadius: 0,
+                ),
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: 0.04),
+                  offset: const Offset(0, 0),
+                  blurRadius: 4,
+                  spreadRadius: 0,
+                ),
+              ]
             : [
-          AppShadows.lightShadow,
-          AppShadows.mediumShadow,
-          AppShadows.mediumHeavyShadow,
-          BoxShadow(
-            color: AppColors.shadowColor.withValues(alpha: 0.01),
-            offset: const Offset(0, 64),
-            blurRadius: 25,
-            spreadRadius: 0,
-          ),
-          BoxShadow(
-            color: AppColors.shadowColor.withValues(alpha: 0.00),
-            offset: const Offset(0, 99),
-            blurRadius: 28,
-            spreadRadius: 0,
-          ),
-        ],
+                AppShadows.lightShadow,
+                AppShadows.mediumShadow,
+                AppShadows.mediumHeavyShadow,
+                BoxShadow(
+                  color: AppColors.shadowColor.withValues(alpha: 0.01),
+                  offset: const Offset(0, 64),
+                  blurRadius: 25,
+                  spreadRadius: 0,
+                ),
+                BoxShadow(
+                  color: AppColors.shadowColor.withValues(alpha: 0.00),
+                  offset: const Offset(0, 99),
+                  blurRadius: 28,
+                  spreadRadius: 0,
+                ),
+              ],
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -130,26 +185,26 @@ class BookClassConfirmView extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 AppText(
-                  'Power Pilates',
+                  preview.title,
                   style: (context) => AppTextStyles.gelasioMedium(context),
                 ),
                 const SizedBox(height: AppSpacing.lmd),
                 _buildDetailRow(
                   icon: Icons.location_on_outlined,
-                  text: 'Downtown Studio',
-                  isDark: isDark
+                  text: preview.studio,
+                  isDark: isDark,
                 ),
                 const SizedBox(height: AppSpacing.sm),
                 _buildDetailRow(
                   icon: Icons.watch_later_outlined,
-                  text: 'Today, 6:00 PM',
-                    isDark: isDark
+                  text: preview.time,
+                  isDark: isDark,
                 ),
                 const SizedBox(height: AppSpacing.sm),
                 _buildDetailRow(
                   icon: Icons.person_outline,
-                  text: 'Aisha Sherin',
-                    isDark: isDark
+                  text: preview.trainerName,
+                  isDark: isDark,
                 ),
               ],
             ),
@@ -158,7 +213,6 @@ class BookClassConfirmView extends StatelessWidget {
             height: 72,
             width: 94,
             decoration: BoxDecoration(
-              // color: Colors.grey,
               borderRadius: BorderRadius.circular(12),
             ),
             child: ClipRRect(
@@ -179,10 +233,18 @@ class BookClassConfirmView extends StatelessWidget {
     );
   }
 
-  Widget _buildDetailRow({required IconData icon, required String text,required bool isDark}) {
+  Widget _buildDetailRow({
+    required IconData icon,
+    required String text,
+    required bool isDark,
+  }) {
     return Row(
       children: [
-        Icon(icon, color: isDark?  AppColors.languageIconDark:AppColors.languageIcon, size: 16),
+        Icon(
+          icon,
+          color: isDark ? AppColors.languageIconDark : AppColors.languageIcon,
+          size: 16,
+        ),
         const SizedBox(width: 4),
         AppText(text, style: (context) => AppTextStyles.bodyTextSmall(context)),
       ],
@@ -280,14 +342,9 @@ class BookClassConfirmView extends StatelessWidget {
                             width: 8,
                             height: 8,
                             fit: BoxFit.contain,
-                            // colorFilter: ColorFilter.mode(
-                            //   selected ? theme.colorScheme.primary : theme.hintColor,
-                            //   BlendMode.srcIn,
-                            // ),
                             alignment: Alignment.center,
                           ),
                         ),
-                        // child: const Icon(Icons.check, color: Colors.white, size: 14),
                       )
                     : SizedBox(
                         height: 16,
