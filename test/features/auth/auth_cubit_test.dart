@@ -59,6 +59,7 @@ void main() {
       expect(cubit.state.signUpStep, 1);
       expect(cubit.state.showRegisterOtpSuccess, isTrue);
       expect(cubit.state.registerUiStatus, RegisterUiStatus.idle);
+      expect(cubit.state.signUpPendingPhone, '+966500000001');
       expect(fakeRepo.registerCalls, 1);
       await cubit.close();
     });
@@ -73,6 +74,80 @@ void main() {
 
       cubit.previousSignUpStep();
       expect(cubit.state.flow, AuthFlow.onboarding);
+      await cubit.close();
+    });
+  });
+
+  group('AuthCubit sign-up phone OTP', () {
+    test('verifySignUpPhoneOtp saves token and advances to step 2', () async {
+      fakeRepo.verifyPhoneOtpResult = ApiSuccess<LoginEmailResult>(
+        LoginEmailResult(
+          user: AuthUser(email: 'v@example.com', phone: '+966500000001'),
+          token: 'jwt-phone-verify',
+        ),
+      );
+      final cubit = buildCubit(
+        seed: AuthState.initial().copyWith(
+          flow: AuthFlow.signUp,
+          signUpStep: 1,
+          signUpPendingPhone: '+966500000001',
+        ),
+      );
+
+      await cubit.verifySignUpPhoneOtp(code: '654321');
+
+      expect(cubit.state.signUpStep, 2);
+      expect(storage.readToken(), 'jwt-phone-verify');
+      expect(cubit.state.user?.email, 'v@example.com');
+      expect(fakeRepo.verifyPhoneOtpCalls, 1);
+      expect(fakeRepo.lastVerifyPhoneOtpPhone, '+966500000001');
+      expect(fakeRepo.lastVerifyPhoneOtpCode, '654321');
+      await cubit.close();
+    });
+
+    test('verifySignUpPhoneOtp does nothing when not on OTP step', () async {
+      final cubit = buildCubit(
+        seed: AuthState.initial().copyWith(
+          flow: AuthFlow.signUp,
+          signUpStep: 0,
+          signUpPendingPhone: '+966500000001',
+        ),
+      );
+
+      await cubit.verifySignUpPhoneOtp(code: '123456');
+
+      expect(fakeRepo.verifyPhoneOtpCalls, 0);
+      await cubit.close();
+    });
+
+    test('verifySignUpPhoneOtp does nothing when code length is not 6', () async {
+      final cubit = buildCubit(
+        seed: AuthState.initial().copyWith(
+          flow: AuthFlow.signUp,
+          signUpStep: 1,
+          signUpPendingPhone: '+966500000001',
+        ),
+      );
+
+      await cubit.verifySignUpPhoneOtp(code: '12345');
+
+      expect(fakeRepo.verifyPhoneOtpCalls, 0);
+      await cubit.close();
+    });
+
+    test('previousSignUpStep from OTP step clears pending phone', () async {
+      final cubit = buildCubit(
+        seed: AuthState.initial().copyWith(
+          flow: AuthFlow.signUp,
+          signUpStep: 1,
+          signUpPendingPhone: '+966500000001',
+        ),
+      );
+
+      cubit.previousSignUpStep();
+
+      expect(cubit.state.signUpStep, 0);
+      expect(cubit.state.signUpPendingPhone, isEmpty);
       await cubit.close();
     });
   });

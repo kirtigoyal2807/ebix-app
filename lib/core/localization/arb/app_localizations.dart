@@ -461,8 +461,20 @@ abstract class AppLocalizations {
   /// No description provided for @enterCode.
   ///
   /// In en, this message translates to:
-  /// **'Enter the 4-digit code sent to'**
+  /// **'Enter the 6-digit code sent to'**
   String get enterCode;
+
+  /// No description provided for @phoneVerificationMissingPhone.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone number is missing. Go back and continue registration again.'**
+  String get phoneVerificationMissingPhone;
+
+  /// No description provided for @phoneVerificationEnterSixDigits.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter the 6-digit verification code.'**
+  String get phoneVerificationEnterSixDigits;
 
   /// No description provided for @continueTxt.
   ///

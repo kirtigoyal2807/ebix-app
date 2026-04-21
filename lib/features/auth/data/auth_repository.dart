@@ -40,6 +40,22 @@ class AuthRepository extends BaseRepository {
     );
   }
 
+  /// Verify sign-up / login phone OTP — on success envelope `data` has `user` + `token`.
+  Future<ApiResult<LoginEmailResult>> verifyPhoneOtp({
+    required String phone,
+    required String code,
+  }) {
+    return post<LoginEmailResult>(
+      '/auth/phone/verify',
+      data: {
+        'phone': phone.trim(),
+        'code': code.trim(),
+      },
+      fromJson: (json) =>
+          LoginEmailResult.fromJson(json as Map<String, dynamic>),
+    );
+  }
+
   /// Registration — success is OTP sent (envelope); no session/token in this step.
   Future<ApiResult<bool>> register({
     required String firstName,

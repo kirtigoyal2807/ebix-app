@@ -89,7 +89,8 @@ class AuthCubit extends Cubit<AuthState> {
           )
           .clearedForgotPasswordFlow()
           .clearedPostLoginProfile()
-          .clearedSignUpBranchUi(),
+          .clearedSignUpBranchUi()
+          .clearedSignUpPhoneVerification(),
     );
   }
 
@@ -201,6 +202,14 @@ class AuthCubit extends Cubit<AuthState> {
   void previousSignUpStep() {
     if (state.signUpStep > 0) {
       final ns = state.signUpStep - 1;
+      if (state.signUpStep == 1 && ns == 0) {
+        emit(
+          state
+              .copyWith(signUpStep: 0)
+              .clearedSignUpPhoneVerification(),
+        );
+        return;
+      }
       if (state.signUpStep == 4 && ns == 3) {
         emit(
           state.copyWith(
@@ -240,8 +249,56 @@ class AuthCubit extends Cubit<AuthState> {
             )
             .clearedForgotPasswordFlow()
             .clearedPostLoginProfile()
-            .clearedSignUpBranchUi(),
+            .clearedSignUpBranchUi()
+            .clearedSignUpPhoneVerification(),
       );
+    }
+  }
+
+  /// Sign-up step 1: `POST /auth/phone/verify` then advance (token used for later steps).
+  Future<void> verifySignUpPhoneOtp({required String code}) async {
+    if (state.flow != AuthFlow.signUp || state.signUpStep != 1) {
+      return;
+    }
+    final phone = state.signUpPendingPhone.trim();
+    final trimmedCode = code.trim();
+    if (phone.isEmpty || trimmedCode.length != 6) {
+      return;
+    }
+
+    emit(
+      state.copyWith(
+        signUpPhoneOtpUiStatus: SignUpPhoneOtpUiStatus.loading,
+        signUpPhoneOtpErrorMessage: '',
+        signUpPhoneOtpFieldErrors: {},
+      ),
+    );
+
+    final result = await _authRepository.verifyPhoneOtp(
+      phone: phone,
+      code: trimmedCode,
+    );
+
+    switch (result) {
+      case ApiSuccess<LoginEmailResult>(:final data):
+        await _tokenStorage.saveToken(data.token);
+        emit(
+          state.copyWith(
+            signUpStep: 2,
+            user: data.user,
+            signUpPhoneOtpUiStatus: SignUpPhoneOtpUiStatus.idle,
+            signUpPhoneOtpErrorMessage: '',
+            signUpPhoneOtpFieldErrors: {},
+          ),
+        );
+      case ApiFailure<LoginEmailResult>(:final exception):
+        emit(
+          state.copyWith(
+            signUpPhoneOtpUiStatus: SignUpPhoneOtpUiStatus.idle,
+            signUpPhoneOtpErrorMessage: exception.message ?? '',
+            signUpPhoneOtpFieldErrors: _mapFieldErrors(exception),
+          ),
+        );
     }
   }
 
@@ -559,6 +616,9 @@ class AuthCubit extends Cubit<AuthState> {
           .clearedForgotPasswordFlow(),
     );
 
+    final preFlow = state.flow;
+    final preStep = state.signUpStep;
+
     final result = await _authRepository.register(
       firstName: firstName,
       lastName: lastName,
@@ -571,8 +631,7 @@ class AuthCubit extends Cubit<AuthState> {
 
     switch (result) {
       case ApiSuccess<bool>():
-        final advanceOtp =
-            state.flow == AuthFlow.signUp && state.signUpStep == 0;
+        final advanceOtp = preFlow == AuthFlow.signUp && preStep == 0;
         emit(
           state.copyWith(
             registerUiStatus: RegisterUiStatus.idle,
@@ -580,6 +639,10 @@ class AuthCubit extends Cubit<AuthState> {
             registerFieldErrors: {},
             showRegisterOtpSuccess: true,
             signUpStep: advanceOtp ? 1 : state.signUpStep,
+            signUpPendingPhone: advanceOtp ? phone.trim() : state.signUpPendingPhone,
+            signUpPhoneOtpUiStatus: SignUpPhoneOtpUiStatus.idle,
+            signUpPhoneOtpErrorMessage: '',
+            signUpPhoneOtpFieldErrors: {},
           ),
         );
       case ApiFailure<bool>(:final exception):

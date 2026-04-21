@@ -197,7 +197,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get verifyPhone => 'Verify your phone';
 
   @override
-  String get enterCode => 'Enter the 4-digit code sent to';
+  String get enterCode => 'Enter the 6-digit code sent to';
+
+  @override
+  String get phoneVerificationMissingPhone =>
+      'Phone number is missing. Go back and continue registration again.';
+
+  @override
+  String get phoneVerificationEnterSixDigits =>
+      'Please enter the 6-digit verification code.';
 
   @override
   String get continueTxt => 'Continue';

@@ -193,7 +193,15 @@ class AppLocalizationsAr extends AppLocalizations {
   String get verifyPhone => 'تأكيد رقم الهاتف';
 
   @override
-  String get enterCode => 'أدخل الرمز المكون من 4 أرقام المرسل إلى';
+  String get enterCode => 'أدخل الرمز المكون من 6 أرقام المرسل إلى';
+
+  @override
+  String get phoneVerificationMissingPhone =>
+      'رقم الهاتف غير متوفر. ارجع وأكمل التسجيل مرة أخرى.';
+
+  @override
+  String get phoneVerificationEnterSixDigits =>
+      'يُرجى إدخال رمز التحقق المكوّن من 6 أرقام.';
 
   @override
   String get continueTxt => 'متابعة';

@@ -18,6 +18,8 @@ enum SignUpBranchesLoadStatus { idle, loading, loaded, failure }
 
 enum SignUpHomeBranchStatus { idle, loading }
 
+enum SignUpPhoneOtpUiStatus { idle, loading }
+
 class AuthState extends Equatable {
   final AuthFlow flow;
   final int signUpStep; // 0 → 4
@@ -65,6 +67,13 @@ class AuthState extends Equatable {
   /// Sign-up step 2→3: API `experience` for [submitUserGoal] on [SignUpGoalView].
   final String signUpExperience;
 
+  /// Phone (E.164) pending `POST /auth/phone/verify` after [`POST /auth/register`].
+  final String signUpPendingPhone;
+
+  final SignUpPhoneOtpUiStatus signUpPhoneOtpUiStatus;
+  final String signUpPhoneOtpErrorMessage;
+  final Map<String, String> signUpPhoneOtpFieldErrors;
+
   /// Sign-up branch step: `GET /branches` + `POST /auth/home-branch`.
   final SignUpBranchesLoadStatus signUpBranchesLoadStatus;
   final List<Branch> signUpBranches;
@@ -100,6 +109,10 @@ class AuthState extends Equatable {
     required this.postLoginGoalErrorMessage,
     required this.postLoginGoalFieldErrors,
     required this.signUpExperience,
+    required this.signUpPendingPhone,
+    required this.signUpPhoneOtpUiStatus,
+    required this.signUpPhoneOtpErrorMessage,
+    required this.signUpPhoneOtpFieldErrors,
     required this.signUpBranchesLoadStatus,
     required this.signUpBranches,
     this.signUpBranchesPagination,
@@ -136,6 +149,10 @@ class AuthState extends Equatable {
       postLoginGoalErrorMessage: '',
       postLoginGoalFieldErrors: {},
       signUpExperience: '',
+      signUpPendingPhone: '',
+      signUpPhoneOtpUiStatus: SignUpPhoneOtpUiStatus.idle,
+      signUpPhoneOtpErrorMessage: '',
+      signUpPhoneOtpFieldErrors: {},
       signUpBranchesLoadStatus: SignUpBranchesLoadStatus.idle,
       signUpBranches: [],
       signUpBranchesPagination: null,
@@ -173,6 +190,11 @@ class AuthState extends Equatable {
     String? postLoginGoalErrorMessage,
     Map<String, String>? postLoginGoalFieldErrors,
     String? signUpExperience,
+    String? signUpPendingPhone,
+    bool clearSignUpPendingPhone = false,
+    SignUpPhoneOtpUiStatus? signUpPhoneOtpUiStatus,
+    String? signUpPhoneOtpErrorMessage,
+    Map<String, String>? signUpPhoneOtpFieldErrors,
     SignUpBranchesLoadStatus? signUpBranchesLoadStatus,
     List<Branch>? signUpBranches,
     PaginationMeta? signUpBranchesPagination,
@@ -218,6 +240,15 @@ class AuthState extends Equatable {
       postLoginGoalFieldErrors:
           postLoginGoalFieldErrors ?? this.postLoginGoalFieldErrors,
       signUpExperience: signUpExperience ?? this.signUpExperience,
+      signUpPendingPhone: clearSignUpPendingPhone
+          ? ''
+          : (signUpPendingPhone ?? this.signUpPendingPhone),
+      signUpPhoneOtpUiStatus:
+          signUpPhoneOtpUiStatus ?? this.signUpPhoneOtpUiStatus,
+      signUpPhoneOtpErrorMessage:
+          signUpPhoneOtpErrorMessage ?? this.signUpPhoneOtpErrorMessage,
+      signUpPhoneOtpFieldErrors:
+          signUpPhoneOtpFieldErrors ?? this.signUpPhoneOtpFieldErrors,
       signUpBranchesLoadStatus:
           signUpBranchesLoadStatus ?? this.signUpBranchesLoadStatus,
       signUpBranches: signUpBranches ?? this.signUpBranches,
@@ -273,6 +304,16 @@ class AuthState extends Equatable {
     );
   }
 
+  /// Clears phone OTP step draft (when leaving sign-up or restarting).
+  AuthState clearedSignUpPhoneVerification() {
+    return copyWith(
+      clearSignUpPendingPhone: true,
+      signUpPhoneOtpUiStatus: SignUpPhoneOtpUiStatus.idle,
+      signUpPhoneOtpErrorMessage: '',
+      signUpPhoneOtpFieldErrors: {},
+    );
+  }
+
   @override
   List<Object?> get props => [
         flow,
@@ -299,6 +340,10 @@ class AuthState extends Equatable {
         postLoginGoalErrorMessage,
         postLoginGoalFieldErrors,
         signUpExperience,
+        signUpPendingPhone,
+        signUpPhoneOtpUiStatus,
+        signUpPhoneOtpErrorMessage,
+        signUpPhoneOtpFieldErrors,
         signUpBranchesLoadStatus,
         signUpBranches,
         signUpBranchesPagination,

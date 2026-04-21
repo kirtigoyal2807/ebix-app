@@ -4,6 +4,7 @@ import 'package:pilates_app/core/network/network_exception.dart';
 import 'package:pilates_app/features/auth/data/auth_repository.dart';
 import 'package:pilates_app/features/auth/data/models/branches_list_result.dart';
 import 'package:pilates_app/features/auth/data/models/branch.dart';
+import 'package:pilates_app/features/auth/data/models/auth_user.dart';
 import 'package:pilates_app/features/auth/data/models/login_email_result.dart';
 import 'package:pilates_app/features/auth/data/models/register_gender.dart';
 
@@ -15,6 +16,12 @@ class FakeAuthRepository extends AuthRepository {
     NetworkException(type: NetworkFailureType.unknown, message: 'unset'),
   );
   ApiResult<bool> registerResult = const ApiSuccess<bool>(true);
+  ApiResult<LoginEmailResult> verifyPhoneOtpResult = ApiSuccess<LoginEmailResult>(
+    LoginEmailResult(
+      user: AuthUser(email: 'verified@example.com', phone: '+966500000000'),
+      token: 'phone-verify-jwt',
+    ),
+  );
   ApiResult<bool> phoneOtpResult = const ApiSuccess<bool>(true);
   ApiResult<bool> passwordForgotResult = const ApiSuccess<bool>(true);
   ApiResult<bool> verifyEmailCodeResult = const ApiSuccess<bool>(true);
@@ -37,6 +44,7 @@ class FakeAuthRepository extends AuthRepository {
 
   int loginCalls = 0;
   int registerCalls = 0;
+  int verifyPhoneOtpCalls = 0;
   int phoneOtpCalls = 0;
   int passwordForgotCalls = 0;
   int verifyEmailCodeCalls = 0;
@@ -47,6 +55,9 @@ class FakeAuthRepository extends AuthRepository {
 
   String? lastLoginEmail;
   String? lastRegisterEmail;
+  String? lastRegisterPhone;
+  String? lastVerifyPhoneOtpPhone;
+  String? lastVerifyPhoneOtpCode;
   String? lastForgotEmail;
   String? lastVerifyEmail;
   String? lastVerifyCode;
@@ -80,7 +91,19 @@ class FakeAuthRepository extends AuthRepository {
   }) async {
     registerCalls++;
     lastRegisterEmail = email;
+    lastRegisterPhone = phone;
     return registerResult;
+  }
+
+  @override
+  Future<ApiResult<LoginEmailResult>> verifyPhoneOtp({
+    required String phone,
+    required String code,
+  }) async {
+    verifyPhoneOtpCalls++;
+    lastVerifyPhoneOtpPhone = phone;
+    lastVerifyPhoneOtpCode = code;
+    return verifyPhoneOtpResult;
   }
 
   @override

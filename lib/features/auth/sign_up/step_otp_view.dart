@@ -6,118 +6,181 @@ import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/widgets/app_app_bar.dart';
 import 'package:pilates_app/widgets/app_button.dart';
 import 'package:pilates_app/widgets/app_scaffold.dart';
+import 'package:pilates_app/widgets/app_text.dart';
 
 import '../../../core/localization/localization_extension.dart';
 import '../cubit/auth_cubit.dart';
+import '../cubit/auth_state.dart';
 import 'widgets/sign_up_header.dart';
 import 'widgets/sign_up_progress.dart';
 import 'widgets/otp_field.dart';
 
-class SignUpOtpView extends StatelessWidget {
+class SignUpOtpView extends StatefulWidget {
   const SignUpOtpView({super.key});
+
+  @override
+  State<SignUpOtpView> createState() => _SignUpOtpViewState();
+}
+
+class _SignUpOtpViewState extends State<SignUpOtpView> {
+  String _otp = '';
+
+  Future<void> _submit(BuildContext context) async {
+    final cubit = context.read<AuthCubit>();
+    final phone = cubit.state.signUpPendingPhone.trim();
+    if (phone.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(context.l10n.phoneVerificationMissingPhone)),
+      );
+      return;
+    }
+    if (_otp.trim().length != 6) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(context.l10n.phoneVerificationEnterSixDigits)),
+      );
+      return;
+    }
+    await cubit.verifySignUpPhoneOtp(code: _otp.trim());
+  }
 
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    return AppScaffold(
-      appBar: AppAppBar(
-        onBack: () => context.read<AuthCubit>().previousSignUpStep(),
-        title: context.l10n.verification,
-        isMoreMenu: false,
-      ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: AppSpacing.lg,
-          vertical: AppSpacing.md,
-        ),
-        child: Column(
-          children: [
-            Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Progress
-                    const SignUpProgress(currentStep: 1, totalSteps: 5),
-                    const SizedBox(height: AppSpacing.sm),
-                    RichText(
-                      text: TextSpan(
-                        children: [
-                          TextSpan(
-                            text: '${context.l10n.step} 2',
-                            style: AppTextStyles.caption(context).copyWith(
-                              color: isDark
-                                  ? AppColors.languageTextDark
-                                  : AppColors.languageIcon,
-                            ),
+    return BlocConsumer<AuthCubit, AuthState>(
+      listenWhen: (previous, current) {
+        return previous.signUpPhoneOtpUiStatus == SignUpPhoneOtpUiStatus.loading &&
+            current.signUpPhoneOtpUiStatus == SignUpPhoneOtpUiStatus.idle &&
+            current.signUpPhoneOtpErrorMessage.isNotEmpty &&
+            current.signUpPhoneOtpFieldErrors.isEmpty;
+      },
+      listener: (context, state) {
+        final text = state.signUpPhoneOtpErrorMessage.trim().isEmpty
+            ? context.l10n.loginErrorGeneric
+            : state.signUpPhoneOtpErrorMessage;
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(text)),
+        );
+      },
+      builder: (context, state) {
+        final loading = state.signUpPhoneOtpUiStatus == SignUpPhoneOtpUiStatus.loading;
+        final phone = state.signUpPendingPhone.trim();
+        final subtitle = phone.isEmpty
+            ? context.l10n.enterCode
+            : '${context.l10n.enterCode} $phone';
+        final fe = state.signUpPhoneOtpFieldErrors;
+        final codeErr = fe['code'];
+        final phoneErr = fe['phone'];
+
+        return AppScaffold(
+          appBar: AppAppBar(
+            onBack: () => context.read<AuthCubit>().previousSignUpStep(),
+            title: context.l10n.verification,
+            isMoreMenu: false,
+          ),
+          body: Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: AppSpacing.lg,
+              vertical: AppSpacing.md,
+            ),
+            child: Column(
+              children: [
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const SignUpProgress(currentStep: 1, totalSteps: 5),
+                        const SizedBox(height: AppSpacing.sm),
+                        RichText(
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text: '${context.l10n.step} 2',
+                                style: AppTextStyles.caption(context).copyWith(
+                                  color: isDark
+                                      ? AppColors.languageTextDark
+                                      : AppColors.languageIcon,
+                                ),
+                              ),
+                              TextSpan(
+                                text: ' ${context.l10n.offf} 5',
+                                style: AppTextStyles.caption(context),
+                              ),
+                            ],
                           ),
-                          TextSpan(
-                            text: ' ${context.l10n.offf} 5',
-                            style: AppTextStyles.caption(context),
+                        ),
+                        const SizedBox(height: AppSpacing.xxl),
+
+                        SignUpHeader(
+                          title: context.l10n.verifyPhone,
+                          subtitle: subtitle,
+                          step: 1,
+                          totalSteps: 4,
+                        ),
+
+                        const SizedBox(height: AppSpacing.lg),
+
+                        OtpField(
+                          length: 6,
+                          onChanged: (otp) => setState(() => _otp = otp),
+                          onCompleted: (otp) {
+                            setState(() => _otp = otp);
+                            context.read<AuthCubit>().verifySignUpPhoneOtp(code: otp);
+                          },
+                        ),
+
+                        if (codeErr != null || phoneErr != null) ...[
+                          const SizedBox(height: AppSpacing.sm),
+                          AppText(
+                            codeErr ?? phoneErr ?? '',
+                            style: (c) => AppTextStyles.caption(c).copyWith(
+                                  color: isDark ? AppColors.redDark : AppColors.redLight,
+                                ),
                           ),
                         ],
-                      ),
-                    ),
-                    const SizedBox(height: AppSpacing.xxl),
 
-                    // Header
-                    SignUpHeader(
-                      title: context.l10n.verifyPhone,
-                      subtitle: context.l10n.enterCode,
-                      step: 1,
-                      totalSteps: 4,
-                    ),
+                        const SizedBox(height: AppSpacing.lg),
 
-                    const SizedBox(height: AppSpacing.lg),
-
-                    // OTP field
-                    OtpField(
-                      length: 4,
-                      onCompleted: (otp) {
-                        // Handle OTP completion
-                      },
-                    ),
-
-                    const SizedBox(height: AppSpacing.lg),
-
-                    Center(
-                      child: RichText(
-                        text: TextSpan(
-                          children: [
-                            TextSpan(
-                              text: "${context.l10n.didntReceiveCode} ",
-                              style: AppTextStyles.caption(context).copyWith(
-                                color: isDark
-                                    ? AppColors.darkGreyText
-                                    : AppColors.greyText,
-                                fontWeight: FontWeight.w400,
-                                height: 1.4,
-                              ),
+                        Center(
+                          child: RichText(
+                            text: TextSpan(
+                              children: [
+                                TextSpan(
+                                  text: "${context.l10n.didntReceiveCode} ",
+                                  style: AppTextStyles.caption(context).copyWith(
+                                    color: isDark
+                                        ? AppColors.darkGreyText
+                                        : AppColors.greyText,
+                                    fontWeight: FontWeight.w400,
+                                    height: 1.4,
+                                  ),
+                                ),
+                                TextSpan(
+                                  text: context.l10n.resendCode,
+                                  style: AppTextStyles.boldBody(context),
+                                ),
+                              ],
                             ),
-
-                            TextSpan(
-                              text: context.l10n.resendCode,
-                              style: AppTextStyles.boldBody(context),
-                            ),
-                          ],
+                          ),
                         ),
-                      ),
+                        const SizedBox(height: AppSpacing.lg),
+                      ],
                     ),
-                    const SizedBox(height: AppSpacing.lg),
-                  ],
+                  ),
                 ),
-              ),
-            ),
 
-            // Verify button
-            AppButton(
-              label: context.l10n.verify,
-              onPressed: () => context.read<AuthCubit>().nextSignUpStep(),
+                AppButton(
+                  key: const ValueKey('sign_up_phone_otp_verify'),
+                  label: context.l10n.verify,
+                  isLoading: loading,
+                  onPressed: loading ? null : () => _submit(context),
+                ),
+              ],
             ),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 }
