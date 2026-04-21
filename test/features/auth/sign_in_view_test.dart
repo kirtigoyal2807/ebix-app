@@ -69,7 +69,7 @@ void main() {
     await cubit.close();
   });
 
-  testWidgets('Phone tab: OTP request shows success path', (tester) async {
+  testWidgets('Phone tab: OTP request stores pending phone for OTP screen', (tester) async {
     SharedPreferences.setMockInitialValues({});
     final fake = FakeAuthRepository();
     fake.phoneOtpResult = const ApiSuccess<bool>(true);
@@ -113,6 +113,7 @@ void main() {
 
     expect(fake.phoneOtpCalls, 1);
     expect(cubit.state.loginUiStatus, LoginUiStatus.idle);
+    expect(cubit.state.signInPendingPhone, '+966500123456');
 
     await cubit.close();
   });

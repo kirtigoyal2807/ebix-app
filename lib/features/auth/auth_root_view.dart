@@ -4,6 +4,7 @@ import 'package:lottie/lottie.dart';
 import 'package:pilates_app/core/localization/localization_extension.dart';
 import 'package:pilates_app/features/auth/post_login/post_login_experience_view.dart';
 import 'package:pilates_app/features/auth/post_login/post_login_goal_view.dart';
+import 'package:pilates_app/features/auth/sign_in/sign_in_phone_otp_view.dart';
 import 'package:pilates_app/features/auth/sign_in/sign_in_view.dart';
 import 'package:pilates_app/features/auth/sign_up/step_branch_view.dart';
 import 'package:pilates_app/features/auth/sign_up/step_experience_view.dart';
@@ -60,6 +61,9 @@ class AuthRootView extends StatelessWidget {
               }
 
             case AuthFlow.signIn:
+              if (state.signInPendingPhone.isNotEmpty) {
+                return const SignInPhoneOtpView();
+              }
               return const SignInView();
 
             case AuthFlow.postLoginSetup:

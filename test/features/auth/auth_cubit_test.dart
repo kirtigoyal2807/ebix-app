@@ -407,7 +407,7 @@ void main() {
       await cubit.close();
     });
 
-    test('requestPhoneLoginOtp success toggles phone OTP banner', () async {
+    test('requestPhoneLoginOtp success opens phone OTP step in sign-in flow', () async {
       fakeRepo.phoneOtpResult = const ApiSuccess<bool>(true);
       final cubit = buildCubit(
         seed: AuthState.initial().copyWith(flow: AuthFlow.signIn),
@@ -415,8 +415,34 @@ void main() {
 
       await cubit.requestPhoneLoginOtp(phone: '+966500000000');
 
-      expect(cubit.state.showPhoneOtpSuccess, isTrue);
+      expect(cubit.state.signInPendingPhone, '+966500000000');
+      expect(cubit.state.showPhoneOtpSuccess, isFalse);
       expect(fakeRepo.phoneOtpCalls, 1);
+      await cubit.close();
+    });
+
+    test('verifySignInPhoneOtp success authenticates and saves token', () async {
+      fakeRepo.verifyPhoneOtpResult = ApiSuccess<LoginEmailResult>(
+        LoginEmailResult(
+          user: AuthUser(email: 'p@u.com', phone: '+966500000000'),
+          token: 'phone-login-jwt',
+        ),
+      );
+      final cubit = buildCubit(
+        seed: AuthState.initial().copyWith(
+          flow: AuthFlow.signIn,
+          signInPendingPhone: '+966500000000',
+        ),
+      );
+
+      await cubit.verifySignInPhoneOtp(code: '123456');
+
+      expect(fakeRepo.verifyPhoneOtpCalls, 1);
+      expect(fakeRepo.lastVerifyPhoneOtpPhone, '+966500000000');
+      expect(fakeRepo.lastVerifyPhoneOtpCode, '123456');
+      expect(storage.readToken(), 'phone-login-jwt');
+      expect(cubit.state.flow, AuthFlow.authenticated);
+      expect(cubit.state.signInPendingPhone, isEmpty);
       await cubit.close();
     });
   });

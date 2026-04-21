@@ -94,6 +94,7 @@ class AuthCubit extends Cubit<AuthState> {
           )
           .clearedForgotPasswordFlow()
           .clearedPostLoginProfile()
+          .clearedSignInPhoneVerification()
           .clearedSignUpBranchUi()
           .clearedSignUpPhoneVerification(),
     );
@@ -114,11 +115,16 @@ class AuthCubit extends Cubit<AuthState> {
             showRegisterOtpSuccess: false,
           )
           .clearedForgotPasswordFlow()
-          .clearedPostLoginProfile(),
+          .clearedPostLoginProfile()
+          .clearedSignInPhoneVerification(),
     );
   }
 
   void backFromSignIn() {
+    if (state.signInPendingPhone.isNotEmpty) {
+      emit(state.clearedSignInPhoneVerification());
+      return;
+    }
     emit(
       state
           .copyWith(
@@ -133,7 +139,8 @@ class AuthCubit extends Cubit<AuthState> {
             showRegisterOtpSuccess: false,
           )
           .clearedForgotPasswordFlow()
-          .clearedPostLoginProfile(),
+          .clearedPostLoginProfile()
+          .clearedSignInPhoneVerification(),
     );
   }
 
@@ -450,6 +457,7 @@ class AuthCubit extends Cubit<AuthState> {
           )
           .clearedPostLoginProfile()
           .clearedForgotPasswordFlow()
+          .clearedSignInPhoneVerification()
           .clearedSignUpBranchUi()
           .clearedSignUpPhoneVerification(),
     );
@@ -472,7 +480,8 @@ class AuthCubit extends Cubit<AuthState> {
             showRegisterOtpSuccess: false,
           )
           .clearedPostLoginProfile()
-          .clearedForgotPasswordFlow(),
+          .clearedForgotPasswordFlow()
+          .clearedSignInPhoneVerification(),
     );
   }
 
@@ -558,7 +567,8 @@ class AuthCubit extends Cubit<AuthState> {
                 showRegisterOtpSuccess: false,
               )
               .clearedForgotPasswordFlow()
-              .clearedPostLoginProfile(),
+              .clearedPostLoginProfile()
+              .clearedSignInPhoneVerification(),
         );
       case ApiFailure<LoginEmailResult>(:final exception):
         final fields = <String, String>{};
@@ -605,7 +615,8 @@ class AuthCubit extends Cubit<AuthState> {
             loginUiStatus: LoginUiStatus.idle,
             loginErrorMessage: '',
             loginFieldErrors: {},
-            showPhoneOtpSuccess: true,
+            signInPendingPhone: phone.trim(),
+            showPhoneOtpSuccess: false,
           ),
         );
       case ApiFailure<bool>(:final exception):
@@ -623,6 +634,58 @@ class AuthCubit extends Cubit<AuthState> {
   void clearPhoneOtpSuccessBanner() {
     if (state.showPhoneOtpSuccess) {
       emit(state.copyWith(showPhoneOtpSuccess: false));
+    }
+  }
+
+  Future<void> verifySignInPhoneOtp({required String code}) async {
+    final phone = state.signInPendingPhone.trim();
+    final otp = code.trim();
+    if (state.flow != AuthFlow.signIn || phone.isEmpty || otp.length != 6) {
+      return;
+    }
+
+    emit(
+      state.copyWith(
+        loginUiStatus: LoginUiStatus.loading,
+        loginErrorMessage: '',
+        loginFieldErrors: {},
+      ),
+    );
+
+    final result = await _authRepository.verifyPhoneOtp(
+      phone: phone,
+      code: otp,
+    );
+
+    switch (result) {
+      case ApiSuccess<LoginEmailResult>(:final data):
+        await _tokenStorage.saveToken(data.token);
+        emit(
+          state
+              .copyWith(
+                loginUiStatus: LoginUiStatus.idle,
+                loginErrorMessage: '',
+                loginFieldErrors: {},
+                user: data.user,
+                flow: AuthFlow.authenticated,
+                showPhoneOtpSuccess: false,
+                registerUiStatus: RegisterUiStatus.idle,
+                registerErrorMessage: '',
+                registerFieldErrors: {},
+                showRegisterOtpSuccess: false,
+              )
+              .clearedForgotPasswordFlow()
+              .clearedPostLoginProfile()
+              .clearedSignInPhoneVerification(),
+        );
+      case ApiFailure<LoginEmailResult>(:final exception):
+        emit(
+          state.copyWith(
+            loginUiStatus: LoginUiStatus.idle,
+            loginErrorMessage: exception.message ?? '',
+            loginFieldErrors: _mapFieldErrors(exception),
+          ),
+        );
     }
   }
 

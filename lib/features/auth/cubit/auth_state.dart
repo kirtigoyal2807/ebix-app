@@ -33,6 +33,7 @@ class AuthState extends Equatable {
   final String loginErrorMessage;
 
   final Map<String, String> loginFieldErrors;
+  final String signInPendingPhone;
 
   final AuthUser? user;
 
@@ -93,6 +94,7 @@ class AuthState extends Equatable {
     required this.loginUiStatus,
     required this.loginErrorMessage,
     required this.loginFieldErrors,
+    required this.signInPendingPhone,
     this.user,
     required this.showPhoneOtpSuccess,
     required this.registerUiStatus,
@@ -133,6 +135,7 @@ class AuthState extends Equatable {
       loginUiStatus: LoginUiStatus.idle,
       loginErrorMessage: '',
       loginFieldErrors: {},
+      signInPendingPhone: '',
       user: null,
       showPhoneOtpSuccess: false,
       registerUiStatus: RegisterUiStatus.idle,
@@ -173,6 +176,8 @@ class AuthState extends Equatable {
     LoginUiStatus? loginUiStatus,
     String? loginErrorMessage,
     Map<String, String>? loginFieldErrors,
+    String? signInPendingPhone,
+    bool clearSignInPendingPhone = false,
     AuthUser? user,
     bool clearUser = false,
     bool? showPhoneOtpSuccess,
@@ -215,6 +220,9 @@ class AuthState extends Equatable {
       loginUiStatus: loginUiStatus ?? this.loginUiStatus,
       loginErrorMessage: loginErrorMessage ?? this.loginErrorMessage,
       loginFieldErrors: loginFieldErrors ?? this.loginFieldErrors,
+      signInPendingPhone: clearSignInPendingPhone
+          ? ''
+          : (signInPendingPhone ?? this.signInPendingPhone),
       user: clearUser ? null : (user ?? this.user),
       showPhoneOtpSuccess: showPhoneOtpSuccess ?? this.showPhoneOtpSuccess,
       registerUiStatus: registerUiStatus ?? this.registerUiStatus,
@@ -292,6 +300,17 @@ class AuthState extends Equatable {
     );
   }
 
+  /// Clears phone-login OTP draft (when leaving sign-in or returning to phone form).
+  AuthState clearedSignInPhoneVerification() {
+    return copyWith(
+      clearSignInPendingPhone: true,
+      loginUiStatus: LoginUiStatus.idle,
+      loginErrorMessage: '',
+      loginFieldErrors: {},
+      showPhoneOtpSuccess: false,
+    );
+  }
+
   AuthState clearedSignUpBranchUi() {
     return copyWith(
       signUpBranchesLoadStatus: SignUpBranchesLoadStatus.idle,
@@ -324,6 +343,7 @@ class AuthState extends Equatable {
         loginUiStatus,
         loginErrorMessage,
         loginFieldErrors,
+        signInPendingPhone,
         user,
         showPhoneOtpSuccess,
         registerUiStatus,
