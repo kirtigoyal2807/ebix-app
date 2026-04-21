@@ -231,6 +231,14 @@ class AuthRepository extends BaseRepository {
     );
   }
 
+  /// Invalidate server session — requires JWT (Bearer via [DioClient]).
+  Future<ApiResult<bool>> logout() {
+    return post<bool>(
+      '/auth/logout',
+      fromJson: (_) => true,
+    );
+  }
+
   /// Customer profile — requires JWT (saved after login).
   Future<ApiResult<bool>> submitUserGoal({
     required String experience,

@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:pilates_app/core/storage/token_storage.dart';
 import 'package:pilates_app/features/auth/data/models/auth_user.dart';
 import 'package:pilates_app/features/auth/data/models/branch.dart';
 import 'package:pilates_app/features/auth/data/models/pagination_meta.dart';
@@ -353,4 +354,13 @@ class AuthState extends Equatable {
         signUpHomeBranchFieldErrors,
         selectedSignUpBranchId,
       ];
+}
+
+/// Cold-start [AuthState] from persisted JWT — must stay in sync with [main] / [AuthCubit] seeding.
+AuthState initialAuthStateFromTokenStorage(TokenStorage tokenStorage) {
+  final hasSavedSession =
+      (tokenStorage.readToken() ?? '').trim().isNotEmpty;
+  return AuthState.initial().copyWith(
+    flow: hasSavedSession ? AuthFlow.authenticated : AuthFlow.splash,
+  );
 }

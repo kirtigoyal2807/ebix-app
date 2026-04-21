@@ -20,16 +20,21 @@ class AuthCubit extends Cubit<AuthState> {
   final TokenStorage _tokenStorage;
   final AuthLocaleBridge _localeBridge;
 
+  bool _logoutInFlight = false;
+
+  /// [seed] is normally computed in [main] from [TokenStorage]: if a JWT exists,
+  /// [AuthFlow.authenticated] skips splash/onboarding on cold start.
   AuthCubit({
     required AuthRepository authRepository,
     required TokenStorage tokenStorage,
     required AuthLocaleBridge localeBridge,
+    AuthState? seed,
   })  : this._impl(
           authRepository: authRepository,
           tokenStorage: tokenStorage,
           localeBridge: localeBridge,
-          seed: AuthState.initial(),
-          startSplash: true,
+          seed: seed ?? AuthState.initial(),
+          startSplash: (seed ?? AuthState.initial()).flow == AuthFlow.splash,
         );
 
   /// Tests and isolated screens: no splash timer, optional [seed] state.
@@ -417,6 +422,39 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
+  /// `POST /auth/logout` then clear local session and open sign-in.
+  Future<void> logout() async {
+    if (state.flow != AuthFlow.authenticated || _logoutInFlight) {
+      return;
+    }
+    _logoutInFlight = true;
+    try {
+      await _authRepository.logout();
+    } finally {
+      _logoutInFlight = false;
+    }
+    await _tokenStorage.clearToken();
+    emit(
+      state
+          .copyWith(
+            flow: AuthFlow.signIn,
+            clearUser: true,
+            loginUiStatus: LoginUiStatus.idle,
+            loginErrorMessage: '',
+            loginFieldErrors: {},
+            showPhoneOtpSuccess: false,
+            registerUiStatus: RegisterUiStatus.idle,
+            registerErrorMessage: '',
+            registerFieldErrors: {},
+            showRegisterOtpSuccess: false,
+          )
+          .clearedPostLoginProfile()
+          .clearedForgotPasswordFlow()
+          .clearedSignUpBranchUi()
+          .clearedSignUpPhoneVerification(),
+    );
+  }
+
   Future<void> cancelPostLoginSetup() async {
     await _tokenStorage.clearToken();
     emit(
@@ -512,19 +550,15 @@ class AuthCubit extends Cubit<AuthState> {
                 loginErrorMessage: '',
                 loginFieldErrors: {},
                 user: data.user,
-                flow: AuthFlow.postLoginSetup,
-                postLoginStep: 0,
-                postLoginExperience: '',
-                postLoginGoalUiStatus: PostLoginGoalUiStatus.idle,
-                postLoginGoalErrorMessage: '',
-                postLoginGoalFieldErrors: {},
+                flow: AuthFlow.authenticated,
                 showPhoneOtpSuccess: false,
                 registerUiStatus: RegisterUiStatus.idle,
                 registerErrorMessage: '',
                 registerFieldErrors: {},
                 showRegisterOtpSuccess: false,
               )
-              .clearedForgotPasswordFlow(),
+              .clearedForgotPasswordFlow()
+              .clearedPostLoginProfile(),
         );
       case ApiFailure<LoginEmailResult>(:final exception):
         final fields = <String, String>{};

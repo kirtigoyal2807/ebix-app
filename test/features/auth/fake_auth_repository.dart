@@ -41,6 +41,7 @@ class FakeAuthRepository extends AuthRepository {
     ),
   );
   ApiResult<bool> setHomeBranchResult = const ApiSuccess<bool>(true);
+  ApiResult<bool> logoutResult = const ApiSuccess<bool>(true);
 
   int loginCalls = 0;
   int registerCalls = 0;
@@ -52,6 +53,7 @@ class FakeAuthRepository extends AuthRepository {
   int submitUserGoalCalls = 0;
   int listBranchesCalls = 0;
   int setHomeBranchCalls = 0;
+  int logoutCalls = 0;
 
   String? lastLoginEmail;
   String? lastRegisterEmail;
@@ -169,5 +171,11 @@ class FakeAuthRepository extends AuthRepository {
     setHomeBranchCalls++;
     lastHomeBranchId = homeBranchId;
     return setHomeBranchResult;
+  }
+
+  @override
+  Future<ApiResult<bool>> logout() async {
+    logoutCalls++;
+    return logoutResult;
   }
 }

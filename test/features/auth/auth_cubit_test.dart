@@ -368,7 +368,7 @@ void main() {
   });
 
   group('AuthCubit login', () {
-    test('loginWithEmail saves token and opens post-login setup', () async {
+    test('loginWithEmail saves token and opens home flow', () async {
       fakeRepo.loginResult = const ApiSuccess<LoginEmailResult>(
         LoginEmailResult(
           user: AuthUser(email: 'a@b.com'),
@@ -381,7 +381,7 @@ void main() {
 
       await cubit.loginWithEmail(email: 'a@b.com', password: 'Secret@123');
 
-      expect(cubit.state.flow, AuthFlow.postLoginSetup);
+      expect(cubit.state.flow, AuthFlow.authenticated);
       expect(cubit.state.postLoginStep, 0);
       expect(storage.readToken(), 'jwt-test');
       expect(cubit.state.user?.email, 'a@b.com');
@@ -417,6 +417,38 @@ void main() {
 
       expect(cubit.state.showPhoneOtpSuccess, isTrue);
       expect(fakeRepo.phoneOtpCalls, 1);
+      await cubit.close();
+    });
+  });
+
+  group('AuthCubit logout', () {
+    test('logout calls API, clears token, and opens sign-in', () async {
+      fakeRepo.logoutResult = const ApiSuccess<bool>(true);
+      await storage.saveToken('jwt-before-logout');
+      final cubit = buildCubit(
+        seed: AuthState.initial().copyWith(
+          flow: AuthFlow.authenticated,
+          user: AuthUser(email: 'a@b.com'),
+        ),
+      );
+
+      await cubit.logout();
+
+      expect(cubit.state.flow, AuthFlow.signIn);
+      expect(cubit.state.user, isNull);
+      expect(storage.readToken(), isNull);
+      expect(fakeRepo.logoutCalls, 1);
+      await cubit.close();
+    });
+
+    test('logout does nothing when not authenticated', () async {
+      final cubit = buildCubit(
+        seed: AuthState.initial().copyWith(flow: AuthFlow.signIn),
+      );
+
+      await cubit.logout();
+
+      expect(fakeRepo.logoutCalls, 0);
       await cubit.close();
     });
   });
