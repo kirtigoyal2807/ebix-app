@@ -25,6 +25,7 @@ class MyBookingClassCard extends StatelessWidget {
   final int? spot;
   final int? position;
   final bool? isRate;
+  final String? coverImageUrl;
 
   const MyBookingClassCard({
     super.key,
@@ -38,6 +39,7 @@ class MyBookingClassCard extends StatelessWidget {
     this.spot = 0,
     this.position = 0,
     this.isRate = false,
+    this.coverImageUrl,
   });
 
   @override
@@ -87,19 +89,11 @@ class MyBookingClassCard extends StatelessWidget {
                 borderRadius: const BorderRadius.vertical(
                   top: Radius.circular(AppRadius.lg),
                 ),
-                child:
-                    // SvgPicture.asset(
-                    //   'assets/images/svg/ic_yoga.svg',
-                    //   height: size.height * 0.22,
-                    //   // width: width * 0.6,
-                    //   fit: BoxFit.fill,
-                    // ),
-                    Image.asset(
-                      "assets/images/demo images/Class Image.png",
-                      height: size.height * 0.18,
-                      // width: width * 0.6,
-                      fit: BoxFit.fill,
-                    ),
+                child: _coverImage(
+                  context,
+                  height: size.height * 0.18,
+                  url: coverImageUrl,
+                ),
               ),
               Padding(
                 padding: const EdgeInsets.only(
@@ -617,4 +611,23 @@ class MyBookingClassCard extends StatelessWidget {
         );
     }
   }
+}
+
+Widget _coverImage(
+  BuildContext context, {
+  required double height,
+  String? url,
+}) {
+  const fallback = 'assets/images/demo images/Class Image.png';
+  if (url != null && url.isNotEmpty) {
+    return Image.network(
+      url,
+      height: height,
+      width: double.infinity,
+      fit: BoxFit.cover,
+      errorBuilder: (_, __, ___) =>
+          Image.asset(fallback, height: height, fit: BoxFit.fill),
+    );
+  }
+  return Image.asset(fallback, height: height, fit: BoxFit.fill);
 }

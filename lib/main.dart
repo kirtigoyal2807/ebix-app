@@ -13,6 +13,9 @@ import 'features/auth/auth_root_view.dart';
 import 'features/auth/cubit/auth_cubit.dart';
 import 'features/auth/cubit/auth_state.dart';
 import 'features/auth/data/auth_repository.dart';
+import 'features/loyalty/data/loyalty_repository.dart';
+import 'features/my_booking/data/my_bookings_repository.dart';
+import 'features/progress_tracking_flow/data/progress_repository.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -27,10 +30,19 @@ Future<void> main() async {
   final authRepository = AuthRepository(dio);
 
   runApp(
-    PilatesApp(
-      authRepository: authRepository,
-      tokenStorage: tokenStorage,
-      localeBridge: localeBridge,
+    RepositoryProvider<MyBookingsRepository>(
+      create: (_) => MyBookingsRepository(dio),
+      child: RepositoryProvider<LoyaltyRepository>(
+        create: (_) => LoyaltyRepository(dio),
+        child: RepositoryProvider<ProgressRepository>(
+          create: (_) => ProgressRepository(dio),
+          child: PilatesApp(
+            authRepository: authRepository,
+            tokenStorage: tokenStorage,
+            localeBridge: localeBridge,
+          ),
+        ),
+      ),
     ),
   );
 }

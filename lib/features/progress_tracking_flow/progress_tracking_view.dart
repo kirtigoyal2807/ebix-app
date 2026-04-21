@@ -1,7 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pilates_app/core/localization/localization_extension.dart';
+import 'package:pilates_app/features/loyalty/data/loyalty_repository.dart';
+import 'package:pilates_app/features/progress_tracking_flow/achievement/cubit/loyalty_achievements_cubit.dart';
+import 'package:pilates_app/features/progress_tracking_flow/data/progress_repository.dart';
+import 'package:pilates_app/features/progress_tracking_flow/progrees_overview/cubit/progress_goal_cubit.dart';
+import 'package:pilates_app/features/progress_tracking_flow/progrees_overview/cubit/progress_overview_cubit.dart';
+import 'package:pilates_app/features/progress_tracking_flow/progrees_overview/cubit/weekly_activity_cubit.dart';
 import 'package:pilates_app/features/progress_tracking_flow/progrees_overview/view/overview_view.dart';
 import 'package:pilates_app/features/progress_tracking_flow/progrees_overview/widget/progress_tab_bar.dart';
+import 'package:pilates_app/features/progress_tracking_flow/view_session_history/cubit/session_history_cubit.dart';
 import 'package:pilates_app/features/progress_tracking_flow/view_session_history/history_view.dart';
 
 import '../../config/theme/app_colors.dart';
@@ -15,9 +23,29 @@ class ProgressTrackingView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    return DefaultTabController(
-      length: 3,
-      child: Scaffold(
+    final progressRepo = context.read<ProgressRepository>();
+    final loyaltyRepo = context.read<LoyaltyRepository>();
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (_) => ProgressOverviewCubit(progressRepo)..load(),
+        ),
+        BlocProvider(
+          create: (_) => WeeklyActivityCubit(progressRepo)..load(),
+        ),
+        BlocProvider(
+          create: (_) => ProgressGoalCubit(progressRepo)..load(),
+        ),
+        BlocProvider(
+          create: (_) => SessionHistoryCubit(progressRepo),
+        ),
+        BlocProvider(
+          create: (_) => LoyaltyAchievementsCubit(loyaltyRepo)..load(),
+        ),
+      ],
+      child: DefaultTabController(
+        length: 3,
+        child: Scaffold(
         backgroundColor: isDark
             ? AppColors.homeBackground
             : AppColors.whiteColor,
@@ -53,8 +81,13 @@ class ProgressTrackingView extends StatelessWidget {
           ),
         ),
         body: TabBarView(
-          children: [OverviewView(), HistoryView(), AchievementView()],
+          children: [
+            OverviewView(),
+            HistoryView(),
+            AchievementView(),
+          ],
         ),
+      ),
       ),
     );
   }

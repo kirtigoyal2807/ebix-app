@@ -7,8 +7,10 @@ import '../../../core/localization/localization_extension.dart';
 PreferredSizeWidget bookingTabBar({
   required BuildContext context,
   required bool isDark,
+  required TabController controller,
 }) {
   return TabBar(
+    controller: controller,
     isScrollable: false,
     labelStyle: AppTextStyles.body(context),
     unselectedLabelColor: AppColors.lightGrey,
