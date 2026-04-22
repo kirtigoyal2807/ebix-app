@@ -34,6 +34,36 @@ void main() {
       expect(data['email'], 'noor@example.com');
     });
 
+    test('POST /auth/email/send sends trimmed email', () async {
+      RequestOptions? seen;
+      final dio = createTestDio(
+        onRequest: (options, handler) {
+          seen = options;
+          handler.resolve(
+            Response(
+              requestOptions: options,
+              statusCode: 200,
+              data: const {
+                'success': true,
+                'message': 'sent',
+                'data': null,
+              },
+            ),
+          );
+        },
+      );
+      final repo = AuthRepository(dio);
+
+      final result = await repo.sendEmailVerification(
+        email: '  noor@example.com  ',
+      );
+
+      expect(result.isSuccess, isTrue);
+      expect(seen?.path, '/auth/email/send');
+      final data = seen?.data as Map<String, dynamic>;
+      expect(data['email'], 'noor@example.com');
+    });
+
     test('POST /auth/email/verify sends email and code', () async {
       RequestOptions? seen;
       final dio = createTestDio(

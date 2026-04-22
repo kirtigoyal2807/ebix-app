@@ -63,12 +63,14 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
       },
       listener: (context, state) {
         if (state.forgotPasswordFieldErrors.isNotEmpty) return;
-        if (state.forgotPasswordEmail.isNotEmpty &&
+        if (state.showForgotPasswordOtp &&
+            state.forgotPasswordEmail.isNotEmpty &&
             state.forgotPasswordErrorMessage.isEmpty) {
+          final email = state.forgotPasswordEmail;
+          context.read<AuthCubit>().clearForgotPasswordOtpOffer();
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text(context.l10n.forgotPasswordCodeSent)),
           );
-          final email = state.forgotPasswordEmail;
           Navigator.of(context).push(
             MaterialPageRoute<void>(
               builder: (_) => ForgotOtpView(email: email),

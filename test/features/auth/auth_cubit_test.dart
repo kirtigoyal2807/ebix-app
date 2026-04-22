@@ -541,6 +541,7 @@ void main() {
       expect(cubit.state.forgotPasswordUiStatus, ForgotPasswordUiStatus.idle);
       expect(cubit.state.forgotPasswordEmail, 'noor@example.com');
       expect(cubit.state.forgotPasswordErrorMessage, isEmpty);
+      expect(cubit.state.showForgotPasswordOtp, isTrue);
       expect(fakeRepo.passwordForgotCalls, 1);
       expect(fakeRepo.lastForgotEmail, 'noor@example.com');
       await cubit.close();
@@ -601,6 +602,78 @@ void main() {
       await cubit.requestForgotPassword('x@y.com');
 
       expect(cubit.state.forgotPasswordFieldErrors['email'], 'invalid');
+      expect(cubit.state.showForgotPasswordOtp, isFalse);
+      await cubit.close();
+    });
+
+    test(
+        'resendForgotPasswordEmail calls sendEmailVerification, not password forgot',
+        () async {
+      fakeRepo.sendEmailVerificationResult = const ApiSuccess<bool>(true);
+      final cubit = buildCubit(
+        seed: AuthState.initial().copyWith(
+          flow: AuthFlow.signIn,
+          forgotPasswordEmail: 'noor@example.com',
+        ),
+      );
+
+      await cubit.resendForgotPasswordEmail('noor@example.com');
+
+      expect(cubit.state.forgotPasswordUiStatus, ForgotPasswordUiStatus.idle);
+      expect(fakeRepo.passwordForgotCalls, 0);
+      expect(fakeRepo.sendEmailVerificationCalls, 1);
+      expect(fakeRepo.lastSendEmailVerificationEmail, 'noor@example.com');
+      expect(cubit.state.showForgotPasswordOtp, isFalse);
+      await cubit.close();
+    });
+
+    test('resendForgotPasswordEmail failure maps field errors', () async {
+      fakeRepo.sendEmailVerificationResult = ApiFailure<bool>(
+        NetworkException(
+          type: NetworkFailureType.validation,
+          message: 'rate limited',
+          fieldErrors: {'email': ['too many']},
+        ),
+      );
+      final cubit = buildCubit(
+        seed: AuthState.initial().copyWith(flow: AuthFlow.signIn),
+      );
+
+      await cubit.resendForgotPasswordEmail('x@y.com');
+
+      expect(cubit.state.forgotPasswordFieldErrors['email'], 'too many');
+      expect(cubit.state.showForgotPasswordOtp, isFalse);
+      await cubit.close();
+    });
+
+    test('resendForgotPasswordEmail clears forgotEmailCodeVerified', () async {
+      fakeRepo.sendEmailVerificationResult = const ApiSuccess<bool>(true);
+      final cubit = buildCubit(
+        seed: AuthState.initial().copyWith(
+          flow: AuthFlow.signIn,
+          forgotPasswordEmail: 'noor@example.com',
+          forgotEmailCodeVerified: true,
+        ),
+      );
+
+      await cubit.resendForgotPasswordEmail('noor@example.com');
+
+      expect(cubit.state.forgotEmailCodeVerified, isFalse);
+      await cubit.close();
+    });
+
+    test('clearForgotPasswordOtpOffer clears showForgotPasswordOtp', () async {
+      fakeRepo.passwordForgotResult = const ApiSuccess<bool>(true);
+      final cubit = buildCubit(
+        seed: AuthState.initial().copyWith(flow: AuthFlow.signIn),
+      );
+
+      await cubit.requestForgotPassword('noor@example.com');
+      expect(cubit.state.showForgotPasswordOtp, isTrue);
+
+      cubit.clearForgotPasswordOtpOffer();
+      expect(cubit.state.showForgotPasswordOtp, isFalse);
+
       await cubit.close();
     });
   });

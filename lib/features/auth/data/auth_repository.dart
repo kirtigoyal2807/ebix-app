@@ -111,7 +111,20 @@ class AuthRepository extends BaseRepository {
     );
   }
 
+  /// Resend email OTP (forgot-password OTP screen). Body: [email] only.
+  ///
+  /// Debug backends may accept verification code `000000`.
+  Future<ApiResult<bool>> sendEmailVerification({required String email}) {
+    return post<bool>(
+      '/auth/email/send',
+      data: {'email': email.trim()},
+      fromJson: (_) => true,
+    );
+  }
+
   /// Step 2 — verify code from email (10 min window).
+  ///
+  /// Debug backends may accept code `000000`.
   Future<ApiResult<bool>> verifyEmailCode({
     required String email,
     required String code,

@@ -25,6 +25,7 @@ class FakeAuthRepository extends AuthRepository {
   ApiResult<bool> phoneOtpResult = const ApiSuccess<bool>(true);
   ApiResult<bool> sendPhoneOtpResult = const ApiSuccess<bool>(true);
   ApiResult<bool> passwordForgotResult = const ApiSuccess<bool>(true);
+  ApiResult<bool> sendEmailVerificationResult = const ApiSuccess<bool>(true);
   ApiResult<bool> verifyEmailCodeResult = const ApiSuccess<bool>(true);
   ApiResult<bool> resetPasswordResult = const ApiSuccess<bool>(true);
   ApiResult<bool> submitUserGoalResult = const ApiSuccess<bool>(true);
@@ -50,6 +51,7 @@ class FakeAuthRepository extends AuthRepository {
   int phoneOtpCalls = 0;
   int sendPhoneOtpCalls = 0;
   int passwordForgotCalls = 0;
+  int sendEmailVerificationCalls = 0;
   int verifyEmailCodeCalls = 0;
   int resetPasswordCalls = 0;
   int submitUserGoalCalls = 0;
@@ -64,6 +66,7 @@ class FakeAuthRepository extends AuthRepository {
   String? lastVerifyPhoneOtpCode;
   String? lastSendPhoneOtpPhone;
   String? lastForgotEmail;
+  String? lastSendEmailVerificationEmail;
   String? lastVerifyEmail;
   String? lastVerifyCode;
   String? lastResetEmail;
@@ -129,6 +132,13 @@ class FakeAuthRepository extends AuthRepository {
     passwordForgotCalls++;
     lastForgotEmail = email;
     return passwordForgotResult;
+  }
+
+  @override
+  Future<ApiResult<bool>> sendEmailVerification({required String email}) async {
+    sendEmailVerificationCalls++;
+    lastSendEmailVerificationEmail = email;
+    return sendEmailVerificationResult;
   }
 
   @override

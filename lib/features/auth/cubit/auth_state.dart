@@ -59,6 +59,9 @@ class AuthState extends Equatable {
   /// `true` after `POST /auth/email/verify` succeeds (step 2).
   final bool forgotEmailCodeVerified;
 
+  /// One-shot: [AuthCubit.requestForgotPassword] succeeded — [ForgotPasswordView] opens OTP then clears.
+  final bool showForgotPasswordOtp;
+
   /// After email login: 0 = experience, 1 = goals (+ API).
   final int postLoginStep;
 
@@ -112,6 +115,7 @@ class AuthState extends Equatable {
     required this.forgotPasswordErrorMessage,
     required this.forgotPasswordFieldErrors,
     required this.forgotEmailCodeVerified,
+    required this.showForgotPasswordOtp,
     required this.postLoginStep,
     required this.postLoginExperience,
     required this.postLoginGoalUiStatus,
@@ -155,6 +159,7 @@ class AuthState extends Equatable {
       forgotPasswordErrorMessage: '',
       forgotPasswordFieldErrors: {},
       forgotEmailCodeVerified: false,
+      showForgotPasswordOtp: false,
       postLoginStep: 0,
       postLoginExperience: '',
       postLoginGoalUiStatus: PostLoginGoalUiStatus.idle,
@@ -200,6 +205,7 @@ class AuthState extends Equatable {
     String? forgotPasswordErrorMessage,
     Map<String, String>? forgotPasswordFieldErrors,
     bool? forgotEmailCodeVerified,
+    bool? showForgotPasswordOtp,
     int? postLoginStep,
     String? postLoginExperience,
     PostLoginGoalUiStatus? postLoginGoalUiStatus,
@@ -252,6 +258,7 @@ class AuthState extends Equatable {
           forgotPasswordFieldErrors ?? this.forgotPasswordFieldErrors,
       forgotEmailCodeVerified:
           forgotEmailCodeVerified ?? this.forgotEmailCodeVerified,
+      showForgotPasswordOtp: showForgotPasswordOtp ?? this.showForgotPasswordOtp,
       postLoginStep: postLoginStep ?? this.postLoginStep,
       postLoginExperience: postLoginExperience ?? this.postLoginExperience,
       postLoginGoalUiStatus:
@@ -301,6 +308,7 @@ class AuthState extends Equatable {
       forgotPasswordErrorMessage: '',
       forgotPasswordFieldErrors: {},
       forgotEmailCodeVerified: false,
+      showForgotPasswordOtp: false,
     );
   }
 
@@ -374,6 +382,7 @@ class AuthState extends Equatable {
         forgotPasswordErrorMessage,
         forgotPasswordFieldErrors,
         forgotEmailCodeVerified,
+        showForgotPasswordOtp,
         postLoginStep,
         postLoginExperience,
         postLoginGoalUiStatus,

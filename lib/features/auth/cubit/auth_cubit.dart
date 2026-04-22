@@ -859,12 +859,19 @@ class AuthCubit extends Cubit<AuthState> {
     emit(state.clearedForgotPasswordFlow());
   }
 
+  void clearForgotPasswordOtpOffer() {
+    if (state.showForgotPasswordOtp) {
+      emit(state.copyWith(showForgotPasswordOtp: false));
+    }
+  }
+
   Future<void> requestForgotPassword(String email) async {
     emit(
       state.copyWith(
         forgotPasswordUiStatus: ForgotPasswordUiStatus.loading,
         forgotPasswordErrorMessage: '',
         forgotPasswordFieldErrors: {},
+        showForgotPasswordOtp: false,
       ),
     );
 
@@ -878,6 +885,7 @@ class AuthCubit extends Cubit<AuthState> {
             forgotPasswordEmail: email.trim(),
             forgotPasswordErrorMessage: '',
             forgotPasswordFieldErrors: {},
+            showForgotPasswordOtp: true,
           ),
         );
       case ApiFailure<bool>(:final exception):
@@ -886,6 +894,45 @@ class AuthCubit extends Cubit<AuthState> {
             forgotPasswordUiStatus: ForgotPasswordUiStatus.idle,
             forgotPasswordErrorMessage: exception.message ?? '',
             forgotPasswordFieldErrors: _mapFieldErrors(exception),
+            showForgotPasswordOtp: false,
+          ),
+        );
+    }
+  }
+
+  /// Forgot-password OTP screen — resend code via [AuthRepository.sendEmailVerification].
+  Future<void> resendForgotPasswordEmail(String email) async {
+    emit(
+      state.copyWith(
+        forgotPasswordUiStatus: ForgotPasswordUiStatus.loading,
+        forgotPasswordErrorMessage: '',
+        forgotPasswordFieldErrors: {},
+        // New code invalidates prior verify; avoids OTP listener pushing reset screen on resend.
+        forgotEmailCodeVerified: false,
+        showForgotPasswordOtp: false,
+      ),
+    );
+
+    final result = await _authRepository.sendEmailVerification(email: email);
+
+    switch (result) {
+      case ApiSuccess<bool>():
+        emit(
+          state.copyWith(
+            forgotPasswordUiStatus: ForgotPasswordUiStatus.idle,
+            forgotPasswordEmail: email.trim(),
+            forgotPasswordErrorMessage: '',
+            forgotPasswordFieldErrors: {},
+            showForgotPasswordOtp: false,
+          ),
+        );
+      case ApiFailure<bool>(:final exception):
+        emit(
+          state.copyWith(
+            forgotPasswordUiStatus: ForgotPasswordUiStatus.idle,
+            forgotPasswordErrorMessage: exception.message ?? '',
+            forgotPasswordFieldErrors: _mapFieldErrors(exception),
+            showForgotPasswordOtp: false,
           ),
         );
     }
@@ -900,6 +947,8 @@ class AuthCubit extends Cubit<AuthState> {
         forgotPasswordUiStatus: ForgotPasswordUiStatus.loading,
         forgotPasswordErrorMessage: '',
         forgotPasswordFieldErrors: {},
+        forgotEmailCodeVerified: false,
+        showForgotPasswordOtp: false,
       ),
     );
 
@@ -914,6 +963,7 @@ class AuthCubit extends Cubit<AuthState> {
             forgotPasswordErrorMessage: '',
             forgotPasswordFieldErrors: {},
             forgotEmailCodeVerified: true,
+            showForgotPasswordOtp: false,
           ),
         );
       case ApiFailure<bool>(:final exception):
@@ -923,6 +973,7 @@ class AuthCubit extends Cubit<AuthState> {
             forgotPasswordErrorMessage: exception.message ?? '',
             forgotPasswordFieldErrors: _mapFieldErrors(exception),
             forgotEmailCodeVerified: false,
+            showForgotPasswordOtp: false,
           ),
         );
     }
@@ -937,6 +988,7 @@ class AuthCubit extends Cubit<AuthState> {
         forgotPasswordUiStatus: ForgotPasswordUiStatus.loading,
         forgotPasswordErrorMessage: '',
         forgotPasswordFieldErrors: {},
+        showForgotPasswordOtp: false,
       ),
     );
 
@@ -952,6 +1004,7 @@ class AuthCubit extends Cubit<AuthState> {
             forgotPasswordUiStatus: ForgotPasswordUiStatus.idle,
             forgotPasswordErrorMessage: exception.message ?? '',
             forgotPasswordFieldErrors: _mapFieldErrors(exception),
+            showForgotPasswordOtp: false,
           ),
         );
     }

@@ -41,7 +41,7 @@ class _ForgotOtpViewState extends State<ForgotOtpView> {
   }
 
   Future<void> _resend(BuildContext context) async {
-    await context.read<AuthCubit>().requestForgotPassword(widget.email);
+    await context.read<AuthCubit>().resendForgotPasswordEmail(widget.email);
   }
 
   @override
@@ -50,8 +50,22 @@ class _ForgotOtpViewState extends State<ForgotOtpView> {
 
     return BlocConsumer<AuthCubit, AuthState>(
       listenWhen: (previous, current) {
-        return previous.forgotPasswordUiStatus == ForgotPasswordUiStatus.loading &&
-            current.forgotPasswordUiStatus == ForgotPasswordUiStatus.idle;
+        final finished =
+            previous.forgotPasswordUiStatus == ForgotPasswordUiStatus.loading &&
+                current.forgotPasswordUiStatus == ForgotPasswordUiStatus.idle;
+        if (!finished) return false;
+        if (current.forgotPasswordFieldErrors.isNotEmpty) return true;
+        if (current.forgotPasswordErrorMessage.isNotEmpty) return true;
+        if (current.forgotEmailCodeVerified && !previous.forgotEmailCodeVerified) {
+          return true;
+        }
+        if (!current.forgotEmailCodeVerified &&
+            current.forgotPasswordEmail.isNotEmpty &&
+            current.forgotPasswordErrorMessage.isEmpty &&
+            current.forgotPasswordFieldErrors.isEmpty) {
+          return true;
+        }
+        return false;
       },
       listener: (context, state) {
         if (state.forgotPasswordFieldErrors.isNotEmpty) return;
@@ -131,6 +145,7 @@ class _ForgotOtpViewState extends State<ForgotOtpView> {
                         const SizedBox(height: AppSpacing.lg),
                         Center(
                           child: GestureDetector(
+                            key: const ValueKey('forgot_resend_code'),
                             onTap: loading ? null : () => _resend(context),
                             child: RichText(
                               text: TextSpan(
