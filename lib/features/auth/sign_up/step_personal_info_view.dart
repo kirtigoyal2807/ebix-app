@@ -15,6 +15,7 @@ import 'package:pilates_app/widgets/app_text_field.dart';
 import 'package:pilates_app/widgets/phone_number_field.dart';
 
 import '../../../core/localization/localization_extension.dart';
+import '../../../core/utils/input_validators.dart';
 import 'widgets/sign_up_header.dart';
 import 'widgets/sign_up_progress.dart';
 
@@ -78,13 +79,18 @@ class _SignUpPersonalInfoViewState extends State<SignUpPersonalInfoView> {
 
     setState(() {
       _clientFirstNameError = first.isEmpty ? l10n.pleaseEnterFirstName : null;
-      _clientEmailError = email.isEmpty ? l10n.pleaseEnterEmail : null;
+      _clientEmailError = email.isEmpty
+          ? l10n.pleaseEnterEmail
+          : (InputValidators.isValidEmail(email)
+                ? null
+                : l10n.pleaseEnterValidEmail);
       _clientPasswordError = password.length < 8 ? l10n.passwordTooShort : null;
       _clientPhoneError = phone.length < 8 ? l10n.pleaseEnterPhone : null;
     });
 
     if (first.isEmpty ||
         email.isEmpty ||
+        !InputValidators.isValidEmail(email) ||
         password.length < 8 ||
         phone.length < 8) {
       return;

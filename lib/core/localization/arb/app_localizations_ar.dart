@@ -2649,6 +2649,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get pleaseEnterEmail => 'يُرجى إدخال بريدك الإلكتروني';
 
   @override
+  String get pleaseEnterValidEmail => 'يُرجى إدخال بريد إلكتروني صالح';
+
+  @override
   String get pleaseEnterPassword => 'يُرجى إدخال كلمة المرور';
 
   @override

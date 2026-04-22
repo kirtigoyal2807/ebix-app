@@ -5096,6 +5096,12 @@ abstract class AppLocalizations {
   /// **'Please enter your email'**
   String get pleaseEnterEmail;
 
+  /// No description provided for @pleaseEnterValidEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a valid email address'**
+  String get pleaseEnterValidEmail;
+
   /// No description provided for @pleaseEnterPassword.
   ///
   /// In en, this message translates to:

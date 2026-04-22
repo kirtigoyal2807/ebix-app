@@ -15,6 +15,7 @@ import 'package:pilates_app/widgets/app_text.dart';
 import 'package:pilates_app/widgets/app_text_field.dart';
 import 'package:pilates_app/widgets/phone_number_field.dart';
 
+import '../../../core/utils/input_validators.dart';
 import '../../../core/localization/localization_extension.dart';
 import '../forgot_password/forgot_password_view.dart';
 
@@ -57,12 +58,19 @@ class _SignInViewState extends State<SignInView> {
     final email = _emailController.text.trim();
     final password = _passwordController.text;
     setState(() {
-      _clientEmailError =
-          email.isEmpty ? l10n.pleaseEnterEmail : null;
+      _clientEmailError = email.isEmpty
+          ? l10n.pleaseEnterEmail
+          : (InputValidators.isValidEmail(email)
+                ? null
+                : l10n.pleaseEnterValidEmail);
       _clientPasswordError =
           password.isEmpty ? l10n.pleaseEnterPassword : null;
     });
-    if (email.isEmpty || password.isEmpty) return;
+    if (email.isEmpty ||
+        !InputValidators.isValidEmail(email) ||
+        password.isEmpty) {
+      return;
+    }
 
     context.read<AuthCubit>().loginWithEmail(
           email: email,

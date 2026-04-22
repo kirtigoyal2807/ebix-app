@@ -2667,6 +2667,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get pleaseEnterEmail => 'Please enter your email';
 
   @override
+  String get pleaseEnterValidEmail => 'Please enter a valid email address';
+
+  @override
   String get pleaseEnterPassword => 'Please enter your password';
 
   @override

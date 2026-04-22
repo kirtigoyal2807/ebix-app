@@ -1059,6 +1059,7 @@
   "loginOtpSent": "تم إرسال رمز التحقق. تحقق من هاتفك.",
   "loginErrorGeneric": "حدث خطأ ما. يُرجى المحاولة مرة أخرى.",
   "pleaseEnterEmail": "يُرجى إدخال بريدك الإلكتروني",
+  "pleaseEnterValidEmail": "يُرجى إدخال بريد إلكتروني صالح",
   "pleaseEnterPassword": "يُرجى إدخال كلمة المرور",
   "pleaseEnterPhone": "يُرجى إدخال رقم الهاتف",
   "registerOtpSent": "تم إرسال رمز التحقق. تحقق من بريدك الإلكتروني أو هاتفك.",
