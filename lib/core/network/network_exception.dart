@@ -51,11 +51,15 @@ class NetworkException implements Exception {
     Map<String, List<String>>? fieldErrors,
     dynamic responseData,
   }) {
+    final normalizedMessage = message.trim();
+    final fallbackFieldMessage = _firstFieldErrorMessage(fieldErrors);
     final hasFieldErrors = fieldErrors != null && fieldErrors.isNotEmpty;
     final type = _typeForHttpCode(statusCode, validationHint: hasFieldErrors);
     return NetworkException(
       type: type,
-      message: message,
+      message: normalizedMessage.isNotEmpty
+          ? normalizedMessage
+          : fallbackFieldMessage,
       statusCode: statusCode,
       responseData: responseData,
       fieldErrors: fieldErrors,
@@ -178,15 +182,22 @@ class NetworkException implements Exception {
       );
     }
 
+    final extractedFieldErrors = _extractFieldErrorsFromAnyResponse(data);
+    final extractedMessage =
+        _extractMessageFromAnyResponse(data) ??
+        _firstFieldErrorMessage(extractedFieldErrors) ??
+        fallbackMessage ??
+        'HTTP $statusCode';
     final type = _typeForHttpCode(statusCode);
     return NetworkException(
       type: type,
-      message: fallbackMessage ?? 'HTTP $statusCode',
+      message: extractedMessage,
       statusCode: statusCode,
       responseData: data,
       dioExceptionType: dioExceptionType,
       cause: cause,
       stackTrace: stackTrace,
+      fieldErrors: extractedFieldErrors,
     );
   }
 
@@ -213,4 +224,103 @@ class NetworkException implements Exception {
   @override
   String toString() =>
       'NetworkException($type, status: $statusCode, message: $message)';
+
+  static String? _extractMessageFromAnyResponse(dynamic data) {
+    if (data is String) {
+      final trimmed = data.trim();
+      return trimmed.isEmpty ? null : trimmed;
+    }
+    if (data is! Map) return null;
+
+    String? readString(dynamic value) {
+      if (value is String) {
+        final trimmed = value.trim();
+        return trimmed.isEmpty ? null : trimmed;
+      }
+      if (value == null) return null;
+      final asText = value.toString().trim();
+      return asText.isEmpty ? null : asText;
+    }
+
+    const directMessageKeys = ['message', 'error', 'detail', 'title', 'reason'];
+    for (final key in directMessageKeys) {
+      final candidate = readString(data[key]);
+      if (candidate != null) return candidate;
+    }
+
+    const nestedMessageKeys = [
+      'errors',
+      'error_description',
+      'error_description_ar',
+    ];
+    for (final key in nestedMessageKeys) {
+      final candidate = _extractMessageFromNestedError(data[key]);
+      if (candidate != null) return candidate;
+    }
+
+    return null;
+  }
+
+  static String? _extractMessageFromNestedError(dynamic value) {
+    if (value is List && value.isNotEmpty) {
+      final first = value.first;
+      if (first is String) {
+        final trimmed = first.trim();
+        return trimmed.isEmpty ? null : trimmed;
+      }
+      return _extractMessageFromNestedError(first);
+    }
+    if (value is Map && value.isNotEmpty) {
+      for (final entry in value.entries) {
+        final nested = _extractMessageFromNestedError(entry.value);
+        if (nested != null) return nested;
+      }
+    }
+    if (value is String) {
+      final trimmed = value.trim();
+      return trimmed.isEmpty ? null : trimmed;
+    }
+    return null;
+  }
+
+  static String? _firstFieldErrorMessage(Map<String, List<String>>? fieldErrors) {
+    if (fieldErrors == null || fieldErrors.isEmpty) return null;
+    for (final value in fieldErrors.values) {
+      if (value.isNotEmpty) {
+        final first = value.first.trim();
+        if (first.isNotEmpty) {
+          return first;
+        }
+      }
+    }
+    return null;
+  }
+
+  static Map<String, List<String>>? _extractFieldErrorsFromAnyResponse(
+    dynamic data,
+  ) {
+    if (data is! Map) return null;
+    final errors = data['errors'];
+    if (errors is! Map) return null;
+    final out = <String, List<String>>{};
+    for (final entry in errors.entries) {
+      final key = entry.key.toString();
+      final value = entry.value;
+      if (value is List) {
+        final messages = value
+            .map((e) => e.toString().trim())
+            .where((e) => e.isNotEmpty)
+            .toList();
+        if (messages.isNotEmpty) {
+          out[key] = messages;
+        }
+        continue;
+      }
+      final asText = value?.toString().trim() ?? '';
+      if (asText.isNotEmpty) {
+        out[key] = [asText];
+      }
+    }
+    return out.isEmpty ? null : out;
+  }
 }
