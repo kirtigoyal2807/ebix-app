@@ -5132,6 +5132,12 @@ abstract class AppLocalizations {
   /// **'Please enter your first name'**
   String get pleaseEnterFirstName;
 
+  /// No description provided for @pleaseEnterLastName.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your last name'**
+  String get pleaseEnterLastName;
+
   /// No description provided for @forgotPasswordCodeSent.
   ///
   /// In en, this message translates to:

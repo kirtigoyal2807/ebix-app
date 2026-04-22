@@ -36,6 +36,7 @@ class _SignUpPersonalInfoViewState extends State<SignUpPersonalInfoView> {
   CountryCode? _phoneCountry;
   String? _genderValue;
   String? _clientFirstNameError;
+  String? _clientLastNameError;
   String? _clientEmailError;
   String? _clientPasswordError;
   String? _clientPhoneError;
@@ -73,12 +74,14 @@ class _SignUpPersonalInfoViewState extends State<SignUpPersonalInfoView> {
   void _submit(BuildContext context) {
     final l10n = context.l10n;
     final first = _firstNameController.text.trim();
+    final last = _lastNameController.text.trim();
     final email = _emailController.text.trim();
     final password = _passwordController.text;
     final phone = _composePhoneE164();
 
     setState(() {
       _clientFirstNameError = first.isEmpty ? l10n.pleaseEnterFirstName : null;
+      _clientLastNameError = last.isEmpty ? l10n.pleaseEnterLastName : null;
       _clientEmailError = email.isEmpty
           ? l10n.pleaseEnterEmail
           : (InputValidators.isValidEmail(email)
@@ -89,6 +92,7 @@ class _SignUpPersonalInfoViewState extends State<SignUpPersonalInfoView> {
     });
 
     if (first.isEmpty ||
+        last.isEmpty ||
         email.isEmpty ||
         !InputValidators.isValidEmail(email) ||
         password.length < 8 ||
@@ -98,9 +102,7 @@ class _SignUpPersonalInfoViewState extends State<SignUpPersonalInfoView> {
 
     context.read<AuthCubit>().register(
           firstName: first,
-          lastName: _lastNameController.text.trim().isEmpty
-              ? null
-              : _lastNameController.text.trim(),
+          lastName: last,
           email: email,
           phone: phone,
           password: password,
@@ -197,8 +199,12 @@ class _SignUpPersonalInfoViewState extends State<SignUpPersonalInfoView> {
                           label: context.l10n.lastName,
                           hint: 'Tajib',
                           keyboardType: TextInputType.name,
-                          errorText: fe['lastname'] ?? fe['last_name'],
-                          onChanged: (_) => setState(() {}),
+                          errorText: _clientLastNameError ??
+                              fe['lastname'] ??
+                              fe['last_name'],
+                          onChanged: (_) => setState(() {
+                            _clientLastNameError = null;
+                          }),
                         ),
                         const SizedBox(height: AppSpacing.md),
                         AppTextField(

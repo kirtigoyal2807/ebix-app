@@ -2686,6 +2686,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get pleaseEnterFirstName => 'Please enter your first name';
 
   @override
+  String get pleaseEnterLastName => 'Please enter your last name';
+
+  @override
   String get forgotPasswordCodeSent => 'A 6-digit code was sent to your email.';
 
   @override

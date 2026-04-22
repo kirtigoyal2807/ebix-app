@@ -1062,6 +1062,7 @@
   "registerOtpSent": "Verification code sent. Check your email or phone.",
   "passwordTooShort": "Password must be at least 8 characters",
   "pleaseEnterFirstName": "Please enter your first name",
+  "pleaseEnterLastName": "Please enter your last name",
   "forgotPasswordCodeSent": "A 6-digit code was sent to your email.",
   "passwordMismatch": "Passwords do not match",
   "passwordResetSuccess": "Your password was updated. Sign in with your new password.",

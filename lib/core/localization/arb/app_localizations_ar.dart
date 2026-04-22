@@ -2668,6 +2668,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get pleaseEnterFirstName => 'يُرجى إدخال اسمك الأول';
 
   @override
+  String get pleaseEnterLastName => 'يُرجى إدخال اسم العائلة';
+
+  @override
   String get forgotPasswordCodeSent =>
       'تم إرسال رمز مكوّن من 6 أرقام إلى بريدك الإلكتروني.';
 
