@@ -314,6 +314,46 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
+  /// Resend OTP on sign-up step 2 — `POST /auth/phone/send`.
+  Future<void> resendSignUpPhoneOtp() async {
+    if (state.flow != AuthFlow.signUp || state.signUpStep != 1) {
+      return;
+    }
+    if (state.phoneOtpSendUiStatus == PhoneOtpSendUiStatus.loading) {
+      return;
+    }
+    final phone = state.signUpPendingPhone.trim();
+    if (phone.isEmpty) {
+      return;
+    }
+
+    emit(
+      state.copyWith(
+        phoneOtpSendUiStatus: PhoneOtpSendUiStatus.loading,
+        phoneOtpSendErrorMessage: '',
+      ),
+    );
+
+    final result = await _authRepository.sendPhoneOtp(phone: phone);
+
+    switch (result) {
+      case ApiSuccess<bool>():
+        emit(
+          state.copyWith(
+            phoneOtpSendUiStatus: PhoneOtpSendUiStatus.idle,
+            phoneOtpSendErrorMessage: '',
+          ),
+        );
+      case ApiFailure<bool>(:final exception):
+        emit(
+          state.copyWith(
+            phoneOtpSendUiStatus: PhoneOtpSendUiStatus.idle,
+            phoneOtpSendErrorMessage: exception.message ?? '',
+          ),
+        );
+    }
+  }
+
   /// `GET /branches` when sign-up is on the branch step (loads once per visit).
   Future<void> loadSignUpBranches() async {
     if (state.flow != AuthFlow.signUp || state.signUpStep != 4) {
@@ -602,6 +642,8 @@ class AuthCubit extends Cubit<AuthState> {
             registerErrorMessage: '',
             registerFieldErrors: {},
             showRegisterOtpSuccess: false,
+            phoneOtpSendUiStatus: PhoneOtpSendUiStatus.idle,
+            phoneOtpSendErrorMessage: '',
           )
           .clearedForgotPasswordFlow(),
     );
@@ -689,6 +731,46 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
+  /// Resend OTP on sign-in phone verification — `POST /auth/phone/send`.
+  Future<void> resendSignInPhoneOtp() async {
+    if (state.flow != AuthFlow.signIn) {
+      return;
+    }
+    if (state.phoneOtpSendUiStatus == PhoneOtpSendUiStatus.loading) {
+      return;
+    }
+    final phone = state.signInPendingPhone.trim();
+    if (phone.isEmpty) {
+      return;
+    }
+
+    emit(
+      state.copyWith(
+        phoneOtpSendUiStatus: PhoneOtpSendUiStatus.loading,
+        phoneOtpSendErrorMessage: '',
+      ),
+    );
+
+    final result = await _authRepository.sendPhoneOtp(phone: phone);
+
+    switch (result) {
+      case ApiSuccess<bool>():
+        emit(
+          state.copyWith(
+            phoneOtpSendUiStatus: PhoneOtpSendUiStatus.idle,
+            phoneOtpSendErrorMessage: '',
+          ),
+        );
+      case ApiFailure<bool>(:final exception):
+        emit(
+          state.copyWith(
+            phoneOtpSendUiStatus: PhoneOtpSendUiStatus.idle,
+            phoneOtpSendErrorMessage: exception.message ?? '',
+          ),
+        );
+    }
+  }
+
   Future<void> register({
     required String firstName,
     String? lastName,
@@ -709,6 +791,8 @@ class AuthCubit extends Cubit<AuthState> {
             loginErrorMessage: '',
             loginFieldErrors: {},
             showPhoneOtpSuccess: false,
+            phoneOtpSendUiStatus: PhoneOtpSendUiStatus.idle,
+            phoneOtpSendErrorMessage: '',
           )
           .clearedForgotPasswordFlow(),
     );

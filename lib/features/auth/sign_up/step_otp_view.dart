@@ -43,27 +43,52 @@ class _SignUpOtpViewState extends State<SignUpOtpView> {
     await cubit.verifySignUpPhoneOtp(code: _otp.trim());
   }
 
+  Future<void> _resend(BuildContext context) async {
+    await context.read<AuthCubit>().resendSignUpPhoneOtp();
+  }
+
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    return BlocConsumer<AuthCubit, AuthState>(
+    return BlocListener<AuthCubit, AuthState>(
       listenWhen: (previous, current) {
-        return previous.signUpPhoneOtpUiStatus == SignUpPhoneOtpUiStatus.loading &&
-            current.signUpPhoneOtpUiStatus == SignUpPhoneOtpUiStatus.idle &&
-            current.signUpPhoneOtpErrorMessage.isNotEmpty &&
-            current.signUpPhoneOtpFieldErrors.isEmpty;
+        return previous.phoneOtpSendUiStatus == PhoneOtpSendUiStatus.loading &&
+            current.phoneOtpSendUiStatus == PhoneOtpSendUiStatus.idle;
       },
       listener: (context, state) {
-        final text = state.signUpPhoneOtpErrorMessage.trim().isEmpty
-            ? context.l10n.loginErrorGeneric
-            : state.signUpPhoneOtpErrorMessage;
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(text)),
-        );
+        if (state.phoneOtpSendErrorMessage.isNotEmpty) {
+          final text = state.phoneOtpSendErrorMessage.trim().isEmpty
+              ? context.l10n.loginErrorGeneric
+              : state.phoneOtpSendErrorMessage;
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(text)),
+          );
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(context.l10n.registerOtpSent)),
+          );
+        }
       },
-      builder: (context, state) {
+      child: BlocConsumer<AuthCubit, AuthState>(
+        listenWhen: (previous, current) {
+          return previous.signUpPhoneOtpUiStatus == SignUpPhoneOtpUiStatus.loading &&
+              current.signUpPhoneOtpUiStatus == SignUpPhoneOtpUiStatus.idle &&
+              current.signUpPhoneOtpErrorMessage.isNotEmpty &&
+              current.signUpPhoneOtpFieldErrors.isEmpty;
+        },
+        listener: (context, state) {
+          final text = state.signUpPhoneOtpErrorMessage.trim().isEmpty
+              ? context.l10n.loginErrorGeneric
+              : state.signUpPhoneOtpErrorMessage;
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(text)),
+          );
+        },
+        builder: (context, state) {
         final loading = state.signUpPhoneOtpUiStatus == SignUpPhoneOtpUiStatus.loading;
+        final blockInteraction =
+            state.phoneOtpSendUiStatus == PhoneOtpSendUiStatus.loading;
         final phone = state.signUpPendingPhone.trim();
         final subtitle = phone.isEmpty
             ? context.l10n.enterCode
@@ -78,7 +103,9 @@ class _SignUpOtpViewState extends State<SignUpOtpView> {
             title: context.l10n.verification,
             isMoreMenu: false,
           ),
-          body: Padding(
+          body: Stack(
+            children: [
+              Padding(
             padding: const EdgeInsets.symmetric(
               horizontal: AppSpacing.lg,
               vertical: AppSpacing.md,
@@ -143,24 +170,29 @@ class _SignUpOtpViewState extends State<SignUpOtpView> {
                         const SizedBox(height: AppSpacing.lg),
 
                         Center(
-                          child: RichText(
-                            text: TextSpan(
-                              children: [
-                                TextSpan(
-                                  text: "${context.l10n.didntReceiveCode} ",
-                                  style: AppTextStyles.caption(context).copyWith(
-                                    color: isDark
-                                        ? AppColors.darkGreyText
-                                        : AppColors.greyText,
-                                    fontWeight: FontWeight.w400,
-                                    height: 1.4,
+                          child: GestureDetector(
+                            onTap: blockInteraction || loading
+                                ? null
+                                : () => _resend(context),
+                            child: RichText(
+                              text: TextSpan(
+                                children: [
+                                  TextSpan(
+                                    text: "${context.l10n.didntReceiveCode} ",
+                                    style: AppTextStyles.caption(context).copyWith(
+                                      color: isDark
+                                          ? AppColors.darkGreyText
+                                          : AppColors.greyText,
+                                      fontWeight: FontWeight.w400,
+                                      height: 1.4,
+                                    ),
                                   ),
-                                ),
-                                TextSpan(
-                                  text: context.l10n.resendCode,
-                                  style: AppTextStyles.boldBody(context),
-                                ),
-                              ],
+                                  TextSpan(
+                                    text: context.l10n.resendCode,
+                                    style: AppTextStyles.boldBody(context),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),
@@ -174,13 +206,27 @@ class _SignUpOtpViewState extends State<SignUpOtpView> {
                   key: const ValueKey('sign_up_phone_otp_verify'),
                   label: context.l10n.verify,
                   isLoading: loading,
-                  onPressed: loading ? null : () => _submit(context),
+                  onPressed: (loading || blockInteraction)
+                      ? null
+                      : () => _submit(context),
                 ),
               ],
             ),
           ),
+              if (blockInteraction)
+                const Positioned.fill(
+                  child: ColoredBox(
+                    color: Color(0x33000000),
+                    child: Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  ),
+                ),
+            ],
+          ),
         );
       },
+    ),
     );
   }
 }

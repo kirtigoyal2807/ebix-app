@@ -22,6 +22,10 @@ class SignInPhoneOtpView extends StatefulWidget {
 class _SignInPhoneOtpViewState extends State<SignInPhoneOtpView> {
   String _code = '';
 
+  Future<void> _resend(BuildContext context) async {
+    await context.read<AuthCubit>().resendSignInPhoneOtp();
+  }
+
   Future<void> _verify(BuildContext context) async {
     if (_code.length != 6) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -36,23 +40,44 @@ class _SignInPhoneOtpViewState extends State<SignInPhoneOtpView> {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    return BlocConsumer<AuthCubit, AuthState>(
+    return BlocListener<AuthCubit, AuthState>(
       listenWhen: (previous, current) {
-        return previous.loginUiStatus == LoginUiStatus.loading &&
-            current.loginUiStatus == LoginUiStatus.idle &&
-            current.loginErrorMessage.isNotEmpty &&
-            current.loginFieldErrors.isEmpty;
+        return previous.phoneOtpSendUiStatus == PhoneOtpSendUiStatus.loading &&
+            current.phoneOtpSendUiStatus == PhoneOtpSendUiStatus.idle;
       },
       listener: (context, state) {
-        final text = state.loginErrorMessage.trim().isEmpty
-            ? context.l10n.loginErrorGeneric
-            : state.loginErrorMessage;
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(text)),
-        );
+        if (state.phoneOtpSendErrorMessage.isNotEmpty) {
+          final text = state.phoneOtpSendErrorMessage.trim().isEmpty
+              ? context.l10n.loginErrorGeneric
+              : state.phoneOtpSendErrorMessage;
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(text)),
+          );
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(context.l10n.loginOtpSent)),
+          );
+        }
       },
-      builder: (context, state) {
+      child: BlocConsumer<AuthCubit, AuthState>(
+        listenWhen: (previous, current) {
+          return previous.loginUiStatus == LoginUiStatus.loading &&
+              current.loginUiStatus == LoginUiStatus.idle &&
+              current.loginErrorMessage.isNotEmpty &&
+              current.loginFieldErrors.isEmpty;
+        },
+        listener: (context, state) {
+          final text = state.loginErrorMessage.trim().isEmpty
+              ? context.l10n.loginErrorGeneric
+              : state.loginErrorMessage;
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(text)),
+          );
+        },
+        builder: (context, state) {
         final loading = state.loginUiStatus == LoginUiStatus.loading;
+        final blockInteraction =
+            state.phoneOtpSendUiStatus == PhoneOtpSendUiStatus.loading;
         final codeErr = state.loginFieldErrors['code'];
         final phone = state.signInPendingPhone;
 
@@ -62,7 +87,9 @@ class _SignInPhoneOtpViewState extends State<SignInPhoneOtpView> {
             title: context.l10n.verifyPhone,
             isMoreMenu: false,
           ),
-          body: Padding(
+          body: Stack(
+            children: [
+              Padding(
             padding: const EdgeInsets.symmetric(
               horizontal: AppSpacing.lg,
               vertical: AppSpacing.md,
@@ -104,6 +131,34 @@ class _SignInPhoneOtpViewState extends State<SignInPhoneOtpView> {
                             ),
                           ),
                         ],
+                        const SizedBox(height: AppSpacing.lg),
+                        Center(
+                          child: GestureDetector(
+                            onTap: blockInteraction || loading
+                                ? null
+                                : () => _resend(context),
+                            child: RichText(
+                              text: TextSpan(
+                                children: [
+                                  TextSpan(
+                                    text: '${context.l10n.didntReceiveCode} ',
+                                    style: AppTextStyles.caption(context).copyWith(
+                                      color: isDark
+                                          ? AppColors.darkGreyText
+                                          : AppColors.greyText,
+                                      fontWeight: FontWeight.w400,
+                                      height: 1.4,
+                                    ),
+                                  ),
+                                  TextSpan(
+                                    text: context.l10n.resendCode,
+                                    style: AppTextStyles.boldBody(context),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -112,13 +167,27 @@ class _SignInPhoneOtpViewState extends State<SignInPhoneOtpView> {
                   key: const ValueKey('sign_in_phone_otp_verify'),
                   label: context.l10n.verify,
                   isLoading: loading,
-                  onPressed: loading ? null : () => _verify(context),
+                  onPressed: (loading || blockInteraction)
+                      ? null
+                      : () => _verify(context),
                 ),
               ],
             ),
           ),
+              if (blockInteraction)
+                const Positioned.fill(
+                  child: ColoredBox(
+                    color: Color(0x33000000),
+                    child: Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  ),
+                ),
+            ],
+          ),
         );
       },
+    ),
     );
   }
 }

@@ -21,6 +21,9 @@ enum SignUpHomeBranchStatus { idle, loading }
 
 enum SignUpPhoneOtpUiStatus { idle, loading }
 
+/// `/auth/phone/send` (resend code) — separate from verify loading.
+enum PhoneOtpSendUiStatus { idle, loading }
+
 class AuthState extends Equatable {
   final AuthFlow flow;
   final int signUpStep; // 0 → 4
@@ -76,6 +79,9 @@ class AuthState extends Equatable {
   final String signUpPhoneOtpErrorMessage;
   final Map<String, String> signUpPhoneOtpFieldErrors;
 
+  final PhoneOtpSendUiStatus phoneOtpSendUiStatus;
+  final String phoneOtpSendErrorMessage;
+
   /// Sign-up branch step: `GET /branches` + `POST /auth/home-branch`.
   final SignUpBranchesLoadStatus signUpBranchesLoadStatus;
   final List<Branch> signUpBranches;
@@ -116,6 +122,8 @@ class AuthState extends Equatable {
     required this.signUpPhoneOtpUiStatus,
     required this.signUpPhoneOtpErrorMessage,
     required this.signUpPhoneOtpFieldErrors,
+    required this.phoneOtpSendUiStatus,
+    required this.phoneOtpSendErrorMessage,
     required this.signUpBranchesLoadStatus,
     required this.signUpBranches,
     this.signUpBranchesPagination,
@@ -157,6 +165,8 @@ class AuthState extends Equatable {
       signUpPhoneOtpUiStatus: SignUpPhoneOtpUiStatus.idle,
       signUpPhoneOtpErrorMessage: '',
       signUpPhoneOtpFieldErrors: {},
+      phoneOtpSendUiStatus: PhoneOtpSendUiStatus.idle,
+      phoneOtpSendErrorMessage: '',
       signUpBranchesLoadStatus: SignUpBranchesLoadStatus.idle,
       signUpBranches: [],
       signUpBranchesPagination: null,
@@ -201,6 +211,8 @@ class AuthState extends Equatable {
     SignUpPhoneOtpUiStatus? signUpPhoneOtpUiStatus,
     String? signUpPhoneOtpErrorMessage,
     Map<String, String>? signUpPhoneOtpFieldErrors,
+    PhoneOtpSendUiStatus? phoneOtpSendUiStatus,
+    String? phoneOtpSendErrorMessage,
     SignUpBranchesLoadStatus? signUpBranchesLoadStatus,
     List<Branch>? signUpBranches,
     PaginationMeta? signUpBranchesPagination,
@@ -258,6 +270,9 @@ class AuthState extends Equatable {
           signUpPhoneOtpErrorMessage ?? this.signUpPhoneOtpErrorMessage,
       signUpPhoneOtpFieldErrors:
           signUpPhoneOtpFieldErrors ?? this.signUpPhoneOtpFieldErrors,
+      phoneOtpSendUiStatus: phoneOtpSendUiStatus ?? this.phoneOtpSendUiStatus,
+      phoneOtpSendErrorMessage:
+          phoneOtpSendErrorMessage ?? this.phoneOtpSendErrorMessage,
       signUpBranchesLoadStatus:
           signUpBranchesLoadStatus ?? this.signUpBranchesLoadStatus,
       signUpBranches: signUpBranches ?? this.signUpBranches,
@@ -308,6 +323,8 @@ class AuthState extends Equatable {
       loginErrorMessage: '',
       loginFieldErrors: {},
       showPhoneOtpSuccess: false,
+      phoneOtpSendUiStatus: PhoneOtpSendUiStatus.idle,
+      phoneOtpSendErrorMessage: '',
     );
   }
 
@@ -331,6 +348,8 @@ class AuthState extends Equatable {
       signUpPhoneOtpUiStatus: SignUpPhoneOtpUiStatus.idle,
       signUpPhoneOtpErrorMessage: '',
       signUpPhoneOtpFieldErrors: {},
+      phoneOtpSendUiStatus: PhoneOtpSendUiStatus.idle,
+      phoneOtpSendErrorMessage: '',
     );
   }
 
@@ -365,6 +384,8 @@ class AuthState extends Equatable {
         signUpPhoneOtpUiStatus,
         signUpPhoneOtpErrorMessage,
         signUpPhoneOtpFieldErrors,
+        phoneOtpSendUiStatus,
+        phoneOtpSendErrorMessage,
         signUpBranchesLoadStatus,
         signUpBranches,
         signUpBranchesPagination,

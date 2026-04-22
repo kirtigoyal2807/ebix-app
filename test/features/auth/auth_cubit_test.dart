@@ -135,6 +135,39 @@ void main() {
       await cubit.close();
     });
 
+    test('resendSignUpPhoneOtp calls sendPhoneOtp with pending phone', () async {
+      fakeRepo.sendPhoneOtpResult = const ApiSuccess<bool>(true);
+      final cubit = buildCubit(
+        seed: AuthState.initial().copyWith(
+          flow: AuthFlow.signUp,
+          signUpStep: 1,
+          signUpPendingPhone: '+966500000001',
+        ),
+      );
+
+      await cubit.resendSignUpPhoneOtp();
+
+      expect(cubit.state.phoneOtpSendUiStatus, PhoneOtpSendUiStatus.idle);
+      expect(fakeRepo.sendPhoneOtpCalls, 1);
+      expect(fakeRepo.lastSendPhoneOtpPhone, '+966500000001');
+      await cubit.close();
+    });
+
+    test('resendSignUpPhoneOtp is no-op when not on sign-up OTP step', () async {
+      final cubit = buildCubit(
+        seed: AuthState.initial().copyWith(
+          flow: AuthFlow.signUp,
+          signUpStep: 0,
+          signUpPendingPhone: '+966500000001',
+        ),
+      );
+
+      await cubit.resendSignUpPhoneOtp();
+
+      expect(fakeRepo.sendPhoneOtpCalls, 0);
+      await cubit.close();
+    });
+
     test('previousSignUpStep from OTP step clears pending phone', () async {
       final cubit = buildCubit(
         seed: AuthState.initial().copyWith(
@@ -443,6 +476,23 @@ void main() {
       expect(storage.readToken(), 'phone-login-jwt');
       expect(cubit.state.flow, AuthFlow.authenticated);
       expect(cubit.state.signInPendingPhone, isEmpty);
+      await cubit.close();
+    });
+
+    test('resendSignInPhoneOtp calls sendPhoneOtp with sign-in pending phone', () async {
+      fakeRepo.sendPhoneOtpResult = const ApiSuccess<bool>(true);
+      final cubit = buildCubit(
+        seed: AuthState.initial().copyWith(
+          flow: AuthFlow.signIn,
+          signInPendingPhone: '+966500000000',
+        ),
+      );
+
+      await cubit.resendSignInPhoneOtp();
+
+      expect(cubit.state.phoneOtpSendUiStatus, PhoneOtpSendUiStatus.idle);
+      expect(fakeRepo.sendPhoneOtpCalls, 1);
+      expect(fakeRepo.lastSendPhoneOtpPhone, '+966500000000');
       await cubit.close();
     });
   });

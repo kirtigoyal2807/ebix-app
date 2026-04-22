@@ -23,6 +23,7 @@ class FakeAuthRepository extends AuthRepository {
     ),
   );
   ApiResult<bool> phoneOtpResult = const ApiSuccess<bool>(true);
+  ApiResult<bool> sendPhoneOtpResult = const ApiSuccess<bool>(true);
   ApiResult<bool> passwordForgotResult = const ApiSuccess<bool>(true);
   ApiResult<bool> verifyEmailCodeResult = const ApiSuccess<bool>(true);
   ApiResult<bool> resetPasswordResult = const ApiSuccess<bool>(true);
@@ -47,6 +48,7 @@ class FakeAuthRepository extends AuthRepository {
   int registerCalls = 0;
   int verifyPhoneOtpCalls = 0;
   int phoneOtpCalls = 0;
+  int sendPhoneOtpCalls = 0;
   int passwordForgotCalls = 0;
   int verifyEmailCodeCalls = 0;
   int resetPasswordCalls = 0;
@@ -60,6 +62,7 @@ class FakeAuthRepository extends AuthRepository {
   String? lastRegisterPhone;
   String? lastVerifyPhoneOtpPhone;
   String? lastVerifyPhoneOtpCode;
+  String? lastSendPhoneOtpPhone;
   String? lastForgotEmail;
   String? lastVerifyEmail;
   String? lastVerifyCode;
@@ -112,6 +115,13 @@ class FakeAuthRepository extends AuthRepository {
   Future<ApiResult<bool>> requestPhoneLoginOtp({required String phone}) async {
     phoneOtpCalls++;
     return phoneOtpResult;
+  }
+
+  @override
+  Future<ApiResult<bool>> sendPhoneOtp({required String phone}) async {
+    sendPhoneOtpCalls++;
+    lastSendPhoneOtpPhone = phone;
+    return sendPhoneOtpResult;
   }
 
   @override

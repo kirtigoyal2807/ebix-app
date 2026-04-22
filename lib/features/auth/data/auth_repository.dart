@@ -40,6 +40,15 @@ class AuthRepository extends BaseRepository {
     );
   }
 
+  /// Resend phone OTP (sign-up or sign-in flow). Body: [phone] only.
+  Future<ApiResult<bool>> sendPhoneOtp({required String phone}) {
+    return post<bool>(
+      '/auth/phone/send',
+      data: {'phone': phone.trim()},
+      fromJson: (_) => true,
+    );
+  }
+
   /// Verify sign-up / login phone OTP — on success envelope `data` has `user` + `token`.
   Future<ApiResult<LoginEmailResult>> verifyPhoneOtp({
     required String phone,
