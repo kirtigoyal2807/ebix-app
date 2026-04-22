@@ -1,14 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pilates_app/config/theme/app_colors.dart';
 import 'package:pilates_app/config/theme/app_radius.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/core/localization/localization_extension.dart';
+import 'package:pilates_app/features/home/data/models/home_response.dart';
 import 'package:pilates_app/widgets/app_text.dart';
 
 class SpringChallengeCard extends StatefulWidget {
-  const SpringChallengeCard({super.key});
+  const SpringChallengeCard({
+    super.key,
+    required this.banners,
+    required this.onBannerTap,
+  });
+
+  final List<HomeBanner> banners;
+  final ValueChanged<HomeBanner> onBannerTap;
 
   @override
   State<SpringChallengeCard> createState() => _SpringChallengeCardState();
@@ -26,6 +33,10 @@ class _SpringChallengeCardState extends State<SpringChallengeCard> {
 
   @override
   Widget build(BuildContext context) {
+    if (widget.banners.isEmpty) {
+      return const SizedBox.shrink();
+    }
+
     final size = MediaQuery.sizeOf(context);
     final cardHeight = (size.height * 0.25).clamp(180.0, 200.0);
 
@@ -36,9 +47,9 @@ class _SpringChallengeCardState extends State<SpringChallengeCard> {
           child: PageView.builder(
             controller: _pageController,
             onPageChanged: (index) => setState(() => _currentPage = index),
-            itemCount: 3, // For demonstration
+            itemCount: widget.banners.length,
             itemBuilder: (context, index) {
-              return _buildCard(context, cardHeight);
+              return _buildCard(context, cardHeight, widget.banners[index]);
             },
           ),
         ),
@@ -48,7 +59,7 @@ class _SpringChallengeCardState extends State<SpringChallengeCard> {
     );
   }
 
-  Widget _buildCard(BuildContext context, double height) {
+  Widget _buildCard(BuildContext context, double height, HomeBanner banner) {
     final size = MediaQuery.sizeOf(context);
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
@@ -70,22 +81,35 @@ class _SpringChallengeCardState extends State<SpringChallengeCard> {
       ),
       child: Stack(
         children: [
-          // Background Illustration
-          Positioned(
-            right: 0,
-            bottom: 0,
-            top: 0,
-            child: Opacity(
-              opacity: 1,
-              child: SvgPicture.asset(
-                'assets/images/svg/ic_reset_bg.svg',
-                height: height,
-                fit: BoxFit.contain,
+          Positioned.fill(
+            child: Image.network(
+              banner.imageUrl ?? '',
+              fit: BoxFit.cover,
+              errorBuilder: (_, __, ___) {
+                return Container(color: AppColors.splashBackgroundDark);
+              },
+              loadingBuilder: (context, child, progress) {
+                if (progress == null) {
+                  return child;
+                }
+                return Container(color: AppColors.splashBackgroundDark);
+              },
+            ),
+          ),
+          Positioned.fill(
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.bottomCenter,
+                  end: Alignment.topCenter,
+                  colors: [
+                    Colors.black.withValues(alpha: 0.45),
+                    Colors.black.withValues(alpha: 0.1),
+                  ],
+                ),
               ),
             ),
           ),
-
-          // Content
           Padding(
             padding: EdgeInsets.all(
               size.height < 700 ? AppSpacing.md : AppSpacing.lmd,
@@ -98,7 +122,7 @@ class _SpringChallengeCardState extends State<SpringChallengeCard> {
                 SizedBox(
                   width: size.width * 0.5,
                   child: AppText(
-                    context.l10n.springResetChallenge,
+                    banner.title ?? context.l10n.springResetChallenge,
                     maxLines: 2,
                     style: (context) =>
                         AppTextStyles.heading1(context).copyWith(
@@ -112,7 +136,7 @@ class _SpringChallengeCardState extends State<SpringChallengeCard> {
                 ),
                 const SizedBox(height: AppSpacing.sm),
                 AppText(
-                  context.l10n.springResetDesc,
+                  banner.subtitle ?? context.l10n.springResetDesc,
                   maxLines: 1,
                   style: (context) =>
                       AppTextStyles.bodyTextSmall(context).copyWith(
@@ -125,7 +149,7 @@ class _SpringChallengeCardState extends State<SpringChallengeCard> {
                 Spacer(),
                 // SizedBox(height: size.height < 700 ? AppSpacing.md : AppSpacing.lg),
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () => widget.onBannerTap(banner),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.whiteColor,
                     // foregroundColor: const Color(0xFF65422C),
@@ -165,7 +189,7 @@ class _SpringChallengeCardState extends State<SpringChallengeCard> {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
-      children: List.generate(3, (index) {
+      children: List.generate(widget.banners.length, (index) {
         final isSelected = _currentPage == index;
         return AnimatedContainer(
           duration: const Duration(milliseconds: 300),

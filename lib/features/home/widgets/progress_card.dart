@@ -105,7 +105,8 @@ class ProgressCard extends StatelessWidget {
   Widget _buildActiveProgress(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final size = MediaQuery.sizeOf(context);
-    final progress = classesDone / goalClasses;
+    final safeGoal = goalClasses <= 0 ? 1 : goalClasses;
+    final progress = (classesDone / safeGoal).clamp(0.0, 1.0);
 
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
@@ -171,7 +172,7 @@ class ProgressCard extends StatelessWidget {
               Expanded(
                 child: _buildProgressStat(
                   context,
-                  '${(progress * 100).toInt()}%',
+                  '${(progress * 100).round()}%',
                   context.l10n.goal,
                 ),
               ),
@@ -193,7 +194,7 @@ class ProgressCard extends StatelessWidget {
           ),
           const SizedBox(height: AppSpacing.sm),
           AppText(
-            context.l10n.ofClassesThisMonth(goalClasses),
+            context.l10n.ofClassesThisMonth(safeGoal),
             style: (context) =>
                 AppTextStyles.helpAndSupportItemSubLabel(context).copyWith(
                   fontSize: size.width * 0.03 > 14 ? 14 : size.width * 0.03,

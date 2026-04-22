@@ -1,29 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:pilates_app/config/theme/app_colors.dart';
 import 'package:pilates_app/config/theme/app_radius.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/core/localization/localization_extension.dart';
+import 'package:pilates_app/features/home/data/models/home_response.dart';
 import 'package:pilates_app/widgets/app_text.dart';
 
 import '../../booking/views/trainer_details_view.dart';
 
 class ClassTypesSection extends StatelessWidget {
-  const ClassTypesSection({super.key});
+  const ClassTypesSection({super.key, required this.classTypes});
+
+  final List<HomeClassType> classTypes;
 
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final size = MediaQuery.sizeOf(context);
-    final types = [
-      {'name': context.l10n.classTypeReformer, 'image': 'assets/images/demo images/ic_table.png'},
-      {'name': context.l10n.classTypeCadillac, 'image': 'assets/images/demo images/ic_table.png'},
-      {'name': context.l10n.classTypeFlow, 'image': 'assets/images/demo images/ic_table.png'},
-    ];
-
-    final itemWidth = size.width * 0.45;
-    final itemHeight = itemWidth * 0.65;
+    if (classTypes.isEmpty) {
+      return const SizedBox.shrink();
+    }
 
     return Column(
       children: [
@@ -32,9 +29,10 @@ class ClassTypesSection extends StatelessWidget {
           child: ListView.separated(
             padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
             scrollDirection: Axis.horizontal,
-            itemCount: types.length,
+            itemCount: classTypes.length,
             separatorBuilder: (_, __) => const SizedBox(width: AppSpacing.md),
             itemBuilder: (context, index) {
+              final classType = classTypes[index];
               return SizedBox(
                 width: 140,
                 child: Column(
@@ -42,25 +40,31 @@ class ClassTypesSection extends StatelessWidget {
                   children: [
                     ClipRRect(
                       borderRadius: BorderRadius.circular(AppRadius.md),
-                      child: Image.asset(
-                        types[index]['image']!,
+                      child: Image.network(
+                        classType.imageUrl ?? '',
                         width: 140,
                         height: 105,
-                        // width: itemWidth,
-                        // height: itemHeight,
                         fit: BoxFit.cover,
+                        errorBuilder: (_, __, ___) => Image.asset(
+                          'assets/images/demo images/ic_table.png',
+                          width: 140,
+                          height: 105,
+                          fit: BoxFit.cover,
+                        ),
                       ),
-
                     ),
                     const SizedBox(height: AppSpacing.base),
                     AppText(
-                      types[index]['name']!,
-                      style: (context) => AppTextStyles.heading1(context).copyWith(
-                        fontSize: size.width * 0.035 > 14 ? 14 : size.width * 0.035,
-                        color: isDark
-                            ? AppColors.lightText
-                            : AppColors.darkText,
-                      ),
+                      classType.name ?? '',
+                      style: (context) =>
+                          AppTextStyles.heading1(context).copyWith(
+                            fontSize: size.width * 0.035 > 14
+                                ? 14
+                                : size.width * 0.035,
+                            color: isDark
+                                ? AppColors.lightText
+                                : AppColors.darkText,
+                          ),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -76,21 +80,20 @@ class ClassTypesSection extends StatelessWidget {
 }
 
 class TopTrainersSection extends StatelessWidget {
-  const TopTrainersSection({super.key});
+  const TopTrainersSection({super.key, required this.trainers});
+
+  final List<HomeTrainer> trainers;
 
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final size = MediaQuery.sizeOf(context);
-    final trainers = [
-      {'name': 'Lena Hart', 'type': context.l10n.trainerGroundedFlow, 'image': 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=1976&auto=format&fit=crop'},
-      {'name': 'Lena Hart', 'type': context.l10n.trainerGroundedFlow, 'image': 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=1976&auto=format&fit=crop'},
-      {'name': 'Lena Hart', 'type': context.l10n.trainerGroundedFlow, 'image': 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=1976&auto=format&fit=crop'},
-    ];
+    if (trainers.isEmpty) {
+      return const SizedBox.shrink();
+    }
 
     final itemWidth = size.width * 0.38 > 140 ? 140.0 : size.width * 0.38;
-    final itemHeight =168.0;
-    // itemWidth * 1.3 > 180 ? 180.0 : itemWidth * 1.3;
+    final itemHeight = 168.0;
 
     return Column(
       children: [
@@ -102,45 +105,57 @@ class TopTrainersSection extends StatelessWidget {
             itemCount: trainers.length,
             separatorBuilder: (_, __) => const SizedBox(width: AppSpacing.md),
             itemBuilder: (context, index) {
+              final trainer = trainers[index];
+              final subtitle = trainer.specialties.isEmpty
+                  ? (trainer.avgRating == null ? '' : '★ ${trainer.avgRating}')
+                  : trainer.specialties.join(', ');
               return Container(
                 width: itemWidth,
                 padding: EdgeInsets.all(itemWidth * 0.1),
                 decoration: BoxDecoration(
-                  color: isDark ? AppColors.trainerBlackBackgroundColor: AppColors.seekBarLight,
+                  color: isDark
+                      ? AppColors.trainerBlackBackgroundColor
+                      : AppColors.seekBarLight,
                   borderRadius: BorderRadius.circular(AppRadius.md),
                 ),
                 child: Column(
                   children: [
                     CircleAvatar(
                       radius: itemWidth * 0.22,
-                      backgroundImage: NetworkImage(trainers[index]['image']!),
+                      backgroundColor: isDark
+                          ? AppColors.homeBackground
+                          : AppColors.whiteColor,
+                      backgroundImage: (trainer.imageUrl ?? '').trim().isEmpty
+                          ? null
+                          : NetworkImage(trainer.imageUrl!),
+                      child: (trainer.imageUrl ?? '').trim().isEmpty
+                          ? const Icon(Icons.person)
+                          : null,
                     ),
                     const SizedBox(height: AppSpacing.sm),
                     AppText(
-                      trainers[index]['name']!,
-                      style: (context) => AppTextStyles.heading1(context).copyWith(
-                        fontSize: 16,
-                        height: 1.2,
-                        // fontSize: size.width * 0.035 > 14 ? 14 : size.width * 0.035,
-                        color: isDark
-                            ? AppColors.lightText
-                            : AppColors.darkText,
-                      ),
+                      trainer.displayName ?? '',
+                      style: (context) =>
+                          AppTextStyles.heading1(context).copyWith(
+                            fontSize: 16,
+                            height: 1.2,
+                            color: isDark
+                                ? AppColors.lightText
+                                : AppColors.darkText,
+                          ),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
-                    SizedBox(
-                      height: 2,
-                    ),
+                    SizedBox(height: 2),
                     AppText(
-                      trainers[index]['type']!,
-                      style: (context) => AppTextStyles.captionText(context).copyWith(
-                        fontSize: 12,
-                        // fontSize: size.width * 0.03 > 12 ? 12 : size.width * 0.03,
-                        color: isDark
-                            ? AppColors.languageIconDark
-                            : AppColors.lightGrey,
-                      ),
+                      subtitle,
+                      style: (context) =>
+                          AppTextStyles.captionText(context).copyWith(
+                            fontSize: 12,
+                            color: isDark
+                                ? AppColors.languageIconDark
+                                : AppColors.lightGrey,
+                          ),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -149,19 +164,22 @@ class TopTrainersSection extends StatelessWidget {
                       onTap: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => TrainerDetailsView()),
+                          MaterialPageRoute(
+                            builder: (context) => TrainerDetailsView(),
+                          ),
                         );
                       },
                       child: AppText(
                         context.l10n.viewClasses,
-                        style: (context) => AppTextStyles.captionText(context).copyWith(
-                          color: isDark
-                              ? AppColors.versionColor
-                              : AppColors.languageIcon,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 14
-                          // fontSize: size.width * 0.03 > 14 ? 14 : size.width * 0.03,
-                        ),
+                        style: (context) =>
+                            AppTextStyles.captionText(context).copyWith(
+                              color: isDark
+                                  ? AppColors.versionColor
+                                  : AppColors.languageIcon,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 14,
+                              // fontSize: size.width * 0.03 > 14 ? 14 : size.width * 0.03,
+                            ),
                       ),
                     ),
                   ],

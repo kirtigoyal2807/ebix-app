@@ -29,13 +29,13 @@ class AuthCubit extends Cubit<AuthState> {
     required TokenStorage tokenStorage,
     required AuthLocaleBridge localeBridge,
     AuthState? seed,
-  })  : this._impl(
-          authRepository: authRepository,
-          tokenStorage: tokenStorage,
-          localeBridge: localeBridge,
-          seed: seed ?? AuthState.initial(),
-          startSplash: (seed ?? AuthState.initial()).flow == AuthFlow.splash,
-        );
+  }) : this._impl(
+         authRepository: authRepository,
+         tokenStorage: tokenStorage,
+         localeBridge: localeBridge,
+         seed: seed ?? AuthState.initial(),
+         startSplash: (seed ?? AuthState.initial()).flow == AuthFlow.splash,
+       );
 
   /// Tests and isolated screens: no splash timer, optional [seed] state.
   @visibleForTesting
@@ -45,12 +45,12 @@ class AuthCubit extends Cubit<AuthState> {
     required AuthLocaleBridge localeBridge,
     AuthState? seed,
   }) : this._impl(
-          authRepository: authRepository,
-          tokenStorage: tokenStorage,
-          localeBridge: localeBridge,
-          seed: seed ?? AuthState.initial(),
-          startSplash: false,
-        );
+         authRepository: authRepository,
+         tokenStorage: tokenStorage,
+         localeBridge: localeBridge,
+         seed: seed ?? AuthState.initial(),
+         startSplash: false,
+       );
 
   AuthCubit._impl({
     required AuthRepository authRepository,
@@ -58,15 +58,17 @@ class AuthCubit extends Cubit<AuthState> {
     required AuthLocaleBridge localeBridge,
     required AuthState seed,
     required bool startSplash,
-  })  : _authRepository = authRepository,
-        _tokenStorage = tokenStorage,
-        _localeBridge = localeBridge,
-        super(seed) {
+  }) : _authRepository = authRepository,
+       _tokenStorage = tokenStorage,
+       _localeBridge = localeBridge,
+       super(seed) {
     _localeBridge.languageCode = state.locale.languageCode;
     if (startSplash) {
       _startSplash();
     }
   }
+
+  AuthRepository get authRepository => _authRepository;
 
   // Splash logic
   void _startSplash() {
@@ -154,12 +156,7 @@ class AuthCubit extends Cubit<AuthState> {
   /// Sign-up step 2: store [experience] (`beginner` | `intermediate` | `advanced`) and open goals.
   void continueSignUpExperience(String experience) {
     if (state.flow != AuthFlow.signUp || state.signUpStep != 2) return;
-    emit(
-      state.copyWith(
-        signUpExperience: experience,
-        signUpStep: 3,
-      ),
-    );
+    emit(state.copyWith(signUpExperience: experience, signUpStep: 3));
   }
 
   /// Sign-up step 3: `POST /auth/goal` then advance to branch step on success.
@@ -215,11 +212,7 @@ class AuthCubit extends Cubit<AuthState> {
     if (state.signUpStep > 0) {
       final ns = state.signUpStep - 1;
       if (state.signUpStep == 1 && ns == 0) {
-        emit(
-          state
-              .copyWith(signUpStep: 0)
-              .clearedSignUpPhoneVerification(),
-        );
+        emit(state.copyWith(signUpStep: 0).clearedSignUpPhoneVerification());
         return;
       }
       if (state.signUpStep == 4 && ns == 3) {
@@ -242,10 +235,15 @@ class AuthCubit extends Cubit<AuthState> {
         state.copyWith(
           signUpStep: ns,
           signUpExperience: ns <= 2 ? '' : state.signUpExperience,
-          postLoginGoalUiStatus:
-              ns < 3 ? PostLoginGoalUiStatus.idle : state.postLoginGoalUiStatus,
-          postLoginGoalErrorMessage: ns < 3 ? '' : state.postLoginGoalErrorMessage,
-          postLoginGoalFieldErrors: ns < 3 ? {} : state.postLoginGoalFieldErrors,
+          postLoginGoalUiStatus: ns < 3
+              ? PostLoginGoalUiStatus.idle
+              : state.postLoginGoalUiStatus,
+          postLoginGoalErrorMessage: ns < 3
+              ? ''
+              : state.postLoginGoalErrorMessage,
+          postLoginGoalFieldErrors: ns < 3
+              ? {}
+              : state.postLoginGoalFieldErrors,
         ),
       );
     } else if (state.flow == AuthFlow.signUp) {
@@ -417,10 +415,7 @@ class AuthCubit extends Cubit<AuthState> {
       case ApiSuccess<bool>():
         emit(
           state
-              .copyWith(
-                flow: AuthFlow.authenticated,
-                signUpExperience: '',
-              )
+              .copyWith(flow: AuthFlow.authenticated, signUpExperience: '')
               .clearedForgotPasswordFlow()
               .clearedPostLoginProfile()
               .clearedSignUpBranchUi(),
@@ -440,10 +435,7 @@ class AuthCubit extends Cubit<AuthState> {
   void completeSignUpForTesting() {
     emit(
       state
-          .copyWith(
-            flow: AuthFlow.authenticated,
-            signUpExperience: '',
-          )
+          .copyWith(flow: AuthFlow.authenticated, signUpExperience: '')
           .clearedForgotPasswordFlow()
           .clearedPostLoginProfile()
           .clearedSignUpBranchUi(),
@@ -453,12 +445,7 @@ class AuthCubit extends Cubit<AuthState> {
   // After email login — experience → goals → POST /auth/goal → home
 
   void continuePostLoginExperience(String experience) {
-    emit(
-      state.copyWith(
-        postLoginExperience: experience,
-        postLoginStep: 1,
-      ),
-    );
+    emit(state.copyWith(postLoginExperience: experience, postLoginStep: 1));
   }
 
   Future<void> backPostLoginSetup() async {
@@ -551,9 +538,9 @@ class AuthCubit extends Cubit<AuthState> {
     switch (result) {
       case ApiSuccess<bool>():
         emit(
-          state
-              .clearedPostLoginProfile()
-              .copyWith(flow: AuthFlow.authenticated),
+          state.clearedPostLoginProfile().copyWith(
+            flow: AuthFlow.authenticated,
+          ),
         );
       case ApiFailure<bool>(:final exception):
         emit(
@@ -820,7 +807,9 @@ class AuthCubit extends Cubit<AuthState> {
             registerFieldErrors: {},
             showRegisterOtpSuccess: true,
             signUpStep: advanceOtp ? 1 : state.signUpStep,
-            signUpPendingPhone: advanceOtp ? phone.trim() : state.signUpPendingPhone,
+            signUpPendingPhone: advanceOtp
+                ? phone.trim()
+                : state.signUpPendingPhone,
             signUpPhoneOtpUiStatus: SignUpPhoneOtpUiStatus.idle,
             signUpPhoneOtpErrorMessage: '',
             signUpPhoneOtpFieldErrors: {},
@@ -952,7 +941,10 @@ class AuthCubit extends Cubit<AuthState> {
       ),
     );
 
-    final result = await _authRepository.verifyEmailCode(email: email, code: code);
+    final result = await _authRepository.verifyEmailCode(
+      email: email,
+      code: code,
+    );
 
     switch (result) {
       case ApiSuccess<bool>():
@@ -992,8 +984,10 @@ class AuthCubit extends Cubit<AuthState> {
       ),
     );
 
-    final result =
-        await _authRepository.resetPassword(email: email, password: password);
+    final result = await _authRepository.resetPassword(
+      email: email,
+      password: password,
+    );
 
     switch (result) {
       case ApiSuccess<bool>():

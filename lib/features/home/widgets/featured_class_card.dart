@@ -1,17 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import 'package:pilates_app/config/theme/app_colors.dart';
 import 'package:pilates_app/config/theme/app_radius.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/core/localization/localization_extension.dart';
+import 'package:pilates_app/features/home/data/models/home_response.dart';
 import 'package:pilates_app/widgets/app_text.dart';
 
 import '../../../widgets/app_shadow.dart';
 import '../../booking/views/book_class_confirm_view.dart';
 
 class FeaturedClassCard extends StatelessWidget {
-  const FeaturedClassCard({super.key});
+  const FeaturedClassCard({super.key, required this.featuredClass});
+
+  final HomeFeaturedClass featuredClass;
 
   @override
   Widget build(BuildContext context) {
@@ -52,73 +56,65 @@ class FeaturedClassCard extends StatelessWidget {
             borderRadius: const BorderRadius.vertical(
               top: Radius.circular(AppRadius.lg),
             ),
-            child:
-                // SvgPicture.asset(
-                //   'assets/images/svg/ic_yoga.svg',
-                //   height: imageHeight,
-                //   // width: width * 0.6,
-                //   fit: BoxFit.fill,
-                // ),
-                Image.asset(
-                  "assets/images/demo images/Class Image.png",
-                  height: imageHeight,
-                  // width: width * 0.6,
-                  fit: BoxFit.fill,
+            child: Image.network(
+              featuredClass.image ?? '',
+              height: imageHeight,
+              fit: BoxFit.fill,
+              errorBuilder: (_, __, ___) => Image.asset(
+                'assets/images/demo images/Class Image.png',
+                height: imageHeight,
+                fit: BoxFit.fill,
+              ),
+            ),
+          ),
+          if (featuredClass.inPlan == true)
+            Padding(
+              padding: const EdgeInsets.only(
+                right: AppSpacing.md,
+                left: AppSpacing.md,
+                top: AppSpacing.base,
+              ),
+              child: Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: AppSpacing.sm,
+                  vertical: AppSpacing.xs,
                 ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(
-              right: AppSpacing.md,
-              left: AppSpacing.md,
-              top: AppSpacing.base,
-            ),
-            child: Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: AppSpacing.sm,
-                vertical: AppSpacing.xs,
-              ),
-              margin: const EdgeInsets.only(right: AppSpacing.xs),
-              decoration: BoxDecoration(
-                color: isDark
-                    ? AppColors.successColor.withValues(alpha: 0.36)
-                    : AppColors.featuredTagBackgroundColor,
-                borderRadius: BorderRadius.circular(16),
-                // border: Border.all(
-                //   color: isDark
-                //       ? AppColors.successBorderDark
-                //       : AppColors.featuredTagBackgroundColor,
-                //   width: 1,
-                // ),
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(
-                    Icons.check,
-                    color: isDark
-                        ? AppColors.lightGreyColor
-                        : AppColors.GreyColor,
-                    size: 12,
-                  ),
-                  const SizedBox(width: AppSpacing.xs),
-                  Flexible(
-                    child: AppText(
-                      context.l10n.inYourPlan,
-                      style: (context) =>
-                          AppTextStyles.boldBody(context).copyWith(
-                            fontSize: 12,
-                            color: isDark
-                                ? AppColors.lightGreyColor
-                                : AppColors.GreyColor,
-                          ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
+                margin: const EdgeInsets.only(right: AppSpacing.xs),
+                decoration: BoxDecoration(
+                  color: isDark
+                      ? AppColors.successColor.withValues(alpha: 0.36)
+                      : AppColors.featuredTagBackgroundColor,
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      Icons.check,
+                      color: isDark
+                          ? AppColors.lightGreyColor
+                          : AppColors.GreyColor,
+                      size: 12,
                     ),
-                  ),
-                ],
+                    const SizedBox(width: AppSpacing.xs),
+                    Flexible(
+                      child: AppText(
+                        context.l10n.inYourPlan,
+                        style: (context) =>
+                            AppTextStyles.boldBody(context).copyWith(
+                              fontSize: 12,
+                              color: isDark
+                                  ? AppColors.lightGreyColor
+                                  : AppColors.GreyColor,
+                            ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
           Padding(
             padding: const EdgeInsets.only(
               right: AppSpacing.md,
@@ -129,48 +125,31 @@ class FeaturedClassCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // AppText(
-                //   '${context.l10n.powerPilates} ${context.l10n.withTrainer("Aisha Sherin")}',
-                //   style: (context) => AppTextStyles.boldBody(context).copyWith(
-                //     fontSize: size.width * 0.04 > 16 ? 16 : size.width * 0.04,
-                //     color: isDark ? AppColors.lightText : AppColors.darkText,
-                //   ),
-                // ),
                 RichText(
                   text: TextSpan(
-                    text: context.l10n.powerPilates,
+                    text: featuredClass.className ?? context.l10n.powerPilates,
                     style: AppTextStyles.boldBody(context).copyWith(
                       fontSize: size.width * 0.04 > 16 ? 16 : size.width * 0.04,
                       color: isDark ? AppColors.lightText : AppColors.darkText,
                     ),
                     children: [
-                      TextSpan(
-                        text: " ${context.l10n.withKey} ",
-                        style: AppTextStyles.bodyText(context).copyWith(
-                          fontSize: size.width * 0.04 > 16
-                              ? 16
-                              : size.width * 0.04,
-                          // highlight
+                      if ((featuredClass.trainerName ?? '').trim().isNotEmpty)
+                        TextSpan(
+                          text:
+                              ' ${context.l10n.withKey} ${featuredClass.trainerName}',
+                          style: AppTextStyles.bodyText(context).copyWith(
+                            fontSize: size.width * 0.04 > 16
+                                ? 16
+                                : size.width * 0.04,
+                          ),
                         ),
-                      ),
-                      TextSpan(
-                        text: context.l10n.withTrainer("Aisha Sherin"),
-                        style: AppTextStyles.boldBody(context).copyWith(
-                          fontSize: size.width * 0.04 > 16
-                              ? 16
-                              : size.width * 0.04,
-                          color: isDark
-                              ? AppColors.lightText
-                              : AppColors.darkText,
-                        ),
-                      ),
                     ],
                   ),
                 ),
 
                 const SizedBox(height: AppSpacing.xs),
                 AppText(
-                  '${context.l10n.branchDowntown} • ${context.l10n.today} • ${context.l10n.spotsLeft(3)}',
+                  _buildSubtitle(context),
                   style: (context) =>
                       AppTextStyles.captionText(context).copyWith(
                         fontSize: size.width * 0.03 > 14
@@ -217,5 +196,20 @@ class FeaturedClassCard extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  String _buildSubtitle(BuildContext context) {
+    final values = <String>[];
+    final branch = featuredClass.branchName?.trim();
+    if (branch != null && branch.isNotEmpty) {
+      values.add(branch);
+    }
+    if (featuredClass.startAt != null) {
+      values.add(DateFormat('MMM d, h:mm a').format(featuredClass.startAt!));
+    }
+    if (featuredClass.spotsLeft != null) {
+      values.add(context.l10n.spotsLeft(featuredClass.spotsLeft!));
+    }
+    return values.join(' • ');
   }
 }
