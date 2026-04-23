@@ -11,6 +11,7 @@ import 'package:pilates_app/widgets/app_text.dart';
 
 import '../../../widgets/app_shadow.dart';
 import '../../booking/views/book_class_confirm_view.dart';
+import 'plan_status_badge.dart';
 
 class FeaturedClassCard extends StatelessWidget {
   const FeaturedClassCard({super.key, required this.featuredClass});
@@ -56,65 +57,31 @@ class FeaturedClassCard extends StatelessWidget {
             borderRadius: const BorderRadius.vertical(
               top: Radius.circular(AppRadius.lg),
             ),
-            child: Image.network(
-              featuredClass.image ?? '',
+            child: SizedBox(
+              width: double.infinity,
               height: imageHeight,
-              fit: BoxFit.fill,
-              errorBuilder: (_, __, ___) => Image.asset(
-                'assets/images/demo images/Class Image.png',
+              child: Image.network(
+                featuredClass.image ?? '',
+                width: double.infinity,
                 height: imageHeight,
-                fit: BoxFit.fill,
+                fit: BoxFit.cover,
+                errorBuilder: (dynamic _, dynamic _, dynamic _) => Image.asset(
+                  'assets/images/demo images/Class Image.png',
+                  width: double.infinity,
+                  height: imageHeight,
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
           ),
-          if (featuredClass.inPlan == true)
-            Padding(
-              padding: const EdgeInsets.only(
-                right: AppSpacing.md,
-                left: AppSpacing.md,
-                top: AppSpacing.base,
-              ),
-              child: Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: AppSpacing.sm,
-                  vertical: AppSpacing.xs,
-                ),
-                margin: const EdgeInsets.only(right: AppSpacing.xs),
-                decoration: BoxDecoration(
-                  color: isDark
-                      ? AppColors.successColor.withValues(alpha: 0.36)
-                      : AppColors.featuredTagBackgroundColor,
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(
-                      Icons.check,
-                      color: isDark
-                          ? AppColors.lightGreyColor
-                          : AppColors.GreyColor,
-                      size: 12,
-                    ),
-                    const SizedBox(width: AppSpacing.xs),
-                    Flexible(
-                      child: AppText(
-                        context.l10n.inYourPlan,
-                        style: (context) =>
-                            AppTextStyles.boldBody(context).copyWith(
-                              fontSize: 12,
-                              color: isDark
-                                  ? AppColors.lightGreyColor
-                                  : AppColors.GreyColor,
-                            ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+          Padding(
+            padding: const EdgeInsets.only(
+              right: AppSpacing.md,
+              left: AppSpacing.md,
+              top: AppSpacing.base,
             ),
+            child: PlanStatusBadge(inPlan: featuredClass.inPlan == true),
+          ),
           Padding(
             padding: const EdgeInsets.only(
               right: AppSpacing.md,
@@ -133,16 +100,29 @@ class FeaturedClassCard extends StatelessWidget {
                       color: isDark ? AppColors.lightText : AppColors.darkText,
                     ),
                     children: [
-                      if ((featuredClass.trainerName ?? '').trim().isNotEmpty)
+                      if ((featuredClass.trainerName ?? '')
+                          .trim()
+                          .isNotEmpty) ...[
                         TextSpan(
-                          text:
-                              ' ${context.l10n.withKey} ${featuredClass.trainerName}',
+                          text: ' ${context.l10n.withKey} ',
                           style: AppTextStyles.bodyText(context).copyWith(
                             fontSize: size.width * 0.04 > 16
                                 ? 16
                                 : size.width * 0.04,
                           ),
                         ),
+                        TextSpan(
+                          text: featuredClass.trainerName,
+                          style: AppTextStyles.boldBody(context).copyWith(
+                            fontSize: size.width * 0.04 > 16
+                                ? 16
+                                : size.width * 0.04,
+                            color: isDark
+                                ? AppColors.lightText
+                                : AppColors.darkText,
+                          ),
+                        ),
+                      ],
                     ],
                   ),
                 ),

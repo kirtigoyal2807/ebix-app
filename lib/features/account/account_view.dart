@@ -17,6 +17,30 @@ import '../../core/localization/localization_extension.dart';
 class AccountView extends StatelessWidget {
   const AccountView({super.key});
 
+  Future<void> _confirmAndLogout(BuildContext context) async {
+    final shouldLogout = await showDialog<bool>(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        title: Text(context.l10n.logout),
+        content: Text(context.l10n.logoutConfirmationMessage),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(false),
+            child: Text(context.l10n.cancel),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(true),
+            child: Text(context.l10n.logout),
+          ),
+        ],
+      ),
+    );
+
+    if (shouldLogout == true && context.mounted) {
+      await context.read<AuthCubit>().logout();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,7 +66,7 @@ class AccountView extends StatelessWidget {
               SizedBox(
                 width: MediaQuery.of(context).size.width,
                 child: ElevatedButton(
-                  onPressed: () => context.read<AuthCubit>().logout(),
+                  onPressed: () => _confirmAndLogout(context),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.logOutButton,
                     shape: RoundedRectangleBorder(

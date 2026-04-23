@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:pilates_app/config/theme/app_colors.dart';
 import 'package:pilates_app/config/theme/app_radius.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/core/localization/localization_extension.dart';
-import 'package:pilates_app/features/subscription/purchase_subscription/view/subscription_view.dart';
 import 'package:pilates_app/widgets/app_text.dart';
 
-import '../../my_booking/my_booking_view.dart';
+import '../cubit/home_cubit.dart';
+import '../../account/view/change_home_branch.dart';
 
 class QuickActions extends StatelessWidget {
   const QuickActions({super.key});
@@ -32,7 +33,7 @@ class QuickActions extends StatelessWidget {
           children: [
             GestureDetector(
               onTap: () {
-
+                context.read<HomeCubit>().setTab(1);
               },
               child: _buildActionItem(
                 context,
@@ -46,8 +47,16 @@ class QuickActions extends StatelessWidget {
             ),
             SizedBox(width: gap),
             GestureDetector(
-              onTap: (){
-
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const ChangeHomeBranch(
+                      title: 'Branches',
+                      readOnly: true,
+                    ),
+                  ),
+                );
               },
               child: _buildActionItem(
                 context,
@@ -60,14 +69,19 @@ class QuickActions extends StatelessWidget {
               ),
             ),
             SizedBox(width: gap),
-            _buildActionItem(
-              context,
-              context.l10n.viewSchedule,
-              isDark
-                  ? 'assets/images/svg/ic_view_dark.svg'
-                  : 'assets/images/svg/ic_view_light.svg',
-              itemPadding,
-              itemWidth,
+            GestureDetector(
+              onTap: () {
+                context.read<HomeCubit>().setTab(1);
+              },
+              child: _buildActionItem(
+                context,
+                context.l10n.viewSchedule,
+                isDark
+                    ? 'assets/images/svg/ic_view_dark.svg'
+                    : 'assets/images/svg/ic_view_light.svg',
+                itemPadding,
+                itemWidth,
+              ),
             ),
           ],
         ),
@@ -83,7 +97,6 @@ class QuickActions extends StatelessWidget {
     double width,
   ) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final size = MediaQuery.sizeOf(context);
 
     return Container(
       width: width,

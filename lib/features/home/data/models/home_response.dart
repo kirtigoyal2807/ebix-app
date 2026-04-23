@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+
 class HomeResponse {
   const HomeResponse({
     required this.banners,
@@ -18,6 +20,7 @@ class HomeResponse {
   final List<HomeReceivedGift> receivedGifts;
 
   factory HomeResponse.fromJson(Map<String, dynamic> json) {
+    debugPrint('[HomeResponse.fromJson] progress raw value: ${json['progress']}');
     return HomeResponse(
       banners: _toList(
         json['banners'],
@@ -101,12 +104,30 @@ class HomeProgress {
   final int goalPercent;
 
   factory HomeProgress.fromJson(Map<String, dynamic> json) {
-    return HomeProgress(
-      mtdAttendedClasses: _toIntOrZero(json['mtdAttendedClasses']),
-      mtdAttendedMinutes: _toIntOrZero(json['mtdAttendedMinutes']),
-      monthlyTargetClasses: _toIntOrZero(json['monthlyTargetClasses']),
-      goalPercent: _toIntOrZero(json['goalPercent']),
+    debugPrint('[HomeProgress.fromJson] raw json: $json');
+    final parsed = HomeProgress(
+      mtdAttendedClasses: _toIntOrZero(
+        json['mtdAttendedClasses'] ?? json['mtd_attended_classes'],
+      ),
+      mtdAttendedMinutes: _toIntOrZero(
+        json['mtdAttendedMinutes'] ?? json['mtd_attended_minutes'],
+      ),
+      monthlyTargetClasses: _toIntOrZero(
+        json['monthlyTargetClasses'] ??
+            json['monthly_target_classes'] ??
+            json['targetClasses'] ??
+            json['target_classes'],
+      ),
+      goalPercent: _toIntOrZero(
+        json['goalPercent'] ?? json['goal_percent'],
+      ),
     );
+    debugPrint(
+      '[HomeProgress.fromJson] parsed → classes=${parsed.mtdAttendedClasses} '
+      'minutes=${parsed.mtdAttendedMinutes} target=${parsed.monthlyTargetClasses} '
+      'goal=${parsed.goalPercent}',
+    );
+    return parsed;
   }
 }
 

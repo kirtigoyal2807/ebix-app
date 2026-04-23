@@ -121,9 +121,12 @@
   "classTxt": "Class",
   "totalTime": "Total Time",
   "goal": "Goal",
-  "ofClassesThisMonth": "of {count} classes this month",
+  "ofClassesThisMonth": "{attended} of {count} classes this month",
   "@ofClassesThisMonth": {
     "placeholders": {
+      "attended": {
+        "type": "int"
+      },
       "count": {
         "type": "int"
       }
@@ -390,6 +393,7 @@
   "date": "Date",
   "accountTitle": "Account",
   "logout": "Logout",
+  "logoutConfirmationMessage": "Are you sure you want to log out of your account?",
   "appPreferences": "App Preferences",
   "language": "Language",
   "englishShort": "English (EN)",
@@ -1069,7 +1073,11 @@
   "branchesCouldNotLoad": "Could not load branches. Try again.",
   "noBranchesAvailable": "No branches available.",
   "pleaseSelectBranch": "Please select a branch to continue.",
-  "retry": "Retry"
+  "retry": "Retry",
+  "locationPermissionTitle": "Location Access",
+  "locationPermissionMessage": "Location permission is disabled. Please enable it in app settings so we can suggest the nearest branch.",
+  "openSettings": "Open Settings",
+  "notNow": "Not Now"
 }
 
 

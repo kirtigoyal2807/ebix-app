@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:pilates_app/config/theme/app_colors.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
@@ -24,13 +26,101 @@ class SignUpBranchView extends StatefulWidget {
 }
 
 class _SignUpBranchViewState extends State<SignUpBranchView> {
+  double? _userLat;
+  double? _userLng;
+  bool _awaitingPermission = true;
+
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
-      context.read<AuthCubit>().loadSignUpBranches();
+      _requestLocationAndLoadBranches();
     });
+  }
+
+  Future<void> _requestLocationAndLoadBranches() async {
+    // Every time this screen is opened/refreshed, restart the location flow
+    // so branch distance and sorting always use the latest permission decision.
+    if (mounted) {
+      setState(() {
+        _awaitingPermission = true;
+        _userLat = null;
+        _userLng = null;
+      });
+    }
+
+    // Request location permission. Whether granted or denied, we still load
+    // branches — the permission status is used by the backend to optionally
+    // sort results by proximity.
+    final status = await Permission.locationWhenInUse.request();
+    if (!mounted) return;
+
+    double? lat;
+    double? lng;
+
+    // If permanently denied (user tapped "Don't ask again" or disabled in
+    // system settings), show a dialog prompting them to open app settings.
+    if (status.isPermanentlyDenied) {
+      await _showLocationSettingsDialog();
+      if (!mounted) return;
+      await context.read<AuthCubit>().loadSignUpBranches();
+      if (!mounted) return;
+      setState(() => _awaitingPermission = false);
+      return;
+    }
+
+    // Permission granted — fetch coordinates, store them in state so the
+    // branch list can compute distances, and pass them to the API.
+    if (status.isGranted) {
+      try {
+        final position = await Geolocator.getCurrentPosition(
+          locationSettings: const LocationSettings(
+            accuracy: LocationAccuracy.medium,
+            timeLimit: Duration(seconds: 10),
+          ),
+        );
+        if (!mounted) return;
+        lat = position.latitude;
+        lng = position.longitude;
+        setState(() {
+          _userLat = lat;
+          _userLng = lng;
+        });
+      } catch (_) {
+        // Couldn't get position (timeout, hardware error, etc.) — fall through
+        // and load branches without coordinates.
+        if (!mounted) return;
+      }
+    }
+
+    await context.read<AuthCubit>().loadSignUpBranches(lat: lat, lng: lng);
+    if (!mounted) return;
+    setState(() => _awaitingPermission = false);
+  }
+
+  Future<void> _showLocationSettingsDialog() async {
+    await showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (ctx) => AlertDialog(
+        title: Text(context.l10n.locationPermissionTitle),
+        content: Text(context.l10n.locationPermissionMessage),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(ctx).pop(),
+            child: Text(context.l10n.notNow),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.of(ctx).pop();
+              openAppSettings();
+            },
+            child: Text(context.l10n.openSettings),
+          ),
+        ],
+      ),
+    );
   }
 
   void _onFinish(BuildContext context) {
@@ -65,7 +155,8 @@ class _SignUpBranchViewState extends State<SignUpBranchView> {
       },
       builder: (context, state) {
         final branches = state.signUpBranches;
-        final loading = state.signUpBranchesLoadStatus == SignUpBranchesLoadStatus.loading;
+        final loading = _awaitingPermission ||
+            state.signUpBranchesLoadStatus == SignUpBranchesLoadStatus.loading;
         final failure = state.signUpBranchesLoadStatus == SignUpBranchesLoadStatus.failure;
         final fe = state.signUpHomeBranchFieldErrors;
         final saving = state.signUpHomeBranchStatus == SignUpHomeBranchStatus.loading;
@@ -87,7 +178,7 @@ class _SignUpBranchViewState extends State<SignUpBranchView> {
               children: [
                 Expanded(
                   child: RefreshIndicator(
-                    onRefresh: () => context.read<AuthCubit>().loadSignUpBranches(),
+                    onRefresh: _requestLocationAndLoadBranches,
                     child: SingleChildScrollView(
                       physics: const AlwaysScrollableScrollPhysics(),
                       child: Column(
@@ -151,9 +242,27 @@ class _SignUpBranchViewState extends State<SignUpBranchView> {
                               ],
                             )
                           else if (branches.isEmpty)
-                            AppText(
-                              context.l10n.noBranchesAvailable,
-                              style: AppTextStyles.body,
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                vertical: AppSpacing.xxl,
+                              ),
+                              child: Center(
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                  
+                                    const SizedBox(height: AppSpacing.md),
+                                    AppText(
+                                      context.l10n.noBranchesAvailable,
+                                      style: (context) =>
+                                          AppTextStyles.body(context).copyWith(
+                                        color: Theme.of(context).hintColor,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ],
+                                ),
+                              ),
                             )
                           else ..._branchTiles(
                             context,
@@ -195,7 +304,28 @@ class _SignUpBranchViewState extends State<SignUpBranchView> {
     for (var i = 0; i < branches.length; i++) {
       final b = branches[i];
       final selected = b.id == selectedId;
-      final distance = b.distance.isEmpty ? '-' : b.distance;
+
+      // Compute distance from user's location to branch coordinates.
+      // Priority: calculate locally if we have both positions; otherwise fall
+      // back to the server-provided label; otherwise show '-'.
+      final String distance;
+      if (_userLat != null && _userLng != null && b.lat != null && b.lng != null) {
+        final meters = Geolocator.distanceBetween(
+          _userLat!,
+          _userLng!,
+          b.lat!,
+          b.lng!,
+        );
+        if (meters < 1000) {
+          distance = '${meters.toStringAsFixed(0)} m';
+        } else {
+          final km = meters / 1000;
+          distance = '${km.toStringAsFixed(1)} km';
+        }
+      } else {
+        distance = b.distance.isEmpty ? '-' : b.distance;
+      }
+
       out.add(
         KeyedSubtree(
           key: ValueKey('sign_up_branch_${b.id}'),
@@ -206,6 +336,7 @@ class _SignUpBranchViewState extends State<SignUpBranchView> {
             type: b.typeLabel,
             selected: selected,
             onTap: () => cubit.selectSignUpBranch(b.id),
+            imageUrl: b.imageUrl,
           ),
         ),
       );

@@ -350,8 +350,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get goal => 'الهدف';
 
   @override
-  String ofClassesThisMonth(int count) {
-    return 'من $count حصص هذا الشهر';
+  String ofClassesThisMonth(int attended, int count) {
+    return '$attended من $count حصص هذا الشهر';
   }
 
   @override
@@ -1017,6 +1017,10 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get logout => 'تسجيل الخروج';
+
+  @override
+  String get logoutConfirmationMessage =>
+      'هل أنت متأكد أنك تريد تسجيل الخروج من حسابك؟';
 
   @override
   String get appPreferences => 'تفضيلات التطبيق';
@@ -2692,4 +2696,17 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get retry => 'إعادة المحاولة';
+
+  @override
+  String get locationPermissionTitle => 'الوصول إلى الموقع';
+
+  @override
+  String get locationPermissionMessage =>
+      'إذن الموقع معطّل. يُرجى تفعيله من إعدادات التطبيق حتى نتمكن من اقتراح أقرب فرع إليك.';
+
+  @override
+  String get openSettings => 'فتح الإعدادات';
+
+  @override
+  String get notNow => 'ليس الآن';
 }

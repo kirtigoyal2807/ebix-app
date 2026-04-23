@@ -10,6 +10,7 @@ import 'models/branch.dart';
 import 'models/login_email_result.dart';
 import 'models/pagination_meta.dart';
 import 'models/register_gender.dart';
+import 'models/auth_user.dart';
 
 /// Pilates API — auth endpoints.
 class AuthRepository extends BaseRepository {
@@ -258,6 +259,14 @@ class AuthRepository extends BaseRepository {
     return post<bool>(
       '/auth/logout',
       fromJson: (_) => true,
+    );
+  }
+
+  /// Customer profile — requires JWT (saved after login).
+  Future<ApiResult<AuthUser>> getProfile() {
+    return get<AuthUser>(
+      '/me',
+      fromJson: (json) => AuthUser.fromJson(json as Map<String, dynamic>),
     );
   }
 

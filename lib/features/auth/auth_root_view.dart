@@ -77,6 +77,12 @@ class AuthRootView extends StatelessWidget {
               }
 
             case AuthFlow.authenticated:
+              // Load profile if user is null (app restarted with saved token)
+              if (state.user == null) {
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  context.read<AuthCubit>().loadProfile();
+                });
+              }
               return const HomeView();
           }
         },

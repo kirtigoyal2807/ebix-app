@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:pilates_app/config/theme/app_colors.dart';
 import 'package:pilates_app/config/theme/app_radius.dart';
@@ -6,6 +7,8 @@ import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/core/localization/localization_extension.dart';
 import 'package:pilates_app/widgets/app_text.dart';
+import '../../progress_tracking_flow/progress_tracking_view.dart';
+import '../cubit/home_cubit.dart';
 import '../cubit/home_state.dart';
 
 class ProgressCard extends StatelessWidget {
@@ -13,6 +16,9 @@ class ProgressCard extends StatelessWidget {
   final int classesDone;
   final double totalHours;
   final int goalClasses;
+  /// Server-computed goal percentage. When provided, used directly instead of
+  /// recomputing from classesDone / goalClasses.
+  final int? goalPercent;
 
   const ProgressCard({
     super.key,
@@ -20,6 +26,7 @@ class ProgressCard extends StatelessWidget {
     required this.classesDone,
     required this.totalHours,
     required this.goalClasses,
+    this.goalPercent,
   });
 
   @override
@@ -81,7 +88,9 @@ class ProgressCard extends StatelessWidget {
           ),
           const SizedBox(height: AppSpacing.md),
           ElevatedButton(
-            onPressed: () {},
+            onPressed: () {
+              context.read<HomeCubit>().setTab(1);
+            },
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.splashBackgroundDark,
               foregroundColor: Colors.white,
@@ -105,8 +114,11 @@ class ProgressCard extends StatelessWidget {
   Widget _buildActiveProgress(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final size = MediaQuery.sizeOf(context);
-    final safeGoal = goalClasses <= 0 ? 1 : goalClasses;
-    final progress = (classesDone / safeGoal).clamp(0.0, 1.0);
+    final safeGoal = goalClasses <= 0 ? 0 : goalClasses;
+    // Use server-provided goalPercent when available; fall back to local calc.
+    final progress = goalPercent != null
+        ? (goalPercent! / 100).clamp(0.0, 1.0)
+        : (classesDone / safeGoal).clamp(0.0, 1.0);
 
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
@@ -138,16 +150,23 @@ class ProgressCard extends StatelessWidget {
               Expanded(
                 child: AppText(
                   context.l10n.monthlyProgress,
-                  style: (context) => AppTextStyles.heading1(context).copyWith(
-                    fontSize: 16,
-                    // fontSize: size.width * 0.035 > 16 ? 16 : size.width * 0.035,
-                  ),
+                  style: (context) =>
+                      AppTextStyles.heading1(context).copyWith(fontSize: 16),
                 ),
               ),
-              Icon(
-                Icons.chevron_right,
-                color: isDark ? AppColors.lightGrey : AppColors.darkGreyText,
-                size: 24,
+              GestureDetector(
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => const ProgressTrackingView(),
+                    ),
+                  );
+                },
+                child: Icon(
+                  Icons.chevron_right,
+                  color: isDark ? AppColors.lightGrey : AppColors.darkGreyText,
+                  size: 24,
+                ),
               ),
             ],
           ),
@@ -165,7 +184,7 @@ class ProgressCard extends StatelessWidget {
               Expanded(
                 child: _buildProgressStat(
                   context,
-                  context.l10n.hoursCount(totalHours.toString()),
+                  context.l10n.hoursCount(totalHours.toStringAsFixed(2)),
                   context.l10n.totalTime,
                 ),
               ),
@@ -194,7 +213,7 @@ class ProgressCard extends StatelessWidget {
           ),
           const SizedBox(height: AppSpacing.sm),
           AppText(
-            context.l10n.ofClassesThisMonth(safeGoal),
+            context.l10n.ofClassesThisMonth(classesDone, safeGoal),
             style: (context) =>
                 AppTextStyles.helpAndSupportItemSubLabel(context).copyWith(
                   fontSize: size.width * 0.03 > 14 ? 14 : size.width * 0.03,

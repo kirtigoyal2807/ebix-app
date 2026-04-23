@@ -121,9 +121,12 @@
   "classTxt": "حصص",
   "totalTime": "إجمالي الوقت",
   "goal": "الهدف",
-  "ofClassesThisMonth": "من {count} حصص هذا الشهر",
+  "ofClassesThisMonth": "{attended} من {count} حصص هذا الشهر",
   "@ofClassesThisMonth": {
     "placeholders": {
+      "attended": {
+        "type": "int"
+      },
       "count": {
         "type": "int"
       }
@@ -390,6 +393,7 @@
   "date": "التاريخ",
   "accountTitle": "الحساب",
   "logout": "تسجيل الخروج",
+  "logoutConfirmationMessage": "هل أنت متأكد أنك تريد تسجيل الخروج من حسابك؟",
   "appPreferences": "تفضيلات التطبيق",
   "language": "اللغة",
   "englishShort": "الإنجليزية (EN)",
@@ -1072,7 +1076,11 @@
   "branchesCouldNotLoad": "تعذّر تحميل الفروع. حاول مرة أخرى.",
   "noBranchesAvailable": "لا توجد فروع متاحة.",
   "pleaseSelectBranch": "يُرجى اختيار فرع للمتابعة.",
-  "retry": "إعادة المحاولة"
+  "retry": "إعادة المحاولة",
+  "locationPermissionTitle": "الوصول إلى الموقع",
+  "locationPermissionMessage": "إذن الموقع معطّل. يُرجى تفعيله من إعدادات التطبيق حتى نتمكن من اقتراح أقرب فرع إليك.",
+  "openSettings": "فتح الإعدادات",
+  "notNow": "ليس الآن"
 }
 
 

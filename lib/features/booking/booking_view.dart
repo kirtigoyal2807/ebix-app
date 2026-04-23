@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pilates_app/config/theme/app_colors.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
-import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/core/localization/localization_extension.dart';
+import 'package:pilates_app/features/home/cubit/home_cubit.dart';
+import 'package:pilates_app/features/home/cubit/home_state.dart';
 import 'package:pilates_app/features/booking/views/trainer_view.dart';
-import 'package:pilates_app/widgets/app_text.dart';
 import 'cubit/booking_cubit.dart';
 import 'cubit/booking_state.dart';
 import 'widgets/booking_tabs.dart';
@@ -15,13 +15,24 @@ import 'widgets/booking_subscription_card.dart';
 import 'widgets/booking_class_card.dart';
 
 class BookingView extends StatelessWidget {
-  const BookingView({super.key});
+  const BookingView({super.key, this.initialTab = BookingTab.classes});
+
+  final BookingTab initialTab;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => BookingCubit(),
-      child: const BookingBody(),
+      create: (context) => BookingCubit(initialTab: initialTab),
+      child: BlocListener<HomeCubit, HomeState>(
+        listener: (context, homeState) {
+          if (homeState.currentIndex == 1 &&
+              context.read<BookingCubit>().state.selectedTab !=
+                  homeState.selectedBookingTab) {
+            context.read<BookingCubit>().setTab(homeState.selectedBookingTab);
+          }
+        },
+        child: const BookingBody(),
+      ),
     );
   }
 }
@@ -63,7 +74,12 @@ class _BookingBodyState extends State<BookingBody> {
                       const SizedBox(height: AppSpacing.lg),
                       const BookingSubscriptionCard(),
                       const SizedBox(height: AppSpacing.lg),
-                      Divider(color: isDark ? AppColors.greyText:AppColors.buttonBorder, height: 1),
+                      Divider(
+                        color: isDark
+                            ? AppColors.greyText
+                            : AppColors.buttonBorder,
+                        height: 1,
+                      ),
                       const SizedBox(height: AppSpacing.lg),
                       BookingClassCard(
                         title: 'Power Pilates',

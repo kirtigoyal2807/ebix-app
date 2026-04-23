@@ -7,7 +7,14 @@ import 'package:pilates_app/widgets/app_button.dart';
 import '../../auth/sign_up/widgets/branch_option.dart';
 
 class ChangeHomeBranch extends StatefulWidget {
-  const ChangeHomeBranch({super.key});
+  const ChangeHomeBranch({
+    super.key,
+    this.title,
+    this.readOnly = false,
+  });
+
+  final String? title;
+  final bool readOnly;
 
   @override
   State<ChangeHomeBranch> createState() => _ChangeHomeBranchState();
@@ -18,9 +25,13 @@ class _ChangeHomeBranchState extends State<ChangeHomeBranch> {
 
   @override
   Widget build(BuildContext context) {
+    final screenTitle = widget.title?.isNotEmpty == true
+        ? widget.title!
+        : context.l10n.changeHomeBranch;
+
     return Scaffold(
       appBar: AppAppBar(
-        title: context.l10n.changeHomeBranch,
+        title: screenTitle,
         onBack: () => Navigator.of(context).pop(),
         isMoreMenu: false,
       ),
@@ -42,9 +53,9 @@ class _ChangeHomeBranchState extends State<ChangeHomeBranch> {
                       city: 'Al Madinah Al Munawarah',
                       distance: '5 km away',
                       type: 'Premium',
-                      selected: _selectedIndex == 0,
+                      selected: !widget.readOnly && _selectedIndex == 0,
                       isOnBoarding: false,
-                      onTap: () => setState(() => _selectedIndex = 0),
+                      onTap: widget.readOnly ? () {} : () => setState(() => _selectedIndex = 0),
                     ),
                     SizedBox(
                       height: AppSpacing.base,
@@ -55,8 +66,8 @@ class _ChangeHomeBranchState extends State<ChangeHomeBranch> {
                       distance: '5 km away',
                       type: 'Premium',
                       isOnBoarding: false,
-                      selected: _selectedIndex == 1,
-                      onTap: () => setState(() => _selectedIndex = 1),
+                      selected: !widget.readOnly && _selectedIndex == 1,
+                      onTap: widget.readOnly ? () {} : () => setState(() => _selectedIndex = 1),
                     ),
                     SizedBox(
                       height: AppSpacing.base,
@@ -67,8 +78,8 @@ class _ChangeHomeBranchState extends State<ChangeHomeBranch> {
                       distance: '5 km away',
                       type: 'Premium',
                       isOnBoarding: false,
-                      selected: _selectedIndex == 2,
-                      onTap: () => setState(() => _selectedIndex = 2),
+                      selected: !widget.readOnly && _selectedIndex == 2,
+                      onTap: widget.readOnly ? () {} : () => setState(() => _selectedIndex = 2),
                     ),
                 
                 
@@ -78,9 +89,12 @@ class _ChangeHomeBranchState extends State<ChangeHomeBranch> {
                 ),
               ),
             ),
-            AppButton(label: context.l10n.updateHomeBranch,variant: AppButtonVariant.primary,onPressed: () {
-
-            },)
+            if (!widget.readOnly)
+              AppButton(
+                label: context.l10n.updateHomeBranch,
+                variant: AppButtonVariant.primary,
+                onPressed: () {},
+              )
           ],
         ),
       ),

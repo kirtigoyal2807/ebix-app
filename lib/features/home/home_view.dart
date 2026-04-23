@@ -11,6 +11,7 @@ import '../account/account_view.dart';
 import '../auth/cubit/auth_cubit.dart';
 import '../auth/cubit/auth_state.dart';
 import '../explore/explore_view.dart';
+import '../explore/view/referral_program_view.dart';
 import 'cubit/home_cubit.dart';
 import 'cubit/home_state.dart';
 import 'data/models/home_response.dart';
@@ -24,6 +25,7 @@ import 'widgets/featured_class_card.dart';
 import 'widgets/horizontal_list_section.dart';
 import 'widgets/received_gift_card.dart';
 
+import '../booking/cubit/booking_state.dart';
 import '../booking/booking_view.dart';
 
 class HomeView extends StatelessWidget {
@@ -48,7 +50,7 @@ class HomeView extends StatelessWidget {
               index: state.currentIndex,
               children: [
                 const HomeContentView(),
-                const BookingView(),
+                BookingView(initialTab: state.selectedBookingTab),
                 const ExploreView(),
                 const AccountView(),
               ],
@@ -225,9 +227,13 @@ class HomeContentView extends StatelessWidget {
         final monthlyTarget = progress?.monthlyTargetClasses ?? 0;
         final goalClasses = monthlyTarget <= 0 ? 1 : monthlyTarget;
         final totalHours = attendedMinutes / 60;
-        final progressStatus = (attendedClasses == 0 && attendedMinutes == 0)
-            ? HomeUserStatus.empty
-            : HomeUserStatus.existing;
+        // Show the active progress card whenever the API returns a progress
+        // object — even if the user hasn't attended any classes yet this month.
+        // Only fall back to the empty/onboarding card when there is no
+        // progress object at all (i.e. the user has never had a membership).
+        final progressStatus = (progress != null && progress.monthlyTargetClasses > 0)
+            ? HomeUserStatus.existing
+            : HomeUserStatus.empty;
 
         return Column(
           children: [
@@ -295,6 +301,7 @@ class HomeContentView extends StatelessWidget {
                         classesDone: attendedClasses,
                         totalHours: totalHours,
                         goalClasses: goalClasses,
+                        goalPercent: progress.goalPercent,
                       ),
                     ],
                     if (featuredClass != null) ...[
@@ -315,6 +322,7 @@ class HomeContentView extends StatelessWidget {
                         context.l10n.classTypes,
                         isDark,
                         size,
+                        onTap: () => context.read<HomeCubit>().setTab(1),
                       ),
                       const SizedBox(height: AppSpacing.md),
                       ClassTypesSection(classTypes: classTypes),
@@ -326,6 +334,10 @@ class HomeContentView extends StatelessWidget {
                         context.l10n.topTrainers,
                         isDark,
                         size,
+                        onTap: () => context.read<HomeCubit>().setTab(
+                          1,
+                          bookingTab: BookingTab.trainers,
+                        ),
                       ),
                       const SizedBox(height: AppSpacing.md),
                       TopTrainersSection(trainers: topTrainers),
@@ -365,8 +377,9 @@ class HomeContentView extends StatelessWidget {
     BuildContext context,
     String title,
     bool isDark,
-    Size size,
-  ) {
+    Size size, {
+    required VoidCallback onTap,
+  }) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
       child: Row(
@@ -383,19 +396,22 @@ class HomeContentView extends StatelessWidget {
               ),
             ),
           ),
-          AppText(
-            context.l10n.seeAll,
-            style: (context) =>
-                AppTextStyles.captionText(
-                  context,
-                  fontWeight: FontWeight.w500,
-                ).copyWith(
-                  color: isDark
-                      ? AppColors.languageTextDark
-                      : AppColors.languageIcon,
-                  fontSize: 14,
-                  height: 1.2,
-                ),
+          GestureDetector(
+            onTap: onTap,
+            child: AppText(
+              context.l10n.seeAll,
+              style: (context) =>
+                  AppTextStyles.captionText(
+                    context,
+                    fontWeight: FontWeight.w500,
+                  ).copyWith(
+                    color: isDark
+                        ? AppColors.languageTextDark
+                        : AppColors.languageIcon,
+                    fontSize: 14,
+                    height: 1.2,
+                  ),
+            ),
           ),
         ],
       ),
@@ -410,12 +426,17 @@ class HomeContentView extends StatelessWidget {
     final userId = authState.user?.id ?? '';
     final payload = banner.actionPayload ?? const <String, dynamic>{};
 
+    if (actionType == 'screen') {
+      _handleBannerScreenAction(context, payload);
+      return;
+    }
+
     String? rawTarget;
-    if (actionType == 'externalurl') {
+    if (actionType == 'deeplink') {
+      rawTarget = payload['url']?.toString();
+    } else if (actionType == 'externalurl') {
       rawTarget =
           payload['externalUrl']?.toString() ?? payload['url']?.toString();
-    } else if (actionType == 'deeplink') {
-      rawTarget = payload['url']?.toString();
     } else {
       return;
     }
@@ -434,5 +455,33 @@ class HomeContentView extends StatelessWidget {
         ? LaunchMode.externalApplication
         : LaunchMode.platformDefault;
     await launchUrl(uri, mode: mode);
+  }
+
+  void _handleBannerScreenAction(
+    BuildContext context,
+    Map<String, dynamic> payload,
+  ) {
+    final screen = (payload['screen']?.toString() ?? '').trim().toLowerCase();
+    if (screen.isEmpty) {
+      return;
+    }
+
+    switch (screen) {
+      case 'classes':
+      case 'classcategories':
+        context.read<HomeCubit>().setTab(1, bookingTab: BookingTab.classes);
+        break;
+      case 'trainers':
+        context.read<HomeCubit>().setTab(1, bookingTab: BookingTab.trainers);
+        break;
+      case 'referral':
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (_) => const ReferralProgramView()),
+        );
+        break;
+      default:
+        break;
+    }
   }
 }

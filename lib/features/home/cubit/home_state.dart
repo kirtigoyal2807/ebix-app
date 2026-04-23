@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:pilates_app/features/booking/cubit/booking_state.dart';
 
 import '../data/models/home_response.dart';
 
@@ -11,12 +12,14 @@ class HomeState extends Equatable {
   final HomeLoadStatus loadStatus;
   final String errorMessage;
   final HomeResponse? data;
+  final BookingTab selectedBookingTab;
 
   const HomeState({
     required this.currentIndex,
     required this.loadStatus,
     required this.errorMessage,
     required this.data,
+    required this.selectedBookingTab,
   });
 
   factory HomeState.initial() {
@@ -25,6 +28,7 @@ class HomeState extends Equatable {
       loadStatus: HomeLoadStatus.initial,
       errorMessage: '',
       data: null,
+      selectedBookingTab: BookingTab.classes,
     );
   }
 
@@ -33,6 +37,7 @@ class HomeState extends Equatable {
     HomeLoadStatus? loadStatus,
     String? errorMessage,
     HomeResponse? data,
+    BookingTab? selectedBookingTab,
     bool clearData = false,
   }) {
     return HomeState(
@@ -40,9 +45,16 @@ class HomeState extends Equatable {
       loadStatus: loadStatus ?? this.loadStatus,
       errorMessage: errorMessage ?? this.errorMessage,
       data: clearData ? null : (data ?? this.data),
+      selectedBookingTab: selectedBookingTab ?? this.selectedBookingTab,
     );
   }
 
   @override
-  List<Object?> get props => [currentIndex, loadStatus, errorMessage, data];
+  List<Object?> get props => [
+    currentIndex,
+    loadStatus,
+    errorMessage,
+    data,
+    selectedBookingTab,
+  ];
 }

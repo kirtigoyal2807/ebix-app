@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pilates_app/core/network/api_result.dart';
@@ -11,6 +10,7 @@ import 'package:pilates_app/features/auth/data/auth_repository.dart';
 import 'package:pilates_app/features/auth/data/models/branches_list_result.dart';
 import 'package:pilates_app/features/auth/data/models/login_email_result.dart';
 import 'package:pilates_app/features/auth/data/models/register_gender.dart';
+import 'package:pilates_app/features/auth/data/models/auth_user.dart';
 
 import 'auth_flow.dart';
 import 'auth_state.dart';
@@ -61,7 +61,7 @@ class AuthCubit extends Cubit<AuthState> {
   }) : _authRepository = authRepository,
        _tokenStorage = tokenStorage,
        _localeBridge = localeBridge,
-       super(seed) {
+       super(seed.copyWith(user: tokenStorage.readUser())) {
     _localeBridge.languageCode = state.locale.languageCode;
     if (startSplash) {
       _startSplash();
@@ -292,6 +292,7 @@ class AuthCubit extends Cubit<AuthState> {
     switch (result) {
       case ApiSuccess<LoginEmailResult>(:final data):
         await _tokenStorage.saveToken(data.token);
+        await _tokenStorage.saveUser(data.user);
         emit(
           state.copyWith(
             signUpStep: 2,
@@ -353,7 +354,7 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   /// `GET /branches` when sign-up is on the branch step (loads once per visit).
-  Future<void> loadSignUpBranches() async {
+  Future<void> loadSignUpBranches({double? lat, double? lng}) async {
     if (state.flow != AuthFlow.signUp || state.signUpStep != 4) {
       return;
     }
@@ -364,8 +365,15 @@ class AuthCubit extends Cubit<AuthState> {
       ),
     );
 
+    final queryParameters = <String, dynamic>{
+      'page': 1,
+      'per_page': 50,
+      if (lat != null) 'lat': lat,
+      if (lng != null) 'lng': lng,
+    };
+
     final result = await _authRepository.listBranches(
-      queryParameters: const {'page': 1, 'per_page': 50},
+      queryParameters: queryParameters,
     );
 
     switch (result) {
@@ -468,6 +476,7 @@ class AuthCubit extends Cubit<AuthState> {
       _logoutInFlight = false;
     }
     await _tokenStorage.clearToken();
+    await _tokenStorage.clearUser();
     emit(
       state
           .copyWith(
@@ -492,6 +501,7 @@ class AuthCubit extends Cubit<AuthState> {
 
   Future<void> cancelPostLoginSetup() async {
     await _tokenStorage.clearToken();
+    await _tokenStorage.clearUser();
     emit(
       state
           .copyWith(
@@ -579,6 +589,7 @@ class AuthCubit extends Cubit<AuthState> {
     switch (result) {
       case ApiSuccess<LoginEmailResult>(:final data):
         await _tokenStorage.saveToken(data.token);
+        await _tokenStorage.saveUser(data.user);
         emit(
           state
               .copyWith(
@@ -689,6 +700,7 @@ class AuthCubit extends Cubit<AuthState> {
     switch (result) {
       case ApiSuccess<LoginEmailResult>(:final data):
         await _tokenStorage.saveToken(data.token);
+        await _tokenStorage.saveUser(data.user);
         emit(
           state
               .copyWith(
@@ -1001,6 +1013,18 @@ class AuthCubit extends Cubit<AuthState> {
             showForgotPasswordOtp: false,
           ),
         );
+    }
+  }
+
+  Future<void> loadProfile() async {
+    final result = await _authRepository.getProfile();
+    switch (result) {
+      case ApiSuccess<AuthUser>(:final data):
+        emit(state.copyWith(user: data));
+      case ApiFailure<AuthUser>(:final exception):
+        // Profile load failed - user remains null
+        // This is not a critical error, user can continue without profile data
+        break;
     }
   }
 

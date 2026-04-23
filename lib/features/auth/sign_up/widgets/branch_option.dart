@@ -6,7 +6,6 @@ import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/widgets/app_text.dart';
 
-import '../../../../core/localization/localization_extension.dart';
 import '../../../../widgets/app_shadow.dart';
 
 class BranchOption extends StatelessWidget {
@@ -17,6 +16,7 @@ class BranchOption extends StatelessWidget {
   final bool selected;
   final VoidCallback onTap;
   final bool isOnBoarding;
+  final String? imageUrl;
 
   const BranchOption({
     super.key,
@@ -27,12 +27,16 @@ class BranchOption extends StatelessWidget {
     required this.selected,
     required this.onTap,
     this.isOnBoarding = true,
+    this.imageUrl,
   });
 
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final theme = Theme.of(context);
+    final normalizedDistance = distance.trim();
+    final hasDistance =
+        normalizedDistance.isNotEmpty && normalizedDistance != '-';
     final borderColor = selected
         ? isDark
               ? AppColors.greyText
@@ -102,12 +106,35 @@ class BranchOption extends StatelessWidget {
                 topLeft: Radius.circular(AppRadius.md),
                 topRight: Radius.circular(AppRadius.md),
               ),
-              child: Image.asset(
-                "assets/images/png/ic_branch.png",
-                fit: BoxFit.fill,
-                width: MediaQuery.of(context).size.width,
-                height: 127,
-              ),
+              child: imageUrl != null && imageUrl!.isNotEmpty
+                  ? Image.network(
+                      imageUrl!,
+                      fit: BoxFit.cover,
+                      width: MediaQuery.of(context).size.width,
+                      height: 127,
+                      errorBuilder: (context, e, stack) => Image.asset(
+                        "assets/images/png/ic_branch.png",
+                        fit: BoxFit.fill,
+                        width: MediaQuery.of(context).size.width,
+                        height: 127,
+                      ),
+                      loadingBuilder: (_, child, loadingProgress) {
+                        if (loadingProgress == null) return child;
+                        return SizedBox(
+                          width: MediaQuery.of(context).size.width,
+                          height: 127,
+                          child: const Center(
+                            child: CircularProgressIndicator(strokeWidth: 2),
+                          ),
+                        );
+                      },
+                    )
+                  : Image.asset(
+                      "assets/images/png/ic_branch.png",
+                      fit: BoxFit.fill,
+                      width: MediaQuery.of(context).size.width,
+                      height: 127,
+                    ),
             ),
 
             /// TOP ROW: TITLE + CHIP
@@ -183,62 +210,23 @@ class BranchOption extends StatelessWidget {
                   /// DISTANCE
                   Row(
                     children: [
-                      Icon(
-                        Icons.location_on_outlined,
-                        size: 16,
-                        color: theme.hintColor,
-                      ),
-                      const SizedBox(width: 4),
-                      AppText(
-                        distance,
-                        style: (context) => AppTextStyles.bodyTextSmall(
-                          context,
-                        ).copyWith(fontSize: 12, height: 1.4),
-                      ),
-                      Spacer(),
-
-                      isOnBoarding
-                          ? _BranchTypeChip(type: type)
-                          : Container(
-                              padding: EdgeInsets.symmetric(
-                                horizontal: AppSpacing.xi,
-                                vertical: 2,
-                              ),
-                              decoration: BoxDecoration(
-                                color: isDark
-                                    ? AppColors.successColor.withValues(
-                                        alpha: 0.36,
-                                      )
-                                    : AppColors.featuredTagBackgroundColor,
-                                borderRadius: BorderRadius.circular(
-                                  AppRadius.base,
-                                ),
-                              ),
-                              child: Row(
-                                children: [
-                                  Icon(
-                                    Icons.done,
-                                    color: isDark
-                                        ? AppColors.successBorderDark
-                                        : AppColors.GreyColor,
-                                    size: 11,
-                                  ),
-                                  SizedBox(width: 5),
-                                  AppText(
-                                    context.l10n.branchTitle,
-                                    style: (context) =>
-                                        AppTextStyles.splashVersion(
-                                          context,
-                                        ).copyWith(
-                                          color: isDark
-                                              ? AppColors.successBorderDark
-                                              : AppColors.GreyColor,
-                                          height: 1.8,
-                                        ),
-                                  ),
-                                ],
-                              ),
-                            ),
+                      if (hasDistance) ...[
+                        Icon(
+                          Icons.location_on_outlined,
+                          size: 16,
+                          color: theme.hintColor,
+                        ),
+                        const SizedBox(width: 4),
+                        AppText(
+                          normalizedDistance,
+                          style: (context) => AppTextStyles.bodyTextSmall(
+                            context,
+                          ).copyWith(fontSize: 12, height: 1.4),
+                        ),
+                        const Spacer(),
+                      ] else
+                        const Spacer(),
+                      _BranchTypeChip(type: type),
                     ],
                   ),
                 ],
@@ -259,7 +247,6 @@ class _BranchTypeChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Container(

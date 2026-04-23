@@ -1,5 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../features/auth/data/models/auth_user.dart';
 
 /// Persists JWT for [DioClient] `accessToken` and session use.
 class TokenStorage {
@@ -8,6 +12,7 @@ class TokenStorage {
   final SharedPreferences _prefs;
 
   static const _kAccessToken = 'auth_access_token';
+  static const _kUserData = 'auth_user_data';
 
   String? readToken() => _prefs.getString(_kAccessToken);
 
@@ -19,4 +24,32 @@ class TokenStorage {
   }
 
   Future<void> clearToken() => _prefs.remove(_kAccessToken);
+
+  AuthUser? readUser() {
+    final userJson = _prefs.getString(_kUserData);
+    if (userJson != null) {
+      try {
+        final json = jsonDecode(userJson) as Map<String, dynamic>;
+        return AuthUser.fromJson(json);
+      } catch (e) {
+        // Invalid stored user data
+        clearUser();
+      }
+    }
+    return null;
+  }
+
+  Future<void> saveUser(AuthUser user) async {
+    final userJson = jsonEncode({
+      'id': user.id,
+      'firstName': user.firstName,
+      'lastName': user.lastName,
+      'name': user.name,
+      'email': user.email,
+      'phone': user.phone,
+    });
+    await _prefs.setString(_kUserData, userJson);
+  }
+
+  Future<void> clearUser() => _prefs.remove(_kUserData);
 }

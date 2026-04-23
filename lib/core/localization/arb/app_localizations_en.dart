@@ -355,8 +355,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get goal => 'Goal';
 
   @override
-  String ofClassesThisMonth(int count) {
-    return 'of $count classes this month';
+  String ofClassesThisMonth(int attended, int count) {
+    return '$attended of $count classes this month';
   }
 
   @override
@@ -1026,6 +1026,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get logout => 'Logout';
+
+  @override
+  String get logoutConfirmationMessage =>
+      'Are you sure you want to log out of your account?';
 
   @override
   String get appPreferences => 'App Preferences';
@@ -2709,4 +2713,17 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get retry => 'Retry';
+
+  @override
+  String get locationPermissionTitle => 'Location Access';
+
+  @override
+  String get locationPermissionMessage =>
+      'Location permission is disabled. Please enable it in app settings so we can suggest the nearest branch.';
+
+  @override
+  String get openSettings => 'Open Settings';
+
+  @override
+  String get notNow => 'Not Now';
 }

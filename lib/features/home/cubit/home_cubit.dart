@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pilates_app/core/network/api_result.dart';
+import 'package:pilates_app/features/booking/cubit/booking_state.dart';
 
 import '../data/home_repository.dart';
 import '../data/models/home_response.dart';
@@ -12,8 +13,15 @@ class HomeCubit extends Cubit<HomeState> {
 
   final HomeRepository _homeRepository;
 
-  void setTab(int index) {
-    emit(state.copyWith(currentIndex: index));
+  void setTab(int index, {BookingTab? bookingTab}) {
+    emit(
+      state.copyWith(
+        currentIndex: index,
+        selectedBookingTab:
+            bookingTab ??
+            (index == 1 ? BookingTab.classes : state.selectedBookingTab),
+      ),
+    );
   }
 
   Future<void> loadHome() async {
