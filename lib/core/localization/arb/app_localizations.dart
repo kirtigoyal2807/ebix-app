@@ -1376,6 +1376,12 @@ abstract class AppLocalizations {
   /// **'Mat provided at studio'**
   String get itemMat;
 
+  /// No description provided for @noReviewsYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No reviews yet'**
+  String get noReviewsYet;
+
   /// No description provided for @basedOnReviews.
   ///
   /// In en, this message translates to:
@@ -1465,6 +1471,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Check your upcoming bookings or\nbrowse available classes'**
   String get noClassesDescription;
+
+  /// No description provided for @noUpcomingClasses.
+  ///
+  /// In en, this message translates to:
+  /// **'No upcoming classes'**
+  String get noUpcomingClasses;
+
+  /// No description provided for @noCurrentClasses.
+  ///
+  /// In en, this message translates to:
+  /// **'No current classes'**
+  String get noCurrentClasses;
+
+  /// No description provided for @noPastClasses.
+  ///
+  /// In en, this message translates to:
+  /// **'No past classes'**
+  String get noPastClasses;
+
+  /// No description provided for @noCancelledClasses.
+  ///
+  /// In en, this message translates to:
+  /// **'No cancelled classes'**
+  String get noCancelledClasses;
+
+  /// No description provided for @noUpcomingClassesDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Check your plan or browse available classes to book one.'**
+  String get noUpcomingClassesDescription;
+
+  /// No description provided for @noCurrentClassesDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'You have no class in progress at the moment.'**
+  String get noCurrentClassesDescription;
+
+  /// No description provided for @noPastClassesDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Classes you have completed will appear here.'**
+  String get noPastClassesDescription;
+
+  /// No description provided for @noCancelledClassesDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'You have no cancelled class bookings here.'**
+  String get noCancelledClassesDescription;
 
   /// No description provided for @confirmed.
   ///
@@ -2461,6 +2515,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Download'**
   String get download;
+
+  /// No description provided for @invoicePdfNotAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'No invoice PDF is available for this item.'**
+  String get invoicePdfNotAvailable;
 
   /// No description provided for @all.
   ///
@@ -4885,6 +4945,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Search trainers...'**
   String get searchTrainers;
+
+  /// No description provided for @noTrainersTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No trainers found'**
+  String get noTrainersTitle;
+
+  /// No description provided for @noTrainersFilteredDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Try a different search or change the filter above.'**
+  String get noTrainersFilteredDescription;
+
+  /// No description provided for @noTrainersDefaultDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'No trainers to show right now. Pull to refresh, or check back later.'**
+  String get noTrainersDefaultDescription;
 
   /// No description provided for @allTrainers.
   ///

@@ -14,6 +14,9 @@ import 'features/auth/cubit/auth_cubit.dart';
 import 'features/auth/cubit/auth_state.dart';
 import 'features/auth/data/auth_repository.dart';
 import 'features/booking/data/classes_repository.dart';
+import 'features/booking/data/reviews_repository.dart';
+import 'features/booking/data/trainers_repository.dart';
+import 'features/invoice_history/data/invoices_repository.dart';
 import 'features/loyalty/data/loyalty_repository.dart';
 import 'features/my_booking/data/my_bookings_repository.dart';
 import 'features/progress_tracking_flow/data/progress_repository.dart';
@@ -33,16 +36,25 @@ Future<void> main() async {
   runApp(
     RepositoryProvider<MyBookingsRepository>(
       create: (_) => MyBookingsRepository(dio),
-      child: RepositoryProvider<LoyaltyRepository>(
-        create: (_) => LoyaltyRepository(dio),
-        child: RepositoryProvider<ClassesRepository>(
-          create: (_) => ClassesRepository(dio),
-          child: RepositoryProvider<ProgressRepository>(
-            create: (_) => ProgressRepository(dio),
-            child: PilatesApp(
-              authRepository: authRepository,
-              tokenStorage: tokenStorage,
-              localeBridge: localeBridge,
+      child: RepositoryProvider<TrainersRepository>(
+        create: (_) => TrainersRepository(dio),
+        child: RepositoryProvider<ReviewsRepository>(
+          create: (_) => ReviewsRepository(dio),
+          child: RepositoryProvider<LoyaltyRepository>(
+            create: (_) => LoyaltyRepository(dio),
+            child: RepositoryProvider<InvoicesRepository>(
+              create: (_) => InvoicesRepository(dio),
+              child: RepositoryProvider<ClassesRepository>(
+                create: (_) => ClassesRepository(dio),
+                child: RepositoryProvider<ProgressRepository>(
+                  create: (_) => ProgressRepository(dio),
+                  child: PilatesApp(
+                    authRepository: authRepository,
+                    tokenStorage: tokenStorage,
+                    localeBridge: localeBridge,
+                  ),
+                ),
+              ),
             ),
           ),
         ),

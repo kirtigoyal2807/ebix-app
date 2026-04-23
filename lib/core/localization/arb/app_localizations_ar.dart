@@ -679,6 +679,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get itemMat => 'سجادة متوفرة في الاستوديو';
 
   @override
+  String get noReviewsYet => 'لا توجد مراجعات بعد';
+
+  @override
   String basedOnReviews(int count) {
     return 'بناءً على $count مراجعة';
   }
@@ -727,6 +730,33 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get noClassesDescription =>
       'تحقق من حجوزاتك القادمة\nأو تصفح الحصص المتاحة';
+
+  @override
+  String get noUpcomingClasses => 'لا توجد حصص قادمة';
+
+  @override
+  String get noCurrentClasses => 'لا يوجد حصص حالياً';
+
+  @override
+  String get noPastClasses => 'لا توجد حصص سابقة';
+
+  @override
+  String get noCancelledClasses => 'لا توجد حصص ملغاة';
+
+  @override
+  String get noUpcomingClassesDescription =>
+      'تحقق من خطتك أو تصفح الحصص المتاحة لحجز حصة.';
+
+  @override
+  String get noCurrentClassesDescription =>
+      'لا يوجد لديك حصة جارية في الوقت الحالي.';
+
+  @override
+  String get noPastClassesDescription => 'ستظهر هنا الحصص التي أتممتها.';
+
+  @override
+  String get noCancelledClassesDescription =>
+      'لا يوجد لديك حجوزات ملغاة لعرضها هنا.';
 
   @override
   String get confirmed => 'مؤكد';
@@ -1255,6 +1285,10 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get download => 'تحميل';
+
+  @override
+  String get invoicePdfNotAvailable =>
+      'لا يوجد رابط لتنزيل فاتورة PDF لهذا العنصر.';
 
   @override
   String get all => 'الكل';
@@ -2534,6 +2568,17 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get searchTrainers => 'ابحث عن المدربين...';
+
+  @override
+  String get noTrainersTitle => 'لا يوجد مدربون';
+
+  @override
+  String get noTrainersFilteredDescription =>
+      'جرّب بحثاً آخر أو غيّر الفلتر أعلاه.';
+
+  @override
+  String get noTrainersDefaultDescription =>
+      'لا يوجد مدربون لعرضهم حالياً. اسحب للتحديث أو عُد لاحقاً.';
 
   @override
   String get allTrainers => 'جميع المدربين';

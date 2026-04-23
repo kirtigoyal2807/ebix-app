@@ -89,8 +89,10 @@ class TopTrainersSection extends StatelessWidget {
     ];
 
     final itemWidth = size.width * 0.38 > 140 ? 140.0 : size.width * 0.38;
-    final itemHeight =168.0;
-    // itemWidth * 1.3 > 180 ? 180.0 : itemWidth * 1.3;
+    final verticalPadding = (itemWidth * 0.08).clamp(8.0, 14.0);
+    final avatarRadius = (itemWidth * 0.20).clamp(22.0, 28.0);
+    // Tall enough for avatar + 2 text lines + link without vertical overflow.
+    final itemHeight = (avatarRadius * 2 + verticalPadding * 2 + 120).clamp(188.0, 230.0);
 
     return Column(
       children: [
@@ -104,15 +106,20 @@ class TopTrainersSection extends StatelessWidget {
             itemBuilder: (context, index) {
               return Container(
                 width: itemWidth,
-                padding: EdgeInsets.all(itemWidth * 0.1),
+                padding: EdgeInsets.symmetric(
+                  horizontal: itemWidth * 0.08,
+                  vertical: verticalPadding,
+                ),
                 decoration: BoxDecoration(
                   color: isDark ? AppColors.trainerBlackBackgroundColor: AppColors.seekBarLight,
                   borderRadius: BorderRadius.circular(AppRadius.md),
                 ),
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.max,
                   children: [
                     CircleAvatar(
-                      radius: itemWidth * 0.22,
+                      radius: avatarRadius,
                       backgroundImage: NetworkImage(trainers[index]['image']!),
                     ),
                     const SizedBox(height: AppSpacing.sm),
@@ -121,7 +128,6 @@ class TopTrainersSection extends StatelessWidget {
                       style: (context) => AppTextStyles.heading1(context).copyWith(
                         fontSize: 16,
                         height: 1.2,
-                        // fontSize: size.width * 0.035 > 14 ? 14 : size.width * 0.035,
                         color: isDark
                             ? AppColors.lightText
                             : AppColors.darkText,
@@ -129,22 +135,19 @@ class TopTrainersSection extends StatelessWidget {
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
-                    SizedBox(
-                      height: 2,
-                    ),
+                    const SizedBox(height: 2),
                     AppText(
                       trainers[index]['type']!,
                       style: (context) => AppTextStyles.captionText(context).copyWith(
                         fontSize: 12,
-                        // fontSize: size.width * 0.03 > 12 ? 12 : size.width * 0.03,
                         color: isDark
                             ? AppColors.languageIconDark
                             : AppColors.lightGrey,
                       ),
-                      maxLines: 1,
+                      maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
-                    const SizedBox(height: AppSpacing.base),
+                    const Spacer(),
                     GestureDetector(
                       onTap: () {
                         Navigator.push(
@@ -154,13 +157,15 @@ class TopTrainersSection extends StatelessWidget {
                       },
                       child: AppText(
                         context.l10n.viewClasses,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        textAlign: TextAlign.center,
                         style: (context) => AppTextStyles.captionText(context).copyWith(
                           color: isDark
                               ? AppColors.versionColor
                               : AppColors.languageIcon,
                           fontWeight: FontWeight.bold,
-                          fontSize: 14
-                          // fontSize: size.width * 0.03 > 14 ? 14 : size.width * 0.03,
+                          fontSize: 14,
                         ),
                       ),
                     ),

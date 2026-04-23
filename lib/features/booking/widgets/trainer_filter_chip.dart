@@ -19,10 +19,9 @@ class TrainerFilterChip extends StatelessWidget {
     return BlocBuilder<BookingCubit, BookingState>(
       builder: (context, state) {
         return SizedBox(
-          height: 28,
+          height: 32,
           child: ListView.separated(
             itemCount: state.trainerTypeList.length,
-            shrinkWrap: true,
             padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
             scrollDirection: Axis.horizontal,
             separatorBuilder: (context, index) => const SizedBox(width: 10),
@@ -51,12 +50,15 @@ class TrainerFilterChip extends StatelessWidget {
                   ),
                   child: AppText(
                     getTrainer(context, state.trainerTypeList[index]),
-                    style: (context) =>
-                        AppTextStyles.textFieldHeading(context).copyWith(
-                          color: isSelected || isDark
-                              ? Colors.white
-                              : AppColors.darkText,
-                        ),
+                    style: (context) => AppTextStyles.bodyTextSmall(
+                      context,
+                      fontWeight:
+                          isSelected ? FontWeight.w600 : FontWeight.w500,
+                    ).copyWith(
+                      color: isSelected || isDark
+                          ? Colors.white
+                          : AppColors.darkText,
+                    ),
                   ),
                 ),
               );

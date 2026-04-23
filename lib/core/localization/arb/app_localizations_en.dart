@@ -685,6 +685,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get itemMat => 'Mat provided at studio';
 
   @override
+  String get noReviewsYet => 'No reviews yet';
+
+  @override
   String basedOnReviews(int count) {
     return 'Based on $count reviews';
   }
@@ -733,6 +736,34 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get noClassesDescription =>
       'Check your upcoming bookings or\nbrowse available classes';
+
+  @override
+  String get noUpcomingClasses => 'No upcoming classes';
+
+  @override
+  String get noCurrentClasses => 'No current classes';
+
+  @override
+  String get noPastClasses => 'No past classes';
+
+  @override
+  String get noCancelledClasses => 'No cancelled classes';
+
+  @override
+  String get noUpcomingClassesDescription =>
+      'Check your plan or browse available classes to book one.';
+
+  @override
+  String get noCurrentClassesDescription =>
+      'You have no class in progress at the moment.';
+
+  @override
+  String get noPastClassesDescription =>
+      'Classes you have completed will appear here.';
+
+  @override
+  String get noCancelledClassesDescription =>
+      'You have no cancelled class bookings here.';
 
   @override
   String get confirmed => 'Confirmed';
@@ -1267,6 +1298,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get download => 'Download';
+
+  @override
+  String get invoicePdfNotAvailable =>
+      'No invoice PDF is available for this item.';
 
   @override
   String get all => 'All';
@@ -2552,6 +2587,17 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get searchTrainers => 'Search trainers...';
+
+  @override
+  String get noTrainersTitle => 'No trainers found';
+
+  @override
+  String get noTrainersFilteredDescription =>
+      'Try a different search or change the filter above.';
+
+  @override
+  String get noTrainersDefaultDescription =>
+      'No trainers to show right now. Pull to refresh, or check back later.';
 
   @override
   String get allTrainers => 'All Trainers';
