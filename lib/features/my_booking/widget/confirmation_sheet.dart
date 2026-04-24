@@ -12,10 +12,14 @@ class ConfirmationSheet extends StatelessWidget {
   final String confirmationText;
   final String buttonText;
 
+  /// After the sheet is popped, runs when the user taps [buttonText] (destructive confirm).
+  final Future<void> Function()? onDestructive;
+
   const ConfirmationSheet({
     super.key,
     required this.confirmationText,
     required this.buttonText,
+    this.onDestructive,
   });
 
   @override
@@ -51,7 +55,11 @@ class ConfirmationSheet extends StatelessWidget {
           // Cancel
           Center(
             child: GestureDetector(
-              onTap: () => Navigator.pop(context),
+              onTap: () async {
+                Navigator.pop(context);
+                final run = onDestructive;
+                if (run != null) await run();
+              },
 
               child: Padding(
                 padding: EdgeInsets.symmetric(

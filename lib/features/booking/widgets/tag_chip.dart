@@ -9,29 +9,42 @@ import '../../../widgets/app_text.dart';
 class TagChip extends StatelessWidget {
   final String label;
   final double fontSize;
+  final int maxLines;
 
-  const TagChip({super.key, required this.label, required this.fontSize});
+  const TagChip({
+    super.key,
+    required this.label,
+    required this.fontSize,
+    this.maxLines = 2,
+  });
 
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    return Container(
-      padding: EdgeInsets.symmetric(vertical: 1, horizontal: AppSpacing.sm),
-      decoration: BoxDecoration(
-        color: isDark ? AppColors.darkLightBlue : AppColors.lightBlue,
-        borderRadius: BorderRadius.circular(AppRadius.base),
+    return ConstrainedBox(
+      constraints: BoxConstraints(
+        maxWidth: MediaQuery.sizeOf(context).width * 0.65,
       ),
-      child: AppText(
-        label,
-        style: (context) =>
-            AppTextStyles.bodyText(
-              context,
-              fontWeight: FontWeight.w500,
-            ).copyWith(
-              fontSize: fontSize,
-              height: 1.8,
-              color: isDark ? AppColors.lightBlue : AppColors.darkBlue,
-            ),
+      child: Container(
+        padding: EdgeInsets.symmetric(vertical: 1, horizontal: AppSpacing.sm),
+        decoration: BoxDecoration(
+          color: isDark ? AppColors.darkLightBlue : AppColors.lightBlue,
+          borderRadius: BorderRadius.circular(AppRadius.base),
+        ),
+        child: AppText(
+          label,
+          maxLines: maxLines,
+          overflow: TextOverflow.ellipsis,
+          style: (context) =>
+              AppTextStyles.bodyText(
+                context,
+                fontWeight: FontWeight.w500,
+              ).copyWith(
+                fontSize: fontSize,
+                height: 1.35,
+                color: isDark ? AppColors.lightBlue : AppColors.darkBlue,
+              ),
+        ),
       ),
     );
   }

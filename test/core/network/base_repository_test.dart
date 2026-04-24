@@ -284,6 +284,36 @@ void main() {
       expect(ex.type, NetworkFailureType.validation);
     });
 
+    test('POST: 422 plain message (no envelope) maps to validation message', () async {
+      final dio = createTestDio(
+        onRequest: (options, handler) {
+          handler.reject(
+            DioException(
+              requestOptions: options,
+              type: DioExceptionType.badResponse,
+              response: Response(
+                requestOptions: options,
+                statusCode: 422,
+                data: const {'message': 'Check-in is too early'},
+              ),
+            ),
+          );
+        },
+      );
+      final repo = TestRepository(dio);
+
+      final result = await repo.post<Map<String, dynamic>>(
+        '/enrollments/1/check-in',
+        data: const <String, dynamic>{},
+      );
+
+      expect(result.isFailure, isTrue);
+      final ex = result.exceptionOrNull!;
+      expect(ex.type, NetworkFailureType.validation);
+      expect(ex.statusCode, 422);
+      expect(ex.message, 'Check-in is too early');
+    });
+
     test('GET: missing statusCode maps to ApiFailure', () async {
       final dio = createTestDio(
         onRequest: (options, handler) {

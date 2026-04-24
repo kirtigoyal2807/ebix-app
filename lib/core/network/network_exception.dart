@@ -189,9 +189,10 @@ class NetworkException implements Exception {
         fallbackMessage ??
         'HTTP $statusCode';
     final type = _typeForHttpCode(statusCode);
+    final plain = _plainMessageFromBody(data);
     return NetworkException(
       type: type,
-      message: extractedMessage,
+      message: plain ?? extractedMessage,
       statusCode: statusCode,
       responseData: data,
       dioExceptionType: dioExceptionType,
@@ -199,6 +200,17 @@ class NetworkException implements Exception {
       stackTrace: stackTrace,
       fieldErrors: extractedFieldErrors,
     );
+  }
+
+  /// Laravel / plain JSON errors without a `success` envelope (e.g. 422 `message`).
+  static String? _plainMessageFromBody(dynamic data) {
+    if (data is! Map) return null;
+    final m = Map<String, dynamic>.from(data);
+    for (final key in <String>['message', 'error', 'detail']) {
+      final v = m[key];
+      if (v is String && v.trim().isNotEmpty) return v.trim();
+    }
+    return null;
   }
 
   factory NetworkException.fromUnknown(Object error, [StackTrace? st]) {

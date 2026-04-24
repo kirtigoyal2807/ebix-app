@@ -1,18 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:pilates_app/features/progress_tracking_flow/data/models/progress_goal_settings.dart';
+import 'package:pilates_app/features/progress_tracking_flow/progrees_overview/cubit/progress_goal_cubit.dart';
+import 'package:pilates_app/features/progress_tracking_flow/progrees_overview/cubit/progress_goal_state.dart';
+import 'package:pilates_app/features/progress_tracking_flow/progrees_overview/goal_form_mapping.dart';
 import 'package:pilates_app/widgets/app_button.dart';
 
 import '../../../../config/theme/app_colors.dart';
 import '../../../../config/theme/app_radius.dart';
 import '../../../../config/theme/app_spacing.dart';
 import '../../../../config/theme/app_text_styles.dart';
-import '../../../../core/localization/arb/app_localizations.dart';
 import '../../../../core/localization/localization_extension.dart';
 import '../../../../widgets/app_app_bar.dart';
 import '../../../../widgets/app_text.dart';
 import '../../../auth/sign_up/widgets/experience_option.dart';
 import '../../../auth/sign_up/widgets/monthly_target_slider.dart';
 
+/// Edit training goal — `GET /progress/goal` (15.4) + `PUT /progress/goal` (15.5).
+/// Expects [ProgressGoalCubit] above this route (e.g. [BlocProvider.value] from overview).
 class EditGoal extends StatefulWidget {
   const EditGoal({super.key});
 
@@ -22,6 +28,60 @@ class EditGoal extends StatefulWidget {
 
 class _EditGoalState extends State<EditGoal> {
   int _selectedIndex = 0;
+  int _monthly = 8;
+  bool _hydrated = false;
+
+  void _scheduleHydrate(ProgressGoalSettings? g) {
+    if (g == null || _hydrated) return;
+    _hydrated = true;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      setState(() {
+        _selectedIndex = GoalFormMapping.indexFromStoredGoal(
+          g.goal,
+          context.l10n,
+        );
+        _monthly = GoalFormMapping.nearestMonthlyStep(g.monthlyGoal);
+      });
+    });
+  }
+
+  String _leadingIconForIndex(bool isDark, int index) {
+    switch (index.clamp(0, 3)) {
+      case 0:
+        return isDark
+            ? 'assets/images/svg/goal/ic_dark_build_strength.svg'
+            : 'assets/images/svg/goal/ic_build_strength.svg';
+      case 1:
+        return isDark
+            ? 'assets/images/svg/goal/ic_find_dark_minsfulness.svg'
+            : 'assets/images/svg/goal/ic_find_minsfulness.svg';
+      case 2:
+        return isDark
+            ? 'assets/images/svg/goal/ic_dark_improve_flexibility.svg'
+            : 'assets/images/svg/goal/ic_improve_flexibility.svg';
+      default:
+        return isDark
+            ? 'assets/images/svg/goal/ic_dark_general_fitness.svg'
+            : 'assets/images/svg/goal/ic_general_fitness.svg';
+    }
+  }
+
+  Future<void> _onSave(BuildContext context) async {
+    final cubit = context.read<ProgressGoalCubit>();
+    final l10n = context.l10n;
+    final experience =
+        cubit.state.goal?.experience ?? 'intermediate';
+    final ok = await cubit.save(
+      monthlyGoal: _monthly,
+      goal: GoalFormMapping.goalTitleForIndex(l10n, _selectedIndex),
+      experience: experience,
+    );
+    if (!context.mounted) return;
+    if (ok) {
+      Navigator.of(context).pop();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,182 +92,248 @@ class _EditGoalState extends State<EditGoal> {
         title: context.l10n.edit_goal_title,
         isMoreMenu: false,
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  ///current Goal
-                  Container(
-                    margin: EdgeInsets.only(
-                      left: AppSpacing.lg,
-                      right: AppSpacing.lg,
-                      bottom: AppSpacing.lg,
-                      top: AppSpacing.md,
+      body: BlocBuilder<ProgressGoalCubit, ProgressGoalState>(
+        builder: (context, state) {
+          if (state.status == ProgressGoalStatus.loading &&
+              state.goal == null) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          if (state.status == ProgressGoalStatus.failure &&
+              state.goal == null) {
+            return Center(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    AppText(
+                      state.errorMessage ?? '—',
+                      textAlign: TextAlign.center,
+                      style: (c) => AppTextStyles.bodyText(c),
                     ),
-                    padding: EdgeInsets.only(
-                      left: AppSpacing.md,
-                      right: AppSpacing.md,
-                      bottom: AppSpacing.sm,
-                      top: AppSpacing.md,
+                    SizedBox(height: AppSpacing.md),
+                    AppButton(
+                      label: context.l10n.retry,
+                      expanded: false,
+                      onPressed: () =>
+                          context.read<ProgressGoalCubit>().load(),
                     ),
-                    decoration: BoxDecoration(
-                      color: isDark ? AppColors.homeBackground : Colors.white,
-                      borderRadius: BorderRadius.circular(AppRadius.md),
-                      border: Border.all(
-                        color: isDark
-                            ? AppColors.greyText
-                            : AppColors.buttonBorder,
-                      ),
+                  ],
+                ),
+              ),
+            );
+          }
+
+          final goal = state.goal;
+          _scheduleHydrate(goal);
+
+          final currentTitle = goal?.goal != null &&
+                  goal!.goal!.trim().isNotEmpty
+              ? goal.goal!.trim()
+              : GoalFormMapping.goalTitleForIndex(
+                  context.l10n,
+                  _selectedIndex,
+                );
+          final currentSubtitle = goal != null
+              ? ProgressGoalSettings.experienceLabel(
+                  context.l10n,
+                  goal.experience,
+                )
+              : context.l10n.edit_goal_intermediate_level;
+
+          return Column(
+            children: [
+              if (state.errorMessage != null &&
+                  state.status == ProgressGoalStatus.failure &&
+                  state.goal != null)
+                Material(
+                  color: AppColors.featuredTagBackgroundColor,
+                  child: Padding(
+                    padding: const EdgeInsets.all(AppSpacing.md),
+                    child: AppText(
+                      state.errorMessage!,
+                      style: (c) => AppTextStyles.captionText(c),
                     ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        AppText(
-                          context.l10n.edit_goal_current_goal,
-                          style: (context) => AppTextStyles.body(
-                            context,
-                          ).copyWith(color: AppColors.lightGrey, height: 1.55),
+                  ),
+                ),
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      Container(
+                        margin: EdgeInsets.only(
+                          left: AppSpacing.lg,
+                          right: AppSpacing.lg,
+                          bottom: AppSpacing.lg,
+                          top: AppSpacing.md,
                         ),
-                        SizedBox(height: AppSpacing.sm),
-
-                        ListTile(
-                          contentPadding: EdgeInsets.zero,
-                          minVerticalPadding: 0,
-
-                          leading: SvgPicture.asset(
-                            isDark
-                                ? "assets/images/svg/goal/ic_find_dark_minsfulness.svg"
-                                : "assets/images/svg/goal/ic_find_minsfulness.svg",
-                            height: 64,
-                            width: 64,
+                        padding: EdgeInsets.only(
+                          left: AppSpacing.md,
+                          right: AppSpacing.md,
+                          bottom: AppSpacing.sm,
+                          top: AppSpacing.md,
+                        ),
+                        decoration: BoxDecoration(
+                          color: isDark
+                              ? AppColors.homeBackground
+                              : Colors.white,
+                          borderRadius: BorderRadius.circular(AppRadius.md),
+                          border: Border.all(
+                            color: isDark
+                                ? AppColors.greyText
+                                : AppColors.buttonBorder,
                           ),
-                          title: AppText(
-                            context.l10n.findMindfulness,
-                            style: (context) => AppTextStyles.experienceButton(
-                              context,
-                            ).copyWith(fontSize: 18),
-                          ),
-                          subtitle: AppText(
-                            context.l10n.edit_goal_intermediate_level,
-                            style: (context) =>
-                                AppTextStyles.body(context).copyWith(
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            AppText(
+                              context.l10n.edit_goal_current_goal,
+                              style: (c) => AppTextStyles.body(
+                                c,
+                              ).copyWith(
+                                color: AppColors.lightGrey,
+                                height: 1.55,
+                              ),
+                            ),
+                            SizedBox(height: AppSpacing.sm),
+                            ListTile(
+                              contentPadding: EdgeInsets.zero,
+                              minVerticalPadding: 0,
+                              leading: SvgPicture.asset(
+                                _leadingIconForIndex(isDark, _selectedIndex),
+                                height: 64,
+                                width: 64,
+                              ),
+                              title: AppText(
+                                currentTitle,
+                                style: (c) =>
+                                    AppTextStyles.experienceButton(
+                                  c,
+                                ).copyWith(fontSize: 18),
+                              ),
+                              subtitle: AppText(
+                                currentSubtitle,
+                                style: (c) =>
+                                    AppTextStyles.body(c).copyWith(
                                   color: isDark
                                       ? AppColors.darkGreyText
                                       : AppColors.greyText,
                                   fontWeight: FontWeight.w400,
                                 ),
-                          ),
+                              ),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
+                      ),
+                      Divider(
+                        color: isDark
+                            ? AppColors.greyText
+                            : AppColors.buttonBorder,
+                        height: 1,
+                      ),
+                      SizedBox(height: AppSpacing.lg),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: AppSpacing.lg,
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            AppText(
+                              context.l10n.edit_goal_choose_focus,
+                              style: AppTextStyles.heading1,
+                            ),
+                            const SizedBox(height: AppSpacing.md),
+                            ExperienceOption(
+                              title: context.l10n.buildStrength,
+                              description: context.l10n.buildStrengthDesc,
+                              selected: _selectedIndex == 0,
+                              iconPath: isDark
+                                  ? 'assets/images/svg/goal/ic_dark_build_strength.svg'
+                                  : 'assets/images/svg/goal/ic_build_strength.svg',
+                              onTap: () => setState(() => _selectedIndex = 0),
+                            ),
+                            const SizedBox(height: AppSpacing.base),
+                            ExperienceOption(
+                              title: context.l10n.findMindfulness,
+                              description: context.l10n.findMindfulnessDesc,
+                              selected: _selectedIndex == 1,
+                              iconPath: isDark
+                                  ? 'assets/images/svg/goal/ic_find_dark_minsfulness.svg'
+                                  : 'assets/images/svg/goal/ic_find_minsfulness.svg',
+                              onTap: () => setState(() => _selectedIndex = 1),
+                            ),
+                            const SizedBox(height: AppSpacing.base),
+                            ExperienceOption(
+                              title: context.l10n.improveFlexibility,
+                              description: context.l10n.improveFlexibilityDesc,
+                              selected: _selectedIndex == 2,
+                              iconPath: isDark
+                                  ? 'assets/images/svg/goal/ic_dark_improve_flexibility.svg'
+                                  : 'assets/images/svg/goal/ic_improve_flexibility.svg',
+                              onTap: () => setState(() => _selectedIndex = 2),
+                            ),
+                            const SizedBox(height: AppSpacing.base),
+                            ExperienceOption(
+                              title: context.l10n.generalFitness,
+                              description: context.l10n.generalFitnessDesc,
+                              selected: _selectedIndex == 3,
+                              iconPath: isDark
+                                  ? 'assets/images/svg/goal/ic_dark_general_fitness.svg'
+                                  : 'assets/images/svg/goal/ic_general_fitness.svg',
+                              onTap: () => setState(() => _selectedIndex = 3),
+                            ),
+                            const SizedBox(height: AppSpacing.lg),
+                            AppText(
+                              context.l10n.monthlyTarget,
+                              style: (c) =>
+                                  AppTextStyles.gelasioRegular(c).copyWith(),
+                            ),
+                            const SizedBox(height: AppSpacing.md),
+                            MonthlyTargetSlider(
+                              key: ValueKey<int>(_monthly),
+                              initialMonthlyClasses: _monthly,
+                              onMonthlyClassesChanged: (v) {
+                                setState(() => _monthly = v);
+                              },
+                            ),
+                            const SizedBox(height: AppSpacing.lg),
+                            _buildSmartTip(context, isDark),
+                            const SizedBox(height: AppSpacing.lg),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
-
-                  Divider(
-                    color: isDark ? AppColors.greyText : AppColors.buttonBorder,
-                    height: 1,
-                  ),
-                  SizedBox(height: AppSpacing.lg),
-
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: AppSpacing.lg,
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        AppText(
-                          context.l10n.edit_goal_choose_focus,
-                          style: AppTextStyles.heading1,
-                        ),
-
-                        const SizedBox(height: AppSpacing.md),
-
-                        ExperienceOption(
-                          title: context.l10n.buildStrength,
-                          description: context.l10n.buildStrengthDesc,
-                          selected: _selectedIndex == 0,
-                          iconPath: isDark
-                              ? "assets/images/svg/goal/ic_dark_build_strength.svg"
-                              : "assets/images/svg/goal/ic_build_strength.svg",
-                          onTap: () => setState(() => _selectedIndex = 0),
-                        ),
-                        const SizedBox(height: AppSpacing.base),
-
-                        ExperienceOption(
-                          title: context.l10n.findMindfulness,
-                          description: context.l10n.findMindfulnessDesc,
-                          selected: _selectedIndex == 1,
-                          iconPath: isDark
-                              ? "assets/images/svg/goal/ic_find_dark_minsfulness.svg"
-                              : "assets/images/svg/goal/ic_find_minsfulness.svg",
-                          onTap: () => setState(() => _selectedIndex = 1),
-                        ),
-                        const SizedBox(height: AppSpacing.base),
-                        ExperienceOption(
-                          title: context.l10n.improveFlexibility,
-                          description: context.l10n.improveFlexibilityDesc,
-                          selected: _selectedIndex == 2,
-                          iconPath: isDark
-                              ? "assets/images/svg/goal/ic_dark_improve_flexibility.svg"
-                              : "assets/images/svg/goal/ic_improve_flexibility.svg",
-                          onTap: () => setState(() => _selectedIndex = 2),
-                        ),
-                        const SizedBox(height: AppSpacing.base),
-                        ExperienceOption(
-                          title: context.l10n.generalFitness,
-                          description: context.l10n.generalFitnessDesc,
-                          selected: _selectedIndex == 3,
-                          iconPath: isDark
-                              ? "assets/images/svg/goal/ic_dark_general_fitness.svg"
-                              : "assets/images/svg/goal/ic_general_fitness.svg",
-                          onTap: () => setState(() => _selectedIndex = 3),
-                        ),
-                        const SizedBox(height: AppSpacing.lg),
-                        AppText(
-                          context.l10n.monthlyTarget,
-                          style: (context) =>
-                              AppTextStyles.gelasioRegular(context).copyWith(),
-                        ),
-
-                        const SizedBox(height: AppSpacing.md),
-                        MonthlyTargetSlider(),
-                        const SizedBox(height: AppSpacing.lg),
-                        _buildSmartTip(context, isDark),
-                        const SizedBox(height: AppSpacing.lg),
-                      ],
-                    ),
-                  ),
-                ],
+                ),
               ),
-            ),
-          ),
-
-          Container(
-            padding: EdgeInsets.only(
-              left: AppSpacing.lg,
-              right: AppSpacing.lg,
-              bottom: AppSpacing.lg,
-            ),
-            decoration: BoxDecoration(
-              color: isDark ? AppColors.homeBackground : Colors.white,
-            ),
-            child: AppButton(
-              label: context.l10n.edit_goal_save_changes,
-              onPressed: () {},
-              variant: AppButtonVariant.primary,
-            ),
-          ),
-        ],
+              Container(
+                padding: EdgeInsets.only(
+                  left: AppSpacing.lg,
+                  right: AppSpacing.lg,
+                  bottom: AppSpacing.lg,
+                ),
+                decoration: BoxDecoration(
+                  color: isDark ? AppColors.homeBackground : Colors.white,
+                ),
+                child: AppButton(
+                  label: context.l10n.edit_goal_save_changes,
+                  isLoading: state.isSubmitting,
+                  onPressed: state.isSubmitting
+                      ? null
+                      : () => _onSave(context),
+                  variant: AppButtonVariant.primary,
+                ),
+              ),
+            ],
+          );
+        },
       ),
     );
   }
 
-  /// SMART TIP
   Widget _buildSmartTip(BuildContext context, bool isDark) {
-    final l10n = AppLocalizations.of(context);
-
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
@@ -216,9 +342,8 @@ class _EditGoalState extends State<EditGoal> {
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          SvgPicture.asset("assets/images/svg/ic_tip.svg"),
+          SvgPicture.asset('assets/images/svg/ic_tip.svg'),
           const SizedBox(width: AppSpacing.sm),
           Expanded(
             child: RichText(

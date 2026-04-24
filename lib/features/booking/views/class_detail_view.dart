@@ -7,6 +7,7 @@ import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/core/localization/localization_extension.dart';
 import 'package:pilates_app/features/booking/cubit/booking_cubit.dart';
 import 'package:pilates_app/features/booking/cubit/booking_state.dart';
+import 'package:pilates_app/features/booking/data/class_booking_preview.dart';
 import 'package:pilates_app/features/booking/widgets/class_detail_header.dart';
 import 'package:pilates_app/features/booking/widgets/class_info_grid.dart';
 import 'package:pilates_app/features/booking/widgets/class_location_card.dart';
@@ -20,9 +21,16 @@ import 'book_class_confirm_view.dart';
 import 'join_waitlist_view.dart';
 
 class ClassDetailView extends StatelessWidget {
-  const ClassDetailView({super.key, required this.classState});
+  const ClassDetailView({
+    super.key,
+    required this.classState,
+    required this.calendarEventId,
+    required this.preview,
+  });
 
   final ClassState classState;
+  final String calendarEventId;
+  final ClassBookingPreview preview;
 
   @override
   Widget build(BuildContext context) {
@@ -95,10 +103,12 @@ class ClassDetailView extends StatelessWidget {
                   child: ElevatedButton(
                     onPressed: () {
                       if (classState == ClassState.booking) {
-                        context.read<BookingCubit>().bookClass();
                         Navigator.of(context).push(
                           MaterialPageRoute(
-                            builder: (_) => const BookClassConfirmView(),
+                            builder: (_) => BookClassConfirmView(
+                              calendarEventId: calendarEventId,
+                              preview: preview,
+                            ),
                           ),
                         );
                       } else {

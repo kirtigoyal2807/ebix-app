@@ -104,7 +104,7 @@ class TopTrainersSection extends StatelessWidget {
     }
 
     final itemWidth = size.width * 0.38 > 140 ? 140.0 : size.width * 0.38;
-    final itemHeight = 168.0;
+    const itemHeight = 168.0;
 
     return SizedBox(
       height: itemHeight,
@@ -179,12 +179,12 @@ class TopTrainersSection extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => TrainerDetailsView(),
+                        builder: (context) => const TrainerDetailsView(),
                       ),
                     );
                   },
                   child: Container(
-                    padding: EdgeInsets.only(top: 10),
+                    padding: const EdgeInsets.only(top: 10),
                     child: AppText(
                       context.l10n.viewClasses,
                       style: (context) =>

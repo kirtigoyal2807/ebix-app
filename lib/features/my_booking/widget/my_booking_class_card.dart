@@ -25,6 +25,17 @@ class MyBookingClassCard extends StatelessWidget {
   final int? spot;
   final int? position;
   final bool? isRate;
+  final String? coverImageUrl;
+  final VoidCallback? onCheckIn;
+  final bool isCheckInBusy;
+  final String? checkInLabel;
+
+  /// §13.10 — after user confirms in sheet; same flow as leave waitlist.
+  final Future<void> Function()? onConfirmCancelEnrollment;
+  final bool isCancelBusy;
+
+  /// Pre-formatted line for cancelled state (e.g. from [BookingResource.cancelledAt]).
+  final String? cancelledDetailLine;
 
   const MyBookingClassCard({
     super.key,
@@ -38,6 +49,13 @@ class MyBookingClassCard extends StatelessWidget {
     this.spot = 0,
     this.position = 0,
     this.isRate = false,
+    this.coverImageUrl,
+    this.onCheckIn,
+    this.isCheckInBusy = false,
+    this.checkInLabel,
+    this.onConfirmCancelEnrollment,
+    this.isCancelBusy = false,
+    this.cancelledDetailLine,
   });
 
   @override
@@ -87,19 +105,11 @@ class MyBookingClassCard extends StatelessWidget {
                 borderRadius: const BorderRadius.vertical(
                   top: Radius.circular(AppRadius.lg),
                 ),
-                child:
-                    // SvgPicture.asset(
-                    //   'assets/images/svg/ic_yoga.svg',
-                    //   height: size.height * 0.22,
-                    //   // width: width * 0.6,
-                    //   fit: BoxFit.fill,
-                    // ),
-                    Image.asset(
-                      "assets/images/demo images/Class Image.png",
-                      height: size.height * 0.18,
-                      // width: width * 0.6,
-                      fit: BoxFit.fill,
-                    ),
+                child: _coverImage(
+                  context,
+                  height: size.height * 0.18,
+                  url: coverImageUrl,
+                ),
               ),
               Padding(
                 padding: const EdgeInsets.only(
@@ -403,42 +413,65 @@ class MyBookingClassCard extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
             ),
             const SizedBox(height: AppSpacing.md),
-            Row(
-              children: [
-                Expanded(
-                  child: AppButton(
-                    label: context.l10n.checkIn,
-                    onPressed: () {},
-                    buttonHeight: 32,
-                    variant: AppButtonVariant.primary,
-                    verticalPadding: 6.5,
-                    buttonFontSize: 12,
+            if (onConfirmCancelEnrollment != null)
+              Row(
+                children: [
+                  Expanded(
+                    child: AppButton(
+                      label: checkInLabel ?? context.l10n.checkIn,
+                      onPressed: isCheckInBusy || isCancelBusy ? null : onCheckIn,
+                      isLoading: isCheckInBusy,
+                      buttonHeight: 32,
+                      variant: onCheckIn == null && !isCheckInBusy
+                          ? AppButtonVariant.disable
+                          : AppButtonVariant.primary,
+                      verticalPadding: 6.5,
+                      buttonFontSize: 12,
+                    ),
                   ),
-                ),
-                SizedBox(width: AppSpacing.sm),
-                Expanded(
-                  child: AppButton(
-                    label: context.l10n.cancel,
-                    onPressed: () {
-                      showModalBottomSheet(
-                        context: context,
-                        isScrollControlled: true,
-                        backgroundColor: Colors.transparent,
-                        barrierColor: AppColors.bottomSheetShadow,
-                        builder: (_) => ConfirmationSheet(
-                          confirmationText: context.l10n.cancelClassConfirm,
-                          buttonText: context.l10n.cancelClassYes,
-                        ),
-                      );
-                    },
-                    buttonHeight: 32,
-                    buttonColor: AppColors.redLight,
-                    verticalPadding: 6.5,
-                    buttonFontSize: 12,
+                  SizedBox(width: AppSpacing.sm),
+                  Expanded(
+                    child: AppButton(
+                      label: context.l10n.cancel,
+                      onPressed: isCheckInBusy || isCancelBusy
+                          ? null
+                          : () {
+                              final run = onConfirmCancelEnrollment!;
+                              showModalBottomSheet<void>(
+                                context: context,
+                                isScrollControlled: true,
+                                backgroundColor: Colors.transparent,
+                                barrierColor: AppColors.bottomSheetShadow,
+                                builder: (_) => ConfirmationSheet(
+                                  confirmationText:
+                                      context.l10n.cancelClassConfirm,
+                                  buttonText: context.l10n.cancelClassYes,
+                                  onDestructive: run,
+                                ),
+                              );
+                            },
+                      isLoading: isCancelBusy,
+                      buttonHeight: 32,
+                      buttonColor: AppColors.redLight,
+                      verticalPadding: 6.5,
+                      buttonFontSize: 12,
+                    ),
                   ),
-                ),
-              ],
-            ),
+                ],
+              )
+            else
+              AppButton(
+                label: checkInLabel ?? context.l10n.checkIn,
+                onPressed: isCheckInBusy || isCancelBusy ? null : onCheckIn,
+                isLoading: isCheckInBusy,
+                buttonHeight: 32,
+                expanded: true,
+                variant: onCheckIn == null && !isCheckInBusy
+                    ? AppButtonVariant.disable
+                    : AppButtonVariant.primary,
+                verticalPadding: 6.5,
+                buttonFontSize: 12,
+              ),
           ],
         );
       case (BookingStatus.waitListed):
@@ -470,18 +503,24 @@ class MyBookingClassCard extends StatelessWidget {
             const SizedBox(height: AppSpacing.md),
             AppButton(
               label: context.l10n.leaveWaitlist,
-              onPressed: () {
-                showModalBottomSheet(
-                  context: context,
-                  isScrollControlled: true,
-                  backgroundColor: Colors.transparent,
-                  barrierColor: AppColors.bottomSheetShadow,
-                  builder: (_) => ConfirmationSheet(
-                    confirmationText: context.l10n.leaveWaitlistConfirm,
-                    buttonText: context.l10n.leaveWaitlistYes,
-                  ),
-                );
-              },
+              onPressed: isCancelBusy || onConfirmCancelEnrollment == null
+                  ? null
+                  : () {
+                      final run = onConfirmCancelEnrollment!;
+                      showModalBottomSheet<void>(
+                        context: context,
+                        isScrollControlled: true,
+                        backgroundColor: Colors.transparent,
+                        barrierColor: AppColors.bottomSheetShadow,
+                        builder: (_) => ConfirmationSheet(
+                          confirmationText:
+                              context.l10n.leaveWaitlistConfirm,
+                          buttonText: context.l10n.leaveWaitlistYes,
+                          onDestructive: run,
+                        ),
+                      );
+                    },
+              isLoading: isCancelBusy,
               buttonHeight: 32,
               buttonColor: AppColors.redLight,
               verticalPadding: 6.5,
@@ -604,7 +643,7 @@ class MyBookingClassCard extends StatelessWidget {
             ),
             const SizedBox(height: AppSpacing.sm),
             AppText(
-              context.l10n.cancelledOn('Jan 15', '2:00 PM'),
+              cancelledDetailLine ?? '—',
               style: (context) => AppTextStyles.captionText(context).copyWith(
                 fontSize: size.width * 0.03 > 14 ? 14 : size.width * 0.03,
                 color: isDark ? AppColors.darkGreyText : AppColors.lightGrey,
@@ -617,4 +656,23 @@ class MyBookingClassCard extends StatelessWidget {
         );
     }
   }
+}
+
+Widget _coverImage(
+  BuildContext context, {
+  required double height,
+  String? url,
+}) {
+  const fallback = 'assets/images/demo images/Class Image.png';
+  if (url != null && url.isNotEmpty) {
+    return Image.network(
+      url,
+      height: height,
+      width: double.infinity,
+      fit: BoxFit.cover,
+      errorBuilder: (_, __, ___) =>
+          Image.asset(fallback, height: height, fit: BoxFit.fill),
+    );
+  }
+  return Image.asset(fallback, height: height, fit: BoxFit.fill);
 }

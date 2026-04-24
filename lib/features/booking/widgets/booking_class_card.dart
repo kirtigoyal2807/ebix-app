@@ -10,6 +10,7 @@ import 'package:pilates_app/features/booking/widgets/upgrade_bottom_sheet.dart';
 import 'package:pilates_app/widgets/app_text.dart';
 import 'package:pilates_app/features/booking/cubit/booking_cubit.dart';
 import '../../../widgets/app_shadow.dart';
+import '../data/class_booking_preview.dart';
 import '../views/class_detail_view.dart';
 
 class BookingClassCard extends StatelessWidget {
@@ -21,6 +22,7 @@ class BookingClassCard extends StatelessWidget {
   final double rating;
   final bool isInPlan;
   final bool upgradeRequired;
+  final String calendarEventId;
 
   const BookingClassCard({
     super.key,
@@ -32,6 +34,7 @@ class BookingClassCard extends StatelessWidget {
     this.rating = 4.5,
     this.isInPlan = true,
     this.upgradeRequired = false,
+    this.calendarEventId = BookingDemoCalendarEvent.id,
   });
 
   @override
@@ -54,7 +57,16 @@ class BookingClassCard extends StatelessWidget {
               MaterialPageRoute(
                 builder: (newContext) => BlocProvider.value(
                   value: cubit,
-                  child: ClassDetailView(classState: ClassState.booking),
+                  child: ClassDetailView(
+                    classState: ClassState.booking,
+                    calendarEventId: calendarEventId,
+                    preview: ClassBookingPreview(
+                      title: title,
+                      trainerName: trainerName,
+                      studio: studio,
+                      time: time,
+                    ),
+                  ),
                 ),
               ),
             );

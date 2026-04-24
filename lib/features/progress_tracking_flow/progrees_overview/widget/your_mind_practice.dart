@@ -1,85 +1,142 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
+import 'package:pilates_app/core/localization/localization_extension.dart';
+import 'package:pilates_app/features/progress_tracking_flow/progrees_overview/cubit/progress_overview_cubit.dart';
+import 'package:pilates_app/features/progress_tracking_flow/progrees_overview/cubit/progress_overview_state.dart';
 import 'package:pilates_app/widgets/app_text.dart';
 
 import '../../../../config/theme/app_colors.dart';
 import '../../../../config/theme/app_radius.dart';
-import '../../../../core/localization/localization_extension.dart';
 
 class YourMindPractice extends StatelessWidget {
   const YourMindPractice({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          AppText(
-            context.l10n.mind_practice_title,
-            style: (context) => AppTextStyles.gelasioRegular(context),
-          ),
-          SizedBox(height: AppSpacing.md),
-          Row(
-            children: [
-              Expanded(
-                child: _buildCard(
-                  isDark: isDark,
-                  title: context.l10n.mind_practice_mindful_value,
-                  subTitle: context.l10n.mind_practice_mindful_movement,
-                  iconImage:
-                      "assets/images/svg/progress_tracking/ic_mindful_movement.svg",
+    return BlocBuilder<ProgressOverviewCubit, ProgressOverviewState>(
+      builder: (context, state) {
+        if (state.status == ProgressOverviewStatus.loading &&
+            state.overview == null) {
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                AppText(
+                  context.l10n.mind_practice_title,
+                  style: (context) => AppTextStyles.gelasioRegular(context),
                 ),
-              ),
+                SizedBox(height: AppSpacing.md),
+                const SizedBox(
+                  height: 200,
+                  width: double.infinity,
+                  child: Center(child: CircularProgressIndicator()),
+                ),
+              ],
+            ),
+          );
+        }
 
-              SizedBox(width: AppSpacing.md),
-              Expanded(
-                child: _buildCard(
-                  isDark: isDark,
-                  title: "5",
-                  subTitle: context.l10n.mind_practice_morning_sessions,
-                  iconImage:
-                      "assets/images/svg/progress_tracking/ic_morning_sessions.svg",
-                ),
+        final overview = state.overview;
+        final isDark = Theme.of(context).brightness == Brightness.dark;
+        final mindfulTitle = overview == null
+            ? '—'
+            : _formatMindfulHours(context, overview.mtdAttendedMinutes);
+        final morningTitle =
+            overview == null ? '—' : '${overview.mtdMorningSessions}';
+        final flowTitle =
+            overview == null ? '—' : '${overview.flowInstructors}';
+        final peaceTitle = overview == null
+            ? '—'
+            : _formatInnerPeacePercent(overview.innerPeacePercent);
+
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              AppText(
+                context.l10n.mind_practice_title,
+                style: (context) => AppTextStyles.gelasioRegular(context),
+              ),
+              SizedBox(height: AppSpacing.md),
+              Row(
+                children: [
+                  Expanded(
+                    child: _buildCard(
+                      isDark: isDark,
+                      title: mindfulTitle,
+                      subTitle: context.l10n.mind_practice_mindful_movement,
+                      iconImage:
+                          "assets/images/svg/progress_tracking/ic_mindful_movement.svg",
+                    ),
+                  ),
+                  SizedBox(width: AppSpacing.md),
+                  Expanded(
+                    child: _buildCard(
+                      isDark: isDark,
+                      title: morningTitle,
+                      subTitle: context.l10n.mind_practice_morning_sessions,
+                      iconImage:
+                          "assets/images/svg/progress_tracking/ic_morning_sessions.svg",
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: AppSpacing.md),
+              Row(
+                children: [
+                  Expanded(
+                    child: _buildCard(
+                      isDark: isDark,
+                      title: flowTitle,
+                      subTitle: context.l10n.mind_practice_flow_instructors,
+                      iconImage:
+                          "assets/images/svg/progress_tracking/ic_flow_instructors.svg",
+                    ),
+                  ),
+                  SizedBox(width: AppSpacing.md),
+                  Expanded(
+                    child: _buildCard(
+                      isDark: isDark,
+                      title: peaceTitle,
+                      subTitle: context.l10n.mind_practice_inner_peace,
+                      iconImage:
+                          "assets/images/svg/progress_tracking/ic_inner_peace.svg",
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
-          SizedBox(height: AppSpacing.md),
-          Row(
-            children: [
-              Expanded(
-                child: _buildCard(
-                  isDark: isDark,
-                  title: "4",
-                  subTitle: context.l10n.mind_practice_flow_instructors,
-                  iconImage:
-                      "assets/images/svg/progress_tracking/ic_flow_instructors.svg",
-                ),
-              ),
-
-              SizedBox(width: AppSpacing.md),
-              Expanded(
-                child: _buildCard(
-                  isDark: isDark,
-                  title: "+25%",
-                  subTitle: context.l10n.mind_practice_inner_peace,
-                  iconImage:
-                      "assets/images/svg/progress_tracking/ic_inner_peace.svg",
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 
-  _buildCard({
+  static String _formatMindfulHours(BuildContext context, int minutes) {
+    if (minutes <= 0) {
+      return context.l10n.hoursCount('0');
+    }
+    final hours = (minutes * 10 / 60).round() / 10;
+    final count = hours == hours.roundToDouble()
+        ? hours.round().toString()
+        : hours.toStringAsFixed(1);
+    return context.l10n.hoursCount(count);
+  }
+
+  static String _formatInnerPeacePercent(double value) {
+    if (value == value.roundToDouble()) {
+      return '${value.round()}%';
+    }
+    return '${value.toStringAsFixed(1)}%';
+  }
+
+  Widget _buildCard({
     required bool isDark,
     required String iconImage,
     required String title,
@@ -104,7 +161,6 @@ class YourMindPractice extends StatelessWidget {
             width: 32,
             color: isDark ? AppColors.languageIconDark : AppColors.languageIcon,
           ),
-
           SizedBox(height: AppSpacing.lg),
           AppText(
             title,
@@ -113,7 +169,8 @@ class YourMindPractice extends StatelessWidget {
           SizedBox(height: AppSpacing.sm),
           AppText(
             subTitle.replaceFirst(' ', '\n'),
-            style: (context) => AppTextStyles.bodyTextSmall(context).copyWith(height: 1.2),
+            style: (context) =>
+                AppTextStyles.bodyTextSmall(context).copyWith(height: 1.2),
           ),
         ],
       ),

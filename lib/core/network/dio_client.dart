@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 
 import '../constants/api_config.dart';
+import 'api_log_interceptor.dart';
 
 /// Builds a [Dio] instance aligned with the Pilates API:
 /// JSON body, [ApiConfig.headerBrand], [ApiConfig.headerAcceptLanguage],
@@ -57,13 +58,7 @@ class DioClient {
       dio.interceptors.addAll(interceptors);
     }
     if (kDebugMode) {
-      dio.interceptors.add(
-        LogInterceptor(
-          requestBody: true,
-          responseBody: true,
-          error: true,
-        ),
-      );
+      dio.interceptors.add(ApiLogInterceptor());
     }
   }
 

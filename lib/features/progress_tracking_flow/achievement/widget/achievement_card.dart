@@ -12,16 +12,29 @@ import '../../../../widgets/app_text.dart';
 class AchievementCard extends StatelessWidget {
   final String content;
   final bool showProgressBar;
+  final int? earnedBadgeCount;
+  final int? totalBadges;
+  final double? progress;
 
   const AchievementCard({
     super.key,
     required this.content,
     this.showProgressBar = false,
+    this.earnedBadgeCount,
+    this.totalBadges,
+    this.progress,
   });
 
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final earned = earnedBadgeCount;
+    final total = totalBadges;
+    final title = (earned != null && total != null && total > 0)
+        ? '$earned / $total ${context.l10n.achievements}'
+        : '8 ${context.l10n.achievements}';
+    final barValue = progress?.clamp(0.0, 1.0) ?? 0.6;
+
     return Container(
       padding: EdgeInsets.symmetric(vertical: 20),
       width: double.infinity,
@@ -32,7 +45,6 @@ class AchievementCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          //achievement
           Container(
             padding: EdgeInsets.all(AppSpacing.md),
             decoration: BoxDecoration(
@@ -72,7 +84,7 @@ class AchievementCard extends StatelessWidget {
                     ],
             ),
             child: SvgPicture.asset(
-              "assets/images/svg/progress_tracking/ic_achievement.svg",
+              'assets/images/svg/progress_tracking/ic_achievement.svg',
               color: isDark
                   ? AppColors.subscriptionCardGradient2
                   : AppColors.languageIcon,
@@ -80,14 +92,13 @@ class AchievementCard extends StatelessWidget {
           ),
           SizedBox(height: AppSpacing.md),
           AppText(
-            "8 ${context.l10n.achievements}",
+            title,
             style: (context) => AppTextStyles.appBarTitle(
               context,
             ).copyWith(fontWeight: FontWeight.w600, height: 1),
           ),
           SizedBox(height: 2),
           AppText(content, style: (context) => AppTextStyles.bodyText(context)),
-
           Visibility(
             visible: showProgressBar,
             child: Padding(
@@ -99,7 +110,7 @@ class AchievementCard extends StatelessWidget {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(AppRadius.sm),
                 child: LinearProgressIndicator(
-                  value: 0.6,
+                  value: barValue,
                   minHeight: 6,
                   backgroundColor: isDark
                       ? AppColors.progressBGColor

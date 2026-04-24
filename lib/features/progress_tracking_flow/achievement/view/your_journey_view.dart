@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:intl/intl.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
+import 'package:pilates_app/features/loyalty/data/models/loyalty_badge.dart';
+import 'package:pilates_app/features/progress_tracking_flow/achievement/cubit/loyalty_achievements_cubit.dart';
+import 'package:pilates_app/features/progress_tracking_flow/achievement/cubit/loyalty_achievements_state.dart';
 import 'package:pilates_app/widgets/app_text.dart';
 
 import '../../../../config/theme/app_colors.dart';
@@ -10,8 +15,20 @@ import '../../../../core/localization/localization_extension.dart';
 import '../../../../widgets/app_app_bar.dart';
 import '../widget/achievement_card.dart';
 
+/// Full achievements list — uses [LoyaltyAchievementsCubit] from parent (BlocProvider.value).
 class YourJourneyView extends StatelessWidget {
   const YourJourneyView({super.key});
+
+  static List<LoyaltyBadge> _sorted(List<LoyaltyBadge> raw) {
+    final list = List<LoyaltyBadge>.from(raw);
+    list.sort((a, b) {
+      if (a.isEarned == b.isEarned) {
+        return a.name.compareTo(b.name);
+      }
+      return a.isEarned ? -1 : 1;
+    });
+    return list;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,96 +39,106 @@ class YourJourneyView extends StatelessWidget {
         title: context.l10n.yourJourney_title,
         isMoreMenu: false,
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.symmetric(
-            vertical: AppSpacing.md,
-            horizontal: AppSpacing.lg,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              AchievementCard(
-                content: context.l10n.yourJourney_achievement_content,
-                showProgressBar: true,
+      body: BlocBuilder<LoyaltyAchievementsCubit, LoyaltyAchievementsState>(
+        builder: (context, state) {
+          final data = state.data;
+          if (state.status == LoyaltyAchievementsStatus.loading &&
+              data == null) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          if (data == null) {
+            return Center(
+              child: AppText(
+                state.errorMessage ?? '—',
+                style: (context) => AppTextStyles.bodyText(context),
               ),
-              SizedBox(height: AppSpacing.xl),
-              AppText(
-                context.l10n.yourJourney_achievements_earned,
-                style: (context) => AppTextStyles.gelasioRegular(context),
+            );
+          }
+          final badges = _sorted(data.badges);
+          final earned = badges.where((b) => b.isEarned).toList();
+          final locked = badges.where((b) => !b.isEarned).toList();
+          final total = badges.length;
+          final earnedCount = data.earnedBadgeCount;
+          final progress = total > 0 ? earnedCount / total : 0.0;
+
+          return RefreshIndicator(
+            onRefresh: () =>
+                context.read<LoyaltyAchievementsCubit>().refresh(),
+            child: ListView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              padding: EdgeInsets.symmetric(
+                vertical: AppSpacing.md,
+                horizontal: AppSpacing.lg,
               ),
-              SizedBox(height: AppSpacing.md),
-              _buildCard(
-                image: isDark
-                    ? "assets/images/svg/progress_tracking/ic_dark_consistency_flow.svg"
-                    : "assets/images/svg/progress_tracking/ic_consistency_flow.svg",
-                title: context.l10n.yourJourney_consistency_title,
-                subtitle: context.l10n.yourJourney_consistency_subtitle,
-                content: context.l10n.yourJourney_consistency_content,
-                isDark: isDark,
-                date: context.l10n.yourJourney_consistency_date,
-                context: context,
-              ),
-              SizedBox(height: AppSpacing.md),
-              _buildCard(
-                image: isDark
-                    ? "assets/images/svg/progress_tracking/ic_dark_foundation_builder.svg"
-                    : "assets/images/svg/progress_tracking/ic_foundation_builder.svg",
-                title: context.l10n.yourJourney_foundation_title,
-                subtitle: context.l10n.yourJourney_foundation_subtitle,
-                content: context.l10n.yourJourney_foundation_content,
-                isDark: isDark,
-                date: context.l10n.yourJourney_foundation_date,
-                context: context,
-              ),
-              SizedBox(height: AppSpacing.xl),
-              AppText(
-                context.l10n.yourJourney_on_your_path,
-                style: (context) => AppTextStyles.gelasioRegular(context),
-              ),
-              SizedBox(height: AppSpacing.md),
-              _buildCard(
-                image: isDark
-                    ? "assets/images/svg/progress_tracking/ic_dark_monthly_dedication.svg"
-                    : "assets/images/svg/progress_tracking/ic_monthly_dedication.svg",
-                title: context.l10n.yourJourney_monthly_title,
-                subtitle: context.l10n.yourJourney_monthly_subtitle,
-                content: context.l10n.yourJourney_monthly_content,
-                isDark: isDark,
-                isShowProgress: true,
-                date: context.l10n.yourJourney_monthly_date,
-                context: context,
-              ),
-              SizedBox(height: AppSpacing.md),
-              _buildCard(
-                image: isDark
-                    ? "assets/images/svg/progress_tracking/ic_dark_community_spirit.svg"
-                    : "assets/images/svg/progress_tracking/ic_community_spirit.svg",
-                title: context.l10n.yourJourney_community_title,
-                subtitle: context.l10n.yourJourney_community_subtitle,
-                content: context.l10n.yourJourney_community_content,
-                isDark: isDark,
-                isShowProgress: true,
-                date: context.l10n.yourJourney_community_date,
-                context: context,
-              ),
-            ],
-          ),
-        ),
+              children: [
+                AchievementCard(
+                  content: context.l10n.yourJourney_achievement_content,
+                  showProgressBar: true,
+                  earnedBadgeCount: total > 0 ? earnedCount : null,
+                  totalBadges: total > 0 ? total : null,
+                  progress: total > 0 ? progress : null,
+                ),
+                SizedBox(height: AppSpacing.xl),
+                AppText(
+                  context.l10n.yourJourney_achievements_earned,
+                  style: (context) => AppTextStyles.gelasioRegular(context),
+                ),
+                SizedBox(height: AppSpacing.md),
+                if (earned.isEmpty)
+                  AppText(
+                    context.l10n.noClassesYet,
+                    style: (context) => AppTextStyles.bodyText(context),
+                  )
+                else
+                  ...earned.map(
+                    (b) => Padding(
+                      padding: EdgeInsets.only(bottom: AppSpacing.md),
+                      child: _JourneyBadgeCard(badge: b, isDark: isDark),
+                    ),
+                  ),
+                SizedBox(height: AppSpacing.xl),
+                AppText(
+                  context.l10n.yourJourney_on_your_path,
+                  style: (context) => AppTextStyles.gelasioRegular(context),
+                ),
+                SizedBox(height: AppSpacing.md),
+                if (locked.isEmpty)
+                  AppText(
+                    context.l10n.noClassesYet,
+                    style: (context) => AppTextStyles.bodyText(context),
+                  )
+                else
+                  ...locked.map(
+                    (b) => Padding(
+                      padding: EdgeInsets.only(bottom: AppSpacing.md),
+                      child: _JourneyBadgeCard(badge: b, isDark: isDark),
+                    ),
+                  ),
+              ],
+            ),
+          );
+        },
       ),
     );
   }
+}
 
-  _buildCard({
-    required bool isDark,
-    required String image,
-    required String title,
-    required String subtitle,
-    required String content,
-    required String date,
-    required BuildContext context,
-    bool isShowProgress = false,
-  }) {
+class _JourneyBadgeCard extends StatelessWidget {
+  const _JourneyBadgeCard({required this.badge, required this.isDark});
+
+  final LoyaltyBadge badge;
+  final bool isDark;
+
+  @override
+  Widget build(BuildContext context) {
+    final locale = Localizations.localeOf(context).toLanguageTag();
+    final subtitle = badge.description?.trim().isNotEmpty == true
+        ? badge.description!.trim()
+        : badge.badgeType;
+    final dateStr = badge.earnedAt != null
+        ? DateFormat.yMMMd(locale).format(badge.earnedAt!.toLocal())
+        : '';
+
     return Container(
       padding: EdgeInsets.symmetric(
         vertical: AppSpacing.lmd,
@@ -127,17 +154,15 @@ class YourJourneyView extends StatelessWidget {
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
-
         children: [
-          SvgPicture.asset(image, height: 40, width: 40),
+          _Leading(badge: badge, isDark: isDark),
           SizedBox(width: AppSpacing.md),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 AppText(
-                  title,
+                  badge.name.isEmpty ? badge.badgeKey : badge.name,
                   style: (context) => AppTextStyles.textFieldHeading(
                     context,
                   ).copyWith(height: 1),
@@ -147,107 +172,60 @@ class YourJourneyView extends StatelessWidget {
                   subtitle,
                   style: (context) =>
                       AppTextStyles.textFieldHeading(context).copyWith(
-                        height: 1,
-                        color: isDark
-                            ? AppColors.languageTextDark
-                            : AppColors.languageIcon,
-                      ),
-                ),
-                SizedBox(height: AppSpacing.base),
-                AppText(
-                  content,
-                  style: (context) => AppTextStyles.bodyText(
-                    context,
-                  ).copyWith(height: 1.4, color: AppColors.lightGrey),
-                ),
-
-                SizedBox(height: AppSpacing.lmd),
-
-                Visibility(
-                  visible: isShowProgress,
-                  child: Padding(
-                    padding: EdgeInsets.only(bottom: AppSpacing.lmd),
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            AppText(
-                              context.l10n.yourJourney_your_progress,
-                              style: (context) => AppTextStyles.captionText(
-                                context,
-                              ).copyWith(color: AppColors.lightGrey),
-                            ),
-
-                            AppText(
-                              context.l10n.yourJourney_progress_count,
-                              style: (context) =>
-                                  AppTextStyles.captionText(context, fontWeight: FontWeight.w600,).copyWith(
-                                    color: isDark
-                                        ? AppColors.languageTextDark
-                                        : AppColors.languageIcon,
-
-                                  ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: AppSpacing.base),
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(AppRadius.sm),
-                          child: LinearProgressIndicator(
-                            value: 0.6,
-                            minHeight: 6,
-                            backgroundColor: isDark
-                                ? AppColors.primaryDarkButton
-                                : AppColors.goalTrackColor,
-                            valueColor: AlwaysStoppedAnimation<Color>(
-                              isDark
-                                  ? AppColors.languageIconDark
-                                  : AppColors.languageIconDark,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                    height: 1,
+                    color: isDark
+                        ? AppColors.languageTextDark
+                        : AppColors.languageIcon,
                   ),
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    AppText(
-                      date,
-                      style: (content) => AppTextStyles.captionText(
-                        content,
-                      ).copyWith(color: AppColors.lightGrey),
-                    ),
-                    Container(
-                      padding: EdgeInsets.symmetric(
-                        vertical: 1,
-                        horizontal: AppSpacing.sm,
-                      ),
-                      decoration: BoxDecoration(
-                        color: isDark
-                            ? AppColors.switchInactiveDark
-                            : AppColors.greyContainerBg,
-                        borderRadius: BorderRadius.circular(AppRadius.base),
-                      ),
-                      child: AppText(
-                        context.l10n.yourJourney_points,
-                        style: (context) =>
-                            AppTextStyles.splashVersion(context).copyWith(
-                              color: isDark
-                                  ? AppColors.lightText
-                                  : AppColors.darkText,
-                            ),
-                      ),
-                    ),
-                  ],
-                ),
+                SizedBox(height: AppSpacing.base),
+                if (dateStr.isNotEmpty)
+                  AppText(
+                    dateStr,
+                    style: (context) => AppTextStyles.captionText(
+                      context,
+                    ).copyWith(color: AppColors.lightGrey),
+                  ),
               ],
             ),
           ),
         ],
       ),
+    );
+  }
+}
+
+class _Leading extends StatelessWidget {
+  const _Leading({required this.badge, required this.isDark});
+
+  final LoyaltyBadge badge;
+  final bool isDark;
+
+  @override
+  Widget build(BuildContext context) {
+    final url = badge.iconUrl;
+    if (url != null && url.isNotEmpty) {
+      return ClipRRect(
+        borderRadius: BorderRadius.circular(8),
+        child: Image.network(
+          url,
+          height: 40,
+          width: 40,
+          fit: BoxFit.cover,
+          errorBuilder: (_, __, ___) => _svg(isDark),
+        ),
+      );
+    }
+    return _svg(isDark);
+  }
+
+  Widget _svg(bool isDark) {
+    return SvgPicture.asset(
+      isDark
+          ? 'assets/images/svg/progress_tracking/ic_dark_consistency_flow.svg'
+          : 'assets/images/svg/progress_tracking/ic_consistency_flow.svg',
+      height: 40,
+      width: 40,
     );
   }
 }

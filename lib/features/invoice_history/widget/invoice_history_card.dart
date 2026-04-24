@@ -14,6 +14,8 @@ class InvoiceHistoryCard extends StatelessWidget {
   final String date;
   final String amount;
   final bool? refund;
+  final VoidCallback? onView;
+  final VoidCallback? onDownload;
 
   const InvoiceHistoryCard({
     super.key,
@@ -23,6 +25,8 @@ class InvoiceHistoryCard extends StatelessWidget {
     required this.date,
     required this.amount,
     this.refund = false,
+    this.onView,
+    this.onDownload,
   });
 
   @override
@@ -34,7 +38,8 @@ class InvoiceHistoryCard extends StatelessWidget {
         AppText(
           month,
           style: (context) => AppTextStyles.bodyText(
-            context,fontWeight: FontWeight.w500,
+            context,
+            fontWeight: FontWeight.w500,
           ).copyWith(color: AppColors.lightGrey),
         ),
         SizedBox(height: AppSpacing.sm),
@@ -55,14 +60,19 @@ class InvoiceHistoryCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  AppText(
-                    title,
-                    style: (context) => AppTextStyles.experienceButton(context),
+                  Expanded(
+                    child: AppText(
+                      title,
+                      maxLines: 2,
+                      style: (context) => AppTextStyles.experienceButton(context),
+                    ),
                   ),
+                  SizedBox(width: AppSpacing.sm),
                   AppText(
                     amount,
+                    maxLines: 1,
                     style: (context) =>
                         AppTextStyles.experienceButton(context).copyWith(
                           color: refund == true
@@ -79,6 +89,7 @@ class InvoiceHistoryCard extends StatelessWidget {
               SizedBox(height: AppSpacing.xs),
               AppText(
                 subTitle,
+                maxLines: 2,
                 style: (context) => AppTextStyles.bodyText(
                   context,
                 ).copyWith(color: AppColors.lightGrey),
@@ -86,24 +97,57 @@ class InvoiceHistoryCard extends StatelessWidget {
               SizedBox(height: AppSpacing.base),
               Row(
                 children: [
-                  AppText(
-                    date,
-                    style: (context) => AppTextStyles.bodyText(
-                      context,
-                    ).copyWith(color: AppColors.lightGrey, fontSize: 12),
+                  Expanded(
+                    child: AppText(
+                      date,
+                      maxLines: 2,
+                      style: (context) => AppTextStyles.bodyText(
+                        context,
+                      ).copyWith(color: AppColors.lightGrey, fontSize: 12),
+                    ),
                   ),
-                  Spacer(),
-                  AppText(
-                    context.l10n.view,
-                    style: (context) =>
-                        AppTextStyles.body(context).copyWith(fontSize: 12),
-                  ),
-                  SizedBox(width: AppSpacing.md),
-                  AppText(
-                    context.l10n.download,
-                    style: (context) =>
-                        AppTextStyles.body(context).copyWith(fontSize: 12),
-                  ),
+                  if (onView != null)
+                    Material(
+                      color: Colors.transparent,
+                      child: InkWell(
+                        onTap: onView,
+                        borderRadius: BorderRadius.circular(4),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 6),
+                          child: AppText(
+                            context.l10n.view,
+                            maxLines: 1,
+                            style: (context) => AppTextStyles.body(context).copyWith(
+                              fontSize: 12,
+                              color: Theme.of(context).colorScheme.primary,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  if (onDownload != null) ...[
+                    SizedBox(width: AppSpacing.xs),
+                    Material(
+                      color: Colors.transparent,
+                      child: InkWell(
+                        onTap: onDownload,
+                        borderRadius: BorderRadius.circular(4),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 6),
+                          child: AppText(
+                            context.l10n.download,
+                            maxLines: 1,
+                            style: (context) => AppTextStyles.body(context).copyWith(
+                              fontSize: 12,
+                              color: Theme.of(context).colorScheme.primary,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ],
               ),
             ],

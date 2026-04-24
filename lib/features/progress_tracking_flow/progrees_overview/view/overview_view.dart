@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pilates_app/config/theme/app_colors.dart';
 import 'package:pilates_app/config/theme/app_radius.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/core/localization/localization_extension.dart';
+import 'package:pilates_app/features/progress_tracking_flow/data/models/progress_goal_settings.dart';
+import 'package:pilates_app/features/progress_tracking_flow/progrees_overview/cubit/progress_goal_cubit.dart';
+import 'package:pilates_app/features/progress_tracking_flow/progrees_overview/cubit/progress_goal_state.dart';
 import 'package:pilates_app/widgets/app_text.dart';
 
 import '../widget/goal_progress.dart';
@@ -45,9 +49,15 @@ class OverviewView extends StatelessWidget {
                     ),
                     InkWell(
                       onTap: () {
-                        Navigator.push(
+                        final goalCubit = context.read<ProgressGoalCubit>();
+                        Navigator.push<void>(
                           context,
-                          MaterialPageRoute(builder: (context) => EditGoal()),
+                          MaterialPageRoute<void>(
+                            builder: (_) => BlocProvider.value(
+                              value: goalCubit,
+                              child: const EditGoal(),
+                            ),
+                          ),
                         );
                       },
                       child: SvgPicture.asset(
@@ -61,30 +71,44 @@ class OverviewView extends StatelessWidget {
                 ),
                 SizedBox(height: AppSpacing.base),
 
-                ListTile(
-                  contentPadding: EdgeInsets.zero,
-                  leading: SvgPicture.asset(
-                    isDark
-                        ? "assets/images/svg/goal/ic_find_dark_minsfulness.svg"
-                        : "assets/images/svg/goal/ic_find_minsfulness.svg",
-                    height: 64,
-                    width: 64,
-                  ),
-                  title: AppText(
-                    context.l10n.findMindfulness,
-                    style: (context) => AppTextStyles.experienceButton(
-                      context,
-                    ).copyWith(fontSize: 18),
-                  ),
-                  subtitle: AppText(
-                    context.l10n.edit_goal_intermediate_level,
-                    style: (context) => AppTextStyles.body(context).copyWith(
-                      color: isDark
-                          ? AppColors.darkGreyText
-                          : AppColors.greyText,
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
+                BlocBuilder<ProgressGoalCubit, ProgressGoalState>(
+                  builder: (context, state) {
+                    final goal = state.goal;
+                    final title = goal?.goal != null && goal!.goal!.trim().isNotEmpty
+                        ? goal.goal!.trim()
+                        : context.l10n.findMindfulness;
+                    final subtitle = goal != null
+                        ? ProgressGoalSettings.experienceLabel(
+                            context.l10n,
+                            goal.experience,
+                          )
+                        : context.l10n.edit_goal_intermediate_level;
+                    return ListTile(
+                      contentPadding: EdgeInsets.zero,
+                      leading: SvgPicture.asset(
+                        isDark
+                            ? "assets/images/svg/goal/ic_find_dark_minsfulness.svg"
+                            : "assets/images/svg/goal/ic_find_minsfulness.svg",
+                        height: 64,
+                        width: 64,
+                      ),
+                      title: AppText(
+                        title,
+                        style: (context) => AppTextStyles.experienceButton(
+                          context,
+                        ).copyWith(fontSize: 18),
+                      ),
+                      subtitle: AppText(
+                        subtitle,
+                        style: (context) => AppTextStyles.body(context).copyWith(
+                          color: isDark
+                              ? AppColors.darkGreyText
+                              : AppColors.greyText,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                    );
+                  },
                 ),
                 SizedBox(height: AppSpacing.base),
 
