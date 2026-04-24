@@ -6,6 +6,7 @@ import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/widgets/app_text.dart';
 
 import '../../../core/localization/localization_extension.dart';
+import '../../../core/utils/support_launcher.dart';
 
 class HelpSupportBottomSheet extends StatelessWidget {
   const HelpSupportBottomSheet({super.key});
@@ -68,9 +69,10 @@ class HelpSupportBottomSheet extends StatelessWidget {
                           icon: Icons.chat_bubble_outline,
                           title: context.l10n.liveChat,
                           subtitle: context.l10n.liveChatDesc,
-                          onTap: () {
-                            Navigator.pop(context);
-                          },
+                          onTap: () => _openSupport(
+                            context,
+                            () => SupportLauncher.openWhatsApp(),
+                          ),
                         ),
                         const SizedBox(height: AppSpacing.md),
 
@@ -79,9 +81,10 @@ class HelpSupportBottomSheet extends StatelessWidget {
                           icon: Icons.alternate_email,
                           title: context.l10n.emailSupport,
                           subtitle: context.l10n.emailSupportDesc,
-                          onTap: () {
-                            Navigator.pop(context);
-                          },
+                          onTap: () => _openSupport(
+                            context,
+                            () => SupportLauncher.openEmail(),
+                          ),
                         ),
 
                         const SizedBox(height: AppSpacing.md),
@@ -91,9 +94,10 @@ class HelpSupportBottomSheet extends StatelessWidget {
                           icon: Icons.phone_outlined,
                           title: context.l10n.phoneSupport,
                           subtitle: context.l10n.phoneSupportDesc,
-                          onTap: () {
-                            Navigator.pop(context);
-                          },
+                          onTap: () => _openSupport(
+                            context,
+                            () => SupportLauncher.openPhone(),
+                          ),
                         ),
 
                         const SizedBox(height: AppSpacing.lg),
@@ -115,6 +119,25 @@ class HelpSupportBottomSheet extends StatelessWidget {
       ),
     );
   }
+}
+
+Future<void> _openSupport(
+  BuildContext context,
+  Future<bool> Function() launch,
+) async {
+  final messenger = ScaffoldMessenger.maybeOf(context);
+  final message = context.l10n.loginErrorGeneric;
+  Navigator.of(context).pop();
+  final ok = await launch();
+  if (ok) return;
+  messenger?.showSnackBar(
+    SnackBar(
+      content: AppText(
+        message,
+        style: AppTextStyles.body,
+      ),
+    ),
+  );
 }
 
 class _HelpOption extends StatelessWidget {

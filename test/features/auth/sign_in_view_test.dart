@@ -20,7 +20,7 @@ import 'fake_auth_repository.dart';
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  testWidgets('Email tab: successful login opens post-login setup', (tester) async {
+  testWidgets('Email tab: successful login opens home flow', (tester) async {
     SharedPreferences.setMockInitialValues({});
     final fake = FakeAuthRepository();
     fake.loginResult = ApiSuccess<LoginEmailResult>(
@@ -60,7 +60,7 @@ void main() {
     await tester.tap(find.byKey(const ValueKey('sign_in_submit')));
     await tester.pumpAndSettle();
 
-    expect(cubit.state.flow, AuthFlow.postLoginSetup);
+    expect(cubit.state.flow, AuthFlow.authenticated);
     expect(
       TokenStorage(await SharedPreferences.getInstance()).readToken(),
       'jwt-from-test',
@@ -69,7 +69,7 @@ void main() {
     await cubit.close();
   });
 
-  testWidgets('Phone tab: OTP request shows success path', (tester) async {
+  testWidgets('Phone tab: OTP request stores pending phone for OTP screen', (tester) async {
     SharedPreferences.setMockInitialValues({});
     final fake = FakeAuthRepository();
     fake.phoneOtpResult = const ApiSuccess<bool>(true);
@@ -113,6 +113,7 @@ void main() {
 
     expect(fake.phoneOtpCalls, 1);
     expect(cubit.state.loginUiStatus, LoginUiStatus.idle);
+    expect(cubit.state.signInPendingPhone, '+966500123456');
 
     await cubit.close();
   });

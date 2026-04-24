@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -25,6 +26,13 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final prefs = await SharedPreferences.getInstance();
   final tokenStorage = TokenStorage(prefs);
+  final authInitialState = initialAuthStateFromTokenStorage(tokenStorage);
+  if (kDebugMode) {
+    final t = tokenStorage.readToken();
+    if (t != null && t.trim().isNotEmpty) {
+      debugPrint('[Auth] access token (restored session): $t');
+    }
+  }
   final localeBridge = AuthLocaleBridge();
   final dio = DioClient(
     baseUrl: ApiConfig.baseUrl,
@@ -52,6 +60,7 @@ Future<void> main() async {
                     authRepository: authRepository,
                     tokenStorage: tokenStorage,
                     localeBridge: localeBridge,
+                    authInitialState: authInitialState,
                   ),
                 ),
               ),
@@ -69,11 +78,13 @@ class PilatesApp extends StatelessWidget {
     required this.authRepository,
     required this.tokenStorage,
     required this.localeBridge,
+    required this.authInitialState,
   });
 
   final AuthRepository authRepository;
   final TokenStorage tokenStorage;
   final AuthLocaleBridge localeBridge;
+  final AuthState authInitialState;
 
   @override
   Widget build(BuildContext context) {
@@ -82,6 +93,7 @@ class PilatesApp extends StatelessWidget {
         authRepository: authRepository,
         tokenStorage: tokenStorage,
         localeBridge: localeBridge,
+        seed: authInitialState,
       ),
       child: BlocBuilder<AuthCubit, AuthState>(
         builder: (context, state) {

@@ -11,8 +11,15 @@ import '../cubit/home_state.dart';
 
 class MembershipCard extends StatelessWidget {
   final HomeUserStatus status;
+  final String? planName;
+  final int? totalSessions;
 
-  const MembershipCard({super.key, required this.status});
+  const MembershipCard({
+    super.key,
+    required this.status,
+    this.planName,
+    this.totalSessions,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -91,7 +98,7 @@ class MembershipCard extends StatelessWidget {
                                     AppTextStyles.heading1(context).copyWith(
                                       color: AppColors.seekBarLight,
                                       fontSize: 16,
-                                      height: 1
+                                      height: 1,
                                     ),
                               ),
                               SizedBox(height: AppSpacing.sm),
@@ -197,14 +204,18 @@ class MembershipCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 AppText(
-                  context.l10n.premiumMember,
+                  (planName ?? '').trim().isNotEmpty
+                      ? planName!.trim()
+                      : context.l10n.premiumMember,
                   style: (context) => AppTextStyles.heading1(
                     context,
                   ).copyWith(color: AppColors.seekBarLight, fontSize: 16),
                 ),
                 SizedBox(height: 4),
                 AppText(
-                  context.l10n.unlimitedClasses,
+                  totalSessions != null
+                      ? '${totalSessions!} ${context.l10n.classes}'
+                      : context.l10n.unlimitedClasses,
                   style: (context) => AppTextStyles.captionText(
                     context,
                   ).copyWith(color: AppColors.lightGreyText),

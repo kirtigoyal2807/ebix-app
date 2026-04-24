@@ -5,11 +5,13 @@ import 'package:pilates_app/config/theme/app_spacing.dart';
 
 class OtpField extends StatefulWidget {
   final int length;
+  final ValueChanged<String>? onChanged;
   final void Function(String otp)? onCompleted;
 
   const OtpField({
     super.key,
     this.length = 4,
+    this.onChanged,
     this.onCompleted,
   });
 
@@ -47,8 +49,8 @@ class _OtpFieldState extends State<OtpField> {
       }
     }
 
-    final otp =
-    _controllers.map((c) => c.text).join();
+    final otp = _controllers.map((c) => c.text).join();
+    widget.onChanged?.call(otp);
 
     if (otp.length == widget.length) {
       widget.onCompleted?.call(otp);

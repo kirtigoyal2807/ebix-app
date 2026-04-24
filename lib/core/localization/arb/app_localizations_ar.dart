@@ -193,7 +193,15 @@ class AppLocalizationsAr extends AppLocalizations {
   String get verifyPhone => 'تأكيد رقم الهاتف';
 
   @override
-  String get enterCode => 'أدخل الرمز المكون من 4 أرقام المرسل إلى';
+  String get enterCode => 'أدخل الرمز المكون من 6 أرقام المرسل إلى';
+
+  @override
+  String get phoneVerificationMissingPhone =>
+      'رقم الهاتف غير متوفر. ارجع وأكمل التسجيل مرة أخرى.';
+
+  @override
+  String get phoneVerificationEnterSixDigits =>
+      'يُرجى إدخال رمز التحقق المكوّن من 6 أرقام.';
 
   @override
   String get continueTxt => 'متابعة';
@@ -342,8 +350,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get goal => 'الهدف';
 
   @override
-  String ofClassesThisMonth(int count) {
-    return 'من $count حصص هذا الشهر';
+  String ofClassesThisMonth(int attended, int count) {
+    return '$attended من $count حصص هذا الشهر';
   }
 
   @override
@@ -1058,6 +1066,10 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get logout => 'تسجيل الخروج';
+
+  @override
+  String get logoutConfirmationMessage =>
+      'هل أنت متأكد أنك تريد تسجيل الخروج من حسابك؟';
 
   @override
   String get appPreferences => 'تفضيلات التطبيق';
@@ -2705,6 +2717,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get pleaseEnterEmail => 'يُرجى إدخال بريدك الإلكتروني';
 
   @override
+  String get pleaseEnterValidEmail => 'يُرجى إدخال بريد إلكتروني صالح';
+
+  @override
   String get pleaseEnterPassword => 'يُرجى إدخال كلمة المرور';
 
   @override
@@ -2719,6 +2734,9 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get pleaseEnterFirstName => 'يُرجى إدخال اسمك الأول';
+
+  @override
+  String get pleaseEnterLastName => 'يُرجى إدخال اسم العائلة';
 
   @override
   String get forgotPasswordCodeSent =>
@@ -2742,4 +2760,17 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get retry => 'إعادة المحاولة';
+
+  @override
+  String get locationPermissionTitle => 'الوصول إلى الموقع';
+
+  @override
+  String get locationPermissionMessage =>
+      'إذن الموقع معطّل. يُرجى تفعيله من إعدادات التطبيق حتى نتمكن من اقتراح أقرب فرع إليك.';
+
+  @override
+  String get openSettings => 'فتح الإعدادات';
+
+  @override
+  String get notNow => 'ليس الآن';
 }

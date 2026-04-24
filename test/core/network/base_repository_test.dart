@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:pilates_app/core/network/api_result.dart';
 import 'package:pilates_app/core/network/network_exception.dart';
 
 import 'test_repository.dart';
@@ -83,7 +82,40 @@ void main() {
       final ex = result.exceptionOrNull!;
       expect(ex.type, NetworkFailureType.badResponse);
       expect(ex.statusCode, 404);
+      expect(ex.message, 'Not found');
       expect(ex.responseData, const {'message': 'Not found'});
+    });
+
+    test('POST: 400 non-envelope errors map first error message', () async {
+      final dio = createTestDio(
+        onRequest: (options, handler) {
+          handler.reject(
+            DioException(
+              requestOptions: options,
+              type: DioExceptionType.badResponse,
+              response: Response(
+                requestOptions: options,
+                statusCode: 400,
+                data: const {
+                  'errors': {
+                    'email': ['Email is invalid'],
+                  },
+                },
+              ),
+            ),
+          );
+        },
+      );
+      final repo = TestRepository(dio);
+
+      final result = await repo.post<Map<String, dynamic>>('/x', data: const {});
+
+      expect(result.isFailure, isTrue);
+      final ex = result.exceptionOrNull!;
+      expect(ex.message, 'Email is invalid');
+      expect(ex.fieldErrors, const {
+        'email': ['Email is invalid'],
+      });
     });
 
     test('GET: 500 maps to ApiFailure', () async {
@@ -218,6 +250,38 @@ void main() {
       expect(ex.type, NetworkFailureType.validation);
       expect(ex.statusCode, 422);
       expect(ex.fieldErrors, const {'email': ['invalid']});
+    });
+
+    test('POST: 422 envelope with empty message uses first field error',
+        () async {
+      final dio = createTestDio(
+        onRequest: (options, handler) {
+          handler.reject(
+            DioException(
+              requestOptions: options,
+              type: DioExceptionType.badResponse,
+              response: Response(
+                requestOptions: options,
+                statusCode: 422,
+                data: const {
+                  'success': false,
+                  'message': '',
+                  'errors': {
+                    'password': ['Password must be at least 8 chars'],
+                  },
+                },
+              ),
+            ),
+          );
+        },
+      );
+      final repo = TestRepository(dio);
+
+      final result = await repo.post<Map<String, dynamic>>('/x', data: const {});
+      expect(result.isFailure, isTrue);
+      final ex = result.exceptionOrNull!;
+      expect(ex.message, 'Password must be at least 8 chars');
+      expect(ex.type, NetworkFailureType.validation);
     });
 
     test('POST: 422 plain message (no envelope) maps to validation message', () async {

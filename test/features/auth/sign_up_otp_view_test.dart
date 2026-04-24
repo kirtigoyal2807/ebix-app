@@ -9,7 +9,9 @@ import 'package:pilates_app/core/storage/token_storage.dart';
 import 'package:pilates_app/features/auth/cubit/auth_cubit.dart';
 import 'package:pilates_app/features/auth/cubit/auth_flow.dart';
 import 'package:pilates_app/features/auth/cubit/auth_state.dart';
-import 'package:pilates_app/features/auth/sign_up/step_personal_info_view.dart';
+import 'package:pilates_app/features/auth/data/models/auth_user.dart';
+import 'package:pilates_app/features/auth/data/models/login_email_result.dart';
+import 'package:pilates_app/features/auth/sign_up/step_otp_view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'fake_auth_repository.dart';
@@ -17,18 +19,26 @@ import 'fake_auth_repository.dart';
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  testWidgets('Continue calls register and advances to OTP step', (tester) async {
+  testWidgets('SignUpOtpView verify submits 6-digit code and advances', (tester) async {
     SharedPreferences.setMockInitialValues({});
+    final prefs = await SharedPreferences.getInstance();
+    final storage = TokenStorage(prefs);
     final fake = FakeAuthRepository();
-    fake.registerResult = const ApiSuccess<bool>(true);
+    fake.verifyPhoneOtpResult = ApiSuccess<LoginEmailResult>(
+      LoginEmailResult(
+        user: AuthUser(email: 'u@example.com', phone: '+966500000001'),
+        token: 'otp-test-token',
+      ),
+    );
 
     final cubit = AuthCubit.forTesting(
       authRepository: fake,
-      tokenStorage: TokenStorage(await SharedPreferences.getInstance()),
+      tokenStorage: storage,
       localeBridge: AuthLocaleBridge(),
       seed: AuthState.initial().copyWith(
         flow: AuthFlow.signUp,
-        signUpStep: 0,
+        signUpStep: 1,
+        signUpPendingPhone: '+966500000001',
       ),
     );
 
@@ -43,43 +53,26 @@ void main() {
         locale: const Locale('en'),
         home: BlocProvider<AuthCubit>.value(
           value: cubit,
-          child: const SignUpPersonalInfoView(),
+          child: const SignUpOtpView(),
         ),
       ),
     );
 
-    await tester.enterText(
-      find.byKey(const ValueKey('signup_firstName')),
-      'Noor',
-    );
-    await tester.enterText(
-      find.byKey(const ValueKey('signup_lastName')),
-      'Ali',
-    );
-    await tester.enterText(
-      find.byKey(const ValueKey('signup_email')),
-      'noor@example.com',
-    );
-    await tester.enterText(
-      find.byKey(const ValueKey('signup_password')),
-      'Secret@123',
-    );
-    await tester.enterText(
-      find.descendant(
-        of: find.byKey(const ValueKey('signup_phone')),
-        matching: find.byType(TextField),
-      ),
-      '500000001',
-    );
-
-    await tester.tap(find.byKey(const ValueKey('signup_continue')));
     await tester.pumpAndSettle();
 
-    expect(cubit.state.signUpStep, 1);
-    expect(cubit.state.signUpPendingPhone, '+966500000001');
-    expect(fake.registerCalls, 1);
-    expect(fake.lastRegisterEmail, 'noor@example.com');
-    expect(fake.lastRegisterPhone, '+966500000001');
+    final fields = find.byType(TextField);
+    expect(fields, findsNWidgets(6));
+    const code = '987654';
+    for (var i = 0; i < 6; i++) {
+      await tester.enterText(fields.at(i), code.substring(i, i + 1));
+      await tester.pump();
+    }
+    await tester.pumpAndSettle();
+
+    expect(cubit.state.signUpStep, 2);
+    expect(fake.verifyPhoneOtpCalls, 1);
+    expect(fake.lastVerifyPhoneOtpCode, code);
+    expect(storage.readToken(), 'otp-test-token');
 
     await cubit.close();
   });

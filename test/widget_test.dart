@@ -6,6 +6,7 @@ import 'package:pilates_app/core/constants/api_config.dart';
 import 'package:pilates_app/core/network/auth_locale_bridge.dart';
 import 'package:pilates_app/core/network/dio_client.dart';
 import 'package:pilates_app/core/storage/token_storage.dart';
+import 'package:pilates_app/features/auth/cubit/auth_state.dart';
 import 'package:pilates_app/features/auth/data/auth_repository.dart';
 import 'package:pilates_app/main.dart';
 
@@ -23,12 +24,14 @@ void main() {
       accessToken: () => tokenStorage.readToken(),
     ).dio;
     final authRepository = AuthRepository(dio);
+    final authInitialState = initialAuthStateFromTokenStorage(tokenStorage);
 
     await tester.pumpWidget(
       PilatesApp(
         authRepository: authRepository,
         tokenStorage: tokenStorage,
         localeBridge: localeBridge,
+        authInitialState: authInitialState,
       ),
     );
 

@@ -461,8 +461,20 @@ abstract class AppLocalizations {
   /// No description provided for @enterCode.
   ///
   /// In en, this message translates to:
-  /// **'Enter the 4-digit code sent to'**
+  /// **'Enter the 6-digit code sent to'**
   String get enterCode;
+
+  /// No description provided for @phoneVerificationMissingPhone.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone number is missing. Go back and continue registration again.'**
+  String get phoneVerificationMissingPhone;
+
+  /// No description provided for @phoneVerificationEnterSixDigits.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter the 6-digit verification code.'**
+  String get phoneVerificationEnterSixDigits;
 
   /// No description provided for @continueTxt.
   ///
@@ -749,8 +761,8 @@ abstract class AppLocalizations {
   /// No description provided for @ofClassesThisMonth.
   ///
   /// In en, this message translates to:
-  /// **'of {count} classes this month'**
-  String ofClassesThisMonth(int count);
+  /// **'{attended} of {count} classes this month'**
+  String ofClassesThisMonth(int attended, int count);
 
   /// No description provided for @featuredClass.
   ///
@@ -2089,6 +2101,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Logout'**
   String get logout;
+
+  /// No description provided for @logoutConfirmationMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to log out of your account?'**
+  String get logoutConfirmationMessage;
 
   /// No description provided for @appPreferences.
   ///
@@ -5198,6 +5216,12 @@ abstract class AppLocalizations {
   /// **'Please enter your email'**
   String get pleaseEnterEmail;
 
+  /// No description provided for @pleaseEnterValidEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a valid email address'**
+  String get pleaseEnterValidEmail;
+
   /// No description provided for @pleaseEnterPassword.
   ///
   /// In en, this message translates to:
@@ -5227,6 +5251,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Please enter your first name'**
   String get pleaseEnterFirstName;
+
+  /// No description provided for @pleaseEnterLastName.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your last name'**
+  String get pleaseEnterLastName;
 
   /// No description provided for @forgotPasswordCodeSent.
   ///
@@ -5269,6 +5299,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Retry'**
   String get retry;
+
+  /// No description provided for @locationPermissionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Location Access'**
+  String get locationPermissionTitle;
+
+  /// No description provided for @locationPermissionMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Location permission is disabled. Please enable it in app settings so we can suggest the nearest branch.'**
+  String get locationPermissionMessage;
+
+  /// No description provided for @openSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Open Settings'**
+  String get openSettings;
+
+  /// No description provided for @notNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Not Now'**
+  String get notNow;
 }
 
 class _AppLocalizationsDelegate

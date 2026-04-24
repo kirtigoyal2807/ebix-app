@@ -10,6 +10,7 @@ import 'models/branch.dart';
 import 'models/login_email_result.dart';
 import 'models/pagination_meta.dart';
 import 'models/register_gender.dart';
+import 'models/auth_user.dart';
 
 /// Pilates API — auth endpoints.
 class AuthRepository extends BaseRepository {
@@ -37,6 +38,31 @@ class AuthRepository extends BaseRepository {
       '/auth/login',
       data: {'phone': phone},
       fromJson: (_) => true,
+    );
+  }
+
+  /// Resend phone OTP (sign-up or sign-in flow). Body: [phone] only.
+  Future<ApiResult<bool>> sendPhoneOtp({required String phone}) {
+    return post<bool>(
+      '/auth/phone/send',
+      data: {'phone': phone.trim()},
+      fromJson: (_) => true,
+    );
+  }
+
+  /// Verify sign-up / login phone OTP — on success envelope `data` has `user` + `token`.
+  Future<ApiResult<LoginEmailResult>> verifyPhoneOtp({
+    required String phone,
+    required String code,
+  }) {
+    return post<LoginEmailResult>(
+      '/auth/phone/verify',
+      data: {
+        'phone': phone.trim(),
+        'code': code.trim(),
+      },
+      fromJson: (json) =>
+          LoginEmailResult.fromJson(json as Map<String, dynamic>),
     );
   }
 
@@ -86,7 +112,20 @@ class AuthRepository extends BaseRepository {
     );
   }
 
+  /// Resend email OTP (forgot-password OTP screen). Body: [email] only.
+  ///
+  /// Debug backends may accept verification code `000000`.
+  Future<ApiResult<bool>> sendEmailVerification({required String email}) {
+    return post<bool>(
+      '/auth/email/send',
+      data: {'email': email.trim()},
+      fromJson: (_) => true,
+    );
+  }
+
   /// Step 2 — verify code from email (10 min window).
+  ///
+  /// Debug backends may accept code `000000`.
   Future<ApiResult<bool>> verifyEmailCode({
     required String email,
     required String code,
@@ -212,6 +251,22 @@ class AuthRepository extends BaseRepository {
       '/auth/home-branch',
       data: {'homeBranchId': homeBranchId},
       fromJson: (_) => true,
+    );
+  }
+
+  /// Invalidate server session — requires JWT (Bearer via [DioClient]).
+  Future<ApiResult<bool>> logout() {
+    return post<bool>(
+      '/auth/logout',
+      fromJson: (_) => true,
+    );
+  }
+
+  /// Customer profile — requires JWT (saved after login).
+  Future<ApiResult<AuthUser>> getProfile() {
+    return get<AuthUser>(
+      '/me',
+      fromJson: (json) => AuthUser.fromJson(json as Map<String, dynamic>),
     );
   }
 

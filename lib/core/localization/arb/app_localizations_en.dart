@@ -197,7 +197,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get verifyPhone => 'Verify your phone';
 
   @override
-  String get enterCode => 'Enter the 4-digit code sent to';
+  String get enterCode => 'Enter the 6-digit code sent to';
+
+  @override
+  String get phoneVerificationMissingPhone =>
+      'Phone number is missing. Go back and continue registration again.';
+
+  @override
+  String get phoneVerificationEnterSixDigits =>
+      'Please enter the 6-digit verification code.';
 
   @override
   String get continueTxt => 'Continue';
@@ -347,8 +355,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get goal => 'Goal';
 
   @override
-  String ofClassesThisMonth(int count) {
-    return 'of $count classes this month';
+  String ofClassesThisMonth(int attended, int count) {
+    return '$attended of $count classes this month';
   }
 
   @override
@@ -1068,6 +1076,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get logout => 'Logout';
+
+  @override
+  String get logoutConfirmationMessage =>
+      'Are you sure you want to log out of your account?';
 
   @override
   String get appPreferences => 'App Preferences';
@@ -2724,6 +2736,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get pleaseEnterEmail => 'Please enter your email';
 
   @override
+  String get pleaseEnterValidEmail => 'Please enter a valid email address';
+
+  @override
   String get pleaseEnterPassword => 'Please enter your password';
 
   @override
@@ -2738,6 +2753,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get pleaseEnterFirstName => 'Please enter your first name';
+
+  @override
+  String get pleaseEnterLastName => 'Please enter your last name';
 
   @override
   String get forgotPasswordCodeSent => 'A 6-digit code was sent to your email.';
@@ -2760,4 +2778,17 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get retry => 'Retry';
+
+  @override
+  String get locationPermissionTitle => 'Location Access';
+
+  @override
+  String get locationPermissionMessage =>
+      'Location permission is disabled. Please enable it in app settings so we can suggest the nearest branch.';
+
+  @override
+  String get openSettings => 'Open Settings';
+
+  @override
+  String get notNow => 'Not Now';
 }

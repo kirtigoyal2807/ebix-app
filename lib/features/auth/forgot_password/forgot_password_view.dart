@@ -7,6 +7,7 @@ import 'package:pilates_app/widgets/app_app_bar.dart';
 import 'package:pilates_app/widgets/app_button.dart';
 import 'package:pilates_app/widgets/app_scaffold.dart';
 import 'package:pilates_app/widgets/app_text_field.dart';
+import 'package:pilates_app/core/utils/input_validators.dart';
 
 import '../../../core/localization/localization_extension.dart';
 import '../sign_up/widgets/sign_up_header.dart';
@@ -42,9 +43,13 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
     final l10n = context.l10n;
     final email = _emailController.text.trim();
     setState(() {
-      _clientEmailError = email.isEmpty ? l10n.pleaseEnterEmail : null;
+      _clientEmailError = email.isEmpty
+          ? l10n.pleaseEnterEmail
+          : (InputValidators.isValidEmail(email)
+                ? null
+                : l10n.pleaseEnterValidEmail);
     });
-    if (email.isEmpty) return;
+    if (email.isEmpty || !InputValidators.isValidEmail(email)) return;
 
     await context.read<AuthCubit>().requestForgotPassword(email);
   }
@@ -58,12 +63,14 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
       },
       listener: (context, state) {
         if (state.forgotPasswordFieldErrors.isNotEmpty) return;
-        if (state.forgotPasswordEmail.isNotEmpty &&
+        if (state.showForgotPasswordOtp &&
+            state.forgotPasswordEmail.isNotEmpty &&
             state.forgotPasswordErrorMessage.isEmpty) {
+          final email = state.forgotPasswordEmail;
+          context.read<AuthCubit>().clearForgotPasswordOtpOffer();
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text(context.l10n.forgotPasswordCodeSent)),
           );
-          final email = state.forgotPasswordEmail;
           Navigator.of(context).push(
             MaterialPageRoute<void>(
               builder: (_) => ForgotOtpView(email: email),

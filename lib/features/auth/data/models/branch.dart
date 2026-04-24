@@ -8,6 +8,9 @@ class Branch extends Equatable {
     required this.city,
     required this.distance,
     required this.typeLabel,
+    this.lat,
+    this.lng,
+    this.imageUrl,
   });
 
   final int id;
@@ -15,6 +18,9 @@ class Branch extends Equatable {
   final String city;
   final String distance;
   final String typeLabel;
+  final double? lat;
+  final double? lng;
+  final String? imageUrl;
 
   factory Branch.fromJson(Map<String, dynamic> json) {
     return Branch(
@@ -22,8 +28,11 @@ class Branch extends Equatable {
       title: _string(json['name'] ?? json['title'] ?? json['branch_name']),
       city: _string(json['city'] ?? json['city_name'] ?? json['address']),
       distance: _string(json['distance_label'] ?? json['distance'] ?? json['km_away']),
-      typeLabel: _string(
-        json['type'] ?? json['branch_type'] ?? json['tier'] ?? json['label'] ?? 'Standard',
+      typeLabel: _typeLabelFromJson(json),
+      lat: _asDouble(json['lat'] ?? json['latitude']),
+      lng: _asDouble(json['lng'] ?? json['longitude']),
+      imageUrl: _nullableString(
+        json['image_url'] ?? json['imageUrl'] ?? json['image'] ?? json['photo'],
       ),
     );
   }
@@ -40,6 +49,31 @@ class Branch extends Equatable {
     return s;
   }
 
+  static String _typeLabelFromJson(Map<String, dynamic> json) {
+    final type = _string(
+      json['branchLabel'] ??
+          json['branch_label'] ??
+          json['type'] ??
+          json['branch_type'] ??
+          json['tier'] ??
+          json['label'],
+    );
+    return type.isEmpty ? 'Premium' : type;
+  }
+
+  static String? _nullableString(dynamic v) {
+    if (v == null) return null;
+    final s = '$v'.trim();
+    return s.isEmpty ? null : s;
+  }
+
+  static double? _asDouble(dynamic v) {
+    if (v == null) return null;
+    if (v is double) return v;
+    if (v is num) return v.toDouble();
+    return double.tryParse('$v');
+  }
+
   @override
-  List<Object?> get props => [id, title, city, distance, typeLabel];
+  List<Object?> get props => [id, title, city, distance, typeLabel, lat, lng, imageUrl];
 }

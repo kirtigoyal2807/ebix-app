@@ -4,6 +4,7 @@ import 'package:pilates_app/core/network/network_exception.dart';
 import 'package:pilates_app/features/auth/data/auth_repository.dart';
 import 'package:pilates_app/features/auth/data/models/branches_list_result.dart';
 import 'package:pilates_app/features/auth/data/models/branch.dart';
+import 'package:pilates_app/features/auth/data/models/auth_user.dart';
 import 'package:pilates_app/features/auth/data/models/login_email_result.dart';
 import 'package:pilates_app/features/auth/data/models/register_gender.dart';
 
@@ -15,8 +16,16 @@ class FakeAuthRepository extends AuthRepository {
     NetworkException(type: NetworkFailureType.unknown, message: 'unset'),
   );
   ApiResult<bool> registerResult = const ApiSuccess<bool>(true);
+  ApiResult<LoginEmailResult> verifyPhoneOtpResult = ApiSuccess<LoginEmailResult>(
+    LoginEmailResult(
+      user: AuthUser(email: 'verified@example.com', phone: '+966500000000'),
+      token: 'phone-verify-jwt',
+    ),
+  );
   ApiResult<bool> phoneOtpResult = const ApiSuccess<bool>(true);
+  ApiResult<bool> sendPhoneOtpResult = const ApiSuccess<bool>(true);
   ApiResult<bool> passwordForgotResult = const ApiSuccess<bool>(true);
+  ApiResult<bool> sendEmailVerificationResult = const ApiSuccess<bool>(true);
   ApiResult<bool> verifyEmailCodeResult = const ApiSuccess<bool>(true);
   ApiResult<bool> resetPasswordResult = const ApiSuccess<bool>(true);
   ApiResult<bool> submitUserGoalResult = const ApiSuccess<bool>(true);
@@ -34,20 +43,30 @@ class FakeAuthRepository extends AuthRepository {
     ),
   );
   ApiResult<bool> setHomeBranchResult = const ApiSuccess<bool>(true);
+  ApiResult<bool> logoutResult = const ApiSuccess<bool>(true);
 
   int loginCalls = 0;
   int registerCalls = 0;
+  int verifyPhoneOtpCalls = 0;
   int phoneOtpCalls = 0;
+  int sendPhoneOtpCalls = 0;
   int passwordForgotCalls = 0;
+  int sendEmailVerificationCalls = 0;
   int verifyEmailCodeCalls = 0;
   int resetPasswordCalls = 0;
   int submitUserGoalCalls = 0;
   int listBranchesCalls = 0;
   int setHomeBranchCalls = 0;
+  int logoutCalls = 0;
 
   String? lastLoginEmail;
   String? lastRegisterEmail;
+  String? lastRegisterPhone;
+  String? lastVerifyPhoneOtpPhone;
+  String? lastVerifyPhoneOtpCode;
+  String? lastSendPhoneOtpPhone;
   String? lastForgotEmail;
+  String? lastSendEmailVerificationEmail;
   String? lastVerifyEmail;
   String? lastVerifyCode;
   String? lastResetEmail;
@@ -80,7 +99,19 @@ class FakeAuthRepository extends AuthRepository {
   }) async {
     registerCalls++;
     lastRegisterEmail = email;
+    lastRegisterPhone = phone;
     return registerResult;
+  }
+
+  @override
+  Future<ApiResult<LoginEmailResult>> verifyPhoneOtp({
+    required String phone,
+    required String code,
+  }) async {
+    verifyPhoneOtpCalls++;
+    lastVerifyPhoneOtpPhone = phone;
+    lastVerifyPhoneOtpCode = code;
+    return verifyPhoneOtpResult;
   }
 
   @override
@@ -90,10 +121,24 @@ class FakeAuthRepository extends AuthRepository {
   }
 
   @override
+  Future<ApiResult<bool>> sendPhoneOtp({required String phone}) async {
+    sendPhoneOtpCalls++;
+    lastSendPhoneOtpPhone = phone;
+    return sendPhoneOtpResult;
+  }
+
+  @override
   Future<ApiResult<bool>> requestPasswordForgot({required String email}) async {
     passwordForgotCalls++;
     lastForgotEmail = email;
     return passwordForgotResult;
+  }
+
+  @override
+  Future<ApiResult<bool>> sendEmailVerification({required String email}) async {
+    sendEmailVerificationCalls++;
+    lastSendEmailVerificationEmail = email;
+    return sendEmailVerificationResult;
   }
 
   @override
@@ -146,5 +191,11 @@ class FakeAuthRepository extends AuthRepository {
     setHomeBranchCalls++;
     lastHomeBranchId = homeBranchId;
     return setHomeBranchResult;
+  }
+
+  @override
+  Future<ApiResult<bool>> logout() async {
+    logoutCalls++;
+    return logoutResult;
   }
 }

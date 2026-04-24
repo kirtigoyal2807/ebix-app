@@ -1,60 +1,60 @@
 import 'package:equatable/equatable.dart';
+import 'package:pilates_app/features/booking/cubit/booking_state.dart';
+
+import '../data/models/home_response.dart';
 
 enum HomeUserStatus { empty, existing, expired }
 
+enum HomeLoadStatus { initial, loading, loaded, failure }
+
 class HomeState extends Equatable {
-  final HomeUserStatus status;
-  final String userName;
-  final int classesDone;
-  final double totalHours;
-  final int goalClasses;
   final int currentIndex;
+  final HomeLoadStatus loadStatus;
+  final String errorMessage;
+  final HomeResponse? data;
+  final BookingTab selectedBookingTab;
 
   const HomeState({
-    required this.status,
-    required this.userName,
-    required this.classesDone,
-    required this.totalHours,
-    required this.goalClasses,
     required this.currentIndex,
+    required this.loadStatus,
+    required this.errorMessage,
+    required this.data,
+    required this.selectedBookingTab,
   });
 
   factory HomeState.initial() {
     return const HomeState(
-      status: HomeUserStatus.existing, // Default for testing all UI elements
-      userName: "Rachel",
-      classesDone: 12,
-      totalHours: 8.5,
-      goalClasses: 16,
       currentIndex: 0,
+      loadStatus: HomeLoadStatus.initial,
+      errorMessage: '',
+      data: null,
+      selectedBookingTab: BookingTab.classes,
     );
   }
 
   HomeState copyWith({
-    HomeUserStatus? status,
-    String? userName,
-    int? classesDone,
-    double? totalHours,
-    int? goalClasses,
     int? currentIndex,
+    HomeLoadStatus? loadStatus,
+    String? errorMessage,
+    HomeResponse? data,
+    BookingTab? selectedBookingTab,
+    bool clearData = false,
   }) {
     return HomeState(
-      status: status ?? this.status,
-      userName: userName ?? this.userName,
-      classesDone: classesDone ?? this.classesDone,
-      totalHours: totalHours ?? this.totalHours,
-      goalClasses: goalClasses ?? this.goalClasses,
       currentIndex: currentIndex ?? this.currentIndex,
+      loadStatus: loadStatus ?? this.loadStatus,
+      errorMessage: errorMessage ?? this.errorMessage,
+      data: clearData ? null : (data ?? this.data),
+      selectedBookingTab: selectedBookingTab ?? this.selectedBookingTab,
     );
   }
 
   @override
   List<Object?> get props => [
-    status,
-    userName,
-    classesDone,
-    totalHours,
-    goalClasses,
     currentIndex,
+    loadStatus,
+    errorMessage,
+    data,
+    selectedBookingTab,
   ];
 }

@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:pilates_app/core/storage/token_storage.dart';
 import 'package:pilates_app/features/auth/data/models/auth_user.dart';
 import 'package:pilates_app/features/auth/data/models/branch.dart';
 import 'package:pilates_app/features/auth/data/models/pagination_meta.dart';
@@ -18,6 +19,11 @@ enum SignUpBranchesLoadStatus { idle, loading, loaded, failure }
 
 enum SignUpHomeBranchStatus { idle, loading }
 
+enum SignUpPhoneOtpUiStatus { idle, loading }
+
+/// `/auth/phone/send` (resend code) — separate from verify loading.
+enum PhoneOtpSendUiStatus { idle, loading }
+
 class AuthState extends Equatable {
   final AuthFlow flow;
   final int signUpStep; // 0 → 4
@@ -30,6 +36,7 @@ class AuthState extends Equatable {
   final String loginErrorMessage;
 
   final Map<String, String> loginFieldErrors;
+  final String signInPendingPhone;
 
   final AuthUser? user;
 
@@ -52,6 +59,9 @@ class AuthState extends Equatable {
   /// `true` after `POST /auth/email/verify` succeeds (step 2).
   final bool forgotEmailCodeVerified;
 
+  /// One-shot: [AuthCubit.requestForgotPassword] succeeded — [ForgotPasswordView] opens OTP then clears.
+  final bool showForgotPasswordOtp;
+
   /// After email login: 0 = experience, 1 = goals (+ API).
   final int postLoginStep;
 
@@ -64,6 +74,16 @@ class AuthState extends Equatable {
 
   /// Sign-up step 2→3: API `experience` for [submitUserGoal] on [SignUpGoalView].
   final String signUpExperience;
+
+  /// Phone (E.164) pending `POST /auth/phone/verify` after [`POST /auth/register`].
+  final String signUpPendingPhone;
+
+  final SignUpPhoneOtpUiStatus signUpPhoneOtpUiStatus;
+  final String signUpPhoneOtpErrorMessage;
+  final Map<String, String> signUpPhoneOtpFieldErrors;
+
+  final PhoneOtpSendUiStatus phoneOtpSendUiStatus;
+  final String phoneOtpSendErrorMessage;
 
   /// Sign-up branch step: `GET /branches` + `POST /auth/home-branch`.
   final SignUpBranchesLoadStatus signUpBranchesLoadStatus;
@@ -83,6 +103,7 @@ class AuthState extends Equatable {
     required this.loginUiStatus,
     required this.loginErrorMessage,
     required this.loginFieldErrors,
+    required this.signInPendingPhone,
     this.user,
     required this.showPhoneOtpSuccess,
     required this.registerUiStatus,
@@ -94,12 +115,19 @@ class AuthState extends Equatable {
     required this.forgotPasswordErrorMessage,
     required this.forgotPasswordFieldErrors,
     required this.forgotEmailCodeVerified,
+    required this.showForgotPasswordOtp,
     required this.postLoginStep,
     required this.postLoginExperience,
     required this.postLoginGoalUiStatus,
     required this.postLoginGoalErrorMessage,
     required this.postLoginGoalFieldErrors,
     required this.signUpExperience,
+    required this.signUpPendingPhone,
+    required this.signUpPhoneOtpUiStatus,
+    required this.signUpPhoneOtpErrorMessage,
+    required this.signUpPhoneOtpFieldErrors,
+    required this.phoneOtpSendUiStatus,
+    required this.phoneOtpSendErrorMessage,
     required this.signUpBranchesLoadStatus,
     required this.signUpBranches,
     this.signUpBranchesPagination,
@@ -119,6 +147,7 @@ class AuthState extends Equatable {
       loginUiStatus: LoginUiStatus.idle,
       loginErrorMessage: '',
       loginFieldErrors: {},
+      signInPendingPhone: '',
       user: null,
       showPhoneOtpSuccess: false,
       registerUiStatus: RegisterUiStatus.idle,
@@ -130,12 +159,19 @@ class AuthState extends Equatable {
       forgotPasswordErrorMessage: '',
       forgotPasswordFieldErrors: {},
       forgotEmailCodeVerified: false,
+      showForgotPasswordOtp: false,
       postLoginStep: 0,
       postLoginExperience: '',
       postLoginGoalUiStatus: PostLoginGoalUiStatus.idle,
       postLoginGoalErrorMessage: '',
       postLoginGoalFieldErrors: {},
       signUpExperience: '',
+      signUpPendingPhone: '',
+      signUpPhoneOtpUiStatus: SignUpPhoneOtpUiStatus.idle,
+      signUpPhoneOtpErrorMessage: '',
+      signUpPhoneOtpFieldErrors: {},
+      phoneOtpSendUiStatus: PhoneOtpSendUiStatus.idle,
+      phoneOtpSendErrorMessage: '',
       signUpBranchesLoadStatus: SignUpBranchesLoadStatus.idle,
       signUpBranches: [],
       signUpBranchesPagination: null,
@@ -155,6 +191,8 @@ class AuthState extends Equatable {
     LoginUiStatus? loginUiStatus,
     String? loginErrorMessage,
     Map<String, String>? loginFieldErrors,
+    String? signInPendingPhone,
+    bool clearSignInPendingPhone = false,
     AuthUser? user,
     bool clearUser = false,
     bool? showPhoneOtpSuccess,
@@ -167,12 +205,20 @@ class AuthState extends Equatable {
     String? forgotPasswordErrorMessage,
     Map<String, String>? forgotPasswordFieldErrors,
     bool? forgotEmailCodeVerified,
+    bool? showForgotPasswordOtp,
     int? postLoginStep,
     String? postLoginExperience,
     PostLoginGoalUiStatus? postLoginGoalUiStatus,
     String? postLoginGoalErrorMessage,
     Map<String, String>? postLoginGoalFieldErrors,
     String? signUpExperience,
+    String? signUpPendingPhone,
+    bool clearSignUpPendingPhone = false,
+    SignUpPhoneOtpUiStatus? signUpPhoneOtpUiStatus,
+    String? signUpPhoneOtpErrorMessage,
+    Map<String, String>? signUpPhoneOtpFieldErrors,
+    PhoneOtpSendUiStatus? phoneOtpSendUiStatus,
+    String? phoneOtpSendErrorMessage,
     SignUpBranchesLoadStatus? signUpBranchesLoadStatus,
     List<Branch>? signUpBranches,
     PaginationMeta? signUpBranchesPagination,
@@ -192,6 +238,9 @@ class AuthState extends Equatable {
       loginUiStatus: loginUiStatus ?? this.loginUiStatus,
       loginErrorMessage: loginErrorMessage ?? this.loginErrorMessage,
       loginFieldErrors: loginFieldErrors ?? this.loginFieldErrors,
+      signInPendingPhone: clearSignInPendingPhone
+          ? ''
+          : (signInPendingPhone ?? this.signInPendingPhone),
       user: clearUser ? null : (user ?? this.user),
       showPhoneOtpSuccess: showPhoneOtpSuccess ?? this.showPhoneOtpSuccess,
       registerUiStatus: registerUiStatus ?? this.registerUiStatus,
@@ -209,6 +258,7 @@ class AuthState extends Equatable {
           forgotPasswordFieldErrors ?? this.forgotPasswordFieldErrors,
       forgotEmailCodeVerified:
           forgotEmailCodeVerified ?? this.forgotEmailCodeVerified,
+      showForgotPasswordOtp: showForgotPasswordOtp ?? this.showForgotPasswordOtp,
       postLoginStep: postLoginStep ?? this.postLoginStep,
       postLoginExperience: postLoginExperience ?? this.postLoginExperience,
       postLoginGoalUiStatus:
@@ -218,6 +268,18 @@ class AuthState extends Equatable {
       postLoginGoalFieldErrors:
           postLoginGoalFieldErrors ?? this.postLoginGoalFieldErrors,
       signUpExperience: signUpExperience ?? this.signUpExperience,
+      signUpPendingPhone: clearSignUpPendingPhone
+          ? ''
+          : (signUpPendingPhone ?? this.signUpPendingPhone),
+      signUpPhoneOtpUiStatus:
+          signUpPhoneOtpUiStatus ?? this.signUpPhoneOtpUiStatus,
+      signUpPhoneOtpErrorMessage:
+          signUpPhoneOtpErrorMessage ?? this.signUpPhoneOtpErrorMessage,
+      signUpPhoneOtpFieldErrors:
+          signUpPhoneOtpFieldErrors ?? this.signUpPhoneOtpFieldErrors,
+      phoneOtpSendUiStatus: phoneOtpSendUiStatus ?? this.phoneOtpSendUiStatus,
+      phoneOtpSendErrorMessage:
+          phoneOtpSendErrorMessage ?? this.phoneOtpSendErrorMessage,
       signUpBranchesLoadStatus:
           signUpBranchesLoadStatus ?? this.signUpBranchesLoadStatus,
       signUpBranches: signUpBranches ?? this.signUpBranches,
@@ -246,6 +308,7 @@ class AuthState extends Equatable {
       forgotPasswordErrorMessage: '',
       forgotPasswordFieldErrors: {},
       forgotEmailCodeVerified: false,
+      showForgotPasswordOtp: false,
     );
   }
 
@@ -257,6 +320,19 @@ class AuthState extends Equatable {
       postLoginGoalUiStatus: PostLoginGoalUiStatus.idle,
       postLoginGoalErrorMessage: '',
       postLoginGoalFieldErrors: {},
+    );
+  }
+
+  /// Clears phone-login OTP draft (when leaving sign-in or returning to phone form).
+  AuthState clearedSignInPhoneVerification() {
+    return copyWith(
+      clearSignInPendingPhone: true,
+      loginUiStatus: LoginUiStatus.idle,
+      loginErrorMessage: '',
+      loginFieldErrors: {},
+      showPhoneOtpSuccess: false,
+      phoneOtpSendUiStatus: PhoneOtpSendUiStatus.idle,
+      phoneOtpSendErrorMessage: '',
     );
   }
 
@@ -273,6 +349,18 @@ class AuthState extends Equatable {
     );
   }
 
+  /// Clears phone OTP step draft (when leaving sign-up or restarting).
+  AuthState clearedSignUpPhoneVerification() {
+    return copyWith(
+      clearSignUpPendingPhone: true,
+      signUpPhoneOtpUiStatus: SignUpPhoneOtpUiStatus.idle,
+      signUpPhoneOtpErrorMessage: '',
+      signUpPhoneOtpFieldErrors: {},
+      phoneOtpSendUiStatus: PhoneOtpSendUiStatus.idle,
+      phoneOtpSendErrorMessage: '',
+    );
+  }
+
   @override
   List<Object?> get props => [
         flow,
@@ -282,6 +370,7 @@ class AuthState extends Equatable {
         loginUiStatus,
         loginErrorMessage,
         loginFieldErrors,
+        signInPendingPhone,
         user,
         showPhoneOtpSuccess,
         registerUiStatus,
@@ -293,12 +382,19 @@ class AuthState extends Equatable {
         forgotPasswordErrorMessage,
         forgotPasswordFieldErrors,
         forgotEmailCodeVerified,
+        showForgotPasswordOtp,
         postLoginStep,
         postLoginExperience,
         postLoginGoalUiStatus,
         postLoginGoalErrorMessage,
         postLoginGoalFieldErrors,
         signUpExperience,
+        signUpPendingPhone,
+        signUpPhoneOtpUiStatus,
+        signUpPhoneOtpErrorMessage,
+        signUpPhoneOtpFieldErrors,
+        phoneOtpSendUiStatus,
+        phoneOtpSendErrorMessage,
         signUpBranchesLoadStatus,
         signUpBranches,
         signUpBranchesPagination,
@@ -308,4 +404,13 @@ class AuthState extends Equatable {
         signUpHomeBranchFieldErrors,
         selectedSignUpBranchId,
       ];
+}
+
+/// Cold-start [AuthState] from persisted JWT — must stay in sync with [main] / [AuthCubit] seeding.
+AuthState initialAuthStateFromTokenStorage(TokenStorage tokenStorage) {
+  final hasSavedSession =
+      (tokenStorage.readToken() ?? '').trim().isNotEmpty;
+  return AuthState.initial().copyWith(
+    flow: hasSavedSession ? AuthFlow.authenticated : AuthFlow.splash,
+  );
 }

@@ -61,7 +61,9 @@
   "secureYourAccount": "Secure your account",
   "createPassword": "Create a password and add your phone",
   "verifyPhone": "Verify your phone",
-  "enterCode": "Enter the 4-digit code sent to",
+  "enterCode": "Enter the 6-digit code sent to",
+  "phoneVerificationMissingPhone": "Phone number is missing. Go back and continue registration again.",
+  "phoneVerificationEnterSixDigits": "Please enter the 6-digit verification code.",
   "continueTxt": "Continue",
   "verification": "Verification",
   "experience": "Experience",
@@ -119,9 +121,12 @@
   "classTxt": "Class",
   "totalTime": "Total Time",
   "goal": "Goal",
-  "ofClassesThisMonth": "of {count} classes this month",
+  "ofClassesThisMonth": "{attended} of {count} classes this month",
   "@ofClassesThisMonth": {
     "placeholders": {
+      "attended": {
+        "type": "int"
+      },
       "count": {
         "type": "int"
       }
@@ -403,6 +408,7 @@
   "date": "Date",
   "accountTitle": "Account",
   "logout": "Logout",
+  "logoutConfirmationMessage": "Are you sure you want to log out of your account?",
   "appPreferences": "App Preferences",
   "language": "Language",
   "englishShort": "English (EN)",
@@ -1073,18 +1079,24 @@
   "loginOtpSent": "Verification code sent. Check your phone.",
   "loginErrorGeneric": "Something went wrong. Please try again.",
   "pleaseEnterEmail": "Please enter your email",
+  "pleaseEnterValidEmail": "Please enter a valid email address",
   "pleaseEnterPassword": "Please enter your password",
   "pleaseEnterPhone": "Please enter your phone number",
   "registerOtpSent": "Verification code sent. Check your email or phone.",
   "passwordTooShort": "Password must be at least 8 characters",
   "pleaseEnterFirstName": "Please enter your first name",
+  "pleaseEnterLastName": "Please enter your last name",
   "forgotPasswordCodeSent": "A 6-digit code was sent to your email.",
   "passwordMismatch": "Passwords do not match",
   "passwordResetSuccess": "Your password was updated. Sign in with your new password.",
   "branchesCouldNotLoad": "Could not load branches. Try again.",
   "noBranchesAvailable": "No branches available.",
   "pleaseSelectBranch": "Please select a branch to continue.",
-  "retry": "Retry"
+  "retry": "Retry",
+  "locationPermissionTitle": "Location Access",
+  "locationPermissionMessage": "Location permission is disabled. Please enable it in app settings so we can suggest the nearest branch.",
+  "openSettings": "Open Settings",
+  "notNow": "Not Now"
 }
 
 

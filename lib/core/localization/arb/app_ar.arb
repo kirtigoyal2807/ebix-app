@@ -61,7 +61,9 @@
   "secureYourAccount": "أمّن حسابك",
   "createPassword": "أنشئ كلمة مرور وأضف رقم هاتفك",
   "verifyPhone": "تأكيد رقم الهاتف",
-  "enterCode": "أدخل الرمز المكون من 4 أرقام المرسل إلى",
+  "enterCode": "أدخل الرمز المكون من 6 أرقام المرسل إلى",
+  "phoneVerificationMissingPhone": "رقم الهاتف غير متوفر. ارجع وأكمل التسجيل مرة أخرى.",
+  "phoneVerificationEnterSixDigits": "يُرجى إدخال رمز التحقق المكوّن من 6 أرقام.",
   "continueTxt": "متابعة",
   "verification": "التحقق",
   "experience": "الخبرة",
@@ -119,9 +121,12 @@
   "classTxt": "حصص",
   "totalTime": "إجمالي الوقت",
   "goal": "الهدف",
-  "ofClassesThisMonth": "من {count} حصص هذا الشهر",
+  "ofClassesThisMonth": "{attended} من {count} حصص هذا الشهر",
   "@ofClassesThisMonth": {
     "placeholders": {
+      "attended": {
+        "type": "int"
+      },
       "count": {
         "type": "int"
       }
@@ -403,6 +408,7 @@
   "date": "التاريخ",
   "accountTitle": "الحساب",
   "logout": "تسجيل الخروج",
+  "logoutConfirmationMessage": "هل أنت متأكد أنك تريد تسجيل الخروج من حسابك؟",
   "appPreferences": "تفضيلات التطبيق",
   "language": "اللغة",
   "englishShort": "الإنجليزية (EN)",
@@ -1076,18 +1082,24 @@
   "loginOtpSent": "تم إرسال رمز التحقق. تحقق من هاتفك.",
   "loginErrorGeneric": "حدث خطأ ما. يُرجى المحاولة مرة أخرى.",
   "pleaseEnterEmail": "يُرجى إدخال بريدك الإلكتروني",
+  "pleaseEnterValidEmail": "يُرجى إدخال بريد إلكتروني صالح",
   "pleaseEnterPassword": "يُرجى إدخال كلمة المرور",
   "pleaseEnterPhone": "يُرجى إدخال رقم الهاتف",
   "registerOtpSent": "تم إرسال رمز التحقق. تحقق من بريدك الإلكتروني أو هاتفك.",
   "passwordTooShort": "يجب أن تتكون كلمة المرور من 8 أحرف على الأقل",
   "pleaseEnterFirstName": "يُرجى إدخال اسمك الأول",
+  "pleaseEnterLastName": "يُرجى إدخال اسم العائلة",
   "forgotPasswordCodeSent": "تم إرسال رمز مكوّن من 6 أرقام إلى بريدك الإلكتروني.",
   "passwordMismatch": "كلمتا المرور غير متطابقتين",
   "passwordResetSuccess": "تم تحديث كلمة المرور. سجّل الدخول بكلمة المرور الجديدة.",
   "branchesCouldNotLoad": "تعذّر تحميل الفروع. حاول مرة أخرى.",
   "noBranchesAvailable": "لا توجد فروع متاحة.",
   "pleaseSelectBranch": "يُرجى اختيار فرع للمتابعة.",
-  "retry": "إعادة المحاولة"
+  "retry": "إعادة المحاولة",
+  "locationPermissionTitle": "الوصول إلى الموقع",
+  "locationPermissionMessage": "إذن الموقع معطّل. يُرجى تفعيله من إعدادات التطبيق حتى نتمكن من اقتراح أقرب فرع إليك.",
+  "openSettings": "فتح الإعدادات",
+  "notNow": "ليس الآن"
 }
 
 

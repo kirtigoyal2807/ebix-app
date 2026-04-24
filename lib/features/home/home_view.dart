@@ -6,12 +6,16 @@ import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/core/localization/localization_extension.dart';
 import 'package:pilates_app/widgets/app_text.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../account/account_view.dart';
 import '../auth/cubit/auth_cubit.dart';
 import '../auth/cubit/auth_state.dart';
 import '../explore/explore_view.dart';
+import '../explore/view/referral_program_view.dart';
 import 'cubit/home_cubit.dart';
 import 'cubit/home_state.dart';
+import 'data/models/home_response.dart';
+import 'data/home_repository.dart';
 import 'widgets/home_header.dart';
 import 'widgets/spring_challenge_card.dart';
 import 'widgets/quick_actions.dart';
@@ -19,7 +23,9 @@ import 'widgets/membership_card.dart';
 import 'widgets/progress_card.dart';
 import 'widgets/featured_class_card.dart';
 import 'widgets/horizontal_list_section.dart';
+import 'widgets/received_gift_card.dart';
 
+import '../booking/cubit/booking_state.dart';
 import '../booking/booking_view.dart';
 
 class HomeView extends StatelessWidget {
@@ -28,7 +34,11 @@ class HomeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => HomeCubit(),
+      create: (context) => HomeCubit(
+        homeRepository: HomeRepository(
+          context.read<AuthCubit>().authRepository.httpClient,
+        ),
+      )..loadHome(),
       child: BlocBuilder<HomeCubit, HomeState>(
         builder: (context, state) {
           final isDark = Theme.of(context).brightness == Brightness.dark;
@@ -40,7 +50,7 @@ class HomeView extends StatelessWidget {
               index: state.currentIndex,
               children: [
                 const HomeContentView(),
-                const BookingView(),
+                BookingView(initialTab: state.selectedBookingTab),
                 const ExploreView(),
                 const AccountView(),
               ],
@@ -168,6 +178,63 @@ class HomeContentView extends StatelessWidget {
 
     return BlocBuilder<HomeCubit, HomeState>(
       builder: (context, state) {
+        if (state.loadStatus == HomeLoadStatus.initial ||
+            state.loadStatus == HomeLoadStatus.loading) {
+          return const Center(child: CircularProgressIndicator());
+        }
+        if (state.loadStatus == HomeLoadStatus.failure && state.data == null) {
+          return Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                AppText(
+                  state.errorMessage.isNotEmpty
+                      ? state.errorMessage
+                      : context.l10n.loginErrorGeneric,
+                  style: AppTextStyles.body,
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: AppSpacing.md),
+                ElevatedButton(
+                  onPressed: () => context.read<HomeCubit>().loadHome(),
+                  child: AppText(
+                    context.l10n.retry,
+                    style: AppTextStyles.button,
+                  ),
+                ),
+              ],
+            ),
+          );
+        }
+        final data = state.data;
+        if (data == null) {
+          return const SizedBox.shrink();
+        }
+        final banners = data.banners;
+        final membership = data.membership;
+        final hasMembership = membership != null;
+        final progress = data.progress;
+        final featuredClasses = data.featuredClasses;
+        final featuredClass = featuredClasses.isEmpty
+            ? null
+            : featuredClasses.first;
+        final classTypes = data.classTypes;
+        final topTrainers = data.topTrainers;
+        final receivedGifts = data.receivedGifts;
+
+        final attendedClasses = progress?.mtdAttendedClasses ?? 0;
+        final attendedMinutes = progress?.mtdAttendedMinutes ?? 0;
+        final monthlyTarget = progress?.monthlyTargetClasses ?? 0;
+        final goalClasses = monthlyTarget <= 0 ? 1 : monthlyTarget;
+        final totalHours = attendedMinutes / 60;
+        // Show the active progress card whenever the API returns a progress
+        // object — even if the user hasn't attended any classes yet this month.
+        // Only fall back to the empty/onboarding card when there is no
+        // progress object at all (i.e. the user has never had a membership).
+        final progressStatus = (progress != null && progress.monthlyTargetClasses > 0)
+            ? HomeUserStatus.existing
+            : HomeUserStatus.empty;
+
         return Column(
           children: [
             Expanded(
@@ -180,226 +247,102 @@ class HomeContentView extends StatelessWidget {
                         final fromProfile = authState.user?.greetingName ?? '';
                         final displayName = fromProfile.isNotEmpty
                             ? fromProfile
-                            : state.userName;
+                            : '';
                         return HomeHeader(userName: displayName);
                       },
                     ),
                     const SizedBox(height: AppSpacing.lg),
-                    const SpringChallengeCard(),
-                    const SizedBox(height: AppSpacing.lg),
+                    if (banners.isNotEmpty) ...[
+                      SpringChallengeCard(
+                        banners: banners,
+                        onBannerTap: (banner) =>
+                            _handleBannerTap(context, banner),
+                      ),
+                      const SizedBox(height: AppSpacing.lg),
+                    ],
                     const QuickActions(),
-                    const SizedBox(height: AppSpacing.lg),
-
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: AppSpacing.lg,
+                    if (receivedGifts.isNotEmpty) ...[
+                      const SizedBox(height: AppSpacing.lg),
+                      _sectionTitle(
+                        context,
+                        context.l10n.giftReceivedTitle,
+                        isDark,
+                        size,
                       ),
-                      child: AppText(
+                      const SizedBox(height: AppSpacing.md),
+                      ReceivedGiftCard(gift: receivedGifts.first),
+                    ],
+                    if (hasMembership) ...[
+                      const SizedBox(height: AppSpacing.lg),
+                      _sectionTitle(
+                        context,
                         context.l10n.yourMembership,
-                        style: (context) =>
-                            AppTextStyles.heading1(context).copyWith(
-                              color: isDark
-                                  ? AppColors.lightText
-                                  : AppColors.darkText,
-                              fontSize: size.width * 0.055 > 18
-                                  ? 18
-                                  : size.width * 0.055,
-                              fontWeight: FontWeight.w400,
-                            ),
+                        isDark,
+                        size,
                       ),
-                    ),
-                    const SizedBox(height: AppSpacing.md),
-                    MembershipCard(status: HomeUserStatus.empty),
-                    const SizedBox(height: AppSpacing.md),
-                    MembershipCard(status: HomeUserStatus.expired),
-                    const SizedBox(height: AppSpacing.md),
-                    MembershipCard(status: HomeUserStatus.existing),
-
-                    const SizedBox(height: AppSpacing.lg),
-
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: AppSpacing.lg,
+                      const SizedBox(height: AppSpacing.md),
+                      MembershipCard(
+                        status: HomeUserStatus.existing,
+                        planName: membership.planName,
+                        totalSessions: membership.totalSessions,
                       ),
-                      child: AppText(
+                    ],
+                    if (progress != null) ...[
+                      const SizedBox(height: AppSpacing.lg),
+                      _sectionTitle(
+                        context,
                         context.l10n.yourProgress,
-                        style: (context) =>
-                            AppTextStyles.heading1(context).copyWith(
-                              color: isDark
-                                  ? AppColors.lightText
-                                  : AppColors.darkText,
-                              fontSize: size.width * 0.055 > 18
-                                  ? 18
-                                  : size.width * 0.055,
-                              fontWeight: FontWeight.w400,
-                            ),
+                        isDark,
+                        size,
                       ),
-                    ),
-                    const SizedBox(height: AppSpacing.md),
-                    ProgressCard(
-                      status: HomeUserStatus.empty,
-                      classesDone: state.classesDone,
-                      totalHours: state.totalHours,
-                      goalClasses: state.goalClasses,
-                    ),
-
-                    const SizedBox(height: AppSpacing.lg),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: AppSpacing.lg,
+                      const SizedBox(height: AppSpacing.md),
+                      ProgressCard(
+                        status: progressStatus,
+                        classesDone: attendedClasses,
+                        totalHours: totalHours,
+                        goalClasses: goalClasses,
+                        goalPercent: progress.goalPercent,
                       ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Expanded(
-                            child: AppText(
-                              context.l10n.yourProgress,
-                              style: (context) =>
-                                  AppTextStyles.heading1(context).copyWith(
-                                    color: isDark
-                                        ? AppColors.lightText
-                                        : AppColors.darkText,
-                                    fontSize: size.width * 0.055 > 18
-                                        ? 18
-                                        : size.width * 0.055,
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                            ),
-                          ),
-                          AppText(
-                            context.l10n.seeAll,
-                            style: (context) =>
-                                AppTextStyles.captionText(context,fontWeight: FontWeight.w500).copyWith(
-                                  color: isDark
-                                      ? AppColors.languageTextDark
-                                      : AppColors.languageIcon,
-                                  fontSize: 14,
-                                  // fontSize: size.width * 0.03 > 14
-                                  //     ? 14
-                                  //     : size.width * 0.03,
-                                ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: AppSpacing.md),
-                    ProgressCard(
-                      status: HomeUserStatus.existing,
-                      classesDone: state.classesDone,
-                      totalHours: state.totalHours,
-                      goalClasses: state.goalClasses,
-                    ),
-
-                    const SizedBox(height: AppSpacing.lg),
-
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: AppSpacing.lg,
-                      ),
-                      child: AppText(
+                    ],
+                    if (featuredClass != null) ...[
+                      const SizedBox(height: AppSpacing.lg),
+                      _sectionTitle(
+                        context,
                         context.l10n.featuredClass,
-                        style: (context) =>
-                            AppTextStyles.heading1(context).copyWith(
-                              color: isDark
-                                  ? AppColors.lightText
-                                  : AppColors.darkText,
-                              fontSize: size.width * 0.055 > 18
-                                  ? 18
-                                  : size.width * 0.055,
-                              fontWeight: FontWeight.w400,
-                            ),
+                        isDark,
+                        size,
                       ),
-                    ),
-                    const SizedBox(height: AppSpacing.md),
-                    const FeaturedClassCard(),
+                      const SizedBox(height: AppSpacing.md),
+                      FeaturedClassCard(featuredClass: featuredClass),
+                    ],
+                    if (classTypes.isNotEmpty) ...[
+                      const SizedBox(height: AppSpacing.lg),
+                      _sectionTitleWithSeeAll(
+                        context,
+                        context.l10n.classTypes,
+                        isDark,
+                        size,
+                        onTap: () => context.read<HomeCubit>().setTab(1),
+                      ),
+                      const SizedBox(height: AppSpacing.md),
+                      ClassTypesSection(classTypes: classTypes),
+                    ],
+                    if (topTrainers.isNotEmpty) ...[
+                      const SizedBox(height: AppSpacing.lg),
+                      _sectionTitleWithSeeAll(
+                        context,
+                        context.l10n.topTrainers,
+                        isDark,
+                        size,
+                        onTap: () => context.read<HomeCubit>().setTab(
+                          1,
+                          bookingTab: BookingTab.trainers,
+                        ),
+                      ),
+                      const SizedBox(height: AppSpacing.md),
+                      TopTrainersSection(trainers: topTrainers),
+                    ],
                     const SizedBox(height: AppSpacing.lg),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: AppSpacing.lg,
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Expanded(
-                            child: AppText(
-                              context.l10n.classTypes,
-                              style: (context) =>
-                                  AppTextStyles.heading1(context).copyWith(
-                                    color: isDark
-                                        ? AppColors.lightText
-                                        : AppColors.darkText,
-                                    fontSize: size.width * 0.055 > 18
-                                        ? 18
-                                        : size.width * 0.055,
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                            ),
-                          ),
-                          AppText(
-                            context.l10n.seeAll,
-                            style: (context) =>
-                                AppTextStyles.captionText(context,fontWeight: FontWeight.w500).copyWith(
-                                  color: isDark
-                                      ? AppColors.languageTextDark
-                                      : AppColors.languageIcon,
-                                  fontSize:
-                                  // size.width * 0.03 > 14
-                                  //     ?
-                                  14,
-                                      height: 1.2
-                                      // : size.width * 0.03,
-                                ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: AppSpacing.md),
-                    const ClassTypesSection(),
-                    const SizedBox(height: AppSpacing.lg),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: AppSpacing.lg,
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Expanded(
-                            child: AppText(
-                              context.l10n.topTrainers,
-                              style: (context) =>
-                                  AppTextStyles.heading1(context).copyWith(
-                                    color: isDark
-                                        ? AppColors.lightText
-                                        : AppColors.darkText,
-                                    fontSize: size.width * 0.055 > 18
-                                        ? 18
-                                        : size.width * 0.055,
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                            ),
-                          ),
-                          AppText(
-                            context.l10n.seeAll,
-                            style: (context) =>
-                                AppTextStyles.captionText(context,fontWeight: FontWeight.w500).copyWith(
-                                  color: isDark
-                                      ? AppColors.languageTextDark
-                                      : AppColors.languageIcon,
-                                  fontSize:
-                                  // size.width * 0.03 > 14
-                                  //     ?
-                                  14,
-                                      height: 1.2
-                                      // : size.width * 0.03,
-                                ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: AppSpacing.md),
-                    const TopTrainersSection(),
                     const SizedBox(height: AppSpacing.xl),
                   ],
                 ),
@@ -409,5 +352,136 @@ class HomeContentView extends StatelessWidget {
         );
       },
     );
+  }
+
+  Widget _sectionTitle(
+    BuildContext context,
+    String title,
+    bool isDark,
+    Size size,
+  ) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+      child: AppText(
+        title,
+        style: (context) => AppTextStyles.heading1(context).copyWith(
+          color: isDark ? AppColors.lightText : AppColors.darkText,
+          fontSize: size.width * 0.055 > 18 ? 18 : size.width * 0.055,
+          fontWeight: FontWeight.w400,
+        ),
+      ),
+    );
+  }
+
+  Widget _sectionTitleWithSeeAll(
+    BuildContext context,
+    String title,
+    bool isDark,
+    Size size, {
+    required VoidCallback onTap,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Expanded(
+            child: AppText(
+              title,
+              style: (context) => AppTextStyles.heading1(context).copyWith(
+                color: isDark ? AppColors.lightText : AppColors.darkText,
+                fontSize: size.width * 0.055 > 18 ? 18 : size.width * 0.055,
+                fontWeight: FontWeight.w400,
+              ),
+            ),
+          ),
+          GestureDetector(
+            onTap: onTap,
+            child: AppText(
+              context.l10n.seeAll,
+              style: (context) =>
+                  AppTextStyles.captionText(
+                    context,
+                    fontWeight: FontWeight.w500,
+                  ).copyWith(
+                    color: isDark
+                        ? AppColors.languageTextDark
+                        : AppColors.languageIcon,
+                    fontSize: 14,
+                    height: 1.2,
+                  ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _handleBannerTap(BuildContext context, HomeBanner banner) async {
+    final actionType = (banner.actionType ?? '').trim().toLowerCase();
+    if (actionType.isEmpty) return;
+
+    final authState = context.read<AuthCubit>().state;
+    final userId = authState.user?.id ?? '';
+    final payload = banner.actionPayload ?? const <String, dynamic>{};
+
+    if (actionType == 'screen') {
+      _handleBannerScreenAction(context, payload);
+      return;
+    }
+
+    String? rawTarget;
+    if (actionType == 'deeplink') {
+      rawTarget = payload['url']?.toString();
+    } else if (actionType == 'externalurl') {
+      rawTarget =
+          payload['externalUrl']?.toString() ?? payload['url']?.toString();
+    } else {
+      return;
+    }
+
+    if ((rawTarget ?? '').trim().isEmpty) {
+      return;
+    }
+
+    final resolved = rawTarget!.replaceAll('{userId}', userId);
+    final uri = Uri.tryParse(resolved);
+    if (uri == null) {
+      return;
+    }
+
+    final mode = actionType == 'externalurl'
+        ? LaunchMode.externalApplication
+        : LaunchMode.platformDefault;
+    await launchUrl(uri, mode: mode);
+  }
+
+  void _handleBannerScreenAction(
+    BuildContext context,
+    Map<String, dynamic> payload,
+  ) {
+    final screen = (payload['screen']?.toString() ?? '').trim().toLowerCase();
+    if (screen.isEmpty) {
+      return;
+    }
+
+    switch (screen) {
+      case 'classes':
+      case 'classcategories':
+        context.read<HomeCubit>().setTab(1, bookingTab: BookingTab.classes);
+        break;
+      case 'trainers':
+        context.read<HomeCubit>().setTab(1, bookingTab: BookingTab.trainers);
+        break;
+      case 'referral':
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (_) => const ReferralProgramView()),
+        );
+        break;
+      default:
+        break;
+    }
   }
 }

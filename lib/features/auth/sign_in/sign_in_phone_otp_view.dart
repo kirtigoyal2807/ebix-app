@@ -3,48 +3,37 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pilates_app/config/theme/app_colors.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
+import 'package:pilates_app/core/localization/localization_extension.dart';
+import 'package:pilates_app/features/auth/cubit/auth_cubit.dart';
+import 'package:pilates_app/features/auth/cubit/auth_state.dart';
+import 'package:pilates_app/features/auth/sign_up/widgets/otp_field.dart';
+import 'package:pilates_app/features/auth/sign_up/widgets/sign_up_header.dart';
 import 'package:pilates_app/widgets/app_app_bar.dart';
 import 'package:pilates_app/widgets/app_button.dart';
 import 'package:pilates_app/widgets/app_scaffold.dart';
-import 'package:pilates_app/widgets/app_text.dart';
 
-import '../../../core/localization/localization_extension.dart';
-import '../cubit/auth_cubit.dart';
-import '../cubit/auth_state.dart';
-import 'widgets/sign_up_header.dart';
-import 'widgets/sign_up_progress.dart';
-import 'widgets/otp_field.dart';
-
-class SignUpOtpView extends StatefulWidget {
-  const SignUpOtpView({super.key});
+class SignInPhoneOtpView extends StatefulWidget {
+  const SignInPhoneOtpView({super.key});
 
   @override
-  State<SignUpOtpView> createState() => _SignUpOtpViewState();
+  State<SignInPhoneOtpView> createState() => _SignInPhoneOtpViewState();
 }
 
-class _SignUpOtpViewState extends State<SignUpOtpView> {
-  String _otp = '';
+class _SignInPhoneOtpViewState extends State<SignInPhoneOtpView> {
+  String _code = '';
 
-  Future<void> _submit(BuildContext context) async {
-    final cubit = context.read<AuthCubit>();
-    final phone = cubit.state.signUpPendingPhone.trim();
-    if (phone.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(context.l10n.phoneVerificationMissingPhone)),
-      );
-      return;
-    }
-    if (_otp.trim().length != 6) {
+  Future<void> _resend(BuildContext context) async {
+    await context.read<AuthCubit>().resendSignInPhoneOtp();
+  }
+
+  Future<void> _verify(BuildContext context) async {
+    if (_code.length != 6) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(context.l10n.phoneVerificationEnterSixDigits)),
       );
       return;
     }
-    await cubit.verifySignUpPhoneOtp(code: _otp.trim());
-  }
-
-  Future<void> _resend(BuildContext context) async {
-    await context.read<AuthCubit>().resendSignUpPhoneOtp();
+    await context.read<AuthCubit>().verifySignInPhoneOtp(code: _code);
   }
 
   @override
@@ -66,41 +55,36 @@ class _SignUpOtpViewState extends State<SignUpOtpView> {
           );
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(context.l10n.registerOtpSent)),
+            SnackBar(content: Text(context.l10n.loginOtpSent)),
           );
         }
       },
       child: BlocConsumer<AuthCubit, AuthState>(
         listenWhen: (previous, current) {
-          return previous.signUpPhoneOtpUiStatus == SignUpPhoneOtpUiStatus.loading &&
-              current.signUpPhoneOtpUiStatus == SignUpPhoneOtpUiStatus.idle &&
-              current.signUpPhoneOtpErrorMessage.isNotEmpty &&
-              current.signUpPhoneOtpFieldErrors.isEmpty;
+          return previous.loginUiStatus == LoginUiStatus.loading &&
+              current.loginUiStatus == LoginUiStatus.idle &&
+              current.loginErrorMessage.isNotEmpty &&
+              current.loginFieldErrors.isEmpty;
         },
         listener: (context, state) {
-          final text = state.signUpPhoneOtpErrorMessage.trim().isEmpty
+          final text = state.loginErrorMessage.trim().isEmpty
               ? context.l10n.loginErrorGeneric
-              : state.signUpPhoneOtpErrorMessage;
+              : state.loginErrorMessage;
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text(text)),
           );
         },
         builder: (context, state) {
-        final loading = state.signUpPhoneOtpUiStatus == SignUpPhoneOtpUiStatus.loading;
+        final loading = state.loginUiStatus == LoginUiStatus.loading;
         final blockInteraction =
             state.phoneOtpSendUiStatus == PhoneOtpSendUiStatus.loading;
-        final phone = state.signUpPendingPhone.trim();
-        final subtitle = phone.isEmpty
-            ? context.l10n.enterCode
-            : '${context.l10n.enterCode} $phone';
-        final fe = state.signUpPhoneOtpFieldErrors;
-        final codeErr = fe['code'];
-        final phoneErr = fe['phone'];
+        final codeErr = state.loginFieldErrors['code'];
+        final phone = state.signInPendingPhone;
 
         return AppScaffold(
           appBar: AppAppBar(
-            onBack: () => context.read<AuthCubit>().previousSignUpStep(),
-            title: context.l10n.verification,
+            onBack: () => context.read<AuthCubit>().backFromSignIn(),
+            title: context.l10n.verifyPhone,
             isMoreMenu: false,
           ),
           body: Stack(
@@ -117,58 +101,37 @@ class _SignUpOtpViewState extends State<SignUpOtpView> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const SignUpProgress(currentStep: 1, totalSteps: 5),
-                        const SizedBox(height: AppSpacing.sm),
-                        RichText(
-                          text: TextSpan(
-                            children: [
-                              TextSpan(
-                                text: '${context.l10n.step} 2',
-                                style: AppTextStyles.caption(context).copyWith(
-                                  color: isDark
-                                      ? AppColors.languageTextDark
-                                      : AppColors.languageIcon,
-                                ),
-                              ),
-                              TextSpan(
-                                text: ' ${context.l10n.offf} 5',
-                                style: AppTextStyles.caption(context),
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(height: AppSpacing.xxl),
-
+                        const SizedBox(height: AppSpacing.lg),
                         SignUpHeader(
                           title: context.l10n.verifyPhone,
-                          subtitle: subtitle,
-                          step: 1,
-                          totalSteps: 4,
+                          subtitle: '${context.l10n.enterCode} $phone',
+                          step: 0,
+                          totalSteps: 0,
                         ),
-
-                        const SizedBox(height: AppSpacing.lg),
-
-                        OtpField(
-                          length: 6,
-                          onChanged: (otp) => setState(() => _otp = otp),
-                          onCompleted: (otp) {
-                            setState(() => _otp = otp);
-                            context.read<AuthCubit>().verifySignUpPhoneOtp(code: otp);
-                          },
+                        const SizedBox(height: AppSpacing.xxl),
+                        Center(
+                          child: OtpField(
+                            key: const ValueKey('sign_in_phone_otp_field'),
+                            length: 6,
+                            onChanged: (otp) => setState(() => _code = otp),
+                            onCompleted: (otp) {
+                              setState(() => _code = otp);
+                            },
+                          ),
                         ),
-
-                        if (codeErr != null || phoneErr != null) ...[
+                        if (codeErr != null) ...[
                           const SizedBox(height: AppSpacing.sm),
-                          AppText(
-                            codeErr ?? phoneErr ?? '',
-                            style: (c) => AppTextStyles.caption(c).copyWith(
-                                  color: isDark ? AppColors.redDark : AppColors.redLight,
-                                ),
+                          Center(
+                            child: Text(
+                              codeErr,
+                              style: AppTextStyles.caption(context).copyWith(
+                                color: isDark ? AppColors.redDark : AppColors.redLight,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
                           ),
                         ],
-
                         const SizedBox(height: AppSpacing.lg),
-
                         Center(
                           child: GestureDetector(
                             onTap: blockInteraction || loading
@@ -178,7 +141,7 @@ class _SignUpOtpViewState extends State<SignUpOtpView> {
                               text: TextSpan(
                                 children: [
                                   TextSpan(
-                                    text: "${context.l10n.didntReceiveCode} ",
+                                    text: '${context.l10n.didntReceiveCode} ',
                                     style: AppTextStyles.caption(context).copyWith(
                                       color: isDark
                                           ? AppColors.darkGreyText
@@ -196,19 +159,17 @@ class _SignUpOtpViewState extends State<SignUpOtpView> {
                             ),
                           ),
                         ),
-                        const SizedBox(height: AppSpacing.lg),
                       ],
                     ),
                   ),
                 ),
-
                 AppButton(
-                  key: const ValueKey('sign_up_phone_otp_verify'),
+                  key: const ValueKey('sign_in_phone_otp_verify'),
                   label: context.l10n.verify,
                   isLoading: loading,
                   onPressed: (loading || blockInteraction)
                       ? null
-                      : () => _submit(context),
+                      : () => _verify(context),
                 ),
               ],
             ),
