@@ -864,6 +864,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get submitReview => 'Submit Review';
 
   @override
+  String get signInToRateTrainer => 'Sign in to rate this trainer.';
+
+  @override
+  String get reviewSubmittedSuccess => 'Your review was submitted. Thank you!';
+
+  @override
   String get skipForNow => 'Skip for Now';
 
   @override

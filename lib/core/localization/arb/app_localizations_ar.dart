@@ -855,6 +855,12 @@ class AppLocalizationsAr extends AppLocalizations {
   String get submitReview => 'إرسال التقييم';
 
   @override
+  String get signInToRateTrainer => 'سجّل الدخول لتقييم هذا المدرب.';
+
+  @override
+  String get reviewSubmittedSuccess => 'تم إرسال تقييمك. شكراً!';
+
+  @override
   String get skipForNow => 'تخطي الآن';
 
   @override

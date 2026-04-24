@@ -15,6 +15,7 @@ import '../../../config/theme/app_radius.dart';
 import '../widgets/booking_class_card.dart';
 import '../widgets/class_reviews_section.dart';
 import '../widgets/tag_chip.dart';
+import '../widgets/trainer_average_stars.dart';
 
 /// Trainer profile: pass [trainer] from §12.1 list for API-backed details (`GET /trainers/{id}`).
 /// Omit [trainer] to keep the legacy marketing/demo layout (home shortcuts).
@@ -183,6 +184,7 @@ class _TrainerApiHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final avatar = trainer.avatarUrl;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
@@ -227,30 +229,79 @@ class _TrainerApiHeader extends StatelessWidget {
             ),
           ],
           SizedBox(height: 10),
-          Wrap(
-            alignment: WrapAlignment.center,
-            crossAxisAlignment: WrapCrossAlignment.center,
-            spacing: AppSpacing.sm,
-            runSpacing: AppSpacing.xs,
-            children: [
-              Icon(Icons.star, color: AppColors.goldStarColor, size: 14),
-              AppText(
-                trainer.avgRating ?? '—',
-                maxLines: 1,
-                style: (c) => AppTextStyles.textFieldHeading(
-                  c,
-                  fontWeight: FontWeight.w600,
-                ).copyWith(height: 1, fontSize: 14),
+          if (!trainer.hasReviews)
+            Icon(
+              Icons.star_border_rounded,
+              color: isDark ? AppColors.darkGreyText : AppColors.lightGrey,
+              size: 20,
+            )
+          else if (trainer.averageRatingValue != null)
+            Center(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  TrainerAverageStars(
+                    rating: trainer.averageRatingValue!,
+                    itemSize: 24,
+                  ),
+                  const SizedBox(height: 8),
+                  Wrap(
+                    alignment: WrapAlignment.center,
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    spacing: AppSpacing.sm,
+                    runSpacing: AppSpacing.xs,
+                    children: [
+                      AppText(
+                        trainer.displayAverageRating.isNotEmpty
+                            ? trainer.displayAverageRating
+                            : trainer.averageRatingValue!.toStringAsFixed(1),
+                        maxLines: 1,
+                        textAlign: TextAlign.center,
+                        style: (c) => AppTextStyles.textFieldHeading(
+                          c,
+                          fontWeight: FontWeight.w600,
+                        ).copyWith(height: 1, fontSize: 14),
+                      ),
+                      AppText(
+                        '(${trainer.reviewsCount} ${context.l10n.reviews})',
+                        maxLines: 2,
+                        textAlign: TextAlign.center,
+                        style: (c) => AppTextStyles.helpAndSupportItemSubLabel(
+                          c,
+                        ).copyWith(height: 1.2, fontSize: 14),
+                      ),
+                    ],
+                  ),
+                ],
               ),
-              AppText(
-                '(${trainer.reviewsCount} ${context.l10n.reviews})',
-                maxLines: 2,
-                textAlign: TextAlign.center,
-                style: (c) =>
-                    AppTextStyles.helpAndSupportItemSubLabel(c).copyWith(height: 1.2, fontSize: 14),
-              ),
-            ],
-          ),
+            )
+          else
+            Wrap(
+              alignment: WrapAlignment.center,
+              crossAxisAlignment: WrapCrossAlignment.center,
+              spacing: AppSpacing.sm,
+              runSpacing: AppSpacing.xs,
+              children: [
+                Icon(Icons.star, color: AppColors.goldStarColor, size: 14),
+                AppText(
+                  trainer.displayAverageRating.isNotEmpty
+                      ? trainer.displayAverageRating
+                      : '—',
+                  maxLines: 1,
+                  style: (c) => AppTextStyles.textFieldHeading(
+                    c,
+                    fontWeight: FontWeight.w600,
+                  ).copyWith(height: 1, fontSize: 14),
+                ),
+                AppText(
+                  '(${trainer.reviewsCount} ${context.l10n.reviews})',
+                  maxLines: 2,
+                  textAlign: TextAlign.center,
+                  style: (c) =>
+                      AppTextStyles.helpAndSupportItemSubLabel(c).copyWith(height: 1.2, fontSize: 14),
+                ),
+              ],
+            ),
         ],
       ),
     );

@@ -1694,6 +1694,18 @@ abstract class AppLocalizations {
   /// **'Submit Review'**
   String get submitReview;
 
+  /// No description provided for @signInToRateTrainer.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in to rate this trainer.'**
+  String get signInToRateTrainer;
+
+  /// No description provided for @reviewSubmittedSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Your review was submitted. Thank you!'**
+  String get reviewSubmittedSuccess;
+
   /// No description provided for @skipForNow.
   ///
   /// In en, this message translates to:

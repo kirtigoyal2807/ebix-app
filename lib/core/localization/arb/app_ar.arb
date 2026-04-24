@@ -329,6 +329,8 @@
   "writeDetailedReview": "اكتب مراجعة مفصلة",
   "shareExperienceHint": "شارك تجربتك (اختياري)",
   "submitReview": "إرسال التقييم",
+  "signInToRateTrainer": "سجّل الدخول لتقييم هذا المدرب.",
+  "reviewSubmittedSuccess": "تم إرسال تقييمك. شكراً!",
   "skipForNow": "تخطي الآن",
   "tabUpcoming": "القادمة",
   "tabCurrent": "الحالية",

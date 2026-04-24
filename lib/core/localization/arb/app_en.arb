@@ -329,6 +329,8 @@
   "writeDetailedReview": "Write Detailed Review",
   "shareExperienceHint": "Share your experience (optional)",
   "submitReview": "Submit Review",
+  "signInToRateTrainer": "Sign in to rate this trainer.",
+  "reviewSubmittedSuccess": "Your review was submitted. Thank you!",
   "skipForNow": "Skip for Now",
   "tabUpcoming": "Upcoming",
   "tabCurrent": "Current",

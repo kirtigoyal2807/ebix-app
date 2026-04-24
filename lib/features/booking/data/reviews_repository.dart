@@ -119,4 +119,44 @@ class ReviewsRepository extends BaseRepository {
     }
     return out;
   }
+
+  /// Pilates API §14.2 — `POST /reviews` (class, trainer, or branch).
+  Future<ApiResult<bool>> submitReview({
+    required String reviewableType,
+    required String reviewableId,
+    required int rating,
+    String? body,
+    String? calendarEventId,
+  }) {
+    final trimmedId = reviewableId.trim();
+    if (trimmedId.isEmpty) {
+      return Future.value(
+        ApiFailure(
+          NetworkException(
+            type: NetworkFailureType.validation,
+            message: 'Missing reviewable id',
+          ),
+        ),
+      );
+    }
+    final idParam = int.tryParse(trimmedId) ?? trimmedId;
+    final data = <String, dynamic>{
+      'reviewableType': reviewableType.trim(),
+      'reviewableId': idParam,
+      'rating': rating.clamp(1, 5),
+    };
+    final b = body?.trim();
+    if (b != null && b.isNotEmpty) {
+      data['body'] = b;
+    }
+    final eventId = calendarEventId?.trim();
+    if (eventId != null && eventId.isNotEmpty) {
+      data['calendarEventId'] = eventId;
+    }
+    return post<bool>(
+      '/reviews',
+      data: data,
+      fromJson: (_) => true,
+    );
+  }
 }

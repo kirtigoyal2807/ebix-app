@@ -129,3 +129,31 @@ class TrainerResource {
     return s.isEmpty ? null : s;
   }
 }
+
+/// Shared list/detail formatting for rating line (avoids "—" + "(0)").
+extension TrainerResourceRatingUi on TrainerResource {
+  bool get hasReviews => reviewsCount > 0;
+
+  /// Non-empty when we can show a numeric average (e.g. "4", "4.5").
+  String get displayAverageRating {
+    final raw = avgRating;
+    if (raw == null) return '';
+    var t = raw.trim();
+    if (t.isEmpty || t == '—' || t == '-') return '';
+    final n = double.tryParse(t.replaceAll(',', '.'));
+    if (n == null) return t;
+    if (n == n.roundToDouble()) return n.round().toString();
+    return n.toStringAsFixed(1);
+  }
+
+  /// `avgRating` from the API as 0…5, or `null` if missing / not a number.
+  double? get averageRatingValue {
+    final raw = avgRating;
+    if (raw == null) return null;
+    var t = raw.trim();
+    if (t.isEmpty || t == '—' || t == '-') return null;
+    final n = double.tryParse(t.replaceAll(',', '.'));
+    if (n == null) return null;
+    return n.clamp(0, 5);
+  }
+}

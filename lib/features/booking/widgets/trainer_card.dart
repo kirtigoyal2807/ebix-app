@@ -10,6 +10,7 @@ import 'package:pilates_app/widgets/app_text.dart';
 import '../../../config/theme/app_radius.dart';
 import '../../../widgets/app_shadow.dart';
 import '../data/models/trainer_resource.dart';
+import 'trainer_average_stars.dart';
 import '../views/trainer_details_view.dart';
 
 class TrainerCard extends StatelessWidget {
@@ -98,37 +99,14 @@ class TrainerCard extends StatelessWidget {
                         ),
                       ),
                       SizedBox(width: AppSpacing.sm),
-                      Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Icon(
-                            Icons.star,
-                            color: const Color(0xFFEAB308),
-                            size: 16,
+                      Flexible(
+                        child: Align(
+                          alignment: AlignmentDirectional.centerEnd,
+                          child: _TrainerRatingRow(
+                            trainer: trainer,
+                            isDark: isDark,
                           ),
-                          const SizedBox(width: 4),
-                          AppText(
-                            trainer.avgRating ?? '—',
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: (context) => AppTextStyles.boldBody(
-                              context,
-                            ).copyWith(
-                              color: isDark
-                                  ? AppColors.lightText
-                                  : AppColors.darkText,
-                            ),
-                          ),
-                          const SizedBox(width: 2),
-                          AppText(
-                            '(${trainer.reviewsCount})',
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: (context) => AppTextStyles.captionText(
-                              context,
-                            ),
-                          ),
-                        ],
+                        ),
                       ),
                     ],
                   ),
@@ -226,6 +204,95 @@ class TrainerCard extends StatelessWidget {
             style: (context) => AppTextStyles.bodyText(
               context,
             ).copyWith(height: 1.3),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+/// List card: no reviews → muted outline star. With API [avgRating], show
+/// [TrainerAverageStars] plus number and count; else fallback to single star + text.
+class _TrainerRatingRow extends StatelessWidget {
+  const _TrainerRatingRow({
+    required this.trainer,
+    required this.isDark,
+  });
+
+  final TrainerResource trainer;
+  final bool isDark;
+
+  @override
+  Widget build(BuildContext context) {
+    final count = trainer.reviewsCount;
+    final metaColor = isDark ? AppColors.darkGreyText : AppColors.lightGrey;
+
+    if (!trainer.hasReviews) {
+      return Icon(
+        Icons.star_border_rounded,
+        color: metaColor,
+        size: 18,
+      );
+    }
+
+    final avgValue = trainer.averageRatingValue;
+    final avgText = trainer.displayAverageRating;
+
+    if (avgValue != null) {
+      return Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          TrainerAverageStars(rating: avgValue, itemSize: 13),
+          const SizedBox(width: 6),
+          AppText(
+            avgText.isNotEmpty ? avgText : avgValue.toStringAsFixed(1),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: (context) => AppTextStyles.boldBody(
+              context,
+            ).copyWith(
+              color: isDark ? AppColors.lightText : AppColors.darkText,
+            ),
+          ),
+          const SizedBox(width: 2),
+          AppText(
+            '($count)',
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: (context) => AppTextStyles.captionText(
+              context,
+            ),
+          ),
+        ],
+      );
+    }
+
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Icon(
+          Icons.star_rounded,
+          color: AppColors.goldStarColor,
+          size: 16,
+        ),
+        const SizedBox(width: 4),
+        AppText(
+          avgText.isNotEmpty ? avgText : '—',
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          style: (context) => AppTextStyles.boldBody(
+            context,
+          ).copyWith(
+            color: isDark ? AppColors.lightText : AppColors.darkText,
+          ),
+        ),
+        const SizedBox(width: 2),
+        AppText(
+          '($count)',
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          style: (context) => AppTextStyles.captionText(
+            context,
           ),
         ),
       ],
