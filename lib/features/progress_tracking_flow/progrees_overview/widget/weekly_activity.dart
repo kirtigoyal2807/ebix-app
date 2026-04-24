@@ -110,58 +110,23 @@ class WeeklyGraph extends StatelessWidget {
             ),
           ),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               SizedBox(
-                height: 170,
+                height: 176,
                 child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: data.map((e) {
-                    final barHeight = (e.value / maxValue) * 130;
-                    final isZero = e.value == 0;
-
-                    return Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        AppText(
-                          '${e.value.toInt()}m',
-                          style: (context) => AppTextStyles.body(context),
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    for (final e in data)
+                      Expanded(
+                        child: _WeekBarSlot(
+                          day: e.day,
+                          minutes: e.value,
+                          maxMinutes: maxValue,
+                          isDark: isDark,
                         ),
-                        const SizedBox(height: AppSpacing.sm),
-                        Container(
-                          width: 33,
-                          height: isZero ? 20 : barHeight,
-                          decoration: BoxDecoration(
-                            color: isDark
-                                ? (isZero
-                                    ? AppColors.lightBlackColor
-                                    : AppColors.primary)
-                                : (isZero
-                                    ? AppColors.darkGreyBorder
-                                    : AppColors.primary),
-                            borderRadius: const BorderRadius.only(
-                              topRight: Radius.circular(4),
-                              topLeft: Radius.circular(4),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: AppSpacing.sm),
-                        AppText(
-                          e.day,
-                          style: (context) =>
-                              AppTextStyles.captionText(context).copyWith(
-                            color: isDark
-                                ? (isZero
-                                    ? AppColors.lightDarkGrey
-                                    : AppColors.lightText)
-                                : (isZero
-                                    ? AppColors.languageTextDark
-                                    : AppColors.darkText),
-                          ),
-                        ),
-                      ],
-                    );
-                  }).toList(),
+                      ),
+                  ],
                 ),
               ),
               const SizedBox(height: AppSpacing.md),
@@ -170,8 +135,8 @@ class WeeklyGraph extends StatelessWidget {
                 height: 1,
               ),
               const SizedBox(height: AppSpacing.md),
-              RichText(
-                text: TextSpan(
+              Text.rich(
+                TextSpan(
                   children: [
                     TextSpan(
                       text: context.l10n.weekly_activity_mindful_movement,
@@ -185,6 +150,8 @@ class WeeklyGraph extends StatelessWidget {
                     ),
                   ],
                 ),
+                maxLines: 3,
+                overflow: TextOverflow.ellipsis,
               ),
             ],
           ),
@@ -199,4 +166,109 @@ class _BarData {
   final double value;
 
   _BarData(this.day, this.value);
+}
+
+/// One day column: labels + bar height are derived from available space so the
+/// chart never overflows vertically or horizontally on small / localized UIs.
+class _WeekBarSlot extends StatelessWidget {
+  const _WeekBarSlot({
+    required this.day,
+    required this.minutes,
+    required this.maxMinutes,
+    required this.isDark,
+  });
+
+  final String day;
+  final double minutes;
+  final double maxMinutes;
+  final bool isDark;
+
+  static const double _minuteBandH = 22;
+  static const double _dayBandH = 36;
+
+  @override
+  Widget build(BuildContext context) {
+    final isZero = minutes == 0;
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 2),
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          final barW = math.min(33.0, constraints.maxWidth);
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(
+                height: _minuteBandH,
+                width: constraints.maxWidth,
+                child: FittedBox(
+                  fit: BoxFit.scaleDown,
+                  alignment: Alignment.center,
+                  child: AppText(
+                    '${minutes.toInt()}m',
+                    maxLines: 1,
+                    style: (context) => AppTextStyles.body(context),
+                  ),
+                ),
+              ),
+              const SizedBox(height: AppSpacing.sm),
+              Expanded(
+                child: LayoutBuilder(
+                  builder: (context, inner) {
+                    final maxBar = math.max(20.0, inner.maxHeight);
+                    final scaled = maxMinutes < 1
+                        ? 0.0
+                        : (minutes / maxMinutes) * maxBar;
+                    final barH = isZero ? 20.0 : scaled.clamp(4.0, maxBar);
+                    return Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Container(
+                        width: barW,
+                        height: barH,
+                        decoration: BoxDecoration(
+                          color: isDark
+                              ? (isZero
+                                  ? AppColors.lightBlackColor
+                                  : AppColors.primary)
+                              : (isZero
+                                  ? AppColors.darkGreyBorder
+                                  : AppColors.primary),
+                          borderRadius: const BorderRadius.only(
+                            topRight: Radius.circular(4),
+                            topLeft: Radius.circular(4),
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+              const SizedBox(height: AppSpacing.sm),
+              SizedBox(
+                height: _dayBandH,
+                width: constraints.maxWidth,
+                child: Center(
+                  child: AppText(
+                    day,
+                    maxLines: 2,
+                    textAlign: TextAlign.center,
+                    overflow: TextOverflow.ellipsis,
+                    style: (context) =>
+                        AppTextStyles.captionText(context).copyWith(
+                      color: isDark
+                          ? (isZero
+                              ? AppColors.lightDarkGrey
+                              : AppColors.lightText)
+                          : (isZero
+                              ? AppColors.languageTextDark
+                              : AppColors.darkText),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          );
+        },
+      ),
+    );
+  }
 }

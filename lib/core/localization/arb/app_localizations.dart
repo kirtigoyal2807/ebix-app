@@ -1196,6 +1196,24 @@ abstract class AppLocalizations {
   /// **'Check-In (Opens at 5:30 PM)'**
   String get checkInButton;
 
+  /// No description provided for @checkInSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re checked in.'**
+  String get checkInSuccess;
+
+  /// No description provided for @cancelEnrollmentSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Your booking was cancelled.'**
+  String get cancelEnrollmentSuccess;
+
+  /// No description provided for @checkedIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Checked in'**
+  String get checkedIn;
+
   /// No description provided for @classDetail.
   ///
   /// In en, this message translates to:

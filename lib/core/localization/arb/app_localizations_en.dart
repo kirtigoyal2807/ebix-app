@@ -588,6 +588,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get checkInButton => 'Check-In (Opens at 5:30 PM)';
 
   @override
+  String get checkInSuccess => 'You\'re checked in.';
+
+  @override
+  String get cancelEnrollmentSuccess => 'Your booking was cancelled.';
+
+  @override
+  String get checkedIn => 'Checked in';
+
+  @override
   String get classDetail => 'Class Details';
 
   @override

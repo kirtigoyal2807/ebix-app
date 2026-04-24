@@ -582,6 +582,15 @@ class AppLocalizationsAr extends AppLocalizations {
   String get checkInButton => 'تسجيل الحضور (يفتح الساعة 5:30 مساءً)';
 
   @override
+  String get checkInSuccess => 'تم تسجيل حضورك.';
+
+  @override
+  String get cancelEnrollmentSuccess => 'تم إلغاء حجزك.';
+
+  @override
+  String get checkedIn => 'تم تسجيل الحضور';
+
+  @override
   String get classDetail => 'تفاصيل الحصة';
 
   @override
