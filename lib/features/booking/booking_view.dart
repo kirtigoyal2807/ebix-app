@@ -165,86 +165,72 @@ class _ClassesTab extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    return BlocBuilder<ClassesCubit, ClassesState>(
-      builder: (context, classesState) {
-        // ── Full-screen loader on initial load (no data yet) ──
-        if (classesState.isLoading && classesState.allClasses.isEmpty) {
-          return Column(
-            children: [
-              const BookingSearchBar(),
-              const SizedBox(height: AppSpacing.md),
-              const BookingFilterChips(),
-              const SizedBox(height: AppSpacing.lg),
-              const BookingSubscriptionCard(),
-              const SizedBox(height: AppSpacing.lg),
-              Divider(
-                color: isDark ? AppColors.greyText : AppColors.buttonBorder,
-                height: 1,
-              ),
-              const Expanded(
-                child: Center(child: CircularProgressIndicator()),
-              ),
-            ],
-          );
-        }
+    // Keep search / filters / subscription outside ClassesCubit rebuilds so the
+    // search field is not recreated when loading or data updates (fixes cleared text).
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        const BookingSearchBar(),
+        const SizedBox(height: AppSpacing.md),
+        const BookingFilterChips(),
+        const SizedBox(height: AppSpacing.lg),
+        const BookingSubscriptionCard(),
+        const SizedBox(height: AppSpacing.lg),
+        Divider(
+          color: isDark ? AppColors.greyText : AppColors.buttonBorder,
+          height: 1,
+        ),
+        Expanded(
+          child: BlocBuilder<ClassesCubit, ClassesState>(
+            builder: (context, classesState) {
+              if (classesState.isLoading && classesState.allClasses.isEmpty) {
+                return const Center(child: CircularProgressIndicator());
+              }
 
-        // ── Error state (no cached data) ──
-        if (classesState.hasError && classesState.allClasses.isEmpty) {
-          return Column(
-            children: [
-              const BookingSearchBar(),
-              const SizedBox(height: AppSpacing.md),
-              const BookingFilterChips(),
-              const SizedBox(height: AppSpacing.lg),
-              Expanded(
-                child: _ErrorView(
+              if (classesState.hasError && classesState.allClasses.isEmpty) {
+                return _ErrorView(
                   message: classesState.errorMessage ??
                       context.l10n.somethingWentWrong,
-                  onRetry: () => context.read<ClassesCubit>().refresh(),
-                ),
-              ),
-            ],
-          );
-        }
+                  onRetry: () => context.read<ClassesCubit>().refresh(
+                        search: bookingState.searchQuery.trim().isEmpty
+                            ? null
+                            : bookingState.searchQuery.trim(),
+                      ),
+                );
+              }
 
-        return RefreshIndicator(
-          onRefresh: () => context.read<ClassesCubit>().refresh(
-                search: bookingState.searchQuery.trim().isEmpty
-                    ? null
-                    : bookingState.searchQuery.trim(),
-              ),
-          child: Stack(
-            children: [
-              ListView(
-                padding: const EdgeInsets.symmetric(vertical: AppSpacing.lg),
-                children: [
-                  const BookingSearchBar(),
-                  const SizedBox(height: AppSpacing.md),
-                  const BookingFilterChips(),
-                  const SizedBox(height: AppSpacing.lg),
-                  const BookingSubscriptionCard(),
-                  const SizedBox(height: AppSpacing.lg),
-                  Divider(
-                    color: isDark ? AppColors.greyText : AppColors.buttonBorder,
-                    height: 1,
-                  ),
-                  const SizedBox(height: AppSpacing.lg),
-                  ..._buildClassCards(
-                      context, classesState, bookingState, isDark),
-                ],
-              ),
-              // Thin top bar while refreshing with existing data
-              if (classesState.isLoading)
-                const Positioned(
-                  top: 0,
-                  left: 0,
-                  right: 0,
-                  child: LinearProgressIndicator(minHeight: 3),
+              return RefreshIndicator(
+                onRefresh: () => context.read<ClassesCubit>().refresh(
+                      search: bookingState.searchQuery.trim().isEmpty
+                          ? null
+                          : bookingState.searchQuery.trim(),
+                    ),
+                child: Stack(
+                  children: [
+                    ListView(
+                      padding:
+                          const EdgeInsets.symmetric(vertical: AppSpacing.lg),
+                      children: _buildClassCards(
+                        context,
+                        classesState,
+                        bookingState,
+                        isDark,
+                      ),
+                    ),
+                    if (classesState.isLoading)
+                      const Positioned(
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        child: LinearProgressIndicator(minHeight: 3),
+                      ),
+                  ],
                 ),
-            ],
+              );
+            },
           ),
-        );
-      },
+        ),
+      ],
     );
   }
 

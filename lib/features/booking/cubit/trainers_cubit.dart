@@ -23,11 +23,14 @@ class TrainersCubit extends Cubit<TrainersState> {
 
   final TrainersRepository _repository;
 
+  int _requestId = 0;
+
   Future<void> load({
     String? branchId,
     String? specialty,
     String? search,
   }) async {
+    final requestId = ++_requestId;
     emit(state.copyWith(status: TrainersLoadStatus.loading, clearError: true));
     final result = await _repository.listTrainers(
       branchId: branchId,
@@ -35,6 +38,7 @@ class TrainersCubit extends Cubit<TrainersState> {
       search: search,
       page: 1,
     );
+    if (isClosed || requestId != _requestId) return;
     result.when(
       success: (data, _) {
         emit(

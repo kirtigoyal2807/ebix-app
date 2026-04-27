@@ -8,14 +8,19 @@ class ClassesCubit extends Cubit<ClassesState> {
 
   final ClassesRepository _repository;
 
+  /// Monotonically increased so in-flight responses from older searches are ignored.
+  int _listRequestId = 0;
+
   /// Load class list from API. [search] is forwarded as a query param (§13.2).
   Future<void> load({String? search, bool force = false}) async {
-    if (state.isLoading) return;
     if (!force && state.isLoaded && errorMessage == null) return;
 
+    final requestId = ++_listRequestId;
     emit(state.copyWith(status: ClassesLoadStatus.loading, errorMessage: null));
 
     final result = await _repository.listClasses(search: search);
+
+    if (isClosed || requestId != _listRequestId) return;
 
     switch (result) {
       case ApiSuccess(:final data):
