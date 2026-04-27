@@ -14,6 +14,7 @@ class ClassEventDetailClass {
     required this.allowPackageBooking,
     required this.isActive,
     this.image,
+    this.avgRating,
     this.recentReviews,
   });
 
@@ -27,6 +28,8 @@ class ClassEventDetailClass {
   final bool allowPackageBooking;
   final bool isActive;
   final String? image;
+
+  final double? avgRating;
 
   /// Embedded on `class` when the API includes `recentReviews` (may be `[]`).
   final List<ReviewResource>? recentReviews;
@@ -58,6 +61,7 @@ class ClassEventDetailClass {
       isActive:
           json['isActive'] == true || json['is_active'] == true,
       image: json['image']?.toString(),
+      avgRating: _doubleOrNull(json['avgRating'] ?? json['avg_rating']),
       recentReviews: recentReviews,
     );
   }

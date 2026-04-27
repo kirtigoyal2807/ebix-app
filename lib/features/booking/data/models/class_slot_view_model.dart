@@ -53,6 +53,14 @@ class ClassSlotViewModel {
 
   bool get upgradeRequired => !allowPackageBooking && !allowSinglePurchase;
 
+  /// Short label for UI when [avgRating] is present (includes `0`); `null` if API omitted rating.
+  String? get averageRatingDisplayLabel {
+    final r = avgRating;
+    if (r == null) return null;
+    if (r == r.roundToDouble()) return r.round().toString();
+    return r.toStringAsFixed(1);
+  }
+
   /// Build from the flattened GymClassResource + one UpcomingEvent.
   factory ClassSlotViewModel.fromClassAndEvent(
     GymClassResource gymClass,
@@ -89,7 +97,7 @@ class ClassSlotViewModel {
       name: detail.gymClass?.name ?? '',
       description: detail.gymClass?.description,
       imageUrl: detail.gymClass?.image,
-      avgRating: null,
+      avgRating: detail.gymClass?.avgRating,
       allowPackageBooking: detail.gymClass?.allowPackageBooking ?? false,
       allowSinglePurchase: detail.gymClass?.allowSinglePurchase ?? false,
       trainerName: detail.trainerName ?? '',

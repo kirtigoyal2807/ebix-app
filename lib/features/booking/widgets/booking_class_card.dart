@@ -19,10 +19,11 @@ class BookingClassCard extends StatelessWidget {
   final String studio;
   final String time;
   final int spotsLeft;
-  final double rating;
+  final double? avgRating;
   final bool isInPlan;
   final bool upgradeRequired;
   final String calendarEventId;
+  final String? imageUrl;
   final ClassSlotViewModel? _slot;
 
   const BookingClassCard({
@@ -32,10 +33,11 @@ class BookingClassCard extends StatelessWidget {
     required this.studio,
     required this.time,
     required this.spotsLeft,
-    this.rating = 4.5,
+    this.avgRating,
     this.isInPlan = true,
     this.upgradeRequired = false,
     this.calendarEventId = BookingDemoCalendarEvent.id,
+    this.imageUrl,
   }) : _slot = null;
 
   /// Construct directly from a [ClassSlotViewModel] returned by the API.
@@ -45,11 +47,18 @@ class BookingClassCard extends StatelessWidget {
         studio = slot.branchName,
         time = _formatSlotTime(slot),
         spotsLeft = slot.slotsLeft ?? 0,
-        rating = slot.avgRating ?? 4.5,
+        avgRating = slot.avgRating,
         isInPlan = slot.allowPackageBooking,
         upgradeRequired = slot.upgradeRequired,
         calendarEventId = slot.calendarEventId,
+        imageUrl = _nonEmptyUrl(slot.imageUrl),
         _slot = slot;
+
+  static String? _nonEmptyUrl(String? raw) {
+    final u = raw?.trim();
+    if (u == null || u.isEmpty) return null;
+    return u;
+  }
 
   static String _formatSlotTime(ClassSlotViewModel slot) {
     final now = DateTime.now();
@@ -137,19 +146,10 @@ class BookingClassCard extends StatelessWidget {
                 borderRadius: const BorderRadius.vertical(
                   top: Radius.circular(AppRadius.lg),
                 ),
-                child:
-                    // SvgPicture.asset(
-                    //   'assets/images/svg/ic_yoga.svg',
-                    //   height: size.height * 0.22,
-                    //   // width: width * 0.6,
-                    //   fit: BoxFit.fill,
-                    // ),
-                    Image.asset(
-                      "assets/images/demo images/Class Image.png",
-                      height: size.height * 0.18,
-                      // width: width * 0.6,
-                      fit: BoxFit.fill,
-                    ),
+                child: _classListImage(
+                  imageUrl: imageUrl,
+                  height: size.height * 0.18,
+                ),
               ),
               Padding(
                 padding: const EdgeInsets.only(
@@ -278,25 +278,9 @@ class BookingClassCard extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(width: AppSpacing.xs),
-                    Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        const Icon(
-                          Icons.star,
-                          color: Color(0xFFEAB308),
-                          size: 16,
-                        ),
-                        const SizedBox(width: 4),
-                        AppText(
-                          rating.toString(),
-                          style: (context) =>
-                              AppTextStyles.boldBody(context).copyWith(
-                                color: isDark
-                                    ? AppColors.lightText
-                                    : AppColors.darkText,
-                              ),
-                        ),
-                      ],
+                    _BookingClassCardRatingRow(
+                      avgRating: avgRating,
+                      isDark: isDark,
                     ),
                   ],
                 ),
@@ -389,5 +373,82 @@ class BookingClassCard extends StatelessWidget {
 
       // ),
     );
+  }
+
+  static const String _fallbackClassImageAsset =
+      'assets/images/demo images/Class Image.png';
+
+  static Widget _classListImage({
+    required String? imageUrl,
+    required double height,
+  }) {
+    if (imageUrl != null && imageUrl.isNotEmpty) {
+      return Image.network(
+        imageUrl,
+        height: height,
+        width: double.infinity,
+        fit: BoxFit.cover,
+        errorBuilder: (_, __, ___) => Image.asset(
+          _fallbackClassImageAsset,
+          height: height,
+          width: double.infinity,
+          fit: BoxFit.cover,
+        ),
+      );
+    }
+    return Image.asset(
+      _fallbackClassImageAsset,
+      height: height,
+      width: double.infinity,
+      fit: BoxFit.cover,
+    );
+  }
+}
+
+class _BookingClassCardRatingRow extends StatelessWidget {
+  const _BookingClassCardRatingRow({
+    required this.avgRating,
+    required this.isDark,
+  });
+
+  final double? avgRating;
+  final bool isDark;
+
+  @override
+  Widget build(BuildContext context) {
+    final label = _ratingLabel(avgRating);
+    final metaColor = isDark ? AppColors.darkGreyText : AppColors.lightGrey;
+    if (label == null) {
+      return Icon(
+        Icons.star_border_rounded,
+        color: metaColor,
+        size: 16,
+      );
+    }
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        const Icon(
+          Icons.star,
+          color: Color(0xFFEAB308),
+          size: 16,
+        ),
+        const SizedBox(width: 4),
+        AppText(
+          label,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          style: (context) => AppTextStyles.boldBody(context).copyWith(
+            color: isDark ? AppColors.lightText : AppColors.darkText,
+          ),
+        ),
+      ],
+    );
+  }
+
+  static String? _ratingLabel(double? r) {
+    if (r == null) return null;
+    if (r == r.roundToDouble()) return r.round().toString();
+    return r.toStringAsFixed(1);
   }
 }

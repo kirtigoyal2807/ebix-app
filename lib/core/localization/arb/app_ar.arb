@@ -225,6 +225,7 @@
   "bookYourClass": "احجز حصتك",
   "paymentSummery": "ملخص الدفع",
   "classFee": "رسوم الحصة",
+  "bookingPriceUnavailable": "—",
   "total": "الإجمالي",
   "bookPolicy": "أوافق على سياسة الإلغاء وأفهم أنه يمكنني الإلغاء قبل بدء الحصة بـ 4 ساعات.",
   "confirmBooking": "تأكيد الحجز",

@@ -19,6 +19,7 @@ class TrainerResource {
     required this.branches,
     this.avatarUrl,
     this.recentReviews,
+    this.classesThisWeekCount,
   });
 
   final String id;
@@ -36,6 +37,9 @@ class TrainerResource {
   /// Present when the API includes `recentReviews` / `recent_reviews` (may be `[]`).
   /// If omitted from JSON, this is null and the client may load reviews via `GET /reviews`.
   final List<ReviewResource>? recentReviews;
+
+  /// When present (e.g. `classesThisWeek`), shown on the trainer list card.
+  final int? classesThisWeekCount;
 
   factory TrainerResource.fromJson(Map<String, dynamic> json) {
     final specialtiesRaw = json['specialties'];
@@ -94,6 +98,12 @@ class TrainerResource {
           json['image'] as String? ??
           json['photo'] as String?,
       recentReviews: recentReviews,
+      classesThisWeekCount: _optionalInt(
+        json['classesThisWeek'] ??
+            json['classes_this_week'] ??
+            json['weeklyClassesCount'] ??
+            json['weekly_classes_count'],
+      ),
     );
   }
 

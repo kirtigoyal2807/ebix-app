@@ -1154,6 +1154,12 @@ abstract class AppLocalizations {
   /// **'Class Fee'**
   String get classFee;
 
+  /// No description provided for @bookingPriceUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'—'**
+  String get bookingPriceUnavailable;
+
   /// No description provided for @total.
   ///
   /// In en, this message translates to:

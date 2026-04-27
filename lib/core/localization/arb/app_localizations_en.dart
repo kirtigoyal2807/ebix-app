@@ -566,6 +566,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get classFee => 'Class Fee';
 
   @override
+  String get bookingPriceUnavailable => '—';
+
+  @override
   String get total => 'Total';
 
   @override

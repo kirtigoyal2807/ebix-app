@@ -225,6 +225,7 @@
   "bookYourClass": "Book Your Class",
   "paymentSummery": "Payment Summary",
   "classFee": "Class Fee",
+  "bookingPriceUnavailable": "—",
   "total": "Total",
   "bookPolicy": "I agree to the cancellation policy and understand that I can cancel up to 4 hours before the class starts.",
   "confirmBooking": "Confirm Booking",

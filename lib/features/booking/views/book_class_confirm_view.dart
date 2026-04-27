@@ -76,7 +76,11 @@ class BookClassConfirmView extends StatelessWidget {
             ),
             const SizedBox(height: AppSpacing.lg),
 
-            _buildPaymentSummary(isDark: isDark, l10n: l10n),
+            _buildPaymentSummary(
+              context: context,
+              isDark: isDark,
+              l10n: l10n,
+            ),
             const SizedBox(height: AppSpacing.lg),
 
             _buildPolicyAgreement(l10n: l10n, isDark: isDark),
@@ -285,9 +289,15 @@ class BookClassConfirmView extends StatelessWidget {
   }
 
   Widget _buildPaymentSummary({
+    required BuildContext context,
     required bool isDark,
     required AppLocalizations l10n,
   }) {
+    final price = slot.basePrice;
+    final priceLabel = price != null
+        ? _formatClassPrice(context, price)
+        : l10n.bookingPriceUnavailable;
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
       child: Column(
@@ -310,7 +320,7 @@ class BookClassConfirmView extends StatelessWidget {
               children: [
                 _buildPaymentRow(
                   title: l10n.classFee,
-                  value: 'Included in plan',
+                  value: priceLabel,
                 ),
                 const SizedBox(height: AppSpacing.md),
                 Divider(
@@ -318,13 +328,26 @@ class BookClassConfirmView extends StatelessWidget {
                   height: 1,
                 ),
                 const SizedBox(height: AppSpacing.md),
-                _buildPaymentRow(title: l10n.total, value: '\$0.00'),
+                _buildPaymentRow(title: l10n.total, value: priceLabel),
               ],
             ),
           ),
         ],
       ),
     );
+  }
+
+  static String _formatClassPrice(BuildContext context, double amount) {
+    final locale = Localizations.localeOf(context).toLanguageTag();
+    try {
+      return NumberFormat.currency(
+        locale: locale,
+        name: 'SAR',
+        decimalDigits: 2,
+      ).format(amount);
+    } catch (_) {
+      return '${amount.toStringAsFixed(2)} SAR';
+    }
   }
 
   Widget _buildPaymentRow({required String title, required String value}) {

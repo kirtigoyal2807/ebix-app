@@ -36,6 +36,8 @@ class ClassDetailCubit extends Cubit<ClassDetailState> {
         final resolved = ClassSlotViewModel.fromEventDetail(data);
         final mergedSlot = resolved.copyWith(
           recentReviews: resolved.recentReviews ?? state.slot?.recentReviews,
+          avgRating: resolved.avgRating ?? state.slot?.avgRating,
+          basePrice: resolved.basePrice ?? state.slot?.basePrice,
         );
         emit(
           state.copyWith(

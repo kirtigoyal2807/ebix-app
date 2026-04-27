@@ -76,7 +76,7 @@ class ClassDetailHeader extends StatelessWidget {
                 ],
               ),
             ),
-            if (slot.avgRating != null)
+            if (slot.averageRatingDisplayLabel != null)
               Padding(
                 padding: const EdgeInsets.only(top: 12),
                 child: Row(
@@ -89,7 +89,7 @@ class ClassDetailHeader extends StatelessWidget {
                     ),
                     const SizedBox(width: 4),
                     AppText(
-                      slot.avgRating!.toStringAsFixed(1),
+                      slot.averageRatingDisplayLabel!,
                       style: (ctx) => AppTextStyles.boldBody(ctx).copyWith(
                         fontSize: 18,
                         color: isDark
