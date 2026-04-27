@@ -96,6 +96,7 @@ class ClassEventDetail {
     this.branchName,
     this.branchLocation,
     this.branchAddress,
+    this.gender,
     this.gymClass,
   });
 
@@ -112,6 +113,8 @@ class ClassEventDetail {
   final String? branchName;
   final String? branchLocation;
   final String? branchAddress;
+  /// Gender restriction for this event: 'Male', 'Female', or null (all genders).
+  final String? gender;
   final ClassEventDetailClass? gymClass;
 
   bool get isFull => slotsLeft != null && slotsLeft! <= 0;
@@ -158,6 +161,7 @@ class ClassEventDetail {
       branchAddress:
           json['branchAddress']?.toString() ??
           json['branch_address']?.toString(),
+      gender: json['gender']?.toString(),
       gymClass: gymClass,
     );
   }

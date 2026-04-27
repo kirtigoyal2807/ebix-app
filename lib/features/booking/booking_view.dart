@@ -303,6 +303,14 @@ class _ClassesTab extends StatelessWidget {
           .toList();
     }
 
+    // Gender filter
+    if (state.selectedGender != 'All Gender') {
+      result = result.where((s) {
+        if (s.gender == null) return true;
+        return s.gender!.toLowerCase() == state.selectedGender.toLowerCase();
+      }).toList();
+    }
+
     // Date filter
     if (state.selectedDate != 'All Dates') {
       final now = DateTime.now();

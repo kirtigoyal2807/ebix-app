@@ -17,6 +17,7 @@ class UpcomingEvent {
     this.capacity,
     this.slotsLeft,
     this.waitlistCount,
+    this.gender,
   });
 
   final String id;
@@ -32,6 +33,8 @@ class UpcomingEvent {
   final int? capacity;
   final int? slotsLeft;
   final int? waitlistCount;
+  /// Gender restriction for this event: 'Male', 'Female', or null (all genders).
+  final String? gender;
 
   factory UpcomingEvent.fromJson(Map<String, dynamic> json) {
     return UpcomingEvent(
@@ -61,6 +64,7 @@ class UpcomingEvent {
           _intOrNull(json['slotsLeft'] ?? json['slots_left']),
       waitlistCount:
           _intOrNull(json['waitlistCount'] ?? json['waitlist_count']),
+      gender: json['gender']?.toString(),
     );
   }
 

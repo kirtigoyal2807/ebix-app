@@ -25,6 +25,7 @@ class ClassSlotViewModel {
     this.durationMinutes,
     this.basePrice,
     this.recentReviews,
+    this.gender,
   });
 
   final String classId;
@@ -49,9 +50,13 @@ class ClassSlotViewModel {
   /// From `GET /classes` / event detail `class.recentReviews`; null → fetch via `GET /reviews`.
   final List<ReviewResource>? recentReviews;
 
+  /// Gender restriction for this event: 'Male', 'Female', or null (all genders).
+  final String? gender;
+
   bool get isFull => slotsLeft != null && slotsLeft! <= 0;
 
-  bool get upgradeRequired => !allowPackageBooking && !allowSinglePurchase;
+  /// Upgrade required when class is not included in user's current package.
+  bool get upgradeRequired => !allowPackageBooking;
 
   /// Short label for UI when [avgRating] is present (includes `0`); `null` if API omitted rating.
   String? get averageRatingDisplayLabel {
@@ -86,6 +91,7 @@ class ClassSlotViewModel {
       durationMinutes: gymClass.defaultDurationMinutes,
       basePrice: gymClass.basePrice,
       recentReviews: gymClass.recentReviews,
+      gender: event.gender,
     );
   }
 
@@ -111,6 +117,7 @@ class ClassSlotViewModel {
       durationMinutes: detail.gymClass?.defaultDurationMinutes,
       basePrice: detail.gymClass?.basePrice,
       recentReviews: detail.gymClass?.recentReviews,
+      gender: detail.gender,
     );
   }
 
@@ -134,6 +141,7 @@ class ClassSlotViewModel {
     int? durationMinutes,
     double? basePrice,
     List<ReviewResource>? recentReviews,
+    String? gender,
   }) {
     return ClassSlotViewModel(
       classId: classId ?? this.classId,
@@ -155,6 +163,7 @@ class ClassSlotViewModel {
       durationMinutes: durationMinutes ?? this.durationMinutes,
       basePrice: basePrice ?? this.basePrice,
       recentReviews: recentReviews ?? this.recentReviews,
+      gender: gender ?? this.gender,
     );
   }
 }
