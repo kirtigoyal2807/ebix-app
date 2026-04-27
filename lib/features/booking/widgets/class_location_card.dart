@@ -4,14 +4,22 @@ import 'package:pilates_app/config/theme/app_radius.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/core/localization/localization_extension.dart';
+import 'package:pilates_app/features/booking/data/models/class_slot_view_model.dart';
 import 'package:pilates_app/widgets/app_text.dart';
 
 class ClassLocationCard extends StatelessWidget {
-  const ClassLocationCard({super.key});
+  const ClassLocationCard({super.key, required this.slot});
+
+  final ClassSlotViewModel slot;
 
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    final branchName =
+        slot.branchName.isNotEmpty ? slot.branchName : context.l10n.branchDowntown;
+    final branchAddress =
+        slot.branchAddress ?? slot.branchLocation ?? context.l10n.branchAddressDetail;
 
     return Container(
       width: double.infinity,
@@ -28,26 +36,27 @@ class ClassLocationCard extends StatelessWidget {
         children: [
           AppText(
             context.l10n.location,
-            style: (context) => AppTextStyles.captionText(context).copyWith(
+            style: (ctx) => AppTextStyles.captionText(ctx).copyWith(
               color: AppColors.lightGrey,
               fontSize: 12,
             ),
           ),
           const SizedBox(height: AppSpacing.xs),
           AppText(
-            context.l10n.branchDowntown,
-            style: (context) => AppTextStyles.boldBody(context).copyWith(
+            branchName,
+            style: (ctx) => AppTextStyles.boldBody(ctx).copyWith(
               fontSize: 14,
               color: isDark ? AppColors.lightText : AppColors.darkText,
             ),
           ),
-          AppText(
-            context.l10n.branchAddressDetail,
-            style: (context) => AppTextStyles.boldBody(context).copyWith(
-              fontSize: 14,
-              color: isDark ? AppColors.lightText : AppColors.darkText,
+          if (branchAddress.isNotEmpty)
+            AppText(
+              branchAddress,
+              style: (ctx) => AppTextStyles.boldBody(ctx).copyWith(
+                fontSize: 14,
+                color: isDark ? AppColors.lightText : AppColors.darkText,
+              ),
             ),
-          ),
         ],
       ),
     );

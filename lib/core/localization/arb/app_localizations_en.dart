@@ -2780,6 +2780,18 @@ class AppLocalizationsEn extends AppLocalizations {
   String get retry => 'Retry';
 
   @override
+  String get noClassesFound => 'No classes found';
+
+  @override
+  String get somethingWentWrong => 'Something went wrong. Please try again.';
+
+  @override
+  String get availabilityUnknown => 'Availability unknown';
+
+  @override
+  String get trainerUnknown => 'Unknown trainer';
+
+  @override
   String get locationPermissionTitle => 'Location Access';
 
   @override

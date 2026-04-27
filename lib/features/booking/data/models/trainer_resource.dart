@@ -75,7 +75,7 @@ class TrainerResource {
     List<ReviewResource>? recentReviews;
     if (json.containsKey('recentReviews') || json.containsKey('recent_reviews')) {
       final raw = json['recentReviews'] ?? json['recent_reviews'];
-      recentReviews = _parseRecentReviews(raw);
+      recentReviews = parseRecentReviewsList(raw);
     }
 
     return TrainerResource(
@@ -95,19 +95,6 @@ class TrainerResource {
           json['photo'] as String?,
       recentReviews: recentReviews,
     );
-  }
-
-  static List<ReviewResource> _parseRecentReviews(dynamic raw) {
-    if (raw is! List) return <ReviewResource>[];
-    final out = <ReviewResource>[];
-    for (final e in raw) {
-      if (e is Map<String, dynamic>) {
-        out.add(ReviewResource.fromJson(e));
-      } else if (e is Map) {
-        out.add(ReviewResource.fromJson(Map<String, dynamic>.from(e)));
-      }
-    }
-    return out;
   }
 
   static int? _optionalInt(dynamic v) {

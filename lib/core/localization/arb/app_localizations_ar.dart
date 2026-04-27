@@ -2762,6 +2762,18 @@ class AppLocalizationsAr extends AppLocalizations {
   String get retry => 'إعادة المحاولة';
 
   @override
+  String get noClassesFound => 'لم يتم العثور على فصول';
+
+  @override
+  String get somethingWentWrong => 'حدث خطأ ما. يُرجى المحاولة مرة أخرى.';
+
+  @override
+  String get availabilityUnknown => 'التوفر غير معروف';
+
+  @override
+  String get trainerUnknown => 'مدرب غير معروف';
+
+  @override
   String get locationPermissionTitle => 'الوصول إلى الموقع';
 
   @override

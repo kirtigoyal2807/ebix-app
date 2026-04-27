@@ -29,7 +29,8 @@ class ClassReviewsSection extends StatelessWidget {
   final String? reviewableType;
   final String? reviewableId;
 
-  /// From `GET /trainers/{id}` when the payload includes `recentReviews` (use `[]` for none).
+  /// From `GET /classes`, `GET /classes/events/{id}` nested `class`, or trainer detail
+  /// when the payload includes `recentReviews` (use `[]` for none).
   final List<ReviewResource>? embeddedRecentReviews;
 
   @override

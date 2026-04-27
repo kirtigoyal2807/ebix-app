@@ -5300,6 +5300,30 @@ abstract class AppLocalizations {
   /// **'Retry'**
   String get retry;
 
+  /// No description provided for @noClassesFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No classes found'**
+  String get noClassesFound;
+
+  /// No description provided for @somethingWentWrong.
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong. Please try again.'**
+  String get somethingWentWrong;
+
+  /// No description provided for @availabilityUnknown.
+  ///
+  /// In en, this message translates to:
+  /// **'Availability unknown'**
+  String get availabilityUnknown;
+
+  /// No description provided for @trainerUnknown.
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown trainer'**
+  String get trainerUnknown;
+
   /// No description provided for @locationPermissionTitle.
   ///
   /// In en, this message translates to:

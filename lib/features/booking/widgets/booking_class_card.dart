@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 
 import 'package:pilates_app/config/theme/app_colors.dart';
 import 'package:pilates_app/config/theme/app_radius.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/core/localization/localization_extension.dart';
+import 'package:pilates_app/features/booking/data/models/class_slot_view_model.dart';
 import 'package:pilates_app/features/booking/widgets/upgrade_bottom_sheet.dart';
 import 'package:pilates_app/widgets/app_text.dart';
-import 'package:pilates_app/features/booking/cubit/booking_cubit.dart';
 import '../../../widgets/app_shadow.dart';
 import '../data/class_booking_preview.dart';
 import '../views/class_detail_view.dart';
@@ -23,6 +23,7 @@ class BookingClassCard extends StatelessWidget {
   final bool isInPlan;
   final bool upgradeRequired;
   final String calendarEventId;
+  final ClassSlotViewModel? _slot;
 
   const BookingClassCard({
     super.key,
@@ -35,7 +36,39 @@ class BookingClassCard extends StatelessWidget {
     this.isInPlan = true,
     this.upgradeRequired = false,
     this.calendarEventId = BookingDemoCalendarEvent.id,
-  });
+  }) : _slot = null;
+
+  /// Construct directly from a [ClassSlotViewModel] returned by the API.
+  BookingClassCard.fromSlot(ClassSlotViewModel slot, {super.key})
+      : title = slot.name,
+        trainerName = slot.trainerName,
+        studio = slot.branchName,
+        time = _formatSlotTime(slot),
+        spotsLeft = slot.slotsLeft ?? 0,
+        rating = slot.avgRating ?? 4.5,
+        isInPlan = slot.allowPackageBooking,
+        upgradeRequired = slot.upgradeRequired,
+        calendarEventId = slot.calendarEventId,
+        _slot = slot;
+
+  static String _formatSlotTime(ClassSlotViewModel slot) {
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+    final slotDay = DateTime(
+      slot.startAt.year,
+      slot.startAt.month,
+      slot.startAt.day,
+    );
+    final timeStr = DateFormat('h:mm a').format(slot.startAt.toLocal());
+    if (slotDay == today) {
+      return 'Today, $timeStr';
+    }
+    final tomorrow = today.add(const Duration(days: 1));
+    if (slotDay == tomorrow) {
+      return 'Tomorrow, $timeStr';
+    }
+    return '${DateFormat('EEE, MMM d').format(slot.startAt.toLocal())}, $timeStr';
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,33 +83,22 @@ class BookingClassCard extends StatelessWidget {
       // borderRadius: BorderRadius.circular(AppRadius.lg),
       child: InkWell(
         onTap: () {
-          if (isInPlan) {
-            final cubit = BlocProvider.of<BookingCubit>(context);
-            cubit.loadClassDetails();
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (newContext) => BlocProvider.value(
-                  value: cubit,
-                  child: ClassDetailView(
-                    classState: ClassState.booking,
-                    calendarEventId: calendarEventId,
-                    preview: ClassBookingPreview(
-                      title: title,
-                      trainerName: trainerName,
-                      studio: studio,
-                      time: time,
-                    ),
-                  ),
-                ),
-              ),
-            );
-          } else {
+          if (upgradeRequired) {
             showModalBottomSheet(
               context: context,
               isScrollControlled: true,
               backgroundColor: Colors.transparent,
               barrierColor: AppColors.bottomSheetShadow,
               builder: (_) => const BranchNotInPlanSheet(),
+            );
+          } else {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (newContext) => ClassDetailView(
+                  calendarEventId: calendarEventId,
+                  preloadedSlot: _slot,
+                ),
+              ),
             );
           }
         },

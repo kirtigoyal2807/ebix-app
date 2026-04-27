@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 
 import 'package:pilates_app/config/theme/app_spacing.dart';
-import 'package:pilates_app/widgets/app_shadow.dart';
+import 'package:pilates_app/features/booking/data/models/class_slot_view_model.dart';
+import 'package:pilates_app/features/my_booking/data/models/booking_resource.dart';
 import 'package:pilates_app/widgets/app_text.dart';
 import '../../../config/theme/app_colors.dart';
 import '../../../config/theme/app_radius.dart';
@@ -14,14 +15,22 @@ import '../../../widgets/app_button.dart';
 import '../../../widgets/dotted_underline.dart';
 import '../../home/home_view.dart';
 import '../../my_booking/my_booking_view.dart';
-import '../cubit/booking_cubit.dart';
-import '../cubit/booking_state.dart';
-import 'class_detail_view.dart';
 
 class BookingSuccessScreen extends StatelessWidget {
-  const BookingSuccessScreen({super.key, required this.successPage});
+  const BookingSuccessScreen({
+    super.key,
+    required this.successPage,
+    this.slot,
+    this.booking,
+  });
 
   final SuccessPage successPage;
+
+  /// Optional slot data — used to display real class details.
+  final ClassSlotViewModel? slot;
+
+  /// Optional booking result from the API — used to display waitlist position.
+  final BookingResource? booking;
 
   @override
   Widget build(BuildContext context) {
@@ -184,6 +193,7 @@ class BookingSuccessScreen extends StatelessWidget {
 
   Widget _buildPositionCard(BuildContext context, bool isDark) {
     final l10n = AppLocalizations.of(context);
+    final position = booking?.waitlistPosition;
 
     return Column(
       children: [
@@ -211,9 +221,9 @@ class BookingSuccessScreen extends StatelessWidget {
             children: [
               AppText(
                 l10n.yourPosition,
-                style: (context) =>
+                style: (ctx) =>
                     AppTextStyles.captionText(
-                      context,
+                      ctx,
                       fontWeight: FontWeight.w500,
                     ).copyWith(
                       color: isDark
@@ -223,14 +233,14 @@ class BookingSuccessScreen extends StatelessWidget {
               ),
               const SizedBox(height: AppSpacing.md),
               AppText(
-                '#3',
-                style: (context) =>
-                    AppTextStyles.appBarText(context).copyWith(fontSize: 32),
+                position != null ? '#$position' : '--',
+                style: (ctx) =>
+                    AppTextStyles.appBarText(ctx).copyWith(fontSize: 32),
               ),
               const SizedBox(height: AppSpacing.sm),
               AppText(
                 l10n.inLine,
-                style: (context) => AppTextStyles.captionText(context).copyWith(
+                style: (ctx) => AppTextStyles.captionText(ctx).copyWith(
                   color: isDark ? AppColors.darkGreyText : AppColors.lightGrey,
                 ),
               ),
@@ -247,6 +257,32 @@ class BookingSuccessScreen extends StatelessWidget {
   Widget _buildClassDetailsSection(BuildContext context, bool isDark) {
     final l10n = AppLocalizations.of(context);
 
+    final className = slot?.name ?? booking?.className ?? '--';
+    final instructorName = slot?.trainerName ?? booking?.trainerName ?? '--';
+    final locationName = slot?.branchName ?? booking?.branchName ?? '--';
+    final locationAddress = slot?.branchAddress ?? slot?.branchLocation ?? '';
+
+    String dateLabel = '--';
+    String timeLabel = '--';
+    if (slot != null) {
+      final start = slot!.startAt.toLocal();
+      final end = slot!.endAt.toLocal();
+      final now = DateTime.now();
+      final today = DateTime(now.year, now.month, now.day);
+      final slotDay = DateTime(start.year, start.month, start.day);
+      if (slotDay == today) {
+        dateLabel = 'Today, ${DateFormat('MMMM d, yyyy').format(start)}';
+      } else {
+        dateLabel = DateFormat('EEEE, MMMM d, yyyy').format(start);
+      }
+      timeLabel =
+          '${DateFormat('h:mm a').format(start)} – ${DateFormat('h:mm a').format(end)}';
+    } else if (booking?.startAt != null) {
+      dateLabel =
+          DateFormat('EEEE, MMMM d, yyyy').format(booking!.startAt!.toLocal());
+      timeLabel = DateFormat('h:mm a').format(booking!.startAt!.toLocal());
+    }
+
     return Container(
       margin: const EdgeInsetsDirectional.symmetric(horizontal: AppSpacing.lg),
       padding: const EdgeInsets.all(20),
@@ -256,37 +292,20 @@ class BookingSuccessScreen extends StatelessWidget {
         border: Border.all(
           color: isDark ? AppColors.greyText : AppColors.buttonBorder,
         ),
-        // boxShadow: [
-        //   AppShadows.lightShadow,
-        //   AppShadows.mediumShadow,
-        //   AppShadows.mediumHeavyShadow,
-        //   BoxShadow(
-        //     color: AppColors.shadowColor.withValues(alpha: 0.01),
-        //     offset: const Offset(0, 64),
-        //     blurRadius: 25,
-        //     spreadRadius: 0,
-        //   ),
-        //   BoxShadow(
-        //     color: AppColors.shadowColor.withValues(alpha: 0.00),
-        //     offset: const Offset(0, 99),
-        //     blurRadius: 28,
-        //     spreadRadius: 0,
-        //   ),
-        // ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           AppText(
             l10n.classDetail,
-            style: (context) => AppTextStyles.gelasioMedium(context),
+            style: (ctx) => AppTextStyles.gelasioMedium(ctx),
           ),
 
           const SizedBox(height: AppSpacing.lmd),
 
           _buildClassDetailRow(
             label: l10n.classTxt,
-            value: 'Core Strength & Balance',
+            value: className,
             isDark: isDark,
           ),
 
@@ -294,7 +313,7 @@ class BookingSuccessScreen extends StatelessWidget {
 
           _buildClassDetailRow(
             label: l10n.instructor,
-            value: 'Fatima Al-Hashmi',
+            value: instructorName,
             isDark: isDark,
           ),
 
@@ -302,7 +321,7 @@ class BookingSuccessScreen extends StatelessWidget {
 
           _buildClassDetailRow(
             label: l10n.date,
-            value: 'Today, January 21, 2026',
+            value: dateLabel,
             isDark: isDark,
           ),
 
@@ -310,7 +329,7 @@ class BookingSuccessScreen extends StatelessWidget {
 
           _buildClassDetailRow(
             label: l10n.time,
-            value: '6:00 PM - 7:00 PM',
+            value: timeLabel,
             isDark: isDark,
           ),
 
@@ -318,7 +337,9 @@ class BookingSuccessScreen extends StatelessWidget {
 
           _buildClassDetailRow(
             label: l10n.location,
-            value: 'Downtown Studio, 123 Main Street, Suite 200',
+            value: locationAddress.isNotEmpty
+                ? '$locationName, $locationAddress'
+                : locationName,
             isMultiLine: true,
             isBorder: false,
             isDark: isDark,
@@ -430,43 +451,18 @@ class BookingSuccessScreen extends StatelessWidget {
     final l10n = AppLocalizations.of(context);
 
     return Padding(
-      padding: EdgeInsetsDirectional.only(start: 24, end: 24, bottom: 34),
+      padding: const EdgeInsetsDirectional.only(start: 24, end: 24, bottom: 34),
       child: Column(
         children: [
-          BlocProvider(
-            create: (context) => BookingCubit(),
-            child: BlocBuilder<BookingCubit, BookingState>(
-              builder: (context, state) {
-                return AppButton(
-                  label: l10n.viewMyBooking,
-                  onPressed: () {
-                    // Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(builder: (_) => const JoinWaitlistView()),
-                    // );
-                    final cubit = BlocProvider.of<BookingCubit>(context);
-                    cubit.loadClassDetails();
-
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => MyBookingView()),
-                    );
-
-                    // Navigator.of(context).push(
-                    //   MaterialPageRoute(
-                    //     builder: (newContext) => BlocProvider.value(
-                    //       value: cubit,
-                    //       child: ClassDetailView(
-                    //         classState: ClassState.waitList,
-                    //       ),
-                    //     ),
-                    //   ),
-                    // );
-                  },
-                  variant: AppButtonVariant.primary,
-                );
-              },
-            ),
+          AppButton(
+            label: l10n.viewMyBooking,
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => MyBookingView()),
+              );
+            },
+            variant: AppButtonVariant.primary,
           ),
           const SizedBox(height: AppSpacing.sm),
           Container(
@@ -485,7 +481,10 @@ class BookingSuccessScreen extends StatelessWidget {
             child: AppButton(
               label: l10n.browseMoreClasses,
               onPressed: () {
-                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeView(),));
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (_) => HomeView()),
+                );
               },
               variant: AppButtonVariant.secondary,
             ),

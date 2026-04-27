@@ -140,6 +140,8 @@ class HomeFeaturedClass {
     required this.image,
     required this.spotsLeft,
     required this.inPlan,
+    this.calendarEventId,
+    this.classId,
   });
 
   final String? className;
@@ -149,6 +151,12 @@ class HomeFeaturedClass {
   final String? image;
   final int? spotsLeft;
   final bool? inPlan;
+
+  /// Calendar event UUID — used to navigate to ClassDetailView.
+  final String? calendarEventId;
+
+  /// Class type UUID — used to navigate to class type detail.
+  final String? classId;
 
   factory HomeFeaturedClass.fromJson(Map<String, dynamic> json) {
     final availability = _toMapOrNull(json['availability']);
@@ -161,6 +169,15 @@ class HomeFeaturedClass {
       image: json['image']?.toString(),
       spotsLeft: _toIntOrNull(availability?['spotsLeft']),
       inPlan: flags?['inPlan'] is bool ? flags!['inPlan'] as bool : null,
+      calendarEventId:
+          json['calendarEventId']?.toString() ??
+          json['calendar_event_id']?.toString() ??
+          json['eventId']?.toString() ??
+          json['event_id']?.toString(),
+      classId:
+          json['classId']?.toString() ??
+          json['class_id']?.toString() ??
+          json['id']?.toString(),
     );
   }
 }

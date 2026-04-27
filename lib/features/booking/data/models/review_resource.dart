@@ -1,3 +1,17 @@
+/// Parses embedded `recentReviews` / `recent_reviews` arrays from class or trainer payloads.
+List<ReviewResource> parseRecentReviewsList(dynamic raw) {
+  if (raw is! List) return <ReviewResource>[];
+  final out = <ReviewResource>[];
+  for (final e in raw) {
+    if (e is Map<String, dynamic>) {
+      out.add(ReviewResource.fromJson(e));
+    } else if (e is Map) {
+      out.add(ReviewResource.fromJson(Map<String, dynamic>.from(e)));
+    }
+  }
+  return out;
+}
+
 /// Item from `GET /reviews` (Pilates API §14.1).
 class ReviewResource {
   const ReviewResource({
