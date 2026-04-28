@@ -1020,8 +1020,9 @@ class AuthCubit extends Cubit<AuthState> {
     final result = await _authRepository.getProfile();
     switch (result) {
       case ApiSuccess<AuthUser>(:final data):
+        await _tokenStorage.saveUser(data);
         emit(state.copyWith(user: data));
-      case ApiFailure<AuthUser>(:final exception):
+      case ApiFailure<AuthUser>():
         // Profile load failed - user remains null
         // This is not a critical error, user can continue without profile data
         break;

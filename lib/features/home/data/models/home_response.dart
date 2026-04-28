@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:pilates_app/core/models/membership_snapshot.dart';
 
 class HomeResponse {
   const HomeResponse({
@@ -42,22 +43,29 @@ class HomeResponse {
 }
 
 class HomeMembership {
-  const HomeMembership({required this.planName, required this.totalSessions});
+  const HomeMembership({
+    required this.planName,
+    required this.totalSessions,
+    this.sessionsRemaining,
+  });
 
   final String? planName;
   final int? totalSessions;
 
-  factory HomeMembership.fromJson(Map<String, dynamic> json) {
-    final sessionPack = _toMapOrNull(json['session_pack']);
+  /// Sessions left when API sends `sessionsRemaining` (session packs).
+  final int? sessionsRemaining;
+
+  factory HomeMembership.fromSnapshot(MembershipSnapshot snap) {
     return HomeMembership(
-      planName:
-          sessionPack?['planName']?.toString() ??
-          json['planName']?.toString() ??
-          json['name']?.toString(),
-      totalSessions: _toIntOrNull(
-        sessionPack?['totalSessions'] ?? json['totalSessions'],
-      ),
+      planName: snap.planName,
+      totalSessions: snap.totalSessions,
+      sessionsRemaining: snap.sessionsRemaining,
     );
+  }
+
+  /// Backward-compatible: same shape as [`parseMembershipField`] for a single row.
+  factory HomeMembership.fromJson(Map<String, dynamic> json) {
+    return HomeMembership.fromSnapshot(MembershipSnapshot.fromJsonMap(json));
   }
 }
 
@@ -267,16 +275,9 @@ class HomeReceivedGift {
 }
 
 HomeMembership? _coerceMembership(dynamic raw) {
-  final map = _toMapOrNull(raw);
-  if (map != null) {
-    return HomeMembership.fromJson(map);
-  }
-
-  final list = _toList(raw);
-  if (list.isEmpty) {
-    return null;
-  }
-  return HomeMembership.fromJson(list.first);
+  final snap = parseMembershipField(raw);
+  if (snap == null) return null;
+  return HomeMembership.fromSnapshot(snap);
 }
 
 List<HomeFeaturedClass> _coerceFeaturedClasses(dynamic raw) {

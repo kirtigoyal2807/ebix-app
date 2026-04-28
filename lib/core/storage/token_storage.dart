@@ -40,14 +40,7 @@ class TokenStorage {
   }
 
   Future<void> saveUser(AuthUser user) async {
-    final userJson = jsonEncode({
-      'id': user.id,
-      'firstName': user.firstName,
-      'lastName': user.lastName,
-      'name': user.name,
-      'email': user.email,
-      'phone': user.phone,
-    });
+    final userJson = jsonEncode(user.toJson());
     await _prefs.setString(_kUserData, userJson);
   }
 

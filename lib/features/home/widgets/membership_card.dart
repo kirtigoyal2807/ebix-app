@@ -14,12 +14,32 @@ class MembershipCard extends StatelessWidget {
   final String? planName;
   final int? totalSessions;
 
+  /// When both [sessionsRemaining] and [totalSessions] are set, subtitle shows
+  /// "X of Y classes"; otherwise behavior matches the previous single field.
+  final int? sessionsRemaining;
+
   const MembershipCard({
     super.key,
     required this.status,
     this.planName,
     this.totalSessions,
+    this.sessionsRemaining,
   });
+
+  String _sessionSubtitle(BuildContext context) {
+    final r = sessionsRemaining;
+    final t = totalSessions;
+    if (r != null && t != null && t > 0) {
+      return context.l10n.membershipClassesRemainingOfTotal(r, t);
+    }
+    if (r != null && r >= 0) {
+      return '$r ${context.l10n.classes}';
+    }
+    if (t != null && t > 0) {
+      return '$t ${context.l10n.classes}';
+    }
+    return context.l10n.unlimitedClasses;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -213,9 +233,7 @@ class MembershipCard extends StatelessWidget {
                 ),
                 SizedBox(height: 4),
                 AppText(
-                  totalSessions != null
-                      ? '${totalSessions!} ${context.l10n.classes}'
-                      : context.l10n.unlimitedClasses,
+                  _sessionSubtitle(context),
                   style: (context) => AppTextStyles.captionText(
                     context,
                   ).copyWith(color: AppColors.lightGreyText),

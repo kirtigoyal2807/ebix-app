@@ -10,6 +10,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../account/account_view.dart';
 import '../auth/cubit/auth_cubit.dart';
 import '../auth/cubit/auth_state.dart';
+import '../auth/data/models/auth_user.dart';
 import '../explore/explore_view.dart';
 import '../explore/view/referral_program_view.dart';
 import 'cubit/home_cubit.dart';
@@ -168,6 +169,10 @@ class HomeView extends StatelessWidget {
   }
 }
 
+/// Visible when [`GET /home`] has `membership` or [`GET /me`] exposes plan/session hints.
+bool _showsMembershipFallback(AuthUser? user) =>
+    user?.showsMembershipWithoutHomePayload ?? false;
+
 class HomeContentView extends StatelessWidget {
   const HomeContentView({super.key});
 
@@ -212,7 +217,6 @@ class HomeContentView extends StatelessWidget {
         }
         final banners = data.banners;
         final membership = data.membership;
-        final hasMembership = membership != null;
         final progress = data.progress;
         final featuredClasses = data.featuredClasses;
         final featuredClass = featuredClasses.isEmpty
@@ -272,21 +276,39 @@ class HomeContentView extends StatelessWidget {
                       const SizedBox(height: AppSpacing.md),
                       ReceivedGiftCard(gift: receivedGifts.first),
                     ],
-                    if (hasMembership) ...[
-                      const SizedBox(height: AppSpacing.lg),
-                      _sectionTitle(
-                        context,
-                        context.l10n.yourMembership,
-                        isDark,
-                        size,
-                      ),
-                      const SizedBox(height: AppSpacing.md),
-                      MembershipCard(
-                        status: HomeUserStatus.existing,
-                        planName: membership.planName,
-                        totalSessions: membership.totalSessions,
-                      ),
-                    ],
+                    BlocBuilder<AuthCubit, AuthState>(
+                      builder: (context, authState) {
+                        final user = authState.user;
+                        final hasMembershipHomeOrProfile =
+                            membership != null ||
+                            _showsMembershipFallback(user);
+                        if (!hasMembershipHomeOrProfile) {
+                          return const SizedBox.shrink();
+                        }
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const SizedBox(height: AppSpacing.lg),
+                            _sectionTitle(
+                              context,
+                              context.l10n.yourMembership,
+                              isDark,
+                              size,
+                            ),
+                            const SizedBox(height: AppSpacing.md),
+                            MembershipCard(
+                              status: HomeUserStatus.existing,
+                              planName:
+                                  membership?.planName ?? user?.membershipPlanName,
+                              totalSessions: membership?.totalSessions ??
+                                  user?.membershipTotalSessions,
+                              sessionsRemaining: membership?.sessionsRemaining ??
+                                  user?.membershipSessionsRemaining,
+                            ),
+                          ],
+                        );
+                      },
+                    ),
                     if (progress != null) ...[
                       const SizedBox(height: AppSpacing.lg),
                       _sectionTitle(

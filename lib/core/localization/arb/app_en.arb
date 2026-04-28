@@ -530,6 +530,17 @@
   "all": "All",
   "subscriptions": "Subscriptions",
   "classes": "Classes",
+  "membershipClassesRemainingOfTotal": "{remaining} of {total} classes",
+  "@membershipClassesRemainingOfTotal": {
+    "placeholders": {
+      "remaining": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
   "refunds": "Refunds",
   "date": "Date",
   "termsAndConditions": "Terms & Conditions",

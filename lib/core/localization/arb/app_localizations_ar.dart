@@ -1330,6 +1330,11 @@ class AppLocalizationsAr extends AppLocalizations {
   String get classes => 'الحصص';
 
   @override
+  String membershipClassesRemainingOfTotal(int remaining, int total) {
+    return '$remaining من $total حصة';
+  }
+
+  @override
   String get refunds => 'المبالغ المستردة';
 
   @override

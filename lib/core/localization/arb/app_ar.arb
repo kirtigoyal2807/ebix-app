@@ -511,6 +511,17 @@
   "all": "الكل",
   "subscriptions": "الاشتراكات",
   "classes": "الحصص",
+  "membershipClassesRemainingOfTotal": "{remaining} من {total} حصة",
+  "@membershipClassesRemainingOfTotal": {
+    "placeholders": {
+      "remaining": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
   "refunds": "المبالغ المستردة",
   "date": "التاريخ",
   "termsAndConditions": "الشروط والأحكام",

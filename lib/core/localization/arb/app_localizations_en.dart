@@ -1343,6 +1343,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get classes => 'Classes';
 
   @override
+  String membershipClassesRemainingOfTotal(int remaining, int total) {
+    return '$remaining of $total classes';
+  }
+
+  @override
   String get refunds => 'Refunds';
 
   @override

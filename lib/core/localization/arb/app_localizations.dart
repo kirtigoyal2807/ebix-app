@@ -2594,6 +2594,12 @@ abstract class AppLocalizations {
   /// **'Classes'**
   String get classes;
 
+  /// No description provided for @membershipClassesRemainingOfTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'{remaining} of {total} classes'**
+  String membershipClassesRemainingOfTotal(int remaining, int total);
+
   /// No description provided for @refunds.
   ///
   /// In en, this message translates to:
