@@ -63,16 +63,6 @@ class ClassDetailHeader extends StatelessWidget {
                       height: 1.55,
                     ),
                   ),
-                  if (slot.description != null &&
-                      slot.description!.isNotEmpty) ...[
-                    const SizedBox(height: AppSpacing.xs),
-                    AppText(
-                      slot.description!,
-                      style: (ctx) => AppTextStyles.bodyText(ctx),
-                      maxLines: 3,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ],
                 ],
               ),
             ),

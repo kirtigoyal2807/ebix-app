@@ -13,7 +13,6 @@ import 'package:pilates_app/features/booking/widgets/class_detail_header.dart';
 import 'package:pilates_app/features/booking/widgets/class_info_grid.dart';
 import 'package:pilates_app/features/booking/widgets/class_location_card.dart';
 import 'package:pilates_app/features/booking/widgets/class_about_section.dart';
-import 'package:pilates_app/features/booking/widgets/class_what_to_bring.dart';
 import 'package:pilates_app/features/booking/widgets/class_reviews_section.dart';
 import 'package:pilates_app/widgets/app_app_bar.dart';
 import 'package:pilates_app/widgets/app_text.dart';
@@ -127,11 +126,6 @@ class _ClassDetailBody extends StatelessWidget {
                         horizontal: AppSpacing.lg,
                       ),
                       child: ClassAboutSection(slot: slot),
-                    ),
-                    const SizedBox(height: AppSpacing.lg),
-                    const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
-                      child: ClassWhatToBring(),
                     ),
                     const SizedBox(height: AppSpacing.lg),
                     ClassReviewsSection(
