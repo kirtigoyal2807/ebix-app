@@ -1,10 +1,12 @@
 import 'dart:async';
 
+import 'package:add_2_calendar/add_2_calendar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/core/constants/check_in_policy.dart';
@@ -67,6 +69,116 @@ class _BookingSuccessScreenState extends State<BookingSuccessScreen> {
   DateTime? _classStart() => widget.slot?.startAt ?? widget.booking?.startAt;
 
   DateTime? _classEnd() => widget.slot?.endAt ?? widget.booking?.endAt;
+
+  /// API may omit [endAt]; infer for calendar when we have start + duration from slot.
+  DateTime? _classEndForCalendar() {
+    final explicit = _classEnd();
+    if (explicit != null) return explicit;
+    final start = _classStart();
+    if (start == null) return null;
+    final minutes = widget.slot?.durationMinutes;
+    if (minutes != null && minutes > 0) {
+      return start.add(Duration(minutes: minutes));
+    }
+    return start.add(const Duration(hours: 1));
+  }
+
+  String _eventTitle(BuildContext context) {
+    final slot = widget.slot;
+    final booking = widget.booking;
+    final name = slot?.name ?? booking?.className;
+    if (name != null && name.isNotEmpty) return name;
+    return AppLocalizations.of(context).classTxt;
+  }
+
+  String _mapsLocationQuery() {
+    final slot = widget.slot;
+    final booking = widget.booking;
+    final name = (slot?.branchName ?? booking?.branchName ?? '').trim();
+    final addr =
+        (slot?.branchAddress ?? slot?.branchLocation ?? '').trim();
+    if (name.isNotEmpty && addr.isNotEmpty) return '$name, $addr';
+    if (addr.isNotEmpty) return addr;
+    return name;
+  }
+
+  int? _displayWaitlistPosition() {
+    final api = widget.booking?.waitlistPosition;
+    if (api != null) return api;
+    final wc = widget.slot?.waitlistCount;
+    if (wc != null && wc >= 0) {
+      return wc + 1;
+    }
+    return null;
+  }
+
+  Future<void> _onAddToCalendar(BuildContext context) async {
+    final l10n = AppLocalizations.of(context);
+    final start = _classStart();
+    final end = _classEndForCalendar();
+    if (start == null || end == null) {
+      if (!context.mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(l10n.somethingWentWrong)),
+      );
+      return;
+    }
+
+    final title = _eventTitle(context);
+    final locationQuery = _mapsLocationQuery();
+    try {
+      final ok = await Add2Calendar.addEvent2Cal(
+        Event(
+          title: title,
+          startDate: start.toLocal(),
+          endDate: end.toLocal(),
+          location: locationQuery.isNotEmpty ? locationQuery : null,
+        ),
+      );
+      if (!context.mounted) return;
+      if (!ok) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(l10n.somethingWentWrong)),
+        );
+      }
+    } catch (_) {
+      if (!context.mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(l10n.somethingWentWrong)),
+      );
+    }
+  }
+
+  Future<void> _onOpenDirections(BuildContext context) async {
+    final l10n = AppLocalizations.of(context);
+    final q = _mapsLocationQuery().trim();
+    if (q.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(l10n.somethingWentWrong)),
+      );
+      return;
+    }
+    final uri = Uri.parse(
+      'https://www.google.com/maps/search/?api=1&query=${Uri.encodeComponent(q)}',
+    );
+    try {
+      final launched = await launchUrl(
+        uri,
+        mode: LaunchMode.externalApplication,
+      );
+      if (!context.mounted) return;
+      if (!launched) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(l10n.somethingWentWrong)),
+        );
+      }
+    } catch (_) {
+      if (!context.mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(l10n.somethingWentWrong)),
+      );
+    }
+  }
 
   String _formatTime(BuildContext context, DateTime t) {
     final locale = Localizations.localeOf(context).toLanguageTag();
@@ -312,7 +424,7 @@ class _BookingSuccessScreenState extends State<BookingSuccessScreen> {
 
   Widget _buildPositionCard(BuildContext context, bool isDark) {
     final l10n = AppLocalizations.of(context);
-    final position = widget.booking?.waitlistPosition;
+    final position = _displayWaitlistPosition();
 
     return Column(
       children: [
@@ -542,7 +654,7 @@ class _BookingSuccessScreenState extends State<BookingSuccessScreen> {
               ),
               child: AppButton(
                 label: l10n.addToCalender,
-                onPressed: () {},
+                onPressed: () => _onAddToCalendar(context),
                 variant: AppButtonVariant.secondary,
               ),
             ),
@@ -564,7 +676,7 @@ class _BookingSuccessScreenState extends State<BookingSuccessScreen> {
               ),
               child: AppButton(
                 label: l10n.getDirection,
-                onPressed: () {},
+                onPressed: () => _onOpenDirections(context),
                 variant: AppButtonVariant.secondary,
               ),
             ),
