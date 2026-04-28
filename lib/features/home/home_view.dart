@@ -30,7 +30,17 @@ import '../booking/cubit/booking_state.dart';
 import '../booking/booking_view.dart';
 
 class HomeView extends StatelessWidget {
-  const HomeView({super.key});
+  const HomeView({
+    super.key,
+    this.initialNavIndex = 0,
+    this.initialBookingTab = BookingTab.classes,
+  });
+
+  /// Bottom navigation index (1 = Classes / booking tab).
+  final int initialNavIndex;
+
+  /// Sub-tab when [initialNavIndex] is the booking tab.
+  final BookingTab initialBookingTab;
 
   @override
   Widget build(BuildContext context) {
@@ -38,6 +48,10 @@ class HomeView extends StatelessWidget {
       create: (context) => HomeCubit(
         homeRepository: HomeRepository(
           context.read<AuthCubit>().authRepository.httpClient,
+        ),
+        initialState: HomeState.initial().copyWith(
+          currentIndex: initialNavIndex,
+          selectedBookingTab: initialBookingTab,
         ),
       )..loadHome(),
       child: BlocBuilder<HomeCubit, HomeState>(

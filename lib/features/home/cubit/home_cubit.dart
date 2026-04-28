@@ -7,9 +7,11 @@ import '../data/models/home_response.dart';
 import 'home_state.dart';
 
 class HomeCubit extends Cubit<HomeState> {
-  HomeCubit({required HomeRepository homeRepository})
-    : _homeRepository = homeRepository,
-      super(HomeState.initial());
+  HomeCubit({
+    required HomeRepository homeRepository,
+    HomeState? initialState,
+  }) : _homeRepository = homeRepository,
+       super(initialState ?? HomeState.initial());
 
   final HomeRepository _homeRepository;
 

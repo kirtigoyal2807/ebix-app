@@ -610,7 +610,9 @@ class _BookingSuccessScreenState extends State<BookingSuccessScreen> {
               onPressed: () {
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (_) => const HomeView()),
+                  MaterialPageRoute(
+                    builder: (_) => const HomeView(initialNavIndex: 1),
+                  ),
                 );
               },
               variant: AppButtonVariant.secondary,

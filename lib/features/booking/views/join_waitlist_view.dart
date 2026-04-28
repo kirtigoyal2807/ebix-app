@@ -17,6 +17,7 @@ import '../../../config/theme/app_radius.dart';
 import '../../../config/theme/app_text_styles.dart';
 import '../../../core/localization/arb/app_localizations.dart';
 import '../../../widgets/app_button.dart';
+import '../../home/home_view.dart';
 import 'booking_success_view.dart';
 
 class JoinWaitlistView extends StatelessWidget {
@@ -412,7 +413,14 @@ class _JoinWaitlistBody extends StatelessWidget {
             child: AppButton(
               label: l10n.browseOtherClasses,
               variant: AppButtonVariant.secondary,
-              onPressed: () => Navigator.of(context).pop(),
+              onPressed: () {
+                Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(
+                    builder: (_) => const HomeView(initialNavIndex: 1),
+                  ),
+                  (route) => false,
+                );
+              },
             ),
           ),
         ],
