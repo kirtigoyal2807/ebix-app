@@ -277,11 +277,13 @@ class BookingClassCard extends StatelessWidget {
                         ],
                       ),
                     ),
-                    const SizedBox(width: AppSpacing.xs),
-                    _BookingClassCardRatingRow(
-                      avgRating: avgRating,
-                      isDark: isDark,
-                    ),
+                    if (avgRating != null) ...[
+                      const SizedBox(width: AppSpacing.xs),
+                      _BookingClassCardRatingRow(
+                        avgRating: avgRating!,
+                        isDark: isDark,
+                      ),
+                    ],
                   ],
                 ),
               ),
@@ -411,20 +413,12 @@ class _BookingClassCardRatingRow extends StatelessWidget {
     required this.isDark,
   });
 
-  final double? avgRating;
+  final double avgRating;
   final bool isDark;
 
   @override
   Widget build(BuildContext context) {
     final label = _ratingLabel(avgRating);
-    final metaColor = isDark ? AppColors.darkGreyText : AppColors.lightGrey;
-    if (label == null) {
-      return Icon(
-        Icons.star_border_rounded,
-        color: metaColor,
-        size: 16,
-      );
-    }
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -446,8 +440,7 @@ class _BookingClassCardRatingRow extends StatelessWidget {
     );
   }
 
-  static String? _ratingLabel(double? r) {
-    if (r == null) return null;
+  static String _ratingLabel(double r) {
     if (r == r.roundToDouble()) return r.round().toString();
     return r.toStringAsFixed(1);
   }

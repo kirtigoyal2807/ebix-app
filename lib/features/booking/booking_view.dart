@@ -134,6 +134,7 @@ class _BookingBodyState extends State<BookingBody> {
           child: Column(
             children: [
               const BookingTabs(),
+              const SizedBox(height: AppSpacing.md),
               Expanded(
                 child: BlocBuilder<BookingCubit, BookingState>(
                   builder: (context, bookingState) {
