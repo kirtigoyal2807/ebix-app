@@ -596,6 +596,31 @@ class AppLocalizationsAr extends AppLocalizations {
   String get checkInSuccess => 'تم تسجيل حضورك.';
 
   @override
+  String checkInWindowExplanationSchedule(int minutes, String time) {
+    return 'يبدأ تسجيل الحضور قبل $minutes دقيقة من بدء الحصة (متاح عند $time)';
+  }
+
+  @override
+  String checkInButtonOpensAtDynamic(String time) {
+    return 'تسجيل الحضور (يفتح عند $time)';
+  }
+
+  @override
+  String get checkInEndedForThisClass =>
+      'لم يعد تسجيل الحضور متاحًا لهذه الحصة.';
+
+  @override
+  String get checkInActiveWindowBody => 'يمكنك تسجيل الحضور الآن.';
+
+  @override
+  String checkInOpensAtHint(String time) {
+    return 'يفتح عند $time';
+  }
+
+  @override
+  String get checkInClosedShort => 'مغلق';
+
+  @override
   String get cancelEnrollmentSuccess => 'تم إلغاء حجزك.';
 
   @override
@@ -1737,7 +1762,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get beforeClassStarts => 'قبل بدء الحصة';
 
   @override
-  String get beforeClassStartsSubtitle => 'تلقي إشعار قبل 30 دقيقة';
+  String beforeClassStartsSubtitle(int minutes) {
+    return 'تلقي إشعار قبل $minutes دقيقة';
+  }
 
   @override
   String get dayBeforeReminder => 'تذكير قبل يوم';

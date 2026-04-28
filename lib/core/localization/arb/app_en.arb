@@ -236,6 +236,36 @@
   "checkInLongDescription": "You'll receive a notification when check-in becomes available",
   "checkInButton": "Check-In (Opens at 5:30 PM)",
   "checkInSuccess": "You're checked in.",
+  "checkInWindowExplanationSchedule": "Check-in opens {minutes} minutes before class (Available at {time})",
+  "@checkInWindowExplanationSchedule": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      },
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "checkInButtonOpensAtDynamic": "Check-In (Opens at {time})",
+  "@checkInButtonOpensAtDynamic": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "checkInEndedForThisClass": "Check-in is closed for this class.",
+  "checkInActiveWindowBody": "You can check in now.",
+  "checkInOpensAtHint": "Opens {time}",
+  "@checkInOpensAtHint": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "checkInClosedShort": "Closed",
   "cancelEnrollmentSuccess": "Your booking was cancelled.",
   "checkedIn": "Checked in",
   "classDetail": "Class Details",
@@ -693,7 +723,14 @@
   "allNotifications": "All Notifications",
   "classNotifications": "Class Notifications",
   "beforeClassStarts": "Before Class Starts",
-  "beforeClassStartsSubtitle": "Get notified 30 min before",
+  "beforeClassStartsSubtitle": "Get notified {minutes} min before",
+  "@beforeClassStartsSubtitle": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
   "dayBeforeReminder": "Day Before Reminder",
   "dayBeforeReminderSubtitle": "Reminder 24 hours before",
   "subscriptionBilling": "Subscription & Billing",

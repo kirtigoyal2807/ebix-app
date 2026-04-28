@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'package:pilates_app/core/constants/check_in_policy.dart';
 import 'package:pilates_app/config/theme/app_colors.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/widgets/app_text.dart';
@@ -54,7 +56,9 @@ class PushNotificationView extends StatelessWidget {
                     SizedBox(height: AppSpacing.md),
                     SwitchWidget(
                       title: l10n.beforeClassStarts,
-                      subTitle: l10n.beforeClassStartsSubtitle,
+                      subTitle: l10n.beforeClassStartsSubtitle(
+                        CheckInPolicy.kOpensBeforeStart.inMinutes,
+                      ),
 
                       switchValue: state.beforeClassStart,
                       onChanged: (bool p1) {
@@ -178,7 +182,7 @@ class PushNotificationView extends StatelessWidget {
     );
   }
 
-  titleText({required String text}) {
+  Widget titleText({required String text}) {
     return AppText(
       text,
       style: (context) => AppTextStyles.bodyText(

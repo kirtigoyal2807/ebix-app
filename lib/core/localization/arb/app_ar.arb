@@ -236,6 +236,36 @@
   "checkInLongDescription": "ستتلقى إشعارًا عند توفر تسجيل الحضور",
   "checkInButton": "تسجيل الحضور (يفتح الساعة 5:30 مساءً)",
   "checkInSuccess": "تم تسجيل حضورك.",
+  "checkInWindowExplanationSchedule": "يبدأ تسجيل الحضور قبل {minutes} دقيقة من بدء الحصة (متاح عند {time})",
+  "@checkInWindowExplanationSchedule": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      },
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "checkInButtonOpensAtDynamic": "تسجيل الحضور (يفتح عند {time})",
+  "@checkInButtonOpensAtDynamic": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "checkInEndedForThisClass": "لم يعد تسجيل الحضور متاحًا لهذه الحصة.",
+  "checkInActiveWindowBody": "يمكنك تسجيل الحضور الآن.",
+  "checkInOpensAtHint": "يفتح عند {time}",
+  "@checkInOpensAtHint": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "checkInClosedShort": "مغلق",
   "cancelEnrollmentSuccess": "تم إلغاء حجزك.",
   "checkedIn": "تم تسجيل الحضور",
   "classDetail": "تفاصيل الحصة",
@@ -687,7 +717,14 @@
 
   "classNotifications": "إشعارات الحصص",
   "beforeClassStarts": "قبل بدء الحصة",
-  "beforeClassStartsSubtitle": "تلقي إشعار قبل 30 دقيقة",
+  "beforeClassStartsSubtitle": "تلقي إشعار قبل {minutes} دقيقة",
+  "@beforeClassStartsSubtitle": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
   "dayBeforeReminder": "تذكير قبل يوم",
   "dayBeforeReminderSubtitle": "تذكير قبل 24 ساعة",
 

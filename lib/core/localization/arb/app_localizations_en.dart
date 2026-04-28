@@ -602,6 +602,30 @@ class AppLocalizationsEn extends AppLocalizations {
   String get checkInSuccess => 'You\'re checked in.';
 
   @override
+  String checkInWindowExplanationSchedule(int minutes, String time) {
+    return 'Check-in opens $minutes minutes before class (Available at $time)';
+  }
+
+  @override
+  String checkInButtonOpensAtDynamic(String time) {
+    return 'Check-In (Opens at $time)';
+  }
+
+  @override
+  String get checkInEndedForThisClass => 'Check-in is closed for this class.';
+
+  @override
+  String get checkInActiveWindowBody => 'You can check in now.';
+
+  @override
+  String checkInOpensAtHint(String time) {
+    return 'Opens $time';
+  }
+
+  @override
+  String get checkInClosedShort => 'Closed';
+
+  @override
   String get cancelEnrollmentSuccess => 'Your booking was cancelled.';
 
   @override
@@ -1751,7 +1775,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get beforeClassStarts => 'Before Class Starts';
 
   @override
-  String get beforeClassStartsSubtitle => 'Get notified 30 min before';
+  String beforeClassStartsSubtitle(int minutes) {
+    return 'Get notified $minutes min before';
+  }
 
   @override
   String get dayBeforeReminder => 'Day Before Reminder';
