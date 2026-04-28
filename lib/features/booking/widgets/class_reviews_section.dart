@@ -84,7 +84,7 @@ class _EmbeddedRecentReviewsBody extends StatelessWidget {
         ),
         const SizedBox(height: AppSpacing.base),
         _DynamicReviewsContent(reviews: reviews, isDark: isDark),
-        const SizedBox(height: AppSpacing.lg),
+        const SizedBox(height: AppSpacing.md),
       ],
     );
   }
@@ -194,7 +194,7 @@ class _DynamicReviewsSectionState extends State<_DynamicReviewsSection> {
             );
           },
         ),
-        const SizedBox(height: AppSpacing.lg),
+        const SizedBox(height: AppSpacing.md),
       ],
     );
   }
@@ -238,7 +238,7 @@ class _DynamicReviewsContent extends StatelessWidget {
             width: double.infinity,
             padding: const EdgeInsets.symmetric(
               horizontal: AppSpacing.lg,
-              vertical: AppSpacing.md,
+              vertical: AppSpacing.sm,
             ),
             decoration: BoxDecoration(
               color: isDark ? AppColors.homeBackground : AppColors.whiteColor,
@@ -257,7 +257,7 @@ class _DynamicReviewsContent extends StatelessWidget {
                       maxLines: 1,
                       style: (context) => AppTextStyles.bottomSheetTitle(
                         context,
-                      ).copyWith(fontSize: 40, fontWeight: FontWeight.w600),
+                      ).copyWith(fontSize: 32, fontWeight: FontWeight.w600),
                     ),
                     const SizedBox(width: 12),
                     Expanded(
@@ -286,7 +286,7 @@ class _DynamicReviewsContent extends StatelessWidget {
                     ),
                   ],
                 ),
-                const SizedBox(height: AppSpacing.sm),
+                const SizedBox(height: AppSpacing.xs),
                 Column(
                   children: List.generate(5, (i) {
                     final stars = 5 - i;
@@ -303,19 +303,22 @@ class _DynamicReviewsContent extends StatelessWidget {
             ),
           ),
         ),
-        const SizedBox(height: AppSpacing.base),
+        const SizedBox(height: AppSpacing.sm),
         SizedBox(
-          height: 200,
+          height: 168,
           child: ListView.separated(
             scrollDirection: Axis.horizontal,
             itemCount: reviews.length,
             separatorBuilder: (context, index) => const SizedBox(width: AppSpacing.md),
-            itemBuilder: (context, index) => Padding(
-              padding: EdgeInsets.only(
-                left: index == 0 ? AppSpacing.lg : 0,
-                right: index == reviews.length - 1 ? AppSpacing.lg : 0,
+            itemBuilder: (context, index) => Align(
+              alignment: Alignment.topCenter,
+              child: Padding(
+                padding: EdgeInsets.only(
+                  left: index == 0 ? AppSpacing.lg : 0,
+                  right: index == reviews.length - 1 ? AppSpacing.lg : 0,
+                ),
+                child: _ApiReviewCard(review: reviews[index]),
               ),
-              child: _ApiReviewCard(review: reviews[index]),
             ),
           ),
         ),
@@ -475,7 +478,7 @@ class _StaticClassReviewsBody extends StatelessWidget {
             width: double.infinity,
             padding: const EdgeInsets.symmetric(
               horizontal: AppSpacing.lg,
-              vertical: AppSpacing.md,
+              vertical: AppSpacing.sm,
             ),
             decoration: BoxDecoration(
               color: isDark ? AppColors.homeBackground : AppColors.whiteColor,
@@ -494,7 +497,7 @@ class _StaticClassReviewsBody extends StatelessWidget {
                       maxLines: 1,
                       style: (context) => AppTextStyles.bottomSheetTitle(
                         context,
-                      ).copyWith(fontSize: 40, fontWeight: FontWeight.w600),
+                      ).copyWith(fontSize: 32, fontWeight: FontWeight.w600),
                     ),
                     const SizedBox(width: 12),
                     Expanded(
@@ -520,7 +523,7 @@ class _StaticClassReviewsBody extends StatelessWidget {
                     ),
                   ],
                 ),
-                const SizedBox(height: AppSpacing.sm),
+                const SizedBox(height: AppSpacing.xs),
                 const Column(
                   children: [
                     _RatingBar(stars: 5, progress: 0.6, count: 16),
@@ -534,11 +537,11 @@ class _StaticClassReviewsBody extends StatelessWidget {
             ),
           ),
         ),
-        const SizedBox(height: AppSpacing.base),
+        const SizedBox(height: AppSpacing.sm),
 
         // Review Cards - Horizontal
         const SizedBox(
-          height: 200,
+          height: 168,
           child: _StaticReviewCardsList(),
         ),
       ],
@@ -555,12 +558,15 @@ class _StaticReviewCardsList extends StatelessWidget {
       scrollDirection: Axis.horizontal,
       itemCount: 3,
       separatorBuilder: (context, index) => const SizedBox(width: AppSpacing.md),
-      itemBuilder: (context, index) => Padding(
-        padding: EdgeInsets.only(
-          left: index == 0 ? AppSpacing.lg : 0,
-          right: index == 2 ? AppSpacing.lg : 0,
+      itemBuilder: (context, index) => Align(
+        alignment: Alignment.topCenter,
+        child: Padding(
+          padding: EdgeInsets.only(
+            left: index == 0 ? AppSpacing.lg : 0,
+            right: index == 2 ? AppSpacing.lg : 0,
+          ),
+          child: const _DemoReviewCard(),
         ),
-        child: const _DemoReviewCard(),
       ),
     );
   }
@@ -581,7 +587,7 @@ class _RatingBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return Padding(
-      padding: const EdgeInsets.only(bottom: 2.0),
+      padding: const EdgeInsets.only(bottom: 1.0),
       child: Row(
         children: [
           const Icon(Icons.star, color: AppColors.goldStarColor, size: 14),
@@ -602,7 +608,7 @@ class _RatingBar extends StatelessWidget {
                     ? AppColors.primaryDarkButton
                     : AppColors.ratingBarBackground,
                 color: AppColors.goldStarColor,
-                minHeight: 6,
+                minHeight: 4,
               ),
             ),
           ),
