@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 
+import 'package:flutter_html/flutter_html.dart';
 import 'package:pilates_app/config/theme/app_colors.dart';
 import 'package:pilates_app/config/theme/app_radius.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/features/booking/data/models/class_slot_view_model.dart';
 import 'package:pilates_app/widgets/app_text.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ClassDetailHeader extends StatelessWidget {
   const ClassDetailHeader({super.key, required this.slot});
@@ -16,6 +18,9 @@ class ClassDetailHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final size = MediaQuery.sizeOf(context);
+
+    final desc = slot.description?.trim();
+    final baseBody = AppTextStyles.bodyText(context);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -63,6 +68,42 @@ class ClassDetailHeader extends StatelessWidget {
                       height: 1.55,
                     ),
                   ),
+                  if (desc != null && desc.isNotEmpty) ...[
+                    const SizedBox(height: AppSpacing.xs),
+                    Html(
+                      data: desc,
+                      shrinkWrap: true,
+                      style: {
+                        'body': Style(
+                          margin: Margins.zero,
+                          padding: HtmlPaddings.zero,
+                          fontSize: FontSize(baseBody.fontSize ?? 14),
+                          color: baseBody.color,
+                          fontFamily: baseBody.fontFamily,
+                        ),
+                        'p': Style(
+                          margin: Margins.only(bottom: 8),
+                        ),
+                        'ul': Style(
+                          margin: Margins.only(bottom: 8),
+                        ),
+                        'ol': Style(
+                          margin: Margins.only(bottom: 8),
+                        ),
+                      },
+                      onLinkTap: (url, attributes, element) async {
+                        if (url == null || url.isEmpty) return;
+                        final uri = Uri.tryParse(url.trim());
+                        if (uri == null) return;
+                        try {
+                          await launchUrl(
+                            uri,
+                            mode: LaunchMode.externalApplication,
+                          );
+                        } catch (_) {}
+                      },
+                    ),
+                  ],
                 ],
               ),
             ),
