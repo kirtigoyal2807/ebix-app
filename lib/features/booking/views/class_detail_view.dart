@@ -24,15 +24,11 @@ class ClassDetailView extends StatelessWidget {
   const ClassDetailView({
     super.key,
     required this.classId,
-    this.preferredCalendarEventId,
     this.preloadedSlot,
   });
 
   /// Class type id for `GET /classes/{classId}`.
   final String classId;
-
-  /// Optional calendar event id when the API returns multiple upcoming sessions.
-  final String? preferredCalendarEventId;
 
   /// Optional slot from the list — used as an optimistic placeholder while the
   /// class-detail fetch is in-flight.
@@ -46,7 +42,6 @@ class ClassDetailView extends StatelessWidget {
         ctx.read<ClassesRepository>(),
         id,
         preloadedSlot: preloadedSlot,
-        preferredCalendarEventId: preferredCalendarEventId,
       )..loadClassDetail(),
       child: const _ClassDetailBody(),
     );

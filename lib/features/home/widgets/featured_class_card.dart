@@ -151,8 +151,6 @@ class FeaturedClassCard extends StatelessWidget {
                       MaterialPageRoute(
                         builder: (_) => ClassDetailView(
                           classId: classId,
-                          preferredCalendarEventId:
-                              featuredClass.calendarEventId,
                         ),
                       ),
                     );

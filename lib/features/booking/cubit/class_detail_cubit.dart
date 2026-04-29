@@ -8,14 +8,14 @@ import 'package:pilates_app/features/booking/data/models/class_slot_view_model.d
 /// [ClassSlotViewModel] for the detail UI.
 ///
 /// Accepts an optional [preloadedSlot] from the list so the UI is instant while
-/// the detail fetch is in-flight. [preferredCalendarEventId] selects which
-/// upcoming event to show when the API returns several.
+/// the detail fetch is in-flight. The displayed session is the next upcoming
+/// event (earliest [UpcomingEvent.startAt] that is still at or after the user's
+/// current time) from the API response.
 class ClassDetailCubit extends Cubit<ClassDetailState> {
   ClassDetailCubit(
     this._repository,
     String classId, {
     ClassSlotViewModel? preloadedSlot,
-    this.preferredCalendarEventId,
   })  : _classId = classId.trim(),
         super(
           ClassDetailState(
@@ -29,32 +29,17 @@ class ClassDetailCubit extends Cubit<ClassDetailState> {
   final ClassesRepository _repository;
   final String _classId;
 
-  /// When set, must appear in `upcomingEvents` to select that session; otherwise
-  /// the earliest upcoming event is used.
-  final String? preferredCalendarEventId;
-
   /// Fetch class detail from the server and resolve [slot].
   Future<void> loadClassDetail() async {
     if (state.isLoading) return;
 
     emit(state.copyWith(status: ClassDetailLoadStatus.loading, errorMessage: null));
 
-    String? preferredId;
-    final explicit = preferredCalendarEventId?.trim();
-    if (explicit != null && explicit.isNotEmpty) {
-      preferredId = explicit;
-    } else {
-      final fromPreload = state.slot?.calendarEventId.trim();
-      if (fromPreload != null && fromPreload.isNotEmpty) {
-        preferredId = fromPreload;
-      }
-    }
-
     final result = await _repository.getClassDetail(_classId);
 
     switch (result) {
       case ApiSuccess(:final data):
-        final picked = ClassSlotViewModel.pickUpcomingEvent(data, preferredId);
+        final picked = ClassSlotViewModel.pickUpcomingEvent(data);
         final resolved =
             ClassSlotViewModel.fromGymClassResource(data, event: picked);
         final mergedSlot = resolved.copyWith(

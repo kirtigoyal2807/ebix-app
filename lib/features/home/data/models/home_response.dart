@@ -160,7 +160,7 @@ class HomeFeaturedClass {
   final int? spotsLeft;
   final bool? inPlan;
 
-  /// Calendar event UUID — optional hint for which upcoming session to show on ClassDetailView.
+  /// Calendar event UUID from home payload (e.g. the featured slot).
   final String? calendarEventId;
 
   /// Class type UUID — required to open ClassDetailView (`GET /classes/{id}`).

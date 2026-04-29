@@ -108,7 +108,6 @@ class BookingClassCard extends StatelessWidget {
               MaterialPageRoute(
                 builder: (newContext) => ClassDetailView(
                   classId: classId,
-                  preferredCalendarEventId: calendarEventId,
                   preloadedSlot: _slot,
                 ),
               ),

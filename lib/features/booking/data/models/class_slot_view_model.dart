@@ -101,20 +101,20 @@ class ClassSlotViewModel {
     );
   }
 
-  /// Picks an [UpcomingEvent] from [gymClass]: [preferredEventId] if listed, else earliest by [UpcomingEvent.startAt].
+  /// Next session for the user: among events with [UpcomingEvent.startAt] at or
+  /// after [referenceTime] (default [`DateTime.now`]), returns the one with the
+  /// smallest [startAt]. Returns `null` if there are no events or none are still upcoming.
   static UpcomingEvent? pickUpcomingEvent(
-    GymClassResource gymClass,
-    String? preferredEventId,
-  ) {
+    GymClassResource gymClass, {
+    DateTime? referenceTime,
+  }) {
+    final now = referenceTime ?? DateTime.now();
     final events = gymClass.upcomingEvents;
     if (events.isEmpty) return null;
-    final want = preferredEventId?.trim();
-    if (want != null && want.isNotEmpty) {
-      for (final e in events) {
-        if (e.id == want) return e;
-      }
-    }
-    final sorted = List<UpcomingEvent>.from(events)
+    final upcoming =
+        events.where((e) => !e.startAt.isBefore(now)).toList(growable: false);
+    if (upcoming.isEmpty) return null;
+    final sorted = List<UpcomingEvent>.from(upcoming)
       ..sort((a, b) => a.startAt.compareTo(b.startAt));
     return sorted.first;
   }

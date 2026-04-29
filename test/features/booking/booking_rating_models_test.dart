@@ -121,6 +121,79 @@ void main() {
     });
   });
 
+  group('ClassSlotViewModel.pickUpcomingEvent', () {
+    GymClassResource _twoFutureEvents() {
+      return GymClassResource(
+        id: '1',
+        name: 'C',
+        allowSinglePurchase: true,
+        allowPackageBooking: true,
+        isActive: true,
+        upcomingEvents: [
+          UpcomingEvent(
+            id: 'jun1',
+            startAt: DateTime.utc(2026, 6, 1, 10),
+            endAt: DateTime.utc(2026, 6, 1, 11),
+            status: 'scheduled',
+            branchName: 'Branch',
+          ),
+          UpcomingEvent(
+            id: 'jun3',
+            startAt: DateTime.utc(2026, 6, 3, 10),
+            endAt: DateTime.utc(2026, 6, 3, 11),
+            status: 'scheduled',
+            branchName: 'Branch',
+          ),
+        ],
+      );
+    }
+
+    test('empty list returns null', () {
+      final g = GymClassResource(
+        id: '1',
+        name: 'C',
+        allowSinglePurchase: true,
+        allowPackageBooking: true,
+        isActive: true,
+        upcomingEvents: const [],
+      );
+      expect(
+        ClassSlotViewModel.pickUpcomingEvent(
+          g,
+          referenceTime: DateTime.utc(2026, 5, 1),
+        ),
+        isNull,
+      );
+    });
+
+    test('earliest event at or after referenceTime', () {
+      final g = _twoFutureEvents();
+      final ref = DateTime.utc(2026, 6, 2, 12);
+      expect(
+        ClassSlotViewModel.pickUpcomingEvent(g, referenceTime: ref)?.id,
+        'jun3',
+      );
+    });
+
+    test('event exactly at referenceTime is eligible', () {
+      final g = _twoFutureEvents();
+      final ref = DateTime.utc(2026, 6, 1, 10);
+      expect(
+        ClassSlotViewModel.pickUpcomingEvent(g, referenceTime: ref)?.id,
+        'jun1',
+      );
+    });
+
+    test('returns null when all events are strictly before referenceTime', () {
+      final g = _twoFutureEvents();
+      final ref = DateTime.utc(2026, 7, 1);
+      expect(
+        ClassSlotViewModel.pickUpcomingEvent(g, referenceTime: ref),
+        isNull,
+      );
+    });
+  });
+
   group('TrainerResource rating UI', () {
     test('averageRatingValue is null for missing avg', () {
       final t = TrainerResource.fromJson({
