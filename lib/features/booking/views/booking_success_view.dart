@@ -70,8 +70,8 @@ class _BookingSuccessScreenState extends State<BookingSuccessScreen> {
 
   DateTime? _classEnd() => widget.slot?.endAt ?? widget.booking?.endAt;
 
-  /// API may omit [endAt]; infer for calendar when we have start + duration from slot.
-  DateTime? _classEndForCalendar() {
+  /// API may omit [endAt]; infer when we have start + duration from slot (calendar + check-in window).
+  DateTime? _effectiveClassEnd() {
     final explicit = _classEnd();
     if (explicit != null) return explicit;
     final start = _classStart();
@@ -82,6 +82,9 @@ class _BookingSuccessScreenState extends State<BookingSuccessScreen> {
     }
     return start.add(const Duration(hours: 1));
   }
+
+  /// API may omit [endAt]; infer for calendar when we have start + duration from slot.
+  DateTime? _classEndForCalendar() => _effectiveClassEnd();
 
   String _eventTitle(BuildContext context) {
     final slot = widget.slot;
@@ -270,7 +273,7 @@ class _BookingSuccessScreenState extends State<BookingSuccessScreen> {
   Widget _buildCheckInSection(BuildContext context, bool isDark) {
     final l10n = AppLocalizations.of(context);
     final start = _classStart();
-    final end = _classEnd();
+    final end = _effectiveClassEnd();
     final enrollmentId = widget.booking?.id;
 
     final now = DateTime.now();
@@ -362,10 +365,18 @@ class _BookingSuccessScreenState extends State<BookingSuccessScreen> {
                 ? AppButtonVariant.primary
                 : AppButtonVariant.disable,
             isLoading: _checkInBusy,
-            onPressed: canTapCheckIn
-                ? () async {
-                    final id = widget.booking?.id;
-                    if (id == null || id.isEmpty) return;
+            onPressed: !canTapCheckIn
+                ? null
+                : () async {
+                    final id = enrollmentId.trim();
+                    if (id.isEmpty) {
+                      if (context.mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text(l10n.somethingWentWrong)),
+                        );
+                      }
+                      return;
+                    }
                     setState(() => _checkInBusy = true);
                     final repo = context.read<MyBookingsRepository>();
                     final result = await repo.checkIn(id);
@@ -388,8 +399,7 @@ class _BookingSuccessScreenState extends State<BookingSuccessScreen> {
                           ),
                         );
                     }
-                  }
-                : () {},
+                  },
           ),
 
           const SizedBox(height: AppSpacing.md),

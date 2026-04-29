@@ -40,7 +40,7 @@ class BookingResource {
     final trainerMap = _map(eventMap?['trainer']);
 
     return BookingResource(
-      id: '${root['id'] ?? ''}',
+      id: _enrollmentIdFrom(root),
       status: '${root['status'] ?? ''}',
       statusLabel: '${root['statusLabel'] ?? root['status_label'] ?? ''}',
       waitlistPosition: _waitlistPositionFrom(root),
@@ -61,7 +61,32 @@ class BookingResource {
     if (nested != null && nested.isNotEmpty) {
       return nested;
     }
+    final data = _map(json['data']);
+    if (data != null && data.isNotEmpty) {
+      final inner = _map(data['enrollment']) ?? _map(data['booking']);
+      if (inner != null && inner.isNotEmpty) {
+        return inner;
+      }
+      return data;
+    }
     return json;
+  }
+
+  static String _enrollmentIdFrom(Map<String, dynamic> root) {
+    final candidates = <dynamic>[
+      root['id'],
+      root['enrollmentId'],
+      root['enrollment_id'],
+      root['uuid'],
+      root['enrollmentUUID'],
+      root['enrollment_uuid'],
+    ];
+    for (final c in candidates) {
+      if (c == null) continue;
+      final s = '$c'.trim();
+      if (s.isNotEmpty) return s;
+    }
+    return '';
   }
 
   static int? _waitlistPositionFrom(Map<String, dynamic> root) {
