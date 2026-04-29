@@ -22,7 +22,7 @@ import '../../../config/theme/app_text_styles.dart';
 import '../../../core/localization/arb/app_localizations.dart';
 import '../../../widgets/app_button.dart';
 import '../../../widgets/dotted_underline.dart';
-import '../../home/home_view.dart';
+import '../../home/booking_flow_navigation.dart';
 import '../../my_booking/my_booking_view.dart';
 
 class BookingSuccessScreen extends StatefulWidget {
@@ -193,78 +193,85 @@ class _BookingSuccessScreenState extends State<BookingSuccessScreen> {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final l10n = AppLocalizations.of(context);
 
-    return Scaffold(
-      backgroundColor: isDark ? AppColors.homeBackground : AppColors.whiteColor,
-      body: SingleChildScrollView(
-        padding: EdgeInsetsDirectional.only(
-          top: MediaQuery.of(context).viewPadding.top,
-          bottom: MediaQuery.of(context).viewPadding.bottom,
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const SizedBox(height: AppSpacing.xl),
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) {
+        if (didPop) return;
+        popBookingFlowToClassesTab(context);
+      },
+      child: Scaffold(
+        backgroundColor: isDark ? AppColors.homeBackground : AppColors.whiteColor,
+        body: SingleChildScrollView(
+          padding: EdgeInsetsDirectional.only(
+            top: MediaQuery.of(context).viewPadding.top,
+            bottom: MediaQuery.of(context).viewPadding.bottom,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const SizedBox(height: AppSpacing.xl),
 
-            Lottie.asset(
-              "assets/json/tick.json",
-              height: 100,
-              width: 100,
-              repeat: false,
-            ),
-
-            const SizedBox(height: AppSpacing.md),
-
-            AppText(
-              widget.successPage == SuccessPage.booking
-                  ? l10n.bookingSuccess
-                  : l10n.onWaitList,
-              style: (context) => AppTextStyles.gelasioMedium(context).copyWith(
-                    fontSize: 24,
-                    color: isDark ? AppColors.lightText : const Color(0xff0D0D12),
-                  ),
-            ),
-
-            const SizedBox(height: AppSpacing.sm),
-
-            AppText(
-              widget.successPage == SuccessPage.booking
-                  ? l10n.successMessage
-                  : l10n.onWaitListDescription,
-              style: (context) => AppTextStyles.bodyText(context),
-              textAlign: TextAlign.center,
-            ),
-
-            const SizedBox(height: AppSpacing.lg),
-
-            widget.successPage == SuccessPage.booking
-                ? _buildCheckInSection(context, isDark)
-                : _buildPositionCard(context, isDark),
-
-            const SizedBox(height: AppSpacing.lg),
-
-            _buildClassDetailsSection(context, isDark),
-
-            const SizedBox(height: AppSpacing.lg),
-
-            _buildActionButtons(context, isDark),
-
-            const SizedBox(height: AppSpacing.lg),
-
-            Padding(
-              padding: const EdgeInsetsDirectional.symmetric(
-                horizontal: AppSpacing.lg,
+              Lottie.asset(
+                "assets/json/tick.json",
+                height: 100,
+                width: 100,
+                repeat: false,
               ),
-              child: AppText(
-                l10n.cancelBooking,
-                style: (context) =>
-                    AppTextStyles.helpAndSupportItemSubLabel(context),
-                textAlign: TextAlign.start,
-              ),
-            ),
 
-            const SizedBox(height: AppSpacing.lg),
-            _buildFooterLinks(context, isDark),
-          ],
+              const SizedBox(height: AppSpacing.md),
+
+              AppText(
+                widget.successPage == SuccessPage.booking
+                    ? l10n.bookingSuccess
+                    : l10n.onWaitList,
+                style: (context) => AppTextStyles.gelasioMedium(context).copyWith(
+                      fontSize: 24,
+                      color: isDark ? AppColors.lightText : const Color(0xff0D0D12),
+                    ),
+              ),
+
+              const SizedBox(height: AppSpacing.sm),
+
+              AppText(
+                widget.successPage == SuccessPage.booking
+                    ? l10n.successMessage
+                    : l10n.onWaitListDescription,
+                style: (context) => AppTextStyles.bodyText(context),
+                textAlign: TextAlign.center,
+              ),
+
+              const SizedBox(height: AppSpacing.lg),
+
+              widget.successPage == SuccessPage.booking
+                  ? _buildCheckInSection(context, isDark)
+                  : _buildPositionCard(context, isDark),
+
+              const SizedBox(height: AppSpacing.lg),
+
+              _buildClassDetailsSection(context, isDark),
+
+              const SizedBox(height: AppSpacing.lg),
+
+              _buildActionButtons(context, isDark),
+
+              const SizedBox(height: AppSpacing.lg),
+
+              Padding(
+                padding: const EdgeInsetsDirectional.symmetric(
+                  horizontal: AppSpacing.lg,
+                ),
+                child: AppText(
+                  l10n.cancelBooking,
+                  style: (context) =>
+                      AppTextStyles.helpAndSupportItemSubLabel(context),
+                  textAlign: TextAlign.start,
+                ),
+              ),
+
+              const SizedBox(height: AppSpacing.lg),
+              _buildFooterLinks(context, isDark),
+            ],
+          ),
         ),
       ),
     );
@@ -727,16 +734,9 @@ class _BookingSuccessScreenState extends State<BookingSuccessScreen> {
                 ),
               ],
             ),
-            child: AppButton(
+              child: AppButton(
               label: l10n.browseMoreClasses,
-              onPressed: () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => const HomeView(initialNavIndex: 1),
-                  ),
-                );
-              },
+              onPressed: () => popBookingFlowToClassesTab(context),
               variant: AppButtonVariant.secondary,
             ),
           ),

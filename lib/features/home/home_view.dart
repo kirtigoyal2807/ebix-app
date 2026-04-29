@@ -28,6 +28,7 @@ import 'widgets/received_gift_card.dart';
 
 import '../booking/cubit/booking_state.dart';
 import '../booking/booking_view.dart';
+import 'booking_flow_navigation.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({
@@ -54,28 +55,30 @@ class HomeView extends StatelessWidget {
           selectedBookingTab: initialBookingTab,
         ),
       )..loadHome(),
-      child: BlocBuilder<HomeCubit, HomeState>(
-        builder: (context, state) {
-          final isDark = Theme.of(context).brightness == Brightness.dark;
-          return Scaffold(
-            backgroundColor: isDark
-                ? AppColors.homeBackground
-                : AppColors.whiteColor,
-            body: IndexedStack(
-              index: state.currentIndex,
-              children: [
-                const HomeContentView(),
-                BookingView(initialTab: state.selectedBookingTab),
-                const ExploreView(),
-                const AccountView(),
-              ],
-            ),
-            bottomNavigationBar: _buildBottomNavBar(
-              context,
-              state.currentIndex,
-            ),
-          );
-        },
+      child: _HomeBookingFlowTabListener(
+        child: BlocBuilder<HomeCubit, HomeState>(
+          builder: (context, state) {
+            final isDark = Theme.of(context).brightness == Brightness.dark;
+            return Scaffold(
+              backgroundColor: isDark
+                  ? AppColors.homeBackground
+                  : AppColors.whiteColor,
+              body: IndexedStack(
+                index: state.currentIndex,
+                children: [
+                  const HomeContentView(),
+                  BookingView(initialTab: state.selectedBookingTab),
+                  const ExploreView(),
+                  const AccountView(),
+                ],
+              ),
+              bottomNavigationBar: _buildBottomNavBar(
+                context,
+                state.currentIndex,
+              ),
+            );
+          },
+        ),
       ),
     );
   }
@@ -181,6 +184,41 @@ class HomeView extends StatelessWidget {
       ),
     );
   }
+}
+
+/// Listens for [openClassesBookingTabAfterPopToRoot] after user leaves booking
+/// success / waitlist success and pops the flow to root.
+class _HomeBookingFlowTabListener extends StatefulWidget {
+  const _HomeBookingFlowTabListener({required this.child});
+
+  final Widget child;
+
+  @override
+  State<_HomeBookingFlowTabListener> createState() =>
+      _HomeBookingFlowTabListenerState();
+}
+
+class _HomeBookingFlowTabListenerState extends State<_HomeBookingFlowTabListener> {
+  @override
+  void initState() {
+    super.initState();
+    openClassesBookingTabAfterPopToRoot.addListener(_onOpenClassesRequest);
+  }
+
+  @override
+  void dispose() {
+    openClassesBookingTabAfterPopToRoot.removeListener(_onOpenClassesRequest);
+    super.dispose();
+  }
+
+  void _onOpenClassesRequest() {
+    if (!openClassesBookingTabAfterPopToRoot.value || !mounted) return;
+    openClassesBookingTabAfterPopToRoot.value = false;
+    context.read<HomeCubit>().setTab(1, bookingTab: BookingTab.classes);
+  }
+
+  @override
+  Widget build(BuildContext context) => widget.child;
 }
 
 /// Visible when [`GET /home`] has `membership` or [`GET /me`] exposes plan/session hints.
