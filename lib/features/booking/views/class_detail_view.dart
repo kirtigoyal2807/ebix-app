@@ -157,7 +157,7 @@ class _ClassDetailBody extends StatelessWidget {
                     onPressed: !canBookOrWaitlist
                         ? null
                         : () {
-                            if (slot.isFull) {
+                            if (!slot.hasOpenSpots) {
                               Navigator.of(context).push(
                                 MaterialPageRoute(
                                   builder: (_) => JoinWaitlistView(slot: slot),
@@ -187,9 +187,9 @@ class _ClassDetailBody extends StatelessWidget {
                     child: AppText(
                       !canBookOrWaitlist
                           ? context.l10n.noUpcomingClasses
-                          : slot.isFull
-                              ? context.l10n.joinWailList
-                              : context.l10n.bookThisClass,
+                          : slot.hasOpenSpots
+                              ? context.l10n.bookThisClass
+                              : context.l10n.joinWailList,
                       style: (ctx) => AppTextStyles.button(ctx).copyWith(
                         fontSize: size.width * 0.04 > 16
                             ? 16

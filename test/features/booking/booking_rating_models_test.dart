@@ -93,6 +93,34 @@ void main() {
     });
   });
 
+  group('ClassSlotViewModel.hasOpenSpots', () {
+    ClassSlotViewModel slot({int? slotsLeft}) => ClassSlotViewModel(
+          classId: 'c',
+          calendarEventId: 'e',
+          name: 'N',
+          allowPackageBooking: true,
+          allowSinglePurchase: true,
+          trainerName: 'T',
+          branchName: 'B',
+          startAt: _t,
+          endAt: _t,
+          slotsLeft: slotsLeft,
+        );
+
+    test('false when slotsLeft null', () {
+      expect(slot(slotsLeft: null).hasOpenSpots, isFalse);
+    });
+
+    test('false when slotsLeft 0', () {
+      expect(slot(slotsLeft: 0).hasOpenSpots, isFalse);
+    });
+
+    test('true when slotsLeft 1 or more', () {
+      expect(slot(slotsLeft: 1).hasOpenSpots, isTrue);
+      expect(slot(slotsLeft: 5).hasOpenSpots, isTrue);
+    });
+  });
+
   group('TrainerResource rating UI', () {
     test('averageRatingValue is null for missing avg', () {
       final t = TrainerResource.fromJson({

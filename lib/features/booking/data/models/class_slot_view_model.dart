@@ -55,6 +55,9 @@ class ClassSlotViewModel {
 
   bool get isFull => slotsLeft != null && slotsLeft! <= 0;
 
+  /// Open seats reported by the API (`slotsLeft >= 1`). `null` or `<= 0` → no spots to book (waitlist).
+  bool get hasOpenSpots => slotsLeft != null && slotsLeft! >= 1;
+
   /// `true` when the user can book or join waitlist for a concrete calendar event.
   bool get hasBookableSlot => calendarEventId.trim().isNotEmpty;
 
