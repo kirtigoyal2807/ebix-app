@@ -23,32 +23,38 @@ import 'join_waitlist_view.dart';
 class ClassDetailView extends StatelessWidget {
   const ClassDetailView({
     super.key,
-    required this.calendarEventId,
+    required this.classId,
+    this.preferredCalendarEventId,
     this.preloadedSlot,
   });
 
-  final String calendarEventId;
+  /// Class type id for `GET /classes/{classId}`.
+  final String classId;
+
+  /// Optional calendar event id when the API returns multiple upcoming sessions.
+  final String? preferredCalendarEventId;
 
   /// Optional slot from the list — used as an optimistic placeholder while the
-  /// full event-detail fetch is in-flight.
+  /// class-detail fetch is in-flight.
   final ClassSlotViewModel? preloadedSlot;
 
   @override
   Widget build(BuildContext context) {
+    final id = classId.trim();
     return BlocProvider(
       create: (ctx) => ClassDetailCubit(
         ctx.read<ClassesRepository>(),
+        id,
         preloadedSlot: preloadedSlot,
-      )..loadEventDetail(calendarEventId),
-      child: _ClassDetailBody(calendarEventId: calendarEventId),
+        preferredCalendarEventId: preferredCalendarEventId,
+      )..loadClassDetail(),
+      child: const _ClassDetailBody(),
     );
   }
 }
 
 class _ClassDetailBody extends StatelessWidget {
-  const _ClassDetailBody({required this.calendarEventId});
-
-  final String calendarEventId;
+  const _ClassDetailBody();
 
   @override
   Widget build(BuildContext context) {
@@ -72,9 +78,8 @@ class _ClassDetailBody extends StatelessWidget {
           if (state.hasError && state.slot == null) {
             return _ErrorBody(
               message: state.errorMessage ?? context.l10n.somethingWentWrong,
-              onRetry: () => context
-                  .read<ClassDetailCubit>()
-                  .loadEventDetail(calendarEventId),
+              onRetry: () =>
+                  context.read<ClassDetailCubit>().loadClassDetail(),
             );
           }
 
@@ -83,7 +88,7 @@ class _ClassDetailBody extends StatelessWidget {
             return const Center(child: CircularProgressIndicator());
           }
 
-          final isFull = slot.isFull;
+          final canBookOrWaitlist = slot.hasBookableSlot;
 
           return Stack(
             children: [
@@ -149,24 +154,26 @@ class _ClassDetailBody extends StatelessWidget {
                     horizontal: AppSpacing.lg,
                   ),
                   child: ElevatedButton(
-                    onPressed: () {
-                      if (isFull) {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (_) => JoinWaitlistView(slot: slot),
-                          ),
-                        );
-                      } else {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (_) => BookClassConfirmView(
-                              calendarEventId: slot.calendarEventId,
-                              slot: slot,
-                            ),
-                          ),
-                        );
-                      }
-                    },
+                    onPressed: !canBookOrWaitlist
+                        ? null
+                        : () {
+                            if (slot.isFull) {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (_) => JoinWaitlistView(slot: slot),
+                                ),
+                              );
+                            } else {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (_) => BookClassConfirmView(
+                                    calendarEventId: slot.calendarEventId,
+                                    slot: slot,
+                                  ),
+                                ),
+                              );
+                            }
+                          },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.splashBackgroundDark,
                       foregroundColor: Colors.white,
@@ -178,9 +185,11 @@ class _ClassDetailBody extends StatelessWidget {
                       minimumSize: const Size(double.infinity, 48),
                     ),
                     child: AppText(
-                      isFull
-                          ? context.l10n.joinWailList
-                          : context.l10n.bookThisClass,
+                      !canBookOrWaitlist
+                          ? context.l10n.noUpcomingClasses
+                          : slot.isFull
+                              ? context.l10n.joinWailList
+                              : context.l10n.bookThisClass,
                       style: (ctx) => AppTextStyles.button(ctx).copyWith(
                         fontSize: size.width * 0.04 > 16
                             ? 16

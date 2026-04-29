@@ -12,7 +12,7 @@ class ClassDetailState extends Equatable {
 
   final ClassDetailLoadStatus status;
 
-  /// Fully-resolved slot data after the event-detail API call.
+  /// Resolved slot after the class-detail API call.
   final ClassSlotViewModel? slot;
 
   final String? errorMessage;

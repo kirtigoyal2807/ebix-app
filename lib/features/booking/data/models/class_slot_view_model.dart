@@ -55,6 +55,9 @@ class ClassSlotViewModel {
 
   bool get isFull => slotsLeft != null && slotsLeft! <= 0;
 
+  /// `true` when the user can book or join waitlist for a concrete calendar event.
+  bool get hasBookableSlot => calendarEventId.trim().isNotEmpty;
+
   /// Upgrade required when class is not included in user's current package.
   bool get upgradeRequired => !allowPackageBooking;
 
@@ -95,7 +98,58 @@ class ClassSlotViewModel {
     );
   }
 
-  /// Build from ClassEventDetail (used in class detail view).
+  /// Picks an [UpcomingEvent] from [gymClass]: [preferredEventId] if listed, else earliest by [UpcomingEvent.startAt].
+  static UpcomingEvent? pickUpcomingEvent(
+    GymClassResource gymClass,
+    String? preferredEventId,
+  ) {
+    final events = gymClass.upcomingEvents;
+    if (events.isEmpty) return null;
+    final want = preferredEventId?.trim();
+    if (want != null && want.isNotEmpty) {
+      for (final e in events) {
+        if (e.id == want) return e;
+      }
+    }
+    final sorted = List<UpcomingEvent>.from(events)
+      ..sort((a, b) => a.startAt.compareTo(b.startAt));
+    return sorted.first;
+  }
+
+  /// Build from `GET /classes/{classId}` ([GymClassResource]). When [event] is null, class
+  /// metadata is shown without a bookable session ([hasBookableSlot] is false).
+  factory ClassSlotViewModel.fromGymClassResource(
+    GymClassResource gymClass, {
+    UpcomingEvent? event,
+  }) {
+    if (event != null) {
+      return ClassSlotViewModel.fromClassAndEvent(gymClass, event);
+    }
+    return ClassSlotViewModel(
+      classId: gymClass.id,
+      calendarEventId: '',
+      name: gymClass.name,
+      description: gymClass.description,
+      imageUrl: gymClass.image,
+      avgRating: gymClass.avgRating,
+      allowPackageBooking: gymClass.allowPackageBooking,
+      allowSinglePurchase: gymClass.allowSinglePurchase,
+      trainerName: '',
+      branchName: '',
+      branchLocation: null,
+      branchAddress: null,
+      startAt: DateTime.fromMillisecondsSinceEpoch(0, isUtc: true),
+      endAt: DateTime.fromMillisecondsSinceEpoch(0, isUtc: true),
+      slotsLeft: null,
+      waitlistCount: null,
+      durationMinutes: gymClass.defaultDurationMinutes,
+      basePrice: gymClass.basePrice,
+      recentReviews: gymClass.recentReviews,
+      gender: null,
+    );
+  }
+
+  /// Build from §13.5 `GET /classes/events/{eventId}` when needed outside class-detail.
   factory ClassSlotViewModel.fromEventDetail(ClassEventDetail detail) {
     return ClassSlotViewModel(
       classId: detail.gymClass?.id ?? '',

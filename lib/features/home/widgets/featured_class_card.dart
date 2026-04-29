@@ -145,12 +145,14 @@ class FeaturedClassCard extends StatelessWidget {
                 const SizedBox(height: AppSpacing.md),
                 ElevatedButton(
                   onPressed: () {
-                    final eventId = featuredClass.calendarEventId ?? '';
-                    if (eventId.isEmpty) return;
+                    final classId = featuredClass.classId?.trim() ?? '';
+                    if (classId.isEmpty) return;
                     Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (_) => ClassDetailView(
-                          calendarEventId: eventId,
+                          classId: classId,
+                          preferredCalendarEventId:
+                              featuredClass.calendarEventId,
                         ),
                       ),
                     );

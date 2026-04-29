@@ -17,10 +17,15 @@ class ClassInfoGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final dateLabel = _formatDateTime(slot.startAt);
-    final availability = slot.slotsLeft != null
-        ? context.l10n.spotsLeft(slot.slotsLeft!)
-        : context.l10n.availabilityUnknown;
+    final hasSlot = slot.hasBookableSlot;
+    final dateLabel = hasSlot
+        ? _formatDateTime(slot.startAt)
+        : context.l10n.noUpcomingClasses;
+    final availability = !hasSlot
+        ? context.l10n.noUpcomingClasses
+        : slot.slotsLeft != null
+            ? context.l10n.spotsLeft(slot.slotsLeft!)
+            : "0";
     final durationLabel = slot.durationMinutes != null
         ? context.l10n.minutesCount(slot.durationMinutes!)
         : '--';

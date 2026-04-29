@@ -23,6 +23,7 @@ class BookingClassCard extends StatelessWidget {
   final bool isInPlan;
   final bool upgradeRequired;
   final String calendarEventId;
+  final String classId;
   final String? imageUrl;
   final ClassSlotViewModel? _slot;
 
@@ -37,6 +38,7 @@ class BookingClassCard extends StatelessWidget {
     this.isInPlan = true,
     this.upgradeRequired = false,
     this.calendarEventId = BookingDemoCalendarEvent.id,
+    this.classId = BookingDemoClass.id,
     this.imageUrl,
   }) : _slot = null;
 
@@ -51,6 +53,7 @@ class BookingClassCard extends StatelessWidget {
         isInPlan = slot.allowPackageBooking,
         upgradeRequired = slot.upgradeRequired,
         calendarEventId = slot.calendarEventId,
+        classId = slot.classId,
         imageUrl = _nonEmptyUrl(slot.imageUrl),
         _slot = slot;
 
@@ -104,7 +107,8 @@ class BookingClassCard extends StatelessWidget {
             Navigator.of(context).push(
               MaterialPageRoute(
                 builder: (newContext) => ClassDetailView(
-                  calendarEventId: calendarEventId,
+                  classId: classId,
+                  preferredCalendarEventId: calendarEventId,
                   preloadedSlot: _slot,
                 ),
               ),

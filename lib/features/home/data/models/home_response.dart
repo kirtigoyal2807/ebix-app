@@ -160,10 +160,10 @@ class HomeFeaturedClass {
   final int? spotsLeft;
   final bool? inPlan;
 
-  /// Calendar event UUID — used to navigate to ClassDetailView.
+  /// Calendar event UUID — optional hint for which upcoming session to show on ClassDetailView.
   final String? calendarEventId;
 
-  /// Class type UUID — used to navigate to class type detail.
+  /// Class type UUID — required to open ClassDetailView (`GET /classes/{id}`).
   final String? classId;
 
   factory HomeFeaturedClass.fromJson(Map<String, dynamic> json) {
