@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pilates_app/config/theme/app_colors.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
-import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/core/localization/localization_extension.dart';
 import 'package:pilates_app/widgets/app_text.dart';
 import '../cubit/booking_cubit.dart';
@@ -71,8 +70,8 @@ class _TabItem extends StatelessWidget {
       child: GestureDetector(
         onTap: onTap,
         child: Container(
-          // padding: const EdgeInsets.symmetric(vertical: 16),
-          margin: EdgeInsets.symmetric(horizontal: 24),
+          // padding: const EdgeInsets.symmetric(vertical: AppSpacing.md),
+          margin: const EdgeInsets.symmetric(horizontal: 24),
           decoration: BoxDecoration(
             border: Border(
               bottom: BorderSide(

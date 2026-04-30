@@ -1,18 +1,35 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:pilates_app/config/theme/app_colors.dart';
 import 'package:pilates_app/config/theme/app_radius.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/core/localization/localization_extension.dart';
+import 'package:pilates_app/features/booking/data/models/class_slot_view_model.dart';
 import 'package:pilates_app/widgets/app_text.dart';
 
 import '../views/trainer_details_view.dart';
 
 class ClassInfoGrid extends StatelessWidget {
-  const ClassInfoGrid({super.key});
+  const ClassInfoGrid({super.key, required this.slot});
+
+  final ClassSlotViewModel slot;
 
   @override
   Widget build(BuildContext context) {
+    final hasSlot = slot.hasBookableSlot;
+    final dateLabel = hasSlot
+        ? _formatDateTime(slot.startAt)
+        : context.l10n.noUpcomingClasses;
+    final availability = !hasSlot
+        ? context.l10n.noUpcomingClasses
+        : slot.slotsLeft != null
+            ? context.l10n.spotsLeft(slot.slotsLeft!)
+            : "0";
+    final durationLabel = slot.durationMinutes != null
+        ? context.l10n.minutesCount(slot.durationMinutes!)
+        : '--';
+
     return Column(
       children: [
         Row(
@@ -22,13 +39,16 @@ class ClassInfoGrid extends StatelessWidget {
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => TrainerDetailsView()),
+                    MaterialPageRoute(
+                      builder: (context) => TrainerDetailsView(),
+                    ),
                   );
                 },
                 child: _InfoCard(
-
                   label: context.l10n.instructor,
-                  value: context.l10n.trainerAishaSherin,
+                  value: slot.trainerName.isNotEmpty
+                      ? slot.trainerName
+                      : context.l10n.trainerUnknown,
                   showAvatar: true,
                 ),
               ),
@@ -37,7 +57,7 @@ class ClassInfoGrid extends StatelessWidget {
             Expanded(
               child: _InfoCard(
                 label: context.l10n.duration,
-                value: context.l10n.minutesCount(40),
+                value: durationLabel,
               ),
             ),
           ],
@@ -48,20 +68,31 @@ class ClassInfoGrid extends StatelessWidget {
             Expanded(
               child: _InfoCard(
                 label: context.l10n.dateTime,
-                value: '${context.l10n.today}, 6:00 PM',
+                value: dateLabel,
               ),
             ),
             const SizedBox(width: AppSpacing.md),
             Expanded(
               child: _InfoCard(
                 label: context.l10n.availability,
-                value: context.l10n.spotsLeft(3),
+                value: availability,
               ),
             ),
           ],
         ),
       ],
     );
+  }
+
+  String _formatDateTime(DateTime dt) {
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+    final slotDay = DateTime(dt.year, dt.month, dt.day);
+    final timeStr = DateFormat('h:mm a').format(dt.toLocal());
+    if (slotDay == today) return 'Today, $timeStr';
+    final tomorrow = today.add(const Duration(days: 1));
+    if (slotDay == tomorrow) return 'Tomorrow, $timeStr';
+    return '${DateFormat('EEE, MMM d').format(dt.toLocal())}, $timeStr';
   }
 }
 
@@ -95,7 +126,7 @@ class _InfoCard extends StatelessWidget {
         children: [
           AppText(
             label,
-            style: (context) => AppTextStyles.captionText(context).copyWith(
+            style: (ctx) => AppTextStyles.captionText(ctx).copyWith(
               color: AppColors.lightGrey,
               fontSize: 12,
             ),
@@ -104,19 +135,26 @@ class _InfoCard extends StatelessWidget {
           Row(
             children: [
               if (showAvatar) ...[
-                Image.asset("assets/images/png/ic_trainer.png",height: 24,
+                Image.asset(
+                  'assets/images/png/ic_trainer.png',
+                  height: 24,
                   width: 24,
-                  fit: BoxFit.fill,),
+                  fit: BoxFit.fill,
+                ),
                 const SizedBox(width: 8),
-              ]else ...[
-                SizedBox(height: 24,)
+              ] else ...[
+                const SizedBox(height: 24),
               ],
               Expanded(
                 child: AppText(
                   value,
-                  style: (context) => AppTextStyles.boldBody(context).copyWith(
+                  style: (ctx) => AppTextStyles.boldBody(ctx).copyWith(
                     fontSize: 14,
-                    color: showAvatar ?isDark ? AppColors.languageTextDark : AppColors.languageIcon  : (isDark ? AppColors.lightText : AppColors.darkText),
+                    color: showAvatar
+                        ? (isDark
+                              ? AppColors.languageTextDark
+                              : AppColors.languageIcon)
+                        : (isDark ? AppColors.lightText : AppColors.darkText),
                   ),
                 ),
               ),

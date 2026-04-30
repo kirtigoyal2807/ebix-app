@@ -5,14 +5,14 @@ import 'package:pilates_app/config/theme/app_radius.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/core/localization/localization_extension.dart';
-import 'package:pilates_app/features/booking/cubit/booking_cubit.dart';
-import 'package:pilates_app/features/booking/cubit/booking_state.dart';
-import 'package:pilates_app/features/booking/data/class_booking_preview.dart';
+import 'package:pilates_app/features/booking/cubit/class_detail_cubit.dart';
+import 'package:pilates_app/features/booking/cubit/class_detail_state.dart';
+import 'package:pilates_app/features/booking/data/classes_repository.dart';
+import 'package:pilates_app/features/booking/data/models/class_slot_view_model.dart';
 import 'package:pilates_app/features/booking/widgets/class_detail_header.dart';
 import 'package:pilates_app/features/booking/widgets/class_info_grid.dart';
 import 'package:pilates_app/features/booking/widgets/class_location_card.dart';
 import 'package:pilates_app/features/booking/widgets/class_about_section.dart';
-import 'package:pilates_app/features/booking/widgets/class_what_to_bring.dart';
 import 'package:pilates_app/features/booking/widgets/class_reviews_section.dart';
 import 'package:pilates_app/widgets/app_app_bar.dart';
 import 'package:pilates_app/widgets/app_text.dart';
@@ -23,14 +23,33 @@ import 'join_waitlist_view.dart';
 class ClassDetailView extends StatelessWidget {
   const ClassDetailView({
     super.key,
-    required this.classState,
-    required this.calendarEventId,
-    required this.preview,
+    required this.classId,
+    this.preloadedSlot,
   });
 
-  final ClassState classState;
-  final String calendarEventId;
-  final ClassBookingPreview preview;
+  /// Class type id for `GET /classes/{classId}`.
+  final String classId;
+
+  /// Optional slot from the list — used as an optimistic placeholder while the
+  /// class-detail fetch is in-flight.
+  final ClassSlotViewModel? preloadedSlot;
+
+  @override
+  Widget build(BuildContext context) {
+    final id = classId.trim();
+    return BlocProvider(
+      create: (ctx) => ClassDetailCubit(
+        ctx.read<ClassesRepository>(),
+        id,
+        preloadedSlot: preloadedSlot,
+      )..loadClassDetail(),
+      child: const _ClassDetailBody(),
+    );
+  }
+}
+
+class _ClassDetailBody extends StatelessWidget {
+  const _ClassDetailBody();
 
   @override
   Widget build(BuildContext context) {
@@ -44,54 +63,83 @@ class ClassDetailView extends StatelessWidget {
         title: context.l10n.classDetails,
         isMoreMenu: false,
       ),
-      body: BlocBuilder<BookingCubit, BookingState>(
+      body: BlocBuilder<ClassDetailCubit, ClassDetailState>(
         builder: (context, state) {
-          if (state.classDetailStatus == ClassDetailStatus.loading) {
+          // Show full-screen loader only when there's no preloaded data
+          if (state.isLoading && state.slot == null) {
             return const Center(child: CircularProgressIndicator());
           }
 
+          if (state.hasError && state.slot == null) {
+            return _ErrorBody(
+              message: state.errorMessage ?? context.l10n.somethingWentWrong,
+              onRetry: () =>
+                  context.read<ClassDetailCubit>().loadClassDetail(),
+            );
+          }
+
+          final slot = state.slot;
+          if (slot == null) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          final canBookOrWaitlist = slot.hasBookableSlot;
+
           return Stack(
             children: [
-              SingleChildScrollView(
-                padding: EdgeInsets.only(
-                  // left: AppSpacing.lg,
-                  // right: AppSpacing.lg,
-                  bottom: size.height * 0.15, // Space for sticky button
+              // Thin top-of-screen progress bar while background fetch is running
+              if (state.isLoading)
+                const Positioned(
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  child: LinearProgressIndicator(minHeight: 3),
                 ),
-                child: const Column(
+              SingleChildScrollView(
+                padding: EdgeInsets.only(bottom: size.height * 0.15),
+                child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Padding(
-                      padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
-                      child: ClassDetailHeader(),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: AppSpacing.lg,
+                      ),
+                      child: ClassDetailHeader(slot: slot),
                     ),
-                    SizedBox(height: AppSpacing.lg),
+                    const SizedBox(height: AppSpacing.lg),
                     Padding(
-                      padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
-                      child: ClassInfoGrid(),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: AppSpacing.lg,
+                      ),
+                      child: ClassInfoGrid(slot: slot),
                     ),
-                    SizedBox(height: AppSpacing.md),
+                    const SizedBox(height: AppSpacing.md),
                     Padding(
-                      padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
-                      child: ClassLocationCard(),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: AppSpacing.lg,
+                      ),
+                      child: ClassLocationCard(slot: slot),
                     ),
-                    SizedBox(height: AppSpacing.lg),
+                    const SizedBox(height: AppSpacing.lg),
                     Padding(
-                      padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
-                      child: ClassAboutSection(),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: AppSpacing.lg,
+                      ),
+                      child: ClassAboutSection(slot: slot),
                     ),
-                    SizedBox(height: AppSpacing.lg),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
-                      child: ClassWhatToBring(),
+                    const SizedBox(height: AppSpacing.lg),
+                    ClassReviewsSection(
+                      embeddedRecentReviews: slot.recentReviews,
+                      reviewableType:
+                          slot.recentReviews == null ? 'class' : null,
+                      reviewableId:
+                          slot.recentReviews == null ? slot.classId : null,
                     ),
-                    SizedBox(height: AppSpacing.lg),
-                    ClassReviewsSection(),
                   ],
                 ),
               ),
 
-              // Sticky Button
+              // Sticky action button
               Positioned(
                 left: 0,
                 right: 0,
@@ -101,26 +149,26 @@ class ClassDetailView extends StatelessWidget {
                     horizontal: AppSpacing.lg,
                   ),
                   child: ElevatedButton(
-                    onPressed: () {
-                      if (classState == ClassState.booking) {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (_) => BookClassConfirmView(
-                              calendarEventId: calendarEventId,
-                              preview: preview,
-                            ),
-                          ),
-                        );
-                      } else {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) => const JoinWaitlistView(),
-                          ),
-                        );
-                      }
-                    },
-
+                    onPressed: !canBookOrWaitlist
+                        ? null
+                        : () {
+                            if (!slot.hasOpenSpots) {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (_) => JoinWaitlistView(slot: slot),
+                                ),
+                              );
+                            } else {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (_) => BookClassConfirmView(
+                                    calendarEventId: slot.calendarEventId,
+                                    slot: slot,
+                                  ),
+                                ),
+                              );
+                            }
+                          },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.splashBackgroundDark,
                       foregroundColor: Colors.white,
@@ -132,15 +180,16 @@ class ClassDetailView extends StatelessWidget {
                       minimumSize: const Size(double.infinity, 48),
                     ),
                     child: AppText(
-                      classState == ClassState.booking
-                          ? context.l10n.bookThisClass
-                          : context.l10n.joinWailList,
-                      style: (context) =>
-                          AppTextStyles.button(context).copyWith(
-                            fontSize: size.width * 0.04 > 16
-                                ? 16
-                                : size.width * 0.04,
-                          ),
+                      !canBookOrWaitlist
+                          ? context.l10n.noUpcomingClasses
+                          : slot.hasOpenSpots
+                              ? context.l10n.bookThisClass
+                              : context.l10n.joinWailList,
+                      style: (ctx) => AppTextStyles.button(ctx).copyWith(
+                        fontSize: size.width * 0.04 > 16
+                            ? 16
+                            : size.width * 0.04,
+                      ),
                     ),
                   ),
                 ),
@@ -153,4 +202,35 @@ class ClassDetailView extends StatelessWidget {
   }
 }
 
-enum ClassState { booking, waitList }
+class _ErrorBody extends StatelessWidget {
+  const _ErrorBody({required this.message, required this.onRetry});
+  final String message;
+  final VoidCallback onRetry;
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(AppSpacing.xl),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            AppText(
+              message,
+              style: (ctx) => AppTextStyles.bodyText(ctx),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: AppSpacing.md),
+            TextButton(
+              onPressed: onRetry,
+              child: AppText(
+                context.l10n.retry,
+                style: (ctx) => AppTextStyles.bodyText(ctx),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

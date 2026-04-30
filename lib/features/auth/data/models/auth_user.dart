@@ -1,4 +1,6 @@
-/// Subset of profile fields from `POST /auth/login` → `data.user`.
+import 'package:pilates_app/core/models/membership_snapshot.dart';
+
+/// Subset of profile fields from `POST /auth/login` → `data.user`, or [`GET /me`].
 class AuthUser {
   const AuthUser({
     this.id,
@@ -7,6 +9,15 @@ class AuthUser {
     this.name,
     this.email,
     this.phone,
+
+    /// From `membership[]` / `planName` on profile (aligned with [`GET /home`] `membership`).
+    this.membershipPlanName,
+
+    /// From `membership[].totalSessions` or top-level helpers when backend sends them.
+    this.membershipTotalSessions,
+
+    /// From `membership[].sessionsRemaining` (`sessionsRemaining`) when provided.
+    this.membershipSessionsRemaining,
   });
 
   final String? id;
@@ -16,7 +27,12 @@ class AuthUser {
   final String? email;
   final String? phone;
 
+  final String? membershipPlanName;
+  final int? membershipTotalSessions;
+  final int? membershipSessionsRemaining;
+
   factory AuthUser.fromJson(Map<String, dynamic> json) {
+    final membershipSnap = parseMembershipField(json['membership']);
     return AuthUser(
       id: json['id']?.toString(),
       firstName: json['first_name'] as String? ?? json['firstName'] as String?,
@@ -24,8 +40,43 @@ class AuthUser {
       name: json['name'] as String? ?? json['full_name'] as String?,
       email: json['email'] as String?,
       phone: json['phone'] as String?,
+      membershipPlanName:
+          membershipSnap?.planName ??
+          _trimOrNull(json['membershipPlanName']) ??
+          _trimOrNull(json['planName']) ??
+          _trimOrNull(json['plan_name']),
+      membershipTotalSessions:
+          membershipSnap?.totalSessions ??
+          _parseInt(json['membershipTotalSessions']) ??
+          _parseInt(json['totalSessions']) ??
+          _parseInt(json['total_sessions']),
+      membershipSessionsRemaining:
+          membershipSnap?.sessionsRemaining ??
+          _parseInt(json['membershipSessionsRemaining']) ??
+          _parseInt(json['sessionsRemaining']) ??
+          _parseInt(json['sessions_remaining']),
     );
   }
+
+  Map<String, dynamic> toJson() => <String, dynamic>{
+    'id': id,
+    'firstName': firstName,
+    'lastName': lastName,
+    'name': name,
+    'email': email,
+    'phone': phone,
+    'membershipPlanName': membershipPlanName,
+    'membershipTotalSessions': membershipTotalSessions,
+    'membershipSessionsRemaining': membershipSessionsRemaining,
+  };
+
+  bool get _hasStoredMembershipHints =>
+      (membershipPlanName?.trim().isNotEmpty ?? false) ||
+      membershipTotalSessions != null ||
+      membershipSessionsRemaining != null;
+
+  /// Fallback when [`GET /home`] omits membership but [`GET /me`] carries plan info.
+  bool get showsMembershipWithoutHomePayload => _hasStoredMembershipHints;
 
   /// First name for greetings (home header, etc.).
   String get greetingName {
@@ -38,5 +89,18 @@ class AuthUser {
     final p = phone?.trim();
     if (p != null && p.isNotEmpty) return p;
     return '';
+  }
+
+  static String? _trimOrNull(dynamic v) {
+    if (v == null) return null;
+    final s = v.toString().trim();
+    return s.isEmpty ? null : s;
+  }
+
+  static int? _parseInt(dynamic value) {
+    if (value == null) return null;
+    if (value is int) return value;
+    if (value is num) return value.toInt();
+    return int.tryParse(value.toString());
   }
 }

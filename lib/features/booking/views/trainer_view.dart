@@ -33,80 +33,75 @@ class TrainerView extends StatelessWidget {
 
     return BlocBuilder<BookingCubit, BookingState>(
       builder: (context, bookingState) {
-        return BlocBuilder<TrainersCubit, TrainersState>(
-          builder: (context, state) {
         final hasTrainerFilters =
             bookingState.searchQuery.trim().isNotEmpty ||
-            bookingState.selectedTrainerType != TrainerType.allTrainers;
+                bookingState.selectedTrainerType != TrainerType.allTrainers;
 
-        final header = <Widget>[
-          BookingSearchBar(hintText: context.l10n.searchTrainers),
-          const SizedBox(height: AppSpacing.md),
-          const TrainerFilterChip(),
-          const SizedBox(height: AppSpacing.md),
-          Divider(
-            color: isDark ? AppColors.greyText : AppColors.buttonBorder,
-            height: 1,
-          ),
-          const SizedBox(height: AppSpacing.lg),
-        ];
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            BookingSearchBar(hintText: context.l10n.searchTrainers),
+            const SizedBox(height: AppSpacing.md),
+            const TrainerFilterChip(),
+            const SizedBox(height: AppSpacing.md),
+            Divider(
+              color: isDark ? AppColors.greyText : AppColors.buttonBorder,
+              height: 1,
+            ),
+            const SizedBox(height: AppSpacing.lg),
+            Expanded(
+              child: BlocBuilder<TrainersCubit, TrainersState>(
+                builder: (context, state) {
+                  if (state.status == TrainersLoadStatus.loading &&
+                      state.items.isEmpty) {
+                    return const Center(
+                      child: CircularProgressIndicator.adaptive(),
+                    );
+                  }
 
-        if (state.status == TrainersLoadStatus.loading && state.items.isEmpty) {
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              ...header,
-              const Expanded(
-                child: Center(child: CircularProgressIndicator.adaptive()),
-              ),
-            ],
-          );
-        }
+                  if (state.status == TrainersLoadStatus.failure &&
+                      state.items.isEmpty) {
+                    return Center(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: AppSpacing.lg,
+                        ),
+                        child: AppText(
+                          state.errorMessage ??
+                              context.l10n.branchesCouldNotLoad,
+                          textAlign: TextAlign.center,
+                          maxLines: 5,
+                          overflow: TextOverflow.ellipsis,
+                          style: (c) => AppTextStyles.bodyText(c),
+                        ),
+                      ),
+                    );
+                  }
 
-        if (state.status == TrainersLoadStatus.failure && state.items.isEmpty) {
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              ...header,
-              Expanded(
-                child: Center(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
-                    child: AppText(
-                      state.errorMessage ?? context.l10n.branchesCouldNotLoad,
-                      textAlign: TextAlign.center,
-                      maxLines: 5,
-                      overflow: TextOverflow.ellipsis,
-                      style: (c) => AppTextStyles.bodyText(c),
+                  return RefreshIndicator(
+                    onRefresh: () => _reload(context),
+                    child: ListView(
+                      padding:
+                          const EdgeInsets.symmetric(vertical: AppSpacing.lg),
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      children: [
+                        if (state.items.isEmpty)
+                          _NoTrainersEmpty(
+                            isDark: isDark,
+                            hasFilters: hasTrainerFilters,
+                          )
+                        else
+                          for (final trainer in state.items) ...[
+                            TrainerCard(trainer: trainer),
+                            const SizedBox(height: AppSpacing.md),
+                          ],
+                      ],
                     ),
-                  ),
-                ),
+                  );
+                },
               ),
-            ],
-          );
-        }
-
-        return RefreshIndicator(
-          onRefresh: () => _reload(context),
-          child: ListView(
-            padding: const EdgeInsets.symmetric(vertical: AppSpacing.lg),
-            physics: const AlwaysScrollableScrollPhysics(),
-            children: [
-              ...header,
-              if (state.items.isEmpty)
-                _NoTrainersEmpty(
-                  isDark: isDark,
-                  hasFilters: hasTrainerFilters,
-                )
-              else
-                for (final trainer in state.items) ...[
-                  TrainerCard(trainer: trainer),
-                  const SizedBox(height: AppSpacing.md),
-                ],
-            ],
-          ),
-        );
-          },
+            ),
+          ],
         );
       },
     );

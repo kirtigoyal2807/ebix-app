@@ -10,6 +10,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../account/account_view.dart';
 import '../auth/cubit/auth_cubit.dart';
 import '../auth/cubit/auth_state.dart';
+import '../auth/data/models/auth_user.dart';
 import '../explore/explore_view.dart';
 import '../explore/view/referral_program_view.dart';
 import 'cubit/home_cubit.dart';
@@ -27,9 +28,20 @@ import 'widgets/received_gift_card.dart';
 
 import '../booking/cubit/booking_state.dart';
 import '../booking/booking_view.dart';
+import 'booking_flow_navigation.dart';
 
 class HomeView extends StatelessWidget {
-  const HomeView({super.key});
+  const HomeView({
+    super.key,
+    this.initialNavIndex = 0,
+    this.initialBookingTab = BookingTab.classes,
+  });
+
+  /// Bottom navigation index (1 = Classes / booking tab).
+  final int initialNavIndex;
+
+  /// Sub-tab when [initialNavIndex] is the booking tab.
+  final BookingTab initialBookingTab;
 
   @override
   Widget build(BuildContext context) {
@@ -38,29 +50,36 @@ class HomeView extends StatelessWidget {
         homeRepository: HomeRepository(
           context.read<AuthCubit>().authRepository.httpClient,
         ),
+        tokenStorage: context.read<AuthCubit>().tokenStorage,
+        initialState: HomeState.initial().copyWith(
+          currentIndex: initialNavIndex,
+          selectedBookingTab: initialBookingTab,
+        ),
       )..loadHome(),
-      child: BlocBuilder<HomeCubit, HomeState>(
-        builder: (context, state) {
-          final isDark = Theme.of(context).brightness == Brightness.dark;
-          return Scaffold(
-            backgroundColor: isDark
-                ? AppColors.homeBackground
-                : AppColors.whiteColor,
-            body: IndexedStack(
-              index: state.currentIndex,
-              children: [
-                const HomeContentView(),
-                BookingView(initialTab: state.selectedBookingTab),
-                const ExploreView(),
-                const AccountView(),
-              ],
-            ),
-            bottomNavigationBar: _buildBottomNavBar(
-              context,
-              state.currentIndex,
-            ),
-          );
-        },
+      child: _HomeBookingFlowTabListener(
+        child: BlocBuilder<HomeCubit, HomeState>(
+          builder: (context, state) {
+            final isDark = Theme.of(context).brightness == Brightness.dark;
+            return Scaffold(
+              backgroundColor: isDark
+                  ? AppColors.homeBackground
+                  : AppColors.whiteColor,
+              body: IndexedStack(
+                index: state.currentIndex,
+                children: [
+                  const HomeContentView(),
+                  BookingView(initialTab: state.selectedBookingTab),
+                  const ExploreView(),
+                  const AccountView(),
+                ],
+              ),
+              bottomNavigationBar: _buildBottomNavBar(
+                context,
+                state.currentIndex,
+              ),
+            );
+          },
+        ),
       ),
     );
   }
@@ -168,6 +187,45 @@ class HomeView extends StatelessWidget {
   }
 }
 
+/// Listens for [openClassesBookingTabAfterPopToRoot] after user leaves booking
+/// success / waitlist success and pops the flow to root.
+class _HomeBookingFlowTabListener extends StatefulWidget {
+  const _HomeBookingFlowTabListener({required this.child});
+
+  final Widget child;
+
+  @override
+  State<_HomeBookingFlowTabListener> createState() =>
+      _HomeBookingFlowTabListenerState();
+}
+
+class _HomeBookingFlowTabListenerState extends State<_HomeBookingFlowTabListener> {
+  @override
+  void initState() {
+    super.initState();
+    openClassesBookingTabAfterPopToRoot.addListener(_onOpenClassesRequest);
+  }
+
+  @override
+  void dispose() {
+    openClassesBookingTabAfterPopToRoot.removeListener(_onOpenClassesRequest);
+    super.dispose();
+  }
+
+  void _onOpenClassesRequest() {
+    if (!openClassesBookingTabAfterPopToRoot.value || !mounted) return;
+    openClassesBookingTabAfterPopToRoot.value = false;
+    context.read<HomeCubit>().setTab(1, bookingTab: BookingTab.classes);
+  }
+
+  @override
+  Widget build(BuildContext context) => widget.child;
+}
+
+/// Visible when [`GET /home`] has `membership` or [`GET /me`] exposes plan/session hints.
+bool _showsMembershipFallback(AuthUser? user) =>
+    user?.showsMembershipWithoutHomePayload ?? false;
+
 class HomeContentView extends StatelessWidget {
   const HomeContentView({super.key});
 
@@ -212,7 +270,6 @@ class HomeContentView extends StatelessWidget {
         }
         final banners = data.banners;
         final membership = data.membership;
-        final hasMembership = membership != null;
         final progress = data.progress;
         final featuredClasses = data.featuredClasses;
         final featuredClass = featuredClasses.isEmpty
@@ -272,21 +329,39 @@ class HomeContentView extends StatelessWidget {
                       const SizedBox(height: AppSpacing.md),
                       ReceivedGiftCard(gift: receivedGifts.first),
                     ],
-                    if (hasMembership) ...[
-                      const SizedBox(height: AppSpacing.lg),
-                      _sectionTitle(
-                        context,
-                        context.l10n.yourMembership,
-                        isDark,
-                        size,
-                      ),
-                      const SizedBox(height: AppSpacing.md),
-                      MembershipCard(
-                        status: HomeUserStatus.existing,
-                        planName: membership.planName,
-                        totalSessions: membership.totalSessions,
-                      ),
-                    ],
+                    BlocBuilder<AuthCubit, AuthState>(
+                      builder: (context, authState) {
+                        final user = authState.user;
+                        final hasMembershipHomeOrProfile =
+                            membership != null ||
+                            _showsMembershipFallback(user);
+                        if (!hasMembershipHomeOrProfile) {
+                          return const SizedBox.shrink();
+                        }
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const SizedBox(height: AppSpacing.lg),
+                            _sectionTitle(
+                              context,
+                              context.l10n.yourMembership,
+                              isDark,
+                              size,
+                            ),
+                            const SizedBox(height: AppSpacing.md),
+                            MembershipCard(
+                              status: HomeUserStatus.existing,
+                              planName:
+                                  membership?.planName ?? user?.membershipPlanName,
+                              totalSessions: membership?.totalSessions ??
+                                  user?.membershipTotalSessions,
+                              sessionsRemaining: membership?.sessionsRemaining ??
+                                  user?.membershipSessionsRemaining,
+                            ),
+                          ],
+                        );
+                      },
+                    ),
                     if (progress != null) ...[
                       const SizedBox(height: AppSpacing.lg),
                       _sectionTitle(

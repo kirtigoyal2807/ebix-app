@@ -31,7 +31,7 @@ void main() {
         authRepository: authRepository,
         tokenStorage: tokenStorage,
         localeBridge: localeBridge,
-        //authInitialState: authInitialState,
+        authInitialState: authInitialState,
       ),
     );
 

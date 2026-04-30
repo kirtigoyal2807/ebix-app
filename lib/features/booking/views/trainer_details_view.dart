@@ -229,80 +229,132 @@ class _TrainerApiHeader extends StatelessWidget {
             ),
           ],
           SizedBox(height: 10),
-          if (!trainer.hasReviews)
-            Icon(
-              Icons.star_border_rounded,
-              color: isDark ? AppColors.darkGreyText : AppColors.lightGrey,
-              size: 20,
-            )
-          else if (trainer.averageRatingValue != null)
-            Center(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  TrainerAverageStars(
-                    rating: trainer.averageRatingValue!,
-                    itemSize: 24,
-                  ),
-                  const SizedBox(height: 8),
-                  Wrap(
-                    alignment: WrapAlignment.center,
-                    crossAxisAlignment: WrapCrossAlignment.center,
-                    spacing: AppSpacing.sm,
-                    runSpacing: AppSpacing.xs,
-                    children: [
-                      AppText(
-                        trainer.displayAverageRating.isNotEmpty
-                            ? trainer.displayAverageRating
-                            : trainer.averageRatingValue!.toStringAsFixed(1),
-                        maxLines: 1,
-                        textAlign: TextAlign.center,
-                        style: (c) => AppTextStyles.textFieldHeading(
-                          c,
-                          fontWeight: FontWeight.w600,
-                        ).copyWith(height: 1, fontSize: 14),
-                      ),
-                      AppText(
-                        '(${trainer.reviewsCount} ${context.l10n.reviews})',
-                        maxLines: 2,
-                        textAlign: TextAlign.center,
-                        style: (c) => AppTextStyles.helpAndSupportItemSubLabel(
-                          c,
-                        ).copyWith(height: 1.2, fontSize: 14),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            )
-          else
+          _TrainerApiHeaderRating(trainer: trainer, isDark: isDark),
+        ],
+      ),
+    );
+  }
+}
+
+class _TrainerApiHeaderRating extends StatelessWidget {
+  const _TrainerApiHeaderRating({
+    required this.trainer,
+    required this.isDark,
+  });
+
+  final TrainerResource trainer;
+  final bool isDark;
+
+  @override
+  Widget build(BuildContext context) {
+    final count = trainer.reviewsCount;
+    final metaColor = isDark ? AppColors.darkGreyText : AppColors.lightGrey;
+    final avgValue = trainer.averageRatingValue;
+    final avgText = trainer.displayAverageRating;
+
+    if (avgValue != null) {
+      return Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TrainerAverageStars(
+              rating: avgValue,
+              itemSize: 24,
+            ),
+            const SizedBox(height: 8),
             Wrap(
               alignment: WrapAlignment.center,
               crossAxisAlignment: WrapCrossAlignment.center,
               spacing: AppSpacing.sm,
               runSpacing: AppSpacing.xs,
               children: [
-                Icon(Icons.star, color: AppColors.goldStarColor, size: 14),
                 AppText(
-                  trainer.displayAverageRating.isNotEmpty
-                      ? trainer.displayAverageRating
-                      : '—',
+                  avgText.isNotEmpty
+                      ? avgText
+                      : avgValue.toStringAsFixed(1),
                   maxLines: 1,
+                  textAlign: TextAlign.center,
                   style: (c) => AppTextStyles.textFieldHeading(
                     c,
                     fontWeight: FontWeight.w600,
                   ).copyWith(height: 1, fontSize: 14),
                 ),
-                AppText(
-                  '(${trainer.reviewsCount} ${context.l10n.reviews})',
-                  maxLines: 2,
-                  textAlign: TextAlign.center,
-                  style: (c) =>
-                      AppTextStyles.helpAndSupportItemSubLabel(c).copyWith(height: 1.2, fontSize: 14),
-                ),
+                if (count > 0)
+                  AppText(
+                    '($count ${context.l10n.reviews})',
+                    maxLines: 2,
+                    textAlign: TextAlign.center,
+                    style: (c) =>
+                        AppTextStyles.helpAndSupportItemSubLabel(c).copyWith(
+                      height: 1.2,
+                      fontSize: 14,
+                    ),
+                  ),
               ],
             ),
+          ],
+        ),
+      );
+    }
+
+    if (avgText.isNotEmpty) {
+      return Wrap(
+        alignment: WrapAlignment.center,
+        crossAxisAlignment: WrapCrossAlignment.center,
+        spacing: AppSpacing.sm,
+        runSpacing: AppSpacing.xs,
+        children: [
+          Icon(Icons.star_border_rounded, color: metaColor, size: 20),
+          AppText(
+            avgText,
+            maxLines: 1,
+            style: (c) => AppTextStyles.textFieldHeading(
+              c,
+              fontWeight: FontWeight.w600,
+            ).copyWith(height: 1, fontSize: 14),
+          ),
+          if (count > 0)
+            AppText(
+              '($count ${context.l10n.reviews})',
+              maxLines: 2,
+              textAlign: TextAlign.center,
+              style: (c) =>
+                  AppTextStyles.helpAndSupportItemSubLabel(c).copyWith(
+                height: 1.2,
+                fontSize: 14,
+              ),
+            ),
         ],
+      );
+    }
+
+    if (count > 0) {
+      return Wrap(
+        alignment: WrapAlignment.center,
+        crossAxisAlignment: WrapCrossAlignment.center,
+        spacing: AppSpacing.sm,
+        runSpacing: AppSpacing.xs,
+        children: [
+          Icon(Icons.star_border_rounded, color: metaColor, size: 20),
+          AppText(
+            '($count ${context.l10n.reviews})',
+            maxLines: 2,
+            textAlign: TextAlign.center,
+            style: (c) =>
+                AppTextStyles.helpAndSupportItemSubLabel(c).copyWith(
+              height: 1.2,
+              fontSize: 14,
+            ),
+          ),
+        ],
+      );
+    }
+
+    return Center(
+      child: Icon(
+        Icons.star_border_rounded,
+        color: metaColor,
+        size: 20,
       ),
     );
   }

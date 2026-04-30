@@ -566,6 +566,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get classFee => 'Class Fee';
 
   @override
+  String get bookingPriceUnavailable => '—';
+
+  @override
   String get total => 'Total';
 
   @override
@@ -597,6 +600,30 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get checkInSuccess => 'You\'re checked in.';
+
+  @override
+  String checkInWindowExplanationSchedule(int minutes, String time) {
+    return 'Check-in opens $minutes minutes before class (Available at $time)';
+  }
+
+  @override
+  String checkInButtonOpensAtDynamic(String time) {
+    return 'Check-In (Opens at $time)';
+  }
+
+  @override
+  String get checkInEndedForThisClass => 'Check-in is closed for this class.';
+
+  @override
+  String get checkInActiveWindowBody => 'You can check in now.';
+
+  @override
+  String checkInOpensAtHint(String time) {
+    return 'Opens $time';
+  }
+
+  @override
+  String get checkInClosedShort => 'Closed';
 
   @override
   String get cancelEnrollmentSuccess => 'Your booking was cancelled.';
@@ -1340,6 +1367,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get classes => 'Classes';
 
   @override
+  String membershipClassesRemainingOfTotal(int remaining, int total) {
+    return '$remaining of $total classes';
+  }
+
+  @override
   String get refunds => 'Refunds';
 
   @override
@@ -1743,7 +1775,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get beforeClassStarts => 'Before Class Starts';
 
   @override
-  String get beforeClassStartsSubtitle => 'Get notified 30 min before';
+  String beforeClassStartsSubtitle(int minutes) {
+    return 'Get notified $minutes min before';
+  }
 
   @override
   String get dayBeforeReminder => 'Day Before Reminder';
@@ -2778,6 +2812,18 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get retry => 'Retry';
+
+  @override
+  String get noClassesFound => 'No classes found';
+
+  @override
+  String get somethingWentWrong => 'Something went wrong. Please try again.';
+
+  @override
+  String get availabilityUnknown => 'Availability unknown';
+
+  @override
+  String get trainerUnknown => 'Unknown trainer';
 
   @override
   String get locationPermissionTitle => 'Location Access';

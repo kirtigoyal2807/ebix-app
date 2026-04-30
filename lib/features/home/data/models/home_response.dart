@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:pilates_app/core/models/membership_snapshot.dart';
 
 class HomeResponse {
   const HomeResponse({
@@ -42,22 +43,29 @@ class HomeResponse {
 }
 
 class HomeMembership {
-  const HomeMembership({required this.planName, required this.totalSessions});
+  const HomeMembership({
+    required this.planName,
+    required this.totalSessions,
+    this.sessionsRemaining,
+  });
 
   final String? planName;
   final int? totalSessions;
 
-  factory HomeMembership.fromJson(Map<String, dynamic> json) {
-    final sessionPack = _toMapOrNull(json['session_pack']);
+  /// Sessions left when API sends `sessionsRemaining` (session packs).
+  final int? sessionsRemaining;
+
+  factory HomeMembership.fromSnapshot(MembershipSnapshot snap) {
     return HomeMembership(
-      planName:
-          sessionPack?['planName']?.toString() ??
-          json['planName']?.toString() ??
-          json['name']?.toString(),
-      totalSessions: _toIntOrNull(
-        sessionPack?['totalSessions'] ?? json['totalSessions'],
-      ),
+      planName: snap.planName,
+      totalSessions: snap.totalSessions,
+      sessionsRemaining: snap.sessionsRemaining,
     );
+  }
+
+  /// Backward-compatible: same shape as [`parseMembershipField`] for a single row.
+  factory HomeMembership.fromJson(Map<String, dynamic> json) {
+    return HomeMembership.fromSnapshot(MembershipSnapshot.fromJsonMap(json));
   }
 }
 
@@ -140,6 +148,8 @@ class HomeFeaturedClass {
     required this.image,
     required this.spotsLeft,
     required this.inPlan,
+    this.calendarEventId,
+    this.classId,
   });
 
   final String? className;
@@ -149,6 +159,12 @@ class HomeFeaturedClass {
   final String? image;
   final int? spotsLeft;
   final bool? inPlan;
+
+  /// Calendar event UUID from home payload (e.g. the featured slot).
+  final String? calendarEventId;
+
+  /// Class type UUID — required to open ClassDetailView (`GET /classes/{id}`).
+  final String? classId;
 
   factory HomeFeaturedClass.fromJson(Map<String, dynamic> json) {
     final availability = _toMapOrNull(json['availability']);
@@ -161,6 +177,15 @@ class HomeFeaturedClass {
       image: json['image']?.toString(),
       spotsLeft: _toIntOrNull(availability?['spotsLeft']),
       inPlan: flags?['inPlan'] is bool ? flags!['inPlan'] as bool : null,
+      calendarEventId:
+          json['calendarEventId']?.toString() ??
+          json['calendar_event_id']?.toString() ??
+          json['eventId']?.toString() ??
+          json['event_id']?.toString(),
+      classId:
+          json['classId']?.toString() ??
+          json['class_id']?.toString() ??
+          json['id']?.toString(),
     );
   }
 }
@@ -250,16 +275,9 @@ class HomeReceivedGift {
 }
 
 HomeMembership? _coerceMembership(dynamic raw) {
-  final map = _toMapOrNull(raw);
-  if (map != null) {
-    return HomeMembership.fromJson(map);
-  }
-
-  final list = _toList(raw);
-  if (list.isEmpty) {
-    return null;
-  }
-  return HomeMembership.fromJson(list.first);
+  final snap = parseMembershipField(raw);
+  if (snap == null) return null;
+  return HomeMembership.fromSnapshot(snap);
 }
 
 List<HomeFeaturedClass> _coerceFeaturedClasses(dynamic raw) {

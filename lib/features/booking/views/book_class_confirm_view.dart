@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:intl/intl.dart';
 
 import 'package:pilates_app/config/theme/app_spacing.dart';
+import 'package:pilates_app/features/booking/data/models/class_slot_view_model.dart';
 import 'package:pilates_app/widgets/app_app_bar.dart';
 import 'package:pilates_app/widgets/app_shadow.dart';
 import 'package:pilates_app/widgets/app_text.dart';
@@ -14,7 +16,6 @@ import '../../../core/localization/arb/app_localizations.dart';
 import '../../../widgets/app_button.dart';
 import '../cubit/confirm_booking_cubit.dart';
 import '../cubit/confirm_booking_state.dart';
-import '../data/class_booking_preview.dart';
 import '../data/classes_repository.dart';
 import 'booking_success_view.dart';
 
@@ -22,11 +23,29 @@ class BookClassConfirmView extends StatelessWidget {
   const BookClassConfirmView({
     super.key,
     required this.calendarEventId,
-    required this.preview,
+    required this.slot,
   });
 
   final String calendarEventId;
-  final ClassBookingPreview preview;
+  final ClassSlotViewModel slot;
+
+  String get _timeLabel {
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+    final slotDay = DateTime(
+      slot.startAt.year,
+      slot.startAt.month,
+      slot.startAt.day,
+    );
+    final start = DateFormat('h:mm a').format(slot.startAt.toLocal());
+    final end = DateFormat('h:mm a').format(slot.endAt.toLocal());
+    final prefix = slotDay == today
+        ? 'Today'
+        : slotDay == today.add(const Duration(days: 1))
+            ? 'Tomorrow'
+            : DateFormat('EEE, MMM d').format(slot.startAt.toLocal());
+    return '$prefix, $start – $end';
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,32 +76,14 @@ class BookClassConfirmView extends StatelessWidget {
             ),
             const SizedBox(height: AppSpacing.lg),
 
-            _buildPaymentSummary(isDark: isDark, l10n: l10n),
+            _buildPaymentSummary(
+              context: context,
+              isDark: isDark,
+              l10n: l10n,
+            ),
             const SizedBox(height: AppSpacing.lg),
 
             _buildPolicyAgreement(l10n: l10n, isDark: isDark),
-            BlocBuilder<ConfirmBookingCubit, ConfirmBookingState>(
-              buildWhen: (prev, next) => prev.errorMessage != next.errorMessage,
-              builder: (context, state) {
-                final msg = state.errorMessage;
-                if (msg == null || msg.isEmpty) {
-                  return const SizedBox.shrink();
-                }
-                return Padding(
-                  padding: const EdgeInsets.fromLTRB(
-                    AppSpacing.lg,
-                    AppSpacing.md,
-                    AppSpacing.lg,
-                    0,
-                  ),
-                  child: AppText(
-                    msg,
-                    style: (context) => AppTextStyles.bodyTextSmall(context)
-                        .copyWith(color: AppColors.lightRedColor),
-                  ),
-                );
-              },
-            ),
             const Spacer(),
 
             Padding(
@@ -104,17 +105,25 @@ class BookClassConfirmView extends StatelessWidget {
                               );
                               return;
                             }
-                            final ok = await cubit.submitBooking();
+                            final booking = await cubit.submitBooking();
                             if (!context.mounted) return;
-                            if (ok) {
+                            if (booking != null) {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) =>
-                                      const BookingSuccessScreen(
+                                  builder: (context) => BookingSuccessScreen(
                                     successPage: SuccessPage.booking,
+                                    slot: slot,
+                                    booking: booking,
                                   ),
                                 ),
+                              );
+                              return;
+                            }
+                            final errorMessage = cubit.state.errorMessage;
+                            if (errorMessage != null && errorMessage.isNotEmpty) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text(errorMessage)),
                               );
                             }
                           },
@@ -185,25 +194,25 @@ class BookClassConfirmView extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 AppText(
-                  preview.title,
+                  slot.name,
                   style: (context) => AppTextStyles.gelasioMedium(context),
                 ),
                 const SizedBox(height: AppSpacing.lmd),
                 _buildDetailRow(
                   icon: Icons.location_on_outlined,
-                  text: preview.studio,
+                  text: slot.branchName,
                   isDark: isDark,
                 ),
                 const SizedBox(height: AppSpacing.sm),
                 _buildDetailRow(
                   icon: Icons.watch_later_outlined,
-                  text: preview.time,
+                  text: _timeLabel,
                   isDark: isDark,
                 ),
                 const SizedBox(height: AppSpacing.sm),
                 _buildDetailRow(
                   icon: Icons.person_outline,
-                  text: preview.trainerName,
+                  text: slot.trainerName,
                   isDark: isDark,
                 ),
               ],
@@ -220,12 +229,25 @@ class BookClassConfirmView extends StatelessWidget {
                 top: Radius.circular(AppRadius.md),
                 bottom: Radius.circular(AppRadius.md),
               ),
-              child: Image.asset(
-                "assets/images/demo images/yoga.png",
-                height: 72,
-                width: 94,
-                fit: BoxFit.fill,
-              ),
+              child: slot.imageUrl != null && slot.imageUrl!.isNotEmpty
+                  ? Image.network(
+                      slot.imageUrl!,
+                      height: 72,
+                      width: 94,
+                      fit: BoxFit.fill,
+                      errorBuilder: (_, __, ___) => Image.asset(
+                        'assets/images/demo images/yoga.png',
+                        height: 72,
+                        width: 94,
+                        fit: BoxFit.fill,
+                      ),
+                    )
+                  : Image.asset(
+                      'assets/images/demo images/yoga.png',
+                      height: 72,
+                      width: 94,
+                      fit: BoxFit.fill,
+                    ),
             ),
           ),
         ],
@@ -252,9 +274,15 @@ class BookClassConfirmView extends StatelessWidget {
   }
 
   Widget _buildPaymentSummary({
+    required BuildContext context,
     required bool isDark,
     required AppLocalizations l10n,
   }) {
+    final price = slot.basePrice;
+    final priceLabel = price != null
+        ? _formatClassPrice(context, price)
+        : l10n.bookingPriceUnavailable;
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
       child: Column(
@@ -277,7 +305,7 @@ class BookClassConfirmView extends StatelessWidget {
               children: [
                 _buildPaymentRow(
                   title: l10n.classFee,
-                  value: 'Included in plan',
+                  value: priceLabel,
                 ),
                 const SizedBox(height: AppSpacing.md),
                 Divider(
@@ -285,13 +313,26 @@ class BookClassConfirmView extends StatelessWidget {
                   height: 1,
                 ),
                 const SizedBox(height: AppSpacing.md),
-                _buildPaymentRow(title: l10n.total, value: '\$0.00'),
+                _buildPaymentRow(title: l10n.total, value: priceLabel),
               ],
             ),
           ),
         ],
       ),
     );
+  }
+
+  static String _formatClassPrice(BuildContext context, double amount) {
+    final locale = Localizations.localeOf(context).toLanguageTag();
+    try {
+      return NumberFormat.currency(
+        locale: locale,
+        name: 'SAR',
+        decimalDigits: 2,
+      ).format(amount);
+    } catch (_) {
+      return '${amount.toStringAsFixed(2)} SAR';
+    }
   }
 
   Widget _buildPaymentRow({required String title, required String value}) {
