@@ -5,10 +5,12 @@ import 'package:pilates_app/widgets/app_text.dart';
 
 import '../../../../../config/theme/app_spacing.dart';
 
+import 'package:pilates_app/features/auth/data/models/branch.dart';
+
 class BranchSelector extends StatelessWidget {
-  final List<String> branches;
-  final String selectedBranchId;
-  final ValueChanged<String> onSelect;
+  final List<Branch> branches;
+  final int? selectedBranchId;
+  final ValueChanged<int> onSelect;
 
   const BranchSelector({
     super.key,
@@ -26,13 +28,13 @@ class BranchSelector extends StatelessWidget {
         padding: const EdgeInsets.only(left:AppSpacing.lg),
         child: Row(
           children: branches.map((branch) {
-            final isSelected = branch == selectedBranchId;
+            final isSelected = branch.id == selectedBranchId;
             final isDark = Theme.of(context).brightness == Brightness.dark;
 
             return Padding(
               padding: const EdgeInsets.only(right: 8.0),
               child: GestureDetector(
-                onTap: () => onSelect(branch),
+                onTap: () => onSelect(branch.id),
                 child: AnimatedContainer(
                   duration: const Duration(milliseconds: 200),
                   padding: const EdgeInsets.symmetric(
@@ -50,7 +52,7 @@ class BranchSelector extends StatelessWidget {
                     border: Border.all(color: Colors.transparent),
                   ),
                   child: AppText(
-                    branch, // You might want to map branchId to display name
+                    branch.title,
                     style: (style) =>
                         AppTextStyles.bodyTextSmall(context).copyWith(
                           color: isSelected

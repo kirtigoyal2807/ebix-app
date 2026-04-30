@@ -7,6 +7,7 @@ import '../../../core/localization/localization_extension.dart';
 import '../../../widgets/app_text.dart';
 import '../../explore/view/referral_program_view.dart';
 import '../../invoice_history/invoice_history_view.dart';
+import '../../subscription/purchase_subscription/view/subscription_view.dart';
 import '../../view_subscription/view_subscription_view.dart';
 import 'account_info_tile.dart';
 
@@ -49,6 +50,14 @@ class BillingAndSubscription extends StatelessWidget {
               : "assets/images/svg/account/ic_buy_subscription.svg",
           title: context.l10n.buySubscription,
           subtitle: context.l10n.purchaseNewPlan,
+          onTap: () {
+            Navigator.push<void>(
+              context,
+              MaterialPageRoute<void>(
+                builder: (context) => const SubscriptionView(),
+              ),
+            );
+          },
         ),
         SizedBox(height: AppSpacing.lmd),
         AccountInfoTile(
@@ -57,6 +66,15 @@ class BillingAndSubscription extends StatelessWidget {
               : "assets/images/svg/account/ic_gift_subscription.svg",
           title: context.l10n.giftSubscription,
           subtitle: context.l10n.sendGiftToSomeone,
+          onTap: () {
+            Navigator.push<void>(
+              context,
+              MaterialPageRoute<void>(
+                builder: (context) =>
+                    const SubscriptionView(initialIsGift: true),
+              ),
+            );
+          },
         ),
         SizedBox(height: AppSpacing.lmd),
         AccountInfoTile(

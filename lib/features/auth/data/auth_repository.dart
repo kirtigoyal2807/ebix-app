@@ -22,7 +22,7 @@ class AuthRepository extends BaseRepository {
     required String password,
   }) {
     return post<LoginEmailResult>(
-      '/auth/login',
+      'auth/login',
       data: {
         'email': email.trim(),
         'password': password,
@@ -35,7 +35,7 @@ class AuthRepository extends BaseRepository {
   /// Phone OTP trigger: `phone` only. Success when envelope `success: true`.
   Future<ApiResult<bool>> requestPhoneLoginOtp({required String phone}) {
     return post<bool>(
-      '/auth/login',
+      'auth/login',
       data: {'phone': phone},
       fromJson: (_) => true,
     );
@@ -44,7 +44,7 @@ class AuthRepository extends BaseRepository {
   /// Resend phone OTP (sign-up or sign-in flow). Body: [phone] only.
   Future<ApiResult<bool>> sendPhoneOtp({required String phone}) {
     return post<bool>(
-      '/auth/phone/send',
+      'auth/phone/send',
       data: {'phone': phone.trim()},
       fromJson: (_) => true,
     );
@@ -56,7 +56,7 @@ class AuthRepository extends BaseRepository {
     required String code,
   }) {
     return post<LoginEmailResult>(
-      '/auth/phone/verify',
+      'auth/phone/verify',
       data: {
         'phone': phone.trim(),
         'code': code.trim(),
@@ -97,7 +97,7 @@ class AuthRepository extends BaseRepository {
     }
 
     return post<bool>(
-      '/auth/register',
+      'auth/register',
       data: data,
       fromJson: (_) => true,
     );
@@ -106,7 +106,7 @@ class AuthRepository extends BaseRepository {
   /// Step 1 — sends 6-digit code to email.
   Future<ApiResult<bool>> requestPasswordForgot({required String email}) {
     return post<bool>(
-      '/auth/password/forgot',
+      'auth/password/forgot',
       data: {'email': email.trim()},
       fromJson: (_) => true,
     );
@@ -117,7 +117,7 @@ class AuthRepository extends BaseRepository {
   /// Debug backends may accept verification code `000000`.
   Future<ApiResult<bool>> sendEmailVerification({required String email}) {
     return post<bool>(
-      '/auth/email/send',
+      'auth/email/send',
       data: {'email': email.trim()},
       fromJson: (_) => true,
     );
@@ -131,7 +131,7 @@ class AuthRepository extends BaseRepository {
     required String code,
   }) {
     return post<bool>(
-      '/auth/email/verify',
+      'auth/email/verify',
       data: {
         'email': email.trim(),
         'code': code,
@@ -146,7 +146,7 @@ class AuthRepository extends BaseRepository {
     required String password,
   }) {
     return post<bool>(
-      '/auth/password/reset',
+      'auth/password/reset',
       data: {
         'email': email.trim(),
         'password': password,
@@ -161,7 +161,7 @@ class AuthRepository extends BaseRepository {
   }) async {
     try {
       final response = await httpClient.get<dynamic>(
-        '/branches',
+        'branches',
         queryParameters: queryParameters,
       );
       final code = response.statusCode;
@@ -230,10 +230,13 @@ class AuthRepository extends BaseRepository {
   static List<Branch> _parseBranchesList(dynamic payload) {
     final list = _coerceList(payload);
     if (list == null) return [];
-    return list.map((e) {
-      final map = Map<String, dynamic>.from(e as Map);
-      return Branch.fromJson(map);
-    }).toList();
+    return list
+        .map((e) {
+          final map = Map<String, dynamic>.from(e as Map);
+          return Branch.fromJson(map);
+        })
+        .where((b) => b.isActive)
+        .toList();
   }
 
   static List<dynamic>? _coerceList(dynamic payload) {
@@ -248,7 +251,7 @@ class AuthRepository extends BaseRepository {
   /// Saved preferred branch — JWT customer.
   Future<ApiResult<bool>> setHomeBranch({required int homeBranchId}) {
     return post<bool>(
-      '/auth/home-branch',
+      'auth/home-branch',
       data: {'homeBranchId': homeBranchId},
       fromJson: (_) => true,
     );
@@ -257,7 +260,7 @@ class AuthRepository extends BaseRepository {
   /// Invalidate server session — requires JWT (Bearer via [DioClient]).
   Future<ApiResult<bool>> logout() {
     return post<bool>(
-      '/auth/logout',
+      'auth/logout',
       fromJson: (_) => true,
     );
   }
@@ -277,7 +280,7 @@ class AuthRepository extends BaseRepository {
     required int monthlyGoal,
   }) {
     return post<bool>(
-      '/auth/goal',
+      'auth/goal',
       data: {
         'experience': experience,
         'goal': goal,

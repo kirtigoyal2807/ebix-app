@@ -6,6 +6,7 @@ import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/core/localization/arb/app_localizations.dart';
 import 'package:pilates_app/core/localization/localization_extension.dart';
 import 'package:pilates_app/features/subscription/purchase_subscription/cubit/subscription_cubit.dart';
+import 'package:pilates_app/features/subscription/purchase_subscription/view/widgets/api_health_questionnaire_blocks.dart';
 import 'package:pilates_app/features/subscription/purchase_subscription/view/widgets/subscription_header.dart';
 import 'package:pilates_app/features/subscription/purchase_subscription/view/widgets/subscription_progress.dart';
 import 'package:pilates_app/widgets/app_button.dart';
@@ -20,6 +21,10 @@ class GoalsView extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
     final cubit = context.read<SubscriptionCubit>();
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final hasApiGoals = pickQuestionsByIds(
+      cubit.state.healthQuestionnaireQuestions,
+      const [HealthQuestionnaireIds.goals],
+    ).isNotEmpty;
 
     return Padding(
       padding: const EdgeInsets.symmetric(
@@ -49,25 +54,26 @@ class GoalsView extends StatelessWidget {
                   ),
                   const SizedBox(height: AppSpacing.lg),
 
-                  // Question
-                  _buildSectionHeader(context, l10n.whatIsYourGoal),
-
-                  // const SizedBox(height: AppSpacing.md),
-
-                  // Text Area for Goals
-                  Stack(
-                    children: [
-                      AppTextField(
-                        hint: l10n.enterYourGoals,
-                        label: '',
-                        maxLength: 200,
-
-                        // onChanged: (val) => cubit.updateGoals(val),
-                        maxLines: 8,
-                        // label: '',
-                      ),
-                    ],
-                  ),
+                  if (hasApiGoals)
+                    const ApiGoalsQuestionBlock()
+                  else
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _buildSectionHeader(context, l10n.whatIsYourGoal),
+                        Stack(
+                          children: [
+                            AppTextField(
+                              hint: l10n.enterYourGoals,
+                              label: '',
+                              maxLength: 200,
+                              onChanged: (val) => cubit.updateGoals(val),
+                              maxLines: 8,
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   // const SizedBox(height: 8),
                   //  Align(
                   //   alignment: Alignment.centerRight,
@@ -84,7 +90,20 @@ class GoalsView extends StatelessWidget {
           ),
           AppButton(
             label: l10n.continueTxt,
-            onPressed: () => cubit.nextStep(),
+            onPressed: () {
+              final goalQs = pickQuestionsByIds(
+                cubit.state.healthQuestionnaireQuestions,
+                const [HealthQuestionnaireIds.goals],
+              );
+              if (goalQs.isNotEmpty &&
+                  !cubit.validateQuestionnaireGroup(goalQs)) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text(l10n.giftRecipientValidationError)),
+                );
+                return;
+              }
+              cubit.nextStep();
+            },
             buttonColor: isDark ? AppColors.primary : AppColors.primaryBrown,
             expanded: true,
           ),

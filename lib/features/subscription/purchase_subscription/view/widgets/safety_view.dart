@@ -9,8 +9,34 @@ import 'package:pilates_app/widgets/app_button.dart';
 import 'package:pilates_app/widgets/app_text.dart';
 import 'package:pilates_app/widgets/app_text_field.dart';
 
-class SafetyView extends StatelessWidget {
+class SafetyView extends StatefulWidget {
   const SafetyView({super.key});
+
+  @override
+  State<SafetyView> createState() => _SafetyViewState();
+}
+
+class _SafetyViewState extends State<SafetyView> {
+  late final TextEditingController _nameController;
+  late final TextEditingController _signatureController;
+  late final TextEditingController _dateController;
+
+  @override
+  void initState() {
+    super.initState();
+    final s = context.read<SubscriptionCubit>().state;
+    _nameController = TextEditingController(text: s.declarationName);
+    _signatureController = TextEditingController(text: s.declarationSignature);
+    _dateController = TextEditingController(text: s.declarationDate);
+  }
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _signatureController.dispose();
+    _dateController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -129,11 +155,11 @@ class SafetyView extends StatelessWidget {
                   ),
                   const SizedBox(height: AppSpacing.lg),
 
-                  // Name Field
                   AppTextField(
-                    label: l10n.name, // "Name" from screenshot
-                    hint: l10n.name, // Placeholder
-                    // onChanged: (val) => cubit.updateDeclarationName(val),
+                    label: l10n.name,
+                    hint: l10n.name,
+                    controller: _nameController,
+                    onChanged: cubit.updateDeclarationName,
                   ),
                   const SizedBox(height: AppSpacing.md),
 
@@ -141,7 +167,8 @@ class SafetyView extends StatelessWidget {
                   AppTextField(
                     label: l10n.signature,
                     hint: l10n.signature,
-                    // onChanged: (val) => cubit.updateDeclarationSignature(val),
+                    controller: _signatureController,
+                    onChanged: cubit.updateDeclarationSignature,
                   ),
                   const SizedBox(height: AppSpacing.md),
 
@@ -149,8 +176,8 @@ class SafetyView extends StatelessWidget {
                   AppTextField(
                     label: l10n.date,
                     hint: l10n.date,
-                    // onChanged: (val) => cubit.updateDeclarationDate(val),
-                    // Ideally would act as date picker
+                    controller: _dateController,
+                    onChanged: cubit.updateDeclarationDate,
                   ),
                   const SizedBox(height: AppSpacing.lg),
                 ],

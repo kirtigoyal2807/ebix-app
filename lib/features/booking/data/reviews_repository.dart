@@ -28,7 +28,7 @@ class ReviewsRepository extends BaseRepository {
         'per_page': perPage.clamp(1, 100),
       };
 
-      final response = await httpClient.get<dynamic>('/reviews', queryParameters: query);
+      final response = await httpClient.get<dynamic>('reviews', queryParameters: query);
       final code = response.statusCode;
       if (code == null) {
         return ApiFailure(
@@ -154,7 +154,7 @@ class ReviewsRepository extends BaseRepository {
       data['calendarEventId'] = eventId;
     }
     return post<bool>(
-      '/reviews',
+      'reviews',
       data: data,
       fromJson: (_) => true,
     );

@@ -2540,6 +2540,18 @@ abstract class AppLocalizations {
   /// **'Existing Plan'**
   String get existingPlan;
 
+  /// No description provided for @subscriptionEnded.
+  ///
+  /// In en, this message translates to:
+  /// **'Ended'**
+  String get subscriptionEnded;
+
+  /// No description provided for @subscriptionTransferable.
+  ///
+  /// In en, this message translates to:
+  /// **'Transferable'**
+  String get subscriptionTransferable;
+
   /// No description provided for @noInvoicesYet.
   ///
   /// In en, this message translates to:
@@ -2984,6 +2996,12 @@ abstract class AppLocalizations {
   /// **'Apply'**
   String get apply;
 
+  /// No description provided for @voucherAppliedSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Voucher applied successfully.'**
+  String get voucherAppliedSuccess;
+
   /// No description provided for @acceptedPaymentMethods.
   ///
   /// In en, this message translates to:
@@ -3109,6 +3127,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Recipient Phone Number (Optional)'**
   String get recipientPhoneOptional;
+
+  /// No description provided for @giftRecipientValidationError.
+  ///
+  /// In en, this message translates to:
+  /// **'Please fill in all required recipient details.'**
+  String get giftRecipientValidationError;
+
+  /// No description provided for @giftCheckoutSessionRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Gift delivery needs an active checkout session. Continue from checkout after creating a cart, or pass the session id into this screen.'**
+  String get giftCheckoutSessionRequired;
+
+  /// No description provided for @giftCheckoutNotGiftSession.
+  ///
+  /// In en, this message translates to:
+  /// **'This checkout is not a gift cart. Create the session with checkout/start using \"isGift\": true, then call add gift details with that checkout id.'**
+  String get giftCheckoutNotGiftSession;
+
+  /// No description provided for @checkoutPaymentAlreadyCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment for this checkout is already completed. Continuing.'**
+  String get checkoutPaymentAlreadyCompleted;
+
+  /// No description provided for @pleaseSelectPlan.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select a plan.'**
+  String get pleaseSelectPlan;
+
+  /// No description provided for @giftValidationRecipientName.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the recipient\'s name (at least 2 characters).'**
+  String get giftValidationRecipientName;
+
+  /// No description provided for @giftValidationRecipientEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the recipient\'s email address.'**
+  String get giftValidationRecipientEmail;
+
+  /// No description provided for @giftValidationRecipientPhone.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid phone number or leave this field blank.'**
+  String get giftValidationRecipientPhone;
+
+  /// No description provided for @giftValidationScheduleDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick a delivery date or choose instant delivery.'**
+  String get giftValidationScheduleDate;
 
   /// No description provided for @phoneHint.
   ///
@@ -3241,6 +3313,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'View your badges'**
   String get achievementsSubtitle;
+
+  /// No description provided for @loyaltyRewardRulesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Reward rules'**
+  String get loyaltyRewardRulesTitle;
 
   /// No description provided for @redeemGiftCard.
   ///

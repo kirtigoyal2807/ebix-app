@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 import 'package:pilates_app/config/theme/app_colors.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/core/localization/arb/app_localizations.dart';
+import 'package:pilates_app/features/auth/cubit/auth_cubit.dart';
+import 'package:pilates_app/features/auth/data/models/branch.dart';
+import 'package:pilates_app/features/checkout/data/checkout_repository.dart';
+import 'package:pilates_app/features/checkout/data/models/catalog_product.dart';
 import 'package:pilates_app/features/subscription/purchase_subscription/cubit/subscription_cubit.dart';
+import 'package:pilates_app/features/subscription/purchase_subscription/subscription_api_ids.dart';
 import 'package:pilates_app/features/subscription/purchase_subscription/view/review_screen_view.dart';
 import 'package:pilates_app/features/subscription/purchase_subscription/view/widgets/branch_selector.dart';
 import 'package:pilates_app/features/subscription/purchase_subscription/view/widgets/gift_toggle_card.dart';
@@ -27,14 +31,19 @@ import 'package:pilates_app/widgets/app_text.dart';
 import '../../subscription_as_gift/gift_subscription_view.dart';
 
 class SubscriptionView extends StatelessWidget {
-  const SubscriptionView({super.key});
+  const SubscriptionView({super.key, this.initialIsGift = false});
+
+  /// When `true` (e.g. Account → Gift Subscription), [SubscriptionState.isGift]
+  /// starts on so `POST checkout/start` uses `isGift: true` and the flow can open
+  /// [GiftSubscriptionView] with a real session id.
+  final bool initialIsGift;
 
   static const String routePath = '/subscription';
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => SubscriptionCubit(),
+      create: (context) => SubscriptionCubit(initialIsGift: initialIsGift),
       child: const _SubscriptionViewContent(),
     );
   }
@@ -108,23 +117,134 @@ class _SubscriptionViewContent extends StatelessWidget {
   }
 }
 
-class _PlanSelectionStep extends StatelessWidget {
+class _PlanSelectionStep extends StatefulWidget {
   const _PlanSelectionStep();
 
   @override
-  Widget build(BuildContext context) {
-    final cubit = context.read<SubscriptionCubit>();
-    final l10n = AppLocalizations.of(context)!;
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+  State<_PlanSelectionStep> createState() => _PlanSelectionStepState();
+}
 
-    // Plans data (unchanged)
-    final List<Map<String, dynamic>> plans = [
+class _PlanSelectionStepState extends State<_PlanSelectionStep> {
+  List<Branch> _branches = const [];
+  bool _branchesLoading = true;
+  bool _branchesLoadFailed = false;
+
+  List<CatalogProduct> _catalogProducts = const [];
+  bool _productsLoading = true;
+  bool _productsLoadFailed = false;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) => _loadBranchesAndProducts());
+  }
+
+  Future<void> _loadBranchesAndProducts() async {
+    if (!mounted) return;
+    setState(() {
+      _branchesLoading = true;
+      _branchesLoadFailed = false;
+      _productsLoading = true;
+      _productsLoadFailed = false;
+    });
+
+    final auth = context.read<AuthCubit>().authRepository;
+    final checkout = context.read<CheckoutRepository>();
+
+    final cubit = context.read<SubscriptionCubit>();
+    final branchResult = await auth.listBranches();
+
+    if (!mounted) return;
+
+    branchResult.when(
+      success: (data, _) {
+        _branches = data.branches;
+        _branchesLoadFailed = false;
+      },
+      failure: (_) {
+        _branches = const [];
+        _branchesLoadFailed = true;
+      },
+    );
+
+    setState(() {
+      _branchesLoading = false;
+    });
+
+    if (!mounted) return;
+
+    if (!_branchesLoadFailed && _branches.isNotEmpty) {
+      final bid = cubit.state.selectedBranchId;
+      if (bid == null || bid <= 0) {
+        cubit.selectBranch(_branches.first.id);
+      }
+    }
+
+    final branchIdForProducts = cubit.state.selectedBranchId;
+    final productResult = await checkout.listProducts(
+      branchId: (branchIdForProducts != null && branchIdForProducts > 0)
+          ? branchIdForProducts
+          : null,
+    );
+
+    if (!mounted) return;
+
+    productResult.when(
+      success: (data, _) {
+        _catalogProducts = data;
+        _productsLoadFailed = false;
+      },
+      failure: (_) {
+        _catalogProducts = const [];
+        _productsLoadFailed = true;
+      },
+    );
+
+    setState(() {
+      _productsLoading = false;
+    });
+
+    if (!mounted) return;
+    final l10n = AppLocalizations.of(context)!;
+    _syncSelectedPlan(_resolvedPlans(l10n));
+  }
+
+  Future<void> _reloadCatalogForBranch(int branchId) async {
+    if (!mounted) return;
+    setState(() {
+      _productsLoading = true;
+      _productsLoadFailed = false;
+    });
+    final checkout = context.read<CheckoutRepository>();
+    final productResult = await checkout.listProducts(branchId: branchId);
+    if (!mounted) return;
+    productResult.when(
+      success: (data, _) {
+        _catalogProducts = data;
+        _productsLoadFailed = false;
+      },
+      failure: (_) {
+        _catalogProducts = const [];
+        _productsLoadFailed = true;
+      },
+    );
+    setState(() {
+      _productsLoading = false;
+    });
+    if (!mounted) return;
+    final l10n = AppLocalizations.of(context)!;
+    _syncSelectedPlan(_resolvedPlans(l10n));
+  }
+
+  List<Map<String, dynamic>> _staticPlans(AppLocalizations l10n) {
+    return [
       {
         'id': 'premium',
         'title': l10n.premiumPlanTitle,
         'price': '89',
         'badge': l10n.mostPopular,
         'isPopular': true,
+        'requiresHealthIntake': true,
         'features': [
           l10n.feature12Classes,
           l10n.featureDowntownUptown,
@@ -138,6 +258,7 @@ class _PlanSelectionStep extends StatelessWidget {
         'price': '49',
         'badge': null,
         'isPopular': false,
+        'requiresHealthIntake': true,
         'features': [
           l10n.feature8Classes,
           l10n.featureDowntownOnly,
@@ -149,6 +270,8 @@ class _PlanSelectionStep extends StatelessWidget {
         'title': l10n.unlimitedPlanTitle,
         'price': '149',
         'badge': null,
+        'isPopular': false,
+        'requiresHealthIntake': true,
         'features': [
           l10n.featureUnlimitedClasses,
           l10n.featureAllStudios,
@@ -157,6 +280,38 @@ class _PlanSelectionStep extends StatelessWidget {
         ],
       },
     ];
+  }
+
+  List<Map<String, dynamic>> _resolvedPlans(AppLocalizations l10n) {
+    if (_catalogProducts.isNotEmpty) {
+      return _catalogProducts.map((p) => p.toPlanMap(l10n)).toList();
+    }
+    return _staticPlans(l10n);
+  }
+
+  void _syncSelectedPlan(List<Map<String, dynamic>> plans) {
+    if (!mounted || plans.isEmpty) return;
+    final cubit = context.read<SubscriptionCubit>();
+    final selected = cubit.state.selectedPlanId;
+    final Map<String, dynamic> effectivePlan;
+    if (!plans.any((p) => p['id'] == selected)) {
+      effectivePlan = plans.first;
+    } else {
+      effectivePlan = plans.firstWhere((p) => p['id'] == selected)
+          as Map<String, dynamic>;
+    }
+    final req = effectivePlan['requiresHealthIntake'] as bool? ?? true;
+    cubit.selectPlan(effectivePlan['id'] as String, requiresHealthIntake: req);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final cubit = context.read<SubscriptionCubit>();
+    final l10n = AppLocalizations.of(context)!;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    final plans = _resolvedPlans(l10n);
+    final showPlansLoading = _productsLoading && _catalogProducts.isEmpty;
 
     return Column(
       children: [
@@ -207,63 +362,152 @@ class _PlanSelectionStep extends StatelessWidget {
                 ),
                 const SizedBox(height: AppSpacing.md),
 
-                // Branch Selector
-                BlocBuilder<SubscriptionCubit, SubscriptionState>(
-                  buildWhen: (p, c) => p.selectedBranchId != c.selectedBranchId,
-                  builder: (context, state) {
-                    return BranchSelector(
-                      branches: const [
-                        'Branch A',
-                        'Branch B',
-                        'Branch C',
-                        'Branch D',
-                      ],
-                      selectedBranchId: state.selectedBranchId,
-                      onSelect: (branchId) => cubit.selectBranch(branchId),
-                    );
-                  },
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: AppSpacing.lg,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      AppText(
+                        l10n.select_branch,
+                        style: (context) => AppTextStyles.bodyTextSmall(
+                          context,
+                        ).copyWith(fontWeight: FontWeight.w600),
+                      ),
+                      const SizedBox(height: AppSpacing.sm),
+                      if (_branchesLoading)
+                        const Padding(
+                          padding: EdgeInsets.symmetric(vertical: AppSpacing.md),
+                          child: Center(
+                            child: SizedBox(
+                              width: 28,
+                              height: 28,
+                              child: CircularProgressIndicator(strokeWidth: 2),
+                            ),
+                          ),
+                        )
+                      else if (_branchesLoadFailed)
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            AppText(
+                              l10n.branchesCouldNotLoad,
+                              style: (context) =>
+                                  AppTextStyles.captionText(context),
+                            ),
+                            TextButton(
+                              onPressed: _loadBranchesAndProducts,
+                              child: Text(l10n.retry),
+                            ),
+                          ],
+                        )
+                      else if (_branches.isEmpty)
+                        AppText(
+                          l10n.noBranchesAvailable,
+                          style: (context) =>
+                              AppTextStyles.captionText(context),
+                        )
+                      else
+                        BlocBuilder<SubscriptionCubit, SubscriptionState>(
+                          buildWhen: (p, c) =>
+                              p.selectedBranchId != c.selectedBranchId,
+                          builder: (context, state) {
+                            return BranchSelector(
+                              branches: _branches,
+                              selectedBranchId: state.selectedBranchId,
+                              onSelect: (branchId) {
+                                cubit.selectBranch(branchId);
+                                _reloadCatalogForBranch(branchId);
+                              },
+                            );
+                          },
+                        ),
+                    ],
+                  ),
                 ),
                 const SizedBox(height: AppSpacing.md),
 
-                // Plans List
-                BlocBuilder<SubscriptionCubit, SubscriptionState>(
-                  buildWhen: (p, c) => p.selectedPlanId != c.selectedPlanId,
-                  builder: (context, state) {
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: AppSpacing.lg,
+                if (_productsLoadFailed && _catalogProducts.isEmpty)
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: AppSpacing.lg,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        AppText(
+                          l10n.loginErrorGeneric,
+                          style: (context) =>
+                              AppTextStyles.captionText(context),
+                        ),
+                        TextButton(
+                          onPressed: _loadBranchesAndProducts,
+                          child: Text(l10n.retry),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                // Plans List (`GET /products` when available, else static fallback)
+                if (showPlansLoading)
+                  const Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: AppSpacing.lg,
+                      vertical: AppSpacing.lg,
+                    ),
+                    child: Center(
+                      child: SizedBox(
+                        width: 28,
+                        height: 28,
+                        child: CircularProgressIndicator(strokeWidth: 2),
                       ),
-                      child: Column(
-                        children: plans.map((plan) {
-                          return PlanCard(
-                            id: plan['id'],
-                            title: plan['title'],
-                            price: plan['price'],
-                            isSelected: state.selectedPlanId == plan['id'],
-                            isPopular: plan['isPopular'] ?? false,
-                            badgeText: plan['badge'],
-                            onTap: () {
-                              cubit.selectPlan(plan['id']);
-                              showModalBottomSheet(
-                                context: context,
-                                isScrollControlled: true,
-                                backgroundColor: Colors.transparent,
-                                barrierColor: AppColors.bottomSheetShadow,
-                                builder: (context) => PlanDetailsModal(
-                                  plan: plan,
-                                  onSubscribe: () {
-                                    Navigator.pop(context);
-                                    cubit.nextStep();
-                                  },
-                                ),
-                              );
-                            },
-                          );
-                        }).toList(),
-                      ),
-                    );
-                  },
-                ),
+                    ),
+                  )
+                else
+                  BlocBuilder<SubscriptionCubit, SubscriptionState>(
+                    // Rebuild when branch changes catalog in parent [setState], not only when plan id changes.
+                    builder: (context, state) {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: AppSpacing.lg,
+                        ),
+                        child: Column(
+                          children: plans.map((plan) {
+                            return PlanCard(
+                              id: plan['id'] as String,
+                              title: plan['title'] as String,
+                              price: plan['price'] as String,
+                              isSelected: state.selectedPlanId == plan['id'],
+                              isPopular: plan['isPopular'] as bool? ?? false,
+                              badgeText: plan['badge'] as String?,
+                              onTap: () {
+                                cubit.selectPlan(
+                                  plan['id'] as String,
+                                  requiresHealthIntake:
+                                      plan['requiresHealthIntake'] as bool? ??
+                                          true,
+                                );
+                                showModalBottomSheet(
+                                  context: context,
+                                  isScrollControlled: true,
+                                  backgroundColor: Colors.transparent,
+                                  barrierColor: AppColors.bottomSheetShadow,
+                                  builder: (context) => PlanDetailsModal(
+                                    plan: plan,
+                                    onSubscribe: () {
+                                      Navigator.pop(context);
+                                      cubit.nextStep();
+                                    },
+                                  ),
+                                );
+                              },
+                            );
+                          }).toList(),
+                        ),
+                      );
+                    },
+                  ),
               ],
             ),
           ),
@@ -274,17 +518,88 @@ class _PlanSelectionStep extends StatelessWidget {
           padding: const EdgeInsets.all(24),
           child: AppButton(
             label: l10n.continueTxt,
-            onPressed: () {
-              if (cubit.state.isGift == true) {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const GiftSubscriptionView(),
-                  ),
+            onPressed: () async {
+              final messenger = ScaffoldMessenger.of(context);
+              final state = cubit.state;
+
+              if (state.selectedPlanId.trim().isEmpty) {
+                messenger.showSnackBar(
+                  SnackBar(content: Text(l10n.pleaseSelectPlan)),
                 );
-              } else {
-                cubit.nextStep();
+                return;
               }
+              if (state.selectedBranchId == null || state.selectedBranchId! <= 0) {
+                messenger.showSnackBar(
+                  SnackBar(content: Text(l10n.pleaseSelectBranch)),
+                );
+                return;
+              }
+
+              final productId = subscriptionProductApiId(state.selectedPlanId);
+              final branchId = state.selectedBranchId!;
+              if (productId <= 0) {
+                messenger.showSnackBar(
+                  SnackBar(content: Text(l10n.loginErrorGeneric)),
+                );
+                return;
+              }
+
+              final repo = context.read<CheckoutRepository>();
+
+              showDialog<void>(
+                context: context,
+                barrierDismissible: false,
+                builder: (dialogContext) => const Center(
+                  child: CircularProgressIndicator(),
+                ),
+              );
+
+              final result = await repo.startCheckout(
+                productId: productId,
+                branchId: branchId,
+                isGift: state.isGift,
+              );
+
+              if (context.mounted) {
+                Navigator.of(context, rootNavigator: true).pop();
+              }
+
+              if (!context.mounted) return;
+
+              result.when(
+                success: (data, _) {
+                  final resolvedProductId = data.resolvedProductId ?? productId;
+                  cubit.bindCheckoutSession(
+                    sessionId: data.id,
+                    productId: resolvedProductId,
+                    requiresHealthIntake: data.requiresHealthIntake,
+                  );
+                  if (state.isGift) {
+                    Navigator.push<void>(
+                      context,
+                      MaterialPageRoute<void>(
+                        builder: (context) => BlocProvider.value(
+                          value: cubit,
+                          child: GiftSubscriptionView(checkoutId: data.id),
+                        ),
+                      ),
+                    );
+                  } else {
+                    cubit.nextStep();
+                  }
+                },
+                failure: (e) {
+                  messenger.showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        (e.message != null && e.message!.trim().isNotEmpty)
+                            ? e.message!
+                            : l10n.loginErrorGeneric,
+                      ),
+                    ),
+                  );
+                },
+              );
             },
             buttonColor: isDark ? AppColors.primary : AppColors.primaryBrown,
             expanded: true,

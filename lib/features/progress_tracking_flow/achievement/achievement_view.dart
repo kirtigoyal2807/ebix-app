@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pilates_app/config/theme/app_colors.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/core/localization/localization_extension.dart';
+import 'package:pilates_app/features/loyalty/data/models/loyalty_achievement_rule.dart';
 import 'package:pilates_app/features/loyalty/data/models/loyalty_badge.dart';
 import 'package:pilates_app/features/progress_tracking_flow/achievement/cubit/loyalty_achievements_cubit.dart';
 import 'package:pilates_app/features/progress_tracking_flow/achievement/cubit/loyalty_achievements_state.dart';
@@ -47,7 +48,7 @@ class AchievementView extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   AppText(
-                    state.errorMessage ?? context.l10n.retry,
+                    state.errorMessage ?? context.l10n.loginErrorGeneric,
                     textAlign: TextAlign.center,
                     style: (context) => AppTextStyles.bodyText(context),
                   ),
@@ -65,7 +66,8 @@ class AchievementView extends StatelessWidget {
         }
 
         final data = state.data;
-        final badges = data == null ? <LoyaltyBadge>[] : _sortedBadges(data.badges);
+        final badges =
+            data == null ? <LoyaltyBadge>[] : _sortedBadges(data.badges);
         final total = badges.length;
         final earned = data?.earnedBadgeCount ?? 0;
         final progress = total > 0 ? earned / total : 0.0;
@@ -88,9 +90,9 @@ class AchievementView extends StatelessWidget {
               SizedBox(height: AppSpacing.base),
               AchievementCard(
                 content: context.l10n.achievement_content,
-                earnedBadgeCount: total > 0 ? earned : null,
-                totalBadges: total > 0 ? total : null,
-                progress: total > 0 ? progress : null,
+                earnedBadgeCount: data != null ? earned : null,
+                totalBadges: data != null ? total : null,
+                progress: data != null && total > 0 ? progress : null,
               ),
               SizedBox(height: AppSpacing.lg),
               if (preview.isEmpty)
@@ -107,6 +109,7 @@ class AchievementView extends StatelessWidget {
                     padding: EdgeInsets.only(bottom: AppSpacing.md),
                     child: _BadgeRowCard(
                       badge: b,
+                      rule: data?.ruleMatchingBadge(b),
                       isDark: isDark,
                     ),
                   ),
@@ -139,14 +142,17 @@ class AchievementView extends StatelessWidget {
 class _BadgeRowCard extends StatelessWidget {
   const _BadgeRowCard({
     required this.badge,
+    this.rule,
     required this.isDark,
   });
 
   final LoyaltyBadge badge;
+  final LoyaltyAchievementRule? rule;
   final bool isDark;
 
   @override
   Widget build(BuildContext context) {
+    final matchedRule = rule;
     final subtitle = badge.description?.trim().isNotEmpty == true
         ? badge.description!.trim()
         : badge.badgeType;
@@ -186,6 +192,17 @@ class _BadgeRowCard extends StatelessWidget {
                   style: (context) =>
                       AppTextStyles.bodyText(context).copyWith(height: 1),
                 ),
+                if (matchedRule != null && matchedRule.rewardPoints > 0) ...[
+                  SizedBox(height: AppSpacing.xs),
+                  AppText(
+                    context.l10n.points_short(matchedRule.rewardPoints),
+                    style: (context) =>
+                        AppTextStyles.captionText(context).copyWith(
+                      color: AppColors.languageIcon,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ],
               ],
             ),
           ),

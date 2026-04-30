@@ -13,7 +13,7 @@ class ProgressRepository extends BaseRepository {
   /// 15.1 Overview — month-to-date stats and streaks.
   Future<ApiResult<ProgressOverview>> getOverview() {
     return get<ProgressOverview>(
-      '/progress/overview',
+      'progress/overview',
       fromJson: (json) =>
           ProgressOverview.fromJson(json as Map<String, dynamic>),
     );
@@ -27,7 +27,7 @@ class ProgressRepository extends BaseRepository {
   }) {
     final safePerPage = perPage.clamp(1, 100);
     return get<SessionHistoryPageResult>(
-      '/progress/session-history',
+      'progress/session-history',
       queryParameters: {
         'filter': filter,
         'page': page,
@@ -41,7 +41,7 @@ class ProgressRepository extends BaseRepository {
   /// 15.3 Weekly activity — Mon–Sun minutes and session counts.
   Future<ApiResult<WeeklyActivityResult>> getWeeklyActivity() {
     return get<WeeklyActivityResult>(
-      '/progress/weekly-activity',
+      'progress/weekly-activity',
       fromJson: (json) =>
           WeeklyActivityResult.fromJson(json as Map<String, dynamic>),
     );
@@ -50,7 +50,7 @@ class ProgressRepository extends BaseRepository {
   /// 15.4 Current training goal settings.
   Future<ApiResult<ProgressGoalSettings>> getGoal() {
     return get<ProgressGoalSettings>(
-      '/progress/goal',
+      'progress/goal',
       fromJson: (json) =>
           ProgressGoalSettings.fromJson(json as Map<String, dynamic>),
     );
@@ -73,7 +73,7 @@ class ProgressRepository extends BaseRepository {
       body['goal'] = goal;
     }
     return put<bool>(
-      '/progress/goal',
+      'progress/goal',
       data: body,
       fromJson: (_) => true,
     );

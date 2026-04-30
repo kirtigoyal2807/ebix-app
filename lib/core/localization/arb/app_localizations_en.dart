@@ -1317,6 +1317,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get existingPlan => 'Existing Plan';
 
   @override
+  String get subscriptionEnded => 'Ended';
+
+  @override
+  String get subscriptionTransferable => 'Transferable';
+
+  @override
   String get noInvoicesYet => 'No invoices yet';
 
   @override
@@ -1550,6 +1556,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get apply => 'Apply';
 
   @override
+  String get voucherAppliedSuccess => 'Voucher applied successfully.';
+
+  @override
   String get acceptedPaymentMethods => 'Accepted methods of payment';
 
   @override
@@ -1613,6 +1622,41 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get recipientPhoneOptional => 'Recipient Phone Number (Optional)';
+
+  @override
+  String get giftRecipientValidationError =>
+      'Please fill in all required recipient details.';
+
+  @override
+  String get giftCheckoutSessionRequired =>
+      'Gift delivery needs an active checkout session. Continue from checkout after creating a cart, or pass the session id into this screen.';
+
+  @override
+  String get giftCheckoutNotGiftSession =>
+      'This checkout is not a gift cart. Create the session with checkout/start using \"isGift\": true, then call add gift details with that checkout id.';
+
+  @override
+  String get checkoutPaymentAlreadyCompleted =>
+      'Payment for this checkout is already completed. Continuing.';
+
+  @override
+  String get pleaseSelectPlan => 'Please select a plan.';
+
+  @override
+  String get giftValidationRecipientName =>
+      'Enter the recipient\'s name (at least 2 characters).';
+
+  @override
+  String get giftValidationRecipientEmail =>
+      'Enter the recipient\'s email address.';
+
+  @override
+  String get giftValidationRecipientPhone =>
+      'Enter a valid phone number or leave this field blank.';
+
+  @override
+  String get giftValidationScheduleDate =>
+      'Pick a delivery date or choose instant delivery.';
 
   @override
   String get phoneHint => 'XXXXXXXXXXX';
@@ -1680,6 +1724,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get achievementsSubtitle => 'View your badges';
+
+  @override
+  String get loyaltyRewardRulesTitle => 'Reward rules';
 
   @override
   String get redeemGiftCard => 'Redeem Gift Card';

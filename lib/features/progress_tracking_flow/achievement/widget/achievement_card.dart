@@ -28,12 +28,12 @@ class AchievementCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final earned = earnedBadgeCount;
-    final total = totalBadges;
-    final title = (earned != null && total != null && total > 0)
+    final earned = earnedBadgeCount ?? 0;
+    final total = totalBadges ?? 0;
+    final title = total > 0
         ? '$earned / $total ${context.l10n.achievements}'
-        : '8 ${context.l10n.achievements}';
-    final barValue = progress?.clamp(0.0, 1.0) ?? 0.6;
+        : '$earned ${context.l10n.achievements}';
+    final barValue = (progress ?? 0.0).clamp(0.0, 1.0);
 
     return Container(
       padding: EdgeInsets.symmetric(vertical: 20),
@@ -100,7 +100,7 @@ class AchievementCard extends StatelessWidget {
           SizedBox(height: 2),
           AppText(content, style: (context) => AppTextStyles.bodyText(context)),
           Visibility(
-            visible: showProgressBar,
+            visible: showProgressBar && total > 0,
             child: Padding(
               padding: EdgeInsets.only(
                 top: AppSpacing.base,

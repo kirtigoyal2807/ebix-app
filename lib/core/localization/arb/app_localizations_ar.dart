@@ -1307,6 +1307,12 @@ class AppLocalizationsAr extends AppLocalizations {
   String get existingPlan => 'الخطط السابقة';
 
   @override
+  String get subscriptionEnded => 'منتهية';
+
+  @override
+  String get subscriptionTransferable => 'قابل للتحويل';
+
+  @override
   String get noInvoicesYet => 'لا توجد فواتير بعد';
 
   @override
@@ -1538,6 +1544,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get apply => 'تطبيق';
 
   @override
+  String get voucherAppliedSuccess => 'تم تطبيق القسيمة بنجاح.';
+
+  @override
   String get acceptedPaymentMethods => 'طرق الدفع المقبولة:';
 
   @override
@@ -1600,6 +1609,40 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get recipientPhoneOptional => 'رقم هاتف المستلم (اختياري)';
+
+  @override
+  String get giftRecipientValidationError =>
+      'يرجى تعبئة جميع بيانات المستلم المطلوبة.';
+
+  @override
+  String get giftCheckoutSessionRequired =>
+      'إرسال الهدية يحتاج جلسة دفع نشطة. أكمل من السلة/الدفع أولاً، أو مرّر معرّف الجلسة لهذه الشاشة.';
+
+  @override
+  String get giftCheckoutNotGiftSession =>
+      'هذه الجلسة ليست لشراء هدية. أنشئ الجلسة عبر checkout/start مع \"isGift\": true، ثم أرسل تفاصيل الهدية باستخدام معرّف تلك الجلسة.';
+
+  @override
+  String get checkoutPaymentAlreadyCompleted =>
+      'تم إكمال الدفع لهذه الجلسة مسبقًا. متابعة.';
+
+  @override
+  String get pleaseSelectPlan => 'يرجى اختيار خطة.';
+
+  @override
+  String get giftValidationRecipientName =>
+      'أدخل اسم المستلم (حرفان على الأقل).';
+
+  @override
+  String get giftValidationRecipientEmail => 'أدخل البريد الإلكتروني للمستلم.';
+
+  @override
+  String get giftValidationRecipientPhone =>
+      'أدخل رقم هاتف صالح أو اترك الحقل فارغًا.';
+
+  @override
+  String get giftValidationScheduleDate =>
+      'اختر تاريخ التسليم أو اختر التسليم الفوري.';
 
   @override
   String get phoneHint => 'XXXXXXXXXXX';
@@ -1667,6 +1710,9 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get achievementsSubtitle => 'عرض شاراتك';
+
+  @override
+  String get loyaltyRewardRulesTitle => 'قواعد المكافآت';
 
   @override
   String get redeemGiftCard => 'استبدال بطاقة هدية';

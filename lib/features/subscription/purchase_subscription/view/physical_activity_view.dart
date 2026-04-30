@@ -6,6 +6,7 @@ import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/core/localization/arb/app_localizations.dart';
 import 'package:pilates_app/core/localization/localization_extension.dart';
 import 'package:pilates_app/features/subscription/purchase_subscription/cubit/subscription_cubit.dart';
+import 'package:pilates_app/features/subscription/purchase_subscription/view/widgets/api_health_questionnaire_blocks.dart';
 import 'package:pilates_app/features/subscription/purchase_subscription/view/widgets/subscription_header.dart';
 import 'package:pilates_app/features/subscription/purchase_subscription/view/widgets/subscription_progress.dart';
 import 'package:pilates_app/widgets/app_button.dart';
@@ -19,6 +20,10 @@ class PhysicalActivityView extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
     final cubit = context.read<SubscriptionCubit>();
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final hasApiActivity = pickQuestionsByIds(
+      cubit.state.healthQuestionnaireQuestions,
+      const [HealthQuestionnaireIds.activityPilates],
+    ).isNotEmpty;
 
     return Padding(
       padding: const EdgeInsets.symmetric(
@@ -45,6 +50,10 @@ class PhysicalActivityView extends StatelessWidget {
                   ),
                   const SizedBox(height: AppSpacing.lg),
 
+                  if (hasApiActivity) ...[
+                    const ApiActivityLevelQuestionBlock(),
+                    const SizedBox(height: AppSpacing.lg),
+                  ] else ...[
                   // Question 1
                   _buildSectionHeader(context, l10n.doYouExerciseRegularly),
 
@@ -86,13 +95,45 @@ class PhysicalActivityView extends StatelessWidget {
                       );
                     },
                   ),
+                  ],
                 ],
               ),
             ),
           ),
           AppButton(
             label: l10n.continueTxt,
-            onPressed: () => cubit.nextStep(),
+            onPressed: () {
+              final actQs = pickQuestionsByIds(
+                cubit.state.healthQuestionnaireQuestions,
+                const [HealthQuestionnaireIds.activityPilates],
+              );
+              if (actQs.isNotEmpty && !cubit.validateQuestionnaireGroup(actQs)) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text(l10n.giftRecipientValidationError)),
+                );
+                return;
+              }
+              final raw = cubit.state.healthQuestionnaireAnswers[HealthQuestionnaireIds.activityPilates];
+              if (raw is String) {
+                if (raw == 'yes') {
+                  cubit.updateExerciseRegularly('yes');
+                } else if (raw == 'sometimes') {
+                  cubit.updateExerciseRegularly('sometimes');
+                } else if (raw == 'no') {
+                  cubit.updateExerciseRegularly('no');
+                }
+              }
+              if (actQs.isEmpty) {
+                final er = cubit.state.exerciseRegularly;
+                if (er == null || er.trim().isEmpty) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text(l10n.giftRecipientValidationError)),
+                  );
+                  return;
+                }
+              }
+              cubit.nextStep();
+            },
             buttonColor:isDark ?AppColors.primary: AppColors.primaryBrown,
             expanded: true,
           ),

@@ -12,86 +12,104 @@ import '../cubit/gift_subscription_state.dart';
 import 'delivery_option_tile.dart';
 
 class ReceiptDetails extends StatelessWidget {
-  const ReceiptDetails({super.key});
+  const ReceiptDetails({
+    super.key,
+    required this.nameController,
+    required this.emailController,
+    required this.phoneController,
+    required this.messageController,
+  });
+
+  final TextEditingController nameController;
+  final TextEditingController emailController;
+  final TextEditingController phoneController;
+  final TextEditingController messageController;
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    return BlocProvider(
-      create: (context) => GiftSubscriptionCubit(),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          AppText(
-            l10n.recipientDetails,
-            style: (context) => AppTextStyles.heading1(
-              context,
-            ).copyWith(fontSize: 24, height: 1.2),
-          ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        AppText(
+          l10n.recipientDetails,
+          style: (context) => AppTextStyles.heading1(
+            context,
+          ).copyWith(fontSize: 24, height: 1.2),
+        ),
 
-          SizedBox(height: AppSpacing.md),
+        SizedBox(height: AppSpacing.md),
 
-          AppTextField(label: l10n.recipientNameHint, hint: l10n.recipientNameHint),
-          SizedBox(height: AppSpacing.md),
-          AppTextField(
-            label: l10n.recipientEmail,
-            hint: l10n.recipientEmailHintGmail,
-          ),
-          SizedBox(height: AppSpacing.md),
-          AppTextField(label: l10n.recipientPhoneOptional, hint: "XXXXXXXXXXX"),
-          SizedBox(height: AppSpacing.md),
+        AppTextField(
+          label: l10n.recipientNameHint,
+          hint: l10n.recipientNameHint,
+          controller: nameController,
+        ),
+        SizedBox(height: AppSpacing.md),
+        AppTextField(
+          label: l10n.recipientEmail,
+          hint: l10n.recipientEmailHintGmail,
+          keyboardType: TextInputType.emailAddress,
+          controller: emailController,
+        ),
+        SizedBox(height: AppSpacing.md),
+        AppTextField(
+          label: l10n.recipientPhoneOptional,
+          hint: 'XXXXXXXXXXX',
+          keyboardType: TextInputType.phone,
+          controller: phoneController,
+        ),
+        SizedBox(height: AppSpacing.md),
 
-          AppText(l10n.deliveryOptions, style: AppTextStyles.textFieldHeading),
-          SizedBox(height: AppSpacing.base),
+        AppText(l10n.deliveryOptions, style: AppTextStyles.textFieldHeading),
+        SizedBox(height: AppSpacing.base),
 
-          BlocBuilder<GiftSubscriptionCubit, GiftSubscriptionState>(
-            builder: (context, state) {
-              return ListView.separated(
-                separatorBuilder: (context, index) =>
-                    SizedBox(height: AppSpacing.sm),
-                itemCount: state.deliveryOptions.length,
-                shrinkWrap: true,
-                padding: EdgeInsets.zero,
-                physics: NeverScrollableScrollPhysics(),
-                itemBuilder: (context, index) {
-                  return InkWell(
+        BlocBuilder<GiftSubscriptionCubit, GiftSubscriptionState>(
+          builder: (context, state) {
+            final options = state.deliveryOptions;
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                for (var i = 0; i < options.length; i++) ...[
+                  if (i > 0) SizedBox(height: AppSpacing.sm),
+                  InkWell(
                     onTap: () {
-                      context
-                          .read<GiftSubscriptionCubit>()
-                          .changeDeliveryOption(state.deliveryOptions[index]);
+                      context.read<GiftSubscriptionCubit>().changeDeliveryOption(
+                            options[i],
+                          );
                     },
                     child: DeliveryOptionTile(
-                      label: getLabel(state.deliveryOptions[index], l10n),
+                      label: getLabel(options[i], l10n),
                       isSelected:
-                          state.selectedDeliveryOption ==
-                          state.deliveryOptions[index],
+                          state.selectedDeliveryOption == options[i],
                     ),
-                  );
-                },
-              );
-            },
-          ),
+                  ),
+                ],
+              ],
+            );
+          },
+        ),
 
-          SizedBox(height: AppSpacing.md),
+        SizedBox(height: AppSpacing.md),
 
-          AppTextField(
-            label: l10n.personalMessageOptional,
-            hint: l10n.personalMessageHint,
-            maxLines: 4,
-          ),
-          SizedBox(height: AppSpacing.sm),
-          AppText(
-            l10n.charactersCount,
-            style: (context) => AppTextStyles.bodyText(
-              context,
-            ).copyWith(color: AppColors.lightGrey, height: 1.5),
-          ),
-        ],
-      ),
+        AppTextField(
+          label: l10n.personalMessageOptional,
+          hint: l10n.personalMessageHint,
+          maxLines: 4,
+          controller: messageController,
+        ),
+        SizedBox(height: AppSpacing.sm),
+        AppText(
+          l10n.charactersCount,
+          style: (context) => AppTextStyles.bodyText(
+            context,
+          ).copyWith(color: AppColors.lightGrey, height: 1.5),
+        ),
+      ],
     );
   }
 
-  String getLabel(DeliveryOption deliveryOption, l10n) {
+  String getLabel(DeliveryOption deliveryOption, AppLocalizations l10n) {
     switch (deliveryOption) {
       case DeliveryOption.instantDelivery:
         return l10n.instantDelivery;
