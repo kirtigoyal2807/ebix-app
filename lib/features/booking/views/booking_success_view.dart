@@ -98,8 +98,7 @@ class _BookingSuccessScreenState extends State<BookingSuccessScreen> {
     final slot = widget.slot;
     final booking = widget.booking;
     final name = (slot?.branchName ?? booking?.branchName ?? '').trim();
-    final addr =
-        (slot?.branchAddress ?? slot?.branchLocation ?? '').trim();
+    final addr = (slot?.branchAddress ?? slot?.branchLocation ?? '').trim();
     if (name.isNotEmpty && addr.isNotEmpty) return '$name, $addr';
     if (addr.isNotEmpty) return addr;
     return name;
@@ -121,9 +120,9 @@ class _BookingSuccessScreenState extends State<BookingSuccessScreen> {
     final end = _classEndForCalendar();
     if (start == null || end == null) {
       if (!context.mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(l10n.somethingWentWrong)),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(l10n.somethingWentWrong)));
       return;
     }
 
@@ -140,15 +139,15 @@ class _BookingSuccessScreenState extends State<BookingSuccessScreen> {
       );
       if (!context.mounted) return;
       if (!ok) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(l10n.somethingWentWrong)),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(l10n.somethingWentWrong)));
       }
     } catch (_) {
       if (!context.mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(l10n.somethingWentWrong)),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(l10n.somethingWentWrong)));
     }
   }
 
@@ -156,9 +155,9 @@ class _BookingSuccessScreenState extends State<BookingSuccessScreen> {
     final l10n = AppLocalizations.of(context);
     final q = _mapsLocationQuery().trim();
     if (q.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(l10n.somethingWentWrong)),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(l10n.somethingWentWrong)));
       return;
     }
     final uri = Uri.parse(
@@ -171,15 +170,15 @@ class _BookingSuccessScreenState extends State<BookingSuccessScreen> {
       );
       if (!context.mounted) return;
       if (!launched) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(l10n.somethingWentWrong)),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(l10n.somethingWentWrong)));
       }
     } catch (_) {
       if (!context.mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(l10n.somethingWentWrong)),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(l10n.somethingWentWrong)));
     }
   }
 
@@ -200,7 +199,9 @@ class _BookingSuccessScreenState extends State<BookingSuccessScreen> {
         popBookingFlowToClassesTab(context);
       },
       child: Scaffold(
-        backgroundColor: isDark ? AppColors.homeBackground : AppColors.whiteColor,
+        backgroundColor: isDark
+            ? AppColors.homeBackground
+            : AppColors.whiteColor,
         body: SingleChildScrollView(
           padding: EdgeInsetsDirectional.only(
             top: MediaQuery.of(context).viewPadding.top,
@@ -224,9 +225,12 @@ class _BookingSuccessScreenState extends State<BookingSuccessScreen> {
                 widget.successPage == SuccessPage.booking
                     ? l10n.bookingSuccess
                     : l10n.onWaitList,
-                style: (context) => AppTextStyles.gelasioMedium(context).copyWith(
+                style: (context) =>
+                    AppTextStyles.gelasioMedium(context).copyWith(
                       fontSize: 24,
-                      color: isDark ? AppColors.lightText : const Color(0xff0D0D12),
+                      color: isDark
+                          ? AppColors.lightText
+                          : const Color(0xff0D0D12),
                     ),
               ),
 
@@ -304,8 +308,10 @@ class _BookingSuccessScreenState extends State<BookingSuccessScreen> {
     } else {
       switch (band) {
         case CheckInTimeBand.tooEarly:
-          description =
-              l10n.checkInWindowExplanationSchedule(minutesBefore, opensFormatted);
+          description = l10n.checkInWindowExplanationSchedule(
+            minutesBefore,
+            opensFormatted,
+          );
         case CheckInTimeBand.inWindow:
           description = l10n.checkInActiveWindowBody;
         case CheckInTimeBand.tooLate:
@@ -329,8 +335,7 @@ class _BookingSuccessScreenState extends State<BookingSuccessScreen> {
     } else {
       switch (band) {
         case CheckInTimeBand.tooEarly:
-          buttonLabel =
-              l10n.checkInButtonOpensAtDynamic(opensFormatted);
+          buttonLabel = l10n.checkInButtonOpensAtDynamic(opensFormatted);
         case CheckInTimeBand.inWindow:
           buttonLabel = l10n.checkIn;
         case CheckInTimeBand.tooLate:
@@ -489,9 +494,8 @@ class _BookingSuccessScreenState extends State<BookingSuccessScreen> {
               AppText(
                 l10n.inLine,
                 style: (ctx) => AppTextStyles.captionText(ctx).copyWith(
-                      color:
-                          isDark ? AppColors.darkGreyText : AppColors.lightGrey,
-                    ),
+                  color: isDark ? AppColors.darkGreyText : AppColors.lightGrey,
+                ),
               ),
             ],
           ),
@@ -510,10 +514,9 @@ class _BookingSuccessScreenState extends State<BookingSuccessScreen> {
     final booking = widget.booking;
 
     final className = slot?.name ?? booking?.className ?? '--';
-    final instructorName =
-        slot?.trainerName ?? booking?.trainerName ?? '--';
+    final instructorName = slot?.trainerName ?? booking?.trainerName ?? '--';
     final locationName = slot?.branchName ?? booking?.branchName ?? '--';
-    final locationAddress = slot?.branchAddress ?? slot?.branchLocation ?? '';
+    final locationAddress = slot?.branchAddress ?? '';
 
     String dateLabel = '--';
     String timeLabel = '--';
@@ -734,7 +737,7 @@ class _BookingSuccessScreenState extends State<BookingSuccessScreen> {
                 ),
               ],
             ),
-              child: AppButton(
+            child: AppButton(
               label: l10n.browseMoreClasses,
               onPressed: () => popBookingFlowToClassesTab(context),
               variant: AppButtonVariant.secondary,

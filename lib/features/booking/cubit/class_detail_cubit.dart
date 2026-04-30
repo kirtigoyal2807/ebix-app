@@ -3,6 +3,7 @@ import 'package:pilates_app/core/network/api_result.dart';
 import 'package:pilates_app/features/booking/cubit/class_detail_state.dart';
 import 'package:pilates_app/features/booking/data/classes_repository.dart';
 import 'package:pilates_app/features/booking/data/models/class_slot_view_model.dart';
+import 'package:pilates_app/features/booking/data/models/gym_class_resource.dart';
 
 /// Loads class type detail (§13.3 `GET /classes/{classId}`) and maps it to a
 /// [ClassSlotViewModel] for the detail UI.
@@ -39,7 +40,7 @@ class ClassDetailCubit extends Cubit<ClassDetailState> {
 
     switch (result) {
       case ApiSuccess(:final data):
-        final picked = ClassSlotViewModel.pickUpcomingEvent(data);
+        final picked = _pickMatchingOrUpcomingEvent(data);
         final resolved =
             ClassSlotViewModel.fromGymClassResource(data, event: picked);
         final mergedSlot = resolved.copyWith(
@@ -64,5 +65,17 @@ class ClassDetailCubit extends Cubit<ClassDetailState> {
           ),
         );
     }
+  }
+
+  UpcomingEvent? _pickMatchingOrUpcomingEvent(GymClassResource data) {
+    final preloadedEventId = state.slot?.calendarEventId.trim() ?? '';
+    if (preloadedEventId.isNotEmpty) {
+      for (final event in data.upcomingEvents) {
+        if (event.id.trim() == preloadedEventId) {
+          return event;
+        }
+      }
+    }
+    return ClassSlotViewModel.pickUpcomingEvent(data);
   }
 }

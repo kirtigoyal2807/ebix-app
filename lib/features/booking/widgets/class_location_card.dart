@@ -16,10 +16,10 @@ class ClassLocationCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    final branchName =
-        slot.branchName.isNotEmpty ? slot.branchName : context.l10n.branchDowntown;
-    final branchAddress =
-        slot.branchAddress ?? slot.branchLocation ?? context.l10n.branchAddressDetail;
+    final branchName = slot.branchName.isNotEmpty
+        ? slot.branchName
+        : "";
+    final branchAddress = slot.branchAddress ?? "";
 
     return Container(
       width: double.infinity,
@@ -36,10 +36,9 @@ class ClassLocationCard extends StatelessWidget {
         children: [
           AppText(
             context.l10n.location,
-            style: (ctx) => AppTextStyles.captionText(ctx).copyWith(
-              color: AppColors.lightGrey,
-              fontSize: 12,
-            ),
+            style: (ctx) => AppTextStyles.captionText(
+              ctx,
+            ).copyWith(color: AppColors.lightGrey, fontSize: 12),
           ),
           const SizedBox(height: AppSpacing.xs),
           AppText(

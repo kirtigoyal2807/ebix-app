@@ -69,6 +69,7 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   AuthRepository get authRepository => _authRepository;
+  TokenStorage get tokenStorage => _tokenStorage;
 
   // Splash logic
   void _startSplash() {
@@ -477,6 +478,7 @@ class AuthCubit extends Cubit<AuthState> {
     }
     await _tokenStorage.clearToken();
     await _tokenStorage.clearUser();
+    await _tokenStorage.clearMembershipPlanName();
     emit(
       state
           .copyWith(
@@ -502,6 +504,7 @@ class AuthCubit extends Cubit<AuthState> {
   Future<void> cancelPostLoginSetup() async {
     await _tokenStorage.clearToken();
     await _tokenStorage.clearUser();
+    await _tokenStorage.clearMembershipPlanName();
     emit(
       state
           .copyWith(

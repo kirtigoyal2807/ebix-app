@@ -84,28 +84,6 @@ class BookClassConfirmView extends StatelessWidget {
             const SizedBox(height: AppSpacing.lg),
 
             _buildPolicyAgreement(l10n: l10n, isDark: isDark),
-            BlocBuilder<ConfirmBookingCubit, ConfirmBookingState>(
-              buildWhen: (prev, next) => prev.errorMessage != next.errorMessage,
-              builder: (context, state) {
-                final msg = state.errorMessage;
-                if (msg == null || msg.isEmpty) {
-                  return const SizedBox.shrink();
-                }
-                return Padding(
-                  padding: const EdgeInsets.fromLTRB(
-                    AppSpacing.lg,
-                    AppSpacing.md,
-                    AppSpacing.lg,
-                    0,
-                  ),
-                  child: AppText(
-                    msg,
-                    style: (context) => AppTextStyles.bodyTextSmall(context)
-                        .copyWith(color: AppColors.lightRedColor),
-                  ),
-                );
-              },
-            ),
             const Spacer(),
 
             Padding(
@@ -139,6 +117,13 @@ class BookClassConfirmView extends StatelessWidget {
                                     booking: booking,
                                   ),
                                 ),
+                              );
+                              return;
+                            }
+                            final errorMessage = cubit.state.errorMessage;
+                            if (errorMessage != null && errorMessage.isNotEmpty) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text(errorMessage)),
                               );
                             }
                           },
