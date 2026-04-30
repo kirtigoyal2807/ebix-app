@@ -32,7 +32,6 @@ class RewardView extends StatelessWidget {
             onBack: () => Navigator.of(context).pop(),
             title: context.l10n.rewards,
             isMoreMenu: false,
-
             bottomPreferredSize: PreferredSize(
               preferredSize: const Size.fromHeight(94),
               child: Column(
@@ -52,7 +51,12 @@ class RewardView extends StatelessWidget {
               ),
             ),
           ),
-          body: TabBarView(children: [RewardOverviewView( ), RewardHistoryView()]),
+          body: const TabBarView(
+            children: [
+              RewardOverviewView(),
+              RewardHistoryView(),
+            ],
+          ),
         ),
       ),
     );

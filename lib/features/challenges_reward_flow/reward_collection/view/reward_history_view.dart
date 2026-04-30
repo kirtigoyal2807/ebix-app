@@ -13,7 +13,6 @@ class RewardHistoryView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsetsGeometry.all(AppSpacing.lg),
-
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -29,7 +28,7 @@ class RewardHistoryView extends StatelessWidget {
           ),
           SizedBox(height: AppSpacing.md),
           RewardHistoryCard(
-            title:context.l10n.free_class_pass,
+            title: context.l10n.free_class_pass,
             subTitle: context.l10n.redeemed_on("Jan 22, 2026"),
             point: 2300,
           ),

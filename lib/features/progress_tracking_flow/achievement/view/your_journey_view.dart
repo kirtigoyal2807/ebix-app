@@ -3,9 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
+import 'package:pilates_app/features/loyalty/data/models/loyalty_achievement_rule.dart';
 import 'package:pilates_app/features/loyalty/data/models/loyalty_badge.dart';
 import 'package:pilates_app/features/progress_tracking_flow/achievement/cubit/loyalty_achievements_cubit.dart';
 import 'package:pilates_app/features/progress_tracking_flow/achievement/cubit/loyalty_achievements_state.dart';
+import 'package:pilates_app/widgets/app_button.dart';
 import 'package:pilates_app/widgets/app_text.dart';
 
 import '../../../../config/theme/app_colors.dart';
@@ -48,15 +50,31 @@ class YourJourneyView extends StatelessWidget {
           }
           if (data == null) {
             return Center(
-              child: AppText(
-                state.errorMessage ?? '—',
-                style: (context) => AppTextStyles.bodyText(context),
+              child: Padding(
+                padding: const EdgeInsets.all(AppSpacing.lg),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    AppText(
+                      state.errorMessage ?? context.l10n.loginErrorGeneric,
+                      textAlign: TextAlign.center,
+                      style: (context) => AppTextStyles.bodyText(context),
+                    ),
+                    SizedBox(height: AppSpacing.md),
+                    AppButton(
+                      label: context.l10n.retry,
+                      expanded: false,
+                      onPressed: () =>
+                          context.read<LoyaltyAchievementsCubit>().refresh(),
+                    ),
+                  ],
+                ),
               ),
             );
           }
           final badges = _sorted(data.badges);
-          final earned = badges.where((b) => b.isEarned).toList();
-          final locked = badges.where((b) => !b.isEarned).toList();
+          final earnedList = badges.where((b) => b.isEarned).toList();
+          final lockedList = badges.where((b) => !b.isEarned).toList();
           final total = badges.length;
           final earnedCount = data.earnedBadgeCount;
           final progress = total > 0 ? earnedCount / total : 0.0;
@@ -74,9 +92,9 @@ class YourJourneyView extends StatelessWidget {
                 AchievementCard(
                   content: context.l10n.yourJourney_achievement_content,
                   showProgressBar: true,
-                  earnedBadgeCount: total > 0 ? earnedCount : null,
-                  totalBadges: total > 0 ? total : null,
-                  progress: total > 0 ? progress : null,
+                  earnedBadgeCount: earnedCount,
+                  totalBadges: total,
+                  progress: total > 0 ? progress : 0.0,
                 ),
                 SizedBox(height: AppSpacing.xl),
                 AppText(
@@ -84,16 +102,20 @@ class YourJourneyView extends StatelessWidget {
                   style: (context) => AppTextStyles.gelasioRegular(context),
                 ),
                 SizedBox(height: AppSpacing.md),
-                if (earned.isEmpty)
+                if (earnedList.isEmpty)
                   AppText(
                     context.l10n.noClassesYet,
                     style: (context) => AppTextStyles.bodyText(context),
                   )
                 else
-                  ...earned.map(
+                  ...earnedList.map(
                     (b) => Padding(
                       padding: EdgeInsets.only(bottom: AppSpacing.md),
-                      child: _JourneyBadgeCard(badge: b, isDark: isDark),
+                      child: _JourneyBadgeCard(
+                        badge: b,
+                        rule: data.ruleMatchingBadge(b),
+                        isDark: isDark,
+                      ),
                     ),
                   ),
                 SizedBox(height: AppSpacing.xl),
@@ -102,18 +124,36 @@ class YourJourneyView extends StatelessWidget {
                   style: (context) => AppTextStyles.gelasioRegular(context),
                 ),
                 SizedBox(height: AppSpacing.md),
-                if (locked.isEmpty)
+                if (lockedList.isEmpty)
                   AppText(
                     context.l10n.noClassesYet,
                     style: (context) => AppTextStyles.bodyText(context),
                   )
                 else
-                  ...locked.map(
+                  ...lockedList.map(
                     (b) => Padding(
                       padding: EdgeInsets.only(bottom: AppSpacing.md),
-                      child: _JourneyBadgeCard(badge: b, isDark: isDark),
+                      child: _JourneyBadgeCard(
+                        badge: b,
+                        rule: data.ruleMatchingBadge(b),
+                        isDark: isDark,
+                      ),
                     ),
                   ),
+                if (data.achievements.isNotEmpty) ...[
+                  SizedBox(height: AppSpacing.xl),
+                  AppText(
+                    context.l10n.loyaltyRewardRulesTitle,
+                    style: (context) => AppTextStyles.gelasioRegular(context),
+                  ),
+                  SizedBox(height: AppSpacing.md),
+                  ...data.achievements.map(
+                    (r) => Padding(
+                      padding: EdgeInsets.only(bottom: AppSpacing.md),
+                      child: _AchievementRuleTile(rule: r, isDark: isDark),
+                    ),
+                  ),
+                ],
               ],
             ),
           );
@@ -124,13 +164,19 @@ class YourJourneyView extends StatelessWidget {
 }
 
 class _JourneyBadgeCard extends StatelessWidget {
-  const _JourneyBadgeCard({required this.badge, required this.isDark});
+  const _JourneyBadgeCard({
+    required this.badge,
+    this.rule,
+    required this.isDark,
+  });
 
   final LoyaltyBadge badge;
+  final LoyaltyAchievementRule? rule;
   final bool isDark;
 
   @override
   Widget build(BuildContext context) {
+    final matchedRule = rule;
     final locale = Localizations.localeOf(context).toLanguageTag();
     final subtitle = badge.description?.trim().isNotEmpty == true
         ? badge.description!.trim()
@@ -178,6 +224,17 @@ class _JourneyBadgeCard extends StatelessWidget {
                         : AppColors.languageIcon,
                   ),
                 ),
+                if (matchedRule != null && matchedRule.rewardPoints > 0) ...[
+                  SizedBox(height: AppSpacing.xs),
+                  AppText(
+                    context.l10n.points_short(matchedRule.rewardPoints),
+                    style: (context) =>
+                        AppTextStyles.captionText(context).copyWith(
+                      color: AppColors.languageIcon,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ],
                 SizedBox(height: AppSpacing.base),
                 if (dateStr.isNotEmpty)
                   AppText(
@@ -189,6 +246,69 @@ class _JourneyBadgeCard extends StatelessWidget {
               ],
             ),
           ),
+        ],
+      ),
+    );
+  }
+}
+
+class _AchievementRuleTile extends StatelessWidget {
+  const _AchievementRuleTile({
+    required this.rule,
+    required this.isDark,
+  });
+
+  final LoyaltyAchievementRule rule;
+  final bool isDark;
+
+  @override
+  Widget build(BuildContext context) {
+    final borderColor =
+        isDark ? AppColors.greyText : AppColors.buttonBorder;
+    final threshold = rule.thresholdValue;
+    final meta = threshold != null
+        ? '${rule.ruleType} · $threshold'
+        : rule.ruleType;
+
+    return Container(
+      padding: EdgeInsets.symmetric(
+        vertical: AppSpacing.lmd,
+        horizontal: AppSpacing.md,
+      ),
+      decoration: BoxDecoration(
+        color: isDark ? AppColors.homeBackground : Colors.white,
+        border: Border.all(color: borderColor, width: 1),
+        borderRadius: BorderRadius.circular(AppRadius.md),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          AppText(
+            rule.name.isEmpty ? rule.ruleKey : rule.name,
+            style: (context) => AppTextStyles.textFieldHeading(
+              context,
+            ).copyWith(height: 1.2),
+          ),
+          SizedBox(height: AppSpacing.xs),
+          AppText(
+            meta,
+            style: (context) => AppTextStyles.bodyTextSmall(context).copyWith(
+                  color: AppColors.lightGrey,
+                  height: 1.3,
+                ),
+            maxLines: 3,
+          ),
+          if (rule.rewardPoints > 0) ...[
+            SizedBox(height: AppSpacing.sm),
+            AppText(
+              context.l10n.points_short(rule.rewardPoints),
+              style: (context) =>
+                  AppTextStyles.captionText(context).copyWith(
+                color: AppColors.languageIcon,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ],
         ],
       ),
     );

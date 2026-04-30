@@ -14,10 +14,12 @@ import 'features/auth/auth_root_view.dart';
 import 'features/auth/cubit/auth_cubit.dart';
 import 'features/auth/cubit/auth_state.dart';
 import 'features/auth/data/auth_repository.dart';
+import 'features/checkout/data/checkout_repository.dart';
 import 'features/booking/data/classes_repository.dart';
 import 'features/booking/data/reviews_repository.dart';
 import 'features/booking/data/trainers_repository.dart';
 import 'features/invoice_history/data/invoices_repository.dart';
+import 'features/invoice_history/data/subscriptions_repository.dart';
 import 'features/loyalty/data/loyalty_repository.dart';
 import 'features/my_booking/data/my_bookings_repository.dart';
 import 'features/progress_tracking_flow/data/progress_repository.dart';
@@ -56,11 +58,17 @@ Future<void> main() async {
                 create: (_) => ClassesRepository(dio),
                 child: RepositoryProvider<ProgressRepository>(
                   create: (_) => ProgressRepository(dio),
-                  child: PilatesApp(
-                    authRepository: authRepository,
-                    tokenStorage: tokenStorage,
-                    localeBridge: localeBridge,
-                    authInitialState: authInitialState,
+                  child: RepositoryProvider<SubscriptionsRepository>(
+                    create: (_) => SubscriptionsRepository(dio),
+                    child: RepositoryProvider<CheckoutRepository>(
+                      create: (_) => CheckoutRepository(dio),
+                      child: PilatesApp(
+                        authRepository: authRepository,
+                        tokenStorage: tokenStorage,
+                        localeBridge: localeBridge,
+                        authInitialState: authInitialState,
+                      ),
+                    ),
                   ),
                 ),
               ),

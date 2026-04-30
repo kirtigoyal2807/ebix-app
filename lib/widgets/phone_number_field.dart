@@ -15,6 +15,7 @@ class PhoneNumberField extends StatefulWidget {
   final TextEditingController? controller;
   final String? errorText;
   final Function(CountryCode)? onCountryChanged;
+  final ValueChanged<String>? onChanged;
 
   const PhoneNumberField({
     super.key,
@@ -24,6 +25,7 @@ class PhoneNumberField extends StatefulWidget {
     this.controller,
     this.errorText,
     this.onCountryChanged,
+    this.onChanged,
   });
 
   @override
@@ -122,6 +124,7 @@ class _PhoneNumberFieldState extends State<PhoneNumberField> {
                   controller: widget.controller,
                   focusNode: _focusNode,
                   keyboardType: TextInputType.phone,
+                  onChanged: widget.onChanged,
                   style: AppTextStyles.textField(context),
                   decoration: InputDecoration(
                     hintText: 'XXXXXXXXXX',

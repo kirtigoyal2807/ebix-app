@@ -1,4 +1,7 @@
-/// Item from `GET /subscriptions/me` (Mobile API §9.3).
+/// Item from `GET /subscriptions/customer/{customer}` — Mobile API §9.3.
+///
+/// Fields: `id`, `status`, `entitlementType`, `startsAt`, `expiresAt`, `isActive`,
+/// `pricePaid`, `isTransferable`, `product`, `sessions`, `freezes[]`.
 class CustomerSubscriptionResource {
   const CustomerSubscriptionResource({
     required this.id,
@@ -7,13 +10,13 @@ class CustomerSubscriptionResource {
     this.startsAt,
     this.expiresAt,
     required this.isActive,
-    required this.isPaid,
+    this.isPaid = false,
     required this.pricePaid,
     required this.isTransferable,
     this.product,
     this.sessions,
     this.freezes = const [],
-    required this.createdAt,
+    this.createdAt,
     this.updatedAt,
     this.invoicePdfUrl,
   });
@@ -33,7 +36,9 @@ class CustomerSubscriptionResource {
   final SubscriptionProductRef? product;
   final SubscriptionSessions? sessions;
   final List<SubscriptionFreeze> freezes;
-  final DateTime createdAt;
+
+  /// Not always present on §9.3 minimal payload; optional.
+  final DateTime? createdAt;
   final DateTime? updatedAt;
 
   /// Invoice / receipt PDF URL if the API provides one (various key names).
@@ -68,7 +73,7 @@ class CustomerSubscriptionResource {
 
     return CustomerSubscriptionResource(
       id: '${json['id'] ?? ''}',
-      status: '${json['status'] ?? ''}',
+      status: _parseStatus(json['status']),
       entitlementType:
           '${json['entitlementType'] ?? json['entitlement_type'] ?? 'none'}',
       startsAt: _parseDate(json['startsAt'] ?? json['starts_at']),
@@ -80,8 +85,7 @@ class CustomerSubscriptionResource {
       product: product,
       sessions: sessions,
       freezes: freezes,
-      createdAt: _parseDate(json['createdAt'] ?? json['created_at']) ??
-          DateTime.fromMillisecondsSinceEpoch(0, isUtc: true),
+      createdAt: _parseDate(json['createdAt'] ?? json['created_at']),
       updatedAt: _parseDate(json['updatedAt'] ?? json['updated_at']),
       invoicePdfUrl: _firstNonEmptyString([
         json['invoicePdfUrl'],
@@ -96,6 +100,19 @@ class CustomerSubscriptionResource {
         json['download_url'],
       ]),
     );
+  }
+
+  /// Handles plain string or `{ "value": "...", "label": "..." }` (common in mobile API).
+  static String _parseStatus(dynamic v) {
+    if (v == null) return '';
+    if (v is Map) {
+      final m = Map<String, dynamic>.from(v);
+      final label = m['label'];
+      final value = m['value'];
+      final s = '${label ?? value ?? ''}'.trim();
+      return s;
+    }
+    return '$v'.trim();
   }
 
   static String? _firstNonEmptyString(List<dynamic> candidates) {
@@ -187,18 +204,20 @@ class SubscriptionFreeze {
     required this.status,
     this.startDate,
     this.endDate,
-    required this.daysFrozen,
+    this.daysFrozen = 0,
   });
 
-  final int id;
+  final String id;
   final String status;
   final String? startDate;
   final String? endDate;
   final int daysFrozen;
 
   factory SubscriptionFreeze.fromJson(Map<String, dynamic> json) {
+    final idRaw = json['id'];
+    final idStr = idRaw == null ? '' : '$idRaw'.trim();
     return SubscriptionFreeze(
-      id: SubscriptionSessions._int(json['id'], 0),
+      id: idStr,
       status: '${json['status'] ?? ''}',
       startDate: json['startDate']?.toString() ?? json['start_date']?.toString(),
       endDate: json['endDate']?.toString() ?? json['end_date']?.toString(),

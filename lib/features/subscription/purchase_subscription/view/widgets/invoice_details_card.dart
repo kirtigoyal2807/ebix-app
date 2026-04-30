@@ -2,13 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pilates_app/config/theme/app_colors.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
+import 'package:pilates_app/features/checkout/data/models/membership_receipt_summary.dart';
 
 import '../../../../../config/theme/app_text_styles.dart';
 import '../../../../../core/localization/localization_extension.dart';
 import '../../../../../widgets/app_text.dart';
 
 class InvoiceDetailsCard extends StatelessWidget {
-  const InvoiceDetailsCard({super.key});
+  const InvoiceDetailsCard({super.key, this.receipt});
+
+  /// When set (after checkout / payment intent), shows server-backed lines.
+  final MembershipReceiptSummary? receipt;
 
   @override
   Widget build(BuildContext context) {
@@ -61,68 +65,154 @@ class InvoiceDetailsCard extends StatelessWidget {
 
               const SizedBox(height: AppSpacing.md),
 
-              AppText(
-                context.l10n.invoiceNumber('#2026-0123-456'),
-                style: (context) =>
-                    AppTextStyles.textFieldHeading(context).copyWith(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w400,
-                      color: isDark
-                          ? AppColors.darkGreyText
-                          : AppColors.lightGrey,
-                    ),
-              ),
+              if (receipt != null) ...[
+                AppText(
+                  context.l10n.invoiceNumber(
+                    receipt!.paymentReference?.trim().isNotEmpty == true
+                        ? receipt!.paymentReference!.trim()
+                        : '—',
+                  ),
+                  style: (context) =>
+                      AppTextStyles.textFieldHeading(context).copyWith(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w400,
+                    color: isDark
+                        ? AppColors.darkGreyText
+                        : AppColors.lightGrey,
+                  ),
+                ),
+                AppText(
+                  receipt!.paidAtIso != null &&
+                          receipt!.paidAtIso!.trim().isNotEmpty
+                      ? 'Date: ${MembershipReceiptSummary.shortDateFromIso(receipt!.paidAtIso) ?? receipt!.paidAtIso}'
+                      : context.l10n.invoiceDate,
+                  style: (context) =>
+                      AppTextStyles.textFieldHeading(context).copyWith(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w400,
+                    color: isDark
+                        ? AppColors.darkGreyText
+                        : AppColors.lightGrey,
+                  ),
+                ),
+                const SizedBox(height: 64),
+                _buildRow(
+                  context,
+                  receipt!.planName?.trim().isNotEmpty == true
+                      ? receipt!.planName!.trim()
+                      : context.l10n.premiumPlanMonthly,
+                  MembershipReceiptSummary.formatMinor(
+                    receipt!.subtotalMinor ?? receipt!.totalMinor,
+                    receipt!.currency ?? 'SAR',
+                  ),
+                  isDark,
+                ),
+                if (receipt!.discountMinor != null &&
+                    receipt!.discountMinor! != 0) ...[
+                  const SizedBox(height: AppSpacing.xs),
+                  _buildRow(
+                    context,
+                    context.l10n.discount,
+                    '-${MembershipReceiptSummary.formatMinor(receipt!.discountMinor, receipt!.currency ?? 'SAR')}',
+                    isDark,
+                  ),
+                ],
+                const SizedBox(height: AppSpacing.md),
+                Divider(
+                  color: isDark ? AppColors.greyText : AppColors.buttonBorder,
+                  height: 1,
+                ),
+                const SizedBox(height: AppSpacing.md),
+                _buildRow(
+                  context,
+                  context.l10n.totalPaid,
+                  MembershipReceiptSummary.formatMinor(
+                    receipt!.totalMinor,
+                    receipt!.currency ?? 'SAR',
+                  ),
+                  isDark,
+                  isBold: true,
+                ),
+                const SizedBox(height: AppSpacing.md),
+                Divider(
+                  color: isDark ? AppColors.greyText : AppColors.buttonBorder,
+                  height: 1,
+                ),
+                const SizedBox(height: AppSpacing.md),
+                _buildRow(
+                  context,
+                  context.l10n.paymentMethod,
+                  receipt!.providerName?.trim().isNotEmpty == true
+                      ? receipt!.providerName!.trim()
+                      : 'PayTabs',
+                  isDark,
+                ),
+              ] else ...[
+                AppText(
+                  context.l10n.invoiceNumber('#2026-0123-456'),
+                  style: (context) =>
+                      AppTextStyles.textFieldHeading(context).copyWith(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w400,
+                    color: isDark
+                        ? AppColors.darkGreyText
+                        : AppColors.lightGrey,
+                  ),
+                ),
 
-              AppText(
-                context.l10n.invoiceDate,
-                style: (context) =>
-                    AppTextStyles.textFieldHeading(context).copyWith(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w400,
-                      color: isDark
-                          ? AppColors.darkGreyText
-                          : AppColors.lightGrey,
-                    ),
-              ),
+                AppText(
+                  context.l10n.invoiceDate,
+                  style: (context) =>
+                      AppTextStyles.textFieldHeading(context).copyWith(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w400,
+                    color: isDark
+                        ? AppColors.darkGreyText
+                        : AppColors.lightGrey,
+                  ),
+                ),
 
-              const SizedBox(height: 64),
+                const SizedBox(height: 64),
 
-              _buildRow(context.l10n.premiumPlanMonthly, "\$89.00", isDark),
-              const SizedBox(height: AppSpacing.xs),
-              _buildRow(context.l10n.setupFee, "\$0.00", isDark),
-              const SizedBox(height: AppSpacing.xs),
-              _buildRow(context.l10n.discount, "-\$10.00", isDark),
-              const SizedBox(height: AppSpacing.xs),
-              _buildRow(context.l10n.tax, "\$6.32", isDark),
+                _buildRow(context, context.l10n.premiumPlanMonthly, "\$89.00", isDark),
+                const SizedBox(height: AppSpacing.xs),
+                _buildRow(context, context.l10n.setupFee, "\$0.00", isDark),
+                const SizedBox(height: AppSpacing.xs),
+                _buildRow(context, context.l10n.discount, "-\$10.00", isDark),
+                const SizedBox(height: AppSpacing.xs),
+                _buildRow(context, context.l10n.tax, "\$6.32", isDark),
 
-              const SizedBox(height: AppSpacing.md),
-              Divider(
-                color: isDark ? AppColors.greyText : AppColors.buttonBorder,
-                height: 1,
-              ),
-              const SizedBox(height: AppSpacing.md),
+                const SizedBox(height: AppSpacing.md),
+                Divider(
+                  color: isDark ? AppColors.greyText : AppColors.buttonBorder,
+                  height: 1,
+                ),
+                const SizedBox(height: AppSpacing.md),
 
-              _buildRow(
-                context.l10n.totalPaid,
-                "\$85.32",
-                isDark,
-                isBold: true,
-              ),
+                _buildRow(
+                  context,
+                  context.l10n.totalPaid,
+                  "\$85.32",
+                  isDark,
+                  isBold: true,
+                ),
 
-              const SizedBox(height: AppSpacing.md),
-              Divider(
-                color: isDark ? AppColors.greyText : AppColors.buttonBorder,
-                height: 1,
-              ),
-              const SizedBox(height: AppSpacing.md),
+                const SizedBox(height: AppSpacing.md),
+                Divider(
+                  color: isDark ? AppColors.greyText : AppColors.buttonBorder,
+                  height: 1,
+                ),
+                const SizedBox(height: AppSpacing.md),
 
-              _buildRow(context.l10n.paymentMethod, "•••• 3456", isDark),
-              const SizedBox(height: AppSpacing.xs),
-              _buildRow(
-                context.l10n.nextBillingDateText,
-                "Feb 23, 2026",
-                isDark,
-              ),
+                _buildRow(context, context.l10n.paymentMethod, "•••• 3456", isDark),
+                const SizedBox(height: AppSpacing.xs),
+                _buildRow(
+                  context,
+                  context.l10n.nextBillingDateText,
+                  "Feb 23, 2026",
+                  isDark,
+                ),
+              ],
             ],
           ),
         ),
@@ -131,6 +221,7 @@ class InvoiceDetailsCard extends StatelessWidget {
   }
 
   static Widget _buildRow(
+    BuildContext context,
     String title,
     String value,
     bool isDark, {

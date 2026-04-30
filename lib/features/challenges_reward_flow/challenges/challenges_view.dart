@@ -26,7 +26,6 @@ class ChallengesView extends StatelessWidget {
             vertical: AppSpacing.md,
             horizontal: AppSpacing.lg,
           ),
-        
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -69,7 +68,6 @@ class ChallengesView extends StatelessWidget {
                 days: 3,
                 point: 300,
               ),
-        
               SizedBox(height: AppSpacing.xl),
               AppText(
                 context.l10n.new_challenges,
@@ -83,11 +81,9 @@ class ChallengesView extends StatelessWidget {
                 title: context.l10n.challenge_core_title,
                 subtitle: context.l10n.challenge_core_subtitle(15),
                 people: 87,
-        
                 days: 30,
                 point: 500,
               ),
-        
               SizedBox(height: AppSpacing.md),
               NewChallengesCard(
                 imageIcon: isDark
@@ -96,7 +92,6 @@ class ChallengesView extends StatelessWidget {
                 title: context.l10n.challenge_spring_title,
                 subtitle: context.l10n.challenge_spring_subtitle(25),
                 people: 142,
-        
                 days: 30,
                 point: 600,
               ),

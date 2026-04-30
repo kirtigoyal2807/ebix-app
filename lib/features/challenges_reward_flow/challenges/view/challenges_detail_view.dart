@@ -30,7 +30,6 @@ class ChallengesDetailView extends StatelessWidget {
             vertical: AppSpacing.md,
             horizontal: AppSpacing.lg,
           ),
-
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -58,10 +57,6 @@ class ChallengesDetailView extends StatelessWidget {
                     context.l10n.leaderboard,
                     style: (context) => AppTextStyles.gelasioRegular(context),
                   ),
-                  // AppText(
-                  //   context.l10n.seeAll,
-                  //   style: (context) => AppTextStyles.body(context),
-                  // ),
                 ],
               ),
               SizedBox(height: AppSpacing.md),
@@ -105,7 +100,6 @@ class ChallengesDetailView extends StatelessWidget {
                 name: "You",
                 attendedClasses: "8/20",
               ),
-
               SizedBox(height: AppSpacing.xl),
               AppText(
                 context.l10n.rewards,
@@ -120,7 +114,7 @@ class ChallengesDetailView extends StatelessWidget {
     );
   }
 
-  _progressCard({required BuildContext context}) {
+  Widget _progressCard({required BuildContext context}) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       padding: EdgeInsets.symmetric(

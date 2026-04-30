@@ -4,18 +4,51 @@ import 'package:pilates_app/config/theme/app_colors.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/core/localization/arb/app_localizations.dart';
-import 'package:pilates_app/core/localization/localization_extension.dart';
 import 'package:pilates_app/features/subscription/purchase_subscription/cubit/subscription_cubit.dart';
 import 'package:pilates_app/features/subscription/purchase_subscription/view/widgets/subscription_header.dart';
 import 'package:pilates_app/features/subscription/purchase_subscription/view/widgets/subscription_progress.dart';
 import 'package:pilates_app/widgets/app_button.dart';
-import 'package:pilates_app/widgets/app_scaffold.dart';
 import 'package:pilates_app/widgets/app_text.dart';
 import 'package:pilates_app/widgets/app_text_field.dart';
 import 'package:pilates_app/widgets/phone_number_field.dart';
 
-class HealthInformationView extends StatelessWidget {
+class HealthInformationView extends StatefulWidget {
   const HealthInformationView({super.key});
+
+  @override
+  State<HealthInformationView> createState() => _HealthInformationViewState();
+}
+
+class _HealthInformationViewState extends State<HealthInformationView> {
+  late final TextEditingController _nameController;
+  late final TextEditingController _ageController;
+  late final TextEditingController _heightController;
+  late final TextEditingController _weightController;
+  late final TextEditingController _phoneController;
+  late final TextEditingController _emailController;
+
+  @override
+  void initState() {
+    super.initState();
+    final s = context.read<SubscriptionCubit>().state;
+    _nameController = TextEditingController(text: s.name);
+    _ageController = TextEditingController(text: s.age);
+    _heightController = TextEditingController(text: s.height);
+    _weightController = TextEditingController(text: s.weight);
+    _phoneController = TextEditingController(text: s.phoneNumber);
+    _emailController = TextEditingController(text: s.email);
+  }
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _ageController.dispose();
+    _heightController.dispose();
+    _weightController.dispose();
+    _phoneController.dispose();
+    _emailController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,71 +68,67 @@ class HealthInformationView extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Progress
                   SubscriptionStepHeader(
                     currentStep: 0,
                     totalSteps: 6,
                     isDark: isDark,
                   ),
-                  // Title
                   AppText(
                     l10n.personalInformation,
                     style: (style) => AppTextStyles.heading1(context),
                   ),
                   const SizedBox(height: AppSpacing.lg),
-
-                  // Fields
                   AppTextField(
                     label: l10n.name,
-                    // Using "Name" from screenshot, but l10n has First Name. Adjust if needed.
                     hint: l10n.name,
-                    // onChanged: (val) => cubit.updateName(val),
+                    controller: _nameController,
+                    onChanged: cubit.updateName,
                   ),
                   const SizedBox(height: AppSpacing.md),
-
                   AppTextField(
                     label: l10n.age,
                     hint: l10n.age,
                     keyboardType: TextInputType.number,
-                    // onChanged: (val) => cubit.updateAge(val),
+                    controller: _ageController,
+                    onChanged: cubit.updateAge,
                   ),
                   const SizedBox(height: AppSpacing.md),
-
                   AppTextField(
                     label: l10n.heightCm,
-                    hint: 'Height',
+                    hint: l10n.heightCm,
                     keyboardType: TextInputType.number,
-                    // onChanged: (val) => cubit.updateHeight(val),
+                    controller: _heightController,
+                    onChanged: cubit.updateHeight,
                   ),
                   const SizedBox(height: AppSpacing.md),
-
                   AppTextField(
                     label: l10n.weightKg,
-                    hint: 'Weight',
+                    hint: l10n.weightKg,
                     keyboardType: TextInputType.number,
-                    // onChanged: (val) => cubit.updateWeight(val),
+                    controller: _weightController,
+                    onChanged: cubit.updateWeight,
                   ),
                   const SizedBox(height: AppSpacing.md),
-
                   PhoneNumberField(
                     label: l10n.phoneNumber,
                     countryCode: '+966',
-                    flagAsset: '', // Default from screenshot
+                    flagAsset: '',
+                    controller: _phoneController,
+                    onChanged: cubit.updatePhoneNumber,
                   ),
                   const SizedBox(height: AppSpacing.md),
-
                   AppTextField(
-                    label: l10n.emailTab, // "Email"
+                    label: l10n.emailTab,
                     hint: l10n.emailTab,
                     keyboardType: TextInputType.emailAddress,
-                    // onChanged: (val) => cubit.updateEmail(val),
+                    controller: _emailController,
+                    onChanged: cubit.updateEmail,
                   ),
                   const SizedBox(height: AppSpacing.lg),
                 ],
               ),
             ),
           ),
-
           AppButton(
             label: l10n.continueTxt,
             onPressed: () => cubit.nextStep(),

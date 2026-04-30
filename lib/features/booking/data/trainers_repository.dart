@@ -27,7 +27,7 @@ class TrainersRepository extends BaseRepository {
         if (search != null && search.trim().isNotEmpty) 'search': search.trim(),
       };
 
-      final response = await httpClient.get<dynamic>('/trainers', queryParameters: query);
+      final response = await httpClient.get<dynamic>('trainers', queryParameters: query);
       final code = response.statusCode;
       if (code == null) {
         return ApiFailure(
@@ -97,7 +97,7 @@ class TrainersRepository extends BaseRepository {
   Future<ApiResult<TrainerResource>> getTrainer(String id) {
     final trimmed = id.trim();
     return get<TrainerResource>(
-      '/trainers/$trimmed',
+      'trainers/$trimmed',
       fromJson: (json) => TrainerResource.fromJson(json as Map<String, dynamic>),
     );
   }

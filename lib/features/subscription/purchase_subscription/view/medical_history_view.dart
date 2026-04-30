@@ -6,19 +6,92 @@ import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/core/localization/arb/app_localizations.dart';
 import 'package:pilates_app/core/localization/localization_extension.dart';
 import 'package:pilates_app/features/subscription/purchase_subscription/cubit/subscription_cubit.dart';
+import 'package:pilates_app/features/checkout/data/checkout_repository.dart';
+import 'package:pilates_app/features/checkout/data/models/product_health_questionnaire.dart';
+import 'package:pilates_app/features/subscription/purchase_subscription/view/widgets/api_health_questionnaire_blocks.dart';
 import 'package:pilates_app/features/subscription/purchase_subscription/view/widgets/subscription_header.dart';
 import 'package:pilates_app/features/subscription/purchase_subscription/view/widgets/subscription_progress.dart';
 import 'package:pilates_app/widgets/app_button.dart';
 import 'package:pilates_app/widgets/app_text.dart';
 
-class MedicalHistoryView extends StatelessWidget {
+class MedicalHistoryView extends StatefulWidget {
   const MedicalHistoryView({super.key});
+
+  @override
+  State<MedicalHistoryView> createState() => _MedicalHistoryViewState();
+}
+
+class _MedicalHistoryViewState extends State<MedicalHistoryView> {
+  bool _questionnaireLoading = true;
+  bool _questionnaireLoadFailed = false;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) => _loadQuestionnaire());
+  }
+
+  Future<void> _loadQuestionnaire() async {
+    if (!mounted) return;
+    final cubit = context.read<SubscriptionCubit>();
+    if (!cubit.state.selectedProductRequiresHealthIntake) {
+      setState(() {
+        _questionnaireLoading = false;
+        _questionnaireLoadFailed = false;
+      });
+      return;
+    }
+    final productId = cubit.state.checkoutProductId;
+    if (productId <= 0) {
+      setState(() {
+        _questionnaireLoading = false;
+        _questionnaireLoadFailed = false;
+      });
+      return;
+    }
+
+    setState(() {
+      _questionnaireLoading = true;
+      _questionnaireLoadFailed = false;
+    });
+
+    final repo = context.read<CheckoutRepository>();
+    final result = await repo.getQuestionsByProduct(productId: productId);
+
+    if (!mounted) return;
+
+    result.when(
+      success: (data, _) {
+        cubit.applyHealthQuestionnaire(data);
+        setState(() {
+          _questionnaireLoading = false;
+          _questionnaireLoadFailed = false;
+        });
+      },
+      failure: (_) {
+        cubit.applyHealthQuestionnaire(const ProductHealthQuestionnaire());
+        setState(() {
+          _questionnaireLoading = false;
+          _questionnaireLoadFailed = true;
+        });
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final cubit = context.read<SubscriptionCubit>();
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final hasApiMedical = pickQuestionsByIds(
+      cubit.state.healthQuestionnaireQuestions,
+      const [
+        HealthQuestionnaireIds.injuriesSurgeries,
+        HealthQuestionnaireIds.medicalConditions,
+      ],
+    ).isNotEmpty;
+    final showStaticLegacy = !_questionnaireLoading &&
+        (_questionnaireLoadFailed || !hasApiMedical);
 
     return Padding(
       padding: const EdgeInsets.symmetric(
@@ -46,6 +119,48 @@ class MedicalHistoryView extends StatelessWidget {
                   ),
                   const SizedBox(height: AppSpacing.lg),
 
+                  if (_questionnaireLoading)
+                    const Padding(
+                      padding: EdgeInsets.symmetric(vertical: AppSpacing.md),
+                      child: Center(
+                        child: SizedBox(
+                          width: 28,
+                          height: 28,
+                          child: CircularProgressIndicator(strokeWidth: 2),
+                        ),
+                      ),
+                    ),
+                  if (!_questionnaireLoading && _questionnaireLoadFailed)
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: AppSpacing.md),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Expanded(
+                            child: AppText(
+                              l10n.loginErrorGeneric,
+                              style: (ctx) =>
+                                  AppTextStyles.captionText(ctx),
+                            ),
+                          ),
+                          TextButton(
+                            onPressed: _loadQuestionnaire,
+                            child: Text(l10n.retry),
+                          ),
+                        ],
+                      ),
+                    ),
+                  if (!_questionnaireLoading && hasApiMedical)
+                    const ApiBooleanQuestionsBlock(
+                      questionIds: [
+                        HealthQuestionnaireIds.injuriesSurgeries,
+                        HealthQuestionnaireIds.medicalConditions,
+                      ],
+                    ),
+                  if (!_questionnaireLoading && hasApiMedical)
+                    const SizedBox(height: AppSpacing.lg),
+
+                  if (showStaticLegacy) ...[
                   // Section 1: Chronic Conditions
                   _buildSectionHeader(context, l10n.chronicConditions),
                   const SizedBox(height: AppSpacing.md),
@@ -267,6 +382,7 @@ class MedicalHistoryView extends StatelessWidget {
                     },
                   ),
                   const SizedBox(height: AppSpacing.md),
+                  ],
                 ],
               ),
             ),
@@ -274,8 +390,21 @@ class MedicalHistoryView extends StatelessWidget {
           AppButton(
             label: l10n.continueTxt,
             onPressed: () {
-              // Logic for finishing or next step
-              cubit.nextStep(); // For now
+              final medicalQs = pickQuestionsByIds(
+                cubit.state.healthQuestionnaireQuestions,
+                const [
+                  HealthQuestionnaireIds.injuriesSurgeries,
+                  HealthQuestionnaireIds.medicalConditions,
+                ],
+              );
+              if (medicalQs.isNotEmpty &&
+                  !cubit.validateQuestionnaireGroup(medicalQs)) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text(l10n.giftRecipientValidationError)),
+                );
+                return;
+              }
+              cubit.nextStep();
             },
             buttonColor:isDark ?AppColors.primary: AppColors.primaryBrown,
             expanded: true,

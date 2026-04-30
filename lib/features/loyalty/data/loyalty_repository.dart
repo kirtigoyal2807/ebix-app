@@ -10,7 +10,7 @@ class LoyaltyRepository extends BaseRepository {
   /// 17.10 Achievements — badges (earned + locked) and achievement rules.
   Future<ApiResult<LoyaltyAchievementsResult>> getAchievements() {
     return get<LoyaltyAchievementsResult>(
-      '/loyalty/achievements',
+      'loyalty/achievements',
       fromJson: (json) =>
           LoyaltyAchievementsResult.fromJson(json as Map<String, dynamic>),
     );

@@ -10,7 +10,7 @@ class ClassesRepository extends BaseRepository {
   Future<ApiResult<BookingResource>> bookWithPlan(String calendarEventId) {
     final id = calendarEventId.trim();
     return post<BookingResource>(
-      '/classes/$id/book',
+      'classes/$id/book',
       data: <String, dynamic>{},
       fromJson: (json) =>
           BookingResource.fromJson(json as Map<String, dynamic>),
