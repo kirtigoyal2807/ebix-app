@@ -173,7 +173,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get phoneSupportDesc => '91 98765 43210 • Mon-Sat 9 AM - 7 PM';
 
   @override
-  String get splashAppName => 'The Pilates';
+  String get splashAppName => 'the_pilates';
 
   @override
   String get splashStudio => 'STUDIO';

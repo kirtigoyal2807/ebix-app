@@ -413,7 +413,7 @@ abstract class AppLocalizations {
   /// No description provided for @splashAppName.
   ///
   /// In en, this message translates to:
-  /// **'The Pilates'**
+  /// **'the_pilates'**
   String get splashAppName;
 
   /// No description provided for @splashStudio.

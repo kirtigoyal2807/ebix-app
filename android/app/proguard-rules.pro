@@ -13,6 +13,6 @@
 }
 
 # Keep custom application classes
--keep class com.example.pilates_app.** { *; }
+-keep class sa.thepilates.app.** { *; }
 
 

@@ -1,4 +1,4 @@
-package com.example.pilates_app
+package sa.thepilates.app
 
 import io.flutter.embedding.android.FlutterActivity
 

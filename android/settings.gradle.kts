@@ -19,7 +19,8 @@ pluginManagement {
 
 plugins {
     id("dev.flutter.flutter-plugin-loader") version "1.0.0"
-    id("com.android.application") version "8.11.1" apply false
+    // AndroidX 1.17+ / browser 1.9+ require AGP ≥ 8.9.1. 8.11.x improves bundle native/strip handling vs 8.9.x in some projects.
+    id("com.android.application") version "8.11.2" apply false
     id("org.jetbrains.kotlin.android") version "2.2.20" apply false
 }
 
