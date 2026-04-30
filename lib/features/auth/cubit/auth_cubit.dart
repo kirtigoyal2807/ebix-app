@@ -69,6 +69,7 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   AuthRepository get authRepository => _authRepository;
+  TokenStorage get tokenStorage => _tokenStorage;
 
   // Splash logic
   void _startSplash() {
@@ -477,6 +478,7 @@ class AuthCubit extends Cubit<AuthState> {
     }
     await _tokenStorage.clearToken();
     await _tokenStorage.clearUser();
+    await _tokenStorage.clearMembershipPlanName();
     emit(
       state
           .copyWith(
@@ -502,6 +504,7 @@ class AuthCubit extends Cubit<AuthState> {
   Future<void> cancelPostLoginSetup() async {
     await _tokenStorage.clearToken();
     await _tokenStorage.clearUser();
+    await _tokenStorage.clearMembershipPlanName();
     emit(
       state
           .copyWith(
@@ -1020,8 +1023,9 @@ class AuthCubit extends Cubit<AuthState> {
     final result = await _authRepository.getProfile();
     switch (result) {
       case ApiSuccess<AuthUser>(:final data):
+        await _tokenStorage.saveUser(data);
         emit(state.copyWith(user: data));
-      case ApiFailure<AuthUser>(:final exception):
+      case ApiFailure<AuthUser>():
         // Profile load failed - user remains null
         // This is not a critical error, user can continue without profile data
         break;

@@ -24,9 +24,7 @@ class TrainerCard extends StatelessWidget {
     final size = MediaQuery.sizeOf(context);
     final titleSize = size.width * 0.04 > 16 ? 16.0 : size.width * 0.04;
     final metaSize = size.width * 0.03 > 14 ? 14.0 : size.width * 0.03;
-    final subtitle = trainer.specialties.isNotEmpty
-        ? trainer.specialties.take(5).join(' · ')
-        : context.l10n.powerPilatesSpecialist;
+    final subtitle = trainer.specialties.take(5).join(' · ');
 
     return GestureDetector(
       onTap: () {
@@ -110,19 +108,21 @@ class TrainerCard extends StatelessWidget {
                       ),
                     ],
                   ),
-                  SizedBox(height: AppSpacing.sm),
-                  AppText(
-                    subtitle,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: (context) => AppTextStyles.captionText(context)
-                        .copyWith(
-                      fontSize: metaSize,
-                      color: isDark
-                          ? AppColors.darkGreyText
-                          : AppColors.lightGrey,
+                  if (subtitle.isNotEmpty) ...[
+                    SizedBox(height: AppSpacing.sm),
+                    AppText(
+                      subtitle,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: (context) => AppTextStyles.captionText(context)
+                          .copyWith(
+                        fontSize: metaSize,
+                        color: isDark
+                            ? AppColors.darkGreyText
+                            : AppColors.lightGrey,
+                      ),
                     ),
-                  ),
+                  ],
                   SizedBox(height: AppSpacing.base),
                   Wrap(
                     direction: Axis.horizontal,
@@ -140,41 +140,46 @@ class TrainerCard extends StatelessWidget {
                         TagChip(label: s, fontSize: 14),
                     ],
                   ),
-                  SizedBox(height: AppSpacing.sm),
-                  AppText(
-                    trainer.bio?.trim().isNotEmpty == true
-                        ? trainer.bio!.trim()
-                        : context.l10n.trainerDescription,
-                    maxLines: 4,
-                    overflow: TextOverflow.ellipsis,
-                    style: (context) =>
-                        AppTextStyles.bodyText(context).copyWith(height: 1.4),
-                  ),
-                  SizedBox(height: AppSpacing.sm),
-                  _buildIconRow(
-                    icon: Icon(
-                      Icons.location_on_outlined,
-                      color: isDark
-                          ? AppColors.languageIconDark
-                          : AppColors.languageIcon,
-                      size: 16,
+                  if (trainer.bio != null && trainer.bio!.trim().isNotEmpty) ...[
+                    SizedBox(height: AppSpacing.sm),
+                    AppText(
+                      trainer.bio!.trim(),
+                      maxLines: 4,
+                      overflow: TextOverflow.ellipsis,
+                      style: (context) =>
+                          AppTextStyles.bodyText(context).copyWith(height: 1.4),
                     ),
-                    label: trainer.branches.isNotEmpty
-                        ? trainer.branches.map((b) => b.name).join(', ')
-                        : context.l10n.downtownStudio,
-                  ),
-                  SizedBox(height: AppSpacing.sm),
-                  _buildIconRow(
-                    icon: SvgPicture.asset(
-                      "assets/images/svg/ic_physical_therapy.svg",
-                      height: 16,
-                      width: 16,
-                      color: isDark
-                          ? AppColors.languageIconDark
-                          : AppColors.languageIcon,
+                  ],
+                  if (trainer.branches.isNotEmpty) ...[
+                    SizedBox(height: AppSpacing.sm),
+                    _buildIconRow(
+                      icon: Icon(
+                        Icons.location_on_outlined,
+                        color: isDark
+                            ? AppColors.languageIconDark
+                            : AppColors.languageIcon,
+                        size: 16,
+                      ),
+                      label:
+                          trainer.branches.map((b) => b.name).join(', '),
                     ),
-                    label: context.l10n.classesThisWeek(32),
-                  ),
+                  ],
+                  if (trainer.classesThisWeekCount != null) ...[
+                    SizedBox(height: AppSpacing.sm),
+                    _buildIconRow(
+                      icon: SvgPicture.asset(
+                        "assets/images/svg/ic_physical_therapy.svg",
+                        height: 16,
+                        width: 16,
+                        color: isDark
+                            ? AppColors.languageIconDark
+                            : AppColors.languageIcon,
+                      ),
+                      label: context.l10n.classesThisWeek(
+                        trainer.classesThisWeekCount!,
+                      ),
+                    ),
+                  ],
                 ],
               ),
             ),
@@ -211,8 +216,7 @@ class TrainerCard extends StatelessWidget {
   }
 }
 
-/// List card: no reviews → muted outline star. With API [avgRating], show
-/// [TrainerAverageStars] plus number and count; else fallback to single star + text.
+/// List card: uses API [avgRating] / [reviewsCount] only — no placeholder averages.
 class _TrainerRatingRow extends StatelessWidget {
   const _TrainerRatingRow({
     required this.trainer,
@@ -226,15 +230,6 @@ class _TrainerRatingRow extends StatelessWidget {
   Widget build(BuildContext context) {
     final count = trainer.reviewsCount;
     final metaColor = isDark ? AppColors.darkGreyText : AppColors.lightGrey;
-
-    if (!trainer.hasReviews) {
-      return Icon(
-        Icons.star_border_rounded,
-        color: metaColor,
-        size: 18,
-      );
-    }
-
     final avgValue = trainer.averageRatingValue;
     final avgText = trainer.displayAverageRating;
 
@@ -254,7 +249,66 @@ class _TrainerRatingRow extends StatelessWidget {
               color: isDark ? AppColors.lightText : AppColors.darkText,
             ),
           ),
-          const SizedBox(width: 2),
+          if (count > 0) ...[
+            const SizedBox(width: 2),
+            AppText(
+              '($count)',
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: (context) => AppTextStyles.captionText(
+                context,
+              ),
+            ),
+          ],
+        ],
+      );
+    }
+
+    if (avgText.isNotEmpty) {
+      return Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(
+            Icons.star_border_rounded,
+            color: metaColor,
+            size: 18,
+          ),
+          const SizedBox(width: 4),
+          AppText(
+            avgText,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: (context) => AppTextStyles.boldBody(
+              context,
+            ).copyWith(
+              color: isDark ? AppColors.lightText : AppColors.darkText,
+            ),
+          ),
+          if (count > 0) ...[
+            const SizedBox(width: 2),
+            AppText(
+              '($count)',
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: (context) => AppTextStyles.captionText(
+                context,
+              ),
+            ),
+          ],
+        ],
+      );
+    }
+
+    if (count > 0) {
+      return Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(
+            Icons.star_border_rounded,
+            color: metaColor,
+            size: 18,
+          ),
+          const SizedBox(width: 4),
           AppText(
             '($count)',
             maxLines: 1,
@@ -267,35 +321,10 @@ class _TrainerRatingRow extends StatelessWidget {
       );
     }
 
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Icon(
-          Icons.star_rounded,
-          color: AppColors.goldStarColor,
-          size: 16,
-        ),
-        const SizedBox(width: 4),
-        AppText(
-          avgText.isNotEmpty ? avgText : '—',
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-          style: (context) => AppTextStyles.boldBody(
-            context,
-          ).copyWith(
-            color: isDark ? AppColors.lightText : AppColors.darkText,
-          ),
-        ),
-        const SizedBox(width: 2),
-        AppText(
-          '($count)',
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-          style: (context) => AppTextStyles.captionText(
-            context,
-          ),
-        ),
-      ],
+    return Icon(
+      Icons.star_border_rounded,
+      color: metaColor,
+      size: 18,
     );
   }
 }

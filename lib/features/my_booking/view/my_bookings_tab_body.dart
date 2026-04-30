@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 
+import 'package:pilates_app/core/constants/check_in_policy.dart';
 import 'package:pilates_app/config/theme/app_colors.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
@@ -71,8 +72,9 @@ class MyBookingsTabBody extends StatelessWidget {
     }
   }
 
-  /// Server returns 422 if not in `booked` / bookable state; keep client-side guard minimal.
-  static bool _canSubmitCheckIn(BookingResource b) {
+  /// Matches server rules plus [CheckInPolicy]: check-in unlocks [kOpensBeforeStart]
+  /// minutes before class and closes after session end (or at start if end unknown).
+  static bool _bookingStatusAllowsCheckIn(BookingResource b) {
     if (b.checkedInAt != null) return false;
     final s = b.status.toLowerCase();
     if (s == 'attended' ||
@@ -82,6 +84,37 @@ class MyBookingsTabBody extends StatelessWidget {
       return false;
     }
     return true;
+  }
+
+  static bool _canSubmitCheckIn(BookingResource b) {
+    if (!_bookingStatusAllowsCheckIn(b)) return false;
+    final start = b.startAt;
+    if (start == null) return true;
+    return CheckInPolicy.nowIsWithinWindow(
+      nowLocal: DateTime.now(),
+      classStartUtcOrLocal: start,
+      classEndUtcOrLocal: b.endAt,
+    );
+  }
+
+  static String? _checkInButtonLabelHint(BuildContext context, BookingResource b) {
+    if (b.checkedInAt != null) return null;
+    if (!_bookingStatusAllowsCheckIn(b)) return null;
+    final start = b.startAt;
+    if (start == null) return null;
+    final locale = Localizations.localeOf(context).toLanguageTag();
+    final band = CheckInPolicy.timeBandFor(
+      nowLocal: DateTime.now(),
+      classStartUtcOrLocal: start,
+      classEndUtcOrLocal: b.endAt,
+    );
+    final opens = CheckInPolicy.opensAt(start);
+    final opensStr = DateFormat.jm(locale).format(opens.toLocal());
+    return switch (band) {
+      CheckInTimeBand.tooEarly => context.l10n.checkInOpensAtHint(opensStr),
+      CheckInTimeBand.tooLate => context.l10n.checkInClosedShort,
+      CheckInTimeBand.inWindow => null,
+    };
   }
 
   /// §13.10 — `DELETE /enrollments/{id}` for booked, waitlisted, or pending payment.
@@ -208,13 +241,15 @@ class MyBookingsTabBody extends StatelessWidget {
             physics: const AlwaysScrollableScrollPhysics(),
             padding: const EdgeInsets.symmetric(vertical: AppSpacing.lg),
             itemCount: tab.items.length,
-            separatorBuilder: (_, __) => const SizedBox(height: AppSpacing.md),
+            separatorBuilder: (context, _) =>
+                const SizedBox(height: AppSpacing.md),
             itemBuilder: (context, index) {
               final b = tab.items[index];
               final wl = b.waitlistPosition;
               final checkedIn =
                   b.checkedInAt != null || b.status.toLowerCase() == 'attended';
               final canCheckIn = _canSubmitCheckIn(b);
+              final checkInLabelOverride = _checkInButtonLabelHint(context, b);
               final canCancel = _canCancelEnrollment(b);
               final busy = state.checkInBusyEnrollmentId == b.id;
               final cancelBusy = state.cancelBusyEnrollmentId == b.id;
@@ -230,7 +265,9 @@ class MyBookingsTabBody extends StatelessWidget {
                 isRate: group == MyBookingsStatusGroup.past &&
                     b.status == 'attended',
                 coverImageUrl: b.classImageUrl,
-                checkInLabel: checkedIn ? context.l10n.checkedIn : null,
+                checkInLabel: checkedIn
+                    ? context.l10n.checkedIn
+                    : checkInLabelOverride,
                 isCheckInBusy: busy,
                 onCheckIn: canCheckIn
                     ? () async {
@@ -242,9 +279,7 @@ class MyBookingsTabBody extends StatelessWidget {
                         messenger.showSnackBar(
                           SnackBar(
                             content: Text(
-                              err == null
-                                  ? context.l10n.checkInSuccess
-                                  : err,
+                              err ?? context.l10n.checkInSuccess,
                             ),
                             backgroundColor:
                                 err == null ? null : AppColors.redLight,
@@ -261,9 +296,8 @@ class MyBookingsTabBody extends StatelessWidget {
                         messenger.showSnackBar(
                           SnackBar(
                             content: Text(
-                              err == null
-                                  ? context.l10n.cancelEnrollmentSuccess
-                                  : err,
+                              err ??
+                                  context.l10n.cancelEnrollmentSuccess,
                             ),
                             backgroundColor:
                                 err == null ? null : AppColors.redLight,

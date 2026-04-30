@@ -225,6 +225,7 @@
   "bookYourClass": "Book Your Class",
   "paymentSummery": "Payment Summary",
   "classFee": "Class Fee",
+  "bookingPriceUnavailable": "—",
   "total": "Total",
   "bookPolicy": "I agree to the cancellation policy and understand that I can cancel up to 4 hours before the class starts.",
   "confirmBooking": "Confirm Booking",
@@ -235,6 +236,36 @@
   "checkInLongDescription": "You'll receive a notification when check-in becomes available",
   "checkInButton": "Check-In (Opens at 5:30 PM)",
   "checkInSuccess": "You're checked in.",
+  "checkInWindowExplanationSchedule": "Check-in opens {minutes} minutes before class (Available at {time})",
+  "@checkInWindowExplanationSchedule": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      },
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "checkInButtonOpensAtDynamic": "Check-In (Opens at {time})",
+  "@checkInButtonOpensAtDynamic": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "checkInEndedForThisClass": "Check-in is closed for this class.",
+  "checkInActiveWindowBody": "You can check in now.",
+  "checkInOpensAtHint": "Opens {time}",
+  "@checkInOpensAtHint": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "checkInClosedShort": "Closed",
   "cancelEnrollmentSuccess": "Your booking was cancelled.",
   "checkedIn": "Checked in",
   "classDetail": "Class Details",
@@ -529,6 +560,17 @@
   "all": "All",
   "subscriptions": "Subscriptions",
   "classes": "Classes",
+  "membershipClassesRemainingOfTotal": "{remaining} of {total} classes",
+  "@membershipClassesRemainingOfTotal": {
+    "placeholders": {
+      "remaining": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
   "refunds": "Refunds",
   "date": "Date",
   "termsAndConditions": "Terms & Conditions",
@@ -681,7 +723,14 @@
   "allNotifications": "All Notifications",
   "classNotifications": "Class Notifications",
   "beforeClassStarts": "Before Class Starts",
-  "beforeClassStartsSubtitle": "Get notified 30 min before",
+  "beforeClassStartsSubtitle": "Get notified {minutes} min before",
+  "@beforeClassStartsSubtitle": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
   "dayBeforeReminder": "Day Before Reminder",
   "dayBeforeReminderSubtitle": "Reminder 24 hours before",
   "subscriptionBilling": "Subscription & Billing",
@@ -1093,6 +1142,10 @@
   "noBranchesAvailable": "No branches available.",
   "pleaseSelectBranch": "Please select a branch to continue.",
   "retry": "Retry",
+  "noClassesFound": "No classes found",
+  "somethingWentWrong": "Something went wrong. Please try again.",
+  "availabilityUnknown": "Availability unknown",
+  "trainerUnknown": "Unknown trainer",
   "locationPermissionTitle": "Location Access",
   "locationPermissionMessage": "Location permission is disabled. Please enable it in app settings so we can suggest the nearest branch.",
   "openSettings": "Open Settings",

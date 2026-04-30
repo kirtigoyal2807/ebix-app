@@ -13,6 +13,7 @@ class TokenStorage {
 
   static const _kAccessToken = 'auth_access_token';
   static const _kUserData = 'auth_user_data';
+  static const _kMembershipPlanName = 'membership_plan_name';
 
   String? readToken() => _prefs.getString(_kAccessToken);
 
@@ -40,16 +41,18 @@ class TokenStorage {
   }
 
   Future<void> saveUser(AuthUser user) async {
-    final userJson = jsonEncode({
-      'id': user.id,
-      'firstName': user.firstName,
-      'lastName': user.lastName,
-      'name': user.name,
-      'email': user.email,
-      'phone': user.phone,
-    });
+    final userJson = jsonEncode(user.toJson());
     await _prefs.setString(_kUserData, userJson);
   }
 
   Future<void> clearUser() => _prefs.remove(_kUserData);
+
+  String? readMembershipPlanName() => _prefs.getString(_kMembershipPlanName);
+
+  Future<void> saveMembershipPlanName(String planName) async {
+    await _prefs.setString(_kMembershipPlanName, planName);
+  }
+
+  Future<void> clearMembershipPlanName() =>
+      _prefs.remove(_kMembershipPlanName);
 }

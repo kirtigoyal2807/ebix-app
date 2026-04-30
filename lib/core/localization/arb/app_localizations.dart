@@ -1154,6 +1154,12 @@ abstract class AppLocalizations {
   /// **'Class Fee'**
   String get classFee;
 
+  /// No description provided for @bookingPriceUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'—'**
+  String get bookingPriceUnavailable;
+
   /// No description provided for @total.
   ///
   /// In en, this message translates to:
@@ -1213,6 +1219,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'You\'re checked in.'**
   String get checkInSuccess;
+
+  /// No description provided for @checkInWindowExplanationSchedule.
+  ///
+  /// In en, this message translates to:
+  /// **'Check-in opens {minutes} minutes before class (Available at {time})'**
+  String checkInWindowExplanationSchedule(int minutes, String time);
+
+  /// No description provided for @checkInButtonOpensAtDynamic.
+  ///
+  /// In en, this message translates to:
+  /// **'Check-In (Opens at {time})'**
+  String checkInButtonOpensAtDynamic(String time);
+
+  /// No description provided for @checkInEndedForThisClass.
+  ///
+  /// In en, this message translates to:
+  /// **'Check-in is closed for this class.'**
+  String get checkInEndedForThisClass;
+
+  /// No description provided for @checkInActiveWindowBody.
+  ///
+  /// In en, this message translates to:
+  /// **'You can check in now.'**
+  String get checkInActiveWindowBody;
+
+  /// No description provided for @checkInOpensAtHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Opens {time}'**
+  String checkInOpensAtHint(String time);
+
+  /// No description provided for @checkInClosedShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Closed'**
+  String get checkInClosedShort;
 
   /// No description provided for @cancelEnrollmentSuccess.
   ///
@@ -2588,6 +2630,12 @@ abstract class AppLocalizations {
   /// **'Classes'**
   String get classes;
 
+  /// No description provided for @membershipClassesRemainingOfTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'{remaining} of {total} classes'**
+  String membershipClassesRemainingOfTotal(int remaining, int total);
+
   /// No description provided for @refunds.
   ///
   /// In en, this message translates to:
@@ -3383,8 +3431,8 @@ abstract class AppLocalizations {
   /// No description provided for @beforeClassStartsSubtitle.
   ///
   /// In en, this message translates to:
-  /// **'Get notified 30 min before'**
-  String get beforeClassStartsSubtitle;
+  /// **'Get notified {minutes} min before'**
+  String beforeClassStartsSubtitle(int minutes);
 
   /// No description provided for @dayBeforeReminder.
   ///
@@ -5299,6 +5347,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Retry'**
   String get retry;
+
+  /// No description provided for @noClassesFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No classes found'**
+  String get noClassesFound;
+
+  /// No description provided for @somethingWentWrong.
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong. Please try again.'**
+  String get somethingWentWrong;
+
+  /// No description provided for @availabilityUnknown.
+  ///
+  /// In en, this message translates to:
+  /// **'Availability unknown'**
+  String get availabilityUnknown;
+
+  /// No description provided for @trainerUnknown.
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown trainer'**
+  String get trainerUnknown;
 
   /// No description provided for @locationPermissionTitle.
   ///

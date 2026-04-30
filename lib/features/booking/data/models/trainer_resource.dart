@@ -19,6 +19,7 @@ class TrainerResource {
     required this.branches,
     this.avatarUrl,
     this.recentReviews,
+    this.classesThisWeekCount,
   });
 
   final String id;
@@ -36,6 +37,9 @@ class TrainerResource {
   /// Present when the API includes `recentReviews` / `recent_reviews` (may be `[]`).
   /// If omitted from JSON, this is null and the client may load reviews via `GET /reviews`.
   final List<ReviewResource>? recentReviews;
+
+  /// When present (e.g. `classesThisWeek`), shown on the trainer list card.
+  final int? classesThisWeekCount;
 
   factory TrainerResource.fromJson(Map<String, dynamic> json) {
     final specialtiesRaw = json['specialties'];
@@ -75,7 +79,7 @@ class TrainerResource {
     List<ReviewResource>? recentReviews;
     if (json.containsKey('recentReviews') || json.containsKey('recent_reviews')) {
       final raw = json['recentReviews'] ?? json['recent_reviews'];
-      recentReviews = _parseRecentReviews(raw);
+      recentReviews = parseRecentReviewsList(raw);
     }
 
     return TrainerResource(
@@ -94,20 +98,13 @@ class TrainerResource {
           json['image'] as String? ??
           json['photo'] as String?,
       recentReviews: recentReviews,
+      classesThisWeekCount: _optionalInt(
+        json['classesThisWeek'] ??
+            json['classes_this_week'] ??
+            json['weeklyClassesCount'] ??
+            json['weekly_classes_count'],
+      ),
     );
-  }
-
-  static List<ReviewResource> _parseRecentReviews(dynamic raw) {
-    if (raw is! List) return <ReviewResource>[];
-    final out = <ReviewResource>[];
-    for (final e in raw) {
-      if (e is Map<String, dynamic>) {
-        out.add(ReviewResource.fromJson(e));
-      } else if (e is Map) {
-        out.add(ReviewResource.fromJson(Map<String, dynamic>.from(e)));
-      }
-    }
-    return out;
   }
 
   static int? _optionalInt(dynamic v) {
