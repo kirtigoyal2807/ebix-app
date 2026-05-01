@@ -22,7 +22,6 @@ class RewardOverviewView extends StatelessWidget {
     return SingleChildScrollView(
       child: Padding(
         padding: EdgeInsetsGeometry.symmetric(
-          // horizontal: AppSpacing.lg,
           vertical: AppSpacing.lg,
         ),
         child: Column(
@@ -30,7 +29,6 @@ class RewardOverviewView extends StatelessWidget {
           children: [
             _BuildCard(context: context),
             SizedBox(height: AppSpacing.xl),
-
             Padding(
               padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
               child: AppText(
@@ -50,7 +48,6 @@ class RewardOverviewView extends StatelessWidget {
             SizedBox(height: AppSpacing.md),
             FilterTabButton(),
             SizedBox(height: AppSpacing.lmd),
-
             Padding(
               padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
               child: AppText(
@@ -88,7 +85,7 @@ class RewardOverviewView extends StatelessWidget {
     );
   }
 
-  _BuildCard({required BuildContext context}) {
+  Widget _BuildCard({required BuildContext context}) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       margin: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
@@ -166,11 +163,10 @@ class RewardOverviewView extends StatelessWidget {
     );
   }
 
-  _currentBranch({
+  Widget _currentBranch({
     required BuildContext context,
     required BuildContext cubitContext,
-  })
-  {
+  }) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       margin: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
@@ -192,7 +188,6 @@ class RewardOverviewView extends StatelessWidget {
           children: [
             Icon(Icons.home_outlined, color: AppColors.languageIcon, size: 24),
             SizedBox(width: 10),
-        
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -213,7 +208,6 @@ class RewardOverviewView extends StatelessWidget {
                 ],
               ),
             ),
-        
             Align(
               alignment: Alignment.center,
               child: GestureDetector(
@@ -223,7 +217,6 @@ class RewardOverviewView extends StatelessWidget {
                     context: context,
                     isScrollControlled: true,
                     barrierColor: AppColors.bottomSheetShadow,
-                    // backgroundColor: Colors.transparent,
                     builder: (_) => BlocProvider.value(
                       value: rewardCubit,
                       child: SelectBranchSheet(),

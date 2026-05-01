@@ -16,7 +16,7 @@ class MyBookingsRepository extends BaseRepository {
   Future<ApiResult<BookingResource>> cancelEnrollment(String enrollmentId) {
     final id = enrollmentId.trim();
     return delete<BookingResource>(
-      '/enrollments/$id',
+      'enrollments/$id',
       fromJson: (json) =>
           BookingResource.fromJson(json as Map<String, dynamic>),
     );
@@ -26,7 +26,7 @@ class MyBookingsRepository extends BaseRepository {
   Future<ApiResult<BookingResource>> checkIn(String enrollmentId) {
     final id = enrollmentId.trim();
     return post<BookingResource>(
-      '/enrollments/$id/check-in',
+      'enrollments/$id/check-in',
       data: <String, dynamic>{},
       fromJson: (json) =>
           BookingResource.fromJson(json as Map<String, dynamic>),
@@ -41,7 +41,7 @@ class MyBookingsRepository extends BaseRepository {
   }) async {
     try {
       final response = await httpClient.get<dynamic>(
-        '/my-bookings',
+        'my-bookings',
         queryParameters: {
           'status_group': statusGroup,
           'page': page,

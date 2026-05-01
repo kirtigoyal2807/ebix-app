@@ -4,16 +4,42 @@ import 'package:pilates_app/config/theme/app_colors.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/core/localization/arb/app_localizations.dart';
-import 'package:pilates_app/core/localization/localization_extension.dart';
 import 'package:pilates_app/features/subscription/purchase_subscription/cubit/subscription_cubit.dart';
+import 'package:pilates_app/features/subscription/purchase_subscription/view/widgets/subscription_calendar_date_field.dart';
 import 'package:pilates_app/features/subscription/purchase_subscription/view/widgets/subscription_header.dart';
 import 'package:pilates_app/features/subscription/purchase_subscription/view/widgets/subscription_progress.dart';
 import 'package:pilates_app/widgets/app_button.dart';
 import 'package:pilates_app/widgets/app_text.dart';
 import 'package:pilates_app/widgets/app_text_field.dart';
 
-class DeclarationView extends StatelessWidget {
+class DeclarationView extends StatefulWidget {
   const DeclarationView({super.key});
+
+  @override
+  State<DeclarationView> createState() => _DeclarationViewState();
+}
+
+class _DeclarationViewState extends State<DeclarationView> {
+  late final TextEditingController _nameController;
+  late final TextEditingController _signatureController;
+  late final TextEditingController _dateController;
+
+  @override
+  void initState() {
+    super.initState();
+    final s = context.read<SubscriptionCubit>().state;
+    _nameController = TextEditingController(text: s.declarationName);
+    _signatureController = TextEditingController(text: s.declarationSignature);
+    _dateController = TextEditingController(text: s.declarationDate);
+  }
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _signatureController.dispose();
+    _dateController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,14 +59,11 @@ class DeclarationView extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Progress
                   SubscriptionStepHeader(
                     currentStep: 5,
                     totalSteps: 6,
                     isDark: isDark,
                   ),
-
-                  // Title
                   AppText(
                     l10n.declaration,
                     style: (style) => AppTextStyles.gelasioMedium(
@@ -48,33 +71,27 @@ class DeclarationView extends StatelessWidget {
                     ).copyWith(fontSize: 24, height: 1.2),
                   ),
                   const SizedBox(height: AppSpacing.lg),
-
-                  // Declaration Text
                   _buildSectionHeader(context, l10n.declarationText),
                   const SizedBox(height: AppSpacing.md),
-
-                  // Name Field
                   AppTextField(
-                    label: l10n.name, // "Name" from screenshot
-                    hint: l10n.name, // Placeholder
-                    // onChanged: (val) => cubit.updateDeclarationName(val),
+                    label: l10n.name,
+                    hint: l10n.name,
+                    controller: _nameController,
+                    onChanged: cubit.updateDeclarationName,
                   ),
                   const SizedBox(height: AppSpacing.md),
-
-                  // Signature Field
                   AppTextField(
                     label: l10n.signature,
                     hint: l10n.signature,
-                    // onChanged: (val) => cubit.updateDeclarationSignature(val),
+                    controller: _signatureController,
+                    onChanged: cubit.updateDeclarationSignature,
                   ),
                   const SizedBox(height: AppSpacing.md),
-
-                  // Date Field
-                  AppTextField(
+                  SubscriptionCalendarDateField(
                     label: l10n.date,
                     hint: l10n.date,
-                    // onChanged: (val) => cubit.updateDeclarationDate(val),
-                    // Ideally would act as date picker
+                    controller: _dateController,
+                    onDateSelected: cubit.updateDeclarationDate,
                   ),
                   const SizedBox(height: AppSpacing.lg),
                 ],
@@ -86,7 +103,7 @@ class DeclarationView extends StatelessWidget {
             onPressed: () {
               cubit.nextStep();
             },
-            buttonColor:isDark ?AppColors.primary: AppColors.primaryBrown,
+            buttonColor: isDark ? AppColors.primary : AppColors.primaryBrown,
             expanded: true,
           ),
         ],
@@ -99,7 +116,6 @@ class DeclarationView extends StatelessWidget {
     return AppText(
       title,
       style: (style) => AppTextStyles.bodyText(context).copyWith(
-        // fontWeight: FontWeight.w500,
         fontSize: 16,
         color: isDark ? AppColors.lightText : AppColors.darkText,
       ),

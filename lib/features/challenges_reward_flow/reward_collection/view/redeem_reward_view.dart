@@ -3,11 +3,11 @@ import 'package:pilates_app/config/theme/app_colors.dart';
 import 'package:pilates_app/config/theme/app_radius.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/widgets/app_app_bar.dart';
+import 'package:pilates_app/widgets/app_button.dart';
 import 'package:pilates_app/widgets/app_text.dart';
 
 import '../../../../config/theme/app_text_styles.dart';
 import '../../../../core/localization/localization_extension.dart';
-import '../../../../widgets/app_button.dart';
 import '../widget/redemption_details.dart';
 
 class RedeemRewardView extends StatelessWidget {
@@ -78,7 +78,7 @@ class RedeemRewardView extends StatelessWidget {
     );
   }
 
-  _BookingCard({required bool isDark, required BuildContext context}) {
+  Widget _BookingCard({required bool isDark, required BuildContext context}) {
     return Container(
       width: double.infinity,
       padding: EdgeInsets.symmetric(
@@ -129,7 +129,7 @@ class RedeemRewardView extends StatelessWidget {
     );
   }
 
-  _pointCard({required bool isDark, required BuildContext context}) {
+  Widget _pointCard({required bool isDark, required BuildContext context}) {
     return Container(
       width: double.infinity,
       padding: EdgeInsets.symmetric(
@@ -157,7 +157,6 @@ class RedeemRewardView extends StatelessWidget {
               ),
               AppText(
                 context.l10n.points(1250),
-
                 style: (context) =>
                     AppTextStyles.body(context).copyWith(height: 1.55),
               ),
@@ -173,7 +172,7 @@ class RedeemRewardView extends StatelessWidget {
                     AppTextStyles.bodyText(context).copyWith(height: 1.4),
               ),
               AppText(
-                "-${context.l10n.points(200)}",
+                '-${context.l10n.points(200)}',
                 style: (context) => AppTextStyles.body(
                   context,
                 ).copyWith(height: 1.55, color: AppColors.redLight),
@@ -197,7 +196,6 @@ class RedeemRewardView extends StatelessWidget {
               ),
               AppText(
                 context.l10n.points(1050),
-
                 style: (context) => AppTextStyles.textFieldHeading(
                   context,
                 ).copyWith(height: 1.55),
@@ -209,7 +207,7 @@ class RedeemRewardView extends StatelessWidget {
     );
   }
 
-  _messageCard({required bool isDark, required BuildContext context}) {
+  Widget _messageCard({required bool isDark, required BuildContext context}) {
     return Container(
       padding: EdgeInsets.all(AppSpacing.md),
       decoration: BoxDecoration(

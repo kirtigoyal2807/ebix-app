@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:pilates_app/config/theme/app_colors.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
+import 'package:pilates_app/features/invoice_history/data/subscriptions_repository.dart';
 import 'package:pilates_app/widgets/app_app_bar.dart';
 import 'package:pilates_app/widgets/app_text.dart';
 
@@ -13,8 +14,22 @@ import '../../../widgets/app_button.dart';
 import '../cubit/pause_subscription_cubit.dart';
 import '../cubit/pause_subscription_state.dart';
 
+/// §9.1 freeze — requires the subscription row `id` from §9.3.
 class PauseSubscriptionView extends StatelessWidget {
-  const PauseSubscriptionView({super.key});
+  const PauseSubscriptionView({
+    super.key,
+    required this.subscriptionId,
+  });
+
+  final String subscriptionId;
+
+  static int _inclusiveDayCount(DateTime? start, DateTime? end) {
+    if (start == null || end == null) return 0;
+    final a = DateTime(start.year, start.month, start.day);
+    final b = DateTime(end.year, end.month, end.day);
+    final d = b.difference(a).inDays;
+    return d < 0 ? 0 : d + 1;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,9 +54,13 @@ class PauseSubscriptionView extends StatelessWidget {
             horizontal: AppSpacing.lg,
           ),
           child: BlocProvider(
-            create: (context) => PauseSubscriptionCubit(),
+            create: (context) => PauseSubscriptionCubit(
+              subscriptionId: subscriptionId,
+              repository: context.read<SubscriptionsRepository>(),
+            ),
             child: BlocBuilder<PauseSubscriptionCubit, PauseSubscriptionState>(
               builder: (context, state) {
+                final days = _inclusiveDayCount(state.startDate, state.endDate);
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -162,7 +181,7 @@ class PauseSubscriptionView extends StatelessWidget {
                                 ),
                           ),
                           AppText(
-                            context.l10n.daysCount(8),
+                            context.l10n.daysCount(days),
                             style: (context) =>
                                 AppTextStyles.bodyText(context).copyWith(
                                   fontWeight: FontWeight.w600,
@@ -321,10 +340,25 @@ class PauseSubscriptionView extends StatelessWidget {
                       ),
                     ),
 
+                    if (state.submitError != null) ...[
+                      AppText(
+                        state.submitError!,
+                        style: (context) => AppTextStyles.bodyText(context)
+                            .copyWith(color: AppColors.redLight),
+                      ),
+                      SizedBox(height: AppSpacing.md),
+                    ],
                     SizedBox(height: AppSpacing.lg),
                     AppButton(
                       label: context.l10n.confirmPause,
-                      onPressed: () {},
+                      isLoading: state.isSubmitting,
+                      onPressed: () async {
+                        final ok = await context
+                            .read<PauseSubscriptionCubit>()
+                            .confirmFreeze();
+                        if (!context.mounted) return;
+                        if (ok) Navigator.of(context).pop(true);
+                      },
                       variant: AppButtonVariant.primary,
                     ),
 

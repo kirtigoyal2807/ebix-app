@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:pilates_app/config/theme/app_colors.dart';
 import 'package:pilates_app/config/theme/app_radius.dart';
@@ -15,6 +16,10 @@ class PhoneNumberField extends StatefulWidget {
   final TextEditingController? controller;
   final String? errorText;
   final Function(CountryCode)? onCountryChanged;
+  final ValueChanged<String>? onChanged;
+
+  /// When set, the phone text field only accepts this many digits (e.g. `10`).
+  final int? maxPhoneDigits;
 
   const PhoneNumberField({
     super.key,
@@ -24,6 +29,8 @@ class PhoneNumberField extends StatefulWidget {
     this.controller,
     this.errorText,
     this.onCountryChanged,
+    this.onChanged,
+    this.maxPhoneDigits,
   });
 
   @override
@@ -122,6 +129,13 @@ class _PhoneNumberFieldState extends State<PhoneNumberField> {
                   controller: widget.controller,
                   focusNode: _focusNode,
                   keyboardType: TextInputType.phone,
+                  inputFormatters: widget.maxPhoneDigits != null
+                      ? <TextInputFormatter>[
+                          FilteringTextInputFormatter.digitsOnly,
+                          LengthLimitingTextInputFormatter(widget.maxPhoneDigits),
+                        ]
+                      : null,
+                  onChanged: widget.onChanged,
                   style: AppTextStyles.textField(context),
                   decoration: InputDecoration(
                     hintText: 'XXXXXXXXXX',

@@ -12,7 +12,7 @@ class InvoicesRepository extends BaseRepository {
   /// Loads all pages the API returns in one list (add query params here if the backend supports filtering).
   Future<ApiResult<List<InvoiceResource>>> listInvoices() {
     return get<List<InvoiceResource>>(
-      '/invoices',
+      'invoices',
       fromJson: (json) => _parseInvoiceList(json),
     );
   }

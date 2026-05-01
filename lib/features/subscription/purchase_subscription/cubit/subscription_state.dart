@@ -6,11 +6,34 @@ enum SubscriptionStatus { initial, loading, success, error }
 enum PhysicalActivityFrequency { twoDays, threeDays, fourDays, fiveDays }
 
 class SubscriptionState extends Equatable {
+  /// Sentinel for [copyWith] — omit updating [healthQuestionnaireId].
+  static const Object _unsetQuestionnaireId = Object();
+
   final SubscriptionStatus status;
   final String selectedPlanId;
-  final String selectedBranchId;
+  final int? selectedBranchId;
   final bool isGift;
   final int currentStep; // 0: Plan, 1-6: Health Info Flow
+
+  /// From catalog `requiresHealthIntake` / checkout session; when `false`, steps 2–6
+  /// (medical → declaration) are skipped and `POST …/health-intake` is not sent.
+  final bool selectedProductRequiresHealthIntake;
+
+  /// From `POST /checkout/start` — used for coupon, payment, and questionnaire APIs.
+  final String checkoutSessionId;
+  final int checkoutProductId;
+
+  /// From `GET health-intake/questionnaires/product/{productId}` (or by id).
+  final List<ProductHealthQuestion> healthQuestionnaireQuestions;
+  final int? healthQuestionnaireId;
+  final Map<int, Object?> healthQuestionnaireAnswers;
+
+  /// Per-question explanation for boolean **Yes** (`answers[].answerNote`); optional
+  /// when **`allowOther`** is false (server fallback uses [ProductHealthQuestion.defaultAnswerNoteForBooleanYes]).
+  final Map<int, String> healthQuestionnaireAnswerNotes;
+
+  /// Extra `personalInformation.*` keys from API-driven fields (non name/age/… slots).
+  final Map<String, String> personalInformationDynamicFields;
 
   // Step 1: Personal Information
   final String name;
@@ -54,10 +77,18 @@ class SubscriptionState extends Equatable {
 
   const SubscriptionState({
     this.status = SubscriptionStatus.initial,
-    this.selectedPlanId = 'premium',
-    this.selectedBranchId = 'Branch A',
+    this.selectedPlanId = '',
+    this.selectedBranchId,
     this.isGift = false,
     this.currentStep = 0,
+    this.selectedProductRequiresHealthIntake = false,
+    this.checkoutSessionId = '',
+    this.checkoutProductId = 0,
+    this.healthQuestionnaireQuestions = const [],
+    this.healthQuestionnaireId,
+    this.healthQuestionnaireAnswers = const {},
+    this.healthQuestionnaireAnswerNotes = const {},
+    this.personalInformationDynamicFields = const {},
     this.name = '',
     this.age = '',
     this.height = '',
@@ -87,9 +118,17 @@ class SubscriptionState extends Equatable {
   SubscriptionState copyWith({
     SubscriptionStatus? status,
     String? selectedPlanId,
-    String? selectedBranchId,
+    int? selectedBranchId,
     bool? isGift,
     int? currentStep,
+    bool? selectedProductRequiresHealthIntake,
+    String? checkoutSessionId,
+    int? checkoutProductId,
+    List<ProductHealthQuestion>? healthQuestionnaireQuestions,
+    Object? healthQuestionnaireId = _unsetQuestionnaireId,
+    Map<int, Object?>? healthQuestionnaireAnswers,
+    Map<int, String>? healthQuestionnaireAnswerNotes,
+    Map<String, String>? personalInformationDynamicFields,
     String? name,
     String? age,
     String? height,
@@ -121,6 +160,21 @@ class SubscriptionState extends Equatable {
       selectedBranchId: selectedBranchId ?? this.selectedBranchId,
       isGift: isGift ?? this.isGift,
       currentStep: currentStep ?? this.currentStep,
+      selectedProductRequiresHealthIntake: selectedProductRequiresHealthIntake ??
+          this.selectedProductRequiresHealthIntake,
+      checkoutSessionId: checkoutSessionId ?? this.checkoutSessionId,
+      checkoutProductId: checkoutProductId ?? this.checkoutProductId,
+      healthQuestionnaireQuestions:
+          healthQuestionnaireQuestions ?? this.healthQuestionnaireQuestions,
+      healthQuestionnaireId: identical(healthQuestionnaireId, _unsetQuestionnaireId)
+          ? this.healthQuestionnaireId
+          : healthQuestionnaireId as int?,
+      healthQuestionnaireAnswers:
+          healthQuestionnaireAnswers ?? this.healthQuestionnaireAnswers,
+      healthQuestionnaireAnswerNotes:
+          healthQuestionnaireAnswerNotes ?? this.healthQuestionnaireAnswerNotes,
+      personalInformationDynamicFields: personalInformationDynamicFields ??
+          this.personalInformationDynamicFields,
       name: name ?? this.name,
       age: age ?? this.age,
       height: height ?? this.height,
@@ -157,6 +211,14 @@ class SubscriptionState extends Equatable {
         selectedBranchId,
         isGift,
         currentStep,
+        selectedProductRequiresHealthIntake,
+        checkoutSessionId,
+        checkoutProductId,
+        healthQuestionnaireQuestions,
+        healthQuestionnaireId,
+        healthQuestionnaireAnswers,
+        healthQuestionnaireAnswerNotes,
+        personalInformationDynamicFields,
         name,
         age,
         height,

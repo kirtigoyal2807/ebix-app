@@ -40,7 +40,6 @@ class NewChallengesCard extends StatelessWidget {
           context: context,
           isScrollControlled: true,
           barrierColor: AppColors.bottomSheetShadow,
-
           builder: (_) => const JoinChallengeBottomSheet(),
         );
       },
@@ -84,10 +83,8 @@ class NewChallengesCard extends StatelessWidget {
               ],
             ),
             SizedBox(height: AppSpacing.lg),
-
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
-              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Icon(
                   Icons.people_alt_outlined,
@@ -97,7 +94,6 @@ class NewChallengesCard extends StatelessWidget {
                 SizedBox(width: AppSpacing.xs),
                 AppText(
                   context.l10n.people_joined(people),
-
                   style: (content) => AppTextStyles.captionText(
                     content,
                   ).copyWith(color: AppColors.lightGrey, fontSize: 14),
@@ -129,7 +125,6 @@ class NewChallengesCard extends StatelessWidget {
                   ),
                   child: AppText(
                     "+${context.l10n.points_short(point.toInt())}",
-
                     style: (context) =>
                         AppTextStyles.splashVersion(context).copyWith(
                           color: isDark

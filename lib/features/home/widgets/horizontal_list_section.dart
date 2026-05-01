@@ -27,7 +27,7 @@ class ClassTypesSection extends StatelessWidget {
     return Column(
       children: [
         SizedBox(
-          height: 135,
+          height: 140,
           child: ListView.separated(
             padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
             scrollDirection: Axis.horizontal,
@@ -104,7 +104,8 @@ class TopTrainersSection extends StatelessWidget {
     }
 
     final itemWidth = size.width * 0.38 > 140 ? 140.0 : size.width * 0.38;
-    const itemHeight = 168.0;
+    const itemHeight = 172.0;
+    final pad = itemWidth * 0.08;
 
     return SizedBox(
       height: itemHeight,
@@ -119,88 +120,101 @@ class TopTrainersSection extends StatelessWidget {
           final subtitle = trainer.specialties.isEmpty
               ? (trainer.avgRating == null ? '' : '★ ${trainer.avgRating}')
               : trainer.specialties.join(', ');
-          return Container(
+          return SizedBox(
             width: itemWidth,
-            padding: EdgeInsets.all(itemWidth * 0.1),
-            decoration: BoxDecoration(
-              color: isDark
-                  ? AppColors.trainerBlackBackgroundColor
-                  : AppColors.seekBarLight,
-              borderRadius: BorderRadius.circular(AppRadius.md),
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Column(
-                  children: [
-                    CircleAvatar(
-                      radius: itemWidth * 0.22,
-                      backgroundColor: isDark
-                          ? AppColors.homeBackground
-                          : AppColors.whiteColor,
-                      backgroundImage: (trainer.imageUrl ?? '').trim().isEmpty
-                          ? null
-                          : NetworkImage(trainer.imageUrl!),
-                      child: (trainer.imageUrl ?? '').trim().isEmpty
-                          ? const Icon(Icons.person)
-                          : null,
-                    ),
-                    const SizedBox(height: AppSpacing.sm),
-                    AppText(
-                      trainer.displayName ?? '',
-                      style: (context) =>
-                          AppTextStyles.heading1(context).copyWith(
-                            fontSize: 16,
-                            height: 1.2,
-                            color: isDark
-                                ? AppColors.lightText
-                                : AppColors.darkText,
+            height: itemHeight,
+            child: Container(
+              padding: EdgeInsets.all(pad),
+              decoration: BoxDecoration(
+                color: isDark
+                    ? AppColors.trainerBlackBackgroundColor
+                    : AppColors.seekBarLight,
+                borderRadius: BorderRadius.circular(AppRadius.md),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          CircleAvatar(
+                            radius: itemWidth * 0.20,
+                            backgroundColor: isDark
+                                ? AppColors.homeBackground
+                                : AppColors.whiteColor,
+                            backgroundImage:
+                                (trainer.imageUrl ?? '').trim().isEmpty
+                                    ? null
+                                    : NetworkImage(trainer.imageUrl!),
+                            child: (trainer.imageUrl ?? '').trim().isEmpty
+                                ? const Icon(Icons.person)
+                                : null,
                           ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    const SizedBox(height: 2),
-                    AppText(
-                      subtitle,
-                      style: (context) =>
-                          AppTextStyles.captionText(context).copyWith(
-                            fontSize: 12,
-                            color: isDark
-                                ? AppColors.languageIconDark
-                                : AppColors.lightGrey,
+                          const SizedBox(height: AppSpacing.sm),
+                          AppText(
+                            trainer.displayName ?? '',
+                            style: (context) =>
+                                AppTextStyles.heading1(context).copyWith(
+                                  fontSize: 16,
+                                  height: 1.15,
+                                  color: isDark
+                                      ? AppColors.lightText
+                                      : AppColors.darkText,
+                                ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
                           ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ],
-                ),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const TrainerDetailsView(),
+                          const SizedBox(height: 2),
+                          AppText(
+                            subtitle,
+                            style: (context) =>
+                                AppTextStyles.captionText(context).copyWith(
+                                  fontSize: 12,
+                                  height: 1.2,
+                                  color: isDark
+                                      ? AppColors.languageIconDark
+                                      : AppColors.lightGrey,
+                                ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ],
                       ),
-                    );
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.only(top: 10),
-                    child: AppText(
-                      context.l10n.viewClasses,
-                      style: (context) =>
-                          AppTextStyles.captionText(context).copyWith(
-                            color: isDark
-                                ? AppColors.versionColor
-                                : AppColors.languageIcon,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 14,
-                          ),
-                      maxLines: 2,
-                      textAlign: TextAlign.center,
                     ),
                   ),
-                ),
-              ],
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const TrainerDetailsView(),
+                        ),
+                      );
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: AppSpacing.xi),
+                      child: AppText(
+                        context.l10n.viewClasses,
+                        style: (context) =>
+                            AppTextStyles.captionText(context).copyWith(
+                              color: isDark
+                                  ? AppColors.versionColor
+                                  : AppColors.languageIcon,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 13,
+                              height: 1.15,
+                            ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           );
         },

@@ -25,6 +25,7 @@ import 'widgets/progress_card.dart';
 import 'widgets/featured_class_card.dart';
 import 'widgets/horizontal_list_section.dart';
 import 'widgets/received_gift_card.dart';
+import 'home_tab_intent.dart';
 
 import '../booking/cubit/booking_state.dart';
 import '../booking/booking_view.dart';
@@ -57,30 +58,74 @@ class HomeView extends StatelessWidget {
         ),
       )..loadHome(),
       child: _HomeBookingFlowTabListener(
-        child: BlocBuilder<HomeCubit, HomeState>(
-          builder: (context, state) {
-            final isDark = Theme.of(context).brightness == Brightness.dark;
-            return Scaffold(
-              backgroundColor: isDark
-                  ? AppColors.homeBackground
-                  : AppColors.whiteColor,
-              body: IndexedStack(
-                index: state.currentIndex,
-                children: [
-                  const HomeContentView(),
-                  BookingView(initialTab: state.selectedBookingTab),
-                  const ExploreView(),
-                  const AccountView(),
-                ],
-              ),
-              bottomNavigationBar: _buildBottomNavBar(
-                context,
-                state.currentIndex,
-              ),
-            );
-          },
+        child: const _HomeTabIntentListener(
+          child: _HomeShell(),
         ),
       ),
+    );
+  }
+}
+
+class _HomeTabIntentListener extends StatefulWidget {
+  const _HomeTabIntentListener({required this.child});
+
+  final Widget child;
+
+  @override
+  State<_HomeTabIntentListener> createState() => _HomeTabIntentListenerState();
+}
+
+class _HomeTabIntentListenerState extends State<_HomeTabIntentListener> {
+  void _onIntent() {
+    final tab = homeTabIntent.value;
+    if (tab == null || !mounted) return;
+    context.read<HomeCubit>().setTab(tab);
+    homeTabIntent.value = null;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    homeTabIntent.addListener(_onIntent);
+  }
+
+  @override
+  void dispose() {
+    homeTabIntent.removeListener(_onIntent);
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) => widget.child;
+}
+
+class _HomeShell extends StatelessWidget {
+  const _HomeShell();
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<HomeCubit, HomeState>(
+      builder: (context, state) {
+          final isDark = Theme.of(context).brightness == Brightness.dark;
+          return Scaffold(
+            backgroundColor: isDark
+                ? AppColors.homeBackground
+                : AppColors.whiteColor,
+            body: IndexedStack(
+              index: state.currentIndex,
+              children: [
+                const HomeContentView(),
+                BookingView(initialTab: state.selectedBookingTab),
+                const ExploreView(),
+                const AccountView(),
+              ],
+            ),
+            bottomNavigationBar: _buildBottomNavBar(
+              context,
+              state.currentIndex,
+            ),
+          );
+      },
     );
   }
 

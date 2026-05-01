@@ -1,16 +1,73 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
+import 'package:pilates_app/core/validation/contact_validators.dart';
+import 'package:pilates_app/core/validation/personal_information_validators.dart';
+import 'package:pilates_app/features/checkout/data/checkout_repository.dart';
+import 'package:pilates_app/features/checkout/data/models/product_health_question.dart';
+import 'package:pilates_app/features/checkout/data/models/product_health_questionnaire.dart';
+import 'package:pilates_app/features/subscription/purchase_subscription/subscription_api_ids.dart';
+
 part 'subscription_state.dart';
 
 class SubscriptionCubit extends Cubit<SubscriptionState> {
-  SubscriptionCubit() : super(const SubscriptionState());
+  SubscriptionCubit({bool initialIsGift = false})
+      : super(SubscriptionState(isGift: initialIsGift));
 
-  void selectPlan(String planId) {
-    emit(state.copyWith(selectedPlanId: planId));
+  /// Last product id used for a successful `GET …/questionnaires/product/{id}`.
+  /// Used to skip redundant prefetches when the schema is already in memory.
+  int? _cachedQuestionnaireProductId;
+
+  void selectPlan(String planId, {bool? requiresHealthIntake}) {
+    final nextIntake =
+        requiresHealthIntake ?? state.selectedProductRequiresHealthIntake;
+    final planChanged = planId != state.selectedPlanId;
+    final intakeChanged =
+        nextIntake != state.selectedProductRequiresHealthIntake;
+    final clearQuestionnaire = !nextIntake || planChanged || intakeChanged;
+
+    if (clearQuestionnaire) {
+      _cachedQuestionnaireProductId = null;
+    }
+
+    emit(
+      state.copyWith(
+        selectedPlanId: planId,
+        selectedProductRequiresHealthIntake: nextIntake,
+        healthQuestionnaireQuestions: clearQuestionnaire
+            ? const []
+            : state.healthQuestionnaireQuestions,
+        healthQuestionnaireId: clearQuestionnaire
+            ? null
+            : state.healthQuestionnaireId,
+        healthQuestionnaireAnswers: clearQuestionnaire
+            ? const {}
+            : state.healthQuestionnaireAnswers,
+        healthQuestionnaireAnswerNotes: clearQuestionnaire
+            ? const {}
+            : state.healthQuestionnaireAnswerNotes,
+        personalInformationDynamicFields: clearQuestionnaire
+            ? const {}
+            : state.personalInformationDynamicFields,
+      ),
+    );
   }
 
-  void selectBranch(String branchId) {
+  /// Product id for `GET …/questionnaires/product/{id}`.
+  ///
+  /// After [bindCheckoutSession], [SubscriptionState.checkoutProductId] wins so the
+  /// form matches the checkout session. Before checkout, uses
+  /// [subscriptionProductApiId] on [SubscriptionState.selectedPlanId] (catalog
+  /// numeric `id` strings).
+  int get resolvedHealthQuestionnaireProductId {
+    final cid = state.checkoutProductId;
+    if (cid > 0) {
+      return cid;
+    }
+    return subscriptionProductApiId(state.selectedPlanId);
+  }
+
+  void selectBranch(int branchId) {
     emit(state.copyWith(selectedBranchId: branchId));
   }
 
@@ -18,33 +75,505 @@ class SubscriptionCubit extends Cubit<SubscriptionState> {
     emit(state.copyWith(isGift: isGift));
   }
 
-  // Navigation
-  void nextStep() {
-    // Current assumption: 6 steps total (0-5 index? Start index 0 is Plan. Then Health Steps 1-6. Total 7 steps? or 0 is Plan, 1 is Name, 2 is Medical, 3 is Physical, 4 is Pregnancy, 5 is Goals, 6 is Declaration)
-    // The design shows "Step 3 of 6" for "Physical Activity Level". So 6 health steps?
-    // Let's assume:
-    // Step 0: Plan Selection
-    // Step 1: Personal Info
-    // Step 2: Medical History
-    // Step 3: Physical Activity
-    // Step 4: Pregnancy
-    // Step 5: Goals
-    // Step 6: Declaration
-    // Step 7: Terms & Conditions
-    // Step 7: Safety
-    // Step 8: Terms & Conditions
-    // Step 9: Required Information
-    if (state.currentStep < 10) {
-      emit(state.copyWith(currentStep: state.currentStep + 1));
-    } else {
-      // Finish flow (e.g. navigate to payment)
+  /// Updates [checkoutProductId] only (e.g. after `GET /checkout/{id}`) without
+  /// clearing questionnaire answers.
+  void setCheckoutProductId(int productId) {
+    if (productId <= 0) {
+      return;
+    }
+    emit(state.copyWith(checkoutProductId: productId));
+  }
+
+  /// Called after a successful `POST /checkout/start` so later steps can call
+  /// getCheckoutDetails, applyCoupon, fetchPaymentIntent, and getQuestionsByProduct.
+  ///
+  /// When [requiresHealthIntake] is non-null (from session `data`), it overrides
+  /// the catalog flag for navigation and `POST …/health-intake`.
+  void bindCheckoutSession({
+    required String sessionId,
+    required int productId,
+    bool? requiresHealthIntake,
+  }) {
+    _cachedQuestionnaireProductId = null;
+    emit(
+      state.copyWith(
+        checkoutSessionId: sessionId,
+        checkoutProductId: productId,
+        selectedProductRequiresHealthIntake:
+            requiresHealthIntake ?? state.selectedProductRequiresHealthIntake,
+        healthQuestionnaireQuestions: const [],
+        healthQuestionnaireId: null,
+        healthQuestionnaireAnswers: const {},
+        healthQuestionnaireAnswerNotes: const {},
+        personalInformationDynamicFields: const {},
+      ),
+    );
+  }
+
+  /// Replaces any prior schema from `GET …/questionnaires/product/{id}`.
+  ///
+  /// Pass [fetchedForProductId] when this data came from that product endpoint so
+  /// [prefetchHealthQuestionnaireForSelectedPlan] can avoid duplicate requests.
+  void applyHealthQuestionnaire(
+    ProductHealthQuestionnaire data, {
+    int? fetchedForProductId,
+  }) {
+    emit(
+      state.copyWith(
+        healthQuestionnaireId: data.questionnaireId,
+        healthQuestionnaireQuestions: data.questions,
+        healthQuestionnaireAnswers: const {},
+        healthQuestionnaireAnswerNotes: const {},
+        personalInformationDynamicFields: const {},
+      ),
+    );
+    if (data.questions.isEmpty) {
+      _cachedQuestionnaireProductId = null;
+    } else if (fetchedForProductId != null && fetchedForProductId > 0) {
+      _cachedQuestionnaireProductId = fetchedForProductId;
     }
   }
 
-  void previousStep() {
-    if (state.currentStep > 0) {
-      emit(state.copyWith(currentStep: state.currentStep - 1));
+  /// Warms questionnaire when [SubscriptionState.selectedProductRequiresHealthIntake]
+  /// is true. Uses [resolvedHealthQuestionnaireProductId] (checkout product after
+  /// session bind, else selected plan id).
+  Future<void> prefetchHealthQuestionnaireForSelectedPlan(
+    CheckoutRepository repo,
+  ) async {
+    if (!state.selectedProductRequiresHealthIntake) {
+      return;
     }
+    final pid = resolvedHealthQuestionnaireProductId;
+    if (pid <= 0) {
+      return;
+    }
+    if (state.healthQuestionnaireQuestions.isNotEmpty &&
+        _cachedQuestionnaireProductId == pid) {
+      return;
+    }
+    final r = await repo.getQuestionsByProduct(productId: pid);
+    if (r.isSuccess) {
+      final data = r.dataOrNull;
+      if (data != null) {
+        applyHealthQuestionnaire(data, fetchedForProductId: pid);
+      }
+    }
+  }
+
+  /// Loads `GET health-intake/questionnaires/product/{id}` for
+  /// [resolvedHealthQuestionnaireProductId] (checkout product when set, else
+  /// selected plan id).
+  ///
+  /// Call after [bindCheckoutSession] (and optionally after catalog prefetch) so the
+  /// questionnaire schema is ready before health steps. [bindCheckoutSession] clears
+  /// any prior schema until this runs.
+  Future<bool> fetchHealthQuestionnaireForCurrentProduct(
+    CheckoutRepository repo,
+  ) async {
+    if (!state.selectedProductRequiresHealthIntake) {
+      return true;
+    }
+    final productId = resolvedHealthQuestionnaireProductId;
+    if (productId <= 0) {
+      return false;
+    }
+    final r = await repo.getQuestionsByProduct(productId: productId);
+    if (r.isFailure) {
+      return false;
+    }
+    final data = r.dataOrNull;
+    if (data == null) {
+      return false;
+    }
+    applyHealthQuestionnaire(data, fetchedForProductId: productId);
+    return true;
+  }
+
+  void setHealthQuestionnaireAnswer(int questionId, Object? value) {
+    final m = Map<int, Object?>.from(state.healthQuestionnaireAnswers);
+    m[questionId] = value;
+    final notes = Map<int, String>.from(state.healthQuestionnaireAnswerNotes);
+
+    if (value is bool && value == true) {
+      final q = _questionnaireQuestionById(questionId);
+      if (q != null &&
+          q.isBooleanQuestion &&
+          q.allowOther != true) {
+        final cur = notes[questionId]?.trim() ?? '';
+        if (cur.isEmpty) {
+          notes[questionId] = q.defaultAnswerNoteForBooleanYes();
+        }
+      }
+    } else if (value is! bool || value == false) {
+      notes.remove(questionId);
+    }
+
+    var next = state.copyWith(
+      healthQuestionnaireAnswers: m,
+      healthQuestionnaireAnswerNotes: notes,
+    );
+    if (questionId == 2 && value is bool) {
+      next = next.copyWith(isPregnant: value);
+    }
+    emit(next);
+  }
+
+  ProductHealthQuestion? _questionnaireQuestionById(int questionId) {
+    for (final q in state.healthQuestionnaireQuestions) {
+      if (q.numericQuestionId == questionId) {
+        return q;
+      }
+    }
+    return null;
+  }
+
+  /// Free-text explanation when the user answers **Yes** on a boolean question with
+  /// **`allowOther: true`**. For **`allowOther` false**, the API may still require
+  /// `answerNote`; [setHealthQuestionnaireAnswer] stores [ProductHealthQuestion.defaultAnswerNoteForBooleanYes] automatically.
+  void setHealthQuestionnaireAnswerNote(int questionId, String text) {
+    final trimmed = text.trim();
+    final notes = Map<int, String>.from(state.healthQuestionnaireAnswerNotes);
+    if (trimmed.isEmpty) {
+      notes.remove(questionId);
+    } else {
+      notes[questionId] = trimmed;
+    }
+    emit(state.copyWith(healthQuestionnaireAnswerNotes: notes));
+  }
+
+  /// Validates questions in [group] for the current step (required fields + boolean
+  /// **Yes** explanations when [ProductHealthQuestion.allowOther] is true).
+  ///
+  /// When [requireEveryQuestionInGroup] is `true`, every question in [group] must
+  /// have a valid answer (treats optional API questions as required on that step).
+  bool validateQuestionnaireGroup(
+    List<ProductHealthQuestion> group, {
+    bool requireEveryQuestionInGroup = false,
+  }) {
+    for (final q in group) {
+      final id = q.numericQuestionId;
+      if (id == null) return false;
+      final v = state.healthQuestionnaireAnswers[id];
+      final required =
+          requireEveryQuestionInGroup || (q.isRequired == true);
+
+      if (required) {
+        if (v == null) return false;
+        if (v is String && v.trim().isEmpty) return false;
+        if (v is List && v.isEmpty) return false;
+        if (v is Map) {
+          final selected = v['selected'];
+          final other = v['other'];
+          final hasSelected = selected is List && selected.isNotEmpty;
+          final hasOther = other is String && other.trim().isNotEmpty;
+          if (!hasSelected && !(q.allowOther == true && hasOther)) {
+            return false;
+          }
+        }
+      } else {
+        if (v == null) continue;
+      }
+
+      if (v is bool && v == true && q.allowOther == true) {
+        final note = state.healthQuestionnaireAnswerNotes[id]?.trim() ?? '';
+        if (note.isEmpty) return false;
+      }
+    }
+    return true;
+  }
+
+  /// Toggles one option for a multi-select / checkbox API question.
+  void toggleHealthQuestionnaireOption(
+    int questionId,
+    String optionKey, {
+    required bool selected,
+  }) {
+    final m = Map<int, Object?>.from(state.healthQuestionnaireAnswers);
+    final cur = m[questionId];
+    List<String> list;
+    if (cur is List<String>) {
+      list = List<String>.from(cur);
+    } else if (cur is List) {
+      list = cur.map((e) => e.toString()).toList();
+    } else if (cur is Map) {
+      final inner = cur['selected'];
+      if (inner is List) {
+        list = inner.map((e) => e.toString()).toList();
+      } else {
+        list = [];
+      }
+    } else {
+      list = [];
+    }
+    if (selected) {
+      if (!list.contains(optionKey)) {
+        list = [...list, optionKey];
+      }
+    } else {
+      list = list.where((e) => e != optionKey).toList();
+    }
+    if (cur is Map) {
+      m[questionId] = <String, dynamic>{
+        ...Map<String, dynamic>.from(cur as Map),
+        'selected': list,
+      };
+    } else {
+      m[questionId] = list;
+    }
+    emit(state.copyWith(healthQuestionnaireAnswers: m));
+  }
+
+  /// Updates the free-text part for a checkbox question with [allowOther].
+  void setHealthQuestionnaireOtherText(int questionId, String text) {
+    final m = Map<int, Object?>.from(state.healthQuestionnaireAnswers);
+    final cur = m[questionId];
+    List<String> list;
+    if (cur is List) {
+      list = cur.map((e) => e.toString()).toList();
+      m[questionId] = <String, dynamic>{'selected': list, 'other': text};
+    } else if (cur is Map) {
+      final mm = Map<String, dynamic>.from(cur as Map);
+      mm['other'] = text;
+      m[questionId] = mm;
+    } else {
+      m[questionId] = <String, dynamic>{'selected': <String>[], 'other': text};
+    }
+    emit(state.copyWith(healthQuestionnaireAnswers: m));
+  }
+
+  /// Loads product questionnaire when missing (e.g. static medical fallback),
+  /// then maps legacy subscription fields into [healthQuestionnaireAnswers] so
+  /// `POST …/health-intake` can send a non-empty `answers` list.
+  Future<bool> ensureHealthQuestionnaireForIntake(CheckoutRepository repo) async {
+    if (!state.selectedProductRequiresHealthIntake) {
+      return true;
+    }
+    if (state.checkoutProductId <= 0) {
+      final sid = state.checkoutSessionId.trim();
+      if (sid.isNotEmpty) {
+        final detail = await repo.getCheckoutDetails(sid);
+        if (detail.isSuccess) {
+          final session = detail.dataOrNull!;
+          final fromSession = session.resolvedProductId;
+          if (fromSession != null && fromSession > 0) {
+            setCheckoutProductId(fromSession);
+          }
+          final intake = session.resolvedRequiresHealthIntake;
+          if (intake != null) {
+            emit(state.copyWith(selectedProductRequiresHealthIntake: intake));
+          }
+        }
+      }
+    }
+    if (!state.selectedProductRequiresHealthIntake) {
+      return true;
+    }
+    final idForFetch = resolvedHealthQuestionnaireProductId;
+    if (idForFetch <= 0) {
+      syncHealthIntakeAnswersFromLegacy();
+      return true;
+    }
+    if (state.healthQuestionnaireQuestions.isEmpty) {
+      final r = await repo.getQuestionsByProduct(productId: idForFetch);
+      if (r.isFailure) {
+        return false;
+      }
+      final data = r.dataOrNull!;
+      applyHealthQuestionnaire(data, fetchedForProductId: idForFetch);
+    }
+    syncHealthIntakeAnswersFromLegacy();
+    return true;
+  }
+
+  /// Fills missing [healthQuestionnaireAnswers] from the classic health steps
+  /// (checkbox maps, pregnancy, goals, activity). Known ids **1–5** match the
+  /// default 12-session product form; other ids stay unchanged.
+  void syncHealthIntakeAnswersFromLegacy() {
+    if (state.healthQuestionnaireQuestions.isEmpty) {
+      return;
+    }
+    final m = Map<int, Object?>.from(state.healthQuestionnaireAnswers);
+    for (final q in state.healthQuestionnaireQuestions) {
+      final id = q.numericQuestionId;
+      if (id == null) continue;
+      if (m[id] != null) continue;
+
+      switch (id) {
+        case 1:
+          if (!q.isCheckboxQuestion) {
+            m[id] = _anySectionTrueExcludingNone(state.surgeriesInjuries) ||
+                _anySectionTrueExcludingNone(state.painBonesMuscles);
+          }
+          break;
+        case 2:
+          m[id] = state.isPregnant ?? false;
+          break;
+        case 3:
+          if (!q.isCheckboxQuestion) {
+            final g = state.goals.trim();
+            if (g.isNotEmpty) {
+              m[id] = g;
+            }
+          }
+          break;
+        case 4:
+          if (!q.isCheckboxQuestion) {
+            m[id] = _anySectionTrueExcludingNone(state.chronicConditions);
+          }
+          break;
+        case 5:
+          if (q.isBooleanQuestion) {
+            final ex = state.exerciseRegularly?.trim().toLowerCase();
+            if (ex == 'yes' || ex == 'sometimes') {
+              m[id] = true;
+            } else if (ex == 'no') {
+              m[id] = false;
+            }
+          } else {
+            final ex = state.exerciseRegularly?.trim();
+            if (ex != null && ex.isNotEmpty) {
+              m[id] = ex;
+            }
+          }
+          break;
+      }
+    }
+
+    for (final q in state.healthQuestionnaireQuestions) {
+      final id = q.numericQuestionId;
+      if (id == null) continue;
+      if (m[id] != null) continue;
+      if (q.isRequired == true && q.isBooleanQuestion && !q.isCheckboxQuestion) {
+        m[id] = false;
+      }
+    }
+
+    emit(state.copyWith(healthQuestionnaireAnswers: m));
+  }
+
+  bool _anySectionTrueExcludingNone(Map<String, bool> map) {
+    for (final e in map.entries) {
+      if (e.key == 'none') continue;
+      if (e.value == true) return true;
+    }
+    return false;
+  }
+
+  /// Steps 2–6 are medical → declaration; skipped when [SubscriptionState.selectedProductRequiresHealthIntake] is false.
+  bool _shouldSkipHealthQuestionnaireStep(int step) =>
+      !state.selectedProductRequiresHealthIntake && step >= 2 && step <= 6;
+
+  void nextStep() {
+    if (state.currentStep >= 10) {
+      return;
+    }
+    var step = state.currentStep + 1;
+    while (_shouldSkipHealthQuestionnaireStep(step) && step < 10) {
+      step++;
+    }
+    emit(state.copyWith(currentStep: step.clamp(0, 10)));
+  }
+
+  void previousStep() {
+    if (state.currentStep <= 0) {
+      return;
+    }
+    var step = state.currentStep - 1;
+    while (_shouldSkipHealthQuestionnaireStep(step) && step > 0) {
+      step--;
+    }
+    emit(state.copyWith(currentStep: step.clamp(0, 10)));
+  }
+
+  /// After required-information (step 10), return to checkout review to pay.
+  void goToCheckoutReviewStep() {
+    emit(state.copyWith(currentStep: 9));
+  }
+
+  /// Current value for an API-driven personal field (step 1).
+  String apiPersonalFieldValue(ProductHealthQuestion q) {
+    final slot = q.personalInformationStateSlot;
+    if (slot != null) {
+      switch (slot) {
+        case 'name':
+          return state.name;
+        case 'age':
+          return state.age;
+        case 'height':
+          return state.height;
+        case 'weight':
+          return state.weight;
+        case 'phoneNumber':
+          return state.phoneNumber;
+        case 'email':
+          return state.email;
+      }
+    }
+    return state.personalInformationDynamicFields[q.dynamicPersonalStorageKey] ??
+        '';
+  }
+
+  /// Maps API personal questions into [SubscriptionState] name/age/… or [personalInformationDynamicFields].
+  void applyApiPersonalInformationAnswer(ProductHealthQuestion q, String value) {
+    final slot = q.personalInformationStateSlot;
+    if (slot != null) {
+      switch (slot) {
+        case 'name':
+          updateName(value);
+          return;
+        case 'age':
+          updateAge(value);
+          return;
+        case 'height':
+          updateHeight(value);
+          return;
+        case 'weight':
+          updateWeight(value);
+          return;
+        case 'phoneNumber':
+          updatePhoneNumber(value);
+          return;
+        case 'email':
+          updateEmail(value);
+          return;
+      }
+    }
+    final key = q.dynamicPersonalStorageKey;
+    final next = Map<String, String>.from(state.personalInformationDynamicFields);
+    if (value.trim().isEmpty) {
+      next.remove(key);
+    } else {
+      next[key] = value;
+    }
+    emit(state.copyWith(personalInformationDynamicFields: next));
+  }
+
+  /// Validates the given API personal questions (required text/email/phone rules).
+  bool validateApiPersonalInformationQuestions(
+    List<ProductHealthQuestion> questions,
+  ) {
+    for (final q in questions) {
+      final v = apiPersonalFieldValue(q);
+      final trimmed = v.trim();
+      if (trimmed.isEmpty) {
+        if (q.isRequired == true) {
+          return false;
+        }
+        continue;
+      }
+      if (q.personalInformationStateSlot == 'email' || q.isEmailInputQuestion) {
+        if (!ContactValidators.isValidEmail(trimmed)) {
+          return false;
+        }
+      }
+      if (q.personalInformationStateSlot == 'phoneNumber' ||
+          q.isPhoneInputQuestion) {
+        if (!PersonalInformationValidators.isTenDigitMobile(trimmed)) {
+          return false;
+        }
+      }
+    }
+    return true;
   }
 
   // Health Info Updates - Step 1
@@ -56,7 +585,15 @@ class SubscriptionCubit extends Cubit<SubscriptionState> {
 
   void updateWeight(String val) => emit(state.copyWith(weight: val));
 
-  void updatePhone(String val) => emit(state.copyWith(phoneNumber: val));
+  void updatePhone(String val) {
+    final digits = val.replaceAll(RegExp(r'\D'), '');
+    final limited =
+        digits.length > 10 ? digits.substring(0, 10) : digits;
+    emit(state.copyWith(phoneNumber: limited));
+  }
+
+  /// Alias for [updatePhone] (some call sites use this name).
+  void updatePhoneNumber(String val) => updatePhone(val);
 
   void updateEmail(String val) => emit(state.copyWith(email: val));
 
@@ -99,10 +636,28 @@ class SubscriptionCubit extends Cubit<SubscriptionState> {
       emit(state.copyWith(activityFrequency: val));
 
   // Pregnancy Updates - Step 4
-  void updateIsPregnant(bool val) => emit(state.copyWith(isPregnant: val));
+  void updateIsPregnant(bool val) {
+    final hasQ2 =
+        state.healthQuestionnaireQuestions.any((q) => q.numericQuestionId == 2);
+    if (hasQ2) {
+      setHealthQuestionnaireAnswer(2, val);
+    } else {
+      emit(state.copyWith(isPregnant: val));
+    }
+  }
 
   // Goals Updates - Step 5
-  void updateGoals(String val) => emit(state.copyWith(goals: val));
+  void updateGoals(String val) {
+    final hasQ3 =
+        state.healthQuestionnaireQuestions.any((q) => q.numericQuestionId == 3);
+    if (!hasQ3) {
+      emit(state.copyWith(goals: val));
+      return;
+    }
+    final m = Map<int, Object?>.from(state.healthQuestionnaireAnswers);
+    m[3] = val;
+    emit(state.copyWith(goals: val, healthQuestionnaireAnswers: m));
+  }
 
   // Declaration Updates - Step 6
   void updateDeclarationName(String val) =>

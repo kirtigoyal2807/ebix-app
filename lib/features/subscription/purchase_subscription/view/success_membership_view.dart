@@ -4,15 +4,20 @@ import 'package:pilates_app/config/theme/app_colors.dart';
 import 'package:pilates_app/config/theme/app_radius.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
+import 'package:pilates_app/features/checkout/data/models/membership_receipt_summary.dart';
+import 'package:pilates_app/features/home/home_tab_intent.dart';
+import 'package:pilates_app/features/invoice_history/widget/invoice_list_panel.dart';
 import 'package:pilates_app/features/subscription/purchase_subscription/view/widgets/invoice_details_card.dart';
 import 'package:pilates_app/widgets/app_button.dart';
 import 'package:pilates_app/widgets/app_text.dart';
 
 import '../../../../core/localization/localization_extension.dart';
-import '../../subscription_as_gift/view/gift_successfully_view.dart';
 
 class SuccessMembershipView extends StatelessWidget {
-  const SuccessMembershipView({super.key});
+  const SuccessMembershipView({super.key, this.receipt});
+
+  /// Checkout / Paytabs snapshot for the receipt card; omit for placeholder UI.
+  final MembershipReceiptSummary? receipt;
 
   @override
   Widget build(BuildContext context) {
@@ -71,7 +76,7 @@ class SuccessMembershipView extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: AppSpacing.lg),
-                InvoiceDetailsCard(),
+                InvoiceDetailsCard(receipt: receipt),
                 SizedBox(height: AppSpacing.lg),
                 Container(
                   padding: EdgeInsets.all(AppSpacing.md),
@@ -92,35 +97,39 @@ class SuccessMembershipView extends StatelessWidget {
                             : AppColors.successColor,
                       ),
                       SizedBox(width: AppSpacing.sm),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          AppText(
-                            context.l10n.creditsReady,
-                            style: (context) =>
-                                AppTextStyles.bodyText(context).copyWith(
-                                  color: isDark
-                                      ? AppColors.lightText
-                                      : AppColors.successColor,
-                                  fontWeight: FontWeight.w600,
-                                  height: 1.55,
-                                  fontSize: 12,
-                                ),
-                          ),
-                          SizedBox(height: 2),
-                          AppText(
-                            context.l10n.bookFirstClass,
-                            style: (context) =>
-                                AppTextStyles.bodyText(context).copyWith(
-                                  color: isDark
-                                      ? AppColors.successBorderDark
-                                      : AppColors.greyText,
-                                  fontWeight: FontWeight.w400,
-                                  height: 1.55,
-                                  fontSize: 12,
-                                ),
-                          ),
-                        ],
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            AppText(
+                              context.l10n.creditsReady,
+                              maxLines: 4,
+                              style: (context) =>
+                                  AppTextStyles.bodyText(context).copyWith(
+                                    color: isDark
+                                        ? AppColors.lightText
+                                        : AppColors.successColor,
+                                    fontWeight: FontWeight.w600,
+                                    height: 1.55,
+                                    fontSize: 12,
+                                  ),
+                            ),
+                            SizedBox(height: 2),
+                            AppText(
+                              context.l10n.bookFirstClass,
+                              maxLines: 4,
+                              style: (context) =>
+                                  AppTextStyles.bodyText(context).copyWith(
+                                    color: isDark
+                                        ? AppColors.successBorderDark
+                                        : AppColors.greyText,
+                                    fontWeight: FontWeight.w400,
+                                    height: 1.55,
+                                    fontSize: 12,
+                                  ),
+                            ),
+                          ],
+                        ),
                       ),
                     ],
                   ),
@@ -129,12 +138,9 @@ class SuccessMembershipView extends StatelessWidget {
                 AppButton(
                   label: context.l10n.startExploring,
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const GiftSuccessfullyView(),
-                      ),
-                    );
+                    homeTabIntent.value = 0;
+                    Navigator.of(context, rootNavigator: true)
+                        .popUntil((route) => route.isFirst);
                   },
                   variant: AppButtonVariant.primary,
                 ),
@@ -155,7 +161,10 @@ class SuccessMembershipView extends StatelessWidget {
                   ),
                   child: AppButton(
                     label: context.l10n.downloadInvoice,
-                    onPressed: () {},
+                    onPressed: () => InvoiceListPanel.openInvoiceDownload(
+                      context,
+                      receipt?.pdfUrl,
+                    ),
                     variant: AppButtonVariant.secondary,
                   ),
                 ),

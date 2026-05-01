@@ -24,13 +24,19 @@ class LoyaltyBadge {
     return LoyaltyBadge(
       id: _parseId(json['id']),
       name: '${json['name'] ?? ''}',
-      description: json['description'] as String?,
-      iconUrl: (json['iconUrl'] ?? json['icon_url']) as String?,
+      description: _nullableNonEmptyString(json['description']),
+      iconUrl: _nullableNonEmptyString(json['iconUrl'] ?? json['icon_url']),
       badgeKey: '${json['badgeKey'] ?? json['badge_key'] ?? ''}',
       badgeType: '${json['badgeType'] ?? json['badge_type'] ?? ''}',
       isEarned: json['isEarned'] == true || json['is_earned'] == true,
       earnedAt: _parseDate(json['earnedAt'] ?? json['earned_at']),
     );
+  }
+
+  static String? _nullableNonEmptyString(dynamic v) {
+    if (v == null) return null;
+    final s = '$v'.trim();
+    return s.isEmpty ? null : s;
   }
 
   static int _parseId(dynamic v) {

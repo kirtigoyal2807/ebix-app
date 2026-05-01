@@ -5,7 +5,6 @@ import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/core/localization/arb/app_localizations.dart';
 import 'package:pilates_app/features/subscription/purchase_subscription/cubit/subscription_cubit.dart';
-import 'package:pilates_app/features/subscription/purchase_subscription/view/success_membership_view.dart';
 import 'package:pilates_app/widgets/app_button.dart';
 import 'package:pilates_app/widgets/app_dropdown.dart';
 import 'package:pilates_app/widgets/app_text.dart';
@@ -228,8 +227,7 @@ class RequiredInformationView extends StatelessWidget {
           AppButton(
             label: l10n.continueToPayment,
             onPressed: () {
-               cubit.nextStep();
-               Navigator.push(context, MaterialPageRoute(builder: (context) => SuccessMembershipView(),));
+              cubit.goToCheckoutReviewStep();
             },
             buttonColor:isDark ?AppColors.primary: AppColors.primaryBrown,
             expanded: true,

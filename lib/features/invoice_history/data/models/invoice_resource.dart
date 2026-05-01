@@ -43,7 +43,10 @@ class InvoiceResource {
       amount: s.pricePaid,
       currency: 'SAR',
       status: s.status,
-      issuedAt: s.createdAt,
+      issuedAt: s.createdAt ??
+          s.startsAt ??
+          s.expiresAt ??
+          DateTime.fromMillisecondsSinceEpoch(0, isUtc: true),
       pdfUrl: s.invoicePdfUrl,
     );
   }

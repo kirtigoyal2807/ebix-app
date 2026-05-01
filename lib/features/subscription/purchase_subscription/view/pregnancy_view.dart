@@ -6,6 +6,7 @@ import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/core/localization/arb/app_localizations.dart';
 import 'package:pilates_app/core/localization/localization_extension.dart';
 import 'package:pilates_app/features/subscription/purchase_subscription/cubit/subscription_cubit.dart';
+import 'package:pilates_app/features/subscription/purchase_subscription/view/widgets/api_health_questionnaire_blocks.dart';
 import 'package:pilates_app/features/subscription/purchase_subscription/view/widgets/subscription_header.dart';
 import 'package:pilates_app/features/subscription/purchase_subscription/view/widgets/subscription_progress.dart';
 import 'package:pilates_app/widgets/app_button.dart';
@@ -29,58 +30,90 @@ class PregnancyView extends StatelessWidget {
         children: [
           Expanded(
             child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Progress
-                  SubscriptionStepHeader(
-                    currentStep: 3,
-                    totalSteps: 6,
-                    isDark: isDark,
-                  ),
-
-                  // Title
-                  AppText(
-                    l10n.pregnancy,
-                    style: (style) => AppTextStyles.heading1(context),
-                  ),
-                  const SizedBox(height: AppSpacing.lg),
-
-                  // Question
-                  _buildSectionHeader(context, l10n.areYouPregnant),
-
-                  const SizedBox(height: AppSpacing.md),
-                  BlocBuilder<SubscriptionCubit, SubscriptionState>(
-                    buildWhen: (p, c) => p.isPregnant != c.isPregnant,
-                    builder: (context, state) {
-                      return Column(
-                        children: [
-                          _buildRadioOption(
-                            context,
-                            l10n.yes,
-                            true,
-                            state.isPregnant,
-                            cubit.updateIsPregnant,
-                          ),
-                          _buildRadioOption(
-                            context,
-                            l10n.no,
-                            false,
-                            state.isPregnant,
-                            cubit.updateIsPregnant,
-                          ),
-                        ],
-                      );
-                    },
-                  ),
-                ],
+              child: BlocBuilder<SubscriptionCubit, SubscriptionState>(
+                buildWhen: (p, c) =>
+                    p.healthQuestionnaireQuestions !=
+                        c.healthQuestionnaireQuestions ||
+                    p.selectedProductRequiresHealthIntake !=
+                        c.selectedProductRequiresHealthIntake,
+                builder: (context, state) {
+                  final intake = state.selectedProductRequiresHealthIntake;
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SubscriptionStepHeader(
+                        currentStep: 3,
+                        totalSteps: 6,
+                        isDark: isDark,
+                      ),
+                      AppText(
+                        l10n.pregnancy,
+                        style: (style) => AppTextStyles.heading1(context),
+                      ),
+                      const SizedBox(height: AppSpacing.lg),
+                      if (intake) ...[
+                        const ApiBooleanQuestionsBlock(
+                          questionIds: [HealthQuestionnaireIds.pregnancy],
+                        ),
+                      ] else ...[
+                        _buildSectionHeader(context, l10n.areYouPregnant),
+                        const SizedBox(height: AppSpacing.md),
+                        BlocBuilder<SubscriptionCubit, SubscriptionState>(
+                          buildWhen: (p, c) => p.isPregnant != c.isPregnant,
+                          builder: (context, state) {
+                            return Column(
+                              children: [
+                                _buildRadioOption(
+                                  context,
+                                  l10n.yes,
+                                  true,
+                                  state.isPregnant,
+                                  cubit.updateIsPregnant,
+                                ),
+                                _buildRadioOption(
+                                  context,
+                                  l10n.no,
+                                  false,
+                                  state.isPregnant,
+                                  cubit.updateIsPregnant,
+                                ),
+                              ],
+                            );
+                          },
+                        ),
+                      ],
+                    ],
+                  );
+                },
               ),
             ),
           ),
           AppButton(
             label: l10n.continueTxt,
-            onPressed: () => cubit.nextStep(),
-            buttonColor:isDark ?AppColors.primary: AppColors.primaryBrown,
+            onPressed: () {
+              final intake = cubit.state.selectedProductRequiresHealthIntake;
+              if (intake) {
+                final qs = pickQuestionsByIds(
+                  cubit.state.healthQuestionnaireQuestions,
+                  const [HealthQuestionnaireIds.pregnancy],
+                );
+                if (qs.isNotEmpty && !cubit.validateQuestionnaireGroup(qs)) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text(l10n.giftRecipientValidationError)),
+                  );
+                  return;
+                }
+              } else {
+                if (cubit.state.isPregnant == null) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text(l10n.giftRecipientValidationError)),
+                  );
+                  return;
+                }
+              }
+              cubit.nextStep();
+            },
+            buttonColor: isDark ? AppColors.primary : AppColors.primaryBrown,
             expanded: true,
           ),
         ],

@@ -11,6 +11,7 @@ class Branch extends Equatable {
     this.lat,
     this.lng,
     this.imageUrl,
+    this.isActive = true,
   });
 
   final int id;
@@ -21,12 +22,18 @@ class Branch extends Equatable {
   final double? lat;
   final double? lng;
   final String? imageUrl;
+  final bool isActive;
 
   factory Branch.fromJson(Map<String, dynamic> json) {
     return Branch(
       id: _asInt(json['id']),
       title: _string(json['name'] ?? json['title'] ?? json['branch_name']),
-      city: _string(json['city'] ?? json['city_name'] ?? json['address']),
+      city: _string(
+        json['city'] ??
+            json['city_name'] ??
+            json['address'] ??
+            json['location'],
+      ),
       distance: _string(json['distance_label'] ?? json['distance'] ?? json['km_away']),
       typeLabel: _typeLabelFromJson(json),
       lat: _asDouble(json['lat'] ?? json['latitude']),
@@ -34,6 +41,7 @@ class Branch extends Equatable {
       imageUrl: _nullableString(
         json['image_url'] ?? json['imageUrl'] ?? json['image'] ?? json['photo'],
       ),
+      isActive: json['isActive'] as bool? ?? json['active'] as bool? ?? true,
     );
   }
 
@@ -58,7 +66,10 @@ class Branch extends Equatable {
           json['tier'] ??
           json['label'],
     );
-    return type.isEmpty ? 'Premium' : type;
+    if (type.isNotEmpty) return type;
+    final branchType = _string(json['branchType'] ?? json['branch_type']);
+    if (branchType.isNotEmpty) return branchType;
+    return 'Studio';
   }
 
   static String? _nullableString(dynamic v) {
@@ -75,5 +86,5 @@ class Branch extends Equatable {
   }
 
   @override
-  List<Object?> get props => [id, title, city, distance, typeLabel, lat, lng, imageUrl];
+  List<Object?> get props => [id, title, city, distance, typeLabel, lat, lng, imageUrl, isActive];
 }

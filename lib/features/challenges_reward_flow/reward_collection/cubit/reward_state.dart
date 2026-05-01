@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 
 import '../model/branch_model.dart';
 
@@ -12,7 +11,7 @@ class RewardState extends Equatable {
   RewardState({
     required this.rewardFilterList,
     this.selectedRewardFilter = RewardFilter.all,
-    required this.branchList  ,
+    required this.branchList,
     this.selectedBranch = 0,
   });
 
@@ -31,7 +30,12 @@ class RewardState extends Equatable {
   }
 
   @override
-  List<Object> get props => [rewardFilterList, selectedRewardFilter,branchList,selectedBranch];
+  List<Object> get props => [
+        rewardFilterList,
+        selectedRewardFilter,
+        branchList,
+        selectedBranch,
+      ];
 }
 
 enum RewardFilter { all, experiences, classes, discounts }
