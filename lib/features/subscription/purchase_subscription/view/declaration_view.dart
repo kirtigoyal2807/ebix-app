@@ -5,6 +5,7 @@ import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/core/localization/arb/app_localizations.dart';
 import 'package:pilates_app/features/subscription/purchase_subscription/cubit/subscription_cubit.dart';
+import 'package:pilates_app/features/subscription/purchase_subscription/view/widgets/subscription_calendar_date_field.dart';
 import 'package:pilates_app/features/subscription/purchase_subscription/view/widgets/subscription_header.dart';
 import 'package:pilates_app/features/subscription/purchase_subscription/view/widgets/subscription_progress.dart';
 import 'package:pilates_app/widgets/app_button.dart';
@@ -86,11 +87,11 @@ class _DeclarationViewState extends State<DeclarationView> {
                     onChanged: cubit.updateDeclarationSignature,
                   ),
                   const SizedBox(height: AppSpacing.md),
-                  AppTextField(
+                  SubscriptionCalendarDateField(
                     label: l10n.date,
                     hint: l10n.date,
                     controller: _dateController,
-                    onChanged: cubit.updateDeclarationDate,
+                    onDateSelected: cubit.updateDeclarationDate,
                   ),
                   const SizedBox(height: AppSpacing.lg),
                 ],

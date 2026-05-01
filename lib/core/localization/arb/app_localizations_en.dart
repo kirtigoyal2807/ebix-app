@@ -173,7 +173,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get phoneSupportDesc => '91 98765 43210 • Mon-Sat 9 AM - 7 PM';
 
   @override
-  String get splashAppName => 'the_pilates';
+  String get splashAppName => 'The Pilates';
 
   @override
   String get splashStudio => 'STUDIO';
@@ -1042,6 +1042,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get ifYesHowManyTimes => 'If yes, how many times per week?';
 
   @override
+  String get physicalActivityStepIncomplete =>
+      'Please complete all physical activity questions before continuing.';
+
+  @override
   String daysAWeek(int count) {
     return '$count days a week';
   }
@@ -1589,7 +1593,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get recipientEmailHintGmail => 'email@gmail.com';
 
   @override
-  String get recipientPhoneOptional => 'Recipient Phone Number (Optional)';
+  String get recipientPhoneOptional => 'Recipient phone number';
 
   @override
   String get giftRecipientValidationError =>
@@ -1608,6 +1612,10 @@ class AppLocalizationsEn extends AppLocalizations {
       'Payment for this checkout is already completed. Continuing.';
 
   @override
+  String get healthAnswerExplainHint =>
+      'Briefly explain your answer (required when you select Yes).';
+
+  @override
   String get pleaseSelectPlan => 'Please select a plan.';
 
   @override
@@ -1620,7 +1628,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get giftValidationRecipientPhone =>
-      'Enter a valid phone number or leave this field blank.';
+      'Please enter the recipient\'s phone number.';
 
   @override
   String get giftValidationScheduleDate =>
@@ -2784,6 +2792,25 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get pleaseEnterValidEmail => 'Please enter a valid email address';
+
+  @override
+  String get phoneTenDigitsRequired => 'Please enter a 10-digit mobile number';
+
+  @override
+  String get pleaseCompletePersonalInformation =>
+      'Please fill in all required personal information fields.';
+
+  @override
+  String get enterValidName => 'Please enter your name (at least 2 characters)';
+
+  @override
+  String get enterValidAge => 'Please enter a valid age between 1 and 120';
+
+  @override
+  String get enterValidHeightCm => 'Please enter height between 50 and 300 cm';
+
+  @override
+  String get enterValidWeightKg => 'Please enter weight between 20 and 400 kg';
 
   @override
   String get pleaseEnterPassword => 'Please enter your password';

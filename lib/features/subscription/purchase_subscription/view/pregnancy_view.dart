@@ -20,10 +20,6 @@ class PregnancyView extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
     final cubit = context.read<SubscriptionCubit>();
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final hasApiPregnancy = pickQuestionsByIds(
-      cubit.state.healthQuestionnaireQuestions,
-      const [HealthQuestionnaireIds.pregnancy],
-    ).isNotEmpty;
 
     return Padding(
       padding: const EdgeInsets.symmetric(
@@ -34,80 +30,90 @@ class PregnancyView extends StatelessWidget {
         children: [
           Expanded(
             child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Progress
-                  SubscriptionStepHeader(
-                    currentStep: 3,
-                    totalSteps: 6,
-                    isDark: isDark,
-                  ),
-
-                  // Title
-                  AppText(
-                    l10n.pregnancy,
-                    style: (style) => AppTextStyles.heading1(context),
-                  ),
-                  const SizedBox(height: AppSpacing.lg),
-
-                  if (hasApiPregnancy) ...[
-                    const ApiBooleanQuestionsBlock(
-                      questionIds: [HealthQuestionnaireIds.pregnancy],
-                    ),
-                  ] else ...[
-                    _buildSectionHeader(context, l10n.areYouPregnant),
-                    const SizedBox(height: AppSpacing.md),
-                    BlocBuilder<SubscriptionCubit, SubscriptionState>(
-                      buildWhen: (p, c) => p.isPregnant != c.isPregnant,
-                      builder: (context, state) {
-                        return Column(
-                          children: [
-                            _buildRadioOption(
-                              context,
-                              l10n.yes,
-                              true,
-                              state.isPregnant,
-                              cubit.updateIsPregnant,
-                            ),
-                            _buildRadioOption(
-                              context,
-                              l10n.no,
-                              false,
-                              state.isPregnant,
-                              cubit.updateIsPregnant,
-                            ),
-                          ],
-                        );
-                      },
-                    ),
-                  ],
-                ],
+              child: BlocBuilder<SubscriptionCubit, SubscriptionState>(
+                buildWhen: (p, c) =>
+                    p.healthQuestionnaireQuestions !=
+                        c.healthQuestionnaireQuestions ||
+                    p.selectedProductRequiresHealthIntake !=
+                        c.selectedProductRequiresHealthIntake,
+                builder: (context, state) {
+                  final intake = state.selectedProductRequiresHealthIntake;
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SubscriptionStepHeader(
+                        currentStep: 3,
+                        totalSteps: 6,
+                        isDark: isDark,
+                      ),
+                      AppText(
+                        l10n.pregnancy,
+                        style: (style) => AppTextStyles.heading1(context),
+                      ),
+                      const SizedBox(height: AppSpacing.lg),
+                      if (intake) ...[
+                        const ApiBooleanQuestionsBlock(
+                          questionIds: [HealthQuestionnaireIds.pregnancy],
+                        ),
+                      ] else ...[
+                        _buildSectionHeader(context, l10n.areYouPregnant),
+                        const SizedBox(height: AppSpacing.md),
+                        BlocBuilder<SubscriptionCubit, SubscriptionState>(
+                          buildWhen: (p, c) => p.isPregnant != c.isPregnant,
+                          builder: (context, state) {
+                            return Column(
+                              children: [
+                                _buildRadioOption(
+                                  context,
+                                  l10n.yes,
+                                  true,
+                                  state.isPregnant,
+                                  cubit.updateIsPregnant,
+                                ),
+                                _buildRadioOption(
+                                  context,
+                                  l10n.no,
+                                  false,
+                                  state.isPregnant,
+                                  cubit.updateIsPregnant,
+                                ),
+                              ],
+                            );
+                          },
+                        ),
+                      ],
+                    ],
+                  );
+                },
               ),
             ),
           ),
           AppButton(
             label: l10n.continueTxt,
             onPressed: () {
-              final qs = pickQuestionsByIds(
-                cubit.state.healthQuestionnaireQuestions,
-                const [HealthQuestionnaireIds.pregnancy],
-              );
-              if (qs.isNotEmpty && !cubit.validateQuestionnaireGroup(qs)) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text(l10n.giftRecipientValidationError)),
+              final intake = cubit.state.selectedProductRequiresHealthIntake;
+              if (intake) {
+                final qs = pickQuestionsByIds(
+                  cubit.state.healthQuestionnaireQuestions,
+                  const [HealthQuestionnaireIds.pregnancy],
                 );
-                return;
-              }
-              if (qs.isEmpty && cubit.state.isPregnant == null) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text(l10n.giftRecipientValidationError)),
-                );
-                return;
+                if (qs.isNotEmpty && !cubit.validateQuestionnaireGroup(qs)) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text(l10n.giftRecipientValidationError)),
+                  );
+                  return;
+                }
+              } else {
+                if (cubit.state.isPregnant == null) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text(l10n.giftRecipientValidationError)),
+                  );
+                  return;
+                }
               }
               cubit.nextStep();
             },
-            buttonColor:isDark ?AppColors.primary: AppColors.primaryBrown,
+            buttonColor: isDark ? AppColors.primary : AppColors.primaryBrown,
             expanded: true,
           ),
         ],

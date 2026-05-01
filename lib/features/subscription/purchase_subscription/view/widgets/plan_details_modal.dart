@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -77,10 +79,16 @@ class _PlanDetailsModalState extends State<PlanDetailsModal> {
         }
         setState(() => _displayPlan = merged);
         try {
-          context.read<SubscriptionCubit>().selectPlan(
+          final cubit = context.read<SubscriptionCubit>();
+          final repo = context.read<CheckoutRepository>();
+          cubit.selectPlan(
                 merged['id'] as String,
                 requiresHealthIntake: product.requiresHealthIntake,
               );
+          if (cubit.state.selectedProductRequiresHealthIntake &&
+              cubit.state.healthQuestionnaireQuestions.isEmpty) {
+            unawaited(cubit.prefetchHealthQuestionnaireForSelectedPlan(repo));
+          }
         } catch (_) {}
       },
       failure: (_) {},

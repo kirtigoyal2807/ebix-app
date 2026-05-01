@@ -30,6 +30,8 @@ import 'package:pilates_app/features/checkout/data/models/product_health_questio
 ///    ([applyCoupon]); adjust to `coupon` if needed.
 /// 8. Payment: `POST checkout/{id}/payment/intent` — same resource as
 ///    `…/checkout/019c70d5-…/payment/intent` under the API base ([fetchPaymentIntent]).
+/// 9. After hosted WebView success: poll `GET checkout/{id}` ([refreshCheckoutAfterHostedPayment])
+///    so `payment` / receipt fields match the server before navigating to the receipt UI.
 class CheckoutRepository extends BaseRepository {
   CheckoutRepository(super.dio);
 
@@ -526,6 +528,46 @@ class CheckoutRepository extends BaseRepository {
     }
 
     return result;
+  }
+
+  /// Polls `GET checkout/{id}` after hosted payment so receipt data matches the
+  /// server once the PSP webhook updates the session (often shortly after the
+  /// return URL).
+  Future<CheckoutStartResult?> refreshCheckoutAfterHostedPayment(
+    String checkoutId, {
+    int maxAttempts = 5,
+    Duration delayBetweenAttempts = const Duration(milliseconds: 800),
+  }) async {
+    final id = checkoutId.trim();
+    if (id.isEmpty) return null;
+
+    CheckoutStartResult? lastOk;
+    for (var i = 0; i < maxAttempts; i++) {
+      final detail = await getCheckoutDetails(id);
+      if (detail.isSuccess) {
+        lastOk = detail.dataOrNull;
+        if (lastOk != null && _sessionReflectsPaidCheckout(lastOk)) {
+          return lastOk;
+        }
+      }
+      if (i < maxAttempts - 1) {
+        await Future<void>.delayed(delayBetweenAttempts);
+      }
+    }
+    return lastOk;
+  }
+
+  static bool _sessionReflectsPaidCheckout(CheckoutStartResult s) {
+    final p = s.payment;
+    final hasRef = p?.reference != null && p!.reference!.trim().isNotEmpty;
+    final hasPaidAt = p?.paidAt != null && p!.paidAt!.trim().isNotEmpty;
+    final statusVal = s.status?.value?.toLowerCase().trim() ?? '';
+    final statusPaid = statusVal == 'paid' ||
+        statusVal == 'completed' ||
+        statusVal == 'complete' ||
+        statusVal == 'success' ||
+        statusVal.contains('paid');
+    return hasRef || hasPaidAt || statusPaid;
   }
 
   /// `true` when [message] is the known "checkout already paid" API copy.

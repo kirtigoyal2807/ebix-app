@@ -3,12 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:pilates_app/config/theme/app_colors.dart';
 import 'package:pilates_app/core/utils/checkout_payment_launcher.dart';
+import 'package:pilates_app/core/utils/hosted_payment_webview_page.dart';
+import 'package:pilates_app/core/utils/post_hosted_payment_receipt.dart';
 import 'package:pilates_app/features/checkout/data/checkout_repository.dart';
 import 'package:pilates_app/features/checkout/data/models/checkout_payment_intent_result.dart';
-import 'package:pilates_app/features/checkout/data/models/membership_receipt_summary.dart';
 import 'package:pilates_app/features/subscription/purchase_subscription/data/subscription_health_intake_request.dart';
 import 'package:pilates_app/features/subscription/purchase_subscription/view/review_screen_details_view.dart';
-import 'package:pilates_app/features/subscription/purchase_subscription/view/success_membership_view.dart';
 import 'package:pilates_app/widgets/app_button.dart';
 
 import '../../../../config/theme/app_spacing.dart';
@@ -22,16 +22,17 @@ class ReviewScreenView extends StatelessWidget {
     BuildContext context,
     CheckoutRepository repo,
     String checkoutId,
-    CheckoutPaymentIntentResult intent,
-  ) async {
-    final detail = await repo.getCheckoutDetails(checkoutId);
-    final session = detail.isSuccess ? detail.dataOrNull : null;
-    final receipt = MembershipReceiptSummary.merge(session, intent);
-    if (!context.mounted) return;
-    await Navigator.of(context).push<void>(
-      MaterialPageRoute<void>(
-        builder: (context) => SuccessMembershipView(receipt: receipt),
-      ),
+    CheckoutPaymentIntentResult intent, {
+    Map<String, dynamic>? gatewayCallback,
+    bool dismissRootOverlayBeforeReceipt = false,
+  }) async {
+    await pushReceiptAfterHostedPayment(
+      context: context,
+      repo: repo,
+      checkoutSessionId: checkoutId,
+      paymentIntent: intent,
+      gatewayCallback: gatewayCallback,
+      dismissRootOverlayBeforeReceipt: dismissRootOverlayBeforeReceipt,
     );
   }
 
@@ -106,32 +107,56 @@ class ReviewScreenView extends StatelessWidget {
 
     if (result.isSuccess) {
       final data = result.dataOrNull!;
-      var showReceipt = false;
       if (data.alreadyCompleted) {
         messenger.showSnackBar(
           SnackBar(content: Text(l10n.checkoutPaymentAlreadyCompleted)),
         );
-        showReceipt = true;
-      } else {
-        final url = data.paymentUrl;
-        if (url != null && url.trim().isNotEmpty) {
-          final opened =
-              await CheckoutPaymentLauncher.openHostedPaymentUrl(url);
-          if (context.mounted && !opened) {
-            messenger.showSnackBar(
-              SnackBar(content: Text(l10n.loginErrorGeneric)),
-            );
-          } else {
-            showReceipt = opened;
-          }
-        } else if (context.mounted) {
-          messenger.showSnackBar(
-            SnackBar(content: Text(l10n.loginErrorGeneric)),
-          );
-        }
-      }
-      if (context.mounted && showReceipt) {
         await _pushReceiptScreen(context, repo, id, data);
+        return;
+      }
+
+      final url = data.paymentUrl;
+      if (url != null && url.trim().isNotEmpty) {
+        final paymentResult =
+            await CheckoutPaymentLauncher.openInAppPaymentWebView(
+          context,
+          url,
+        );
+        if (!context.mounted) return;
+
+        if (paymentResult?.outcome != HostedPaymentWebViewOutcome.success) {
+          return;
+        }
+        final paid = paymentResult!;
+
+        showDialog<void>(
+          context: context,
+          barrierDismissible: false,
+          builder: (dialogContext) => const Center(
+            child: CircularProgressIndicator(),
+          ),
+        );
+        try {
+          await _pushReceiptScreen(
+            context,
+            repo,
+            id,
+            data,
+            gatewayCallback: paid.gatewayPayload,
+            dismissRootOverlayBeforeReceipt: true,
+          );
+        } catch (_) {
+          if (context.mounted) {
+            Navigator.of(context, rootNavigator: true).pop();
+          }
+        }
+        return;
+      }
+
+      if (context.mounted) {
+        messenger.showSnackBar(
+          SnackBar(content: Text(l10n.loginErrorGeneric)),
+        );
       }
       return;
     }

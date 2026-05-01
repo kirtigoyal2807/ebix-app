@@ -6,6 +6,7 @@ import 'package:pilates_app/config/theme/app_radius.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/features/invoice_history/data/models/customer_subscription_resource.dart';
+import 'package:pilates_app/features/subscription/purchase_subscription/view/subscription_view.dart';
 import 'package:pilates_app/features/view_subscription/cubit/subscriptions_cubit.dart';
 import 'package:pilates_app/features/view_subscription/cubit/subscriptions_state.dart';
 import 'package:pilates_app/features/view_subscription/view/pause_subscription_view.dart';
@@ -380,7 +381,13 @@ class CurrentPlanView extends StatelessWidget {
                   SizedBox(height: AppSpacing.lg),
                   AppButton(
                     label: context.l10n.changePlan,
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.of(context).push<void>(
+                        MaterialPageRoute<void>(
+                          builder: (context) => const SubscriptionView(),
+                        ),
+                      );
+                    },
                     variant: AppButtonVariant.primary,
                   ),
                   const SizedBox(height: AppSpacing.sm),
