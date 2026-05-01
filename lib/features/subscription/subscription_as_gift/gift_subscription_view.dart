@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/core/constants/api_config.dart';
 import 'package:pilates_app/core/validation/contact_validators.dart';
+import 'package:pilates_app/core/validation/personal_information_validators.dart';
 import 'package:pilates_app/features/checkout/data/checkout_repository.dart';
 import 'package:pilates_app/features/subscription/purchase_subscription/cubit/subscription_cubit.dart';
 import 'package:pilates_app/features/subscription/subscription_as_gift/cubit/gift_subscription_cubit.dart';
@@ -138,9 +139,16 @@ class _GiftSubscriptionViewState extends State<GiftSubscriptionView> {
       return;
     }
 
-    if (!ContactValidators.isValidOptionalPhone(phoneRaw)) {
+    final phoneDigits = phoneRaw.replaceAll(RegExp(r'\D'), '');
+    if (phoneDigits.isEmpty) {
       messenger.showSnackBar(
         SnackBar(content: Text(l10n.giftValidationRecipientPhone)),
+      );
+      return;
+    }
+    if (!PersonalInformationValidators.isTenDigitMobile(phoneRaw)) {
+      messenger.showSnackBar(
+        SnackBar(content: Text(l10n.phoneTenDigitsRequired)),
       );
       return;
     }
@@ -171,7 +179,7 @@ class _GiftSubscriptionViewState extends State<GiftSubscriptionView> {
       checkoutSessionId: trimmedId,
       recipientName: name,
       recipientEmail: email,
-      recipientPhone: _phone.text.trim(),
+      recipientPhone: phoneDigits,
       message: _message.text.trim(),
       deliveryDate: deliveryDate,
     );

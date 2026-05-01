@@ -21,10 +21,6 @@ class GoalsView extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
     final cubit = context.read<SubscriptionCubit>();
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final hasApiGoals = pickQuestionsByIds(
-      cubit.state.healthQuestionnaireQuestions,
-      const [HealthQuestionnaireIds.goals],
-    ).isNotEmpty;
 
     return Padding(
       padding: const EdgeInsets.symmetric(
@@ -35,72 +31,78 @@ class GoalsView extends StatelessWidget {
         children: [
           Expanded(
             child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Progress
-                  SubscriptionStepHeader(
-                    currentStep: 4,
-                    totalSteps: 6,
-                    isDark: isDark,
-                  ),
-
-                  // Title
-                  AppText(
-                    l10n.goals,
-                    style: (style) => AppTextStyles.gelasioMedium(
-                      context,
-                    ).copyWith(fontSize: 24, height: 1.2),
-                  ),
-                  const SizedBox(height: AppSpacing.lg),
-
-                  if (hasApiGoals)
-                    const ApiGoalsQuestionBlock()
-                  else
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        _buildSectionHeader(context, l10n.whatIsYourGoal),
-                        Stack(
+              child: BlocBuilder<SubscriptionCubit, SubscriptionState>(
+                buildWhen: (p, c) =>
+                    p.healthQuestionnaireQuestions !=
+                        c.healthQuestionnaireQuestions ||
+                    p.selectedProductRequiresHealthIntake !=
+                        c.selectedProductRequiresHealthIntake,
+                builder: (context, state) {
+                  final intake = state.selectedProductRequiresHealthIntake;
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SubscriptionStepHeader(
+                        currentStep: 4,
+                        totalSteps: 6,
+                        isDark: isDark,
+                      ),
+                      AppText(
+                        l10n.goals,
+                        style: (style) => AppTextStyles.gelasioMedium(
+                          context,
+                        ).copyWith(fontSize: 24, height: 1.2),
+                      ),
+                      const SizedBox(height: AppSpacing.lg),
+                      if (intake)
+                        const ApiGoalsQuestionBlock()
+                      else
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            AppTextField(
-                              hint: l10n.enterYourGoals,
-                              label: '',
-                              maxLength: 200,
-                              onChanged: (val) => cubit.updateGoals(val),
-                              maxLines: 8,
+                            _buildSectionHeader(context, l10n.whatIsYourGoal),
+                            Stack(
+                              children: [
+                                AppTextField(
+                                  hint: l10n.enterYourGoals,
+                                  label: '',
+                                  maxLength: 200,
+                                  onChanged: (val) => cubit.updateGoals(val),
+                                  maxLines: 8,
+                                ),
+                              ],
                             ),
                           ],
                         ),
-                      ],
-                    ),
-                  // const SizedBox(height: 8),
-                  //  Align(
-                  //   alignment: Alignment.centerRight,
-                  //   child: AppText(
-                  //     '0/200', // Placeholder counter, can be dynamic
-                  //      style:(style)=> AppTextStyles.captionText(context).copyWith(
-                  //       color: isDark ? AppColors.lightGrey : AppColors.greyText,
-                  //     ),
-                  //   ),
-                  // ),
-                ],
+                    ],
+                  );
+                },
               ),
             ),
           ),
           AppButton(
             label: l10n.continueTxt,
             onPressed: () {
-              final goalQs = pickQuestionsByIds(
-                cubit.state.healthQuestionnaireQuestions,
-                const [HealthQuestionnaireIds.goals],
-              );
-              if (goalQs.isNotEmpty &&
-                  !cubit.validateQuestionnaireGroup(goalQs)) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text(l10n.giftRecipientValidationError)),
+              final intake = cubit.state.selectedProductRequiresHealthIntake;
+              if (intake) {
+                final goalQs = pickQuestionsByIds(
+                  cubit.state.healthQuestionnaireQuestions,
+                  const [HealthQuestionnaireIds.goals],
                 );
-                return;
+                if (goalQs.isNotEmpty &&
+                    !cubit.validateQuestionnaireGroup(goalQs)) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text(l10n.giftRecipientValidationError)),
+                  );
+                  return;
+                }
+              } else {
+                if (cubit.state.goals.trim().isEmpty) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text(l10n.giftRecipientValidationError)),
+                  );
+                  return;
+                }
               }
               cubit.nextStep();
             },

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pilates_app/config/theme/app_colors.dart';
@@ -207,6 +209,7 @@ class _PlanSelectionStepState extends State<_PlanSelectionStep> {
     if (!mounted) return;
     final l10n = AppLocalizations.of(context)!;
     _syncSelectedPlan(_resolvedPlans(l10n));
+    await _prefetchQuestionnaireAfterCatalog();
   }
 
   Future<void> _reloadCatalogForBranch(int branchId) async {
@@ -234,17 +237,145 @@ class _PlanSelectionStepState extends State<_PlanSelectionStep> {
     if (!mounted) return;
     final l10n = AppLocalizations.of(context)!;
     _syncSelectedPlan(_resolvedPlans(l10n));
+    await _prefetchQuestionnaireAfterCatalog();
   }
 
+  /// After `GET /products` (catalog), warm questionnaire when the effective plan has
+  /// `requiresHealthIntake: true` ([SubscriptionCubit.prefetchHealthQuestionnaireForSelectedPlan]).
+  Future<void> _prefetchQuestionnaireAfterCatalog() async {
+    final cubit = context.read<SubscriptionCubit>();
+    final repo = context.read<CheckoutRepository>();
+    await cubit.prefetchHealthQuestionnaireForSelectedPlan(repo);
+  }
+
+  /// `POST checkout/start` → bind session → prefetch questionnaire, then either
+  /// push [GiftSubscriptionView] when [SubscriptionState.isGift] or advance to
+  /// personal info ([SubscriptionCubit.nextStep]).
+  Future<void> _startCheckoutAndNavigate() async {
+    if (!mounted) return;
+    final messenger = ScaffoldMessenger.of(context);
+    final l10n = AppLocalizations.of(context)!;
+    final cubit = context.read<SubscriptionCubit>();
+    var state = cubit.state;
+
+    if (state.selectedPlanId.trim().isEmpty) {
+      messenger.showSnackBar(
+        SnackBar(content: Text(l10n.pleaseSelectPlan)),
+      );
+      return;
+    }
+    if (state.selectedBranchId == null || state.selectedBranchId! <= 0) {
+      messenger.showSnackBar(
+        SnackBar(content: Text(l10n.pleaseSelectBranch)),
+      );
+      return;
+    }
+
+    final productId = subscriptionProductApiId(state.selectedPlanId);
+    final branchId = state.selectedBranchId!;
+    if (productId <= 0) {
+      messenger.showSnackBar(
+        SnackBar(content: Text(l10n.loginErrorGeneric)),
+      );
+      return;
+    }
+
+    final repo = context.read<CheckoutRepository>();
+
+    showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (dialogContext) => const Center(
+        child: CircularProgressIndicator(),
+      ),
+    );
+
+    state = cubit.state;
+    final result = await repo.startCheckout(
+      productId: productId,
+      branchId: branchId,
+      isGift: state.isGift,
+    );
+
+    if (mounted) {
+      Navigator.of(context, rootNavigator: true).pop();
+    }
+
+    if (!mounted) return;
+
+    if (result.isSuccess) {
+      final data = result.dataOrNull!;
+      final resolvedProductId = data.resolvedProductId ?? productId;
+      cubit.bindCheckoutSession(
+        sessionId: data.id,
+        productId: resolvedProductId,
+        requiresHealthIntake: data.resolvedRequiresHealthIntake,
+      );
+      await cubit.fetchHealthQuestionnaireForCurrentProduct(repo);
+      if (!mounted) return;
+      if (cubit.state.isGift) {
+        Navigator.push<void>(
+          context,
+          MaterialPageRoute<void>(
+            builder: (context) => BlocProvider.value(
+              value: cubit,
+              child: GiftSubscriptionView(checkoutId: data.id),
+            ),
+          ),
+        );
+      } else {
+        cubit.nextStep();
+      }
+    } else {
+      final e = result.exceptionOrNull!;
+      messenger.showSnackBar(
+        SnackBar(
+          content: Text(
+            (e.message != null && e.message!.trim().isNotEmpty)
+                ? e.message!
+                : l10n.loginErrorGeneric,
+          ),
+        ),
+      );
+    }
+  }
+
+  /// Prefer membership subscriptions in the list so default selection and
+  /// questionnaire prefetch follow the chosen plan; API order may list session
+  /// packs first (e.g. product id 1).
+  List<CatalogProduct> _orderedCatalogForDisplay(List<CatalogProduct> products) {
+    final out = List<CatalogProduct>.from(products);
+    int rank(CatalogProduct p) {
+      final et = p.entitlementType.toLowerCase();
+      final t = p.type.toLowerCase();
+      if (t == 'membership' && et == 'subscription') return 0;
+      if (t == 'membership') return 1;
+      return 2;
+    }
+
+    out.sort((a, b) {
+      final c = rank(a).compareTo(rank(b));
+      if (c != 0) return c;
+      if (a.isRecommended != b.isRecommended) {
+        return (b.isRecommended ? 1 : 0).compareTo(a.isRecommended ? 1 : 0);
+      }
+      return a.id.compareTo(b.id);
+    });
+    return out;
+  }
+
+  /// Fallback when `GET /products` is unavailable. Use numeric `id` strings so
+  /// `GET …/questionnaires/product/{id}` matches real product ids in your API.
   List<Map<String, dynamic>> _staticPlans(AppLocalizations l10n) {
     return [
       {
-        'id': 'premium',
+        'id': '1',
         'title': l10n.premiumPlanTitle,
         'price': '89',
         'badge': l10n.mostPopular,
         'isPopular': true,
         'requiresHealthIntake': true,
+        'priceSubtitle': ' / Month',
         'features': [
           l10n.feature12Classes,
           l10n.featureDowntownUptown,
@@ -253,12 +384,13 @@ class _PlanSelectionStepState extends State<_PlanSelectionStep> {
         ],
       },
       {
-        'id': 'basic',
+        'id': '2',
         'title': l10n.basicPlanTitle,
         'price': '49',
         'badge': null,
         'isPopular': false,
         'requiresHealthIntake': true,
+        'priceSubtitle': ' / Month',
         'features': [
           l10n.feature8Classes,
           l10n.featureDowntownOnly,
@@ -266,12 +398,13 @@ class _PlanSelectionStepState extends State<_PlanSelectionStep> {
         ],
       },
       {
-        'id': 'unlimited',
+        'id': '3',
         'title': l10n.unlimitedPlanTitle,
         'price': '149',
         'badge': null,
         'isPopular': false,
         'requiresHealthIntake': true,
+        'priceSubtitle': ' / Month',
         'features': [
           l10n.featureUnlimitedClasses,
           l10n.featureAllStudios,
@@ -284,7 +417,9 @@ class _PlanSelectionStepState extends State<_PlanSelectionStep> {
 
   List<Map<String, dynamic>> _resolvedPlans(AppLocalizations l10n) {
     if (_catalogProducts.isNotEmpty) {
-      return _catalogProducts.map((p) => p.toPlanMap(l10n)).toList();
+      return _orderedCatalogForDisplay(_catalogProducts)
+          .map((p) => p.toPlanMap(l10n))
+          .toList();
     }
     return _staticPlans(l10n);
   }
@@ -300,7 +435,7 @@ class _PlanSelectionStepState extends State<_PlanSelectionStep> {
       effectivePlan = plans.firstWhere((p) => p['id'] == selected)
           as Map<String, dynamic>;
     }
-    final req = effectivePlan['requiresHealthIntake'] as bool? ?? true;
+    final req = effectivePlan['requiresHealthIntake'] as bool? ?? false;
     cubit.selectPlan(effectivePlan['id'] as String, requiresHealthIntake: req);
   }
 
@@ -311,7 +446,9 @@ class _PlanSelectionStepState extends State<_PlanSelectionStep> {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     final plans = _resolvedPlans(l10n);
-    final showPlansLoading = _productsLoading && _catalogProducts.isEmpty;
+    // Show loader on initial fetch and whenever branch changes trigger a new
+    // `GET /products` — not only when catalog is empty (old products would hide it).
+    final showPlansLoading = _productsLoading;
 
     return Column(
       children: [
@@ -481,13 +618,25 @@ class _PlanSelectionStepState extends State<_PlanSelectionStep> {
                               isSelected: state.selectedPlanId == plan['id'],
                               isPopular: plan['isPopular'] as bool? ?? false,
                               badgeText: plan['badge'] as String?,
+                              priceSuffix: () {
+                                final s =
+                                    (plan['priceSubtitle'] as String?)?.trim();
+                                if (s != null && s.isNotEmpty) return s;
+                                return ' / Month';
+                              }(),
                               onTap: () {
                                 cubit.selectPlan(
                                   plan['id'] as String,
                                   requiresHealthIntake:
                                       plan['requiresHealthIntake'] as bool? ??
-                                          true,
+                                          false,
                                 );
+                                if (cubit.state
+                                        .selectedProductRequiresHealthIntake &&
+                                    cubit.state.healthQuestionnaireQuestions
+                                        .isEmpty) {
+                                  _prefetchQuestionnaireAfterCatalog();
+                                }
                                 showModalBottomSheet(
                                   context: context,
                                   isScrollControlled: true,
@@ -497,7 +646,7 @@ class _PlanSelectionStepState extends State<_PlanSelectionStep> {
                                     plan: plan,
                                     onSubscribe: () {
                                       Navigator.pop(context);
-                                      cubit.nextStep();
+                                      unawaited(_startCheckoutAndNavigate());
                                     },
                                   ),
                                 );
@@ -518,88 +667,8 @@ class _PlanSelectionStepState extends State<_PlanSelectionStep> {
           padding: const EdgeInsets.all(24),
           child: AppButton(
             label: l10n.continueTxt,
-            onPressed: () async {
-              final messenger = ScaffoldMessenger.of(context);
-              final state = cubit.state;
-
-              if (state.selectedPlanId.trim().isEmpty) {
-                messenger.showSnackBar(
-                  SnackBar(content: Text(l10n.pleaseSelectPlan)),
-                );
-                return;
-              }
-              if (state.selectedBranchId == null || state.selectedBranchId! <= 0) {
-                messenger.showSnackBar(
-                  SnackBar(content: Text(l10n.pleaseSelectBranch)),
-                );
-                return;
-              }
-
-              final productId = subscriptionProductApiId(state.selectedPlanId);
-              final branchId = state.selectedBranchId!;
-              if (productId <= 0) {
-                messenger.showSnackBar(
-                  SnackBar(content: Text(l10n.loginErrorGeneric)),
-                );
-                return;
-              }
-
-              final repo = context.read<CheckoutRepository>();
-
-              showDialog<void>(
-                context: context,
-                barrierDismissible: false,
-                builder: (dialogContext) => const Center(
-                  child: CircularProgressIndicator(),
-                ),
-              );
-
-              final result = await repo.startCheckout(
-                productId: productId,
-                branchId: branchId,
-                isGift: state.isGift,
-              );
-
-              if (context.mounted) {
-                Navigator.of(context, rootNavigator: true).pop();
-              }
-
-              if (!context.mounted) return;
-
-              result.when(
-                success: (data, _) {
-                  final resolvedProductId = data.resolvedProductId ?? productId;
-                  cubit.bindCheckoutSession(
-                    sessionId: data.id,
-                    productId: resolvedProductId,
-                    requiresHealthIntake: data.requiresHealthIntake,
-                  );
-                  if (state.isGift) {
-                    Navigator.push<void>(
-                      context,
-                      MaterialPageRoute<void>(
-                        builder: (context) => BlocProvider.value(
-                          value: cubit,
-                          child: GiftSubscriptionView(checkoutId: data.id),
-                        ),
-                      ),
-                    );
-                  } else {
-                    cubit.nextStep();
-                  }
-                },
-                failure: (e) {
-                  messenger.showSnackBar(
-                    SnackBar(
-                      content: Text(
-                        (e.message != null && e.message!.trim().isNotEmpty)
-                            ? e.message!
-                            : l10n.loginErrorGeneric,
-                      ),
-                    ),
-                  );
-                },
-              );
+            onPressed: () {
+              unawaited(_startCheckoutAndNavigate());
             },
             buttonColor: isDark ? AppColors.primary : AppColors.primaryBrown,
             expanded: true,

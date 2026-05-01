@@ -413,7 +413,7 @@ abstract class AppLocalizations {
   /// No description provided for @splashAppName.
   ///
   /// In en, this message translates to:
-  /// **'the_pilates'**
+  /// **'The Pilates'**
   String get splashAppName;
 
   /// No description provided for @splashStudio.
@@ -2078,6 +2078,12 @@ abstract class AppLocalizations {
   /// **'If yes, how many times per week?'**
   String get ifYesHowManyTimes;
 
+  /// No description provided for @physicalActivityStepIncomplete.
+  ///
+  /// In en, this message translates to:
+  /// **'Please complete all physical activity questions before continuing.'**
+  String get physicalActivityStepIncomplete;
+
   /// No description provided for @daysAWeek.
   ///
   /// In en, this message translates to:
@@ -3125,7 +3131,7 @@ abstract class AppLocalizations {
   /// No description provided for @recipientPhoneOptional.
   ///
   /// In en, this message translates to:
-  /// **'Recipient Phone Number (Optional)'**
+  /// **'Recipient phone number'**
   String get recipientPhoneOptional;
 
   /// No description provided for @giftRecipientValidationError.
@@ -3152,6 +3158,12 @@ abstract class AppLocalizations {
   /// **'Payment for this checkout is already completed. Continuing.'**
   String get checkoutPaymentAlreadyCompleted;
 
+  /// No description provided for @healthAnswerExplainHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Briefly explain your answer (required when you select Yes).'**
+  String get healthAnswerExplainHint;
+
   /// No description provided for @pleaseSelectPlan.
   ///
   /// In en, this message translates to:
@@ -3173,7 +3185,7 @@ abstract class AppLocalizations {
   /// No description provided for @giftValidationRecipientPhone.
   ///
   /// In en, this message translates to:
-  /// **'Enter a valid phone number or leave this field blank.'**
+  /// **'Please enter the recipient\'s phone number.'**
   String get giftValidationRecipientPhone;
 
   /// No description provided for @giftValidationScheduleDate.
@@ -5443,6 +5455,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Please enter a valid email address'**
   String get pleaseEnterValidEmail;
+
+  /// No description provided for @phoneTenDigitsRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a 10-digit mobile number'**
+  String get phoneTenDigitsRequired;
+
+  /// No description provided for @pleaseCompletePersonalInformation.
+  ///
+  /// In en, this message translates to:
+  /// **'Please fill in all required personal information fields.'**
+  String get pleaseCompletePersonalInformation;
+
+  /// No description provided for @enterValidName.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your name (at least 2 characters)'**
+  String get enterValidName;
+
+  /// No description provided for @enterValidAge.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a valid age between 1 and 120'**
+  String get enterValidAge;
+
+  /// No description provided for @enterValidHeightCm.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter height between 50 and 300 cm'**
+  String get enterValidHeightCm;
+
+  /// No description provided for @enterValidWeightKg.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter weight between 20 and 400 kg'**
+  String get enterValidWeightKg;
 
   /// No description provided for @pleaseEnterPassword.
   ///

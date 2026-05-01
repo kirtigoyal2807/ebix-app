@@ -5,6 +5,7 @@ import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/widgets/app_text.dart';
 import 'package:pilates_app/widgets/app_text_field.dart';
+import 'package:pilates_app/widgets/phone_number_field.dart';
 
 import '../../../../core/localization/arb/app_localizations.dart';
 import '../cubit/gift_subscription_cubit.dart';
@@ -27,7 +28,7 @@ class ReceiptDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context);
+    final l10n = AppLocalizations.of(context)!;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -53,11 +54,12 @@ class ReceiptDetails extends StatelessWidget {
           controller: emailController,
         ),
         SizedBox(height: AppSpacing.md),
-        AppTextField(
+        PhoneNumberField(
           label: l10n.recipientPhoneOptional,
-          hint: 'XXXXXXXXXXX',
-          keyboardType: TextInputType.phone,
+          countryCode: '+966',
+          flagAsset: '',
           controller: phoneController,
+          maxPhoneDigits: 10,
         ),
         SizedBox(height: AppSpacing.md),
 

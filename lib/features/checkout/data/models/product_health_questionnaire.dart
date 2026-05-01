@@ -1,5 +1,26 @@
 import 'product_health_question.dart';
 
+void _appendPersonalQuestionLists(
+  Map<String, dynamic> source,
+  List<ProductHealthQuestion> target,
+) {
+  for (final k in const [
+    'personalInformation',
+    'personalQuestions',
+    'demographics',
+    'profile',
+    'personal_fields',
+  ]) {
+    final raw = source[k];
+    if (raw is List && raw.isNotEmpty) {
+      target.addAll(
+        raw.map((e) => ProductHealthQuestion.fromJson(e)).toList(),
+      );
+      return;
+    }
+  }
+}
+
 /// Parsed `GET …/questionnaires/product/{id}` or `GET …/questionnaires/{id}` envelope `data`.
 class ProductHealthQuestionnaire {
   const ProductHealthQuestionnaire({
@@ -39,6 +60,10 @@ class ProductHealthQuestionnaire {
       if (item is Map) {
         final qm = Map<String, dynamic>.from(item);
         questionnaireId = _parseId(qm['id']);
+        _appendPersonalQuestionLists(qm, out);
+        if (out.isEmpty) {
+          _appendPersonalQuestionLists(m, out);
+        }
         final inner = qm['questions'];
         if (inner is List) {
           out.addAll(inner.map(ProductHealthQuestion.fromJson));
@@ -54,20 +79,27 @@ class ProductHealthQuestionnaire {
     if (questionnaire is Map) {
       final qm = Map<String, dynamic>.from(questionnaire);
       questionnaireId = _parseId(qm['id']);
+      _appendPersonalQuestionLists(qm, out);
+      if (out.isEmpty) {
+        _appendPersonalQuestionLists(m, out);
+      }
       final inner = qm['questions'];
       if (inner is List) {
-        return ProductHealthQuestionnaire(
-          questionnaireId: questionnaireId,
-          questions: inner.map(ProductHealthQuestion.fromJson).toList(),
-        );
+        out.addAll(inner.map(ProductHealthQuestion.fromJson));
       }
+      return ProductHealthQuestionnaire(
+        questionnaireId: questionnaireId,
+        questions: out,
+      );
     }
 
     final inner = m['questions'] ?? m['items'] ?? m['data'];
     if (inner is List) {
+      _appendPersonalQuestionLists(m, out);
+      out.addAll(inner.map(ProductHealthQuestion.fromJson));
       return ProductHealthQuestionnaire(
         questionnaireId: questionnaireId,
-        questions: inner.map(ProductHealthQuestion.fromJson).toList(),
+        questions: out,
       );
     }
 

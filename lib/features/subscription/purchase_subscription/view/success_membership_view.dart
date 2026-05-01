@@ -5,12 +5,13 @@ import 'package:pilates_app/config/theme/app_radius.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/features/checkout/data/models/membership_receipt_summary.dart';
+import 'package:pilates_app/features/home/home_tab_intent.dart';
+import 'package:pilates_app/features/invoice_history/widget/invoice_list_panel.dart';
 import 'package:pilates_app/features/subscription/purchase_subscription/view/widgets/invoice_details_card.dart';
 import 'package:pilates_app/widgets/app_button.dart';
 import 'package:pilates_app/widgets/app_text.dart';
 
 import '../../../../core/localization/localization_extension.dart';
-import '../../subscription_as_gift/view/gift_successfully_view.dart';
 
 class SuccessMembershipView extends StatelessWidget {
   const SuccessMembershipView({super.key, this.receipt});
@@ -137,12 +138,9 @@ class SuccessMembershipView extends StatelessWidget {
                 AppButton(
                   label: context.l10n.startExploring,
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const GiftSuccessfullyView(),
-                      ),
-                    );
+                    homeTabIntent.value = 0;
+                    Navigator.of(context, rootNavigator: true)
+                        .popUntil((route) => route.isFirst);
                   },
                   variant: AppButtonVariant.primary,
                 ),
@@ -163,7 +161,10 @@ class SuccessMembershipView extends StatelessWidget {
                   ),
                   child: AppButton(
                     label: context.l10n.downloadInvoice,
-                    onPressed: () {},
+                    onPressed: () => InvoiceListPanel.openInvoiceDownload(
+                      context,
+                      receipt?.pdfUrl,
+                    ),
                     variant: AppButtonVariant.secondary,
                   ),
                 ),

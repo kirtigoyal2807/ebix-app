@@ -1060,6 +1060,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String get ifYesHowManyTimes => 'إذا كانت الإجابة بنعم، كم مرة في الأسبوع؟';
 
   @override
+  String get physicalActivityStepIncomplete =>
+      'يُرجى إكمال جميع أسئلة النشاط البدني قبل المتابعة.';
+
+  @override
   String daysAWeek(int count) {
     return '$count أيام في الأسبوع';
   }
@@ -1608,7 +1612,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get recipientEmailHintGmail => 'email@gmail.com';
 
   @override
-  String get recipientPhoneOptional => 'رقم هاتف المستلم (اختياري)';
+  String get recipientPhoneOptional => 'رقم هاتف المستلم';
 
   @override
   String get giftRecipientValidationError =>
@@ -1627,6 +1631,10 @@ class AppLocalizationsAr extends AppLocalizations {
       'تم إكمال الدفع لهذه الجلسة مسبقًا. متابعة.';
 
   @override
+  String get healthAnswerExplainHint =>
+      'اشرح إجابتك باختصار (مطلوب عند اختيار نعم).';
+
+  @override
   String get pleaseSelectPlan => 'يرجى اختيار خطة.';
 
   @override
@@ -1637,8 +1645,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get giftValidationRecipientEmail => 'أدخل البريد الإلكتروني للمستلم.';
 
   @override
-  String get giftValidationRecipientPhone =>
-      'أدخل رقم هاتف صالح أو اترك الحقل فارغًا.';
+  String get giftValidationRecipientPhone => 'يُرجى إدخال رقم هاتف المستلم.';
 
   @override
   String get giftValidationScheduleDate =>
@@ -2859,6 +2866,25 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get pleaseEnterValidEmail => 'يُرجى إدخال بريد إلكتروني صالح';
+
+  @override
+  String get phoneTenDigitsRequired => 'يُرجى إدخال رقم جوال مكوّن من 10 أرقام';
+
+  @override
+  String get pleaseCompletePersonalInformation =>
+      'يُرجى تعبئة جميع حقول المعلومات الشخصية المطلوبة.';
+
+  @override
+  String get enterValidName => 'يُرجى إدخال الاسم (حرفان على الأقل)';
+
+  @override
+  String get enterValidAge => 'يُرجى إدخال عمر صالح بين 1 و 120';
+
+  @override
+  String get enterValidHeightCm => 'يُرجى إدخال الطول بين 50 و 300 سم';
+
+  @override
+  String get enterValidWeightKg => 'يُرجى إدخال الوزن بين 20 و 400 كجم';
 
   @override
   String get pleaseEnterPassword => 'يُرجى إدخال كلمة المرور';

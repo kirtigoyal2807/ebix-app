@@ -14,6 +14,8 @@ class PlanCard extends StatelessWidget {
   final bool isSelected;
   final bool isPopular;
   final String? badgeText; // e.g. "Most Popular" or "Starter"
+  /// Billing line from catalog (e.g. ` / Month`, ` · 60 days`); empty hides suffix.
+  final String priceSuffix;
   final VoidCallback onTap;
 
   const PlanCard({
@@ -24,6 +26,7 @@ class PlanCard extends StatelessWidget {
     required this.isSelected,
     this.badgeText,
     this.isPopular = false,
+    this.priceSuffix = ' / Month',
     required this.onTap,
   });
 
@@ -124,11 +127,12 @@ class PlanCard extends StatelessWidget {
                       "assets/images/svg/ic_Saudi_Riyal_Symbol.svg",
                       color: isDark ? AppColors.languageTextDark : AppColors.languageIcon,
                     ),
-                    AppText(
-                      ' / Month',
-                      style: (context) =>
-                          AppTextStyles.body(context).copyWith(fontSize: 18),
-                    ),
+                    if (priceSuffix.isNotEmpty)
+                      AppText(
+                        priceSuffix,
+                        style: (context) =>
+                            AppTextStyles.body(context).copyWith(fontSize: 18),
+                      ),
                   ],
                 ),
               ],

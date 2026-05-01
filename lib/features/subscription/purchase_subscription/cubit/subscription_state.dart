@@ -28,6 +28,13 @@ class SubscriptionState extends Equatable {
   final int? healthQuestionnaireId;
   final Map<int, Object?> healthQuestionnaireAnswers;
 
+  /// Per-question explanation for boolean **Yes** (`answers[].answerNote`); optional
+  /// when **`allowOther`** is false (server fallback uses [ProductHealthQuestion.defaultAnswerNoteForBooleanYes]).
+  final Map<int, String> healthQuestionnaireAnswerNotes;
+
+  /// Extra `personalInformation.*` keys from API-driven fields (non name/age/… slots).
+  final Map<String, String> personalInformationDynamicFields;
+
   // Step 1: Personal Information
   final String name;
   final String age;
@@ -70,16 +77,18 @@ class SubscriptionState extends Equatable {
 
   const SubscriptionState({
     this.status = SubscriptionStatus.initial,
-    this.selectedPlanId = 'premium',
+    this.selectedPlanId = '',
     this.selectedBranchId,
     this.isGift = false,
     this.currentStep = 0,
-    this.selectedProductRequiresHealthIntake = true,
+    this.selectedProductRequiresHealthIntake = false,
     this.checkoutSessionId = '',
     this.checkoutProductId = 0,
     this.healthQuestionnaireQuestions = const [],
     this.healthQuestionnaireId,
     this.healthQuestionnaireAnswers = const {},
+    this.healthQuestionnaireAnswerNotes = const {},
+    this.personalInformationDynamicFields = const {},
     this.name = '',
     this.age = '',
     this.height = '',
@@ -118,6 +127,8 @@ class SubscriptionState extends Equatable {
     List<ProductHealthQuestion>? healthQuestionnaireQuestions,
     Object? healthQuestionnaireId = _unsetQuestionnaireId,
     Map<int, Object?>? healthQuestionnaireAnswers,
+    Map<int, String>? healthQuestionnaireAnswerNotes,
+    Map<String, String>? personalInformationDynamicFields,
     String? name,
     String? age,
     String? height,
@@ -160,6 +171,10 @@ class SubscriptionState extends Equatable {
           : healthQuestionnaireId as int?,
       healthQuestionnaireAnswers:
           healthQuestionnaireAnswers ?? this.healthQuestionnaireAnswers,
+      healthQuestionnaireAnswerNotes:
+          healthQuestionnaireAnswerNotes ?? this.healthQuestionnaireAnswerNotes,
+      personalInformationDynamicFields: personalInformationDynamicFields ??
+          this.personalInformationDynamicFields,
       name: name ?? this.name,
       age: age ?? this.age,
       height: height ?? this.height,
@@ -202,6 +217,8 @@ class SubscriptionState extends Equatable {
         healthQuestionnaireQuestions,
         healthQuestionnaireId,
         healthQuestionnaireAnswers,
+        healthQuestionnaireAnswerNotes,
+        personalInformationDynamicFields,
         name,
         age,
         height,

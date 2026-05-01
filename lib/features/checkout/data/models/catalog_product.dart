@@ -24,6 +24,7 @@ class CatalogProduct {
     required this.maxFreezingDays,
     required this.sessionCount,
     required this.createdAt,
+    this.apiFeatureLines,
   });
 
   final int id;
@@ -48,6 +49,10 @@ class CatalogProduct {
   final int? sessionCount;
   final String? createdAt;
 
+  /// When the API sends `features` / `benefits` / `highlights`, those strings are
+  /// shown in [toPlanMap] instead of derived [_featureLines].
+  final List<String>? apiFeatureLines;
+
   factory CatalogProduct.fromJson(Map<String, dynamic> json) {
     int asInt(dynamic v) {
       if (v is int) return v;
@@ -64,6 +69,33 @@ class CatalogProduct {
       if (v is bool) return v;
       if (v == 1 || v == '1' || v == 'true') return true;
       return false;
+    }
+
+    List<String>? featureBulletsFromApi(Map<String, dynamic> m) {
+      for (final key in const [
+        'features',
+        'benefits',
+        'highlights',
+        'featureList',
+      ]) {
+        final raw = m[key];
+        if (raw is! List) continue;
+        final out = <String>[];
+        for (final e in raw) {
+          if (e is String) {
+            final s = e.trim();
+            if (s.isNotEmpty) out.add(s);
+          } else if (e is Map) {
+            final mm = Map<String, dynamic>.from(e as Map<dynamic, dynamic>);
+            final text = (mm['text'] ?? mm['label'] ?? mm['title'] ?? mm['name'])
+                ?.toString()
+                .trim();
+            if (text != null && text.isNotEmpty) out.add(text);
+          }
+        }
+        if (out.isNotEmpty) return out;
+      }
+      return null;
     }
 
     return CatalogProduct(
@@ -88,6 +120,7 @@ class CatalogProduct {
       maxFreezingDays: asInt(json['maxFreezingDays']),
       sessionCount: asIntNullable(json['sessionCount']),
       createdAt: json['createdAt']?.toString(),
+      apiFeatureLines: featureBulletsFromApi(json),
     );
   }
 
@@ -130,13 +163,16 @@ class CatalogProduct {
 
   /// Shape expected by [PlanCard] / [PlanDetailsModal].
   Map<String, dynamic> toPlanMap(AppLocalizations l10n) {
+    final bullets = (apiFeatureLines != null && apiFeatureLines!.isNotEmpty)
+        ? apiFeatureLines!
+        : _featureLines();
     return <String, dynamic>{
       'id': id.toString(),
       'title': name,
       'price': salePrice.toString(),
       'badge': isRecommended ? l10n.mostPopular : null,
       'isPopular': isRecommended,
-      'features': _featureLines(),
+      'features': bullets,
       'priceSubtitle': priceSubtitle,
       'requiresHealthIntake': requiresHealthIntake,
     };

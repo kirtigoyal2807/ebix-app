@@ -5,6 +5,7 @@ import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/core/localization/arb/app_localizations.dart';
 import 'package:pilates_app/features/subscription/purchase_subscription/cubit/subscription_cubit.dart';
+import 'package:pilates_app/features/subscription/purchase_subscription/view/widgets/subscription_calendar_date_field.dart';
 import 'package:pilates_app/widgets/app_button.dart';
 import 'package:pilates_app/widgets/app_text.dart';
 import 'package:pilates_app/widgets/app_text_field.dart';
@@ -172,12 +173,12 @@ class _SafetyViewState extends State<SafetyView> {
                   ),
                   const SizedBox(height: AppSpacing.md),
 
-                  // Date Field
-                  AppTextField(
+                  // Date — calendar picker (same pattern as pause / gift date rows)
+                  SubscriptionCalendarDateField(
                     label: l10n.date,
                     hint: l10n.date,
                     controller: _dateController,
-                    onChanged: cubit.updateDeclarationDate,
+                    onDateSelected: cubit.updateDeclarationDate,
                   ),
                   const SizedBox(height: AppSpacing.lg),
                 ],
