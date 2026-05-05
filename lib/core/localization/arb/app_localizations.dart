@@ -5078,6 +5078,18 @@ abstract class AppLocalizations {
   /// **'{label}'**
   String referralRewardFallback(String label);
 
+  /// No description provided for @referralInviteSent.
+  ///
+  /// In en, this message translates to:
+  /// **'Invitation sent'**
+  String get referralInviteSent;
+
+  /// No description provided for @referralInvitePhoneTooLong.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone number must be at most 30 characters'**
+  String get referralInvitePhoneTooLong;
+
   /// No description provided for @joinedDaysAgo.
   ///
   /// In en, this message translates to:

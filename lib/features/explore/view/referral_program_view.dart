@@ -36,90 +36,169 @@ class ReferralProgramView extends StatelessWidget {
   }
 }
 
-class _ReferralProgramScaffold extends StatelessWidget {
+class _ReferralProgramScaffold extends StatefulWidget {
   const _ReferralProgramScaffold();
+
+  @override
+  State<_ReferralProgramScaffold> createState() =>
+      _ReferralProgramScaffoldState();
+}
+
+class _ReferralProgramScaffoldState extends State<_ReferralProgramScaffold> {
+  late final TextEditingController _inviteeNameController;
+  late final TextEditingController _inviteePhoneController;
+
+  @override
+  void initState() {
+    super.initState();
+    _inviteeNameController = TextEditingController();
+    _inviteePhoneController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _inviteeNameController.dispose();
+    _inviteePhoneController.dispose();
+    super.dispose();
+  }
+
+  String? _invitePhoneErrorText(
+    AppLocalizations l10n,
+    ReferralProgramState state,
+  ) {
+    final api = state.invitePhoneApiError?.trim();
+    if (api != null && api.isNotEmpty) {
+      return api;
+    }
+    switch (state.invitePhoneFieldIssue) {
+      case InvitePhoneFieldIssue.empty:
+        return l10n.pleaseEnterPhone;
+      case InvitePhoneFieldIssue.tooLong:
+        return l10n.referralInvitePhoneTooLong;
+      case InvitePhoneFieldIssue.none:
+        return null;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    return Scaffold(
-      appBar: AppAppBar(
-        title: l10n.referralProgram,
-        isMoreMenu: false,
-        onBack: () => Navigator.of(context).pop(),
-      ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsetsGeometry.symmetric(
-            vertical: AppSpacing.md,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _referralCodeCard(context: context),
-              SizedBox(height: AppSpacing.xl),
-              _orRow(context: context),
-              SizedBox(height: AppSpacing.xl),
-              _inviteDirectCard(context: context),
-              SizedBox(height: AppSpacing.xl),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
-                child: AppText(
-                  l10n.howItWorks,
-                  style: (context) =>
-                      AppTextStyles.gelasioMedium(context).copyWith(height: 1),
+    return BlocConsumer<ReferralProgramCubit, ReferralProgramState>(
+      listener: (context, state) {
+        final loc = AppLocalizations.of(context);
+        if (state.inviteSuccessSnackPending) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(loc.referralInviteSent)),
+          );
+          _inviteeNameController.clear();
+          _inviteePhoneController.clear();
+          context.read<ReferralProgramCubit>().consumeInviteSuccessSnack();
+        }
+        final err = state.inviteErrorSnackMessage?.trim();
+        if (err != null && err.isNotEmpty) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(err)),
+          );
+          context.read<ReferralProgramCubit>().consumeInviteErrorSnack();
+        }
+      },
+      builder: (context, state) {
+        return Stack(
+          children: [
+            Scaffold(
+              appBar: AppAppBar(
+                title: l10n.referralProgram,
+                isMoreMenu: false,
+                onBack: () => Navigator.of(context).pop(),
+              ),
+              body: SingleChildScrollView(
+                child: Padding(
+                  padding: EdgeInsetsGeometry.symmetric(
+                    vertical: AppSpacing.md,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _referralCodeCard(context: context),
+                      SizedBox(height: AppSpacing.xl),
+                      _orRow(context: context),
+                      SizedBox(height: AppSpacing.xl),
+                      _inviteDirectCard(context: context),
+                      SizedBox(height: AppSpacing.xl),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+                        child: AppText(
+                          l10n.howItWorks,
+                          style: (context) => AppTextStyles.gelasioMedium(
+                            context,
+                          ).copyWith(height: 1),
+                        ),
+                      ),
+                      SizedBox(height: AppSpacing.md),
+                      _howItWorksCard(context: context),
+                      SizedBox(height: AppSpacing.xl),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            AppText(
+                              l10n.recentReferrals,
+                              style: (context) =>
+                                  AppTextStyles.gelasioMedium(
+                                    context,
+                                  ).copyWith(height: 1),
+                            ),
+                            AppText(
+                              l10n.seeAll,
+                              style: (context) =>
+                                  AppTextStyles.body(context).copyWith(height: 1),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(height: AppSpacing.md),
+                      _recentReferralsCard(
+                        context: context,
+                        title: "Jessica M.",
+                        subTitle: l10n.joinedDaysAgo(2),
+                      ),
+                      SizedBox(height: AppSpacing.md),
+                      _recentReferralsCard(
+                        context: context,
+                        title: "Mike Davis",
+                        subTitle: l10n.joinedDaysAgo(2),
+                      ),
+                      SizedBox(height: AppSpacing.md),
+                      _recentReferralsCard(
+                        context: context,
+                        title: "Emily Wilson",
+                        subTitle: l10n.joinedDaysAgo(4),
+                      ),
+                      SizedBox(height: AppSpacing.md),
+                      _recentReferralsCard(
+                        context: context,
+                        title: "Emily Wilson",
+                        subTitle: l10n.joinedDaysAgo(4),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-              SizedBox(height: AppSpacing.md),
-              _howItWorksCard(context: context),
-              SizedBox(height: AppSpacing.xl),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    AppText(
-                      l10n.recentReferrals,
-                      style: (context) => AppTextStyles.gelasioMedium(
-                        context,
-                      ).copyWith(height: 1),
-                    ),
-                    AppText(
-                      l10n.seeAll,
-                      style: (context) =>
-                          AppTextStyles.body(context).copyWith(height: 1),
-                    ),
-                  ],
+            ),
+            if (state.inviteSubmitting)
+              Positioned.fill(
+                child: AbsorbPointer(
+                  child: Container(
+                    color: Colors.black.withValues(alpha: 0.35),
+                    alignment: Alignment.center,
+                    child: const CircularProgressIndicator(),
+                  ),
                 ),
               ),
-              SizedBox(height: AppSpacing.md),
-              _recentReferralsCard(
-                context: context,
-                title: "Jessica M.",
-                subTitle: l10n.joinedDaysAgo(2),
-              ),
-              SizedBox(height: AppSpacing.md),
-              _recentReferralsCard(
-                context: context,
-                title: "Mike Davis",
-                subTitle: l10n.joinedDaysAgo(2),
-              ),
-              SizedBox(height: AppSpacing.md),
-              _recentReferralsCard(
-                context: context,
-                title: "Emily Wilson",
-                subTitle: l10n.joinedDaysAgo(4),
-              ),
-              SizedBox(height: AppSpacing.md),
-              _recentReferralsCard(
-                context: context,
-                title: "Emily Wilson",
-                subTitle: l10n.joinedDaysAgo(4),
-              ),
-            ],
-          ),
-        ),
-      ),
+          ],
+        );
+      },
     );
   }
 
@@ -161,8 +240,7 @@ class _ReferralProgramScaffold extends StatelessWidget {
               SizedBox(height: AppSpacing.md),
               AppButton(
                 label: l10n.referralRetry,
-                onPressed: () =>
-                    context.read<ReferralProgramCubit>().load(),
+                onPressed: () => context.read<ReferralProgramCubit>().load(),
                 variant: AppButtonVariant.primary,
               ),
             ],
@@ -183,6 +261,26 @@ class _ReferralProgramScaffold extends StatelessWidget {
                   context,
                 ).copyWith(color: AppColors.placeHolderText, height: 1),
               ),
+              if (youReward.isNotEmpty) ...[
+                SizedBox(height: AppSpacing.sm),
+                AppText(
+                  l10n.referralYourReward(youReward),
+                  style: (context) => AppTextStyles.bodyText(context).copyWith(
+                    color: AppColors.placeHolderText,
+                    height: 1.2,
+                  ),
+                ),
+              ],
+              if (friendReward.isNotEmpty) ...[
+                SizedBox(height: AppSpacing.xs),
+                AppText(
+                  l10n.referralFriendReward(friendReward),
+                  style: (context) => AppTextStyles.bodyText(context).copyWith(
+                    color: AppColors.placeHolderText,
+                    height: 1.2,
+                  ),
+                ),
+              ],
             ],
           );
         }
@@ -332,60 +430,88 @@ class _ReferralProgramScaffold extends StatelessWidget {
   Widget _inviteDirectCard({required BuildContext context}) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final l10n = AppLocalizations.of(context);
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
-      padding: EdgeInsets.all(AppSpacing.lmd),
-      decoration: BoxDecoration(
-        color: isDark ? AppColors.homeBackground : AppColors.whiteColor,
-        borderRadius: BorderRadius.circular(AppRadius.md),
-        border: Border.all(
-          color: isDark ? AppColors.greyText : AppColors.buttonBorder,
-          width: 1,
-        ),
-        boxShadow: [
-          AppShadows.lightShadow,
-          AppShadows.mediumShadow,
-          AppShadows.mediumHeavyShadow,
-          BoxShadow(
-            color: AppColors.shadowColor.withValues(alpha: 0.01),
-            offset: const Offset(0, 64),
-            blurRadius: 25,
-            spreadRadius: 0,
+    final cubit = context.read<ReferralProgramCubit>();
+    return BlocBuilder<ReferralProgramCubit, ReferralProgramState>(
+      builder: (context, state) {
+        return Container(
+          margin: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+          padding: EdgeInsets.all(AppSpacing.lmd),
+          decoration: BoxDecoration(
+            color: isDark ? AppColors.homeBackground : AppColors.whiteColor,
+            borderRadius: BorderRadius.circular(AppRadius.md),
+            border: Border.all(
+              color: isDark ? AppColors.greyText : AppColors.buttonBorder,
+              width: 1,
+            ),
+            boxShadow: [
+              AppShadows.lightShadow,
+              AppShadows.mediumShadow,
+              AppShadows.mediumHeavyShadow,
+              BoxShadow(
+                color: AppColors.shadowColor.withValues(alpha: 0.01),
+                offset: const Offset(0, 64),
+                blurRadius: 25,
+                spreadRadius: 0,
+              ),
+              BoxShadow(
+                color: AppColors.shadowColor.withValues(alpha: 0.00),
+                offset: const Offset(0, 99),
+                blurRadius: 28,
+                spreadRadius: 0,
+              ),
+            ],
           ),
-          BoxShadow(
-            color: AppColors.shadowColor.withValues(alpha: 0.00),
-            offset: const Offset(0, 99),
-            blurRadius: 28,
-            spreadRadius: 0,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              AppText(
+                l10n.inviteDirectly,
+                style: (context) =>
+                    AppTextStyles.experienceButton(context).copyWith(height: 1),
+              ),
+              SizedBox(height: AppSpacing.sm),
+              AppText(
+                l10n.sendPersonalInvitation,
+                style: (context) =>
+                    AppTextStyles.bodyLightText(context).copyWith(height: 1),
+              ),
+              SizedBox(height: AppSpacing.lg),
+              AppTextField(
+                controller: _inviteeNameController,
+                hint: l10n.friendsName,
+                label: l10n.friendsName,
+                maxLength: 100,
+                showCharacterCounter: false,
+              ),
+              SizedBox(height: AppSpacing.md),
+              AppTextField(
+                controller: _inviteePhoneController,
+                hint: l10n.phoneHint,
+                label: l10n.phoneNumber,
+                keyboardType: TextInputType.phone,
+                maxLength: 30,
+                showCharacterCounter: false,
+                errorText: _invitePhoneErrorText(l10n, state),
+                onChanged: (_) => cubit.clearInvitePhoneFieldFeedback(),
+              ),
+              SizedBox(height: AppSpacing.lg),
+              AppButton(
+                label: l10n.sendInvitation,
+                onPressed: state.inviteSubmitting
+                    ? null
+                    : () {
+                        FocusScope.of(context).unfocus();
+                        cubit.sendInviteSms(
+                          inviteePhoneRaw: _inviteePhoneController.text,
+                          inviteeNameRaw: _inviteeNameController.text,
+                        );
+                      },
+                variant: AppButtonVariant.primary,
+              ),
+            ],
           ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          AppText(
-            l10n.inviteDirectly,
-            style: (context) =>
-                AppTextStyles.experienceButton(context).copyWith(height: 1),
-          ),
-          SizedBox(height: AppSpacing.sm),
-          AppText(
-            l10n.sendPersonalInvitation,
-            style: (context) =>
-                AppTextStyles.bodyLightText(context).copyWith(height: 1),
-          ),
-          SizedBox(height: AppSpacing.lg),
-          AppTextField(hint: l10n.friendsName, label: l10n.friendsName),
-          SizedBox(height: AppSpacing.md),
-          AppTextField(hint: "XXXXXXXXXX", label: l10n.phoneNumber),
-          SizedBox(height: AppSpacing.lg),
-          AppButton(
-            label: l10n.sendInvitation,
-            onPressed: () {},
-            variant: AppButtonVariant.primary,
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 

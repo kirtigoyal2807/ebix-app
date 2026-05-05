@@ -2677,6 +2677,13 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get referralInviteSent => 'Invitation sent';
+
+  @override
+  String get referralInvitePhoneTooLong =>
+      'Phone number must be at most 30 characters';
+
+  @override
   String joinedDaysAgo(int days) {
     return 'Joined $days days ago';
   }

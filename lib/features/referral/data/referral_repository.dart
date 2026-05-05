@@ -15,4 +15,28 @@ class ReferralRepository extends BaseRepository {
           ReferralProgramDetails.fromJson(json as Map<String, dynamic>),
     );
   }
+
+  /// Records an invitation; `channel`: `sms` (dispatch SMS) or `link` (record only).
+  Future<ApiResult<bool>> sendInvitation({
+    required String inviteePhone,
+    required String channel,
+    String? inviteeName,
+  }) {
+    final trimmedPhone = inviteePhone.trim();
+    final trimmedName = inviteeName?.trim();
+    final body = <String, dynamic>{
+      'inviteePhone': trimmedPhone,
+      'channel': channel,
+    };
+    if (trimmedName != null && trimmedName.isNotEmpty) {
+      body['inviteeName'] = trimmedName.length > 100
+          ? trimmedName.substring(0, 100)
+          : trimmedName;
+    }
+    return post<bool>(
+      '/referral/invite',
+      data: body,
+      fromJson: (_) => true,
+    );
+  }
 }

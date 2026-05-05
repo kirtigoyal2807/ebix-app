@@ -1128,6 +1128,9 @@
     }
   },
 
+  "referralInviteSent": "تم إرسال الدعوة",
+  "referralInvitePhoneTooLong": "يجب ألا يزيد رقم الهاتف عن 30 حرفاً",
+
   "joinedDaysAgo": "انضم منذ {days} أيام",
   "@joinedDaysAgo": {
     "placeholders": {

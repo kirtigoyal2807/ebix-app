@@ -2659,6 +2659,13 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
+  String get referralInviteSent => 'تم إرسال الدعوة';
+
+  @override
+  String get referralInvitePhoneTooLong =>
+      'يجب ألا يزيد رقم الهاتف عن 30 حرفاً';
+
+  @override
   String joinedDaysAgo(int days) {
     return 'انضم منذ $days أيام';
   }

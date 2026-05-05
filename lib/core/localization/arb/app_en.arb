@@ -1114,6 +1114,9 @@
     }
   },
 
+  "referralInviteSent": "Invitation sent",
+  "referralInvitePhoneTooLong": "Phone number must be at most 30 characters",
+
   "joinedDaysAgo": "Joined {days} days ago",
   "@joinedDaysAgo": {
     "placeholders": {
