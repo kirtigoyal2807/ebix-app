@@ -1032,6 +1032,24 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
+  /// [`GET customers/profile`] after switching to the Account tab (not when already on it).
+  Future<void> refreshProfileWhenSelectingAccountTab() async {
+    emit(
+      state.copyWith(
+        accountProfileRefreshStatus: AccountProfileRefreshStatus.loading,
+      ),
+    );
+    try {
+      await loadProfile();
+    } finally {
+      emit(
+        state.copyWith(
+          accountProfileRefreshStatus: AccountProfileRefreshStatus.idle,
+        ),
+      );
+    }
+  }
+
   Map<String, String> _mapFieldErrors(NetworkException exception) {
     final fields = <String, String>{};
     final raw = exception.fieldErrors;

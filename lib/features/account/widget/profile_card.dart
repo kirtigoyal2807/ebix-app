@@ -10,22 +10,8 @@ import 'package:pilates_app/widgets/app_text.dart';
 
 import '../../../core/localization/localization_extension.dart';
 
-class ProfileCard extends StatefulWidget {
+class ProfileCard extends StatelessWidget {
   const ProfileCard({super.key});
-
-  @override
-  State<ProfileCard> createState() => _ProfileCardState();
-}
-
-class _ProfileCardState extends State<ProfileCard> {
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (!mounted) return;
-      context.read<AuthCubit>().loadProfile();
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
