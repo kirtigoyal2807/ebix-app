@@ -2618,6 +2618,47 @@ class AppLocalizationsAr extends AppLocalizations {
   String get recentReferrals => 'الإحالات الأخيرة';
 
   @override
+  String get referralCodeCopied => 'تم نسخ رمز الإحالة';
+
+  @override
+  String get referralProgramLoadError =>
+      'تعذّر تحميل برنامج الإحالة. يُرجى المحاولة مرة أخرى.';
+
+  @override
+  String get referralRetry => 'إعادة المحاولة';
+
+  @override
+  String referralYourReward(String reward) {
+    return 'تربح $reward';
+  }
+
+  @override
+  String referralFriendReward(String reward) {
+    return 'يحصل صديقك على $reward';
+  }
+
+  @override
+  String get referralOrDivider => 'أو';
+
+  @override
+  String referralRewardDiscountPercent(String percent) {
+    return 'خصم $percent٪';
+  }
+
+  @override
+  String referralRewardDiscountAmount(String amount) {
+    return 'خصم $amount';
+  }
+
+  @override
+  String get referralRewardFreeSession => 'جلسة مجانية';
+
+  @override
+  String referralRewardFallback(String label) {
+    return '$label';
+  }
+
+  @override
   String joinedDaysAgo(int days) {
     return 'انضم منذ $days أيام';
   }

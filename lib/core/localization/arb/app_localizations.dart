@@ -5018,6 +5018,66 @@ abstract class AppLocalizations {
   /// **'Recent Referrals'**
   String get recentReferrals;
 
+  /// No description provided for @referralCodeCopied.
+  ///
+  /// In en, this message translates to:
+  /// **'Referral code copied to clipboard'**
+  String get referralCodeCopied;
+
+  /// No description provided for @referralProgramLoadError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load referral program. Please try again.'**
+  String get referralProgramLoadError;
+
+  /// No description provided for @referralRetry.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get referralRetry;
+
+  /// No description provided for @referralYourReward.
+  ///
+  /// In en, this message translates to:
+  /// **'You earn {reward}'**
+  String referralYourReward(String reward);
+
+  /// No description provided for @referralFriendReward.
+  ///
+  /// In en, this message translates to:
+  /// **'They get {reward}'**
+  String referralFriendReward(String reward);
+
+  /// No description provided for @referralOrDivider.
+  ///
+  /// In en, this message translates to:
+  /// **'OR'**
+  String get referralOrDivider;
+
+  /// No description provided for @referralRewardDiscountPercent.
+  ///
+  /// In en, this message translates to:
+  /// **'{percent}% off'**
+  String referralRewardDiscountPercent(String percent);
+
+  /// No description provided for @referralRewardDiscountAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'{amount} off'**
+  String referralRewardDiscountAmount(String amount);
+
+  /// No description provided for @referralRewardFreeSession.
+  ///
+  /// In en, this message translates to:
+  /// **'Free session'**
+  String get referralRewardFreeSession;
+
+  /// No description provided for @referralRewardFallback.
+  ///
+  /// In en, this message translates to:
+  /// **'{label}'**
+  String referralRewardFallback(String label);
+
   /// No description provided for @joinedDaysAgo.
   ///
   /// In en, this message translates to:

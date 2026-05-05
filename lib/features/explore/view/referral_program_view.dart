@@ -1,14 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pilates_app/config/theme/app_colors.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/widgets/app_app_bar.dart';
 import 'package:pilates_app/widgets/app_text.dart';
 import 'package:pilates_app/widgets/app_text_field.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../config/theme/app_radius.dart';
 import '../../../config/theme/app_text_styles.dart';
 import '../../../core/localization/arb/app_localizations.dart';
 import '../../../core/localization/localization_extension.dart';
+import '../../../features/referral/cubit/referral_program_cubit.dart';
+import '../../../features/referral/cubit/referral_program_state.dart';
+import '../../../features/referral/data/referral_repository.dart';
+import '../../../features/referral/referral_reward_format.dart';
 import '../../../widgets/app_button.dart';
 import '../../../widgets/app_shadow.dart';
 import '../../../widgets/dotted_underline.dart';
@@ -18,11 +25,26 @@ class ReferralProgramView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    return BlocProvider(
+      create: (context) {
+        final cubit = ReferralProgramCubit(context.read<ReferralRepository>());
+        cubit.load();
+        return cubit;
+      },
+      child: const _ReferralProgramScaffold(),
+    );
+  }
+}
+
+class _ReferralProgramScaffold extends StatelessWidget {
+  const _ReferralProgramScaffold();
+
+  @override
+  Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     return Scaffold(
       appBar: AppAppBar(
-        title:  l10n.referralProgram,
+        title: l10n.referralProgram,
         isMoreMenu: false,
         onBack: () => Navigator.of(context).pop(),
       ),
@@ -30,7 +52,6 @@ class ReferralProgramView extends StatelessWidget {
         child: Padding(
           padding: EdgeInsetsGeometry.symmetric(
             vertical: AppSpacing.md,
-            // horizontal: AppSpacing.lg,
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -43,15 +64,13 @@ class ReferralProgramView extends StatelessWidget {
               SizedBox(height: AppSpacing.xl),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
-
                 child: AppText(
-                    l10n.howItWorks,
+                  l10n.howItWorks,
                   style: (context) =>
                       AppTextStyles.gelasioMedium(context).copyWith(height: 1),
                 ),
               ),
               SizedBox(height: AppSpacing.md),
-
               _howItWorksCard(context: context),
               SizedBox(height: AppSpacing.xl),
               Padding(
@@ -65,9 +84,8 @@ class ReferralProgramView extends StatelessWidget {
                         context,
                       ).copyWith(height: 1),
                     ),
-
                     AppText(
-                     l10n.seeAll,
+                      l10n.seeAll,
                       style: (context) =>
                           AppTextStyles.body(context).copyWith(height: 1),
                     ),
@@ -90,13 +108,13 @@ class ReferralProgramView extends StatelessWidget {
               _recentReferralsCard(
                 context: context,
                 title: "Emily Wilson",
-                subTitle:l10n.joinedDaysAgo(4),
+                subTitle: l10n.joinedDaysAgo(4),
               ),
               SizedBox(height: AppSpacing.md),
               _recentReferralsCard(
                 context: context,
                 title: "Emily Wilson",
-                subTitle: l10n.joinedDaysAgo(4)
+                subTitle: l10n.joinedDaysAgo(4),
               ),
             ],
           ),
@@ -108,114 +126,188 @@ class ReferralProgramView extends StatelessWidget {
   Widget _referralCodeCard({required BuildContext context}) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final l10n = AppLocalizations.of(context);
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
-      padding: EdgeInsets.all(AppSpacing.lmd),
-      decoration: BoxDecoration(
-        color: isDark ? AppColors.homeBackground : AppColors.whiteColor,
-        borderRadius: BorderRadius.circular(AppRadius.md),
-        border: Border.all(
-          color: isDark ? AppColors.greyText : AppColors.buttonBorder,
-          width: 1,
-        ),
-        boxShadow: [
-          AppShadows.lightShadow,
-          AppShadows.mediumShadow,
-          // AppShadows.mediumHeavyShadow,
-          BoxShadow(
-            color: AppColors.shadowColor.withValues(alpha: 0.01),
-            offset: const Offset(0, 64),
-            blurRadius: 25,
-            spreadRadius: 0,
-          ),
-          BoxShadow(
-            color: AppColors.shadowColor.withValues(alpha: 0.00),
-            offset: const Offset(0, 99),
-            blurRadius: 28,
-            spreadRadius: 0,
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          AppText(
-            l10n.yourReferralCode,
-            style: (context) =>
-                AppTextStyles.textField(context).copyWith(height: 1),
-          ),
-          SizedBox(height: AppSpacing.md),
-          CustomPaint(
-            painter: DashedUnderlinePainter(
-              color: AppColors.primary,
-              dashWidth: 3,
-              dashSpace: 3,
-              top: true,
-              left: true,
-              right: true,
-            ),
-            child: Container(
-              width: MediaQuery.of(context).size.width,
-              padding: EdgeInsets.symmetric(vertical: AppSpacing.md),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(AppRadius.md),
-                color: isDark
-                    ? AppColors.trainerBlackBackgroundColor
-                    : AppColors.selectedLanguageBg,
-              ),
-              child: Column(
-                children: [
-                  AppText(
-                    "P I L A T E S   2 0 2 6",
-                    style: (context) => AppTextStyles.bottomSheetTitle(
-                      context,
-                    ).copyWith(height: 1),
-                  ),
-                  SizedBox(height: AppSpacing.md),
-                  AppText(
-                    l10n.shareCodeWithFriends,
-                    style: (context) => AppTextStyles.bodyText(
-                      context,
-                    ).copyWith(color: AppColors.placeHolderText, height: 1),
-                  ),
-                ],
-              ),
-            ),
-          ),
+    return BlocBuilder<ReferralProgramCubit, ReferralProgramState>(
+      builder: (context, state) {
+        final program = state.program;
+        final loading = state.status == ReferralProgramStatus.loading &&
+            program == null;
+        final failedFirstLoad = state.status == ReferralProgramStatus.failure &&
+            program == null;
 
-          SizedBox(height: AppSpacing.lg),
-          AppButton(
-            label: l10n.copyCode,
-            onPressed: () {},
-            variant: AppButtonVariant.primary,
+        final code = program?.referralCode ?? '';
+        final spacedCode = code.isEmpty ? '' : code.split('').join(' ');
+        final youReward = program != null
+            ? referralRewardDisplay(l10n, program.referrerReward)
+            : '';
+        final friendReward = program != null
+            ? referralRewardDisplay(l10n, program.referredReward)
+            : '';
+
+        late final Widget inner;
+        if (loading) {
+          inner = const Padding(
+            padding: EdgeInsets.symmetric(vertical: AppSpacing.xl),
+            child: Center(child: CircularProgressIndicator()),
+          );
+        } else if (failedFirstLoad) {
+          inner = Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              AppText(
+                state.errorMessage ?? l10n.referralProgramLoadError,
+                style: (context) =>
+                    AppTextStyles.bodyText(context).copyWith(height: 1.3),
+              ),
+              SizedBox(height: AppSpacing.md),
+              AppButton(
+                label: l10n.referralRetry,
+                onPressed: () =>
+                    context.read<ReferralProgramCubit>().load(),
+                variant: AppButtonVariant.primary,
+              ),
+            ],
+          );
+        } else {
+          inner = Column(
+            children: [
+              AppText(
+                spacedCode.isEmpty ? code : spacedCode,
+                style: (context) => AppTextStyles.bottomSheetTitle(
+                  context,
+                ).copyWith(height: 1),
+              ),
+              SizedBox(height: AppSpacing.md),
+              AppText(
+                l10n.shareCodeWithFriends,
+                style: (context) => AppTextStyles.bodyText(
+                  context,
+                ).copyWith(color: AppColors.placeHolderText, height: 1),
+              ),
+            ],
+          );
+        }
+
+        return Container(
+          margin: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+          padding: EdgeInsets.all(AppSpacing.lmd),
+          decoration: BoxDecoration(
+            color: isDark ? AppColors.homeBackground : AppColors.whiteColor,
+            borderRadius: BorderRadius.circular(AppRadius.md),
+            border: Border.all(
+              color: isDark ? AppColors.greyText : AppColors.buttonBorder,
+              width: 1,
+            ),
+            boxShadow: [
+              AppShadows.lightShadow,
+              AppShadows.mediumShadow,
+              BoxShadow(
+                color: AppColors.shadowColor.withValues(alpha: 0.01),
+                offset: const Offset(0, 64),
+                blurRadius: 25,
+                spreadRadius: 0,
+              ),
+              BoxShadow(
+                color: AppColors.shadowColor.withValues(alpha: 0.00),
+                offset: const Offset(0, 99),
+                blurRadius: 28,
+                spreadRadius: 0,
+              ),
+            ],
           ),
-          const SizedBox(height: AppSpacing.sm),
-          Container(
-            decoration: BoxDecoration(
-              color: isDark ? AppColors.homeBackground : Colors.white,
-              borderRadius: BorderRadius.circular(AppRadius.xl),
-              boxShadow: [
-                BoxShadow(
-                  color: AppColors.shadowColor.withValues(alpha: 0.06),
-                  offset: const Offset(0, 1),
-                  blurRadius: 2,
-                  spreadRadius: 0,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              AppText(
+                l10n.yourReferralCode,
+                style: (context) =>
+                    AppTextStyles.textField(context).copyWith(height: 1),
+              ),
+              SizedBox(height: AppSpacing.md),
+              CustomPaint(
+                painter: DashedUnderlinePainter(
+                  color: AppColors.primary,
+                  dashWidth: 3,
+                  dashSpace: 3,
+                  top: true,
+                  left: true,
+                  right: true,
                 ),
-              ],
-            ),
-            child: AppButton(
-              label: l10n.shareViaWhatsapp,
-              onPressed: () {},
-              variant: AppButtonVariant.secondary,
-            ),
+                child: Container(
+                  width: MediaQuery.of(context).size.width,
+                  padding: EdgeInsets.symmetric(vertical: AppSpacing.md),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(AppRadius.md),
+                    color: isDark
+                        ? AppColors.trainerBlackBackgroundColor
+                        : AppColors.selectedLanguageBg,
+                  ),
+                  child: inner,
+                ),
+              ),
+              SizedBox(height: AppSpacing.lg),
+              AppButton(
+                label: l10n.copyCode,
+                onPressed: loading || failedFirstLoad || code.isEmpty
+                    ? null
+                    : () async {
+                        await Clipboard.setData(ClipboardData(text: code));
+                        if (!context.mounted) {
+                          return;
+                        }
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text(l10n.referralCodeCopied)),
+                        );
+                      },
+                variant: AppButtonVariant.primary,
+              ),
+              const SizedBox(height: AppSpacing.sm),
+              Container(
+                decoration: BoxDecoration(
+                  color: isDark ? AppColors.homeBackground : Colors.white,
+                  borderRadius: BorderRadius.circular(AppRadius.xl),
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppColors.shadowColor.withValues(alpha: 0.06),
+                      offset: const Offset(0, 1),
+                      blurRadius: 2,
+                      spreadRadius: 0,
+                    ),
+                  ],
+                ),
+                child: AppButton(
+                  label: l10n.shareViaWhatsapp,
+                  onPressed: loading ||
+                          failedFirstLoad ||
+                          (program?.shareUrl ?? '').isEmpty
+                      ? null
+                      : () async {
+                          final url = program?.shareUrl ?? '';
+                          if (url.isEmpty) {
+                            return;
+                          }
+                          final uri = Uri.parse(
+                            'https://wa.me/?text=${Uri.encodeComponent(url)}',
+                          );
+                          if (await canLaunchUrl(uri)) {
+                            await launchUrl(
+                              uri,
+                              mode: LaunchMode.externalApplication,
+                            );
+                          }
+                        },
+                  variant: AppButtonVariant.secondary,
+                ),
+              ),
+            ],
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 
   Widget _orRow({required BuildContext context}) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final l10n = AppLocalizations.of(context);
     return Stack(
       alignment: Alignment.center,
       children: [
@@ -224,13 +316,14 @@ class ReferralProgramView extends StatelessWidget {
           height: 1,
           thickness: 1,
         ),
-
         Container(
           width: 66,
           alignment: Alignment.center,
-
           color: isDark ? AppColors.homeBackground : AppColors.whiteColor,
-          child: AppText("OR", style: AppTextStyles.gelasioRegular),
+          child: AppText(
+            l10n.referralOrDivider,
+            style: AppTextStyles.gelasioRegular,
+          ),
         ),
       ],
     );

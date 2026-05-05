@@ -21,6 +21,7 @@ import 'features/invoice_history/data/invoices_repository.dart';
 import 'features/loyalty/data/loyalty_repository.dart';
 import 'features/my_booking/data/my_bookings_repository.dart';
 import 'features/progress_tracking_flow/data/progress_repository.dart';
+import 'features/referral/data/referral_repository.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -42,25 +43,28 @@ Future<void> main() async {
   final authRepository = AuthRepository(dio);
 
   runApp(
-    RepositoryProvider<MyBookingsRepository>(
-      create: (_) => MyBookingsRepository(dio),
-      child: RepositoryProvider<TrainersRepository>(
-        create: (_) => TrainersRepository(dio),
-        child: RepositoryProvider<ReviewsRepository>(
-          create: (_) => ReviewsRepository(dio),
-          child: RepositoryProvider<LoyaltyRepository>(
-            create: (_) => LoyaltyRepository(dio),
-            child: RepositoryProvider<InvoicesRepository>(
-              create: (_) => InvoicesRepository(dio),
-              child: RepositoryProvider<ClassesRepository>(
-                create: (_) => ClassesRepository(dio),
-                child: RepositoryProvider<ProgressRepository>(
-                  create: (_) => ProgressRepository(dio),
-                  child: PilatesApp(
-                    authRepository: authRepository,
-                    tokenStorage: tokenStorage,
-                    localeBridge: localeBridge,
-                    authInitialState: authInitialState,
+    RepositoryProvider<ReferralRepository>(
+      create: (_) => ReferralRepository(dio),
+      child: RepositoryProvider<MyBookingsRepository>(
+        create: (_) => MyBookingsRepository(dio),
+        child: RepositoryProvider<TrainersRepository>(
+          create: (_) => TrainersRepository(dio),
+          child: RepositoryProvider<ReviewsRepository>(
+            create: (_) => ReviewsRepository(dio),
+            child: RepositoryProvider<LoyaltyRepository>(
+              create: (_) => LoyaltyRepository(dio),
+              child: RepositoryProvider<InvoicesRepository>(
+                create: (_) => InvoicesRepository(dio),
+                child: RepositoryProvider<ClassesRepository>(
+                  create: (_) => ClassesRepository(dio),
+                  child: RepositoryProvider<ProgressRepository>(
+                    create: (_) => ProgressRepository(dio),
+                    child: PilatesApp(
+                      authRepository: authRepository,
+                      tokenStorage: tokenStorage,
+                      localeBridge: localeBridge,
+                      authInitialState: authInitialState,
+                    ),
                   ),
                 ),
               ),

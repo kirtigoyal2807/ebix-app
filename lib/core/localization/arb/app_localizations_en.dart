@@ -2636,6 +2636,47 @@ class AppLocalizationsEn extends AppLocalizations {
   String get recentReferrals => 'Recent Referrals';
 
   @override
+  String get referralCodeCopied => 'Referral code copied to clipboard';
+
+  @override
+  String get referralProgramLoadError =>
+      'Could not load referral program. Please try again.';
+
+  @override
+  String get referralRetry => 'Retry';
+
+  @override
+  String referralYourReward(String reward) {
+    return 'You earn $reward';
+  }
+
+  @override
+  String referralFriendReward(String reward) {
+    return 'They get $reward';
+  }
+
+  @override
+  String get referralOrDivider => 'OR';
+
+  @override
+  String referralRewardDiscountPercent(String percent) {
+    return '$percent% off';
+  }
+
+  @override
+  String referralRewardDiscountAmount(String amount) {
+    return '$amount off';
+  }
+
+  @override
+  String get referralRewardFreeSession => 'Free session';
+
+  @override
+  String referralRewardFallback(String label) {
+    return '$label';
+  }
+
+  @override
   String joinedDaysAgo(int days) {
     return 'Joined $days days ago';
   }

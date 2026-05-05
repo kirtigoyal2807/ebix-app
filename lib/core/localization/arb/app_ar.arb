@@ -1082,6 +1082,51 @@
 
   "recentReferrals": "الإحالات الأخيرة",
 
+  "referralCodeCopied": "تم نسخ رمز الإحالة",
+  "referralProgramLoadError": "تعذّر تحميل برنامج الإحالة. يُرجى المحاولة مرة أخرى.",
+  "referralRetry": "إعادة المحاولة",
+  "referralYourReward": "تربح {reward}",
+  "@referralYourReward": {
+    "placeholders": {
+      "reward": {
+        "type": "String"
+      }
+    }
+  },
+  "referralFriendReward": "يحصل صديقك على {reward}",
+  "@referralFriendReward": {
+    "placeholders": {
+      "reward": {
+        "type": "String"
+      }
+    }
+  },
+  "referralOrDivider": "أو",
+  "referralRewardDiscountPercent": "خصم {percent}٪",
+  "@referralRewardDiscountPercent": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "referralRewardDiscountAmount": "خصم {amount}",
+  "@referralRewardDiscountAmount": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "referralRewardFreeSession": "جلسة مجانية",
+  "referralRewardFallback": "{label}",
+  "@referralRewardFallback": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
 
   "joinedDaysAgo": "انضم منذ {days} أيام",
   "@joinedDaysAgo": {
