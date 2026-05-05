@@ -750,6 +750,7 @@
   "enterGiftCardCode": "Enter Gift Card Code",
   "enterRedeemCode": "Enter Redeem Code",
   "invalidGiftCardCode": "Invalid gift card code",
+  "redeemCodeRequired": "Please enter your gift card code",
   "redeemGift": "Redeem Gift",
   "giftReceivedTitle": "You received a gift card",
   "viewGift": "View Gift",

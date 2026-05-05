@@ -1837,6 +1837,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get invalidGiftCardCode => 'Invalid gift card code';
 
   @override
+  String get redeemCodeRequired => 'Please enter your gift card code';
+
+  @override
   String get redeemGift => 'Redeem Gift';
 
   @override

@@ -1824,6 +1824,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get invalidGiftCardCode => 'رمز بطاقة الهدية غير صالح';
 
   @override
+  String get redeemCodeRequired => 'يرجى إدخال رمز بطاقة الهدية';
+
+  @override
   String get redeemGift => 'استرداد الهدية';
 
   @override

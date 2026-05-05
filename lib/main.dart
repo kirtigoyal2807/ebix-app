@@ -10,6 +10,7 @@ import 'core/localization/arb/app_localizations.dart';
 import 'core/network/auth_locale_bridge.dart';
 import 'core/network/dio_client.dart';
 import 'core/storage/token_storage.dart';
+import 'features/account/data/notification_preferences_repository.dart';
 import 'features/auth/auth_root_view.dart';
 import 'features/auth/cubit/auth_cubit.dart';
 import 'features/auth/cubit/auth_state.dart';
@@ -21,6 +22,7 @@ import 'features/invoice_history/data/invoices_repository.dart';
 import 'features/loyalty/data/loyalty_repository.dart';
 import 'features/my_booking/data/my_bookings_repository.dart';
 import 'features/progress_tracking_flow/data/progress_repository.dart';
+import 'features/explore/data/gift_repository.dart';
 import 'features/referral/data/referral_repository.dart';
 
 Future<void> main() async {
@@ -43,27 +45,33 @@ Future<void> main() async {
   final authRepository = AuthRepository(dio);
 
   runApp(
-    RepositoryProvider<ReferralRepository>(
-      create: (_) => ReferralRepository(dio),
-      child: RepositoryProvider<MyBookingsRepository>(
-        create: (_) => MyBookingsRepository(dio),
-        child: RepositoryProvider<TrainersRepository>(
-          create: (_) => TrainersRepository(dio),
-          child: RepositoryProvider<ReviewsRepository>(
-            create: (_) => ReviewsRepository(dio),
-            child: RepositoryProvider<LoyaltyRepository>(
-              create: (_) => LoyaltyRepository(dio),
-              child: RepositoryProvider<InvoicesRepository>(
-                create: (_) => InvoicesRepository(dio),
-                child: RepositoryProvider<ClassesRepository>(
-                  create: (_) => ClassesRepository(dio),
-                  child: RepositoryProvider<ProgressRepository>(
-                    create: (_) => ProgressRepository(dio),
-                    child: PilatesApp(
-                      authRepository: authRepository,
-                      tokenStorage: tokenStorage,
-                      localeBridge: localeBridge,
-                      authInitialState: authInitialState,
+    RepositoryProvider<NotificationPreferencesRepository>(
+      create: (_) => NotificationPreferencesRepository(dio),
+      child: RepositoryProvider<GiftRepository>(
+        create: (_) => GiftRepository(dio),
+        child: RepositoryProvider<ReferralRepository>(
+          create: (_) => ReferralRepository(dio),
+          child: RepositoryProvider<MyBookingsRepository>(
+            create: (_) => MyBookingsRepository(dio),
+            child: RepositoryProvider<TrainersRepository>(
+              create: (_) => TrainersRepository(dio),
+              child: RepositoryProvider<ReviewsRepository>(
+                create: (_) => ReviewsRepository(dio),
+                child: RepositoryProvider<LoyaltyRepository>(
+                  create: (_) => LoyaltyRepository(dio),
+                  child: RepositoryProvider<InvoicesRepository>(
+                    create: (_) => InvoicesRepository(dio),
+                    child: RepositoryProvider<ClassesRepository>(
+                      create: (_) => ClassesRepository(dio),
+                      child: RepositoryProvider<ProgressRepository>(
+                        create: (_) => ProgressRepository(dio),
+                        child: PilatesApp(
+                          authRepository: authRepository,
+                          tokenStorage: tokenStorage,
+                          localeBridge: localeBridge,
+                          authInitialState: authInitialState,
+                        ),
+                      ),
                     ),
                   ),
                 ),

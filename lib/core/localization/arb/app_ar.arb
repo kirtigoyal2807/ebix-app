@@ -747,6 +747,7 @@
   "enterGiftCardCode": "أدخل رمز بطاقة الهدية",
   "enterRedeemCode": "أدخل رمز الاسترداد",
   "invalidGiftCardCode": "رمز بطاقة الهدية غير صالح",
+  "redeemCodeRequired": "يرجى إدخال رمز بطاقة الهدية",
   "redeemGift": "استرداد الهدية",
   "giftReceivedTitle": "لقد استلمت بطاقة هدية",
   "viewGift": "عرض الهدية",

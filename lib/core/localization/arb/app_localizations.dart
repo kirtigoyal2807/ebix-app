@@ -3548,6 +3548,12 @@ abstract class AppLocalizations {
   /// **'Invalid gift card code'**
   String get invalidGiftCardCode;
 
+  /// No description provided for @redeemCodeRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your gift card code'**
+  String get redeemCodeRequired;
+
   /// No description provided for @redeemGift.
   ///
   /// In en, this message translates to:
