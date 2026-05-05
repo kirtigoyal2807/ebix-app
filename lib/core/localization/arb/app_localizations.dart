@@ -5090,6 +5090,24 @@ abstract class AppLocalizations {
   /// **'Phone number must be at most 30 characters'**
   String get referralInvitePhoneTooLong;
 
+  /// No description provided for @referralHistoryLoadError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load referral history.'**
+  String get referralHistoryLoadError;
+
+  /// No description provided for @referralHistoryRewardEarned.
+  ///
+  /// In en, this message translates to:
+  /// **'Rewarded'**
+  String get referralHistoryRewardEarned;
+
+  /// No description provided for @referralHistoryRewardPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending'**
+  String get referralHistoryRewardPending;
+
   /// No description provided for @joinedDaysAgo.
   ///
   /// In en, this message translates to:

@@ -2666,6 +2666,15 @@ class AppLocalizationsAr extends AppLocalizations {
       'يجب ألا يزيد رقم الهاتف عن 30 حرفاً';
 
   @override
+  String get referralHistoryLoadError => 'تعذّر تحميل سجل الإحالة.';
+
+  @override
+  String get referralHistoryRewardEarned => 'تم صرف المكافأة';
+
+  @override
+  String get referralHistoryRewardPending => 'قيد الانتظار';
+
+  @override
   String joinedDaysAgo(int days) {
     return 'انضم منذ $days أيام';
   }

@@ -16,16 +16,33 @@ class ReferralProgramCubit extends Cubit<ReferralProgramState> {
     emit(
       state.copyWith(
         status: ReferralProgramStatus.loading,
+        referralHistoryStatus: ReferralHistoryStatus.loading,
         errorMessage: null,
+        referralHistoryErrorMessage: null,
+        referralHistory: const [],
       ),
     );
-    final result = await _repository.getProgramDetails();
-    switch (result) {
+
+    final programFuture = _repository.getProgramDetails();
+    final historyFuture = _repository.getReferralHistory();
+
+    final programResult = await programFuture;
+
+    switch (programResult) {
       case ApiSuccess(:final data):
         emit(
           ReferralProgramState(
             status: ReferralProgramStatus.success,
             program: data,
+            errorMessage: null,
+            referralHistoryStatus: ReferralHistoryStatus.loading,
+            referralHistory: const [],
+            referralHistoryErrorMessage: null,
+            inviteSubmitting: state.inviteSubmitting,
+            invitePhoneFieldIssue: state.invitePhoneFieldIssue,
+            invitePhoneApiError: state.invitePhoneApiError,
+            inviteSuccessSnackPending: state.inviteSuccessSnackPending,
+            inviteErrorSnackMessage: state.inviteErrorSnackMessage,
           ),
         );
       case ApiFailure(:final exception):
@@ -34,6 +51,35 @@ class ReferralProgramCubit extends Cubit<ReferralProgramState> {
             status: ReferralProgramStatus.failure,
             program: state.program,
             errorMessage: exception.message,
+            referralHistoryStatus: ReferralHistoryStatus.loading,
+            referralHistory: const [],
+            referralHistoryErrorMessage: null,
+            inviteSubmitting: state.inviteSubmitting,
+            invitePhoneFieldIssue: state.invitePhoneFieldIssue,
+            invitePhoneApiError: state.invitePhoneApiError,
+            inviteSuccessSnackPending: state.inviteSuccessSnackPending,
+            inviteErrorSnackMessage: state.inviteErrorSnackMessage,
+          ),
+        );
+    }
+
+    final historyResult = await historyFuture;
+
+    switch (historyResult) {
+      case ApiSuccess(:final data):
+        emit(
+          state.copyWith(
+            referralHistoryStatus: ReferralHistoryStatus.success,
+            referralHistory: data,
+            referralHistoryErrorMessage: null,
+          ),
+        );
+      case ApiFailure(:final exception):
+        emit(
+          state.copyWith(
+            referralHistoryStatus: ReferralHistoryStatus.failure,
+            referralHistory: const [],
+            referralHistoryErrorMessage: exception.message,
           ),
         );
     }

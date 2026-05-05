@@ -2684,6 +2684,15 @@ class AppLocalizationsEn extends AppLocalizations {
       'Phone number must be at most 30 characters';
 
   @override
+  String get referralHistoryLoadError => 'Could not load referral history.';
+
+  @override
+  String get referralHistoryRewardEarned => 'Rewarded';
+
+  @override
+  String get referralHistoryRewardPending => 'Pending';
+
+  @override
   String joinedDaysAgo(int days) {
     return 'Joined $days days ago';
   }

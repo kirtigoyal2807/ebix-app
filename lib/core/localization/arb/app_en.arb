@@ -1117,6 +1117,10 @@
   "referralInviteSent": "Invitation sent",
   "referralInvitePhoneTooLong": "Phone number must be at most 30 characters",
 
+  "referralHistoryLoadError": "Could not load referral history.",
+  "referralHistoryRewardEarned": "Rewarded",
+  "referralHistoryRewardPending": "Pending",
+
   "joinedDaysAgo": "Joined {days} days ago",
   "@joinedDaysAgo": {
     "placeholders": {

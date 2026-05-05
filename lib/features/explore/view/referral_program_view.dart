@@ -11,7 +11,6 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../../config/theme/app_radius.dart';
 import '../../../config/theme/app_text_styles.dart';
 import '../../../core/localization/arb/app_localizations.dart';
-import '../../../core/localization/localization_extension.dart';
 import '../../../features/referral/cubit/referral_program_cubit.dart';
 import '../../../features/referral/cubit/referral_program_state.dart';
 import '../../../features/referral/data/referral_repository.dart';
@@ -149,37 +148,74 @@ class _ReferralProgramScaffoldState extends State<_ReferralProgramScaffold> {
                                     context,
                                   ).copyWith(height: 1),
                             ),
-                            AppText(
-                              l10n.seeAll,
-                              style: (context) =>
-                                  AppTextStyles.body(context).copyWith(height: 1),
-                            ),
+                            // AppText(
+                            //   l10n.seeAll,
+                            //   style: (context) =>
+                            //       AppTextStyles.body(context).copyWith(height: 1),
+                            // ),
                           ],
                         ),
                       ),
                       SizedBox(height: AppSpacing.md),
-                      _recentReferralsCard(
-                        context: context,
-                        title: "Jessica M.",
-                        subTitle: l10n.joinedDaysAgo(2),
-                      ),
-                      SizedBox(height: AppSpacing.md),
-                      _recentReferralsCard(
-                        context: context,
-                        title: "Mike Davis",
-                        subTitle: l10n.joinedDaysAgo(2),
-                      ),
-                      SizedBox(height: AppSpacing.md),
-                      _recentReferralsCard(
-                        context: context,
-                        title: "Emily Wilson",
-                        subTitle: l10n.joinedDaysAgo(4),
-                      ),
-                      SizedBox(height: AppSpacing.md),
-                      _recentReferralsCard(
-                        context: context,
-                        title: "Emily Wilson",
-                        subTitle: l10n.joinedDaysAgo(4),
+                      BlocBuilder<ReferralProgramCubit, ReferralProgramState>(
+                        buildWhen: (previous, current) =>
+                            previous.referralHistoryStatus !=
+                                current.referralHistoryStatus ||
+                            previous.referralHistory != current.referralHistory ||
+                            previous.referralHistoryErrorMessage !=
+                                current.referralHistoryErrorMessage,
+                        builder: (context, state) {
+                          if (state.referralHistoryStatus ==
+                              ReferralHistoryStatus.loading) {
+                            return Padding(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: AppSpacing.lg,
+                                vertical: AppSpacing.xl,
+                              ),
+                              child: const Center(
+                                child: CircularProgressIndicator(),
+                              ),
+                            );
+                          }
+                          if (state.referralHistoryStatus ==
+                              ReferralHistoryStatus.failure) {
+                            return Padding(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: AppSpacing.lg,
+                              ),
+                              child: AppText(
+                                state.referralHistoryErrorMessage ??
+                                    l10n.referralHistoryLoadError,
+                                style: (context) =>
+                                    AppTextStyles.helpAndSupportItemSubLabel(
+                                      context,
+                                    ).copyWith(height: 1.55),
+                              ),
+                            );
+                          }
+                          final items = state.referralHistory;
+                          final cards = <Widget>[];
+                          for (var i = 0; i < items.length; i++) {
+                            if (i > 0) {
+                              cards.add(SizedBox(height: AppSpacing.md));
+                            }
+                            final item = items[i];
+                            cards.add(
+                              _recentReferralsCard(
+                                context: context,
+                                title: '${item.referredCustomerId}',
+                                subTitle: item.apiSubtitleLines,
+                                badgeLabel: item.rewardEarned
+                                    ? l10n.referralHistoryRewardEarned
+                                    : l10n.referralHistoryRewardPending,
+                              ),
+                            );
+                          }
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: cards,
+                          );
+                        },
                       ),
                     ],
                   ),
@@ -261,26 +297,26 @@ class _ReferralProgramScaffoldState extends State<_ReferralProgramScaffold> {
                   context,
                 ).copyWith(color: AppColors.placeHolderText, height: 1),
               ),
-              if (youReward.isNotEmpty) ...[
-                SizedBox(height: AppSpacing.sm),
-                AppText(
-                  l10n.referralYourReward(youReward),
-                  style: (context) => AppTextStyles.bodyText(context).copyWith(
-                    color: AppColors.placeHolderText,
-                    height: 1.2,
-                  ),
-                ),
-              ],
-              if (friendReward.isNotEmpty) ...[
-                SizedBox(height: AppSpacing.xs),
-                AppText(
-                  l10n.referralFriendReward(friendReward),
-                  style: (context) => AppTextStyles.bodyText(context).copyWith(
-                    color: AppColors.placeHolderText,
-                    height: 1.2,
-                  ),
-                ),
-              ],
+              // if (youReward.isNotEmpty) ...[
+              //   SizedBox(height: AppSpacing.sm),
+              //   AppText(
+              //     l10n.referralYourReward(youReward),
+              //     style: (context) => AppTextStyles.bodyText(context).copyWith(
+              //       color: AppColors.placeHolderText,
+              //       height: 1.2,
+              //     ),
+              //   ),
+              // ],
+              // if (friendReward.isNotEmpty) ...[
+              //   SizedBox(height: AppSpacing.xs),
+              //   AppText(
+              //     l10n.referralFriendReward(friendReward),
+              //     style: (context) => AppTextStyles.bodyText(context).copyWith(
+              //       color: AppColors.placeHolderText,
+              //       height: 1.2,
+              //     ),
+              //   ),
+              // ],
             ],
           );
         }
@@ -606,6 +642,7 @@ class _ReferralProgramScaffoldState extends State<_ReferralProgramScaffold> {
     required BuildContext context,
     required String title,
     required String subTitle,
+    required String badgeLabel,
   }) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
@@ -650,7 +687,7 @@ class _ReferralProgramScaffoldState extends State<_ReferralProgramScaffold> {
               borderRadius: BorderRadius.circular(AppRadius.base),
             ),
             child: AppText(
-              "+${context.l10n.points_short(500)}",
+              badgeLabel,
               style: (context) => AppTextStyles.splashVersion(context).copyWith(
                 color: isDark ? AppColors.lightText : AppColors.darkText,
               ),

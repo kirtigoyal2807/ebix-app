@@ -1131,6 +1131,10 @@
   "referralInviteSent": "تم إرسال الدعوة",
   "referralInvitePhoneTooLong": "يجب ألا يزيد رقم الهاتف عن 30 حرفاً",
 
+  "referralHistoryLoadError": "تعذّر تحميل سجل الإحالة.",
+  "referralHistoryRewardEarned": "تم صرف المكافأة",
+  "referralHistoryRewardPending": "قيد الانتظار",
+
   "joinedDaysAgo": "انضم منذ {days} أيام",
   "@joinedDaysAgo": {
     "placeholders": {

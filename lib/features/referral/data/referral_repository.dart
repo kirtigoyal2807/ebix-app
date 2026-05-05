@@ -1,6 +1,7 @@
 import 'package:pilates_app/core/network/api_result.dart';
 import 'package:pilates_app/core/network/base_repository.dart';
 
+import 'models/referral_history_item.dart';
 import 'models/referral_program_details.dart';
 
 /// Pilates API — referral module (16.x).
@@ -13,6 +14,28 @@ class ReferralRepository extends BaseRepository {
       '/referral/program',
       fromJson: (json) =>
           ReferralProgramDetails.fromJson(json as Map<String, dynamic>),
+    );
+  }
+
+  /// Referral history — people referred and reward status (JWT).
+  Future<ApiResult<List<ReferralHistoryItem>>> getReferralHistory() {
+    return get<List<ReferralHistoryItem>>(
+      '/referral/history',
+      fromJson: (json) {
+        if (json == null) {
+          return <ReferralHistoryItem>[];
+        }
+        if (json is! List) {
+          return <ReferralHistoryItem>[];
+        }
+        final list = json;
+        return list
+            .map(
+              (e) =>
+                  ReferralHistoryItem.fromJson(e as Map<String, dynamic>),
+            )
+            .toList();
+      },
     );
   }
 

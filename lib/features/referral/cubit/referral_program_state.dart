@@ -1,8 +1,11 @@
 import 'package:equatable/equatable.dart';
 
+import '../data/models/referral_history_item.dart';
 import '../data/models/referral_program_details.dart';
 
 enum ReferralProgramStatus { initial, loading, success, failure }
+
+enum ReferralHistoryStatus { initial, loading, success, failure }
 
 enum InvitePhoneFieldIssue { none, empty, tooLong }
 
@@ -11,6 +14,9 @@ class ReferralProgramState extends Equatable {
     this.status = ReferralProgramStatus.initial,
     this.program,
     this.errorMessage,
+    this.referralHistoryStatus = ReferralHistoryStatus.initial,
+    this.referralHistory = const [],
+    this.referralHistoryErrorMessage,
     this.inviteSubmitting = false,
     this.invitePhoneFieldIssue = InvitePhoneFieldIssue.none,
     this.invitePhoneApiError,
@@ -21,6 +27,10 @@ class ReferralProgramState extends Equatable {
   final ReferralProgramStatus status;
   final ReferralProgramDetails? program;
   final String? errorMessage;
+
+  final ReferralHistoryStatus referralHistoryStatus;
+  final List<ReferralHistoryItem> referralHistory;
+  final String? referralHistoryErrorMessage;
 
   final bool inviteSubmitting;
   final InvitePhoneFieldIssue invitePhoneFieldIssue;
@@ -34,6 +44,9 @@ class ReferralProgramState extends Equatable {
     ReferralProgramStatus? status,
     ReferralProgramDetails? program,
     Object? errorMessage = _unset,
+    ReferralHistoryStatus? referralHistoryStatus,
+    List<ReferralHistoryItem>? referralHistory,
+    Object? referralHistoryErrorMessage = _unset,
     bool? inviteSubmitting,
     InvitePhoneFieldIssue? invitePhoneFieldIssue,
     Object? invitePhoneApiError = _unset,
@@ -46,6 +59,15 @@ class ReferralProgramState extends Equatable {
       errorMessage: identical(errorMessage, _unset)
           ? this.errorMessage
           : errorMessage as String?,
+      referralHistoryStatus:
+          referralHistoryStatus ?? this.referralHistoryStatus,
+      referralHistory: referralHistory ?? this.referralHistory,
+      referralHistoryErrorMessage: identical(
+            referralHistoryErrorMessage,
+            _unset,
+          )
+          ? this.referralHistoryErrorMessage
+          : referralHistoryErrorMessage as String?,
       inviteSubmitting: inviteSubmitting ?? this.inviteSubmitting,
       invitePhoneFieldIssue: invitePhoneFieldIssue ?? this.invitePhoneFieldIssue,
       invitePhoneApiError: identical(invitePhoneApiError, _unset)
@@ -64,6 +86,9 @@ class ReferralProgramState extends Equatable {
         status,
         program,
         errorMessage,
+        referralHistoryStatus,
+        referralHistory,
+        referralHistoryErrorMessage,
         inviteSubmitting,
         invitePhoneFieldIssue,
         invitePhoneApiError,
