@@ -25,11 +25,11 @@ class ProfileCard extends StatelessWidget {
             ? userName
             : context.l10n.name;
         final email = user?.email?.trim();
-        final displayEmail =
-            (email != null && email.isNotEmpty) ? email : context.l10n.email;
+        final displayEmail = (email != null && email.isNotEmpty)
+            ? email
+            : context.l10n.email;
         final avatarUrl = resolveApiMediaUrl(user?.avatar);
-        final avatarProvider =
-            (avatarUrl != null && avatarUrl.isNotEmpty)
+        final avatarProvider = (avatarUrl != null && avatarUrl.isNotEmpty)
             ? NetworkImage(avatarUrl)
             : const AssetImage("assets/images/demo images/Trainer Avatar.png")
                   as ImageProvider;

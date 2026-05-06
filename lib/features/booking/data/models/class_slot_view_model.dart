@@ -119,8 +119,9 @@ class ClassSlotViewModel {
     final now = referenceTime ?? DateTime.now();
     final events = gymClass.upcomingEvents;
     if (events.isEmpty) return null;
-    final upcoming =
-        events.where((e) => !e.startAt.isBefore(now)).toList(growable: false);
+    final upcoming = events
+        .where((e) => !e.startAt.isBefore(now))
+        .toList(growable: false);
     if (upcoming.isEmpty) return null;
     final sorted = List<UpcomingEvent>.from(upcoming)
       ..sort((a, b) => a.startAt.compareTo(b.startAt));

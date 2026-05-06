@@ -12,7 +12,12 @@ class ProgressOverviewCubit extends Cubit<ProgressOverviewState> {
   final ProgressRepository _repository;
 
   Future<void> load() async {
-    emit(state.copyWith(status: ProgressOverviewStatus.loading, errorMessage: null));
+    emit(
+      state.copyWith(
+        status: ProgressOverviewStatus.loading,
+        errorMessage: null,
+      ),
+    );
     final result = await _repository.getOverview();
     switch (result) {
       case ApiSuccess(:final data):

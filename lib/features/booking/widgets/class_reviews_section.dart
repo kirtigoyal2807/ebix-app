@@ -155,17 +155,17 @@ class _DynamicReviewsSectionState extends State<_DynamicReviewsSection> {
     if (_inited) return;
     _inited = true;
     _future = context.read<ReviewsRepository>().listReviews(
-          reviewableType: widget.reviewableType,
-          reviewableId: widget.reviewableId,
-        );
+      reviewableType: widget.reviewableType,
+      reviewableId: widget.reviewableId,
+    );
   }
 
   Future<void> _retry() async {
     setState(() {
       _future = context.read<ReviewsRepository>().listReviews(
-            reviewableType: widget.reviewableType,
-            reviewableId: widget.reviewableId,
-          );
+        reviewableType: widget.reviewableType,
+        reviewableId: widget.reviewableId,
+      );
     });
     await _future;
   }
@@ -221,17 +221,25 @@ class _DynamicReviewsSectionState extends State<_DynamicReviewsSection> {
               },
               failure: (e) {
                 return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg, vertical: 8),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: AppSpacing.lg,
+                    vertical: 8,
+                  ),
                   child: Column(
                     children: [
                       AppText(
                         e.message ?? 'Request failed',
                         maxLines: 4,
-                        style: (c) => AppTextStyles.bodyText(c).copyWith(color: AppColors.error),
+                        style: (c) => AppTextStyles.bodyText(
+                          c,
+                        ).copyWith(color: AppColors.error),
                       ),
                       TextButton(
                         onPressed: _retry,
-                        child: AppText('Retry', style: (c) => AppTextStyles.body(c)),
+                        child: AppText(
+                          'Retry',
+                          style: (c) => AppTextStyles.body(c),
+                        ),
                       ),
                     ],
                   ),
@@ -287,16 +295,21 @@ class _DynamicReviewsContent extends StatelessWidget {
         ? bd.fold<int>(0, (a, b) => a + b)
         : 0;
     final listLen = reviews.length;
-    final displayCount = (summaryReviewsCount != null && summaryReviewsCount! > 0)
+    final displayCount =
+        (summaryReviewsCount != null && summaryReviewsCount! > 0)
         ? summaryReviewsCount!
         : (bdTotal > 0 ? bdTotal : listLen);
 
     if (reviews.isEmpty && displayCount == 0) {
       return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg, vertical: 8),
+        padding: const EdgeInsets.symmetric(
+          horizontal: AppSpacing.lg,
+          vertical: 8,
+        ),
         child: AppText(
           context.l10n.noReviewsYet,
-          style: (c) => AppTextStyles.bodyText(c).copyWith(color: AppColors.lightGrey),
+          style: (c) =>
+              AppTextStyles.bodyText(c).copyWith(color: AppColors.lightGrey),
         ),
       );
     }
@@ -324,7 +337,9 @@ class _DynamicReviewsContent extends StatelessWidget {
     }();
 
     final avgText = _formatAverage(displayAverage);
-    final barDenominator = bdTotal > 0 ? bdTotal : (reviews.isNotEmpty ? reviews.length : 1);
+    final barDenominator = bdTotal > 0
+        ? bdTotal
+        : (reviews.isNotEmpty ? reviews.length : 1);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -375,11 +390,11 @@ class _DynamicReviewsContent extends StatelessWidget {
                             maxLines: 2,
                             style: (context) =>
                                 AppTextStyles.captionText(context).copyWith(
-                              fontSize: 12,
-                              color: isDark
-                                  ? AppColors.darkGreyText
-                                  : AppColors.greyText,
-                            ),
+                                  fontSize: 12,
+                                  color: isDark
+                                      ? AppColors.darkGreyText
+                                      : AppColors.greyText,
+                                ),
                           ),
                         ],
                       ),
@@ -401,11 +416,7 @@ class _DynamicReviewsContent extends StatelessWidget {
                       c = 0;
                     }
                     final p = barDenominator > 0 ? c / barDenominator : 0.0;
-                    return _RatingBar(
-                      stars: stars,
-                      progress: p,
-                      count: c,
-                    );
+                    return _RatingBar(stars: stars, progress: p, count: c);
                   }),
                 ),
               ],
@@ -419,7 +430,8 @@ class _DynamicReviewsContent extends StatelessWidget {
             child: ListView.separated(
               scrollDirection: Axis.horizontal,
               itemCount: reviews.length,
-              separatorBuilder: (context, index) => const SizedBox(width: AppSpacing.md),
+              separatorBuilder: (context, index) =>
+                  const SizedBox(width: AppSpacing.md),
               itemBuilder: (context, index) => Align(
                 alignment: Alignment.topCenter,
                 child: Padding(
@@ -477,15 +489,19 @@ class _ApiReviewCard extends StatelessWidget {
                       displayName,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
-                      style: (context) => AppTextStyles.boldBody(context).copyWith(
-                        color: isDark ? AppColors.lightText : AppColors.darkText,
-                      ),
+                      style: (context) =>
+                          AppTextStyles.boldBody(context).copyWith(
+                            color: isDark
+                                ? AppColors.lightText
+                                : AppColors.darkText,
+                          ),
                     ),
                     AppText(
                       when,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
-                      style: (context) => AppTextStyles.helpAndSupportItemSubLabel(context),
+                      style: (context) =>
+                          AppTextStyles.helpAndSupportItemSubLabel(context),
                     ),
                   ],
                 ),
@@ -500,12 +516,17 @@ class _ApiReviewCard extends StatelessWidget {
                   ),
                   const SizedBox(width: 4),
                   AppText(
-                    _DynamicReviewsContent._formatSingleReviewRating(review.rating),
-                    maxLines: 1,
-                    style: (context) => AppTextStyles.boldBody(context).copyWith(
-                      fontSize: 14,
-                      color: isDark ? AppColors.lightText : AppColors.darkText,
+                    _DynamicReviewsContent._formatSingleReviewRating(
+                      review.rating,
                     ),
+                    maxLines: 1,
+                    style: (context) =>
+                        AppTextStyles.boldBody(context).copyWith(
+                          fontSize: 14,
+                          color: isDark
+                              ? AppColors.lightText
+                              : AppColors.darkText,
+                        ),
                   ),
                 ],
               ),
@@ -515,7 +536,8 @@ class _ApiReviewCard extends StatelessWidget {
             const SizedBox(height: AppSpacing.sm),
             AppText(
               body,
-              style: (context) => AppTextStyles.bodyText(context).copyWith(height: 1.3),
+              style: (context) =>
+                  AppTextStyles.bodyText(context).copyWith(height: 1.3),
               maxLines: 4,
               overflow: TextOverflow.ellipsis,
             ),
@@ -569,12 +591,15 @@ class _StaticClassReviewsBody extends StatelessWidget {
                   maxLines: 1,
                   textAlign: TextAlign.end,
                   style: (context) =>
-                      AppTextStyles.captionText(context, fontWeight: FontWeight.w500).copyWith(
-                    color: isDark
-                        ? AppColors.languageTextDark
-                        : AppColors.languageIcon,
-                    fontSize: 14,
-                  ),
+                      AppTextStyles.captionText(
+                        context,
+                        fontWeight: FontWeight.w500,
+                      ).copyWith(
+                        color: isDark
+                            ? AppColors.languageTextDark
+                            : AppColors.languageIcon,
+                        fontSize: 14,
+                      ),
                 ),
               ),
             ],
@@ -651,10 +676,7 @@ class _StaticClassReviewsBody extends StatelessWidget {
         const SizedBox(height: AppSpacing.sm),
 
         // Review Cards - Horizontal
-        const SizedBox(
-          height: 168,
-          child: _StaticReviewCardsList(),
-        ),
+        const SizedBox(height: 168, child: _StaticReviewCardsList()),
       ],
     );
   }
@@ -668,7 +690,8 @@ class _StaticReviewCardsList extends StatelessWidget {
     return ListView.separated(
       scrollDirection: Axis.horizontal,
       itemCount: 3,
-      separatorBuilder: (context, index) => const SizedBox(width: AppSpacing.md),
+      separatorBuilder: (context, index) =>
+          const SizedBox(width: AppSpacing.md),
       itemBuilder: (context, index) => Align(
         alignment: Alignment.topCenter,
         child: Padding(
@@ -790,17 +813,19 @@ class _DemoReviewCard extends StatelessWidget {
                       context.l10n.reviewerName1,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
-                      style: (context) => AppTextStyles.boldBody(context).copyWith(
-                        color: isDark
-                            ? AppColors.lightText
-                            : AppColors.darkText,
-                      ),
+                      style: (context) =>
+                          AppTextStyles.boldBody(context).copyWith(
+                            color: isDark
+                                ? AppColors.lightText
+                                : AppColors.darkText,
+                          ),
                     ),
                     AppText(
                       context.l10n.reviewerTime1,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
-                      style: (context) => AppTextStyles.helpAndSupportItemSubLabel(context),
+                      style: (context) =>
+                          AppTextStyles.helpAndSupportItemSubLabel(context),
                     ),
                   ],
                 ),
@@ -818,10 +843,13 @@ class _DemoReviewCard extends StatelessWidget {
                   AppText(
                     '4.5',
                     maxLines: 1,
-                    style: (context) => AppTextStyles.boldBody(context).copyWith(
-                      fontSize: 14,
-                      color: isDark ? AppColors.lightText : AppColors.darkText,
-                    ),
+                    style: (context) =>
+                        AppTextStyles.boldBody(context).copyWith(
+                          fontSize: 14,
+                          color: isDark
+                              ? AppColors.lightText
+                              : AppColors.darkText,
+                        ),
                   ),
                 ],
               ),
@@ -830,7 +858,8 @@ class _DemoReviewCard extends StatelessWidget {
           const SizedBox(height: AppSpacing.sm),
           AppText(
             context.l10n.reviewerComment1,
-            style: (context) => AppTextStyles.bodyText(context).copyWith(height: 1.3),
+            style: (context) =>
+                AppTextStyles.bodyText(context).copyWith(height: 1.3),
             maxLines: 4,
             overflow: TextOverflow.ellipsis,
           ),

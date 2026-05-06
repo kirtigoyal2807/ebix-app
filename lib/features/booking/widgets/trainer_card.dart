@@ -91,15 +91,14 @@ class TrainerCard extends StatelessWidget {
                           trainer.displayName,
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
-                          style: (context) => AppTextStyles.boldBody(
-                            context,
-                          ).copyWith(
-                            fontSize: titleSize,
-                            height: 1.2,
-                            color: isDark
-                                ? AppColors.lightText
-                                : AppColors.darkText,
-                          ),
+                          style: (context) =>
+                              AppTextStyles.boldBody(context).copyWith(
+                                fontSize: titleSize,
+                                height: 1.2,
+                                color: isDark
+                                    ? AppColors.lightText
+                                    : AppColors.darkText,
+                              ),
                         ),
                       ),
                       SizedBox(width: AppSpacing.sm),
@@ -120,13 +119,13 @@ class TrainerCard extends StatelessWidget {
                       subtitle,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
-                      style: (context) => AppTextStyles.captionText(context)
-                          .copyWith(
-                        fontSize: metaSize,
-                        color: isDark
-                            ? AppColors.darkGreyText
-                            : AppColors.lightGrey,
-                      ),
+                      style: (context) =>
+                          AppTextStyles.captionText(context).copyWith(
+                            fontSize: metaSize,
+                            color: isDark
+                                ? AppColors.darkGreyText
+                                : AppColors.lightGrey,
+                          ),
                     ),
                   ],
                   SizedBox(height: AppSpacing.base),
@@ -146,7 +145,8 @@ class TrainerCard extends StatelessWidget {
                         TagChip(label: s, fontSize: 14),
                     ],
                   ),
-                  if (trainer.bio != null && trainer.bio!.trim().isNotEmpty) ...[
+                  if (trainer.bio != null &&
+                      trainer.bio!.trim().isNotEmpty) ...[
                     SizedBox(height: AppSpacing.sm),
                     AppText(
                       trainer.bio!.trim(),
@@ -166,8 +166,7 @@ class TrainerCard extends StatelessWidget {
                             : AppColors.languageIcon,
                         size: 16,
                       ),
-                      label:
-                          trainer.branches.map((b) => b.name).join(', '),
+                      label: trainer.branches.map((b) => b.name).join(', '),
                     ),
                   ],
                   if (trainer.classesThisWeekCount != null) ...[
@@ -195,26 +194,19 @@ class TrainerCard extends StatelessWidget {
     );
   }
 
-  Widget _buildIconRow({
-    required Widget icon,
-    required String label,
-  }) {
+  Widget _buildIconRow({required Widget icon, required String label}) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
-          padding: const EdgeInsets.only(top: 1),
-          child: icon,
-        ),
+        Padding(padding: const EdgeInsets.only(top: 1), child: icon),
         SizedBox(width: AppSpacing.xs),
         Expanded(
           child: AppText(
             label,
             maxLines: 3,
             overflow: TextOverflow.ellipsis,
-            style: (context) => AppTextStyles.bodyText(
-              context,
-            ).copyWith(height: 1.3),
+            style: (context) =>
+                AppTextStyles.bodyText(context).copyWith(height: 1.3),
           ),
         ),
       ],
@@ -224,10 +216,7 @@ class TrainerCard extends StatelessWidget {
 
 /// List card: uses API [avgRating] / [reviewsCount] only — no placeholder averages.
 class _TrainerRatingRow extends StatelessWidget {
-  const _TrainerRatingRow({
-    required this.trainer,
-    required this.isDark,
-  });
+  const _TrainerRatingRow({required this.trainer, required this.isDark});
 
   final TrainerResource trainer;
   final bool isDark;
@@ -249,9 +238,7 @@ class _TrainerRatingRow extends StatelessWidget {
             avgText.isNotEmpty ? avgText : avgValue.toStringAsFixed(1),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
-            style: (context) => AppTextStyles.boldBody(
-              context,
-            ).copyWith(
+            style: (context) => AppTextStyles.boldBody(context).copyWith(
               color: isDark ? AppColors.lightText : AppColors.darkText,
             ),
           ),
@@ -261,9 +248,7 @@ class _TrainerRatingRow extends StatelessWidget {
               '($count)',
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
-              style: (context) => AppTextStyles.captionText(
-                context,
-              ),
+              style: (context) => AppTextStyles.captionText(context),
             ),
           ],
         ],
@@ -274,19 +259,13 @@ class _TrainerRatingRow extends StatelessWidget {
       return Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(
-            Icons.star_border_rounded,
-            color: metaColor,
-            size: 18,
-          ),
+          Icon(Icons.star_border_rounded, color: metaColor, size: 18),
           const SizedBox(width: 4),
           AppText(
             avgText,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
-            style: (context) => AppTextStyles.boldBody(
-              context,
-            ).copyWith(
+            style: (context) => AppTextStyles.boldBody(context).copyWith(
               color: isDark ? AppColors.lightText : AppColors.darkText,
             ),
           ),
@@ -296,9 +275,7 @@ class _TrainerRatingRow extends StatelessWidget {
               '($count)',
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
-              style: (context) => AppTextStyles.captionText(
-                context,
-              ),
+              style: (context) => AppTextStyles.captionText(context),
             ),
           ],
         ],
@@ -309,29 +286,19 @@ class _TrainerRatingRow extends StatelessWidget {
       return Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(
-            Icons.star_border_rounded,
-            color: metaColor,
-            size: 18,
-          ),
+          Icon(Icons.star_border_rounded, color: metaColor, size: 18),
           const SizedBox(width: 4),
           AppText(
             '($count)',
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
-            style: (context) => AppTextStyles.captionText(
-              context,
-            ),
+            style: (context) => AppTextStyles.captionText(context),
           ),
         ],
       );
     }
 
-    return Icon(
-      Icons.star_border_rounded,
-      color: metaColor,
-      size: 18,
-    );
+    return Icon(Icons.star_border_rounded, color: metaColor, size: 18);
   }
 }
 

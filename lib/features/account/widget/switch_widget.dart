@@ -31,9 +31,12 @@ class SwitchWidget extends StatelessWidget {
           children: [
             AppText(
               title,
-              style: (context) => AppTextStyles.textFieldHeading(
-                context,
-              ).copyWith(fontSize: 15, height: 1.60,color: isDark? AppColors.lightText :AppColors.darkText),
+              style: (context) =>
+                  AppTextStyles.textFieldHeading(context).copyWith(
+                    fontSize: 15,
+                    height: 1.60,
+                    color: isDark ? AppColors.lightText : AppColors.darkText,
+                  ),
             ),
 
             if (subTitle != null) SizedBox(height: 2),
@@ -47,7 +50,6 @@ class SwitchWidget extends StatelessWidget {
           ],
         ),
 
-
         Transform.scale(
           scale: 0.8, // 👈 reduce overall size (try 0.7–0.9)
           child: CupertinoSwitch(
@@ -55,18 +57,17 @@ class SwitchWidget extends StatelessWidget {
             onChanged: onChanged,
             // activeColor:
             // isDark ? AppColors.switchInactiveDark : AppColors.primary,
-            inactiveThumbColor:   isDark ? AppColors.primary : AppColors.whiteColor,
+            inactiveThumbColor: isDark
+                ? AppColors.primary
+                : AppColors.whiteColor,
             inactiveTrackColor: isDark
                 ? Color(0xff1C1917)
                 : AppColors.buttonBorder,
-            activeTrackColor:  isDark
-                ? AppColors.primary
-                : AppColors.primary,
+            activeTrackColor: isDark ? AppColors.primary : AppColors.primary,
             // trackColor: isDark
             //     ? AppColors.switchInactiveDark
             //     : AppColors.buttonBorder,
-            thumbColor:
-            isDark ? AppColors.lightText : AppColors.whiteColor,
+            thumbColor: isDark ? AppColors.lightText : AppColors.whiteColor,
           ),
         ),
         // Transform.scale(

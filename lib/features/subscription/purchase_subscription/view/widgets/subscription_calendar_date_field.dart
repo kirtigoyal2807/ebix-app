@@ -86,7 +86,9 @@ class SubscriptionCalendarDateField extends StatelessWidget {
                   decoration: BoxDecoration(
                     color: isDark ? AppColors.homeBackground : Colors.white,
                     border: Border.all(
-                      color: isDark ? AppColors.greyText : AppColors.buttonBorder,
+                      color: isDark
+                          ? AppColors.greyText
+                          : AppColors.buttonBorder,
                     ),
                     borderRadius: BorderRadius.circular(AppRadius.md),
                   ),
@@ -98,8 +100,8 @@ class SubscriptionCalendarDateField extends StatelessWidget {
                           style: (ctx) => AppTextStyles.textField(ctx).copyWith(
                             color: hasValue
                                 ? (isDark
-                                    ? AppColors.lightText
-                                    : AppColors.darkText)
+                                      ? AppColors.lightText
+                                      : AppColors.darkText)
                                 : AppColors.lightGrey,
                           ),
                         ),

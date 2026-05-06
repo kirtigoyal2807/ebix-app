@@ -11,10 +11,7 @@ void main() {
       expect(r.dataOrNull, 'ok');
       expect(r.exceptionOrNull, isNull);
 
-      final out = r.when(
-        success: (d, c) => '$d-$c',
-        failure: (_) => 'fail',
-      );
+      final out = r.when(success: (d, c) => '$d-$c', failure: (_) => 'fail');
       expect(out, 'ok-200');
     });
 
@@ -27,10 +24,7 @@ void main() {
       expect(r.dataOrNull, isNull);
       expect(r.exceptionOrNull, ex);
 
-      final out = r.when(
-        success: (_, __) => 's',
-        failure: (e) => e.type.name,
-      );
+      final out = r.when(success: (_, __) => 's', failure: (e) => e.type.name);
       expect(out, 'timeout');
     });
   });

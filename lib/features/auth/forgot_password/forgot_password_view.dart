@@ -58,7 +58,8 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
   Widget build(BuildContext context) {
     return BlocConsumer<AuthCubit, AuthState>(
       listenWhen: (previous, current) {
-        return previous.forgotPasswordUiStatus == ForgotPasswordUiStatus.loading &&
+        return previous.forgotPasswordUiStatus ==
+                ForgotPasswordUiStatus.loading &&
             current.forgotPasswordUiStatus == ForgotPasswordUiStatus.idle;
       },
       listener: (context, state) {
@@ -82,14 +83,15 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
           final text = state.forgotPasswordErrorMessage.trim().isEmpty
               ? context.l10n.loginErrorGeneric
               : state.forgotPasswordErrorMessage;
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(text)),
-          );
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(text)));
         }
       },
       builder: (context, state) {
         final fe = state.forgotPasswordFieldErrors;
-        final loading = state.forgotPasswordUiStatus == ForgotPasswordUiStatus.loading;
+        final loading =
+            state.forgotPasswordUiStatus == ForgotPasswordUiStatus.loading;
 
         return AppScaffold(
           appBar: AppAppBar(
@@ -123,7 +125,8 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
                           hint: context.l10n.usernameHint,
                           keyboardType: TextInputType.emailAddress,
                           errorText: _clientEmailError ?? fe['email'],
-                          onChanged: (_) => setState(() => _clientEmailError = null),
+                          onChanged: (_) =>
+                              setState(() => _clientEmailError = null),
                         ),
                       ],
                     ),

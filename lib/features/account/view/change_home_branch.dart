@@ -11,11 +11,7 @@ import 'package:pilates_app/widgets/app_button.dart';
 import '../../auth/sign_up/widgets/branch_option.dart';
 
 class ChangeHomeBranch extends StatefulWidget {
-  const ChangeHomeBranch({
-    super.key,
-    this.title,
-    this.readOnly = false,
-  });
+  const ChangeHomeBranch({super.key, this.title, this.readOnly = false});
 
   final String? title;
   final bool readOnly;
@@ -61,8 +57,7 @@ class _ChangeHomeBranchState extends State<ChangeHomeBranch> {
       case ApiFailure(:final exception):
         setState(() {
           _isLoadingBranches = false;
-          _loadErrorMessage =
-              (exception.message ?? '').trim().isNotEmpty
+          _loadErrorMessage = (exception.message ?? '').trim().isNotEmpty
               ? exception.message!.trim()
               : context.l10n.branchesCouldNotLoad;
         });
@@ -103,9 +98,7 @@ class _ChangeHomeBranchState extends State<ChangeHomeBranch> {
         final message = (exception.message ?? '').trim().isNotEmpty
             ? exception.message!.trim()
             : context.l10n.somethingWentWrong;
-        messenger.showSnackBar(
-          SnackBar(content: Text(message)),
-        );
+        messenger.showSnackBar(SnackBar(content: Text(message)));
     }
   }
 
@@ -128,15 +121,14 @@ class _ChangeHomeBranchState extends State<ChangeHomeBranch> {
         ),
         child: Column(
           children: [
-            Expanded(
-              child: _buildBranchesContent(context),
-            ),
+            Expanded(child: _buildBranchesContent(context)),
             if (!widget.readOnly)
               AppButton(
                 label: context.l10n.updateHomeBranch,
                 variant: AppButtonVariant.primary,
                 isLoading: _isUpdatingHomeBranch,
-                onPressed: (_selectedBranchId == null ||
+                onPressed:
+                    (_selectedBranchId == null ||
                         _isLoadingBranches ||
                         _isUpdatingHomeBranch)
                     ? null
@@ -171,9 +163,7 @@ class _ChangeHomeBranchState extends State<ChangeHomeBranch> {
     }
 
     if (_branches.isEmpty) {
-      return Center(
-        child: Text(context.l10n.noBranchesAvailable),
-      );
+      return Center(child: Text(context.l10n.noBranchesAvailable));
     }
 
     return SingleChildScrollView(

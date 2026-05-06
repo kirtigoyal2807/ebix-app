@@ -42,7 +42,9 @@ List<ClassSlotViewModel> _trainerUpcomingSlots(
       final matchesId = tid != null && tid.isNotEmpty && tid == id;
       final evName = ev.trainerName?.trim().toLowerCase() ?? '';
       final matchesName =
-          (tid == null || tid.isEmpty) && nameNorm.isNotEmpty && evName == nameNorm;
+          (tid == null || tid.isEmpty) &&
+          nameNorm.isNotEmpty &&
+          evName == nameNorm;
       if (!matchesId && !matchesName) continue;
       out.add(ClassSlotViewModel.fromClassAndEvent(gc, ev));
     }
@@ -82,7 +84,8 @@ class _TrainerDetailsApiRoute extends StatefulWidget {
   final TrainerResource summary;
 
   @override
-  State<_TrainerDetailsApiRoute> createState() => _TrainerDetailsApiRouteState();
+  State<_TrainerDetailsApiRoute> createState() =>
+      _TrainerDetailsApiRouteState();
 }
 
 class _TrainerDetailsApiRouteState extends State<_TrainerDetailsApiRoute> {
@@ -117,7 +120,8 @@ class _TrainerDetailsApiRouteState extends State<_TrainerDetailsApiRoute> {
       builder: (context, snapshot) {
         final bundle = snapshot.data;
         final data = bundle?.trainer;
-        final TrainerResource effective = data != null && data.isSuccess && data.dataOrNull != null
+        final TrainerResource effective =
+            data != null && data.isSuccess && data.dataOrNull != null
             ? data.dataOrNull!
             : widget.summary;
         final err = data?.exceptionOrNull?.message;
@@ -163,10 +167,9 @@ class _TrainerDetailsApiRouteState extends State<_TrainerDetailsApiRoute> {
                     context.l10n.browseAllClasses,
                     textAlign: TextAlign.center,
                     maxLines: 2,
-                    style: (c) => AppTextStyles.boldBody(c).copyWith(
-                      color: AppColors.whiteColor,
-                      fontSize: 16,
-                    ),
+                    style: (c) => AppTextStyles.boldBody(
+                      c,
+                    ).copyWith(color: AppColors.whiteColor, fontSize: 16),
                   ),
                 ),
               ),
@@ -189,27 +192,37 @@ class _TrainerDetailsApiRouteState extends State<_TrainerDetailsApiRoute> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        if (err != null && err.isNotEmpty && data != null && data.isFailure)
+                        if (err != null &&
+                            err.isNotEmpty &&
+                            data != null &&
+                            data.isFailure)
                           Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: AppSpacing.lg,
+                            ),
                             child: AppText(
                               err,
                               maxLines: 6,
-                              style: (c) =>
-                                  AppTextStyles.bodyText(c).copyWith(color: AppColors.error),
+                              style: (c) => AppTextStyles.bodyText(
+                                c,
+                              ).copyWith(color: AppColors.error),
                             ),
                           ),
                         _TrainerApiHeader(trainer: effective),
                         SizedBox(height: AppSpacing.md),
                         Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: AppSpacing.lg,
+                          ),
                           child: Wrap(
                             spacing: AppSpacing.sm,
                             runSpacing: AppSpacing.sm,
                             children: [
                               if (effective.yearsExperience != null)
                                 TagChip(
-                                  label: context.l10n.yearsExperience(effective.yearsExperience!),
+                                  label: context.l10n.yearsExperience(
+                                    effective.yearsExperience!,
+                                  ),
                                   fontSize: 14,
                                 ),
                               for (final s in effective.specialties)
@@ -218,10 +231,13 @@ class _TrainerDetailsApiRouteState extends State<_TrainerDetailsApiRoute> {
                           ),
                         ),
                         _TrainerStatsRow(trainer: effective, isDark: isDark),
-                        if (effective.bio != null && effective.bio!.trim().isNotEmpty) ...[
+                        if (effective.bio != null &&
+                            effective.bio!.trim().isNotEmpty) ...[
                           SizedBox(height: AppSpacing.lg),
                           Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: AppSpacing.lg,
+                            ),
                             child: AppText(
                               '${context.l10n.about} ${effective.displayName}',
                               maxLines: 4,
@@ -230,11 +246,15 @@ class _TrainerDetailsApiRouteState extends State<_TrainerDetailsApiRoute> {
                           ),
                           SizedBox(height: AppSpacing.xs),
                           Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: AppSpacing.lg,
+                            ),
                             child: AppText(
                               effective.bio!,
                               maxLines: 200,
-                              style: (c) => AppTextStyles.bodyText(c).copyWith(height: 1.55),
+                              style: (c) => AppTextStyles.bodyText(
+                                c,
+                              ).copyWith(height: 1.55),
                             ),
                           ),
                         ],
@@ -251,18 +271,24 @@ class _TrainerDetailsApiRouteState extends State<_TrainerDetailsApiRoute> {
                         if (effective.branches.isNotEmpty) ...[
                           SizedBox(height: AppSpacing.md),
                           Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: AppSpacing.lg,
+                            ),
                             child: AppText(
                               context.l10n.branch,
                               style: (c) => AppTextStyles.textFieldHeading(c),
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: AppSpacing.lg,
+                            ),
                             child: AppText(
                               effective.branches.map((b) => b.name).join(', '),
                               maxLines: 8,
-                              style: (c) => AppTextStyles.bodyText(c).copyWith(height: 1.4),
+                              style: (c) => AppTextStyles.bodyText(
+                                c,
+                              ).copyWith(height: 1.4),
                             ),
                           ),
                         ],
@@ -271,27 +297,36 @@ class _TrainerDetailsApiRouteState extends State<_TrainerDetailsApiRoute> {
                           key: ValueKey(
                             'trainer_reviews_${effective.id}_$_reviewsRefreshEpoch',
                           ),
-                          embeddedRecentReviews: useEmbeddedReviews ? embedded : null,
+                          embeddedRecentReviews: useEmbeddedReviews
+                              ? embedded
+                              : null,
                           reviewableType: useEmbeddedReviews ? null : 'trainer',
-                          reviewableId: useEmbeddedReviews ? null : effective.id,
+                          reviewableId: useEmbeddedReviews
+                              ? null
+                              : effective.id,
                           summaryAvgRating: effective.avgRating,
                           summaryReviewsCount: effective.reviewsCount,
                           summaryRatingBreakdown: effective.ratingBreakdown,
                         ),
                         SizedBox(height: AppSpacing.lg),
                         Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: AppSpacing.lg,
+                          ),
                           child: Row(
                             children: [
                               Expanded(
                                 child: AppText(
                                   context.l10n.upcomingClasses,
                                   maxLines: 2,
-                                  style: (c) => AppTextStyles.heading1(c).copyWith(
-                                    color: isDark ? AppColors.lightText : AppColors.darkText,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w400,
-                                  ),
+                                  style: (c) =>
+                                      AppTextStyles.heading1(c).copyWith(
+                                        color: isDark
+                                            ? AppColors.lightText
+                                            : AppColors.darkText,
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w400,
+                                      ),
                                 ),
                               ),
                               InkWell(
@@ -300,31 +335,41 @@ class _TrainerDetailsApiRouteState extends State<_TrainerDetailsApiRoute> {
                                   context.l10n.seeAll,
                                   maxLines: 1,
                                   style: (c) =>
-                                      AppTextStyles.captionText(c, fontWeight: FontWeight.w500)
-                                          .copyWith(
-                                    color: isDark
-                                        ? AppColors.languageTextDark
-                                        : AppColors.languageIcon,
-                                    fontSize: 14,
-                                  ),
+                                      AppTextStyles.captionText(
+                                        c,
+                                        fontWeight: FontWeight.w500,
+                                      ).copyWith(
+                                        color: isDark
+                                            ? AppColors.languageTextDark
+                                            : AppColors.languageIcon,
+                                        fontSize: 14,
+                                      ),
                                 ),
                               ),
                             ],
                           ),
                         ),
                         SizedBox(height: AppSpacing.base),
-                        if (snapshot.connectionState == ConnectionState.waiting && bundle == null)
+                        if (snapshot.connectionState ==
+                                ConnectionState.waiting &&
+                            bundle == null)
                           const Padding(
                             padding: EdgeInsets.symmetric(vertical: 24),
-                            child: Center(child: CircularProgressIndicator.adaptive()),
+                            child: Center(
+                              child: CircularProgressIndicator.adaptive(),
+                            ),
                           )
                         else if (classesRes != null &&
                             classesRes.isFailure &&
                             slots.isEmpty)
                           Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: AppSpacing.lg,
+                            ),
                             child: AppText(
-                              (classesRes.exceptionOrNull?.message ?? '').trim().isEmpty
+                              (classesRes.exceptionOrNull?.message ?? '')
+                                      .trim()
+                                      .isEmpty
                                   ? context.l10n.noClassesFound
                                   : classesRes.exceptionOrNull!.message!,
                               maxLines: 3,
@@ -333,12 +378,14 @@ class _TrainerDetailsApiRouteState extends State<_TrainerDetailsApiRoute> {
                           )
                         else if (slots.isEmpty)
                           Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: AppSpacing.lg,
+                            ),
                             child: AppText(
                               context.l10n.noUpcomingClasses,
-                              style: (c) => AppTextStyles.bodyText(c).copyWith(
-                                color: AppColors.lightGrey,
-                              ),
+                              style: (c) => AppTextStyles.bodyText(
+                                c,
+                              ).copyWith(color: AppColors.lightGrey),
                             ),
                           )
                         else
@@ -361,10 +408,7 @@ class _TrainerDetailsApiRouteState extends State<_TrainerDetailsApiRoute> {
 }
 
 class _TrainerStatsRow extends StatelessWidget {
-  const _TrainerStatsRow({
-    required this.trainer,
-    required this.isDark,
-  });
+  const _TrainerStatsRow({required this.trainer, required this.isDark});
 
   final TrainerResource trainer;
   final bool isDark;
@@ -441,7 +485,8 @@ class _TrainerTeachingStylesSection extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
           child: AppText(
             context.l10n.teachingStyle,
-            style: (c) => AppTextStyles.gelasioRegular(c).copyWith(height: 1.55),
+            style: (c) =>
+                AppTextStyles.gelasioRegular(c).copyWith(height: 1.55),
           ),
         ),
         SizedBox(height: AppSpacing.sm),
@@ -525,10 +570,7 @@ class _TrainerApiHeader extends StatelessWidget {
 }
 
 class _TrainerApiHeaderRating extends StatelessWidget {
-  const _TrainerApiHeaderRating({
-    required this.trainer,
-    required this.isDark,
-  });
+  const _TrainerApiHeaderRating({required this.trainer, required this.isDark});
 
   final TrainerResource trainer;
   final bool isDark;
@@ -545,10 +587,7 @@ class _TrainerApiHeaderRating extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            TrainerAverageStars(
-              rating: avgValue,
-              itemSize: 24,
-            ),
+            TrainerAverageStars(rating: avgValue, itemSize: 24),
             const SizedBox(height: 8),
             Wrap(
               alignment: WrapAlignment.center,
@@ -557,9 +596,7 @@ class _TrainerApiHeaderRating extends StatelessWidget {
               runSpacing: AppSpacing.xs,
               children: [
                 AppText(
-                  avgText.isNotEmpty
-                      ? avgText
-                      : avgValue.toStringAsFixed(1),
+                  avgText.isNotEmpty ? avgText : avgValue.toStringAsFixed(1),
                   maxLines: 1,
                   textAlign: TextAlign.center,
                   style: (c) => AppTextStyles.textFieldHeading(
@@ -572,11 +609,9 @@ class _TrainerApiHeaderRating extends StatelessWidget {
                     '($count ${context.l10n.reviews})',
                     maxLines: 2,
                     textAlign: TextAlign.center,
-                    style: (c) =>
-                        AppTextStyles.helpAndSupportItemSubLabel(c).copyWith(
-                      height: 1.2,
-                      fontSize: 14,
-                    ),
+                    style: (c) => AppTextStyles.helpAndSupportItemSubLabel(
+                      c,
+                    ).copyWith(height: 1.2, fontSize: 14),
                   ),
               ],
             ),
@@ -606,11 +641,9 @@ class _TrainerApiHeaderRating extends StatelessWidget {
               '($count ${context.l10n.reviews})',
               maxLines: 2,
               textAlign: TextAlign.center,
-              style: (c) =>
-                  AppTextStyles.helpAndSupportItemSubLabel(c).copyWith(
-                height: 1.2,
-                fontSize: 14,
-              ),
+              style: (c) => AppTextStyles.helpAndSupportItemSubLabel(
+                c,
+              ).copyWith(height: 1.2, fontSize: 14),
             ),
         ],
       );
@@ -628,22 +661,16 @@ class _TrainerApiHeaderRating extends StatelessWidget {
             '($count ${context.l10n.reviews})',
             maxLines: 2,
             textAlign: TextAlign.center,
-            style: (c) =>
-                AppTextStyles.helpAndSupportItemSubLabel(c).copyWith(
-              height: 1.2,
-              fontSize: 14,
-            ),
+            style: (c) => AppTextStyles.helpAndSupportItemSubLabel(
+              c,
+            ).copyWith(height: 1.2, fontSize: 14),
           ),
         ],
       );
     }
 
     return Center(
-      child: Icon(
-        Icons.star_border_rounded,
-        color: metaColor,
-        size: 20,
-      ),
+      child: Icon(Icons.star_border_rounded, color: metaColor, size: 20),
     );
   }
 }
@@ -668,7 +695,10 @@ class _ApiCertificationsCard extends StatelessWidget {
         children: [
           AppText(
             context.l10n.certificationsTraining,
-            style: (c) => AppTextStyles.gelasioRegular(c, fontWeight: FontWeight.w400).copyWith(height: 1.55),
+            style: (c) => AppTextStyles.gelasioRegular(
+              c,
+              fontWeight: FontWeight.w400,
+            ).copyWith(height: 1.55),
           ),
           SizedBox(height: AppSpacing.xs),
           for (final cert in certifications) _CertRow(cert: cert),
@@ -691,7 +721,10 @@ class _CertRow extends StatelessWidget {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        AppText('• ', style: (c) => AppTextStyles.bodyText(c).copyWith(height: 1.55)),
+        AppText(
+          '• ',
+          style: (c) => AppTextStyles.bodyText(c).copyWith(height: 1.55),
+        ),
         Expanded(
           child: AppText(
             line,
@@ -737,7 +770,8 @@ class _TrainerDetailsDemoView extends StatelessWidget {
                   'Aisha Sherin',
                   textAlign: TextAlign.center,
                   maxLines: 4,
-                  style: (c) => AppTextStyles.heading1(c).copyWith(height: 1.55),
+                  style: (c) =>
+                      AppTextStyles.heading1(c).copyWith(height: 1.55),
                 ),
               ),
               Padding(
@@ -746,7 +780,8 @@ class _TrainerDetailsDemoView extends StatelessWidget {
                   context.l10n.powerPilatesSpecialist,
                   textAlign: TextAlign.center,
                   maxLines: 3,
-                  style: (c) => AppTextStyles.bodyText(c).copyWith(height: 1.55),
+                  style: (c) =>
+                      AppTextStyles.bodyText(c).copyWith(height: 1.55),
                 ),
               ),
               SizedBox(height: 10),
@@ -774,8 +809,9 @@ class _TrainerDetailsDemoView extends StatelessWidget {
                       '(127 ${context.l10n.reviews})',
                       maxLines: 2,
                       textAlign: TextAlign.center,
-                      style: (c) =>
-                          AppTextStyles.helpAndSupportItemSubLabel(c).copyWith(height: 1.2, fontSize: 14),
+                      style: (c) => AppTextStyles.helpAndSupportItemSubLabel(
+                        c,
+                      ).copyWith(height: 1.2, fontSize: 14),
                     ),
                   ],
                 ),
@@ -786,7 +822,10 @@ class _TrainerDetailsDemoView extends StatelessWidget {
                   direction: Axis.horizontal,
                   spacing: AppSpacing.sm,
                   children: [
-                    TagChip(label: context.l10n.yearsExperience(8), fontSize: 14),
+                    TagChip(
+                      label: context.l10n.yearsExperience(8),
+                      fontSize: 14,
+                    ),
                     TagChip(label: context.l10n.matCertified, fontSize: 14),
                     TagChip(label: context.l10n.reformer, fontSize: 14),
                   ],
@@ -840,18 +879,23 @@ class _TrainerDetailsDemoView extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
                 child: AppText(
                   context.l10n.trainerAboutDescription,
-                  style: (c) => AppTextStyles.bodyText(c).copyWith(height: 1.55),
+                  style: (c) =>
+                      AppTextStyles.bodyText(c).copyWith(height: 1.55),
                   maxLines: 12,
                 ),
               ),
               SizedBox(height: AppSpacing.lg),
-              _TrainerDetailsDemoView._demoCertificateTrainingCard(isDark: isDark, context: context),
+              _TrainerDetailsDemoView._demoCertificateTrainingCard(
+                isDark: isDark,
+                context: context,
+              ),
               SizedBox(height: AppSpacing.lg),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
                 child: AppText(
                   context.l10n.teachingStyle,
-                  style: (c) => AppTextStyles.gelasioRegular(c).copyWith(height: 1.55),
+                  style: (c) =>
+                      AppTextStyles.gelasioRegular(c).copyWith(height: 1.55),
                 ),
               ),
               SizedBox(height: AppSpacing.sm),
@@ -959,7 +1003,8 @@ class _TrainerDetailsDemoView extends StatelessWidget {
               label,
               maxLines: 4,
               textAlign: TextAlign.center,
-              style: (c) => AppTextStyles.caption(c).copyWith(height: 1.30, fontSize: 12),
+              style: (c) =>
+                  AppTextStyles.caption(c).copyWith(height: 1.30, fontSize: 12),
             ),
           ),
         ],
@@ -983,23 +1028,41 @@ class _TrainerDetailsDemoView extends StatelessWidget {
         children: [
           AppText(
             context.l10n.certificationsTraining,
-            style: (c) => AppTextStyles.gelasioRegular(c, fontWeight: FontWeight.w400).copyWith(height: 1.55),
+            style: (c) => AppTextStyles.gelasioRegular(
+              c,
+              fontWeight: FontWeight.w400,
+            ).copyWith(height: 1.55),
           ),
           SizedBox(height: AppSpacing.xs),
-          _demoRow(label: context.l10n.pmaCertifiedInstructor, context: context),
+          _demoRow(
+            label: context.l10n.pmaCertifiedInstructor,
+            context: context,
+          ),
           _demoRow(label: context.l10n.matPilatesLevel3, context: context),
-          _demoRow(label: context.l10n.sportsRehabilitationTraining, context: context),
-          _demoRow(label: context.l10n.anatomyBiomechanicsCertificate, context: context),
+          _demoRow(
+            label: context.l10n.sportsRehabilitationTraining,
+            context: context,
+          ),
+          _demoRow(
+            label: context.l10n.anatomyBiomechanicsCertificate,
+            context: context,
+          ),
         ],
       ),
     );
   }
 
-  static Widget _demoRow({required String label, required BuildContext context}) {
+  static Widget _demoRow({
+    required String label,
+    required BuildContext context,
+  }) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        AppText('• ', style: (c) => AppTextStyles.bodyText(c).copyWith(height: 1.55)),
+        AppText(
+          '• ',
+          style: (c) => AppTextStyles.bodyText(c).copyWith(height: 1.55),
+        ),
         Expanded(
           child: AppText(
             label,
@@ -1010,7 +1073,10 @@ class _TrainerDetailsDemoView extends StatelessWidget {
     );
   }
 
-  static Widget _teachingStyleCard({required String label, required bool isDark}) {
+  static Widget _teachingStyleCard({
+    required String label,
+    required bool isDark,
+  }) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 10),
       decoration: BoxDecoration(
@@ -1018,10 +1084,8 @@ class _TrainerDetailsDemoView extends StatelessWidget {
         borderRadius: BorderRadius.circular(AppRadius.base),
       ),
       child: Builder(
-        builder: (context) => AppText(
-          label,
-          style: (c) => AppTextStyles.textFieldHeading(c),
-        ),
+        builder: (context) =>
+            AppText(label, style: (c) => AppTextStyles.textFieldHeading(c)),
       ),
     );
   }

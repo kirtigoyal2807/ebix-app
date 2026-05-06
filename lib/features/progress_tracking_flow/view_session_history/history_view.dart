@@ -49,8 +49,7 @@ class HistoryView extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(vertical: 16),
                           child: AppText(
                             context.l10n.noClassesYet,
-                            style: (context) =>
-                                AppTextStyles.bodyText(context),
+                            style: (context) => AppTextStyles.bodyText(context),
                           ),
                         );
                       }

@@ -50,15 +50,17 @@ class TrainerFilterChip extends StatelessWidget {
                   ),
                   child: AppText(
                     getTrainer(context, state.trainerTypeList[index]),
-                    style: (context) => AppTextStyles.bodyTextSmall(
-                      context,
-                      fontWeight:
-                          isSelected ? FontWeight.w600 : FontWeight.w500,
-                    ).copyWith(
-                      color: isSelected || isDark
-                          ? Colors.white
-                          : AppColors.darkText,
-                    ),
+                    style: (context) =>
+                        AppTextStyles.bodyTextSmall(
+                          context,
+                          fontWeight: isSelected
+                              ? FontWeight.w600
+                              : FontWeight.w500,
+                        ).copyWith(
+                          color: isSelected || isDark
+                              ? Colors.white
+                              : AppColors.darkText,
+                        ),
                   ),
                 ),
               );

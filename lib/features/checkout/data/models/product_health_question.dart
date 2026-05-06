@@ -2,10 +2,7 @@
 /// (`value`, `text`, …). [value] is stored in answers and sent to the backend;
 /// [label] is shown in the UI.
 class ProductHealthQuestionOption {
-  const ProductHealthQuestionOption({
-    required this.value,
-    required this.label,
-  });
+  const ProductHealthQuestionOption({required this.value, required this.label});
 
   final String value;
   final String label;
@@ -43,9 +40,11 @@ class ProductHealthQuestion {
 
   /// API grouping, e.g. `personal_information`, `medical` (from `section` / `group` / `category`).
   final String? section;
+
   /// Submission tokens (e.g. checkbox answer list, radio value). Prefer
   /// [resolvedOptionRows] for UI when [optionChoices] is set.
   final List<String>? options;
+
   /// When API sends `{ "text", "value" }` per option, labels differ from values.
   final List<ProductHealthQuestionOption>? optionChoices;
   final bool? isRequired;
@@ -213,10 +212,12 @@ class ProductHealthQuestion {
           final value =
               (om['value'] ?? om['id'] ?? om['text'])?.toString().trim() ?? '';
           if (value.isEmpty) continue;
-          final rawLabel =
-              (om['text'] ?? om['label'] ?? om['value'])?.toString().trim();
-          final display =
-              (rawLabel != null && rawLabel.isNotEmpty) ? rawLabel : value;
+          final rawLabel = (om['text'] ?? om['label'] ?? om['value'])
+              ?.toString()
+              .trim();
+          final display = (rawLabel != null && rawLabel.isNotEmpty)
+              ? rawLabel
+              : value;
           flatOpts.add(value);
           choiceRows.add(
             ProductHealthQuestionOption(value: value, label: display),
@@ -234,14 +235,17 @@ class ProductHealthQuestion {
       }
     }
     final text =
-        m['text'] as String? ?? m['label'] as String? ?? m['question'] as String?;
+        m['text'] as String? ??
+        m['label'] as String? ??
+        m['question'] as String?;
     return ProductHealthQuestion(
       id: m['id']?.toString(),
       key: m['key'] as String? ?? m['fieldKey'] as String?,
       label: text,
       title: m['title'] as String?,
       type: m['type'] as String? ?? m['inputType'] as String?,
-      section: m['section'] as String? ??
+      section:
+          m['section'] as String? ??
           m['group'] as String? ??
           m['category'] as String?,
       options: flatOpts,
@@ -274,8 +278,9 @@ class ProductHealthQuestion {
 List<ProductHealthQuestion> personalInformationQuestionsFromApi(
   List<ProductHealthQuestion> all,
 ) {
-  final filtered =
-      all.where((q) => q.isPersonalInformationEnvelopeField).toList();
+  final filtered = all
+      .where((q) => q.isPersonalInformationEnvelopeField)
+      .toList();
   int sortKey(ProductHealthQuestion q) => q.order ?? q.numericQuestionId ?? 0;
   filtered.sort((a, b) => sortKey(a).compareTo(sortKey(b)));
   return filtered;
@@ -285,7 +290,7 @@ List<ProductHealthQuestion> personalInformationQuestionsFromApi(
 List<ProductHealthQuestion> extraPersonalInformationQuestionsFromApi(
   List<ProductHealthQuestion> all,
 ) {
-  return personalInformationQuestionsFromApi(all)
-      .where((q) => q.personalInformationStateSlot == null)
-      .toList();
+  return personalInformationQuestionsFromApi(
+    all,
+  ).where((q) => q.personalInformationStateSlot == null).toList();
 }

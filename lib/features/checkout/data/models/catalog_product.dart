@@ -87,9 +87,10 @@ class CatalogProduct {
             if (s.isNotEmpty) out.add(s);
           } else if (e is Map) {
             final mm = Map<String, dynamic>.from(e as Map<dynamic, dynamic>);
-            final text = (mm['text'] ?? mm['label'] ?? mm['title'] ?? mm['name'])
-                ?.toString()
-                .trim();
+            final text =
+                (mm['text'] ?? mm['label'] ?? mm['title'] ?? mm['name'])
+                    ?.toString()
+                    .trim();
             if (text != null && text.isNotEmpty) out.add(text);
           }
         }

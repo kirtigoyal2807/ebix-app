@@ -36,7 +36,6 @@ class ReceiveGiftSheet extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-
                   GestureDetector(
                     child: Icon(
                       Icons.close,
@@ -66,18 +65,19 @@ class ReceiveGiftSheet extends StatelessWidget {
 
               const SizedBox(height: AppSpacing.lg),
               AppText(
-               context.l10n.giftReceivedTitle,
-                style: (context) => AppTextStyles.gelasioMedium(
-                  context,
-                ).copyWith(fontSize: 24, color: isDark ? AppColors.lightText:Color(0xff0D0D12),height: 1.2),
+                context.l10n.giftReceivedTitle,
+                style: (context) =>
+                    AppTextStyles.gelasioMedium(context).copyWith(
+                      fontSize: 24,
+                      color: isDark ? AppColors.lightText : Color(0xff0D0D12),
+                      height: 1.2,
+                    ),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: AppSpacing.xl),
               AppButton(
                 label: context.l10n.viewGift,
-                onPressed: () {
-
-                },
+                onPressed: () {},
                 variant: AppButtonVariant.primary,
               ),
             ],

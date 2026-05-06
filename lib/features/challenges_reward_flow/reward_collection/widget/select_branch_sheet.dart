@@ -44,7 +44,7 @@ class SelectBranchSheet extends StatelessWidget {
                           children: [
                             Expanded(
                               child: AppText(
-                               context.l10n.select_branch,
+                                context.l10n.select_branch,
                                 style: AppTextStyles.bottomSheetTitle,
                               ),
                             ),
@@ -158,7 +158,7 @@ class _BranchOption extends StatelessWidget {
                       context,
                     ).copyWith(fontSize: 14, height: 1.2),
                   ),
-                  SizedBox(height: AppSpacing.xs,),
+                  SizedBox(height: AppSpacing.xs),
                   AppText(
                     subTitle,
                     style: (context) => AppTextStyles.bodyText(

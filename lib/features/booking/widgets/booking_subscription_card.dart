@@ -18,9 +18,12 @@ class BookingSubscriptionCard extends StatelessWidget {
     final size = MediaQuery.sizeOf(context);
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final homeMembershipPlanName =
-        context.select((HomeCubit cubit) => cubit.state.data?.membership?.planName) ??
-            '';
-    final authPlanName = context.select(
+        context.select(
+          (HomeCubit cubit) => cubit.state.data?.membership?.planName,
+        ) ??
+        '';
+    final authPlanName =
+        context.select(
           (AuthCubit cubit) => cubit.state.user?.membershipPlanName,
         ) ??
         '';
@@ -29,8 +32,8 @@ class BookingSubscriptionCard extends StatelessWidget {
     final resolvedPlanName = homeMembershipPlanName.trim().isNotEmpty
         ? homeMembershipPlanName.trim()
         : authPlanName.trim().isNotEmpty
-            ? authPlanName.trim()
-            : storedPlanName.trim();
+        ? authPlanName.trim()
+        : storedPlanName.trim();
     if (resolvedPlanName.isEmpty) {
       return const SizedBox.shrink();
     }
@@ -46,10 +49,7 @@ class BookingSubscriptionCard extends StatelessWidget {
         gradient: const LinearGradient(
           begin: Alignment.bottomRight,
           end: Alignment.topLeft,
-          colors: [
-            Color(0xFF3D281A),
-            Color(0xFF9A7E6D),
-          ],
+          colors: [Color(0xFF3D281A), Color(0xFF9A7E6D)],
         ),
         borderRadius: BorderRadius.circular(AppRadius.md),
         color: AppColors.splashBackgroundDark,
@@ -65,11 +65,12 @@ class BookingSubscriptionCard extends StatelessWidget {
           Expanded(
             child: AppText(
               planLabel,
-              style: (context) => AppTextStyles.helpAndSupportItemLabel(context).copyWith(
-                fontSize: size.width * 0.035 > 14 ? 14 : size.width * 0.035,
-                color: isDark ?AppColors.lightText:AppColors.lightText,
-                fontWeight: FontWeight.w500
-              ),
+              style: (context) =>
+                  AppTextStyles.helpAndSupportItemLabel(context).copyWith(
+                    fontSize: size.width * 0.035 > 14 ? 14 : size.width * 0.035,
+                    color: isDark ? AppColors.lightText : AppColors.lightText,
+                    fontWeight: FontWeight.w500,
+                  ),
             ),
           ),
         ],

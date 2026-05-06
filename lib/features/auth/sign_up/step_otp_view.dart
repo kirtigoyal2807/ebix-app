@@ -61,18 +61,19 @@ class _SignUpOtpViewState extends State<SignUpOtpView> {
           final text = state.phoneOtpSendErrorMessage.trim().isEmpty
               ? context.l10n.loginErrorGeneric
               : state.phoneOtpSendErrorMessage;
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(text)),
-          );
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(text)));
         } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(context.l10n.registerOtpSent)),
-          );
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(context.l10n.registerOtpSent)));
         }
       },
       child: BlocConsumer<AuthCubit, AuthState>(
         listenWhen: (previous, current) {
-          return previous.signUpPhoneOtpUiStatus == SignUpPhoneOtpUiStatus.loading &&
+          return previous.signUpPhoneOtpUiStatus ==
+                  SignUpPhoneOtpUiStatus.loading &&
               current.signUpPhoneOtpUiStatus == SignUpPhoneOtpUiStatus.idle &&
               current.signUpPhoneOtpErrorMessage.isNotEmpty &&
               current.signUpPhoneOtpFieldErrors.isEmpty;
@@ -81,152 +82,164 @@ class _SignUpOtpViewState extends State<SignUpOtpView> {
           final text = state.signUpPhoneOtpErrorMessage.trim().isEmpty
               ? context.l10n.loginErrorGeneric
               : state.signUpPhoneOtpErrorMessage;
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(text)),
-          );
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(text)));
         },
         builder: (context, state) {
-        final loading = state.signUpPhoneOtpUiStatus == SignUpPhoneOtpUiStatus.loading;
-        final blockInteraction =
-            state.phoneOtpSendUiStatus == PhoneOtpSendUiStatus.loading;
-        final phone = state.signUpPendingPhone.trim();
-        final subtitle = phone.isEmpty
-            ? context.l10n.enterCode
-            : '${context.l10n.enterCode} $phone';
-        final fe = state.signUpPhoneOtpFieldErrors;
-        final codeErr = fe['code'];
-        final phoneErr = fe['phone'];
+          final loading =
+              state.signUpPhoneOtpUiStatus == SignUpPhoneOtpUiStatus.loading;
+          final blockInteraction =
+              state.phoneOtpSendUiStatus == PhoneOtpSendUiStatus.loading;
+          final phone = state.signUpPendingPhone.trim();
+          final subtitle = phone.isEmpty
+              ? context.l10n.enterCode
+              : '${context.l10n.enterCode} $phone';
+          final fe = state.signUpPhoneOtpFieldErrors;
+          final codeErr = fe['code'];
+          final phoneErr = fe['phone'];
 
-        return AppScaffold(
-          appBar: AppAppBar(
-            onBack: () => context.read<AuthCubit>().previousSignUpStep(),
-            title: context.l10n.verification,
-            isMoreMenu: false,
-          ),
-          body: Stack(
-            children: [
-              Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: AppSpacing.lg,
-              vertical: AppSpacing.md,
+          return AppScaffold(
+            appBar: AppAppBar(
+              onBack: () => context.read<AuthCubit>().previousSignUpStep(),
+              title: context.l10n.verification,
+              isMoreMenu: false,
             ),
-            child: Column(
+            body: Stack(
               children: [
-                Expanded(
-                  child: SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const SignUpProgress(currentStep: 1, totalSteps: 5),
-                        const SizedBox(height: AppSpacing.sm),
-                        RichText(
-                          text: TextSpan(
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: AppSpacing.lg,
+                    vertical: AppSpacing.md,
+                  ),
+                  child: Column(
+                    children: [
+                      Expanded(
+                        child: SingleChildScrollView(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              TextSpan(
-                                text: '${context.l10n.step} 2',
-                                style: AppTextStyles.caption(context).copyWith(
-                                  color: isDark
-                                      ? AppColors.languageTextDark
-                                      : AppColors.languageIcon,
+                              const SignUpProgress(
+                                currentStep: 1,
+                                totalSteps: 5,
+                              ),
+                              const SizedBox(height: AppSpacing.sm),
+                              RichText(
+                                text: TextSpan(
+                                  children: [
+                                    TextSpan(
+                                      text: '${context.l10n.step} 2',
+                                      style: AppTextStyles.caption(context)
+                                          .copyWith(
+                                            color: isDark
+                                                ? AppColors.languageTextDark
+                                                : AppColors.languageIcon,
+                                          ),
+                                    ),
+                                    TextSpan(
+                                      text: ' ${context.l10n.offf} 5',
+                                      style: AppTextStyles.caption(context),
+                                    ),
+                                  ],
                                 ),
                               ),
-                              TextSpan(
-                                text: ' ${context.l10n.offf} 5',
-                                style: AppTextStyles.caption(context),
+                              const SizedBox(height: AppSpacing.xxl),
+
+                              SignUpHeader(
+                                title: context.l10n.verifyPhone,
+                                subtitle: subtitle,
+                                step: 1,
+                                totalSteps: 4,
                               ),
+
+                              const SizedBox(height: AppSpacing.lg),
+
+                              OtpField(
+                                length: 6,
+                                onChanged: (otp) => setState(() => _otp = otp),
+                                onCompleted: (otp) {
+                                  setState(() => _otp = otp);
+                                  context
+                                      .read<AuthCubit>()
+                                      .verifySignUpPhoneOtp(code: otp);
+                                },
+                              ),
+
+                              if (codeErr != null || phoneErr != null) ...[
+                                const SizedBox(height: AppSpacing.sm),
+                                AppText(
+                                  codeErr ?? phoneErr ?? '',
+                                  style: (c) =>
+                                      AppTextStyles.caption(c).copyWith(
+                                        color: isDark
+                                            ? AppColors.redDark
+                                            : AppColors.redLight,
+                                      ),
+                                ),
+                              ],
+
+                              const SizedBox(height: AppSpacing.lg),
+
+                              Center(
+                                child: GestureDetector(
+                                  onTap: blockInteraction || loading
+                                      ? null
+                                      : () => _resend(context),
+                                  child: RichText(
+                                    text: TextSpan(
+                                      children: [
+                                        TextSpan(
+                                          text:
+                                              "${context.l10n.didntReceiveCode} ",
+                                          style: AppTextStyles.caption(context)
+                                              .copyWith(
+                                                color: isDark
+                                                    ? AppColors.darkGreyText
+                                                    : AppColors.greyText,
+                                                fontWeight: FontWeight.w400,
+                                                height: 1.4,
+                                              ),
+                                        ),
+                                        TextSpan(
+                                          text: context.l10n.resendCode,
+                                          style: AppTextStyles.boldBody(
+                                            context,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: AppSpacing.lg),
                             ],
                           ),
                         ),
-                        const SizedBox(height: AppSpacing.xxl),
+                      ),
 
-                        SignUpHeader(
-                          title: context.l10n.verifyPhone,
-                          subtitle: subtitle,
-                          step: 1,
-                          totalSteps: 4,
-                        ),
-
-                        const SizedBox(height: AppSpacing.lg),
-
-                        OtpField(
-                          length: 6,
-                          onChanged: (otp) => setState(() => _otp = otp),
-                          onCompleted: (otp) {
-                            setState(() => _otp = otp);
-                            context.read<AuthCubit>().verifySignUpPhoneOtp(code: otp);
-                          },
-                        ),
-
-                        if (codeErr != null || phoneErr != null) ...[
-                          const SizedBox(height: AppSpacing.sm),
-                          AppText(
-                            codeErr ?? phoneErr ?? '',
-                            style: (c) => AppTextStyles.caption(c).copyWith(
-                                  color: isDark ? AppColors.redDark : AppColors.redLight,
-                                ),
-                          ),
-                        ],
-
-                        const SizedBox(height: AppSpacing.lg),
-
-                        Center(
-                          child: GestureDetector(
-                            onTap: blockInteraction || loading
-                                ? null
-                                : () => _resend(context),
-                            child: RichText(
-                              text: TextSpan(
-                                children: [
-                                  TextSpan(
-                                    text: "${context.l10n.didntReceiveCode} ",
-                                    style: AppTextStyles.caption(context).copyWith(
-                                      color: isDark
-                                          ? AppColors.darkGreyText
-                                          : AppColors.greyText,
-                                      fontWeight: FontWeight.w400,
-                                      height: 1.4,
-                                    ),
-                                  ),
-                                  TextSpan(
-                                    text: context.l10n.resendCode,
-                                    style: AppTextStyles.boldBody(context),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: AppSpacing.lg),
-                      ],
-                    ),
+                      AppButton(
+                        key: const ValueKey('sign_up_phone_otp_verify'),
+                        label: context.l10n.verify,
+                        isLoading: loading,
+                        onPressed: (loading || blockInteraction)
+                            ? null
+                            : () => _submit(context),
+                      ),
+                    ],
                   ),
                 ),
-
-                AppButton(
-                  key: const ValueKey('sign_up_phone_otp_verify'),
-                  label: context.l10n.verify,
-                  isLoading: loading,
-                  onPressed: (loading || blockInteraction)
-                      ? null
-                      : () => _submit(context),
-                ),
+                if (blockInteraction)
+                  const Positioned.fill(
+                    child: ColoredBox(
+                      color: Color(0x33000000),
+                      child: Center(child: CircularProgressIndicator()),
+                    ),
+                  ),
               ],
             ),
-          ),
-              if (blockInteraction)
-                const Positioned.fill(
-                  child: ColoredBox(
-                    color: Color(0x33000000),
-                    child: Center(
-                      child: CircularProgressIndicator(),
-                    ),
-                  ),
-                ),
-            ],
-          ),
-        );
-      },
-    ),
+          );
+        },
+      ),
     );
   }
 }

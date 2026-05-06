@@ -4,78 +4,83 @@ import 'package:pilates_app/features/account/cubit/push_notification_state.dart'
 import 'package:pilates_app/features/account/data/notification_preferences_repository.dart';
 
 class PushNotificationCubit extends Cubit<PushNotificationState> {
-  PushNotificationCubit({
-    required NotificationPreferencesRepository repository,
-  })  : _repository = repository,
-        super(const PushNotificationState());
+  PushNotificationCubit({required NotificationPreferencesRepository repository})
+    : _repository = repository,
+      super(const PushNotificationState());
 
   final NotificationPreferencesRepository _repository;
 
   Future<void> loadPreferences() async {
-    emit(state.copyWith(
-      status: PushNotificationStatus.loading,
-      errorMessage: null,
-    ));
+    emit(
+      state.copyWith(
+        status: PushNotificationStatus.loading,
+        errorMessage: null,
+      ),
+    );
 
     final result = await _repository.getPreferences();
 
     switch (result) {
       case ApiSuccess(:final data):
-        emit(state.copyWith(
-          status: PushNotificationStatus.loaded,
-          preferences: data,
-          allNotification: data.push,
-          beforeClassStart:
-              data.channels['class_reminder']?.push ?? false,
-          dayBeforeRemainder:
-              data.channels['class_reminder']?.push ?? false,
-          paymentConfirmation:
-              data.channels['booking_confirmed']?.push ?? false,
-          renewalRemainder:
-              data.channels['booking_confirmed']?.push ?? false,
-          promotionOffer: data.channels['promotions']?.push ?? false,
-          appUpdate: data.push,
-          newChallenges: data.channels['points_earned']?.push ?? false,
-        ));
+        emit(
+          state.copyWith(
+            status: PushNotificationStatus.loaded,
+            preferences: data,
+            allNotification: data.push,
+            beforeClassStart: data.channels['class_reminder']?.push ?? false,
+            dayBeforeRemainder: data.channels['class_reminder']?.push ?? false,
+            paymentConfirmation:
+                data.channels['booking_confirmed']?.push ?? false,
+            renewalRemainder: data.channels['booking_confirmed']?.push ?? false,
+            promotionOffer: data.channels['promotions']?.push ?? false,
+            appUpdate: data.push,
+            newChallenges: data.channels['points_earned']?.push ?? false,
+          ),
+        );
       case ApiFailure(:final exception):
-        emit(state.copyWith(
-          status: PushNotificationStatus.error,
-          errorMessage: exception.message,
-        ));
+        emit(
+          state.copyWith(
+            status: PushNotificationStatus.error,
+            errorMessage: exception.message,
+          ),
+        );
     }
   }
 
   Future<void> _updatePreference(Map<String, dynamic> data) async {
-    emit(state.copyWith(
-      status: PushNotificationStatus.updating,
-      errorMessage: null,
-    ));
+    emit(
+      state.copyWith(
+        status: PushNotificationStatus.updating,
+        errorMessage: null,
+      ),
+    );
 
     final result = await _repository.updatePreferences(data);
 
     switch (result) {
       case ApiSuccess(:final data):
-        emit(state.copyWith(
-          status: PushNotificationStatus.loaded,
-          preferences: data,
-          allNotification: data.push,
-          beforeClassStart:
-              data.channels['class_reminder']?.push ?? false,
-          dayBeforeRemainder:
-              data.channels['class_reminder']?.push ?? false,
-          paymentConfirmation:
-              data.channels['booking_confirmed']?.push ?? false,
-          renewalRemainder:
-              data.channels['booking_confirmed']?.push ?? false,
-          promotionOffer: data.channels['promotions']?.push ?? false,
-          appUpdate: data.push,
-          newChallenges: data.channels['points_earned']?.push ?? false,
-        ));
+        emit(
+          state.copyWith(
+            status: PushNotificationStatus.loaded,
+            preferences: data,
+            allNotification: data.push,
+            beforeClassStart: data.channels['class_reminder']?.push ?? false,
+            dayBeforeRemainder: data.channels['class_reminder']?.push ?? false,
+            paymentConfirmation:
+                data.channels['booking_confirmed']?.push ?? false,
+            renewalRemainder: data.channels['booking_confirmed']?.push ?? false,
+            promotionOffer: data.channels['promotions']?.push ?? false,
+            appUpdate: data.push,
+            newChallenges: data.channels['points_earned']?.push ?? false,
+          ),
+        );
       case ApiFailure(:final exception):
-        emit(state.copyWith(
-          status: PushNotificationStatus.error,
-          errorMessage: exception.message,
-        ));
+        emit(
+          state.copyWith(
+            status: PushNotificationStatus.error,
+            errorMessage: exception.message,
+          ),
+        );
     }
   }
 

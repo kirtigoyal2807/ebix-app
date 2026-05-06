@@ -4,10 +4,7 @@ import 'trainer_resource.dart';
 
 /// One page from `GET /trainers` (§12.1).
 class TrainersPageResult {
-  const TrainersPageResult({
-    required this.items,
-    this.pagination,
-  });
+  const TrainersPageResult({required this.items, this.pagination});
 
   final List<TrainerResource> items;
   final PaginationMeta? pagination;

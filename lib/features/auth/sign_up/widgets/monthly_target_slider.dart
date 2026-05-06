@@ -37,9 +37,7 @@ class _MonthlyTargetSliderState extends State<MonthlyTargetSlider> {
   }
 
   int _nearestStep(double raw) {
-    return steps.reduce(
-      (a, b) => (raw - a).abs() <= (raw - b).abs() ? a : b,
-    );
+    return steps.reduce((a, b) => (raw - a).abs() <= (raw - b).abs() ? a : b);
   }
 
   @override

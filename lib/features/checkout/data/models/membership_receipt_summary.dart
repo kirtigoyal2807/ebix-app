@@ -48,10 +48,10 @@ class MembershipReceiptSummary {
   /// Reference or invoice # for the receipt header line.
   String? get displayInvoiceCode =>
       (invoiceNumber != null && invoiceNumber!.trim().isNotEmpty)
-          ? invoiceNumber!.trim()
-          : (paymentReference != null && paymentReference!.trim().isNotEmpty)
-              ? paymentReference!.trim()
-              : null;
+      ? invoiceNumber!.trim()
+      : (paymentReference != null && paymentReference!.trim().isNotEmpty)
+      ? paymentReference!.trim()
+      : null;
 
   /// Card / wallet line for the receipt footer.
   String paymentMethodLine(String fallbackLabel) {
@@ -82,7 +82,9 @@ class MembershipReceiptSummary {
     return null;
   }
 
-  static CheckoutPaymentSummary? _paymentFromIntent(CheckoutPaymentIntentResult? intent) {
+  static CheckoutPaymentSummary? _paymentFromIntent(
+    CheckoutPaymentIntentResult? intent,
+  ) {
     final raw = intent?.raw;
     if (raw == null) return null;
     final p = raw['payment'];
@@ -94,7 +96,9 @@ class MembershipReceiptSummary {
     return null;
   }
 
-  static CheckoutPricing? _pricingFromIntent(CheckoutPaymentIntentResult? intent) {
+  static CheckoutPricing? _pricingFromIntent(
+    CheckoutPaymentIntentResult? intent,
+  ) {
     final raw = intent?.raw;
     if (raw == null) return null;
     final p = raw['pricing'];
@@ -159,12 +163,15 @@ class MembershipReceiptSummary {
       paymentReference: pay?.reference?.trim(),
       paidAtIso: (paidAt != null && paidAt.isNotEmpty)
           ? paidAt
-          : (invoiceDate != null && invoiceDate.isNotEmpty ? invoiceDate : null),
+          : (invoiceDate != null && invoiceDate.isNotEmpty
+                ? invoiceDate
+                : null),
       planName: summary.package?.name?.trim(),
       subtotalMinor: majorToMinor(pricing?.subtotal),
       discountMinor: discountMajor != null ? majorToMinor(discountMajor) : null,
       totalMinor: majorToMinor(pricing?.totalPaid ?? pricing?.subtotal),
-      currency: (pricing?.currency != null && pricing!.currency!.trim().isNotEmpty)
+      currency:
+          (pricing?.currency != null && pricing!.currency!.trim().isNotEmpty)
           ? pricing.currency!.trim()
           : 'SAR',
       providerName: providerName,
@@ -192,8 +199,9 @@ class MembershipReceiptSummary {
         gw = Map<String, dynamic>.from(nested as Map<dynamic, dynamic>);
       }
     }
-    final gatewayPay =
-        (gw == null || gw.isEmpty) ? null : CheckoutPaymentSummary.maybeFrom(gw);
+    final gatewayPay = (gw == null || gw.isEmpty)
+        ? null
+        : CheckoutPaymentSummary.maybeFrom(gw);
     final basePay = session?.payment ?? intentPayment;
     final pay = _mergePaymentSummaries(basePay, gatewayPay);
 

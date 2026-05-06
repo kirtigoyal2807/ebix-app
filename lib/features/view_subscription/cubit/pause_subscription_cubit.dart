@@ -11,13 +11,13 @@ class PauseSubscriptionCubit extends Cubit<PauseSubscriptionState> {
     required DateTime planStartDateLocal,
     DateTime? planExpiresAtLocal,
     required int maxFreezeDays,
-  })  : _repo = repository,
-        _planStart = _dateOnly(planStartDateLocal),
-        _planExpires = planExpiresAtLocal != null
-            ? _dateOnly(planExpiresAtLocal)
-            : null,
-        _maxFreezeDays = maxFreezeDays < 1 ? 1 : maxFreezeDays,
-        super(const PauseSubscriptionState());
+  }) : _repo = repository,
+       _planStart = _dateOnly(planStartDateLocal),
+       _planExpires = planExpiresAtLocal != null
+           ? _dateOnly(planExpiresAtLocal)
+           : null,
+       _maxFreezeDays = maxFreezeDays < 1 ? 1 : maxFreezeDays,
+       super(const PauseSubscriptionState());
 
   final String subscriptionId;
   final SubscriptionsRepository _repo;
@@ -88,13 +88,7 @@ class PauseSubscriptionCubit extends Cubit<PauseSubscriptionState> {
         ),
       );
     } else if (end != null) {
-      emit(
-        state.copyWith(
-          startDate: d,
-          endDate: end,
-          clearSubmitError: true,
-        ),
-      );
+      emit(state.copyWith(startDate: d, endDate: end, clearSubmitError: true));
     } else {
       emit(state.copyWith(startDate: d, clearSubmitError: true));
     }
@@ -121,7 +115,9 @@ class PauseSubscriptionCubit extends Cubit<PauseSubscriptionState> {
     }
     final days = inclusivePauseDays(start, end);
     if (days > _maxFreezeDays) {
-      emit(state.copyWith(submitError: l10n.pausePeriodTooLong(_maxFreezeDays)));
+      emit(
+        state.copyWith(submitError: l10n.pausePeriodTooLong(_maxFreezeDays)),
+      );
       return false;
     }
     if (days < 1) {
@@ -153,12 +149,7 @@ class PauseSubscriptionCubit extends Cubit<PauseSubscriptionState> {
         return true;
       },
       failure: (NetworkException e) {
-        emit(
-          state.copyWith(
-            isSubmitting: false,
-            submitError: e.message,
-          ),
-        );
+        emit(state.copyWith(isSubmitting: false, submitError: e.message));
         return false;
       },
     );

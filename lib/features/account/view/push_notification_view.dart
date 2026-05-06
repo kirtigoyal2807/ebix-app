@@ -102,8 +102,9 @@ class PushNotificationView extends StatelessWidget {
                         SizedBox(height: AppSpacing.md),
                         Divider(
                           height: 1,
-                          color:
-                              isDark ? AppColors.greyText : AppColors.divider,
+                          color: isDark
+                              ? AppColors.greyText
+                              : AppColors.divider,
                         ),
                         SizedBox(height: AppSpacing.md),
                         SwitchWidget(
@@ -132,8 +133,9 @@ class PushNotificationView extends StatelessWidget {
                         SizedBox(height: AppSpacing.md),
                         Divider(
                           height: 1,
-                          color:
-                              isDark ? AppColors.greyText : AppColors.divider,
+                          color: isDark
+                              ? AppColors.greyText
+                              : AppColors.divider,
                         ),
                         SizedBox(height: AppSpacing.md),
                         SwitchWidget(
@@ -162,8 +164,9 @@ class PushNotificationView extends StatelessWidget {
                         SizedBox(height: AppSpacing.md),
                         Divider(
                           height: 1,
-                          color:
-                              isDark ? AppColors.greyText : AppColors.divider,
+                          color: isDark
+                              ? AppColors.greyText
+                              : AppColors.divider,
                         ),
                         SizedBox(height: AppSpacing.md),
                         SwitchWidget(
@@ -194,13 +197,13 @@ class PushNotificationView extends StatelessWidget {
                     ),
                   ),
                 ),
-              if (state.status == PushNotificationStatus.updating)
-                Positioned.fill(
-                  child: Container(
-                    color: Colors.black.withValues(alpha: 0.3),
-                    child: const Center(child: CircularProgressIndicator()),
+                if (state.status == PushNotificationStatus.updating)
+                  Positioned.fill(
+                    child: Container(
+                      color: Colors.black.withValues(alpha: 0.3),
+                      child: const Center(child: CircularProgressIndicator()),
+                    ),
                   ),
-                ),
               ],
             );
           },

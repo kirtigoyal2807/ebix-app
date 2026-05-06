@@ -11,10 +11,7 @@ import 'package:pilates_app/widgets/phone_number_field.dart';
 /// When [questions] is null, uses [personalInformationQuestionsFromApi]; otherwise
 /// renders exactly that list (e.g. [extraPersonalInformationQuestionsFromApi]).
 class ApiPersonalInformationFieldsBlock extends StatelessWidget {
-  const ApiPersonalInformationFieldsBlock({
-    super.key,
-    this.questions,
-  });
+  const ApiPersonalInformationFieldsBlock({super.key, this.questions});
 
   final List<ProductHealthQuestion>? questions;
 
@@ -32,7 +29,8 @@ class ApiPersonalInformationFieldsBlock extends StatelessWidget {
           p.personalInformationDynamicFields !=
               c.personalInformationDynamicFields,
       builder: (context, state) {
-        final qs = questions ??
+        final qs =
+            questions ??
             personalInformationQuestionsFromApi(
               state.healthQuestionnaireQuestions,
             );

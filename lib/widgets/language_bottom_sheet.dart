@@ -66,7 +66,10 @@ class _LanguageBottomSheetState extends State<LanguageBottomSheet> {
                             Align(
                               alignment: Alignment.centerRight,
                               child: IconButton(
-                                icon: const Icon(Icons.close,color: AppColors.arrowIcon,),
+                                icon: const Icon(
+                                  Icons.close,
+                                  color: AppColors.arrowIcon,
+                                ),
                                 onPressed: () => Navigator.of(context).pop(),
                               ),
                             ),
@@ -176,30 +179,35 @@ class _LanguageOption extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(AppRadius.md),
           border: Border.all(
-            color: selected ? (isDark ? AppColors.languageIconDark:AppColors.languageIcon) : Colors.transparent,
+            color: selected
+                ? (isDark ? AppColors.languageIconDark : AppColors.languageIcon)
+                : Colors.transparent,
             width: 1.5,
           ),
-          color: selected ? (isDark ? AppColors.primaryDarkButton:AppColors.selectedLanguageBg) : Colors.transparent,
+          color: selected
+              ? (isDark
+                    ? AppColors.primaryDarkButton
+                    : AppColors.selectedLanguageBg)
+              : Colors.transparent,
         ),
         child: Row(
           children: [
             Text(flag, style: const TextStyle(fontSize: 24)),
             const SizedBox(width: AppSpacing.md),
             Expanded(
-              child: AppText(
-                title,
-                style: AppTextStyles.experienceButton,
-              ),
+              child: AppText(title, style: AppTextStyles.experienceButton),
             ),
             if (selected)
               Container(
                 width: 20,
                 height: 20,
                 decoration: BoxDecoration(
-                  color: (isDark ? AppColors.languageIconDark:AppColors.languageIcon),
+                  color: (isDark
+                      ? AppColors.languageIconDark
+                      : AppColors.languageIcon),
                   borderRadius: BorderRadius.circular(6),
                 ),
-                child:  Center(
+                child: Center(
                   child: SvgPicture.asset(
                     "assets/images/svg/ic_checkbox_white.svg",
                     width: 10,

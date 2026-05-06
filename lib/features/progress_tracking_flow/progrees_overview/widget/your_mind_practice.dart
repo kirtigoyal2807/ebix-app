@@ -45,10 +45,12 @@ class YourMindPractice extends StatelessWidget {
         final mindfulTitle = overview == null
             ? '—'
             : _formatMindfulHours(context, overview.mtdAttendedMinutes);
-        final morningTitle =
-            overview == null ? '—' : '${overview.mtdMorningSessions}';
-        final flowTitle =
-            overview == null ? '—' : '${overview.flowInstructors}';
+        final morningTitle = overview == null
+            ? '—'
+            : '${overview.mtdMorningSessions}';
+        final flowTitle = overview == null
+            ? '—'
+            : '${overview.flowInstructors}';
         final peaceTitle = overview == null
             ? '—'
             : _formatInnerPeacePercent(overview.innerPeacePercent);

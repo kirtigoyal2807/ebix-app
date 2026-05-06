@@ -58,9 +58,7 @@ class HomeView extends StatelessWidget {
         ),
       )..loadHome(),
       child: _HomeBookingFlowTabListener(
-        child: const _HomeTabIntentListener(
-          child: _HomeShell(),
-        ),
+        child: const _HomeTabIntentListener(child: _HomeShell()),
       ),
     );
   }
@@ -120,10 +118,7 @@ class _HomeShell extends StatelessWidget {
               const AccountView(),
             ],
           ),
-          bottomNavigationBar: _buildBottomNavBar(
-            context,
-            state.currentIndex,
-          ),
+          bottomNavigationBar: _buildBottomNavBar(context, state.currentIndex),
         );
       },
     );
@@ -246,7 +241,8 @@ class _HomeBookingFlowTabListener extends StatefulWidget {
       _HomeBookingFlowTabListenerState();
 }
 
-class _HomeBookingFlowTabListenerState extends State<_HomeBookingFlowTabListener> {
+class _HomeBookingFlowTabListenerState
+    extends State<_HomeBookingFlowTabListener> {
   @override
   void initState() {
     super.initState();
@@ -335,7 +331,8 @@ class HomeContentView extends StatelessWidget {
         // object — even if the user hasn't attended any classes yet this month.
         // Only fall back to the empty/onboarding card when there is no
         // progress object at all (i.e. the user has never had a membership).
-        final progressStatus = (progress != null && progress.monthlyTargetClasses > 0)
+        final progressStatus =
+            (progress != null && progress.monthlyTargetClasses > 0)
             ? HomeUserStatus.existing
             : HomeUserStatus.empty;
 
@@ -399,10 +396,13 @@ class HomeContentView extends StatelessWidget {
                             MembershipCard(
                               status: HomeUserStatus.existing,
                               planName:
-                                  membership?.planName ?? user?.membershipPlanName,
-                              totalSessions: membership?.totalSessions ??
+                                  membership?.planName ??
+                                  user?.membershipPlanName,
+                              totalSessions:
+                                  membership?.totalSessions ??
                                   user?.membershipTotalSessions,
-                              sessionsRemaining: membership?.sessionsRemaining ??
+                              sessionsRemaining:
+                                  membership?.sessionsRemaining ??
                                   user?.membershipSessionsRemaining,
                             ),
                           ],

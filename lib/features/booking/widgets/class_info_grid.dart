@@ -24,8 +24,8 @@ class ClassInfoGrid extends StatelessWidget {
     final availability = !hasSlot
         ? context.l10n.noUpcomingClasses
         : slot.slotsLeft != null
-            ? context.l10n.spotsLeft(slot.slotsLeft!)
-            : "0";
+        ? context.l10n.spotsLeft(slot.slotsLeft!)
+        : "0";
     final durationLabel = slot.durationMinutes != null
         ? context.l10n.minutesCount(slot.durationMinutes!)
         : '--';
@@ -66,10 +66,7 @@ class ClassInfoGrid extends StatelessWidget {
         Row(
           children: [
             Expanded(
-              child: _InfoCard(
-                label: context.l10n.dateTime,
-                value: dateLabel,
-              ),
+              child: _InfoCard(label: context.l10n.dateTime, value: dateLabel),
             ),
             const SizedBox(width: AppSpacing.md),
             Expanded(
@@ -126,10 +123,9 @@ class _InfoCard extends StatelessWidget {
         children: [
           AppText(
             label,
-            style: (ctx) => AppTextStyles.captionText(ctx).copyWith(
-              color: AppColors.lightGrey,
-              fontSize: 12,
-            ),
+            style: (ctx) => AppTextStyles.captionText(
+              ctx,
+            ).copyWith(color: AppColors.lightGrey, fontSize: 12),
           ),
           const SizedBox(height: AppSpacing.xs),
           Row(

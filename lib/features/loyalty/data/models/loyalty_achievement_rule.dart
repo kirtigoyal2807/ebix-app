@@ -22,7 +22,9 @@ class LoyaltyAchievementRule {
       name: '${json['name'] ?? ''}',
       ruleKey: '${json['ruleKey'] ?? json['rule_key'] ?? ''}',
       ruleType: '${json['ruleType'] ?? json['rule_type'] ?? ''}',
-      thresholdValue: _doubleOrNull(json['thresholdValue'] ?? json['threshold_value']),
+      thresholdValue: _doubleOrNull(
+        json['thresholdValue'] ?? json['threshold_value'],
+      ),
       rewardPoints: _int(json['rewardPoints'] ?? json['reward_points']),
     );
   }

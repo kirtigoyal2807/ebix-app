@@ -2,10 +2,7 @@ import 'package:pilates_app/core/localization/arb/app_localizations.dart';
 
 import 'data/models/referral_program_details.dart';
 
-String referralRewardDisplay(
-  AppLocalizations l10n,
-  ReferralReward reward,
-) {
+String referralRewardDisplay(AppLocalizations l10n, ReferralReward reward) {
   final type = reward.type.trim();
   final value = reward.value;
   switch (type) {

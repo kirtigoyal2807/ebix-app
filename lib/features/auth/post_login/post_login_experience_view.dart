@@ -110,8 +110,8 @@ class _PostLoginExperienceViewState extends State<PostLoginExperienceView> {
               label: context.l10n.continueTxt,
               onPressed: () {
                 context.read<AuthCubit>().continuePostLoginExperience(
-                      _api[_selectedIndex],
-                    );
+                  _api[_selectedIndex],
+                );
               },
             ),
           ],

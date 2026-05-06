@@ -26,10 +26,9 @@ class ChallengesDetailView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => ChallengeDetailCubit(
-        context.read<LoyaltyRepository>(),
-        challengeId,
-      )..load(),
+      create: (context) =>
+          ChallengeDetailCubit(context.read<LoyaltyRepository>(), challengeId)
+            ..load(),
       child: const _ChallengesDetailScaffold(),
     );
   }
@@ -86,7 +85,10 @@ class _ChallengesDetailScaffold extends StatelessWidget {
           final icon = challengeTypeIconAsset(cc.challengeType, isDark: isDark);
           final frac = challengeProgressFraction(cc);
           final pct = challengePercentComplete(cc);
-          final remaining = (cc.targetValue - cc.progressValue).clamp(0, cc.targetValue);
+          final remaining = (cc.targetValue - cc.progressValue).clamp(
+            0,
+            cc.targetValue,
+          );
 
           return SingleChildScrollView(
             child: Padding(
@@ -124,7 +126,8 @@ class _ChallengesDetailScaffold extends StatelessWidget {
                     children: [
                       AppText(
                         context.l10n.leaderboard,
-                        style: (context) => AppTextStyles.gelasioRegular(context),
+                        style: (context) =>
+                            AppTextStyles.gelasioRegular(context),
                       ),
                     ],
                   ),
@@ -248,8 +251,10 @@ class _ProgressCard extends StatelessWidget {
                 context.l10n.percent_complete(percent),
                 style: (context) =>
                     AppTextStyles.bodyLightText(context).copyWith(
-                  color: isDark ? AppColors.darkGreyText : AppColors.lightGrey,
-                ),
+                      color: isDark
+                          ? AppColors.darkGreyText
+                          : AppColors.lightGrey,
+                    ),
               ),
               AppText(
                 context.l10n.more_classes_to_go(remaining),

@@ -126,8 +126,8 @@ class _SignUpExperienceViewState extends State<SignUpExperienceView> {
               label: context.l10n.continueTxt,
               onPressed: () {
                 context.read<AuthCubit>().continueSignUpExperience(
-                      _api[_selectedIndex],
-                    );
+                  _api[_selectedIndex],
+                );
               },
             ),
           ],

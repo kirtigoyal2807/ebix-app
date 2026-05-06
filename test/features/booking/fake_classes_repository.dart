@@ -6,15 +6,13 @@ import 'package:pilates_app/features/booking/data/models/gym_class_resource.dart
 
 /// Test double for booking class list / detail APIs.
 class FakeClassesRepository extends ClassesRepository {
-  FakeClassesRepository() : super(Dio(BaseOptions(baseUrl: 'https://test.local/')));
+  FakeClassesRepository()
+    : super(Dio(BaseOptions(baseUrl: 'https://test.local/')));
 
   ApiResult<GymClassResource> getClassDetailResult =
       ApiFailure<GymClassResource>(
-    NetworkException(
-      type: NetworkFailureType.unknown,
-      message: 'unset',
-    ),
-  );
+        NetworkException(type: NetworkFailureType.unknown, message: 'unset'),
+      );
 
   int getClassDetailCalls = 0;
   String? lastClassDetailId;

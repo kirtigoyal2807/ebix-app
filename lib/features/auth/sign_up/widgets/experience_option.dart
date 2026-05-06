@@ -128,9 +128,7 @@ class ExperienceOption extends StatelessWidget {
                 width: 20,
                 height: 20,
                 decoration: BoxDecoration(
-                  color: (isDark
-                      ? AppColors.primary
-                      : AppColors.languageIcon),
+                  color: (isDark ? AppColors.primary : AppColors.languageIcon),
                   borderRadius: BorderRadius.circular(6),
                 ),
                 child: Center(

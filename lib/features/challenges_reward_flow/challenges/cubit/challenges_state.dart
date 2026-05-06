@@ -15,10 +15,10 @@ class ChallengesState extends Equatable {
   final String errorMessage;
 
   factory ChallengesState.initial() => const ChallengesState(
-        status: ChallengesLoadStatus.initial,
-        challenges: [],
-        errorMessage: '',
-      );
+    status: ChallengesLoadStatus.initial,
+    challenges: [],
+    errorMessage: '',
+  );
 
   List<LoyaltyChallenge> get activeChallenges =>
       challenges.where((c) => c.isJoined && !c.isCompleted).toList();

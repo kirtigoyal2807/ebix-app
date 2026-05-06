@@ -170,7 +170,9 @@ abstract class BaseRepository {
           return ApiFailure(
             NetworkException.fromApiEnvelope(
               statusCode: code,
-              message: envelope.message.isEmpty ? 'Request failed' : envelope.message,
+              message: envelope.message.isEmpty
+                  ? 'Request failed'
+                  : envelope.message,
               fieldErrors: envelope.fieldErrors,
               responseData: raw,
             ),

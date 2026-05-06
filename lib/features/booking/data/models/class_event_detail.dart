@@ -39,7 +39,8 @@ class ClassEventDetailClass {
 
   factory ClassEventDetailClass.fromJson(Map<String, dynamic> json) {
     List<ReviewResource>? recentReviews;
-    if (json.containsKey('recentReviews') || json.containsKey('recent_reviews')) {
+    if (json.containsKey('recentReviews') ||
+        json.containsKey('recent_reviews')) {
       final raw = json['recentReviews'] ?? json['recent_reviews'];
       recentReviews = parseRecentReviewsList(raw);
     }
@@ -61,14 +62,11 @@ class ClassEventDetailClass {
       allowPackageBooking:
           json['allowPackageBooking'] == true ||
           json['allow_package_booking'] == true,
-      isActive:
-          json['isActive'] == true || json['is_active'] == true,
+      isActive: json['isActive'] == true || json['is_active'] == true,
       image: json['image']?.toString(),
       avgRating: _doubleOrNull(json['avgRating'] ?? json['avg_rating']),
       recentReviews: recentReviews,
-      reviewsCount: _intOrNull(
-        json['reviewsCount'] ?? json['reviews_count'],
-      ),
+      reviewsCount: _intOrNull(json['reviewsCount'] ?? json['reviews_count']),
     );
   }
 
@@ -119,6 +117,7 @@ class ClassEventDetail {
   final String? branchName;
   final String? branchLocation;
   final String? branchAddress;
+
   /// Gender restriction for this event: 'Male', 'Female', or null (all genders).
   final String? gender;
   final ClassEventDetailClass? gymClass;
@@ -137,8 +136,7 @@ class ClassEventDetail {
     }
 
     return ClassEventDetail(
-      eventId:
-          '${json['eventId'] ?? json['event_id'] ?? json['id'] ?? ''}',
+      eventId: '${json['eventId'] ?? json['event_id'] ?? json['id'] ?? ''}',
       startAt:
           DateTime.tryParse('${json['startAt'] ?? json['start_at'] ?? ''}') ??
           DateTime.now(),
@@ -147,20 +145,17 @@ class ClassEventDetail {
           DateTime.now(),
       status: '${json['status'] ?? 'scheduled'}',
       capacity: _intOrNull(json['capacity']),
-      slotsLeft:
-          _intOrNull(json['slotsLeft'] ?? json['slots_left']),
-      waitlistCount:
-          _intOrNull(json['waitlistCount'] ?? json['waitlist_count']),
+      slotsLeft: _intOrNull(json['slotsLeft'] ?? json['slots_left']),
+      waitlistCount: _intOrNull(
+        json['waitlistCount'] ?? json['waitlist_count'],
+      ),
       trainerId:
           json['trainerId']?.toString() ?? json['trainer_id']?.toString(),
       trainerName:
-          json['trainerName']?.toString() ??
-          json['trainer_name']?.toString(),
-      branchId:
-          json['branchId']?.toString() ?? json['branch_id']?.toString(),
+          json['trainerName']?.toString() ?? json['trainer_name']?.toString(),
+      branchId: json['branchId']?.toString() ?? json['branch_id']?.toString(),
       branchName:
-          json['branchName']?.toString() ??
-          json['branch_name']?.toString(),
+          json['branchName']?.toString() ?? json['branch_name']?.toString(),
       branchLocation:
           json['branchLocation']?.toString() ??
           json['branch_location']?.toString(),

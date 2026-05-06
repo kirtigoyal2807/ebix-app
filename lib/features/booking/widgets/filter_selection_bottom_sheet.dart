@@ -64,7 +64,9 @@ class FilterSelectionBottomSheet extends StatelessWidget {
             Flexible(
               child: ListView.builder(
                 shrinkWrap: true,
-                padding: const EdgeInsets.symmetric(horizontal: AppSpacing.base),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: AppSpacing.base,
+                ),
                 itemCount: options.length,
                 itemBuilder: (context, index) {
                   final option = options[index];

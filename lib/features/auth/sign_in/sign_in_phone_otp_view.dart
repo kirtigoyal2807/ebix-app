@@ -50,13 +50,13 @@ class _SignInPhoneOtpViewState extends State<SignInPhoneOtpView> {
           final text = state.phoneOtpSendErrorMessage.trim().isEmpty
               ? context.l10n.loginErrorGeneric
               : state.phoneOtpSendErrorMessage;
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(text)),
-          );
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(text)));
         } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(context.l10n.loginOtpSent)),
-          );
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(context.l10n.loginOtpSent)));
         }
       },
       child: BlocConsumer<AuthCubit, AuthState>(
@@ -70,124 +70,132 @@ class _SignInPhoneOtpViewState extends State<SignInPhoneOtpView> {
           final text = state.loginErrorMessage.trim().isEmpty
               ? context.l10n.loginErrorGeneric
               : state.loginErrorMessage;
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(text)),
-          );
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(text)));
         },
         builder: (context, state) {
-        final loading = state.loginUiStatus == LoginUiStatus.loading;
-        final blockInteraction =
-            state.phoneOtpSendUiStatus == PhoneOtpSendUiStatus.loading;
-        final codeErr = state.loginFieldErrors['code'];
-        final phone = state.signInPendingPhone;
+          final loading = state.loginUiStatus == LoginUiStatus.loading;
+          final blockInteraction =
+              state.phoneOtpSendUiStatus == PhoneOtpSendUiStatus.loading;
+          final codeErr = state.loginFieldErrors['code'];
+          final phone = state.signInPendingPhone;
 
-        return AppScaffold(
-          appBar: AppAppBar(
-            onBack: () => context.read<AuthCubit>().backFromSignIn(),
-            title: context.l10n.verifyPhone,
-            isMoreMenu: false,
-          ),
-          body: Stack(
-            children: [
-              Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: AppSpacing.lg,
-              vertical: AppSpacing.md,
+          return AppScaffold(
+            appBar: AppAppBar(
+              onBack: () => context.read<AuthCubit>().backFromSignIn(),
+              title: context.l10n.verifyPhone,
+              isMoreMenu: false,
             ),
-            child: Column(
+            body: Stack(
               children: [
-                Expanded(
-                  child: SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const SizedBox(height: AppSpacing.lg),
-                        SignUpHeader(
-                          title: context.l10n.verifyPhone,
-                          subtitle: '${context.l10n.enterCode} $phone',
-                          step: 0,
-                          totalSteps: 0,
-                        ),
-                        const SizedBox(height: AppSpacing.xxl),
-                        Center(
-                          child: OtpField(
-                            key: const ValueKey('sign_in_phone_otp_field'),
-                            length: 6,
-                            onChanged: (otp) => setState(() => _code = otp),
-                            onCompleted: (otp) {
-                              setState(() => _code = otp);
-                            },
-                          ),
-                        ),
-                        if (codeErr != null) ...[
-                          const SizedBox(height: AppSpacing.sm),
-                          Center(
-                            child: Text(
-                              codeErr,
-                              style: AppTextStyles.caption(context).copyWith(
-                                color: isDark ? AppColors.redDark : AppColors.redLight,
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: AppSpacing.lg,
+                    vertical: AppSpacing.md,
+                  ),
+                  child: Column(
+                    children: [
+                      Expanded(
+                        child: SingleChildScrollView(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const SizedBox(height: AppSpacing.lg),
+                              SignUpHeader(
+                                title: context.l10n.verifyPhone,
+                                subtitle: '${context.l10n.enterCode} $phone',
+                                step: 0,
+                                totalSteps: 0,
                               ),
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                        ],
-                        const SizedBox(height: AppSpacing.lg),
-                        Center(
-                          child: GestureDetector(
-                            onTap: blockInteraction || loading
-                                ? null
-                                : () => _resend(context),
-                            child: RichText(
-                              text: TextSpan(
-                                children: [
-                                  TextSpan(
-                                    text: '${context.l10n.didntReceiveCode} ',
-                                    style: AppTextStyles.caption(context).copyWith(
-                                      color: isDark
-                                          ? AppColors.darkGreyText
-                                          : AppColors.greyText,
-                                      fontWeight: FontWeight.w400,
-                                      height: 1.4,
+                              const SizedBox(height: AppSpacing.xxl),
+                              Center(
+                                child: OtpField(
+                                  key: const ValueKey(
+                                    'sign_in_phone_otp_field',
+                                  ),
+                                  length: 6,
+                                  onChanged: (otp) =>
+                                      setState(() => _code = otp),
+                                  onCompleted: (otp) {
+                                    setState(() => _code = otp);
+                                  },
+                                ),
+                              ),
+                              if (codeErr != null) ...[
+                                const SizedBox(height: AppSpacing.sm),
+                                Center(
+                                  child: Text(
+                                    codeErr,
+                                    style: AppTextStyles.caption(context)
+                                        .copyWith(
+                                          color: isDark
+                                              ? AppColors.redDark
+                                              : AppColors.redLight,
+                                        ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                              ],
+                              const SizedBox(height: AppSpacing.lg),
+                              Center(
+                                child: GestureDetector(
+                                  onTap: blockInteraction || loading
+                                      ? null
+                                      : () => _resend(context),
+                                  child: RichText(
+                                    text: TextSpan(
+                                      children: [
+                                        TextSpan(
+                                          text:
+                                              '${context.l10n.didntReceiveCode} ',
+                                          style: AppTextStyles.caption(context)
+                                              .copyWith(
+                                                color: isDark
+                                                    ? AppColors.darkGreyText
+                                                    : AppColors.greyText,
+                                                fontWeight: FontWeight.w400,
+                                                height: 1.4,
+                                              ),
+                                        ),
+                                        TextSpan(
+                                          text: context.l10n.resendCode,
+                                          style: AppTextStyles.boldBody(
+                                            context,
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
-                                  TextSpan(
-                                    text: context.l10n.resendCode,
-                                    style: AppTextStyles.boldBody(context),
-                                  ),
-                                ],
+                                ),
                               ),
-                            ),
+                            ],
                           ),
                         ),
-                      ],
-                    ),
+                      ),
+                      AppButton(
+                        key: const ValueKey('sign_in_phone_otp_verify'),
+                        label: context.l10n.verify,
+                        isLoading: loading,
+                        onPressed: (loading || blockInteraction)
+                            ? null
+                            : () => _verify(context),
+                      ),
+                    ],
                   ),
                 ),
-                AppButton(
-                  key: const ValueKey('sign_in_phone_otp_verify'),
-                  label: context.l10n.verify,
-                  isLoading: loading,
-                  onPressed: (loading || blockInteraction)
-                      ? null
-                      : () => _verify(context),
-                ),
+                if (blockInteraction)
+                  const Positioned.fill(
+                    child: ColoredBox(
+                      color: Color(0x33000000),
+                      child: Center(child: CircularProgressIndicator()),
+                    ),
+                  ),
               ],
             ),
-          ),
-              if (blockInteraction)
-                const Positioned.fill(
-                  child: ColoredBox(
-                    color: Color(0x33000000),
-                    child: Center(
-                      child: CircularProgressIndicator(),
-                    ),
-                  ),
-                ),
-            ],
-          ),
-        );
-      },
-    ),
+          );
+        },
+      ),
     );
   }
 }

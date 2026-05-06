@@ -72,10 +72,7 @@ class _PhoneNumberFieldState extends State<PhoneNumberField> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         /// LABEL
-        AppText(
-          widget.label,
-          style: AppTextStyles.textFieldHeading,
-        ),
+        AppText(widget.label, style: AppTextStyles.textFieldHeading),
 
         const SizedBox(height: AppSpacing.sm),
 
@@ -86,7 +83,9 @@ class _PhoneNumberFieldState extends State<PhoneNumberField> {
             border: Border.all(
               color: hasError
                   ? (isDark ? AppColors.redDark : AppColors.redLight)
-                  : (_isFocused ? theme.colorScheme.primary : theme.dividerColor),
+                  : (_isFocused
+                        ? theme.colorScheme.primary
+                        : theme.dividerColor),
               width: _isFocused ? 1.5 : 1,
             ),
           ),
@@ -120,11 +119,7 @@ class _PhoneNumberFieldState extends State<PhoneNumberField> {
               ),
 
               /// DIVIDER
-              Container(
-                width: 1,
-                height: 24,
-                color: theme.dividerColor,
-              ),
+              Container(width: 1, height: 24, color: theme.dividerColor),
 
               /// PHONE INPUT
               Expanded(
@@ -135,14 +130,18 @@ class _PhoneNumberFieldState extends State<PhoneNumberField> {
                   inputFormatters: widget.maxPhoneDigits != null
                       ? <TextInputFormatter>[
                           FilteringTextInputFormatter.digitsOnly,
-                          LengthLimitingTextInputFormatter(widget.maxPhoneDigits),
+                          LengthLimitingTextInputFormatter(
+                            widget.maxPhoneDigits,
+                          ),
                         ]
                       : null,
                   onChanged: widget.onChanged,
                   style: AppTextStyles.textField(context),
                   decoration: InputDecoration(
                     hintText: 'XXXXXXXXXX',
-                    hintStyle: AppTextStyles.textField(context).copyWith(color: AppColors.lightGrey),
+                    hintStyle: AppTextStyles.textField(
+                      context,
+                    ).copyWith(color: AppColors.lightGrey),
                     border: InputBorder.none,
                     contentPadding: const EdgeInsets.symmetric(
                       horizontal: 14,

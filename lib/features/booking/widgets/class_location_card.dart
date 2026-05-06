@@ -16,9 +16,7 @@ class ClassLocationCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    final branchName = slot.branchName.isNotEmpty
-        ? slot.branchName
-        : "";
+    final branchName = slot.branchName.isNotEmpty ? slot.branchName : "";
     final branchAddress = slot.branchAddress ?? "";
 
     return Container(

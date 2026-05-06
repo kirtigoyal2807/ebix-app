@@ -92,11 +92,12 @@ class PlanCard extends StatelessWidget {
                           vertical: 4,
                         ),
                         decoration: BoxDecoration(
-                          color: (
+                          color:
+                              (
                               // isDark
                               // ? const Color(0x3BFDC700)
                               // :
-                          AppColors.goldStarColor), // Gold for popular
+                              AppColors.goldStarColor), // Gold for popular
                           borderRadius: BorderRadius.circular(20),
                           // border: isPopular ? null : Border.all(color: AppColors.lightGreyBorder),
                         ),
@@ -125,7 +126,9 @@ class PlanCard extends StatelessWidget {
                     ),
                     SvgPicture.asset(
                       "assets/images/svg/ic_Saudi_Riyal_Symbol.svg",
-                      color: isDark ? AppColors.languageTextDark : AppColors.languageIcon,
+                      color: isDark
+                          ? AppColors.languageTextDark
+                          : AppColors.languageIcon,
                     ),
                     if (priceSuffix.isNotEmpty)
                       AppText(

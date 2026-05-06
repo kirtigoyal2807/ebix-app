@@ -118,14 +118,13 @@ class PilatesGiftCard extends StatelessWidget {
                           hasName
                               ? l10n.giftCardRecipientGreeting(name)
                               : l10n.recipientNameHint,
-                          style: (context) => AppTextStyles.bodyText(
-                            context,
-                          ).copyWith(
-                            height: 1.5,
-                            color: hasName
-                                ? AppColors.seekBarLight
-                                : AppColors.lightGreyText,
-                          ),
+                          style: (context) =>
+                              AppTextStyles.bodyText(context).copyWith(
+                                height: 1.5,
+                                color: hasName
+                                    ? AppColors.seekBarLight
+                                    : AppColors.lightGreyText,
+                              ),
                           maxLines: 2,
                         ),
                         if (hasMessage) ...[
@@ -143,12 +142,11 @@ class PilatesGiftCard extends StatelessWidget {
                           SizedBox(height: AppSpacing.sm),
                           AppText(
                             l10n.giftCardMessagePlaceholder,
-                            style: (context) => AppTextStyles.bodyText(
-                              context,
-                            ).copyWith(
-                              height: 1.5,
-                              color: AppColors.lightGreyText,
-                            ),
+                            style: (context) =>
+                                AppTextStyles.bodyText(context).copyWith(
+                                  height: 1.5,
+                                  color: AppColors.lightGreyText,
+                                ),
                             maxLines: 3,
                           ),
                         ],

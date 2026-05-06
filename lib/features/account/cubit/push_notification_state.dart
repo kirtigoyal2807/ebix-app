@@ -66,16 +66,16 @@ class PushNotificationState extends Equatable {
 
   @override
   List<Object?> get props => [
-        status,
-        preferences,
-        errorMessage,
-        allNotification,
-        beforeClassStart,
-        dayBeforeRemainder,
-        paymentConfirmation,
-        renewalRemainder,
-        promotionOffer,
-        appUpdate,
-        newChallenges,
-      ];
+    status,
+    preferences,
+    errorMessage,
+    allNotification,
+    beforeClassStart,
+    dayBeforeRemainder,
+    paymentConfirmation,
+    renewalRemainder,
+    promotionOffer,
+    appUpdate,
+    newChallenges,
+  ];
 }

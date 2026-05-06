@@ -7,11 +7,7 @@ import 'package:pilates_app/features/progress_tracking_flow/view_session_history
 
 class SessionHistoryCubit extends Cubit<SessionHistoryState> {
   SessionHistoryCubit(this._repository)
-      : super(
-          SessionHistoryState(
-            sessionHistoryList: SessionHistory.values,
-          ),
-        ) {
+    : super(SessionHistoryState(sessionHistoryList: SessionHistory.values)) {
     loadSessions();
   }
 
@@ -19,12 +15,7 @@ class SessionHistoryCubit extends Cubit<SessionHistoryState> {
 
   Future<void> loadSessions({bool resetPage = true}) async {
     final page = resetPage ? 1 : state.currentPage;
-    emit(
-      state.copyWith(
-        isLoading: true,
-        errorMessage: null,
-      ),
-    );
+    emit(state.copyWith(isLoading: true, errorMessage: null));
     final result = await _repository.getSessionHistory(
       filter: state.selectedSessionHistory.apiFilterValue,
       page: page,
@@ -44,12 +35,7 @@ class SessionHistoryCubit extends Cubit<SessionHistoryState> {
           ),
         );
       case ApiFailure(:final exception):
-        emit(
-          state.copyWith(
-            isLoading: false,
-            errorMessage: exception.message,
-          ),
-        );
+        emit(state.copyWith(isLoading: false, errorMessage: exception.message));
     }
   }
 

@@ -212,9 +212,7 @@ class _GiftSubscriptionViewState extends State<GiftSubscriptionView> {
     if (status == GiftSubmitStatus.failure) {
       final msg = cubit.state.submitErrorMessage?.trim();
       messenger.showSnackBar(
-        SnackBar(
-          content: Text(_giftFailureDisplayMessage(msg, l10n)),
-        ),
+        SnackBar(content: Text(_giftFailureDisplayMessage(msg, l10n))),
       );
     }
   }
@@ -296,11 +294,10 @@ class _GiftSubscriptionViewState extends State<GiftSubscriptionView> {
                   return AppButton(
                     label: l10n.continueToPayment,
                     isLoading: loading,
-                    onPressed: loading
-                        ? null
-                        : () => _onContinue(context),
-                    buttonColor:
-                        isDark ? AppColors.primary : AppColors.primaryBrown,
+                    onPressed: loading ? null : () => _onContinue(context),
+                    buttonColor: isDark
+                        ? AppColors.primary
+                        : AppColors.primaryBrown,
                     expanded: true,
                   );
                 },

@@ -24,7 +24,7 @@ class LoyaltyPointsHistoryEntry {
   final String? processedAt;
   final String? createdAt;
 
-bool get isEarned => entryType.toLowerCase() == 'earned';
+  bool get isEarned => entryType.toLowerCase() == 'earned';
 
   factory LoyaltyPointsHistoryEntry.fromJson(Map<String, dynamic> json) {
     return LoyaltyPointsHistoryEntry(

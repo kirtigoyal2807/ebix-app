@@ -120,7 +120,7 @@ class _PersonalViewBodyState extends State<_PersonalViewBody> {
 
   String _formatDate(DateTime? value) {
     if (value == null) return '';
-    return DateFormat('yyyy-MM-dd').format(value);
+    return DateFormat('dd/MM/yyyy').format(value);
   }
 
   Future<void> _pickDateOfBirth(BuildContext context) async {
@@ -128,7 +128,9 @@ class _PersonalViewBodyState extends State<_PersonalViewBody> {
     final state = personalInfoCubit.state;
     final now = DateTime.now();
     final initialDate =
-        state.dateOfBirth ?? widget.initialUser?.dateOfBirth ?? DateTime(now.year - 18, now.month, now.day);
+        state.dateOfBirth ??
+        widget.initialUser?.dateOfBirth ??
+        DateTime(now.year - 18, now.month, now.day);
     final picked = await showDatePicker(
       context: context,
       initialDate: initialDate.isAfter(now) ? now : initialDate,
@@ -205,10 +207,10 @@ class _PersonalViewBodyState extends State<_PersonalViewBody> {
   void _submit(BuildContext context) {
     final phone = _phoneController.text.trim();
     context.read<PersonalInfoCubit>().saveProfile(
-          firstName: _firstNameController.text.trim(),
-          lastName: _lastNameController.text.trim(),
-          phone: phone.isNotEmpty ? '+966$phone' : '',
-        );
+      firstName: _firstNameController.text.trim(),
+      lastName: _lastNameController.text.trim(),
+      phone: phone.isNotEmpty ? '+966$phone' : '',
+    );
   }
 
   @override
@@ -242,152 +244,152 @@ class _PersonalViewBodyState extends State<_PersonalViewBody> {
             isMoreMenu: false,
           ),
           body: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: AppSpacing.lg,
-            vertical: AppSpacing.sm,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              BlocBuilder<PersonalInfoCubit, PersonalInfoState>(
-                buildWhen: (p, c) =>
-                    p.selectedAvatarPath != c.selectedAvatarPath ||
-                    p.removeAvatar != c.removeAvatar,
-                builder: (context, picState) {
-                  return GestureDetector(
-                    onTap: () => _showProfilePictureOptions(context),
-                    child: Column(
-                      children: [
-                        Align(
-                          alignment: Alignment.center,
-                          child: _buildProfileImage(picState),
+            child: Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: AppSpacing.lg,
+                vertical: AppSpacing.sm,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  BlocBuilder<PersonalInfoCubit, PersonalInfoState>(
+                    buildWhen: (p, c) =>
+                        p.selectedAvatarPath != c.selectedAvatarPath ||
+                        p.removeAvatar != c.removeAvatar,
+                    builder: (context, picState) {
+                      return GestureDetector(
+                        onTap: () => _showProfilePictureOptions(context),
+                        child: Column(
+                          children: [
+                            Align(
+                              alignment: Alignment.center,
+                              child: _buildProfileImage(picState),
+                            ),
+                            SizedBox(height: AppSpacing.sm),
+                            Center(
+                              child: AppText(
+                                l10n.changeProfilePicture,
+                                style: (context) =>
+                                    AppTextStyles.body(context).copyWith(
+                                      fontWeight: FontWeight.w400,
+                                      height: 1.55,
+                                    ),
+                              ),
+                            ),
+                          ],
                         ),
-                        SizedBox(height: AppSpacing.sm),
-                        Center(
-                          child: AppText(
-                            l10n.changeProfilePicture,
-                            style: (context) => AppTextStyles.body(
-                              context,
-                            ).copyWith(fontWeight: FontWeight.w400, height: 1.55),
+                      );
+                    },
+                  ),
+                  SizedBox(height: AppSpacing.lg),
+                  AppTextField(
+                    hint: context.l10n.firstName,
+                    label: context.l10n.firstName,
+                    controller: _firstNameController,
+                  ),
+                  SizedBox(height: AppSpacing.md),
+                  AppTextField(
+                    hint: context.l10n.lastName,
+                    label: context.l10n.lastName,
+                    controller: _lastNameController,
+                  ),
+                  SizedBox(height: AppSpacing.md),
+                  AppTextField(
+                    hint: context.l10n.recipientEmailHint,
+                    label: l10n.emailAddress,
+                    keyboardType: TextInputType.emailAddress,
+                    controller: _emailController,
+                  ),
+                  SizedBox(height: AppSpacing.md),
+                  PhoneNumberField(
+                    label: context.l10n.phoneNumber,
+                    countryCode: '+1',
+                    flagAsset: 'assets/flags/us.svg',
+                    controller: _phoneController,
+                  ),
+                  SizedBox(height: AppSpacing.md),
+                  BlocBuilder<PersonalInfoCubit, PersonalInfoState>(
+                    buildWhen: (p, c) => p.gender != c.gender,
+                    builder: (context, state) {
+                      return AppDropDown<String>(
+                        label: context.l10n.gender,
+                        hint: context.l10n.selectGender,
+                        value: state.gender,
+                        items: [
+                          DropdownMenuItem(
+                            value: 'male',
+                            child: Text(
+                              context.l10n.male,
+                              style: AppTextStyles.textField(context),
+                            ),
                           ),
+                          DropdownMenuItem(
+                            value: 'female',
+                            child: Text(
+                              context.l10n.female,
+                              style: AppTextStyles.textField(context),
+                            ),
+                          ),
+                          DropdownMenuItem(
+                            value: 'other',
+                            child: Text(
+                              context.l10n.other,
+                              style: AppTextStyles.textField(context),
+                            ),
+                          ),
+                        ],
+                        onChanged: (val) {
+                          if (val != null) {
+                            context.read<PersonalInfoCubit>().updateGender(val);
+                          }
+                        },
+                      );
+                    },
+                  ),
+                  SizedBox(height: AppSpacing.md),
+                  BlocBuilder<PersonalInfoCubit, PersonalInfoState>(
+                    buildWhen: (p, c) => p.dateOfBirth != c.dateOfBirth,
+                    builder: (context, state) {
+                      _dobController.text = _formatDate(state.dateOfBirth);
+                      return GestureDetector(
+                        onTap: () => _pickDateOfBirth(context),
+                        child: AbsorbPointer(
+                          child: AppTextField(
+                            hint: 'Select date of birth',
+                            label: 'Date of Birth',
+                            controller: _dobController,
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                  SizedBox(height: AppSpacing.lg),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: isDark ? AppColors.homeBackground : Colors.white,
+                      borderRadius: BorderRadius.circular(AppRadius.xl),
+                      boxShadow: [
+                        BoxShadow(
+                          color: AppColors.shadowColor.withValues(alpha: 0.06),
+                          offset: const Offset(0, 1),
+                          blurRadius: 2,
+                          spreadRadius: 0,
                         ),
                       ],
                     ),
-                  );
-                },
-              ),
-              SizedBox(height: AppSpacing.lg),
-              AppTextField(
-                hint: context.l10n.firstName,
-                label: context.l10n.firstName,
-                controller: _firstNameController,
-              ),
-              SizedBox(height: AppSpacing.md),
-              AppTextField(
-                hint: context.l10n.lastName,
-                label: context.l10n.lastName,
-                controller: _lastNameController,
-              ),
-              SizedBox(height: AppSpacing.md),
-              AppTextField(
-                hint: context.l10n.recipientEmailHint,
-                label: l10n.emailAddress,
-                keyboardType: TextInputType.emailAddress,
-                controller: _emailController,
-              ),
-              SizedBox(height: AppSpacing.md),
-              PhoneNumberField(
-                label: context.l10n.phoneNumber,
-                countryCode: '+1',
-                flagAsset: 'assets/flags/us.svg',
-                controller: _phoneController,
-              ),
-              SizedBox(height: AppSpacing.md),
-              BlocBuilder<PersonalInfoCubit, PersonalInfoState>(
-                buildWhen: (p, c) => p.gender != c.gender,
-                builder: (context, state) {
-                  return AppDropDown<String>(
-                    label: context.l10n.gender,
-                    hint: context.l10n.selectGender,
-                    value: state.gender,
-                    items: [
-                      DropdownMenuItem(
-                        value: 'male',
-                        child: Text(
-                          context.l10n.male,
-                          style: AppTextStyles.textField(context),
-                        ),
-                      ),
-                      DropdownMenuItem(
-                        value: 'female',
-                        child: Text(
-                          context.l10n.female,
-                          style: AppTextStyles.textField(context),
-                        ),
-                      ),
-                      DropdownMenuItem(
-                        value: 'other',
-                        child: Text(
-                          context.l10n.other,
-                          style: AppTextStyles.textField(context),
-                        ),
-                      ),
-                    ],
-                    onChanged: (val) {
-                      if (val != null) {
-                        context.read<PersonalInfoCubit>().updateGender(val);
-                      }
-                    },
-                  );
-                },
-              ),
-              SizedBox(height: AppSpacing.md),
-              BlocBuilder<PersonalInfoCubit, PersonalInfoState>(
-                buildWhen: (p, c) => p.dateOfBirth != c.dateOfBirth,
-                builder: (context, state) {
-                  _dobController.text = _formatDate(state.dateOfBirth);
-                  return GestureDetector(
-                    onTap: () => _pickDateOfBirth(context),
-                    child: AbsorbPointer(
-                      child: AppTextField(
-                        hint: 'Select date of birth',
-                        label: 'Date of Birth',
-                        controller: _dobController,
-                      ),
+                    child: AppButton(
+                      label: l10n.editDetails,
+                      isLoading: isLoading,
+                      onPressed: isLoading ? null : () => _submit(context),
+                      variant: AppButtonVariant.secondary,
                     ),
-                  );
-                },
+                  ),
+                  SizedBox(height: AppSpacing.xl),
+                ],
               ),
-              SizedBox(height: AppSpacing.lg),
-              Container(
-                decoration: BoxDecoration(
-                  color: isDark ? AppColors.homeBackground : Colors.white,
-                  borderRadius: BorderRadius.circular(AppRadius.xl),
-                  boxShadow: [
-                    BoxShadow(
-                      color: AppColors.shadowColor.withValues(alpha: 0.06),
-                      offset: const Offset(0, 1),
-                      blurRadius: 2,
-                      spreadRadius: 0,
-                    ),
-                  ],
-                ),
-                child: AppButton(
-                  label: l10n.editDetails,
-                  isLoading: isLoading,
-                  onPressed: isLoading ? null : () => _submit(context),
-                  variant: AppButtonVariant.secondary,
-                ),
-              ),
-              SizedBox(
-                height: AppSpacing.xl,
-              )
-            ],
+            ),
           ),
-        ),
-      ),
-    );
+        );
       },
     );
   }

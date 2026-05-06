@@ -12,20 +12,12 @@ class ProgressGoalCubit extends Cubit<ProgressGoalState> {
 
   Future<void> load() async {
     emit(
-      state.copyWith(
-        status: ProgressGoalStatus.loading,
-        errorMessage: null,
-      ),
+      state.copyWith(status: ProgressGoalStatus.loading, errorMessage: null),
     );
     final result = await _repository.getGoal();
     switch (result) {
       case ApiSuccess(:final data):
-        emit(
-          ProgressGoalState(
-            status: ProgressGoalStatus.success,
-            goal: data,
-          ),
-        );
+        emit(ProgressGoalState(status: ProgressGoalStatus.success, goal: data));
       case ApiFailure(:final exception):
         emit(
           ProgressGoalState(
@@ -43,12 +35,7 @@ class ProgressGoalCubit extends Cubit<ProgressGoalState> {
     String? experience,
     String? goal,
   }) async {
-    emit(
-      state.copyWith(
-        isSubmitting: true,
-        errorMessage: null,
-      ),
-    );
+    emit(state.copyWith(isSubmitting: true, errorMessage: null));
     final result = await _repository.updateGoal(
       monthlyGoal: monthlyGoal,
       experience: experience,
@@ -80,10 +67,7 @@ class ProgressGoalCubit extends Cubit<ProgressGoalState> {
         }
       case ApiFailure(:final exception):
         emit(
-          state.copyWith(
-            isSubmitting: false,
-            errorMessage: exception.message,
-          ),
+          state.copyWith(isSubmitting: false, errorMessage: exception.message),
         );
         return false;
     }

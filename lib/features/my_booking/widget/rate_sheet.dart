@@ -40,9 +40,9 @@ class RateSheet extends StatelessWidget {
                   context,
                 ).copyWith(fontSize: 16, height: 1.55),
               ),
-        
+
               const SizedBox(height: AppSpacing.xs),
-        
+
               AppText(
                 context.l10n.rateYourClassDesc("Gentle Stretch & Release"),
                 textAlign: TextAlign.start,
@@ -50,11 +50,13 @@ class RateSheet extends StatelessWidget {
                     AppTextStyles.bodyText(context).copyWith(height: 1.55),
                 maxLines: 3,
               ),
-        
+
               const SizedBox(height: AppSpacing.xs),
               RatingBar.builder(
                 initialRating: 3,
-                unratedColor: isDark ? AppColors.lightGrey : AppColors.darkGreyText,
+                unratedColor: isDark
+                    ? AppColors.lightGrey
+                    : AppColors.darkGreyText,
                 minRating: 0,
                 allowHalfRating: true,
                 itemCount: 5,
@@ -64,7 +66,7 @@ class RateSheet extends StatelessWidget {
                 onRatingUpdate: (rating) {},
               ),
               const SizedBox(height: AppSpacing.md),
-        
+
               Divider(
                 height: 1,
                 color: isDark ? AppColors.greyText : AppColors.buttonBorder,
@@ -77,9 +79,9 @@ class RateSheet extends StatelessWidget {
                   context,
                 ).copyWith(fontSize: 16, height: 1.55),
               ),
-        
+
               const SizedBox(height: AppSpacing.xs),
-        
+
               AppText(
                 context.l10n.rateYourTrainerDesc("Sarah Mitchell"),
                 textAlign: TextAlign.start,
@@ -87,11 +89,13 @@ class RateSheet extends StatelessWidget {
                     AppTextStyles.bodyText(context).copyWith(height: 1.55),
                 maxLines: 3,
               ),
-        
+
               const SizedBox(height: AppSpacing.xs),
               RatingBar.builder(
                 initialRating: 3,
-                unratedColor: isDark ? AppColors.lightGrey : AppColors.darkGreyText,
+                unratedColor: isDark
+                    ? AppColors.lightGrey
+                    : AppColors.darkGreyText,
                 minRating: 0,
                 allowHalfRating: true,
                 itemCount: 5,
@@ -101,7 +105,7 @@ class RateSheet extends StatelessWidget {
                 onRatingUpdate: (rating) {},
               ),
               const SizedBox(height: AppSpacing.md),
-        
+
               Divider(
                 height: 1,
                 color: isDark ? AppColors.greyText : AppColors.buttonBorder,
@@ -127,7 +131,7 @@ class RateSheet extends StatelessWidget {
                     horizontal: 14,
                     vertical: 14,
                   ),
-        
+
                   /// BORDER
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(AppRadius.md),
@@ -148,14 +152,14 @@ class RateSheet extends StatelessWidget {
                 onPressed: () {},
                 variant: AppButtonVariant.primary,
               ),
-        
+
               const SizedBox(height: AppSpacing.sm),
-        
+
               // Cancel
               Center(
                 child: GestureDetector(
                   onTap: () => Navigator.pop(context),
-        
+
                   child: Padding(
                     padding: EdgeInsets.symmetric(
                       vertical: (AppSpacing.buttonHeight - 30) / 2,

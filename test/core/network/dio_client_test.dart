@@ -46,63 +46,64 @@ void main() {
       expect(vs?.call(null), isFalse);
     });
 
-    test('interceptor sets X-Brand, Accept-Language, and Bearer when provided',
-        () async {
-      String? brand;
-      String? lang;
-      String? auth;
-      final client = DioClient(
-        baseUrl: 'https://x/',
-        brand: 'pilates',
-        resolveLanguage: () => 'ar',
-        accessToken: () => 'jwt-token',
-      );
-      client.dio.interceptors.add(
-        InterceptorsWrapper(
-          onRequest: (options, handler) {
-            brand = options.headers['X-Brand'] as String?;
-            lang = options.headers['Accept-Language'] as String?;
-            auth = options.headers['Authorization'] as String?;
-            handler.resolve(
-              Response(
-                requestOptions: options,
-                statusCode: 200,
-                data: const {},
-              ),
-            );
-          },
-        ),
-      );
-      await client.dio.get<Object?>('/');
-      expect(brand, 'pilates');
-      expect(lang, 'ar');
-      expect(auth, 'Bearer jwt-token');
-    });
+    test(
+      'interceptor sets X-Brand, Accept-Language, and Bearer when provided',
+      () async {
+        String? brand;
+        String? lang;
+        String? auth;
+        final client = DioClient(
+          baseUrl: 'https://x/',
+          brand: 'pilates',
+          resolveLanguage: () => 'ar',
+          accessToken: () => 'jwt-token',
+        );
+        client.dio.interceptors.add(
+          InterceptorsWrapper(
+            onRequest: (options, handler) {
+              brand = options.headers['X-Brand'] as String?;
+              lang = options.headers['Accept-Language'] as String?;
+              auth = options.headers['Authorization'] as String?;
+              handler.resolve(
+                Response(
+                  requestOptions: options,
+                  statusCode: 200,
+                  data: const {},
+                ),
+              );
+            },
+          ),
+        );
+        await client.dio.get<Object?>('/');
+        expect(brand, 'pilates');
+        expect(lang, 'ar');
+        expect(auth, 'Bearer jwt-token');
+      },
+    );
 
-    test('interceptor omits Authorization when accessToken is null or empty',
-        () async {
-      String? authPresent;
-      final client = DioClient(
-        baseUrl: 'https://y/',
-        accessToken: () => '',
-      );
-      client.dio.interceptors.add(
-        InterceptorsWrapper(
-          onRequest: (options, handler) {
-            authPresent = options.headers['Authorization'] as String?;
-            handler.resolve(
-              Response(
-                requestOptions: options,
-                statusCode: 200,
-                data: const {},
-              ),
-            );
-          },
-        ),
-      );
-      await client.dio.get<Object?>('/');
-      expect(authPresent, isNull);
-    });
+    test(
+      'interceptor omits Authorization when accessToken is null or empty',
+      () async {
+        String? authPresent;
+        final client = DioClient(baseUrl: 'https://y/', accessToken: () => '');
+        client.dio.interceptors.add(
+          InterceptorsWrapper(
+            onRequest: (options, handler) {
+              authPresent = options.headers['Authorization'] as String?;
+              handler.resolve(
+                Response(
+                  requestOptions: options,
+                  statusCode: 200,
+                  data: const {},
+                ),
+              );
+            },
+          ),
+        );
+        await client.dio.get<Object?>('/');
+        expect(authPresent, isNull);
+      },
+    );
 
     test('debug LogInterceptor is only added in debug mode', () {
       final client = DioClient(baseUrl: 'https://x/');

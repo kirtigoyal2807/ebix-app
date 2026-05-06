@@ -108,9 +108,8 @@ class _ChallengesViewBody extends StatelessWidget {
                           Navigator.push<void>(
                             context,
                             MaterialPageRoute<void>(
-                              builder: (_) => ChallengesDetailView(
-                                challengeId: c.id,
-                              ),
+                              builder: (_) =>
+                                  ChallengesDetailView(challengeId: c.id),
                             ),
                           );
                         },
@@ -137,8 +136,7 @@ class _ChallengesViewBody extends StatelessWidget {
                   if (fresh.isEmpty)
                     AppText(
                       context.l10n.newChallengesSubtitle,
-                      style: (context) =>
-                          AppTextStyles.bodyLightText(context),
+                      style: (context) => AppTextStyles.bodyLightText(context),
                     )
                   else
                     for (final c in fresh) ...[

@@ -395,7 +395,7 @@ abstract class AppLocalizations {
   /// No description provided for @emailSupportDesc.
   ///
   /// In en, this message translates to:
-  /// **'support@thepilatesstudio.com'**
+  /// **'info@thepilates.sa'**
   String get emailSupportDesc;
 
   /// No description provided for @phoneSupport.
@@ -407,7 +407,7 @@ abstract class AppLocalizations {
   /// No description provided for @phoneSupportDesc.
   ///
   /// In en, this message translates to:
-  /// **'91 98765 43210 • Mon-Sat 9 AM - 7 PM'**
+  /// **'+966 55 337 8395 • Mon-Sat 9 AM - 7 PM'**
   String get phoneSupportDesc;
 
   /// No description provided for @splashAppName.
@@ -5564,12 +5564,6 @@ abstract class AppLocalizations {
   /// **'Sports Rehabilitation Training'**
   String get sportsRehabilitationTraining;
 
-  /// No description provided for @anatomyBiomechanicsCertificate.
-  ///
-  /// In en, this message translates to:
-  /// **'Anatomy & Biomechanics Certificate'**
-  String get anatomyBiomechanicsCertificate;
-
   /// No description provided for @loginOtpSent.
   ///
   /// In en, this message translates to:
@@ -5773,6 +5767,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Remove Profile Picture'**
   String get removeProfilePicture;
+
+  /// No description provided for @anatomyBiomechanicsCertificate.
+  ///
+  /// In en, this message translates to:
+  /// **'Anatomy & Biomechanics Certificate'**
+  String get anatomyBiomechanicsCertificate;
+
+  /// No description provided for @branches.
+  ///
+  /// In en, this message translates to:
+  /// **'Branches'**
+  String get branches;
+
+  /// No description provided for @voucherSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Voucher code applied successfully'**
+  String get voucherSuccess;
+
+  /// No description provided for @voucherFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Voucher code invalid'**
+  String get voucherFailed;
+
+  /// No description provided for @rewardRedemption.
+  ///
+  /// In en, this message translates to:
+  /// **'Reward redeemed\nsuccessfully'**
+  String get rewardRedemption;
+
+  /// No description provided for @date_of_birth.
+  ///
+  /// In en, this message translates to:
+  /// **'Date of Birth'**
+  String get date_of_birth;
+
+  /// No description provided for @take_picture.
+  ///
+  /// In en, this message translates to:
+  /// **'Take Picture'**
+  String get take_picture;
+
+  /// No description provided for @access_gallery.
+  ///
+  /// In en, this message translates to:
+  /// **'Access from Gallery'**
+  String get access_gallery;
+
+  /// No description provided for @remove_profile_picture.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove Profile Picture'**
+  String get remove_profile_picture;
 }
 
 class _AppLocalizationsDelegate

@@ -5,6 +5,7 @@ enum GiftSubmitStatus { idle, loading, success, failure }
 class GiftSubscriptionState extends Equatable {
   final List<DeliveryOption> deliveryOptions;
   final DeliveryOption selectedDeliveryOption;
+
   /// `yyyy-MM-dd` when [selectedDeliveryOption] is [DeliveryOption.scheduledDelivery].
   final String? scheduledDeliveryDateIso;
   final GiftSubmitStatus submitStatus;
@@ -44,8 +45,9 @@ class GiftSubscriptionState extends Equatable {
           ? null
           : (scheduledDeliveryDateIso ?? this.scheduledDeliveryDateIso),
       submitStatus: submitStatus ?? this.submitStatus,
-      submitErrorMessage:
-          clearSubmitError ? null : (submitErrorMessage ?? this.submitErrorMessage),
+      submitErrorMessage: clearSubmitError
+          ? null
+          : (submitErrorMessage ?? this.submitErrorMessage),
       submittedRecipientName: clearSubmittedRecipient
           ? null
           : (submittedRecipientName ?? this.submittedRecipientName),
@@ -57,14 +59,14 @@ class GiftSubscriptionState extends Equatable {
 
   @override
   List<Object?> get props => [
-        deliveryOptions,
-        selectedDeliveryOption,
-        scheduledDeliveryDateIso,
-        submitStatus,
-        submitErrorMessage,
-        submittedRecipientName,
-        submittedRecipientEmail,
-      ];
+    deliveryOptions,
+    selectedDeliveryOption,
+    scheduledDeliveryDateIso,
+    submitStatus,
+    submitErrorMessage,
+    submittedRecipientName,
+    submittedRecipientEmail,
+  ];
 }
 
 enum DeliveryOption { instantDelivery, scheduledDelivery }

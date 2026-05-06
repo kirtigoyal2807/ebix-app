@@ -23,10 +23,7 @@ class AuthRepository extends BaseRepository {
   }) {
     return post<LoginEmailResult>(
       'auth/login',
-      data: {
-        'email': email.trim(),
-        'password': password,
-      },
+      data: {'email': email.trim(), 'password': password},
       fromJson: (json) =>
           LoginEmailResult.fromJson(json as Map<String, dynamic>),
     );
@@ -57,10 +54,7 @@ class AuthRepository extends BaseRepository {
   }) {
     return post<LoginEmailResult>(
       'auth/phone/verify',
-      data: {
-        'phone': phone.trim(),
-        'code': code.trim(),
-      },
+      data: {'phone': phone.trim(), 'code': code.trim()},
       fromJson: (json) =>
           LoginEmailResult.fromJson(json as Map<String, dynamic>),
     );
@@ -96,11 +90,7 @@ class AuthRepository extends BaseRepository {
       data['dob'] = '$y-$m-$d';
     }
 
-    return post<bool>(
-      'auth/register',
-      data: data,
-      fromJson: (_) => true,
-    );
+    return post<bool>('auth/register', data: data, fromJson: (_) => true);
   }
 
   /// Step 1 — sends 6-digit code to email.
@@ -132,10 +122,7 @@ class AuthRepository extends BaseRepository {
   }) {
     return post<bool>(
       'auth/email/verify',
-      data: {
-        'email': email.trim(),
-        'code': code,
-      },
+      data: {'email': email.trim(), 'code': code},
       fromJson: (_) => true,
     );
   }
@@ -147,10 +134,7 @@ class AuthRepository extends BaseRepository {
   }) {
     return post<bool>(
       'auth/password/reset',
-      data: {
-        'email': email.trim(),
-        'password': password,
-      },
+      data: {'email': email.trim(), 'password': password},
       fromJson: (_) => true,
     );
   }
@@ -202,7 +186,9 @@ class AuthRepository extends BaseRepository {
           return ApiFailure(
             NetworkException.fromApiEnvelope(
               statusCode: code,
-              message: envelope.message.isEmpty ? 'Request failed' : envelope.message,
+              message: envelope.message.isEmpty
+                  ? 'Request failed'
+                  : envelope.message,
               fieldErrors: envelope.fieldErrors,
               responseData: raw,
             ),
@@ -259,10 +245,7 @@ class AuthRepository extends BaseRepository {
 
   /// Invalidate server session — requires JWT (Bearer via [DioClient]).
   Future<ApiResult<bool>> logout() {
-    return post<bool>(
-      'auth/logout',
-      fromJson: (_) => true,
-    );
+    return post<bool>('auth/logout', fromJson: (_) => true);
   }
 
   /// Customer profile — requires JWT (saved after login).

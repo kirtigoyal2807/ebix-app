@@ -164,13 +164,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get emailSupport => 'Email Support';
 
   @override
-  String get emailSupportDesc => 'support@thepilatesstudio.com';
+  String get emailSupportDesc => 'info@thepilates.sa';
 
   @override
   String get phoneSupport => 'Phone Support';
 
   @override
-  String get phoneSupportDesc => '91 98765 43210 • Mon-Sat 9 AM - 7 PM';
+  String get phoneSupportDesc => '+966 55 337 8395 • Mon-Sat 9 AM - 7 PM';
 
   @override
   String get splashAppName => 'The Pilates';
@@ -2957,10 +2957,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get sportsRehabilitationTraining => 'Sports Rehabilitation Training';
 
   @override
-  String get anatomyBiomechanicsCertificate =>
-      'Anatomy & Biomechanics Certificate';
-
-  @override
   String get loginOtpSent => 'Verification code sent. Check your phone.';
 
   @override
@@ -3065,4 +3061,32 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get removeProfilePicture => 'Remove Profile Picture';
+
+  @override
+  String get anatomyBiomechanicsCertificate =>
+      'Anatomy & Biomechanics Certificate';
+
+  @override
+  String get branches => 'Branches';
+
+  @override
+  String get voucherSuccess => 'Voucher code applied successfully';
+
+  @override
+  String get voucherFailed => 'Voucher code invalid';
+
+  @override
+  String get rewardRedemption => 'Reward redeemed\nsuccessfully';
+
+  @override
+  String get date_of_birth => 'Date of Birth';
+
+  @override
+  String get take_picture => 'Take Picture';
+
+  @override
+  String get access_gallery => 'Access from Gallery';
+
+  @override
+  String get remove_profile_picture => 'Remove Profile Picture';
 }

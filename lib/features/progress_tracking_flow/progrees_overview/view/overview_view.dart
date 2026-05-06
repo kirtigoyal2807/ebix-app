@@ -74,7 +74,8 @@ class OverviewView extends StatelessWidget {
                 BlocBuilder<ProgressGoalCubit, ProgressGoalState>(
                   builder: (context, state) {
                     final goal = state.goal;
-                    final title = goal?.goal != null && goal!.goal!.trim().isNotEmpty
+                    final title =
+                        goal?.goal != null && goal!.goal!.trim().isNotEmpty
                         ? goal.goal!.trim()
                         : context.l10n.findMindfulness;
                     final subtitle = goal != null
@@ -100,12 +101,13 @@ class OverviewView extends StatelessWidget {
                       ),
                       subtitle: AppText(
                         subtitle,
-                        style: (context) => AppTextStyles.body(context).copyWith(
-                          color: isDark
-                              ? AppColors.darkGreyText
-                              : AppColors.greyText,
-                          fontWeight: FontWeight.w400,
-                        ),
+                        style: (context) =>
+                            AppTextStyles.body(context).copyWith(
+                              color: isDark
+                                  ? AppColors.darkGreyText
+                                  : AppColors.greyText,
+                              fontWeight: FontWeight.w400,
+                            ),
                       ),
                     );
                   },
@@ -125,11 +127,12 @@ class OverviewView extends StatelessWidget {
                     Expanded(
                       child: AppText(
                         context.l10n.edit_goal_tap_hint,
-                        style: (context) => AppTextStyles.body(context).copyWith(
-                          color: AppColors.lightGrey,
-                          height: 1,
-                          fontSize: 12,
-                        ),
+                        style: (context) =>
+                            AppTextStyles.body(context).copyWith(
+                              color: AppColors.lightGrey,
+                              height: 1,
+                              fontSize: 12,
+                            ),
                       ),
                     ),
                   ],

@@ -13,9 +13,8 @@ class GiftRepository extends BaseRepository {
     return post<SubscriptionGiftResource>(
       '/gifts/redeem',
       data: <String, dynamic>{'redemptionCode': trimmed},
-      fromJson: (json) => SubscriptionGiftResource.fromJson(
-        json as Map<String, dynamic>,
-      ),
+      fromJson: (json) =>
+          SubscriptionGiftResource.fromJson(json as Map<String, dynamic>),
     );
   }
 }

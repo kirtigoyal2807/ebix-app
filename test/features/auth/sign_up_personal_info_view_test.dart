@@ -17,7 +17,9 @@ import 'fake_auth_repository.dart';
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  testWidgets('Continue calls register and advances to OTP step', (tester) async {
+  testWidgets('Continue calls register and advances to OTP step', (
+    tester,
+  ) async {
     SharedPreferences.setMockInitialValues({});
     final fake = FakeAuthRepository();
     fake.registerResult = const ApiSuccess<bool>(true);
@@ -26,10 +28,7 @@ void main() {
       authRepository: fake,
       tokenStorage: TokenStorage(await SharedPreferences.getInstance()),
       localeBridge: AuthLocaleBridge(),
-      seed: AuthState.initial().copyWith(
-        flow: AuthFlow.signUp,
-        signUpStep: 0,
-      ),
+      seed: AuthState.initial().copyWith(flow: AuthFlow.signUp, signUpStep: 0),
     );
 
     await tester.pumpWidget(

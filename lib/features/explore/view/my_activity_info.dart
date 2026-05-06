@@ -8,6 +8,7 @@ import '../../../config/theme/app_text_styles.dart';
 import '../../../core/localization/localization_extension.dart';
 import '../../../widgets/app_text.dart';
 import '../../account/widget/account_info_tile.dart';
+import '../../challenges_reward_flow/badge_collection/badge_collection_view.dart';
 import '../../challenges_reward_flow/challenges/challenges_view.dart';
 import '../../challenges_reward_flow/reward_collection/reward_view.dart';
 import '../../my_booking/my_booking_view.dart';
@@ -89,6 +90,12 @@ class MyActivityInfo extends StatelessWidget {
         ),
         SizedBox(height: AppSpacing.lmd),
         AccountInfoTile(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => BadgeCollectionView()),
+            );
+          },
           icon: isDark
               ? "assets/images/svg/explore/ic_dark_achivements.svg"
               : "assets/images/svg/explore/ic_achivements.svg",

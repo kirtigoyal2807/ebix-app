@@ -36,13 +36,15 @@ class UpcomingEvent {
   final int? capacity;
   final int? slotsLeft;
   final int? waitlistCount;
+
   /// Gender restriction for this event: 'Male', 'Female', or null (all genders).
   final String? gender;
   final String? category;
 
   factory UpcomingEvent.fromJson(Map<String, dynamic> json) {
     final branchMap = _mapOrNull(json['branch']);
-    final genderRaw = json['gender'] ?? json['targetGender'] ?? json['target_gender'];
+    final genderRaw =
+        json['gender'] ?? json['targetGender'] ?? json['target_gender'];
     final categoryRaw =
         json['category'] ??
         json['classCategory'] ??
@@ -85,10 +87,10 @@ class UpcomingEvent {
       trainerName:
           json['trainerName']?.toString() ?? json['trainer_name']?.toString(),
       capacity: _intOrNull(json['capacity']),
-      slotsLeft:
-          _intOrNull(json['slotsLeft'] ?? json['slots_left']),
-      waitlistCount:
-          _intOrNull(json['waitlistCount'] ?? json['waitlist_count']),
+      slotsLeft: _intOrNull(json['slotsLeft'] ?? json['slots_left']),
+      waitlistCount: _intOrNull(
+        json['waitlistCount'] ?? json['waitlist_count'],
+      ),
       gender: _stringOrNull(genderRaw),
       category: _stringOrNull(categoryRaw),
     );
@@ -111,7 +113,8 @@ class UpcomingEvent {
     if (value == null) return null;
     if (value is Map) {
       final map = _mapOrNull(value);
-      final nestedValue = map?['value'] ?? map?['name'] ?? map?['label'] ?? map?['code'];
+      final nestedValue =
+          map?['value'] ?? map?['name'] ?? map?['label'] ?? map?['code'];
       return _stringOrNull(nestedValue);
     }
     final text = value.toString().trim();
@@ -165,8 +168,7 @@ class GymClassResource {
   final List<UpcomingEvent> upcomingEvents;
 
   factory GymClassResource.fromJson(Map<String, dynamic> json) {
-    final eventsRaw =
-        json['upcomingEvents'] ?? json['upcoming_events'];
+    final eventsRaw = json['upcomingEvents'] ?? json['upcoming_events'];
     final parsedEvents = <UpcomingEvent>[];
     if (eventsRaw is List) {
       for (final e in eventsRaw) {
@@ -181,7 +183,8 @@ class GymClassResource {
     }
 
     List<ReviewResource>? recentReviews;
-    if (json.containsKey('recentReviews') || json.containsKey('recent_reviews')) {
+    if (json.containsKey('recentReviews') ||
+        json.containsKey('recent_reviews')) {
       final raw = json['recentReviews'] ?? json['recent_reviews'];
       recentReviews = parseRecentReviewsList(raw);
     }
@@ -200,8 +203,7 @@ class GymClassResource {
       id: '${json['id'] ?? ''}',
       name: '${json['name'] ?? ''}',
       description: json['description']?.toString(),
-      branchId:
-          json['branchId']?.toString() ?? json['branch_id']?.toString(),
+      branchId: json['branchId']?.toString() ?? json['branch_id']?.toString(),
       defaultDurationMinutes: _intOrNull(
         json['defaultDurationMinutes'] ?? json['default_duration_minutes'],
       ),
@@ -215,12 +217,10 @@ class GymClassResource {
       allowPackageBooking:
           json['allowPackageBooking'] == true ||
           json['allow_package_booking'] == true,
-      isActive:
-          json['isActive'] == true || json['is_active'] == true,
+      isActive: json['isActive'] == true || json['is_active'] == true,
       image: resolveApiMediaUrl(json['image']?.toString()),
       avgRating: _doubleOrNull(json['avgRating'] ?? json['avg_rating']),
-      reviewsCount:
-          _intOrNull(json['reviewsCount'] ?? json['reviews_count']),
+      reviewsCount: _intOrNull(json['reviewsCount'] ?? json['reviews_count']),
       recentReviews: recentReviews,
       category: _stringOrNull(classCategoryRaw),
       gender: _stringOrNull(classGenderRaw),
@@ -248,7 +248,8 @@ class GymClassResource {
       final map = value is Map<String, dynamic>
           ? value
           : Map<String, dynamic>.from(value);
-      final nestedValue = map['value'] ?? map['name'] ?? map['label'] ?? map['code'];
+      final nestedValue =
+          map['value'] ?? map['name'] ?? map['label'] ?? map['code'];
       return _stringOrNull(nestedValue);
     }
     final text = value.toString().trim();

@@ -42,8 +42,8 @@ class BookClassConfirmView extends StatelessWidget {
     final prefix = slotDay == today
         ? 'Today'
         : slotDay == today.add(const Duration(days: 1))
-            ? 'Tomorrow'
-            : DateFormat('EEE, MMM d').format(slot.startAt.toLocal());
+        ? 'Tomorrow'
+        : DateFormat('EEE, MMM d').format(slot.startAt.toLocal());
     return '$prefix, $start – $end';
   }
 
@@ -76,11 +76,7 @@ class BookClassConfirmView extends StatelessWidget {
             ),
             const SizedBox(height: AppSpacing.lg),
 
-            _buildPaymentSummary(
-              context: context,
-              isDark: isDark,
-              l10n: l10n,
-            ),
+            _buildPaymentSummary(context: context, isDark: isDark, l10n: l10n),
             const SizedBox(height: AppSpacing.lg),
 
             _buildPolicyAgreement(l10n: l10n, isDark: isDark),
@@ -121,7 +117,8 @@ class BookClassConfirmView extends StatelessWidget {
                               return;
                             }
                             final errorMessage = cubit.state.errorMessage;
-                            if (errorMessage != null && errorMessage.isNotEmpty) {
+                            if (errorMessage != null &&
+                                errorMessage.isNotEmpty) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(content: Text(errorMessage)),
                               );
@@ -221,9 +218,7 @@ class BookClassConfirmView extends StatelessWidget {
           Container(
             height: 72,
             width: 94,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(12),
-            ),
+            decoration: BoxDecoration(borderRadius: BorderRadius.circular(12)),
             child: ClipRRect(
               borderRadius: const BorderRadius.vertical(
                 top: Radius.circular(AppRadius.md),
@@ -303,10 +298,7 @@ class BookClassConfirmView extends StatelessWidget {
             ),
             child: Column(
               children: [
-                _buildPaymentRow(
-                  title: l10n.classFee,
-                  value: priceLabel,
-                ),
+                _buildPaymentRow(title: l10n.classFee, value: priceLabel),
                 const SizedBox(height: AppSpacing.md),
                 Divider(
                   color: isDark ? AppColors.greyText : AppColors.darkGreyBorder,

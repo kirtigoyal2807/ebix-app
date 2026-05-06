@@ -81,15 +81,9 @@ class ClassDetailHeader extends StatelessWidget {
                           color: baseBody.color,
                           fontFamily: baseBody.fontFamily,
                         ),
-                        'p': Style(
-                          margin: Margins.only(bottom: 8),
-                        ),
-                        'ul': Style(
-                          margin: Margins.only(bottom: 8),
-                        ),
-                        'ol': Style(
-                          margin: Margins.only(bottom: 8),
-                        ),
+                        'p': Style(margin: Margins.only(bottom: 8)),
+                        'ul': Style(margin: Margins.only(bottom: 8)),
+                        'ol': Style(margin: Margins.only(bottom: 8)),
                       },
                       onLinkTap: (url, attributes, element) async {
                         if (url == null || url.isEmpty) return;

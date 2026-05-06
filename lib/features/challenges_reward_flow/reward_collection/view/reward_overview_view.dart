@@ -22,9 +22,7 @@ class RewardOverviewView extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return SingleChildScrollView(
       child: Padding(
-        padding: EdgeInsetsGeometry.symmetric(
-          vertical: AppSpacing.lg,
-        ),
+        padding: EdgeInsetsGeometry.symmetric(vertical: AppSpacing.lg),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -99,7 +97,9 @@ class RewardOverviewView extends StatelessWidget {
                     final list = state.filteredRewards;
                     if (list.isEmpty) {
                       return Padding(
-                        padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+                        padding: EdgeInsets.symmetric(
+                          horizontal: AppSpacing.lg,
+                        ),
                         child: AppText(
                           context.l10n.rewardsCatalogSubtitle,
                           style: (context) =>
@@ -244,10 +244,12 @@ class RewardOverviewView extends StatelessWidget {
                         p.branchList != c.branchList,
                     builder: (context, state) {
                       final title = state.branchList.isNotEmpty
-                          ? state.branchList[state.selectedBranch.clamp(
-                              0,
-                              state.branchList.length - 1,
-                            )].title
+                          ? state
+                                .branchList[state.selectedBranch.clamp(
+                                  0,
+                                  state.branchList.length - 1,
+                                )]
+                                .title
                           : '';
                       return AppText(
                         title,

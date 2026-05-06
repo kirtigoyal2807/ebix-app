@@ -66,7 +66,8 @@ class InvoiceHistoryCard extends StatelessWidget {
                     child: AppText(
                       title,
                       maxLines: 2,
-                      style: (context) => AppTextStyles.experienceButton(context),
+                      style: (context) =>
+                          AppTextStyles.experienceButton(context),
                     ),
                   ),
                   SizedBox(width: AppSpacing.sm),
@@ -113,15 +114,19 @@ class InvoiceHistoryCard extends StatelessWidget {
                         onTap: onView,
                         borderRadius: BorderRadius.circular(4),
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 6),
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 6,
+                            horizontal: 6,
+                          ),
                           child: AppText(
                             context.l10n.view,
                             maxLines: 1,
-                            style: (context) => AppTextStyles.body(context).copyWith(
-                              fontSize: 12,
-                              color: Theme.of(context).colorScheme.primary,
-                              fontWeight: FontWeight.w600,
-                            ),
+                            style: (context) =>
+                                AppTextStyles.body(context).copyWith(
+                                  fontSize: 12,
+                                  color: Theme.of(context).colorScheme.primary,
+                                  fontWeight: FontWeight.w600,
+                                ),
                           ),
                         ),
                       ),
@@ -134,15 +139,19 @@ class InvoiceHistoryCard extends StatelessWidget {
                         onTap: onDownload,
                         borderRadius: BorderRadius.circular(4),
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 6),
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 6,
+                            horizontal: 6,
+                          ),
                           child: AppText(
                             context.l10n.download,
                             maxLines: 1,
-                            style: (context) => AppTextStyles.body(context).copyWith(
-                              fontSize: 12,
-                              color: Theme.of(context).colorScheme.primary,
-                              fontWeight: FontWeight.w600,
-                            ),
+                            style: (context) =>
+                                AppTextStyles.body(context).copyWith(
+                                  fontSize: 12,
+                                  color: Theme.of(context).colorScheme.primary,
+                                  fontWeight: FontWeight.w600,
+                                ),
                           ),
                         ),
                       ),

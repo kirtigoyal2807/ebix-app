@@ -13,6 +13,7 @@ class CheckoutPaymentIntentResult {
   final String? clientSecret;
   final String? paymentUrl;
   final String? intentId;
+
   /// PSP row id when the API returns `paymentId` (e.g. Paytabs).
   final String? paymentId;
   final String? publishableKey;
@@ -49,10 +50,7 @@ class CheckoutPaymentIntentResult {
         'payment_intent_id',
         'id',
       ]),
-      paymentId: _readString(m, const [
-        'paymentId',
-        'payment_id',
-      ]),
+      paymentId: _readString(m, const ['paymentId', 'payment_id']),
       publishableKey: _readString(m, const [
         'publishableKey',
         'publishable_key',

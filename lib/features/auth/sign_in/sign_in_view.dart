@@ -63,8 +63,7 @@ class _SignInViewState extends State<SignInView> {
           : (InputValidators.isValidEmail(email)
                 ? null
                 : l10n.pleaseEnterValidEmail);
-      _clientPasswordError =
-          password.isEmpty ? l10n.pleaseEnterPassword : null;
+      _clientPasswordError = password.isEmpty ? l10n.pleaseEnterPassword : null;
     });
     if (email.isEmpty ||
         !InputValidators.isValidEmail(email) ||
@@ -72,18 +71,14 @@ class _SignInViewState extends State<SignInView> {
       return;
     }
 
-    context.read<AuthCubit>().loginWithEmail(
-          email: email,
-          password: password,
-        );
+    context.read<AuthCubit>().loginWithEmail(email: email, password: password);
   }
 
   void _submitPhone(BuildContext context) {
     final phone = _composePhoneE164();
     final l10n = context.l10n;
     setState(() {
-      _clientPhoneError =
-          phone.length < 8 ? l10n.pleaseEnterPhone : null;
+      _clientPhoneError = phone.length < 8 ? l10n.pleaseEnterPhone : null;
     });
     if (phone.length < 8) return;
 
@@ -148,8 +143,7 @@ class _SignInViewState extends State<SignInView> {
                             horizontal: AppSpacing.lg,
                           ),
                           child: SignUpHeader(
-                            title:
-                                '${context.l10n.welcome} Tasha',
+                            title: '${context.l10n.welcome} Tasha',
                             subtitle: context.l10n.enterYourLoginDetails,
                             step: 1,
                             totalSteps: 5,
@@ -178,8 +172,8 @@ class _SignInViewState extends State<SignInView> {
                                               : FontWeight.w400,
                                           color: _selectedTab == 0
                                               ? (isDark
-                                                  ? AppColors.languageTextDark
-                                                  : AppColors.languageIcon)
+                                                    ? AppColors.languageTextDark
+                                                    : AppColors.languageIcon)
                                               : AppColors.lightGrey,
                                         ),
                                       ),
@@ -188,8 +182,8 @@ class _SignInViewState extends State<SignInView> {
                                         height: 2,
                                         color: _selectedTab == 0
                                             ? (isDark
-                                                ? AppColors.languageTextDark
-                                                : AppColors.primary)
+                                                  ? AppColors.languageTextDark
+                                                  : AppColors.primary)
                                             : Colors.transparent,
                                       ),
                                     ],
@@ -206,16 +200,15 @@ class _SignInViewState extends State<SignInView> {
                                     children: [
                                       AppText(
                                         context.l10n.phoneTab,
-                                        style: (context) =>
-                                            GoogleFonts.inter(
+                                        style: (context) => GoogleFonts.inter(
                                           fontSize: 16,
                                           fontWeight: _selectedTab == 1
                                               ? FontWeight.w600
                                               : FontWeight.w400,
                                           color: _selectedTab == 1
                                               ? (isDark
-                                                  ? AppColors.languageTextDark
-                                                  : AppColors.languageIcon)
+                                                    ? AppColors.languageTextDark
+                                                    : AppColors.languageIcon)
                                               : AppColors.lightGrey,
                                         ),
                                       ),
@@ -224,8 +217,8 @@ class _SignInViewState extends State<SignInView> {
                                         height: 2,
                                         color: _selectedTab == 1
                                             ? (isDark
-                                                ? AppColors.languageTextDark
-                                                : AppColors.primary)
+                                                  ? AppColors.languageTextDark
+                                                  : AppColors.primary)
                                             : Colors.transparent,
                                       ),
                                     ],
@@ -328,8 +321,9 @@ class _SignInViewState extends State<SignInView> {
                   ),
                 ),
                 Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: AppSpacing.lg,
+                  ),
                   child: AppButton(
                     key: const ValueKey('sign_in_submit'),
                     label: _selectedTab == 0

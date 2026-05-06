@@ -12,9 +12,8 @@ class SubscriptionsRepository extends BaseRepository {
   SubscriptionsRepository(super.dio);
 
   /// §9.3 — `GET /subscriptions/customer/{customer}` (path segment encoded).
-  Future<ApiResult<List<CustomerSubscriptionResource>>> listSubscriptionsForCustomer(
-    String customerId,
-  ) {
+  Future<ApiResult<List<CustomerSubscriptionResource>>>
+  listSubscriptionsForCustomer(String customerId) {
     final id = customerId.trim();
     return get<List<CustomerSubscriptionResource>>(
       'subscriptions/customer/${Uri.encodeComponent(id)}',
@@ -53,10 +52,7 @@ class SubscriptionsRepository extends BaseRepository {
   }
 
   /// §9.2 — `POST /subscriptions/{subscription}/freeze/{freeze}/cancel`
-  Future<ApiResult<bool>> cancelFreeze(
-    String subscriptionId,
-    String freezeId,
-  ) {
+  Future<ApiResult<bool>> cancelFreeze(String subscriptionId, String freezeId) {
     final sub = subscriptionId.trim();
     final fz = freezeId.trim();
     return post<bool>(
@@ -74,7 +70,9 @@ class SubscriptionsRepository extends BaseRepository {
     return '$y-$m-$day';
   }
 
-  static List<CustomerSubscriptionResource> _parseSubscriptionsList(dynamic json) {
+  static List<CustomerSubscriptionResource> _parseSubscriptionsList(
+    dynamic json,
+  ) {
     if (json is! List<dynamic>) return <CustomerSubscriptionResource>[];
     final out = <CustomerSubscriptionResource>[];
     for (final e in json) {
@@ -82,9 +80,7 @@ class SubscriptionsRepository extends BaseRepository {
         out.add(CustomerSubscriptionResource.fromJson(e));
       } else if (e is Map) {
         out.add(
-          CustomerSubscriptionResource.fromJson(
-            Map<String, dynamic>.from(e),
-          ),
+          CustomerSubscriptionResource.fromJson(Map<String, dynamic>.from(e)),
         );
       }
     }

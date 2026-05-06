@@ -56,7 +56,9 @@ class BookingResource {
   }
 
   /// Prefer nested payload when API wraps enrollment (`data.enrollment`) per §13 patterns.
-  static Map<String, dynamic> _effectiveEnrollmentMap(Map<String, dynamic> json) {
+  static Map<String, dynamic> _effectiveEnrollmentMap(
+    Map<String, dynamic> json,
+  ) {
     final nested = _map(json['enrollment']) ?? _map(json['booking']);
     if (nested != null && nested.isNotEmpty) {
       return nested;

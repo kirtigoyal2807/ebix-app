@@ -64,17 +64,16 @@ class RewardHistoryCard extends StatelessWidget {
               Expanded(
                 child: AppText(
                   '${context.l10n.current_balance}: ${context.l10n.points_short(balanceAfter)}',
-                  style: (context) => AppTextStyles.bodyLightText(context)
-                      .copyWith(fontSize: 12, height: 1.4),
+                  style: (context) => AppTextStyles.bodyLightText(
+                    context,
+                  ).copyWith(fontSize: 12, height: 1.4),
                 ),
               ),
               AppText(
                 pointsLabel,
-                style: (context) => AppTextStyles.boldBody(context).copyWith(
-                  fontSize: 16,
-                  height: 1.55,
-                  color: pointsColor,
-                ),
+                style: (context) => AppTextStyles.boldBody(
+                  context,
+                ).copyWith(fontSize: 16, height: 1.55, color: pointsColor),
               ),
             ],
           ),

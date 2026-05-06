@@ -6,10 +6,7 @@ import 'package:pilates_app/core/localization/localization_extension.dart';
 import 'package:pilates_app/widgets/app_text.dart';
 
 class PlanStatusBadge extends StatelessWidget {
-  const PlanStatusBadge({
-    super.key,
-    required this.inPlan,
-  });
+  const PlanStatusBadge({super.key, required this.inPlan});
 
   final bool inPlan;
 
@@ -44,7 +41,9 @@ class PlanStatusBadge extends StatelessWidget {
                 context.l10n.inYourPlan,
                 style: (context) => AppTextStyles.boldBody(context).copyWith(
                   fontSize: 12,
-                  color: isDark ? AppColors.lightGreyColor : AppColors.GreyColor,
+                  color: isDark
+                      ? AppColors.lightGreyColor
+                      : AppColors.GreyColor,
                 ),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
@@ -72,7 +71,9 @@ class PlanStatusBadge extends StatelessWidget {
         children: [
           Icon(
             Icons.lock_outline,
-            color: isDark ? AppColors.upgradeDarkLockBackgroundColor : AppColors.lightRedColor,
+            color: isDark
+                ? AppColors.upgradeDarkLockBackgroundColor
+                : AppColors.lightRedColor,
             size: 14,
           ),
           const SizedBox(width: 4),
@@ -81,7 +82,9 @@ class PlanStatusBadge extends StatelessWidget {
               context.l10n.upgradeRequired,
               style: (context) => AppTextStyles.boldBody(context).copyWith(
                 fontSize: 12,
-                color: isDark ? AppColors.upgradeDarkLockBackgroundColor : AppColors.upgradeDarkLockBackgroundColor,
+                color: isDark
+                    ? AppColors.upgradeDarkLockBackgroundColor
+                    : AppColors.upgradeDarkLockBackgroundColor,
               ),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,

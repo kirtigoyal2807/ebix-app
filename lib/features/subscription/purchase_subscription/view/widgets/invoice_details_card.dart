@@ -74,36 +74,36 @@ class InvoiceDetailsCard extends StatelessWidget {
                   context.l10n.invoiceHistorySubtitle,
                   style: (context) =>
                       AppTextStyles.textFieldHeading(context).copyWith(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w400,
-                    color: isDark
-                        ? AppColors.darkGreyText
-                        : AppColors.lightGrey,
-                    height: 1.45,
-                  ),
+                        fontSize: 12,
+                        fontWeight: FontWeight.w400,
+                        color: isDark
+                            ? AppColors.darkGreyText
+                            : AppColors.lightGrey,
+                        height: 1.45,
+                      ),
                 ),
               ] else ...[
                 AppText(
                   context.l10n.invoiceNumber(r.displayInvoiceCode ?? '—'),
                   style: (context) =>
                       AppTextStyles.textFieldHeading(context).copyWith(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w400,
-                    color: isDark
-                        ? AppColors.darkGreyText
-                        : AppColors.lightGrey,
-                  ),
+                        fontSize: 12,
+                        fontWeight: FontWeight.w400,
+                        color: isDark
+                            ? AppColors.darkGreyText
+                            : AppColors.lightGrey,
+                      ),
                 ),
                 AppText(
                   _paidDateLine(r, lang),
                   style: (context) =>
                       AppTextStyles.textFieldHeading(context).copyWith(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w400,
-                    color: isDark
-                        ? AppColors.darkGreyText
-                        : AppColors.lightGrey,
-                  ),
+                        fontSize: 12,
+                        fontWeight: FontWeight.w400,
+                        color: isDark
+                            ? AppColors.darkGreyText
+                            : AppColors.lightGrey,
+                      ),
                 ),
                 const SizedBox(height: 64),
                 _buildRow(
@@ -136,11 +136,7 @@ class InvoiceDetailsCard extends StatelessWidget {
                   _buildRow(
                     context,
                     context.l10n.tax,
-                    MembershipReceiptSummary.formatMoney(
-                      r.taxMinor,
-                      cur,
-                      lang,
-                    ),
+                    MembershipReceiptSummary.formatMoney(r.taxMinor, cur, lang),
                     isDark,
                   ),
                 ],
@@ -162,11 +158,7 @@ class InvoiceDetailsCard extends StatelessWidget {
                 _buildRow(
                   context,
                   context.l10n.totalPaid,
-                  MembershipReceiptSummary.formatMoney(
-                    r.totalMinor,
-                    cur,
-                    lang,
-                  ),
+                  MembershipReceiptSummary.formatMoney(r.totalMinor, cur, lang),
                   isDark,
                   isBold: true,
                 ),
@@ -211,8 +203,8 @@ class InvoiceDetailsCard extends StatelessWidget {
     }
     final formatted =
         MembershipReceiptSummary.formatPaidDate(raw, languageCode) ??
-            MembershipReceiptSummary.shortDateFromIso(raw) ??
-            raw;
+        MembershipReceiptSummary.shortDateFromIso(raw) ??
+        raw;
     return 'Date: $formatted';
   }
 
@@ -351,23 +343,18 @@ class ReceiptClipper extends CustomClipper<Path> {
 
     // ---- Bottom Right Rounded ----
     path.quadraticBezierTo(
-      size.width-8,
+      size.width - 8,
       size.height - cutRadius,
       size.width - bottomRadius,
       size.height - cutRadius,
     );
-
-
-
-
 
     // ---- Bottom Cuts Area ----
     double availableWidth = size.width - (bottomRadius * 2);
     double sectionWidth = availableWidth / cutCount;
 
     for (int i = cutCount; i > 0; i--) {
-      double centerX =
-          bottomRadius + (sectionWidth * i) - sectionWidth / 2;
+      double centerX = bottomRadius + (sectionWidth * i) - sectionWidth / 2;
 
       path.arcTo(
         Rect.fromCircle(

@@ -165,15 +165,15 @@ class InvoiceListPanel extends StatelessWidget {
   }
 
   /// Download: system browser / viewer so the user can save or share the file.
-  static Future<void> openInvoiceDownload(BuildContext context, String? url) async {
+  static Future<void> openInvoiceDownload(
+    BuildContext context,
+    String? url,
+  ) async {
     final uri = await _resolveUri(context, url);
     if (uri == null || !context.mounted) return;
     final ok = await _launchWithFallback(
       uri,
-      modes: const [
-        LaunchMode.externalApplication,
-        LaunchMode.platformDefault,
-      ],
+      modes: const [LaunchMode.externalApplication, LaunchMode.platformDefault],
     );
     if (context.mounted && !ok) {
       _showUnavailable(context);
@@ -187,11 +187,13 @@ class InvoiceListPanel extends StatelessWidget {
 
     return BlocBuilder<InvoiceHistoryCubit, InvoiceHistoryState>(
       builder: (context, state) {
-        if (state.loadStatus == InvoicesLoadStatus.loading && state.invoices.isEmpty) {
+        if (state.loadStatus == InvoicesLoadStatus.loading &&
+            state.invoices.isEmpty) {
           return const Center(child: CircularProgressIndicator.adaptive());
         }
 
-        if (state.loadStatus == InvoicesLoadStatus.failure && state.invoices.isEmpty) {
+        if (state.loadStatus == InvoicesLoadStatus.failure &&
+            state.invoices.isEmpty) {
           return Center(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
@@ -229,15 +231,22 @@ class InvoiceListPanel extends StatelessWidget {
             itemCount: state.invoices.length,
             itemBuilder: (context, index) {
               final inv = state.invoices[index];
-              final monthLabel =
-                  DateFormat.yMMMM(languageCode).format(inv.issuedAt.toLocal());
+              final monthLabel = DateFormat.yMMMM(
+                languageCode,
+              ).format(inv.issuedAt.toLocal());
               return Padding(
-                padding: EdgeInsets.only(bottom: index == state.invoices.length - 1 ? 0 : AppSpacing.md),
+                padding: EdgeInsets.only(
+                  bottom: index == state.invoices.length - 1
+                      ? 0
+                      : AppSpacing.md,
+                ),
                 child: InvoiceHistoryCard(
                   month: monthLabel,
                   title: inv.title,
                   subTitle: context.l10n.invoiceNumber(inv.invoiceNumber),
-                  date: DateFormat.yMMMd(languageCode).format(inv.issuedAt.toLocal()),
+                  date: DateFormat.yMMMd(
+                    languageCode,
+                  ).format(inv.issuedAt.toLocal()),
                   amount: _formatMoney(inv, languageCode),
                   refund: inv.isRefund,
                   onView: () => openInvoiceView(context, inv.pdfUrl),

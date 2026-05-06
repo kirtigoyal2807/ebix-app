@@ -55,7 +55,10 @@ class PhysicalActivityView extends StatelessWidget {
                         const ApiActivityLevelQuestionBlock(),
                         const SizedBox(height: AppSpacing.lg),
                       ] else ...[
-                        _buildSectionHeader(context, l10n.doYouExerciseRegularly),
+                        _buildSectionHeader(
+                          context,
+                          l10n.doYouExerciseRegularly,
+                        ),
                         const SizedBox(height: AppSpacing.md),
                         BlocBuilder<SubscriptionCubit, SubscriptionState>(
                           buildWhen: (p, c) =>
@@ -164,14 +167,13 @@ class PhysicalActivityView extends StatelessWidget {
                     requireEveryQuestionInGroup: true,
                   )) {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(l10n.physicalActivityStepIncomplete),
-                  ),
+                  SnackBar(content: Text(l10n.physicalActivityStepIncomplete)),
                 );
                 return;
               }
-              final raw = cubit.state.healthQuestionnaireAnswers[
-                  HealthQuestionnaireIds.activityPilates];
+              final raw =
+                  cubit.state.healthQuestionnaireAnswers[HealthQuestionnaireIds
+                      .activityPilates];
               if (raw is String && raw.trim().isNotEmpty) {
                 cubit.updateExerciseRegularly(raw.trim());
               } else if (raw is bool) {
@@ -219,7 +221,7 @@ class PhysicalActivityView extends StatelessWidget {
               }
               cubit.nextStep();
             },
-            buttonColor:isDark ?AppColors.primary: AppColors.primaryBrown,
+            buttonColor: isDark ? AppColors.primary : AppColors.primaryBrown,
             expanded: true,
           ),
         ],
@@ -247,14 +249,24 @@ class PhysicalActivityView extends StatelessWidget {
               width: 20,
               height: 20,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(6), // Rounded square like checkboxes
+                borderRadius: BorderRadius.circular(
+                  6,
+                ), // Rounded square like checkboxes
                 border: Border.all(
-                  color: isSelected ? AppColors.primaryBrown : (isDark ? AppColors.greyText : AppColors.lightGreyBorder),
+                  color: isSelected
+                      ? AppColors.primaryBrown
+                      : (isDark
+                            ? AppColors.greyText
+                            : AppColors.lightGreyBorder),
                   width: 1,
                 ),
-                color: isSelected ? AppColors.primaryBrown : isDark? AppColors.homeBackground:Colors.white,
+                color: isSelected
+                    ? AppColors.primaryBrown
+                    : isDark
+                    ? AppColors.homeBackground
+                    : Colors.white,
               ),
-               child: isSelected
+              child: isSelected
                   ? const Icon(Icons.check, size: 14, color: Colors.white)
                   : null,
             ),
@@ -264,7 +276,7 @@ class PhysicalActivityView extends StatelessWidget {
                 label,
                 style: (style) => AppTextStyles.bodyTextSmall(context).copyWith(
                   color: isDark ? AppColors.lightGrey : AppColors.lightGrey,
-                  fontWeight: FontWeight.w500
+                  fontWeight: FontWeight.w500,
                 ),
               ),
             ),
@@ -290,25 +302,29 @@ class PhysicalActivityView extends StatelessWidget {
         onTap: () => onChanged(value),
         child: Row(
           children: [
-             Container(
+            Container(
               width: 20,
               height: 20,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(6),
                 border: Border.all(
-                  color: isSelected ? AppColors.primaryBrown : (isDark ? AppColors.greyText : AppColors.lightGreyBorder),
+                  color: isSelected
+                      ? AppColors.primaryBrown
+                      : (isDark
+                            ? AppColors.greyText
+                            : AppColors.lightGreyBorder),
                   width: 1,
                 ),
                 color: isSelected ? AppColors.primaryBrown : Colors.transparent,
               ),
-               child: isSelected
+              child: isSelected
                   ? const Icon(Icons.check, size: 16, color: Colors.white)
                   : null,
             ),
             const SizedBox(width: 12),
             AppText(
               label,
-              style:(style)=> AppTextStyles.bodyTextSmall(context).copyWith(
+              style: (style) => AppTextStyles.bodyTextSmall(context).copyWith(
                 color: isDark ? AppColors.greyText : AppColors.greyText,
               ),
             ),
@@ -322,9 +338,11 @@ class PhysicalActivityView extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return AppText(
       title,
-      style: (style) => AppTextStyles.textFieldHeading(context,fontWeight: FontWeight.w400,).copyWith(fontSize: 16,height: 1.4),
+      style: (style) => AppTextStyles.textFieldHeading(
+        context,
+        fontWeight: FontWeight.w400,
+      ).copyWith(fontSize: 16, height: 1.4),
       maxLines: 4,
     );
   }
-
 }

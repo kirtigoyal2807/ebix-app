@@ -117,13 +117,12 @@ class AppColors {
 
   static const containerGreyBg = Color(0xffFAF9F9);
 
-  static  final bottomSheetShadow =   Color(0xff292524).withValues(alpha: 0.7);
-  static  final divider =   Color(0xffDFE1E7);
+  static final bottomSheetShadow = Color(0xff292524).withValues(alpha: 0.7);
+  static final divider = Color(0xffDFE1E7);
 
   static final placeHolderText = Color(0xff79716B);
   static final goalTrackColor = Color(0xffF5F4F4);
   static final progressBGColor = Color(0xff443F3B);
-
 
   static final lightBlue = Color(0xffDCEBF5);
   static final darkBlue = Color(0xff124061);

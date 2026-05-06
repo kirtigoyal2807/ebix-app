@@ -44,7 +44,9 @@ class _MyBookingScaffoldState extends State<_MyBookingScaffold>
     _tabController.addListener(_onTabChanged);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
-      context.read<MyBookingsCubit>().ensureLoaded(MyBookingsStatusGroup.upcoming);
+      context.read<MyBookingsCubit>().ensureLoaded(
+        MyBookingsStatusGroup.upcoming,
+      );
     });
   }
 
@@ -65,8 +67,7 @@ class _MyBookingScaffoldState extends State<_MyBookingScaffold>
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
-      backgroundColor:
-          isDark ? AppColors.homeBackground : AppColors.whiteColor,
+      backgroundColor: isDark ? AppColors.homeBackground : AppColors.whiteColor,
       appBar: AppAppBar(
         leading: Padding(
           padding: const EdgeInsets.only(left: AppSpacing.lmd),

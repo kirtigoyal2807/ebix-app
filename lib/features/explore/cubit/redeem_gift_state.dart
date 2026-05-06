@@ -32,9 +32,9 @@ class RedeemGiftState extends Equatable {
 
   @override
   List<Object?> get props => [
-        isSubmitting,
-        validation,
-        serverError,
-        successPending,
-      ];
+    isSubmitting,
+    validation,
+    serverError,
+    successPending,
+  ];
 }

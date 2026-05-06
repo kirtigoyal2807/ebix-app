@@ -1,10 +1,6 @@
 /// Channel-level notification preferences (e.g., class_reminder, booking_confirmed).
 class ChannelPreference {
-  const ChannelPreference({
-    this.push,
-    this.sms,
-    this.email,
-  });
+  const ChannelPreference({this.push, this.sms, this.email});
 
   final bool? push;
   final bool? sms;
@@ -26,11 +22,7 @@ class ChannelPreference {
     return map;
   }
 
-  ChannelPreference copyWith({
-    bool? push,
-    bool? sms,
-    bool? email,
-  }) {
+  ChannelPreference copyWith({bool? push, bool? sms, bool? email}) {
     return ChannelPreference(
       push: push ?? this.push,
       sms: sms ?? this.sms,
@@ -79,11 +71,7 @@ class NotificationPreferences {
   }
 
   Map<String, dynamic> toJson() {
-    final map = <String, dynamic>{
-      'push': push,
-      'sms': sms,
-      'email': email,
-    };
+    final map = <String, dynamic>{'push': push, 'sms': sms, 'email': email};
     if (channels.isNotEmpty) {
       map['channels'] = channels.map((k, v) => MapEntry(k, v.toJson()));
     }

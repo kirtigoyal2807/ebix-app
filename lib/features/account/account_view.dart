@@ -54,7 +54,10 @@ class AccountView extends StatelessWidget {
             authState.accountProfileRefreshStatus ==
             AccountProfileRefreshStatus.loading;
         return Scaffold(
-          appBar: AppAppBar(title: context.l10n.accountTitle, isMoreMenu: false),
+          appBar: AppAppBar(
+            title: context.l10n.accountTitle,
+            isMoreMenu: false,
+          ),
           body: Stack(
             children: [
               AbsorbPointer(
@@ -84,7 +87,9 @@ class AccountView extends StatelessWidget {
                             style: ElevatedButton.styleFrom(
                               backgroundColor: AppColors.logOutButton,
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(AppRadius.xl),
+                                borderRadius: BorderRadius.circular(
+                                  AppRadius.xl,
+                                ),
                               ),
                               padding: EdgeInsets.symmetric(
                                 vertical: (AppSpacing.buttonHeight - 30) / 2,
@@ -105,10 +110,9 @@ class AccountView extends StatelessWidget {
                                 Icon(Icons.exit_to_app, color: Colors.white),
                                 Text(
                                   context.l10n.logout,
-                                  style: AppTextStyles.button(context).copyWith(
-                                    fontSize: 16,
-                                    color: Colors.white,
-                                  ),
+                                  style: AppTextStyles.button(
+                                    context,
+                                  ).copyWith(fontSize: 16, color: Colors.white),
                                 ),
                               ],
                             ),

@@ -30,15 +30,9 @@ class ProgressTrackingView extends StatelessWidget {
         BlocProvider(
           create: (_) => ProgressOverviewCubit(progressRepo)..load(),
         ),
-        BlocProvider(
-          create: (_) => WeeklyActivityCubit(progressRepo)..load(),
-        ),
-        BlocProvider(
-          create: (_) => ProgressGoalCubit(progressRepo)..load(),
-        ),
-        BlocProvider(
-          create: (_) => SessionHistoryCubit(progressRepo),
-        ),
+        BlocProvider(create: (_) => WeeklyActivityCubit(progressRepo)..load()),
+        BlocProvider(create: (_) => ProgressGoalCubit(progressRepo)..load()),
+        BlocProvider(create: (_) => SessionHistoryCubit(progressRepo)),
         BlocProvider(
           create: (_) => LoyaltyAchievementsCubit(loyaltyRepo)..load(),
         ),
@@ -46,48 +40,44 @@ class ProgressTrackingView extends StatelessWidget {
       child: DefaultTabController(
         length: 3,
         child: Scaffold(
-        backgroundColor: isDark
-            ? AppColors.homeBackground
-            : AppColors.whiteColor,
-        appBar: AppAppBar(
-          leading: Padding(
-            padding: const EdgeInsets.only(left: AppSpacing.lmd),
-            child: IconButton(
-              icon: const Icon(Icons.arrow_back_ios_rounded, size: 20),
-              onPressed: () => Navigator.of(context).pop(),
+          backgroundColor: isDark
+              ? AppColors.homeBackground
+              : AppColors.whiteColor,
+          appBar: AppAppBar(
+            leading: Padding(
+              padding: const EdgeInsets.only(left: AppSpacing.lmd),
+              child: IconButton(
+                icon: const Icon(Icons.arrow_back_ios_rounded, size: 20),
+                onPressed: () => Navigator.of(context).pop(),
+              ),
             ),
-          ),
-          onBack: () => Navigator.of(context).pop(),
-          title: context.l10n.progress_tracking_title,
-          isMoreMenu: false,
+            onBack: () => Navigator.of(context).pop(),
+            title: context.l10n.progress_tracking_title,
+            isMoreMenu: false,
 
-          bottomPreferredSize: PreferredSize(
-            preferredSize: const Size.fromHeight(94),
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: AppSpacing.lg,
+            bottomPreferredSize: PreferredSize(
+              preferredSize: const Size.fromHeight(94),
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: AppSpacing.lg,
+                    ),
+                    child: progressTabBar(context: context, isDark: isDark),
                   ),
-                  child: progressTabBar(context: context, isDark: isDark),
-                ),
-                Divider(
-                  height: 1,
-                  thickness: 1,
-                  color: isDark ? AppColors.greyText : AppColors.buttonBorder,
-                ),
-              ],
+                  Divider(
+                    height: 1,
+                    thickness: 1,
+                    color: isDark ? AppColors.greyText : AppColors.buttonBorder,
+                  ),
+                ],
+              ),
             ),
           ),
+          body: TabBarView(
+            children: [OverviewView(), HistoryView(), AchievementView()],
+          ),
         ),
-        body: TabBarView(
-          children: [
-            OverviewView(),
-            HistoryView(),
-            AchievementView(),
-          ],
-        ),
-      ),
       ),
     );
   }

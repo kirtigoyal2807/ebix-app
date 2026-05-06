@@ -53,6 +53,5 @@ class TokenStorage {
     await _prefs.setString(_kMembershipPlanName, planName);
   }
 
-  Future<void> clearMembershipPlanName() =>
-      _prefs.remove(_kMembershipPlanName);
+  Future<void> clearMembershipPlanName() => _prefs.remove(_kMembershipPlanName);
 }

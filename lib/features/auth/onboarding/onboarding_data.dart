@@ -1,4 +1,3 @@
-
 import 'onboarding_item.dart';
 
 const onboardingItems = [

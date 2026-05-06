@@ -63,7 +63,9 @@ class SessionHistoryView extends StatelessWidget {
                         label: context.l10n.session_history_total_time,
                         value: state.isLoading && state.sessions.isEmpty
                             ? '—'
-                            : _formatDurationMinutes(state.totalDurationMinutes),
+                            : _formatDurationMinutes(
+                                state.totalDurationMinutes,
+                              ),
                         isDark: isDark,
                       ),
                     ),
@@ -86,8 +88,8 @@ class SessionHistoryView extends StatelessWidget {
                   state.selectedSessionHistory == SessionHistory.allTime
                       ? context.l10n.session_history_all_time
                       : state.selectedSessionHistory == SessionHistory.thisMonth
-                          ? context.l10n.session_history_this_month
-                          : context.l10n.session_history_last_30_days,
+                      ? context.l10n.session_history_this_month
+                      : context.l10n.session_history_last_30_days,
                   style: (context) => AppTextStyles.gelasioRegular(context),
                 );
               },

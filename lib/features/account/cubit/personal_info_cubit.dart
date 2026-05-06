@@ -35,10 +35,7 @@ class PersonalInfoCubit extends Cubit<PersonalInfoState> {
       imageQuality: 85,
     );
     if (image != null) {
-      emit(state.copyWith(
-        selectedAvatarPath: image.path,
-        removeAvatar: false,
-      ));
+      emit(state.copyWith(selectedAvatarPath: image.path, removeAvatar: false));
     }
   }
 
@@ -50,18 +47,12 @@ class PersonalInfoCubit extends Cubit<PersonalInfoState> {
       imageQuality: 85,
     );
     if (image != null) {
-      emit(state.copyWith(
-        selectedAvatarPath: image.path,
-        removeAvatar: false,
-      ));
+      emit(state.copyWith(selectedAvatarPath: image.path, removeAvatar: false));
     }
   }
 
   void removeProfilePicture() {
-    emit(state.copyWith(
-      clearSelectedAvatar: true,
-      removeAvatar: true,
-    ));
+    emit(state.copyWith(clearSelectedAvatar: true, removeAvatar: true));
   }
 
   /// Calls `PUT /customers/profile`. On success emits [PersonalInfoSaveStatus.success]
@@ -78,9 +69,10 @@ class PersonalInfoCubit extends Cubit<PersonalInfoState> {
       ),
     );
 
-    final fullName = [firstName.trim(), lastName.trim()]
-        .where((s) => s.isNotEmpty)
-        .join(' ');
+    final fullName = [
+      firstName.trim(),
+      lastName.trim(),
+    ].where((s) => s.isNotEmpty).join(' ');
 
     final result = await _authRepository.updateProfile(
       name: fullName.isNotEmpty ? fullName : null,

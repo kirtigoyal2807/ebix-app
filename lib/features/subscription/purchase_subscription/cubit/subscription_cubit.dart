@@ -13,7 +13,7 @@ part 'subscription_state.dart';
 
 class SubscriptionCubit extends Cubit<SubscriptionState> {
   SubscriptionCubit({bool initialIsGift = false})
-      : super(SubscriptionState(isGift: initialIsGift));
+    : super(SubscriptionState(isGift: initialIsGift));
 
   /// Last product id used for a successful `GET …/questionnaires/product/{id}`.
   /// Used to skip redundant prefetches when the schema is already in memory.
@@ -24,7 +24,8 @@ class SubscriptionCubit extends Cubit<SubscriptionState> {
   CheckoutPaymentIntentResult? _deferredReceiptPaymentIntent;
   Map<String, dynamic>? _deferredReceiptGatewayCallback;
 
-  bool get hasDeferredPostPaymentReceipt => _deferredReceiptPaymentIntent != null;
+  bool get hasDeferredPostPaymentReceipt =>
+      _deferredReceiptPaymentIntent != null;
 
   CheckoutPaymentIntentResult? get deferredPostPaymentReceiptIntent =>
       _deferredReceiptPaymentIntent;
@@ -223,9 +224,7 @@ class SubscriptionCubit extends Cubit<SubscriptionState> {
 
     if (value is bool && value == true) {
       final q = _questionnaireQuestionById(questionId);
-      if (q != null &&
-          q.isBooleanQuestion &&
-          q.allowOther != true) {
+      if (q != null && q.isBooleanQuestion && q.allowOther != true) {
         final cur = notes[questionId]?.trim() ?? '';
         if (cur.isEmpty) {
           notes[questionId] = q.defaultAnswerNoteForBooleanYes();
@@ -281,8 +280,7 @@ class SubscriptionCubit extends Cubit<SubscriptionState> {
       final id = q.numericQuestionId;
       if (id == null) return false;
       final v = state.healthQuestionnaireAnswers[id];
-      final required =
-          requireEveryQuestionInGroup || (q.isRequired == true);
+      final required = requireEveryQuestionInGroup || (q.isRequired == true);
 
       if (required) {
         if (v == null) return false;
@@ -371,7 +369,9 @@ class SubscriptionCubit extends Cubit<SubscriptionState> {
   /// Loads product questionnaire when missing (e.g. static medical fallback),
   /// then maps legacy subscription fields into [healthQuestionnaireAnswers] so
   /// `POST …/health-intake` can send a non-empty `answers` list.
-  Future<bool> ensureHealthQuestionnaireForIntake(CheckoutRepository repo) async {
+  Future<bool> ensureHealthQuestionnaireForIntake(
+    CheckoutRepository repo,
+  ) async {
     if (!state.selectedProductRequiresHealthIntake) {
       return true;
     }
@@ -428,7 +428,8 @@ class SubscriptionCubit extends Cubit<SubscriptionState> {
       switch (id) {
         case 1:
           if (!q.isCheckboxQuestion) {
-            m[id] = _anySectionTrueExcludingNone(state.surgeriesInjuries) ||
+            m[id] =
+                _anySectionTrueExcludingNone(state.surgeriesInjuries) ||
                 _anySectionTrueExcludingNone(state.painBonesMuscles);
           }
           break;
@@ -470,7 +471,9 @@ class SubscriptionCubit extends Cubit<SubscriptionState> {
       final id = q.numericQuestionId;
       if (id == null) continue;
       if (m[id] != null) continue;
-      if (q.isRequired == true && q.isBooleanQuestion && !q.isCheckboxQuestion) {
+      if (q.isRequired == true &&
+          q.isBooleanQuestion &&
+          !q.isCheckboxQuestion) {
         m[id] = false;
       }
     }
@@ -531,12 +534,16 @@ class SubscriptionCubit extends Cubit<SubscriptionState> {
           return state.email;
       }
     }
-    return state.personalInformationDynamicFields[q.dynamicPersonalStorageKey] ??
+    return state.personalInformationDynamicFields[q
+            .dynamicPersonalStorageKey] ??
         '';
   }
 
   /// Maps API personal questions into [SubscriptionState] name/age/… or [personalInformationDynamicFields].
-  void applyApiPersonalInformationAnswer(ProductHealthQuestion q, String value) {
+  void applyApiPersonalInformationAnswer(
+    ProductHealthQuestion q,
+    String value,
+  ) {
     final slot = q.personalInformationStateSlot;
     if (slot != null) {
       switch (slot) {
@@ -561,7 +568,9 @@ class SubscriptionCubit extends Cubit<SubscriptionState> {
       }
     }
     final key = q.dynamicPersonalStorageKey;
-    final next = Map<String, String>.from(state.personalInformationDynamicFields);
+    final next = Map<String, String>.from(
+      state.personalInformationDynamicFields,
+    );
     if (value.trim().isEmpty) {
       next.remove(key);
     } else {
@@ -609,8 +618,7 @@ class SubscriptionCubit extends Cubit<SubscriptionState> {
 
   void updatePhone(String val) {
     final digits = val.replaceAll(RegExp(r'\D'), '');
-    final limited =
-        digits.length > 10 ? digits.substring(0, 10) : digits;
+    final limited = digits.length > 10 ? digits.substring(0, 10) : digits;
     emit(state.copyWith(phoneNumber: limited));
   }
 
@@ -659,8 +667,9 @@ class SubscriptionCubit extends Cubit<SubscriptionState> {
 
   // Pregnancy Updates - Step 4
   void updateIsPregnant(bool val) {
-    final hasQ2 =
-        state.healthQuestionnaireQuestions.any((q) => q.numericQuestionId == 2);
+    final hasQ2 = state.healthQuestionnaireQuestions.any(
+      (q) => q.numericQuestionId == 2,
+    );
     if (hasQ2) {
       setHealthQuestionnaireAnswer(2, val);
     } else {
@@ -670,8 +679,9 @@ class SubscriptionCubit extends Cubit<SubscriptionState> {
 
   // Goals Updates - Step 5
   void updateGoals(String val) {
-    final hasQ3 =
-        state.healthQuestionnaireQuestions.any((q) => q.numericQuestionId == 3);
+    final hasQ3 = state.healthQuestionnaireQuestions.any(
+      (q) => q.numericQuestionId == 3,
+    );
     if (!hasQ3) {
       emit(state.copyWith(goals: val));
       return;
@@ -704,8 +714,7 @@ class SubscriptionCubit extends Cubit<SubscriptionState> {
 
   void updateEmergencyContactPhone(String val) {
     final digits = val.replaceAll(RegExp(r'\D'), '');
-    final limited =
-        digits.length > 10 ? digits.substring(0, 10) : digits;
+    final limited = digits.length > 10 ? digits.substring(0, 10) : digits;
     emit(state.copyWith(emergencyContactPhone: limited));
   }
 

@@ -119,9 +119,7 @@ class _JoinWaitlistBody extends StatelessWidget {
           Container(
             height: 72,
             width: 94,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8),
-            ),
+            decoration: BoxDecoration(borderRadius: BorderRadius.circular(8)),
             child: ClipRRect(
               borderRadius: const BorderRadius.vertical(
                 top: Radius.circular(AppRadius.md),
@@ -171,11 +169,7 @@ class _JoinWaitlistBody extends StatelessWidget {
                   isDark,
                 ),
                 const SizedBox(height: AppSpacing.sm),
-                _buildDetailRow(
-                  Icons.person_outline,
-                  slot.trainerName,
-                  isDark,
-                ),
+                _buildDetailRow(Icons.person_outline, slot.trainerName, isDark),
               ],
             ),
           ),
@@ -274,9 +268,9 @@ class _JoinWaitlistBody extends StatelessWidget {
                   const SizedBox(height: AppSpacing.sm),
                   AppText(
                     '$waitlistCount ${l10n.people}',
-                    style: (ctx) => AppTextStyles.experienceButton(ctx).copyWith(
-                      fontWeight: FontWeight.w600,
-                    ),
+                    style: (ctx) => AppTextStyles.experienceButton(
+                      ctx,
+                    ).copyWith(fontWeight: FontWeight.w600),
                   ),
                 ],
               ),
@@ -285,9 +279,7 @@ class _JoinWaitlistBody extends StatelessWidget {
                 ? SvgPicture.asset(
                     'assets/images/svg/ic_waitlist_person_dark.svg',
                   )
-                : SvgPicture.asset(
-                    'assets/images/svg/ic_waitlist_person.svg',
-                  ),
+                : SvgPicture.asset('assets/images/svg/ic_waitlist_person.svg'),
           ],
         ),
       ),
@@ -317,13 +309,15 @@ class _JoinWaitlistBody extends StatelessWidget {
                   children: [
                     TextSpan(
                       text: '${l10n.smartTip}: ',
-                      style: AppTextStyles.helpAndSupportItemSubLabel(context)
-                          .copyWith(fontWeight: FontWeight.w600),
+                      style: AppTextStyles.helpAndSupportItemSubLabel(
+                        context,
+                      ).copyWith(fontWeight: FontWeight.w600),
                     ),
                     TextSpan(
                       text: l10n.smartTipDescription,
-                      style: AppTextStyles.helpAndSupportItemSubLabel(context)
-                          .copyWith(height: 1.55),
+                      style: AppTextStyles.helpAndSupportItemSubLabel(
+                        context,
+                      ).copyWith(height: 1.55),
                     ),
                   ],
                 ),
@@ -350,9 +344,9 @@ class _JoinWaitlistBody extends StatelessWidget {
           ),
           child: AppText(
             msg,
-            style: (ctx) => AppTextStyles.bodyTextSmall(ctx).copyWith(
-              color: AppColors.lightRedColor,
-            ),
+            style: (ctx) => AppTextStyles.bodyTextSmall(
+              ctx,
+            ).copyWith(color: AppColors.lightRedColor),
           ),
         );
       },

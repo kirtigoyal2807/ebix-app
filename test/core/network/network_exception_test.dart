@@ -22,10 +22,7 @@ void main() {
 
     test('maps badCertificate', () {
       final n = NetworkException.fromDioException(
-        DioException(
-          requestOptions: ro,
-          type: DioExceptionType.badCertificate,
-        ),
+        DioException(requestOptions: ro, type: DioExceptionType.badCertificate),
       );
       expect(n.type, NetworkFailureType.badCertificate);
     });

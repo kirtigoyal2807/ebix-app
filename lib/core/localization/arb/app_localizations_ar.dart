@@ -159,14 +159,14 @@ class AppLocalizationsAr extends AppLocalizations {
   String get emailSupport => 'الدعم عبر البريد الإلكتروني';
 
   @override
-  String get emailSupportDesc => 'support@thepilatesstudio.com';
+  String get emailSupportDesc => 'info@thepilates.sa';
 
   @override
   String get phoneSupport => 'الدعم الهاتفي';
 
   @override
   String get phoneSupportDesc =>
-      '91 98765 43210 • من الاثنين إلى السبت 9 صباحًا - 7 مساءً';
+      '+966 55 337 8395 • من الاثنين إلى السبت 9 صباحًا - 7 مساءً';
 
   @override
   String get splashAppName => 'ذا بيلاتس';
@@ -2935,10 +2935,6 @@ class AppLocalizationsAr extends AppLocalizations {
   String get sportsRehabilitationTraining => 'تدريب إعادة التأهيل الرياضي';
 
   @override
-  String get anatomyBiomechanicsCertificate =>
-      'شهادة التشريح والميكانيكا الحيوية';
-
-  @override
   String get loginOtpSent => 'تم إرسال رمز التحقق. تحقق من هاتفك.';
 
   @override
@@ -3044,4 +3040,32 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get removeProfilePicture => 'إزالة صورة الملف الشخصي';
+
+  @override
+  String get anatomyBiomechanicsCertificate =>
+      'شهادة التشريح والميكانيكا الحيوية';
+
+  @override
+  String get branches => 'الفروع';
+
+  @override
+  String get voucherSuccess => 'تم تطبيق رمز القسيمة بنجاح';
+
+  @override
+  String get voucherFailed => 'رمز القسيمة غير صالح';
+
+  @override
+  String get rewardRedemption => 'تم استرداد المكافأة بنجاح';
+
+  @override
+  String get date_of_birth => 'تاريخ الميلاد';
+
+  @override
+  String get take_picture => 'التقاط صورة';
+
+  @override
+  String get access_gallery => 'اختيار من المعرض';
+
+  @override
+  String get remove_profile_picture => 'إزالة صورة الملف الشخصي';
 }

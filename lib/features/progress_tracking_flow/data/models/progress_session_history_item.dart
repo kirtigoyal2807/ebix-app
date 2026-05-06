@@ -23,8 +23,12 @@ class ProgressSessionHistoryItem {
       className: '${json['className'] ?? ''}',
       trainerName: json['trainerName'] as String?,
       branchName: json['branchName'] as String?,
-      startTime: DateTime.tryParse('${json['startTime']}') ?? DateTime.fromMillisecondsSinceEpoch(0),
-      endTime: DateTime.tryParse('${json['endTime']}') ?? DateTime.fromMillisecondsSinceEpoch(0),
+      startTime:
+          DateTime.tryParse('${json['startTime']}') ??
+          DateTime.fromMillisecondsSinceEpoch(0),
+      endTime:
+          DateTime.tryParse('${json['endTime']}') ??
+          DateTime.fromMillisecondsSinceEpoch(0),
       durationMinutes: _int(json['durationMinutes']),
       status: '${json['status'] ?? ''}',
     );

@@ -6,7 +6,7 @@ import 'challenge_detail_state.dart';
 
 class ChallengeDetailCubit extends Cubit<ChallengeDetailState> {
   ChallengeDetailCubit(this._loyaltyRepository, this.challengeId)
-      : super(ChallengeDetailState.initial());
+    : super(ChallengeDetailState.initial());
 
   final LoyaltyRepository _loyaltyRepository;
   final int challengeId;

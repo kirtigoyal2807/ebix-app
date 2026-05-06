@@ -36,13 +36,7 @@ class RewardState extends Equatable {
   factory RewardState.initial() {
     return RewardState(
       rewardFilterList: RewardFilter.values,
-      branchList: [
-        BranchModel(
-          id: 0,
-          title: 'All locations',
-          subTitle: '',
-        ),
-      ],
+      branchList: [BranchModel(id: 0, title: 'All locations', subTitle: '')],
       rewardsLoadStatus: RewardListLoadStatus.initial,
       rewards: const [],
       rewardsError: '',
@@ -97,17 +91,17 @@ class RewardState extends Equatable {
 
   @override
   List<Object?> get props => [
-        rewardFilterList,
-        selectedRewardFilter,
-        branchList,
-        selectedBranch,
-        rewardsLoadStatus,
-        rewards,
-        rewardsError,
-        historyLoadStatus,
-        pointsHistory,
-        pointsHistoryError,
-      ];
+    rewardFilterList,
+    selectedRewardFilter,
+    branchList,
+    selectedBranch,
+    rewardsLoadStatus,
+    rewards,
+    rewardsError,
+    historyLoadStatus,
+    pointsHistory,
+    pointsHistoryError,
+  ];
 }
 
 enum RewardFilter { all, experiences, classes, discounts }

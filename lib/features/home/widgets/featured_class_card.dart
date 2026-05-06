@@ -149,9 +149,7 @@ class FeaturedClassCard extends StatelessWidget {
                     if (classId.isEmpty) return;
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (_) => ClassDetailView(
-                          classId: classId,
-                        ),
+                        builder: (_) => ClassDetailView(classId: classId),
                       ),
                     );
                   },

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:pilates_app/core/network/api_result.dart';
 import 'package:pilates_app/core/network/network_exception.dart';
 import 'package:pilates_app/core/network/auth_locale_bridge.dart';
@@ -1071,5 +1072,10 @@ class AuthCubit extends Cubit<AuthState> {
 
   void changeTheme(ThemeMode mode) {
     emit(state.copyWith(themeMode: mode));
+  }
+
+  void changeDOB(DateTime date) {
+    String formattedDate = DateFormat("dd/MM/yyyy").format(date);
+    emit(state.copyWith(dateOfBirth: formattedDate));
   }
 }

@@ -19,7 +19,8 @@ class SessionHistoryCard extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final locale = Localizations.localeOf(context).toLanguageTag();
     final classTitle = item?.className ?? context.l10n.session_card_class_name;
-    final instructor = item?.trainerName != null && item!.trainerName!.isNotEmpty
+    final instructor =
+        item?.trainerName != null && item!.trainerName!.isNotEmpty
         ? 'with ${item!.trainerName}'
         : context.l10n.session_card_instructor;
     final statusLabel = item?.status.isNotEmpty == true
@@ -83,11 +84,11 @@ class SessionHistoryCard extends StatelessWidget {
                   statusLabel,
                   style: (context) =>
                       AppTextStyles.splashVersion(context).copyWith(
-                    color: isDark
-                        ? AppColors.successBorderDark
-                        : AppColors.successColor,
-                    height: 1.8,
-                  ),
+                        color: isDark
+                            ? AppColors.successBorderDark
+                            : AppColors.successColor,
+                        height: 1.8,
+                      ),
                 ),
               ),
             ],

@@ -55,7 +55,7 @@ class ProfilePictureBottomSheet extends StatelessWidget {
                       ],
                     ),
                   ),
-                  const SizedBox(height: AppSpacing.md),
+                  const SizedBox(height: AppSpacing.lg),
                   _ProfilePictureOption(
                     title: context.l10n.takePicture,
                     onTap: () =>
@@ -82,42 +82,51 @@ class ProfilePictureBottomSheet extends StatelessWidget {
   }
 }
 
-class _ProfilePictureOption extends StatelessWidget {
+class _ProfilePictureOption extends StatefulWidget {
   final String title;
   final VoidCallback onTap;
 
-  const _ProfilePictureOption({
-    required this.title,
-    required this.onTap,
-  });
+  const _ProfilePictureOption({required this.title, required this.onTap});
+
+  @override
+  State<_ProfilePictureOption> createState() => _ProfilePictureOptionState();
+}
+
+class _ProfilePictureOptionState extends State<_ProfilePictureOption> {
+  String selectedTitle = '';
 
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-
+    bool selected = selectedTitle == widget.title;
     return InkWell(
-      onTap: onTap,
+      onTap: () {
+        selectedTitle = widget.title;
+        setState(() {});
+        widget.onTap();
+      },
       child: Container(
         width: double.infinity,
         padding: const EdgeInsets.symmetric(
-          horizontal: AppSpacing.lg,
+          horizontal: AppSpacing.base,
           vertical: AppSpacing.md,
         ),
-        margin: const EdgeInsets.symmetric(
-          horizontal: AppSpacing.lg,
-          vertical: AppSpacing.xs,
-        ),
+        margin: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(AppRadius.md),
           border: Border.all(
-            color: isDark ? AppColors.borderDark : AppColors.borderLight,
-            width: 1,
+            color: selected
+                ? (isDark ? AppColors.languageIconDark : AppColors.languageIcon)
+                : Colors.transparent,
+            width: 1.5,
           ),
+          color: selected
+              ? (isDark
+                    ? AppColors.primaryDarkButton
+                    : AppColors.selectedLanguageBg)
+              : Colors.transparent,
         ),
-        child: AppText(
-          title,
-          style: AppTextStyles.experienceButton,
-        ),
+        child: AppText(widget.title, style: AppTextStyles.experienceButton),
       ),
     );
   }

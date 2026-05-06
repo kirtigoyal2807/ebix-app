@@ -40,7 +40,9 @@ class _PlanDetailsModalState extends State<PlanDetailsModal> {
   void initState() {
     super.initState();
     _displayPlan = Map<String, dynamic>.from(widget.plan);
-    WidgetsBinding.instance.addPostFrameCallback((_) => _maybeLoadProductDetail());
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) => _maybeLoadProductDetail(),
+    );
   }
 
   Future<void> _maybeLoadProductDetail() async {
@@ -82,9 +84,9 @@ class _PlanDetailsModalState extends State<PlanDetailsModal> {
           final cubit = context.read<SubscriptionCubit>();
           final repo = context.read<CheckoutRepository>();
           cubit.selectPlan(
-                merged['id'] as String,
-                requiresHealthIntake: product.requiresHealthIntake,
-              );
+            merged['id'] as String,
+            requiresHealthIntake: product.requiresHealthIntake,
+          );
           if (cubit.state.selectedProductRequiresHealthIntake &&
               cubit.state.healthQuestionnaireQuestions.isEmpty) {
             unawaited(cubit.prefetchHealthQuestionnaireForSelectedPlan(repo));
@@ -127,8 +129,8 @@ class _PlanDetailsModalState extends State<PlanDetailsModal> {
                       color: _displayPlan['isPopular'] == true
                           ? AppColors.goldStarColor
                           : (isDark
-                              ? const Color(0x3BFDC700)
-                              : AppColors.goldStarColor),
+                                ? const Color(0x3BFDC700)
+                                : AppColors.goldStarColor),
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: AppText(
@@ -203,12 +205,12 @@ class _PlanDetailsModalState extends State<PlanDetailsModal> {
                     billingSuffix,
                     style: (context) =>
                         AppTextStyles.boldBody(context).copyWith(
-                      fontSize: 32,
-                      fontWeight: FontWeight.w500,
-                      color: isDark
-                          ? AppColors.languageTextDark
-                          : AppColors.languageIcon,
-                    ),
+                          fontSize: 32,
+                          fontWeight: FontWeight.w500,
+                          color: isDark
+                              ? AppColors.languageTextDark
+                              : AppColors.languageIcon,
+                        ),
                   ),
               ],
             ),
@@ -216,18 +218,20 @@ class _PlanDetailsModalState extends State<PlanDetailsModal> {
               const SizedBox(height: AppSpacing.md),
               AppText(
                 descriptionPlain.trim(),
-                style: (context) => AppTextStyles.bodyTextSmall(context)
-                    .copyWith(
-                  color: isDark ? AppColors.lightText : AppColors.greyText,
-                  height: 1.35,
-                ),
+                style: (context) =>
+                    AppTextStyles.bodyTextSmall(context).copyWith(
+                      color: isDark ? AppColors.lightText : AppColors.greyText,
+                      height: 1.35,
+                    ),
               ),
             ],
             const SizedBox(height: AppSpacing.lg),
             if (_displayPlan['features'] != null)
               Container(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
+                padding: const EdgeInsets.symmetric(
+                  vertical: 16,
+                  horizontal: 20,
+                ),
                 decoration: BoxDecoration(
                   color: isDark
                       ? AppColors.lightBlackColor
@@ -237,8 +241,9 @@ class _PlanDetailsModalState extends State<PlanDetailsModal> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
-                  children:
-                      (_displayPlan['features'] as List<String>).map((feature) {
+                  children: (_displayPlan['features'] as List<String>).map((
+                    feature,
+                  ) {
                     return Padding(
                       padding: const EdgeInsets.all(4.0),
                       child: Row(
@@ -257,12 +262,12 @@ class _PlanDetailsModalState extends State<PlanDetailsModal> {
                               feature,
                               style: (style) =>
                                   AppTextStyles.bodyTextSmall(context).copyWith(
-                                color: isDark
-                                    ? AppColors.lightText
-                                    : AppColors.greyText,
-                                fontSize: 12,
-                                height: 1.2,
-                              ),
+                                    color: isDark
+                                        ? AppColors.lightText
+                                        : AppColors.greyText,
+                                    fontSize: 12,
+                                    height: 1.2,
+                                  ),
                             ),
                           ),
                         ],
@@ -275,8 +280,7 @@ class _PlanDetailsModalState extends State<PlanDetailsModal> {
             AppButton(
               label: widget.appLabel ?? 'Subscribe Now',
               onPressed: widget.onSubscribe,
-              buttonColor:
-                  isDark ? AppColors.primary : AppColors.primaryBrown,
+              buttonColor: isDark ? AppColors.primary : AppColors.primaryBrown,
               expanded: true,
             ),
             const SizedBox(height: 16),

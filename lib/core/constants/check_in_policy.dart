@@ -60,8 +60,4 @@ abstract final class CheckInPolicy {
   }
 }
 
-enum CheckInTimeBand {
-  tooEarly,
-  inWindow,
-  tooLate,
-}
+enum CheckInTimeBand { tooEarly, inWindow, tooLate }

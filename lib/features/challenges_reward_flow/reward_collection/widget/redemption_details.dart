@@ -17,9 +17,12 @@ class RedemptionDetails extends StatelessWidget {
     return Container(
       padding: EdgeInsets.all(AppSpacing.lmd),
       decoration: BoxDecoration(
-        color:isDark ? AppColors.homeBackground: AppColors.whiteColor,
+        color: isDark ? AppColors.homeBackground : AppColors.whiteColor,
         borderRadius: BorderRadius.circular(AppRadius.md),
-        border: Border.all(color: isDark ? AppColors.greyText: AppColors.buttonBorder, width: 1),
+        border: Border.all(
+          color: isDark ? AppColors.greyText : AppColors.buttonBorder,
+          width: 1,
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -27,13 +30,14 @@ class RedemptionDetails extends StatelessWidget {
           _buildRow(
             isDark: isDark,
             title: context.l10n.redeem_how_to_collect,
-            subtitle:
-            context.l10n.redeem_collect_desc, ),
+            subtitle: context.l10n.redeem_collect_desc,
+          ),
           SizedBox(height: AppSpacing.base),
           _buildRow(
             isDark: isDark,
             title: context.l10n.redeem_valid_for,
-            subtitle: context.l10n.redeem_valid_desc, ),
+            subtitle: context.l10n.redeem_valid_desc,
+          ),
           SizedBox(height: AppSpacing.base),
           _buildRow(
             isDark: isDark,
@@ -56,7 +60,7 @@ class RedemptionDetails extends StatelessWidget {
         Icon(
           Icons.check_circle_outline_rounded,
           size: 24,
-          color:isDark ? AppColors.successBorderDark: AppColors.successColor,
+          color: isDark ? AppColors.successBorderDark : AppColors.successColor,
         ),
         SizedBox(width: AppSpacing.sm),
         Expanded(
@@ -68,13 +72,13 @@ class RedemptionDetails extends StatelessWidget {
                 style: (context) => AppTextStyles.body(context).copyWith(
                   color: isDark ? AppColors.lightText : AppColors.darkText,
                 ),
-
               ),
               SizedBox(height: AppSpacing.xs),
               AppText(
                 subtitle,
-                style: (context) =>
-                    AppTextStyles.bodyLightText(context).copyWith(fontSize: 12,height: 1.40),
+                style: (context) => AppTextStyles.bodyLightText(
+                  context,
+                ).copyWith(fontSize: 12, height: 1.40),
                 maxLines: 3,
               ),
             ],

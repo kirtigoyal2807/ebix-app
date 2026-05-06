@@ -1,6 +1,7 @@
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:pilates_app/config/theme/app_colors.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
@@ -101,13 +102,13 @@ class _SignUpPersonalInfoViewState extends State<SignUpPersonalInfoView> {
     }
 
     context.read<AuthCubit>().register(
-          firstName: first,
-          lastName: last,
-          email: email,
-          phone: phone,
-          password: password,
-          gender: _mapGender(_genderValue),
-        );
+      firstName: first,
+      lastName: last,
+      email: email,
+      phone: phone,
+      password: password,
+      gender: _mapGender(_genderValue),
+    );
   }
 
   @override
@@ -125,9 +126,9 @@ class _SignUpPersonalInfoViewState extends State<SignUpPersonalInfoView> {
         final text = state.registerErrorMessage.trim().isEmpty
             ? context.l10n.loginErrorGeneric
             : state.registerErrorMessage;
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(text)),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(text)));
       },
       builder: (context, state) {
         final fe = state.registerFieldErrors;
@@ -185,7 +186,8 @@ class _SignUpPersonalInfoViewState extends State<SignUpPersonalInfoView> {
                           label: context.l10n.firstName,
                           hint: 'Ayesha',
                           keyboardType: TextInputType.name,
-                          errorText: _clientFirstNameError ??
+                          errorText:
+                              _clientFirstNameError ??
                               fe['firstname'] ??
                               fe['first_name'],
                           onChanged: (_) => setState(() {
@@ -199,7 +201,8 @@ class _SignUpPersonalInfoViewState extends State<SignUpPersonalInfoView> {
                           label: context.l10n.lastName,
                           hint: 'Tajib',
                           keyboardType: TextInputType.name,
-                          errorText: _clientLastNameError ??
+                          errorText:
+                              _clientLastNameError ??
                               fe['lastname'] ??
                               fe['last_name'],
                           onChanged: (_) => setState(() {
@@ -256,6 +259,33 @@ class _SignUpPersonalInfoViewState extends State<SignUpPersonalInfoView> {
                                 },
                         ),
                         const SizedBox(height: AppSpacing.md),
+                        BlocBuilder<AuthCubit, AuthState>(
+                          builder: (context, state) {
+                            return AppTextField(
+                              onTap: () async {
+                                final DateTime? picked = await showDatePicker(
+                                  context: context,
+                                  initialDate: DateFormat(
+                                    "dd/MM/yyyy",
+                                  ).parse(state.dateOfBirth),
+                                  firstDate: DateTime(1900),
+                                  lastDate: DateTime(2100),
+                                );
+
+                                if (picked != null) {
+                                  if (!context.mounted) return;
+                                  context.read<AuthCubit>().changeDOB(picked);
+                                }
+                              },
+                              readOnly: true,
+                              initialValue: state.dateOfBirth,
+                              label: context.l10n.date_of_birth,
+                              hint: '',
+                              keyboardType: TextInputType.emailAddress,
+                            );
+                          },
+                        ),
+                        const SizedBox(height: AppSpacing.md),
                         AppTextField(
                           key: const ValueKey('signup_password'),
                           controller: _passwordController,
@@ -264,8 +294,7 @@ class _SignUpPersonalInfoViewState extends State<SignUpPersonalInfoView> {
                           obscure: true,
                           keyboardType: TextInputType.visiblePassword,
                           maxLines: 1,
-                          errorText:
-                              _clientPasswordError ?? fe['password'],
+                          errorText: _clientPasswordError ?? fe['password'],
                           onChanged: (_) => setState(() {
                             _clientPasswordError = null;
                           }),
@@ -294,8 +323,7 @@ class _SignUpPersonalInfoViewState extends State<SignUpPersonalInfoView> {
                   key: const ValueKey('signup_continue'),
                   label: context.l10n.continueTxt,
                   isLoading: loading,
-                  onPressed:
-                      loading ? null : () => _submit(context),
+                  onPressed: loading ? null : () => _submit(context),
                 ),
               ],
             ),

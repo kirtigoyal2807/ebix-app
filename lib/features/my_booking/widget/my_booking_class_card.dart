@@ -341,7 +341,7 @@ class MyBookingClassCard extends StatelessWidget {
                               ? AppColors.lightText
                               : AppColors.darkText,
                           fontWeight: FontWeight.w500,
-                            height: 1
+                          height: 1,
                         ),
                         children: [
                           TextSpan(
@@ -350,7 +350,7 @@ class MyBookingClassCard extends StatelessWidget {
                               fontSize: size.width * 0.04 > 16
                                   ? 16
                                   : size.width * 0.04,
-                                height: 1
+                              height: 1,
                               // highlight
                             ),
                           ),
@@ -364,7 +364,7 @@ class MyBookingClassCard extends StatelessWidget {
                                   ? AppColors.lightText
                                   : AppColors.darkText,
                               fontWeight: FontWeight.w500,
-                              height: 1
+                              height: 1,
                             ),
                           ),
                         ],
@@ -419,7 +419,9 @@ class MyBookingClassCard extends StatelessWidget {
                   Expanded(
                     child: AppButton(
                       label: checkInLabel ?? context.l10n.checkIn,
-                      onPressed: isCheckInBusy || isCancelBusy ? null : onCheckIn,
+                      onPressed: isCheckInBusy || isCancelBusy
+                          ? null
+                          : onCheckIn,
                       isLoading: isCheckInBusy,
                       buttonHeight: 32,
                       variant: onCheckIn == null && !isCheckInBusy
@@ -483,7 +485,7 @@ class MyBookingClassCard extends StatelessWidget {
               style: (context) => AppTextStyles.captionText(context).copyWith(
                 fontSize: size.width * 0.03 > 14 ? 14 : size.width * 0.03,
                 color: isDark ? AppColors.darkGreyText : AppColors.greyText,
-                height: 1.2
+                height: 1.2,
               ),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
@@ -495,7 +497,7 @@ class MyBookingClassCard extends StatelessWidget {
               style: (context) => AppTextStyles.captionText(context).copyWith(
                 fontSize: size.width * 0.03 > 14 ? 14 : size.width * 0.03,
                 color: isDark ? AppColors.darkGreyText : AppColors.greyText,
-                  height: 1.2
+                height: 1.2,
               ),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
@@ -513,8 +515,7 @@ class MyBookingClassCard extends StatelessWidget {
                         backgroundColor: Colors.transparent,
                         barrierColor: AppColors.bottomSheetShadow,
                         builder: (_) => ConfirmationSheet(
-                          confirmationText:
-                              context.l10n.leaveWaitlistConfirm,
+                          confirmationText: context.l10n.leaveWaitlistConfirm,
                           buttonText: context.l10n.leaveWaitlistYes,
                           onDestructive: run,
                         ),
@@ -537,7 +538,7 @@ class MyBookingClassCard extends StatelessWidget {
               style: (context) => AppTextStyles.captionText(context).copyWith(
                 fontSize: size.width * 0.03 > 14 ? 14 : size.width * 0.03,
                 color: isDark ? AppColors.darkGreyText : AppColors.greyText,
-                  height: 1.2
+                height: 1.2,
               ),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
@@ -548,7 +549,7 @@ class MyBookingClassCard extends StatelessWidget {
               style: (context) => AppTextStyles.captionText(context).copyWith(
                 fontSize: size.width * 0.03 > 14 ? 14 : size.width * 0.03,
                 color: isDark ? AppColors.darkGreyText : AppColors.greyText,
-                  height: 1.2
+                height: 1.2,
               ),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
@@ -631,7 +632,7 @@ class MyBookingClassCard extends StatelessWidget {
               style: (context) => AppTextStyles.captionText(context).copyWith(
                 fontSize: size.width * 0.03 > 14 ? 14 : size.width * 0.03,
                 color: isDark ? AppColors.darkGreyText : AppColors.greyText,
-                  height: 1.2
+                height: 1.2,
               ),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
@@ -647,7 +648,7 @@ class MyBookingClassCard extends StatelessWidget {
               style: (context) => AppTextStyles.captionText(context).copyWith(
                 fontSize: size.width * 0.03 > 14 ? 14 : size.width * 0.03,
                 color: isDark ? AppColors.darkGreyText : AppColors.lightGrey,
-                  height: 1.2
+                height: 1.2,
               ),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,

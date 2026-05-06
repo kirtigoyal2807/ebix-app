@@ -147,8 +147,8 @@ class TopTrainersSection extends StatelessWidget {
                                 : AppColors.whiteColor,
                             backgroundImage:
                                 (trainer.imageUrl ?? '').trim().isEmpty
-                                    ? null
-                                    : NetworkImage(trainer.imageUrl!),
+                                ? null
+                                : NetworkImage(trainer.imageUrl!),
                             child: (trainer.imageUrl ?? '').trim().isEmpty
                                 ? const Icon(Icons.person)
                                 : null,

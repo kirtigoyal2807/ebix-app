@@ -39,7 +39,9 @@ class GoalProgress extends StatelessWidget {
           width: double.infinity,
           padding: EdgeInsets.symmetric(vertical: AppSpacing.lg),
           decoration: BoxDecoration(
-            color: isDark ? AppColors.primaryDarkButton : AppColors.seekBarLight,
+            color: isDark
+                ? AppColors.primaryDarkButton
+                : AppColors.seekBarLight,
             borderRadius: BorderRadius.circular(AppRadius.md),
           ),
           child: Column(
@@ -87,10 +89,10 @@ class GoalProgress extends StatelessWidget {
                           pctLabel,
                           style: (context) =>
                               AppTextStyles.headline(context).copyWith(
-                            color: isDark
-                                ? AppColors.lightText
-                                : AppColors.darkText,
-                          ),
+                                color: isDark
+                                    ? AppColors.lightText
+                                    : AppColors.darkText,
+                              ),
                         ),
                         SizedBox(height: 2),
                         AppText(

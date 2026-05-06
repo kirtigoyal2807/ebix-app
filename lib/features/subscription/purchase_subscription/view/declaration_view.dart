@@ -114,70 +114,70 @@ class _DeclarationViewState extends State<DeclarationView> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                  SubscriptionStepHeader(
-                    currentStep: 5,
-                    totalSteps: 6,
-                    isDark: isDark,
-                  ),
-                  AppText(
-                    l10n.declaration,
-                    style: (style) => AppTextStyles.gelasioMedium(
-                      context,
-                    ).copyWith(fontSize: 24, height: 1.2),
-                  ),
-                  const SizedBox(height: AppSpacing.lg),
-                  _buildSectionHeader(context, l10n.declarationText),
-                  const SizedBox(height: AppSpacing.md),
-                  AppTextField(
-                    label: l10n.name,
-                    hint: l10n.name,
-                    controller: _nameController,
-                    errorText: _nameError,
-                    keyboardType: TextInputType.name,
-                    onChanged: (_) {
-                      cubit.updateDeclarationName(_nameController.text);
-                      setState(() => _nameError = null);
-                    },
-                  ),
-                  const SizedBox(height: AppSpacing.md),
-                  AppTextField(
-                    label: l10n.signature,
-                    hint: l10n.signature,
-                    controller: _signatureController,
-                    errorText: _signatureError,
-                    onChanged: (_) {
-                      cubit.updateDeclarationSignature(
-                        _signatureController.text,
-                      );
-                      setState(() => _signatureError = null);
-                    },
-                  ),
-                  const SizedBox(height: AppSpacing.md),
-                  SubscriptionCalendarDateField(
-                    label: l10n.date,
-                    hint: l10n.date,
-                    controller: _dateController,
-                    onDateSelected: (d) {
-                      cubit.updateDeclarationDate(d);
-                      setState(() => _dateError = null);
-                    },
-                  ),
-                  if (_dateError != null) ...[
-                    const SizedBox(height: 6),
-                    Text(
-                      _dateError!,
-                      style: AppTextStyles.bodyText(context).copyWith(
-                        fontSize: 12,
-                        color: Theme.of(context).brightness == Brightness.dark
-                            ? AppColors.redDark
-                            : AppColors.redLight,
-                      ),
+                    SubscriptionStepHeader(
+                      currentStep: 5,
+                      totalSteps: 6,
+                      isDark: isDark,
                     ),
+                    AppText(
+                      l10n.declaration,
+                      style: (style) => AppTextStyles.gelasioMedium(
+                        context,
+                      ).copyWith(fontSize: 24, height: 1.2),
+                    ),
+                    const SizedBox(height: AppSpacing.lg),
+                    _buildSectionHeader(context, l10n.declarationText),
+                    const SizedBox(height: AppSpacing.md),
+                    AppTextField(
+                      label: l10n.name,
+                      hint: l10n.name,
+                      controller: _nameController,
+                      errorText: _nameError,
+                      keyboardType: TextInputType.name,
+                      onChanged: (_) {
+                        cubit.updateDeclarationName(_nameController.text);
+                        setState(() => _nameError = null);
+                      },
+                    ),
+                    const SizedBox(height: AppSpacing.md),
+                    AppTextField(
+                      label: l10n.signature,
+                      hint: l10n.signature,
+                      controller: _signatureController,
+                      errorText: _signatureError,
+                      onChanged: (_) {
+                        cubit.updateDeclarationSignature(
+                          _signatureController.text,
+                        );
+                        setState(() => _signatureError = null);
+                      },
+                    ),
+                    const SizedBox(height: AppSpacing.md),
+                    SubscriptionCalendarDateField(
+                      label: l10n.date,
+                      hint: l10n.date,
+                      controller: _dateController,
+                      onDateSelected: (d) {
+                        cubit.updateDeclarationDate(d);
+                        setState(() => _dateError = null);
+                      },
+                    ),
+                    if (_dateError != null) ...[
+                      const SizedBox(height: 6),
+                      Text(
+                        _dateError!,
+                        style: AppTextStyles.bodyText(context).copyWith(
+                          fontSize: 12,
+                          color: Theme.of(context).brightness == Brightness.dark
+                              ? AppColors.redDark
+                              : AppColors.redLight,
+                        ),
+                      ),
+                    ],
+                    const SizedBox(height: AppSpacing.lg),
                   ],
-                  const SizedBox(height: AppSpacing.lg),
-                ],
+                ),
               ),
-            ),
             ),
           ),
           AppButton(

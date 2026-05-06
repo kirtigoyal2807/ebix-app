@@ -136,11 +136,11 @@ class _RedeemGiftCardSheetState extends State<RedeemGiftCardSheet> {
                                 Icons.close,
                                 color: state.isSubmitting
                                     ? (isDark
-                                        ? AppColors.greyText
-                                        : AppColors.lightGrey)
+                                          ? AppColors.greyText
+                                          : AppColors.lightGrey)
                                     : (isDark
-                                        ? AppColors.whiteColor
-                                        : AppColors.blackColor),
+                                          ? AppColors.whiteColor
+                                          : AppColors.blackColor),
                               ),
                             ),
                           ],
@@ -178,9 +178,9 @@ class _RedeemGiftCardSheetState extends State<RedeemGiftCardSheet> {
                               ? null
                               : () {
                                   FocusScope.of(context).unfocus();
-                                  context
-                                      .read<RedeemGiftCubit>()
-                                      .redeem(_codeController.text);
+                                  context.read<RedeemGiftCubit>().redeem(
+                                    _codeController.text,
+                                  );
                                 },
                           variant: AppButtonVariant.primary,
                         ),

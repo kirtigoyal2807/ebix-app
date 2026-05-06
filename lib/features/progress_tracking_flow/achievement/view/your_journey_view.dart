@@ -80,8 +80,7 @@ class YourJourneyView extends StatelessWidget {
           final progress = total > 0 ? earnedCount / total : 0.0;
 
           return RefreshIndicator(
-            onRefresh: () =>
-                context.read<LoyaltyAchievementsCubit>().refresh(),
+            onRefresh: () => context.read<LoyaltyAchievementsCubit>().refresh(),
             child: ListView(
               physics: const AlwaysScrollableScrollPhysics(),
               padding: EdgeInsets.symmetric(
@@ -218,11 +217,11 @@ class _JourneyBadgeCard extends StatelessWidget {
                   subtitle,
                   style: (context) =>
                       AppTextStyles.textFieldHeading(context).copyWith(
-                    height: 1,
-                    color: isDark
-                        ? AppColors.languageTextDark
-                        : AppColors.languageIcon,
-                  ),
+                        height: 1,
+                        color: isDark
+                            ? AppColors.languageTextDark
+                            : AppColors.languageIcon,
+                      ),
                 ),
                 if (matchedRule != null && matchedRule.rewardPoints > 0) ...[
                   SizedBox(height: AppSpacing.xs),
@@ -230,9 +229,9 @@ class _JourneyBadgeCard extends StatelessWidget {
                     context.l10n.points_short(matchedRule.rewardPoints),
                     style: (context) =>
                         AppTextStyles.captionText(context).copyWith(
-                      color: AppColors.languageIcon,
-                      fontWeight: FontWeight.w600,
-                    ),
+                          color: AppColors.languageIcon,
+                          fontWeight: FontWeight.w600,
+                        ),
                   ),
                 ],
                 SizedBox(height: AppSpacing.base),
@@ -253,18 +252,14 @@ class _JourneyBadgeCard extends StatelessWidget {
 }
 
 class _AchievementRuleTile extends StatelessWidget {
-  const _AchievementRuleTile({
-    required this.rule,
-    required this.isDark,
-  });
+  const _AchievementRuleTile({required this.rule, required this.isDark});
 
   final LoyaltyAchievementRule rule;
   final bool isDark;
 
   @override
   Widget build(BuildContext context) {
-    final borderColor =
-        isDark ? AppColors.greyText : AppColors.buttonBorder;
+    final borderColor = isDark ? AppColors.greyText : AppColors.buttonBorder;
     final threshold = rule.thresholdValue;
     final meta = threshold != null
         ? '${rule.ruleType} · $threshold'
@@ -285,25 +280,22 @@ class _AchievementRuleTile extends StatelessWidget {
         children: [
           AppText(
             rule.name.isEmpty ? rule.ruleKey : rule.name,
-            style: (context) => AppTextStyles.textFieldHeading(
-              context,
-            ).copyWith(height: 1.2),
+            style: (context) =>
+                AppTextStyles.textFieldHeading(context).copyWith(height: 1.2),
           ),
           SizedBox(height: AppSpacing.xs),
           AppText(
             meta,
-            style: (context) => AppTextStyles.bodyTextSmall(context).copyWith(
-                  color: AppColors.lightGrey,
-                  height: 1.3,
-                ),
+            style: (context) => AppTextStyles.bodyTextSmall(
+              context,
+            ).copyWith(color: AppColors.lightGrey, height: 1.3),
             maxLines: 3,
           ),
           if (rule.rewardPoints > 0) ...[
             SizedBox(height: AppSpacing.sm),
             AppText(
               context.l10n.points_short(rule.rewardPoints),
-              style: (context) =>
-                  AppTextStyles.captionText(context).copyWith(
+              style: (context) => AppTextStyles.captionText(context).copyWith(
                 color: AppColors.languageIcon,
                 fontWeight: FontWeight.w600,
               ),

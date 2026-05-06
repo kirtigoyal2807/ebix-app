@@ -10,15 +10,14 @@ class ChallengesCubit extends Cubit<ChallengesState> {
   final LoyaltyRepository _loyaltyRepository;
 
   Future<void> load() async {
-    emit(state.copyWith(status: ChallengesLoadStatus.loading, errorMessage: ''));
+    emit(
+      state.copyWith(status: ChallengesLoadStatus.loading, errorMessage: ''),
+    );
     final result = await _loyaltyRepository.getChallenges();
     switch (result) {
       case ApiSuccess(:final data):
         emit(
-          state.copyWith(
-            status: ChallengesLoadStatus.loaded,
-            challenges: data,
-          ),
+          state.copyWith(status: ChallengesLoadStatus.loaded, challenges: data),
         );
       case ApiFailure(:final exception):
         emit(

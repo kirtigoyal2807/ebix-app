@@ -24,7 +24,8 @@ class LoyaltyTierBenefit {
     final label = _trimOrEmptyAsNull(json['label']);
     final titleField =
         _trimOrEmptyAsNull(json['title']) ?? _trimOrEmptyAsNull(json['name']);
-    final desc = _trimOrEmptyAsNull(json['description']) ??
+    final desc =
+        _trimOrEmptyAsNull(json['description']) ??
         _trimOrEmptyAsNull(json['subtitle']);
 
     var primary = label ?? titleField;
@@ -104,9 +105,7 @@ class LoyaltyTier {
             benefits.add(b);
           }
         } else if (e is Map) {
-          final b = LoyaltyTierBenefit.fromJson(
-            Map<String, dynamic>.from(e),
-          );
+          final b = LoyaltyTierBenefit.fromJson(Map<String, dynamic>.from(e));
           if (b.title.trim().isNotEmpty || b.description.trim().isNotEmpty) {
             benefits.add(b);
           }
@@ -115,9 +114,7 @@ class LoyaltyTier {
     }
 
     final minPoints = _readInt(
-      json['minimumPoints'] ??
-          json['pointsMin'] ??
-          json['minPoints'],
+      json['minimumPoints'] ?? json['pointsMin'] ?? json['minPoints'],
     );
 
     return LoyaltyTier(

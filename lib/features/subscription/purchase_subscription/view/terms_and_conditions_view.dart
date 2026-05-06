@@ -29,7 +29,9 @@ class _TermsAndConditionsViewState extends State<TermsAndConditionsView> {
     super.initState();
     _legalScrollController = ScrollController();
     _legalScrollController.addListener(_onLegalScroll);
-    WidgetsBinding.instance.addPostFrameCallback((_) => _maybeMarkShortLegalContentRead());
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) => _maybeMarkShortLegalContentRead(),
+    );
   }
 
   @override
@@ -133,10 +135,14 @@ class _TermsAndConditionsViewState extends State<TermsAndConditionsView> {
                         child: ScrollbarTheme(
                           data: ScrollbarThemeData(
                             thumbColor: WidgetStateProperty.all(
-                              isDark ? AppColors.languageIconDark : AppColors.languageIcon,
+                              isDark
+                                  ? AppColors.languageIconDark
+                                  : AppColors.languageIcon,
                             ),
                             trackColor: WidgetStateProperty.all(
-                              isDark ? AppColors.greyText : AppColors.buttonBorder,
+                              isDark
+                                  ? AppColors.greyText
+                                  : AppColors.buttonBorder,
                             ),
                             trackVisibility: WidgetStateProperty.all(true),
                             thickness: WidgetStateProperty.all(4),
@@ -169,8 +175,7 @@ class _TermsAndConditionsViewState extends State<TermsAndConditionsView> {
                                       AppText(
                                         l10n.subscriptionAgreement,
                                         style: (style) =>
-                                            AppTextStyles
-                                                .helpAndSupportItemLabel(
+                                            AppTextStyles.helpAndSupportItemLabel(
                                               context,
                                             ).copyWith(
                                               fontSize: 12,
@@ -182,17 +187,17 @@ class _TermsAndConditionsViewState extends State<TermsAndConditionsView> {
                                       const SizedBox(height: AppSpacing.md),
                                       Text(
                                         l10n.subscriptionTermsText,
-                                        style: AppTextStyles
-                                            .helpAndSupportItemLabel(
-                                          context,
-                                        ).copyWith(
-                                          fontSize: 12,
-                                          color: isDark
-                                              ? AppColors.darkGreyText
-                                              : AppColors.greyText,
-                                          fontWeight: FontWeight.w400,
-                                          height: 1.5,
-                                        ),
+                                        style:
+                                            AppTextStyles.helpAndSupportItemLabel(
+                                              context,
+                                            ).copyWith(
+                                              fontSize: 12,
+                                              color: isDark
+                                                  ? AppColors.darkGreyText
+                                                  : AppColors.greyText,
+                                              fontWeight: FontWeight.w400,
+                                              height: 1.5,
+                                            ),
                                       ),
                                     ],
                                   ),
@@ -237,7 +242,9 @@ class _TermsAndConditionsViewState extends State<TermsAndConditionsView> {
                                 }
                               : null,
                           activeColor: AppColors.primaryBrown,
-                          checkColor: isDark ? AppColors.lightText : AppColors.darkText,
+                          checkColor: isDark
+                              ? AppColors.lightText
+                              : AppColors.darkText,
                           side: BorderSide(
                             color: isDark
                                 ? AppColors.greyText

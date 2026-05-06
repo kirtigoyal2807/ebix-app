@@ -6,10 +6,8 @@ import 'package:pilates_app/features/my_booking/data/models/booking_resource.dar
 import 'confirm_booking_state.dart';
 
 class ConfirmBookingCubit extends Cubit<ConfirmBookingState> {
-  ConfirmBookingCubit(
-    this._repository, {
-    required this.calendarEventId,
-  }) : super(const ConfirmBookingState());
+  ConfirmBookingCubit(this._repository, {required this.calendarEventId})
+    : super(const ConfirmBookingState());
 
   final ClassesRepository _repository;
   final String calendarEventId;
@@ -22,28 +20,15 @@ class ConfirmBookingCubit extends Cubit<ConfirmBookingState> {
   /// [agreePolicy] is true. Returns the [BookingResource] on success, or null.
   Future<BookingResource?> submitBooking() async {
     if (!state.agreePolicy) return null;
-    emit(
-      state.copyWith(
-        isSubmitting: true,
-        errorMessage: null,
-      ),
-    );
+    emit(state.copyWith(isSubmitting: true, errorMessage: null));
     final result = await _repository.bookWithPlan(calendarEventId);
     switch (result) {
       case ApiSuccess(:final data):
-        emit(
-          state.copyWith(
-            isSubmitting: false,
-            errorMessage: null,
-          ),
-        );
+        emit(state.copyWith(isSubmitting: false, errorMessage: null));
         return data;
       case ApiFailure(:final exception):
         emit(
-          state.copyWith(
-            isSubmitting: false,
-            errorMessage: exception.message,
-          ),
+          state.copyWith(isSubmitting: false, errorMessage: exception.message),
         );
         return null;
     }

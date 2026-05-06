@@ -33,7 +33,9 @@ class PersonalInfoState extends Equatable {
       dateOfBirth: dateOfBirth ?? this.dateOfBirth,
       saveStatus: saveStatus ?? this.saveStatus,
       errorMessage: errorMessage ?? this.errorMessage,
-      selectedAvatarPath: clearSelectedAvatar ? null : (selectedAvatarPath ?? this.selectedAvatarPath),
+      selectedAvatarPath: clearSelectedAvatar
+          ? null
+          : (selectedAvatarPath ?? this.selectedAvatarPath),
       removeAvatar: removeAvatar ?? this.removeAvatar,
     );
   }

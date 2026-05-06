@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:pilates_app/config/theme/app_radius.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
 
-
 class OtpField extends StatefulWidget {
   final int length;
   final ValueChanged<String>? onChanged;
@@ -26,8 +25,7 @@ class _OtpFieldState extends State<OtpField> {
   @override
   void initState() {
     super.initState();
-    _controllers =
-        List.generate(widget.length, (_) => TextEditingController());
+    _controllers = List.generate(widget.length, (_) => TextEditingController());
     _focusNodes = List.generate(widget.length, (_) => FocusNode());
   }
 
@@ -66,9 +64,7 @@ class _OtpFieldState extends State<OtpField> {
       children: List.generate(widget.length, (index) {
         return Container(
           margin: EdgeInsets.only(
-            right: index == widget.length - 1
-                ? 0
-                : AppSpacing.sm,
+            right: index == widget.length - 1 ? 0 : AppSpacing.sm,
           ),
           width: 48,
           height: 48,
@@ -83,15 +79,11 @@ class _OtpFieldState extends State<OtpField> {
               counterText: '',
               contentPadding: EdgeInsets.zero,
               enabledBorder: OutlineInputBorder(
-                borderRadius:
-                BorderRadius.circular(AppRadius.md),
-                borderSide: BorderSide(
-                  color: theme.dividerColor,
-                ),
+                borderRadius: BorderRadius.circular(AppRadius.md),
+                borderSide: BorderSide(color: theme.dividerColor),
               ),
               focusedBorder: OutlineInputBorder(
-                borderRadius:
-                BorderRadius.circular(AppRadius.md),
+                borderRadius: BorderRadius.circular(AppRadius.md),
                 borderSide: BorderSide(
                   color: theme.colorScheme.primary,
                   width: 1.5,

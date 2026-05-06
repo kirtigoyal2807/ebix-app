@@ -47,102 +47,111 @@ void main() {
 
   test('loadClassDetail passes trimmed class id to repository', () async {
     fakeRepo.getClassDetailResult = ApiSuccess(_sampleClassWithEvents());
-    final cubit = ClassDetailCubit(
-      fakeRepo,
-      '  class-1  ',
-    );
+    final cubit = ClassDetailCubit(fakeRepo, '  class-1  ');
     await cubit.loadClassDetail();
     expect(fakeRepo.lastClassDetailId, 'class-1');
     await cubit.close();
   });
 
-  test('loadClassDetail success picks next upcoming session from API list', () async {
-    fakeRepo.getClassDetailResult = ApiSuccess(_sampleClassWithEvents());
-    final cubit = ClassDetailCubit(fakeRepo, 'class-1');
-    await cubit.loadClassDetail();
-    expect(cubit.state.status, ClassDetailLoadStatus.loaded);
-    final expected = ClassSlotViewModel.pickUpcomingEvent(
-      _sampleClassWithEvents(),
-    );
-    expect(cubit.state.slot?.calendarEventId, expected?.id);
-    if (expected != null) {
-      expect(cubit.state.slot?.trainerName, expected.trainerName);
-    }
-    expect(fakeRepo.getClassDetailCalls, 1);
-    await cubit.close();
-  });
+  test(
+    'loadClassDetail success picks next upcoming session from API list',
+    () async {
+      fakeRepo.getClassDetailResult = ApiSuccess(_sampleClassWithEvents());
+      final cubit = ClassDetailCubit(fakeRepo, 'class-1');
+      await cubit.loadClassDetail();
+      expect(cubit.state.status, ClassDetailLoadStatus.loaded);
+      final expected = ClassSlotViewModel.pickUpcomingEvent(
+        _sampleClassWithEvents(),
+      );
+      expect(cubit.state.slot?.calendarEventId, expected?.id);
+      if (expected != null) {
+        expect(cubit.state.slot?.trainerName, expected.trainerName);
+      }
+      expect(fakeRepo.getClassDetailCalls, 1);
+      await cubit.close();
+    },
+  );
 
-  test('loadClassDetail preloaded slot does not steer which API event is shown', () async {
-    fakeRepo.getClassDetailResult = ApiSuccess(_sampleClassWithEvents());
-    final preload = ClassSlotViewModel(
-      classId: 'class-1',
-      calendarEventId: 'evt-late',
-      name: 'Placeholder',
-      allowPackageBooking: true,
-      allowSinglePurchase: true,
-      trainerName: 'X',
-      branchName: 'Y',
-      startAt: DateTime.utc(2026, 1, 1),
-      endAt: DateTime.utc(2026, 1, 1, 1),
-    );
-    final cubit = ClassDetailCubit(
-      fakeRepo,
-      'class-1',
-      preloadedSlot: preload,
-    );
-    await cubit.loadClassDetail();
-    final expected = ClassSlotViewModel.pickUpcomingEvent(
-      _sampleClassWithEvents(),
-    );
-    expect(cubit.state.slot?.calendarEventId, expected?.id);
-    await cubit.close();
-  });
-
-  test('loadClassDetail when every event is in the past yields no bookable slot', () async {
-    fakeRepo.getClassDetailResult = ApiSuccess(
-      GymClassResource(
-        id: 'class-past',
-        name: 'Past only',
-        allowSinglePurchase: true,
+  test(
+    'loadClassDetail preloaded slot does not steer which API event is shown',
+    () async {
+      fakeRepo.getClassDetailResult = ApiSuccess(_sampleClassWithEvents());
+      final preload = ClassSlotViewModel(
+        classId: 'class-1',
+        calendarEventId: 'evt-late',
+        name: 'Placeholder',
         allowPackageBooking: true,
-        isActive: true,
-        upcomingEvents: [
-          UpcomingEvent(
-            id: 'evt-old',
-            startAt: DateTime.utc(2020, 1, 1, 12),
-            endAt: DateTime.utc(2020, 1, 1, 13),
-            status: 'scheduled',
-            branchName: 'North',
-            trainerName: 'Alex',
-            slotsLeft: 0,
-          ),
-        ],
-      ),
-    );
-    final cubit = ClassDetailCubit(fakeRepo, 'class-past');
-    await cubit.loadClassDetail();
-    expect(cubit.state.slot?.hasBookableSlot, isFalse);
-    expect(cubit.state.slot?.calendarEventId, '');
-    await cubit.close();
-  });
-
-  test('loadClassDetail with no upcoming events clears bookable slot', () async {
-    fakeRepo.getClassDetailResult = ApiSuccess(
-      GymClassResource(
-        id: 'class-empty',
-        name: 'Empty',
         allowSinglePurchase: true,
-        allowPackageBooking: true,
-        isActive: true,
-        upcomingEvents: const [],
-      ),
-    );
-    final cubit = ClassDetailCubit(fakeRepo, 'class-empty');
-    await cubit.loadClassDetail();
-    expect(cubit.state.slot?.hasBookableSlot, isFalse);
-    expect(cubit.state.slot?.calendarEventId, '');
-    await cubit.close();
-  });
+        trainerName: 'X',
+        branchName: 'Y',
+        startAt: DateTime.utc(2026, 1, 1),
+        endAt: DateTime.utc(2026, 1, 1, 1),
+      );
+      final cubit = ClassDetailCubit(
+        fakeRepo,
+        'class-1',
+        preloadedSlot: preload,
+      );
+      await cubit.loadClassDetail();
+      final expected = ClassSlotViewModel.pickUpcomingEvent(
+        _sampleClassWithEvents(),
+      );
+      expect(cubit.state.slot?.calendarEventId, expected?.id);
+      await cubit.close();
+    },
+  );
+
+  test(
+    'loadClassDetail when every event is in the past yields no bookable slot',
+    () async {
+      fakeRepo.getClassDetailResult = ApiSuccess(
+        GymClassResource(
+          id: 'class-past',
+          name: 'Past only',
+          allowSinglePurchase: true,
+          allowPackageBooking: true,
+          isActive: true,
+          upcomingEvents: [
+            UpcomingEvent(
+              id: 'evt-old',
+              startAt: DateTime.utc(2020, 1, 1, 12),
+              endAt: DateTime.utc(2020, 1, 1, 13),
+              status: 'scheduled',
+              branchName: 'North',
+              trainerName: 'Alex',
+              slotsLeft: 0,
+            ),
+          ],
+        ),
+      );
+      final cubit = ClassDetailCubit(fakeRepo, 'class-past');
+      await cubit.loadClassDetail();
+      expect(cubit.state.slot?.hasBookableSlot, isFalse);
+      expect(cubit.state.slot?.calendarEventId, '');
+      await cubit.close();
+    },
+  );
+
+  test(
+    'loadClassDetail with no upcoming events clears bookable slot',
+    () async {
+      fakeRepo.getClassDetailResult = ApiSuccess(
+        GymClassResource(
+          id: 'class-empty',
+          name: 'Empty',
+          allowSinglePurchase: true,
+          allowPackageBooking: true,
+          isActive: true,
+          upcomingEvents: const [],
+        ),
+      );
+      final cubit = ClassDetailCubit(fakeRepo, 'class-empty');
+      await cubit.loadClassDetail();
+      expect(cubit.state.slot?.hasBookableSlot, isFalse);
+      expect(cubit.state.slot?.calendarEventId, '');
+      await cubit.close();
+    },
+  );
 
   test('loadClassDetail failure without preload is error', () async {
     fakeRepo.getClassDetailResult = ApiFailure<GymClassResource>(
@@ -171,11 +180,7 @@ void main() {
       startAt: DateTime.utc(2026, 1, 1),
       endAt: DateTime.utc(2026, 1, 1, 1),
     );
-    final cubit = ClassDetailCubit(
-      fakeRepo,
-      'class-1',
-      preloadedSlot: preload,
-    );
+    final cubit = ClassDetailCubit(fakeRepo, 'class-1', preloadedSlot: preload);
     await cubit.loadClassDetail();
     expect(cubit.state.status, ClassDetailLoadStatus.loaded);
     expect(cubit.state.slot?.name, 'Placeholder');

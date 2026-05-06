@@ -70,7 +70,9 @@ class CustomerSubscriptionResource {
     if (freezesRaw is List) {
       for (final e in freezesRaw) {
         if (e is Map) {
-          freezes.add(SubscriptionFreeze.fromJson(Map<String, dynamic>.from(e)));
+          freezes.add(
+            SubscriptionFreeze.fromJson(Map<String, dynamic>.from(e)),
+          );
         }
       }
     }
@@ -85,7 +87,8 @@ class CustomerSubscriptionResource {
       isActive: json['isActive'] == true || json['is_active'] == true,
       isPaid: json['isPaid'] == true || json['is_paid'] == true,
       pricePaid: _double(json['pricePaid'] ?? json['price_paid']),
-      isTransferable: json['isTransferable'] == true || json['is_transferable'] == true,
+      isTransferable:
+          json['isTransferable'] == true || json['is_transferable'] == true,
       product: product,
       sessions: sessions,
       freezes: freezes,
@@ -196,11 +199,7 @@ class SubscriptionProductRef {
 }
 
 class SubscriptionSessions {
-  const SubscriptionSessions({
-    this.total,
-    required this.used,
-    this.remaining,
-  });
+  const SubscriptionSessions({this.total, required this.used, this.remaining});
 
   final int? total;
   final int used;
@@ -250,7 +249,8 @@ class SubscriptionFreeze {
     return SubscriptionFreeze(
       id: idStr,
       status: '${json['status'] ?? ''}',
-      startDate: json['startDate']?.toString() ?? json['start_date']?.toString(),
+      startDate:
+          json['startDate']?.toString() ?? json['start_date']?.toString(),
       endDate: json['endDate']?.toString() ?? json['end_date']?.toString(),
       daysFrozen: SubscriptionSessions._int(
         json['daysFrozen'] ?? json['days_frozen'],

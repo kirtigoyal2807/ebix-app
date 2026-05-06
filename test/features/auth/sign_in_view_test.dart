@@ -69,7 +69,9 @@ void main() {
     await cubit.close();
   });
 
-  testWidgets('Phone tab: OTP request stores pending phone for OTP screen', (tester) async {
+  testWidgets('Phone tab: OTP request stores pending phone for OTP screen', (
+    tester,
+  ) async {
     SharedPreferences.setMockInitialValues({});
     final fake = FakeAuthRepository();
     fake.phoneOtpResult = const ApiSuccess<bool>(true);

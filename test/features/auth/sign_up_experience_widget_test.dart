@@ -16,46 +16,50 @@ import 'fake_auth_repository.dart';
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  testWidgets('SignUpExperienceView Continue stores API experience and advances',
-      (tester) async {
-    SharedPreferences.setMockInitialValues({});
+  testWidgets(
+    'SignUpExperienceView Continue stores API experience and advances',
+    (tester) async {
+      SharedPreferences.setMockInitialValues({});
 
-    final cubit = AuthCubit.forTesting(
-      authRepository: FakeAuthRepository(),
-      tokenStorage: TokenStorage(await SharedPreferences.getInstance()),
-      localeBridge: AuthLocaleBridge(),
-      seed: AuthState.initial().copyWith(
-        flow: AuthFlow.signUp,
-        signUpStep: 2,
-      ),
-    );
-
-    await tester.pumpWidget(
-      MaterialApp(
-        localizationsDelegates: const [
-          AppLocalizations.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-        ],
-        supportedLocales: AppLocalizations.supportedLocales,
-        locale: const Locale('en'),
-        home: BlocProvider<AuthCubit>.value(
-          value: cubit,
-          child: const SignUpExperienceView(),
+      final cubit = AuthCubit.forTesting(
+        authRepository: FakeAuthRepository(),
+        tokenStorage: TokenStorage(await SharedPreferences.getInstance()),
+        localeBridge: AuthLocaleBridge(),
+        seed: AuthState.initial().copyWith(
+          flow: AuthFlow.signUp,
+          signUpStep: 2,
         ),
-      ),
-    );
+      );
 
-    await tester.pumpAndSettle();
+      await tester.pumpWidget(
+        MaterialApp(
+          localizationsDelegates: const [
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+          ],
+          supportedLocales: AppLocalizations.supportedLocales,
+          locale: const Locale('en'),
+          home: BlocProvider<AuthCubit>.value(
+            value: cubit,
+            child: const SignUpExperienceView(),
+          ),
+        ),
+      );
 
-    await tester.tap(find.text('Intermediate'));
-    await tester.pump();
-    await tester.tap(find.byKey(const ValueKey('sign_up_experience_continue')));
-    await tester.pumpAndSettle();
+      await tester.pumpAndSettle();
 
-    expect(cubit.state.signUpStep, 3);
-    expect(cubit.state.signUpExperience, 'intermediate');
+      await tester.tap(find.text('Intermediate'));
+      await tester.pump();
+      await tester.tap(
+        find.byKey(const ValueKey('sign_up_experience_continue')),
+      );
+      await tester.pumpAndSettle();
 
-    await cubit.close();
-  });
+      expect(cubit.state.signUpStep, 3);
+      expect(cubit.state.signUpExperience, 'intermediate');
+
+      await cubit.close();
+    },
+  );
 }

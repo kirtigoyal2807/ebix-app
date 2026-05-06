@@ -20,11 +20,11 @@ class TrainerView extends StatelessWidget {
   Future<void> _reload(BuildContext context) async {
     final booking = context.read<BookingCubit>().state;
     await context.read<TrainersCubit>().load(
-          specialty: trainerSpecialtyQuery(booking.selectedTrainerType),
-          search: booking.searchQuery.trim().isEmpty
-              ? null
-              : booking.searchQuery.trim(),
-        );
+      specialty: trainerSpecialtyQuery(booking.selectedTrainerType),
+      search: booking.searchQuery.trim().isEmpty
+          ? null
+          : booking.searchQuery.trim(),
+    );
   }
 
   @override
@@ -35,7 +35,7 @@ class TrainerView extends StatelessWidget {
       builder: (context, bookingState) {
         final hasTrainerFilters =
             bookingState.searchQuery.trim().isNotEmpty ||
-                bookingState.selectedTrainerType != TrainerType.allTrainers;
+            bookingState.selectedTrainerType != TrainerType.allTrainers;
 
         return Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -81,8 +81,9 @@ class TrainerView extends StatelessWidget {
                   return RefreshIndicator(
                     onRefresh: () => _reload(context),
                     child: ListView(
-                      padding:
-                          const EdgeInsets.symmetric(vertical: AppSpacing.lg),
+                      padding: const EdgeInsets.symmetric(
+                        vertical: AppSpacing.lg,
+                      ),
                       physics: const AlwaysScrollableScrollPhysics(),
                       children: [
                         if (state.items.isEmpty)
@@ -109,10 +110,7 @@ class TrainerView extends StatelessWidget {
 }
 
 class _NoTrainersEmpty extends StatelessWidget {
-  const _NoTrainersEmpty({
-    required this.isDark,
-    required this.hasFilters,
-  });
+  const _NoTrainersEmpty({required this.isDark, required this.hasFilters});
 
   final bool isDark;
   final bool hasFilters;
@@ -131,9 +129,7 @@ class _NoTrainersEmpty extends StatelessWidget {
           Icon(
             Icons.people_outline,
             size: 56,
-            color: isDark
-                ? AppColors.darkGreyText
-                : AppColors.lightGrey,
+            color: isDark ? AppColors.darkGreyText : AppColors.lightGrey,
           ),
           const SizedBox(height: AppSpacing.lg),
           AppText(
@@ -141,10 +137,9 @@ class _NoTrainersEmpty extends StatelessWidget {
             textAlign: TextAlign.center,
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
-            style: (c) => AppTextStyles.heading1(c).copyWith(
-              fontSize: 20,
-              fontWeight: FontWeight.w500,
-            ),
+            style: (c) => AppTextStyles.heading1(
+              c,
+            ).copyWith(fontSize: 20, fontWeight: FontWeight.w500),
           ),
           const SizedBox(height: AppSpacing.sm),
           AppText(
@@ -154,10 +149,8 @@ class _NoTrainersEmpty extends StatelessWidget {
             textAlign: TextAlign.center,
             maxLines: 4,
             overflow: TextOverflow.ellipsis,
-            style: (c) => AppTextStyles.bodyText(c).copyWith(
-              fontSize: 15,
-              height: 1.5,
-            ),
+            style: (c) =>
+                AppTextStyles.bodyText(c).copyWith(fontSize: 15, height: 1.5),
           ),
         ],
       ),

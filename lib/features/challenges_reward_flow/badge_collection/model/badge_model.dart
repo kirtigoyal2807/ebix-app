@@ -1,5 +1,3 @@
-
-
 class BadgeModel {
   final String image;
   final String darkImage;
@@ -12,12 +10,9 @@ class BadgeModel {
     required this.badgeName,
     required this.status,
   });
-
-
 }
 
-
-enum BadgeData{
+enum BadgeData {
   februaryStreak,
   studioLegend,
   firstStep,
@@ -27,7 +22,5 @@ enum BadgeData{
   weekWarrior,
   balanceMaster,
 }
-enum BadgeStatus{
-  earned,
-  locked,
-}
+
+enum BadgeStatus { earned, locked }

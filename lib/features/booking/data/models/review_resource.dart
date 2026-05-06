@@ -46,10 +46,11 @@ class ReviewResource {
       body: json['body'] is String
           ? (json['body'] as String).trim()
           : json['body']?.toString().trim().isNotEmpty == true
-              ? '${json['body']}'.trim()
-              : null,
+          ? '${json['body']}'.trim()
+          : null,
       status: '${json['status'] ?? ''}',
-      createdAt: _parseDate(json['createdAt'] ?? json['created_at']) ??
+      createdAt:
+          _parseDate(json['createdAt'] ?? json['created_at']) ??
           DateTime.fromMillisecondsSinceEpoch(0, isUtc: true),
       reviewer: reviewer,
     );
@@ -89,7 +90,8 @@ class ReviewAuthor {
         final t = '$n'.trim();
         return t.isEmpty ? null : t;
       }(),
-      avatarUrl: json['avatar'] as String? ??
+      avatarUrl:
+          json['avatar'] as String? ??
           json['avatarUrl'] as String? ??
           json['avatar_url'] as String?,
     );

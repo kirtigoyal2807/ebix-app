@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:pilates_app/core/storage/token_storage.dart';
 import 'package:pilates_app/features/auth/data/models/auth_user.dart';
 import 'package:pilates_app/features/auth/data/models/branch.dart';
@@ -32,6 +33,7 @@ class AuthState extends Equatable {
   final int signUpStep; // 0 → 4
   final Locale locale;
   final ThemeMode themeMode;
+  final String dateOfBirth;
 
   final LoginUiStatus loginUiStatus;
 
@@ -142,51 +144,53 @@ class AuthState extends Equatable {
     required this.signUpHomeBranchErrorMessage,
     required this.signUpHomeBranchFieldErrors,
     this.selectedSignUpBranchId,
+    required this.dateOfBirth,
   });
 
   factory AuthState.initial() {
-    return const AuthState(
+    return AuthState(
       flow: AuthFlow.splash,
       signUpStep: 0,
-      locale: Locale('en'),
+      locale: const Locale('en'),
       themeMode: ThemeMode.system,
       loginUiStatus: LoginUiStatus.idle,
       loginErrorMessage: '',
-      loginFieldErrors: {},
+      loginFieldErrors: const {},
       signInPendingPhone: '',
       user: null,
       accountProfileRefreshStatus: AccountProfileRefreshStatus.idle,
       showPhoneOtpSuccess: false,
       registerUiStatus: RegisterUiStatus.idle,
       registerErrorMessage: '',
-      registerFieldErrors: {},
+      registerFieldErrors: const {},
       showRegisterOtpSuccess: false,
       forgotPasswordUiStatus: ForgotPasswordUiStatus.idle,
       forgotPasswordEmail: '',
       forgotPasswordErrorMessage: '',
-      forgotPasswordFieldErrors: {},
+      forgotPasswordFieldErrors: const {},
       forgotEmailCodeVerified: false,
       showForgotPasswordOtp: false,
       postLoginStep: 0,
       postLoginExperience: '',
       postLoginGoalUiStatus: PostLoginGoalUiStatus.idle,
       postLoginGoalErrorMessage: '',
-      postLoginGoalFieldErrors: {},
+      postLoginGoalFieldErrors: const {},
       signUpExperience: '',
       signUpPendingPhone: '',
       signUpPhoneOtpUiStatus: SignUpPhoneOtpUiStatus.idle,
       signUpPhoneOtpErrorMessage: '',
-      signUpPhoneOtpFieldErrors: {},
+      signUpPhoneOtpFieldErrors: const {},
       phoneOtpSendUiStatus: PhoneOtpSendUiStatus.idle,
       phoneOtpSendErrorMessage: '',
       signUpBranchesLoadStatus: SignUpBranchesLoadStatus.idle,
-      signUpBranches: [],
+      signUpBranches: const [],
       signUpBranchesPagination: null,
       signUpBranchesErrorMessage: '',
       signUpHomeBranchStatus: SignUpHomeBranchStatus.idle,
       signUpHomeBranchErrorMessage: '',
-      signUpHomeBranchFieldErrors: {},
+      signUpHomeBranchFieldErrors: const {},
       selectedSignUpBranchId: null,
+      dateOfBirth: DateFormat("dd/MM/yyyy").format(DateTime.now()),
     );
   }
 
@@ -237,6 +241,7 @@ class AuthState extends Equatable {
     Map<String, String>? signUpHomeBranchFieldErrors,
     int? selectedSignUpBranchId,
     bool clearSelectedSignUpBranchId = false,
+    String? dateOfBirth,
   }) {
     return AuthState(
       flow: flow ?? this.flow,
@@ -254,8 +259,7 @@ class AuthState extends Equatable {
           accountProfileRefreshStatus ?? this.accountProfileRefreshStatus,
       showPhoneOtpSuccess: showPhoneOtpSuccess ?? this.showPhoneOtpSuccess,
       registerUiStatus: registerUiStatus ?? this.registerUiStatus,
-      registerErrorMessage:
-          registerErrorMessage ?? this.registerErrorMessage,
+      registerErrorMessage: registerErrorMessage ?? this.registerErrorMessage,
       registerFieldErrors: registerFieldErrors ?? this.registerFieldErrors,
       showRegisterOtpSuccess:
           showRegisterOtpSuccess ?? this.showRegisterOtpSuccess,
@@ -268,7 +272,8 @@ class AuthState extends Equatable {
           forgotPasswordFieldErrors ?? this.forgotPasswordFieldErrors,
       forgotEmailCodeVerified:
           forgotEmailCodeVerified ?? this.forgotEmailCodeVerified,
-      showForgotPasswordOtp: showForgotPasswordOtp ?? this.showForgotPasswordOtp,
+      showForgotPasswordOtp:
+          showForgotPasswordOtp ?? this.showForgotPasswordOtp,
       postLoginStep: postLoginStep ?? this.postLoginStep,
       postLoginExperience: postLoginExperience ?? this.postLoginExperience,
       postLoginGoalUiStatus:
@@ -307,6 +312,7 @@ class AuthState extends Equatable {
       selectedSignUpBranchId: clearSelectedSignUpBranchId
           ? null
           : (selectedSignUpBranchId ?? this.selectedSignUpBranchId),
+      dateOfBirth: dateOfBirth ?? this.dateOfBirth,
     );
   }
 
@@ -373,54 +379,54 @@ class AuthState extends Equatable {
 
   @override
   List<Object?> get props => [
-        flow,
-        signUpStep,
-        locale,
-        themeMode,
-        loginUiStatus,
-        loginErrorMessage,
-        loginFieldErrors,
-        signInPendingPhone,
-        user,
-        accountProfileRefreshStatus,
-        showPhoneOtpSuccess,
-        registerUiStatus,
-        registerErrorMessage,
-        registerFieldErrors,
-        showRegisterOtpSuccess,
-        forgotPasswordUiStatus,
-        forgotPasswordEmail,
-        forgotPasswordErrorMessage,
-        forgotPasswordFieldErrors,
-        forgotEmailCodeVerified,
-        showForgotPasswordOtp,
-        postLoginStep,
-        postLoginExperience,
-        postLoginGoalUiStatus,
-        postLoginGoalErrorMessage,
-        postLoginGoalFieldErrors,
-        signUpExperience,
-        signUpPendingPhone,
-        signUpPhoneOtpUiStatus,
-        signUpPhoneOtpErrorMessage,
-        signUpPhoneOtpFieldErrors,
-        phoneOtpSendUiStatus,
-        phoneOtpSendErrorMessage,
-        signUpBranchesLoadStatus,
-        signUpBranches,
-        signUpBranchesPagination,
-        signUpBranchesErrorMessage,
-        signUpHomeBranchStatus,
-        signUpHomeBranchErrorMessage,
-        signUpHomeBranchFieldErrors,
-        selectedSignUpBranchId,
-      ];
+    flow,
+    signUpStep,
+    locale,
+    themeMode,
+    loginUiStatus,
+    loginErrorMessage,
+    loginFieldErrors,
+    signInPendingPhone,
+    user,
+    accountProfileRefreshStatus,
+    showPhoneOtpSuccess,
+    registerUiStatus,
+    registerErrorMessage,
+    registerFieldErrors,
+    showRegisterOtpSuccess,
+    forgotPasswordUiStatus,
+    forgotPasswordEmail,
+    forgotPasswordErrorMessage,
+    forgotPasswordFieldErrors,
+    forgotEmailCodeVerified,
+    showForgotPasswordOtp,
+    postLoginStep,
+    postLoginExperience,
+    postLoginGoalUiStatus,
+    postLoginGoalErrorMessage,
+    postLoginGoalFieldErrors,
+    signUpExperience,
+    signUpPendingPhone,
+    signUpPhoneOtpUiStatus,
+    signUpPhoneOtpErrorMessage,
+    signUpPhoneOtpFieldErrors,
+    phoneOtpSendUiStatus,
+    phoneOtpSendErrorMessage,
+    signUpBranchesLoadStatus,
+    signUpBranches,
+    signUpBranchesPagination,
+    signUpBranchesErrorMessage,
+    signUpHomeBranchStatus,
+    signUpHomeBranchErrorMessage,
+    signUpHomeBranchFieldErrors,
+    selectedSignUpBranchId,
+    dateOfBirth,
+  ];
 }
 
 /// Cold-start [AuthState] from persisted JWT — must stay in sync with [main] / [AuthCubit] seeding.
 AuthState initialAuthStateFromTokenStorage(TokenStorage tokenStorage) {
-  final hasSavedSession =
-      (tokenStorage.readToken() ?? '').trim().isNotEmpty;
+  final hasSavedSession = (tokenStorage.readToken() ?? '').trim().isNotEmpty;
   return AuthState.initial().copyWith(
     flow: hasSavedSession ? AuthFlow.authenticated : AuthFlow.splash,
   );

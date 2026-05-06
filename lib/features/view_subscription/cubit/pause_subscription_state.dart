@@ -26,12 +26,10 @@ class PauseSubscriptionState extends Equatable {
       startDate: clearStartDate ? null : (startDate ?? this.startDate),
       endDate: clearEndDate ? null : (endDate ?? this.endDate),
       isSubmitting: isSubmitting ?? this.isSubmitting,
-      submitError:
-          clearSubmitError ? null : (submitError ?? this.submitError),
+      submitError: clearSubmitError ? null : (submitError ?? this.submitError),
     );
   }
 
   @override
-  List<Object?> get props =>
-      [startDate, endDate, isSubmitting, submitError];
+  List<Object?> get props => [startDate, endDate, isSubmitting, submitError];
 }

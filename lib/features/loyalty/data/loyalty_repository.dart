@@ -17,44 +17,44 @@ class LoyaltyRepository extends BaseRepository {
   static List<LoyaltyReward> _rewardsFromJson(dynamic json) {
     if (json is! List) return [];
     return json
-        .map((e) => LoyaltyReward.fromJson(
-              e is Map<String, dynamic>
-                  ? e
-                  : Map<String, dynamic>.from(e as Map),
-            ))
+        .map(
+          (e) => LoyaltyReward.fromJson(
+            e is Map<String, dynamic> ? e : Map<String, dynamic>.from(e as Map),
+          ),
+        )
         .toList();
   }
 
   static List<LoyaltyChallenge> _challengesFromJson(dynamic json) {
     if (json is! List) return [];
     return json
-        .map((e) => LoyaltyChallenge.fromJson(
-              e is Map<String, dynamic>
-                  ? e
-                  : Map<String, dynamic>.from(e as Map),
-            ))
+        .map(
+          (e) => LoyaltyChallenge.fromJson(
+            e is Map<String, dynamic> ? e : Map<String, dynamic>.from(e as Map),
+          ),
+        )
         .toList();
   }
 
   static List<LoyaltyLeaderboardEntry> _leaderboardFromJson(dynamic json) {
     if (json is! List) return [];
     return json
-        .map((e) => LoyaltyLeaderboardEntry.fromJson(
-              e is Map<String, dynamic>
-                  ? e
-                  : Map<String, dynamic>.from(e as Map),
-            ))
+        .map(
+          (e) => LoyaltyLeaderboardEntry.fromJson(
+            e is Map<String, dynamic> ? e : Map<String, dynamic>.from(e as Map),
+          ),
+        )
         .toList();
   }
 
   static List<LoyaltyPointsHistoryEntry> _pointsHistoryFromJson(dynamic json) {
     if (json is! List) return [];
     return json
-        .map((e) => LoyaltyPointsHistoryEntry.fromJson(
-              e is Map<String, dynamic>
-                  ? e
-                  : Map<String, dynamic>.from(e as Map),
-            ))
+        .map(
+          (e) => LoyaltyPointsHistoryEntry.fromJson(
+            e is Map<String, dynamic> ? e : Map<String, dynamic>.from(e as Map),
+          ),
+        )
         .toList();
   }
 
@@ -75,11 +75,11 @@ class LoyaltyRepository extends BaseRepository {
       return [];
     }
     return list
-        .map((e) => LoyaltyTier.fromJson(
-              e is Map<String, dynamic>
-                  ? e
-                  : Map<String, dynamic>.from(e as Map),
-            ))
+        .map(
+          (e) => LoyaltyTier.fromJson(
+            e is Map<String, dynamic> ? e : Map<String, dynamic>.from(e as Map),
+          ),
+        )
         .toList();
   }
 
@@ -87,10 +87,7 @@ class LoyaltyRepository extends BaseRepository {
   /// (`id`, `name`, `slug`, `minimumPoints`, `sortOrder`, `isCurrent`, `pointsToNext`, `benefits[]`),
   /// or a map with `tiers` / list-shaped `data`.
   Future<ApiResult<List<LoyaltyTier>>> getTiers() {
-    return get<List<LoyaltyTier>>(
-      'loyalty/tiers',
-      fromJson: _tiersFromJson,
-    );
+    return get<List<LoyaltyTier>>('loyalty/tiers', fromJson: _tiersFromJson);
   }
 
   /// Ledger of loyalty point changes (earn / redeem / etc.).
@@ -164,10 +161,7 @@ class LoyaltyRepository extends BaseRepository {
 
   /// Join a challenge. Success yields `true` when envelope is successful (body may be empty).
   Future<ApiResult<bool>> joinChallenge(int id) {
-    return post<bool>(
-      'loyalty/challenges/$id/join',
-      fromJson: (_) => true,
-    );
+    return post<bool>('loyalty/challenges/$id/join', fromJson: (_) => true);
   }
 
   /// Leaderboard for a challenge.

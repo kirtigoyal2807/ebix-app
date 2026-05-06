@@ -50,9 +50,9 @@ class _CreateNewPasswordViewState extends State<CreateNewPasswordView> {
     final nav = Navigator.of(context);
 
     await context.read<AuthCubit>().resetForgotPassword(
-          email: widget.email,
-          password: password,
-        );
+      email: widget.email,
+      password: password,
+    );
 
     if (!context.mounted) return;
 
@@ -70,9 +70,7 @@ class _CreateNewPasswordViewState extends State<CreateNewPasswordView> {
       return;
     }
 
-    messenger.showSnackBar(
-      SnackBar(content: Text(l10n.passwordResetSuccess)),
-    );
+    messenger.showSnackBar(SnackBar(content: Text(l10n.passwordResetSuccess)));
     nav.popUntil((route) => route.isFirst);
   }
 

@@ -23,7 +23,8 @@ class ReferralHistoryItem {
     final status = statusRaw?.toString() ?? '';
 
     final rewardRaw = json['rewardEarned'];
-    final rewardEarned = rewardRaw == true ||
+    final rewardEarned =
+        rewardRaw == true ||
         rewardRaw == 1 ||
         rewardRaw?.toString().toLowerCase() == 'true';
 
@@ -31,8 +32,8 @@ class ReferralHistoryItem {
     final qualifiedAt = qualified == null
         ? null
         : qualified.toString().trim().isEmpty
-            ? null
-            : qualified.toString();
+        ? null
+        : qualified.toString();
 
     final dateRaw = json['date'];
     final date = dateRaw?.toString() ?? '';

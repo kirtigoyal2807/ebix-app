@@ -97,7 +97,10 @@ class MyBookingsTabBody extends StatelessWidget {
     );
   }
 
-  static String? _checkInButtonLabelHint(BuildContext context, BookingResource b) {
+  static String? _checkInButtonLabelHint(
+    BuildContext context,
+    BookingResource b,
+  ) {
     if (b.checkedInAt != null) return null;
     if (!_bookingStatusAllowsCheckIn(b)) return null;
     final start = b.startAt;
@@ -122,9 +125,7 @@ class MyBookingsTabBody extends StatelessWidget {
     final s = b.status.toLowerCase();
     if (s == 'cancelled' || s == 'canceled') return false;
     if (s == 'attended' || s == 'no_show') return false;
-    return s == 'booked' ||
-        s == 'waitlisted' ||
-        s == 'pending_payment';
+    return s == 'booked' || s == 'waitlisted' || s == 'pending_payment';
   }
 
   static String? _cancelledDetailLine(BuildContext context, BookingResource b) {
@@ -198,8 +199,7 @@ class MyBookingsTabBody extends StatelessWidget {
         }
         if (tab.hasFetched && tab.items.isEmpty) {
           return RefreshIndicator(
-            onRefresh: () =>
-                context.read<MyBookingsCubit>().refresh(group),
+            onRefresh: () => context.read<MyBookingsCubit>().refresh(group),
             child: ListView(
               physics: const AlwaysScrollableScrollPhysics(),
               padding: const EdgeInsets.symmetric(vertical: AppSpacing.lg),
@@ -207,26 +207,30 @@ class MyBookingsTabBody extends StatelessWidget {
                 const SizedBox(height: 80),
                 Center(
                   child: isDark
-                      ? SvgPicture.asset('assets/images/svg/ic_dark_no_class.svg')
+                      ? SvgPicture.asset(
+                          'assets/images/svg/ic_dark_no_class.svg',
+                        )
                       : SvgPicture.asset('assets/images/svg/ic_no_class.svg'),
                 ),
                 const SizedBox(height: AppSpacing.lmd),
                 AppText(
                   _emptyTitle(context, group),
                   textAlign: TextAlign.center,
-                  style: (context) =>
-                      AppTextStyles.gelasioMedium(context).copyWith(height: 1.55),
+                  style: (context) => AppTextStyles.gelasioMedium(
+                    context,
+                  ).copyWith(height: 1.55),
                 ),
                 const SizedBox(height: AppSpacing.xs),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: AppSpacing.lg,
+                  ),
                   child: AppText(
                     _emptyDescription(context, group),
                     textAlign: TextAlign.center,
-                    style: (context) => AppTextStyles.bodyText(context).copyWith(
-                          fontSize: 16,
-                          height: 1.55,
-                        ),
+                    style: (context) => AppTextStyles.bodyText(
+                      context,
+                    ).copyWith(fontSize: 16, height: 1.55),
                   ),
                 ),
               ],
@@ -235,8 +239,7 @@ class MyBookingsTabBody extends StatelessWidget {
         }
 
         return RefreshIndicator(
-          onRefresh: () =>
-              context.read<MyBookingsCubit>().refresh(group),
+          onRefresh: () => context.read<MyBookingsCubit>().refresh(group),
           child: ListView.separated(
             physics: const AlwaysScrollableScrollPhysics(),
             padding: const EdgeInsets.symmetric(vertical: AppSpacing.lg),
@@ -262,7 +265,8 @@ class MyBookingsTabBody extends StatelessWidget {
                 bookingStatus: _cardStatus(b.status),
                 spot: wl,
                 position: wl,
-                isRate: group == MyBookingsStatusGroup.past &&
+                isRate:
+                    group == MyBookingsStatusGroup.past &&
                     b.status == 'attended',
                 coverImageUrl: b.classImageUrl,
                 checkInLabel: checkedIn
@@ -278,11 +282,10 @@ class MyBookingsTabBody extends StatelessWidget {
                         if (!context.mounted) return;
                         messenger.showSnackBar(
                           SnackBar(
-                            content: Text(
-                              err ?? context.l10n.checkInSuccess,
-                            ),
-                            backgroundColor:
-                                err == null ? null : AppColors.redLight,
+                            content: Text(err ?? context.l10n.checkInSuccess),
+                            backgroundColor: err == null
+                                ? null
+                                : AppColors.redLight,
                           ),
                         );
                       }
@@ -296,11 +299,11 @@ class MyBookingsTabBody extends StatelessWidget {
                         messenger.showSnackBar(
                           SnackBar(
                             content: Text(
-                              err ??
-                                  context.l10n.cancelEnrollmentSuccess,
+                              err ?? context.l10n.cancelEnrollmentSuccess,
                             ),
-                            backgroundColor:
-                                err == null ? null : AppColors.redLight,
+                            backgroundColor: err == null
+                                ? null
+                                : AppColors.redLight,
                           ),
                         );
                       }

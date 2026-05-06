@@ -18,7 +18,7 @@ class DiscoverInfo extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         AppText(
-        context.l10n.discover,
+          context.l10n.discover,
           style: (context) => AppTextStyles.captionText(context).copyWith(
             fontWeight: FontWeight.w500,
             height: 1.55,
@@ -31,7 +31,7 @@ class DiscoverInfo extends StatelessWidget {
               ? "assets/images/svg/account/ic_dark_personal_data.svg"
               : "assets/images/svg/account/ic_personal_data.svg",
           title: context.l10n.browseTrainers,
-          subtitle:  context.l10n.meetOurTrainers
+          subtitle: context.l10n.meetOurTrainers,
         ),
       ],
     );

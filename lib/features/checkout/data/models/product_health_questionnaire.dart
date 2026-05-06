@@ -13,9 +13,7 @@ void _appendPersonalQuestionLists(
   ]) {
     final raw = source[k];
     if (raw is List && raw.isNotEmpty) {
-      target.addAll(
-        raw.map((e) => ProductHealthQuestion.fromJson(e)).toList(),
-      );
+      target.addAll(raw.map((e) => ProductHealthQuestion.fromJson(e)).toList());
       return;
     }
   }

@@ -3,6 +3,7 @@ enum AuthFlow {
   onboarding,
   signUp,
   signIn,
+
   /// After email login: collect experience + goal, then [authenticated].
   postLoginSetup,
   authenticated,

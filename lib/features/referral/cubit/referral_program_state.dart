@@ -62,14 +62,13 @@ class ReferralProgramState extends Equatable {
       referralHistoryStatus:
           referralHistoryStatus ?? this.referralHistoryStatus,
       referralHistory: referralHistory ?? this.referralHistory,
-      referralHistoryErrorMessage: identical(
-            referralHistoryErrorMessage,
-            _unset,
-          )
+      referralHistoryErrorMessage:
+          identical(referralHistoryErrorMessage, _unset)
           ? this.referralHistoryErrorMessage
           : referralHistoryErrorMessage as String?,
       inviteSubmitting: inviteSubmitting ?? this.inviteSubmitting,
-      invitePhoneFieldIssue: invitePhoneFieldIssue ?? this.invitePhoneFieldIssue,
+      invitePhoneFieldIssue:
+          invitePhoneFieldIssue ?? this.invitePhoneFieldIssue,
       invitePhoneApiError: identical(invitePhoneApiError, _unset)
           ? this.invitePhoneApiError
           : invitePhoneApiError as String?,
@@ -83,16 +82,16 @@ class ReferralProgramState extends Equatable {
 
   @override
   List<Object?> get props => [
-        status,
-        program,
-        errorMessage,
-        referralHistoryStatus,
-        referralHistory,
-        referralHistoryErrorMessage,
-        inviteSubmitting,
-        invitePhoneFieldIssue,
-        invitePhoneApiError,
-        inviteSuccessSnackPending,
-        inviteErrorSnackMessage,
-      ];
+    status,
+    program,
+    errorMessage,
+    referralHistoryStatus,
+    referralHistory,
+    referralHistoryErrorMessage,
+    inviteSubmitting,
+    invitePhoneFieldIssue,
+    invitePhoneApiError,
+    inviteSuccessSnackPending,
+    inviteErrorSnackMessage,
+  ];
 }

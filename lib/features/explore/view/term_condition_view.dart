@@ -27,26 +27,35 @@ class TermConditionView extends StatelessWidget {
         child: Column(
           children: [
             AppText(
-        context.l10n.termsIntro,
-              style: (context) => AppTextStyles.bodyText(
-                context,
-              ).copyWith(height: 1.55, color:isDark ? AppColors.placeHolderText: AppColors.placeHolderText),
+              context.l10n.termsIntro,
+              style: (context) => AppTextStyles.bodyText(context).copyWith(
+                height: 1.55,
+                color: isDark
+                    ? AppColors.placeHolderText
+                    : AppColors.placeHolderText,
+              ),
               maxLines: 8,
             ),
             SizedBox(height: AppSpacing.lg),
             AppText(
-                context.l10n.termsMedicalDisclaimer,
-              style: (context) => AppTextStyles.bodyText(
-                context,
-              ).copyWith(height: 1.55, color:isDark ? AppColors.placeHolderText:  AppColors.placeHolderText),
+              context.l10n.termsMedicalDisclaimer,
+              style: (context) => AppTextStyles.bodyText(context).copyWith(
+                height: 1.55,
+                color: isDark
+                    ? AppColors.placeHolderText
+                    : AppColors.placeHolderText,
+              ),
               maxLines: 5,
             ),
             SizedBox(height: AppSpacing.lg),
             AppText(
-                context.l10n.termsAccountResponsibility,
-              style: (context) => AppTextStyles.bodyText(
-                context,
-              ).copyWith(height: 1.55, color:isDark ? AppColors.placeHolderText:  AppColors.placeHolderText),
+              context.l10n.termsAccountResponsibility,
+              style: (context) => AppTextStyles.bodyText(context).copyWith(
+                height: 1.55,
+                color: isDark
+                    ? AppColors.placeHolderText
+                    : AppColors.placeHolderText,
+              ),
               maxLines: 4,
             ),
           ],

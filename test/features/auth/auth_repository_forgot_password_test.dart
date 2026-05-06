@@ -26,7 +26,9 @@ void main() {
       );
       final repo = AuthRepository(dio);
 
-      final result = await repo.requestPasswordForgot(email: '  noor@example.com  ');
+      final result = await repo.requestPasswordForgot(
+        email: '  noor@example.com  ',
+      );
 
       expect(result.isSuccess, isTrue);
       expect(seen?.path, '/auth/password/forgot');
@@ -43,11 +45,7 @@ void main() {
             Response(
               requestOptions: options,
               statusCode: 200,
-              data: const {
-                'success': true,
-                'message': 'sent',
-                'data': null,
-              },
+              data: const {'success': true, 'message': 'sent', 'data': null},
             ),
           );
         },
@@ -105,11 +103,7 @@ void main() {
             Response(
               requestOptions: options,
               statusCode: 200,
-              data: const {
-                'success': true,
-                'message': 'updated',
-                'data': null,
-              },
+              data: const {'success': true, 'message': 'updated', 'data': null},
             ),
           );
         },

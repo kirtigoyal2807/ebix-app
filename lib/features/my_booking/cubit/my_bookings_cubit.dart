@@ -14,8 +14,7 @@ class MyBookingsCubit extends Cubit<MyBookingsState> {
   Future<void> ensureLoaded(MyBookingsStatusGroup group) =>
       load(group, force: false);
 
-  Future<void> refresh(MyBookingsStatusGroup group) =>
-      load(group, force: true);
+  Future<void> refresh(MyBookingsStatusGroup group) => load(group, force: true);
 
   Future<void> load(MyBookingsStatusGroup group, {bool force = false}) async {
     final current = state.tab(group);
@@ -95,9 +94,10 @@ class MyBookingsCubit extends Cubit<MyBookingsState> {
     switch (result) {
       case ApiSuccess(:final data):
         emit(
-          _applyCancellationAcrossTabs(state, data).copyWith(
-            clearCancelBusy: true,
-          ),
+          _applyCancellationAcrossTabs(
+            state,
+            data,
+          ).copyWith(clearCancelBusy: true),
         );
         return null;
       case ApiFailure(:final exception):

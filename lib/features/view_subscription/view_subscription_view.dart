@@ -58,10 +58,7 @@ class ViewSubscriptionView extends StatelessWidget {
             ),
           ),
           body: const TabBarView(
-            children: [
-              CurrentPlanView(),
-              ExistingPlanView(),
-            ],
+            children: [CurrentPlanView(), ExistingPlanView()],
           ),
         ),
       ),

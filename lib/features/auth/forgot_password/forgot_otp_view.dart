@@ -29,15 +29,15 @@ class _ForgotOtpViewState extends State<ForgotOtpView> {
   Future<void> _verify(BuildContext context) async {
     final l10n = context.l10n;
     if (_code.length != 6) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(l10n.otpHint)),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(l10n.otpHint)));
       return;
     }
     await context.read<AuthCubit>().verifyForgotEmailCode(
-          email: widget.email,
-          code: _code,
-        );
+      email: widget.email,
+      code: _code,
+    );
   }
 
   Future<void> _resend(BuildContext context) async {
@@ -52,11 +52,12 @@ class _ForgotOtpViewState extends State<ForgotOtpView> {
       listenWhen: (previous, current) {
         final finished =
             previous.forgotPasswordUiStatus == ForgotPasswordUiStatus.loading &&
-                current.forgotPasswordUiStatus == ForgotPasswordUiStatus.idle;
+            current.forgotPasswordUiStatus == ForgotPasswordUiStatus.idle;
         if (!finished) return false;
         if (current.forgotPasswordFieldErrors.isNotEmpty) return true;
         if (current.forgotPasswordErrorMessage.isNotEmpty) return true;
-        if (current.forgotEmailCodeVerified && !previous.forgotEmailCodeVerified) {
+        if (current.forgotEmailCodeVerified &&
+            !previous.forgotEmailCodeVerified) {
           return true;
         }
         if (!current.forgotEmailCodeVerified &&
@@ -81,9 +82,9 @@ class _ForgotOtpViewState extends State<ForgotOtpView> {
           final text = state.forgotPasswordErrorMessage.trim().isEmpty
               ? context.l10n.loginErrorGeneric
               : state.forgotPasswordErrorMessage;
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(text)),
-          );
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(text)));
           return;
         }
         if (state.forgotPasswordEmail.isNotEmpty) {
@@ -93,7 +94,8 @@ class _ForgotOtpViewState extends State<ForgotOtpView> {
         }
       },
       builder: (context, state) {
-        final loading = state.forgotPasswordUiStatus == ForgotPasswordUiStatus.loading;
+        final loading =
+            state.forgotPasswordUiStatus == ForgotPasswordUiStatus.loading;
         final codeErr = state.forgotPasswordFieldErrors['code'];
 
         return AppScaffold(
@@ -136,7 +138,9 @@ class _ForgotOtpViewState extends State<ForgotOtpView> {
                             child: Text(
                               codeErr,
                               style: AppTextStyles.caption(context).copyWith(
-                                color: isDark ? AppColors.redDark : AppColors.redLight,
+                                color: isDark
+                                    ? AppColors.redDark
+                                    : AppColors.redLight,
                               ),
                               textAlign: TextAlign.center,
                             ),
@@ -152,13 +156,14 @@ class _ForgotOtpViewState extends State<ForgotOtpView> {
                                 children: [
                                   TextSpan(
                                     text: '${context.l10n.didntReceiveCode} ',
-                                    style: AppTextStyles.caption(context).copyWith(
-                                      color: isDark
-                                          ? AppColors.darkGreyText
-                                          : AppColors.greyText,
-                                      fontWeight: FontWeight.w400,
-                                      height: 1.4,
-                                    ),
+                                    style: AppTextStyles.caption(context)
+                                        .copyWith(
+                                          color: isDark
+                                              ? AppColors.darkGreyText
+                                              : AppColors.greyText,
+                                          fontWeight: FontWeight.w400,
+                                          height: 1.4,
+                                        ),
                                   ),
                                   TextSpan(
                                     text: context.l10n.resendCode,

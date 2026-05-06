@@ -66,16 +66,16 @@ class AchievementView extends StatelessWidget {
         }
 
         final data = state.data;
-        final badges =
-            data == null ? <LoyaltyBadge>[] : _sortedBadges(data.badges);
+        final badges = data == null
+            ? <LoyaltyBadge>[]
+            : _sortedBadges(data.badges);
         final total = badges.length;
         final earned = data?.earnedBadgeCount ?? 0;
         final progress = total > 0 ? earned / total : 0.0;
         final preview = badges.take(3).toList();
 
         return RefreshIndicator(
-          onRefresh: () =>
-              context.read<LoyaltyAchievementsCubit>().refresh(),
+          onRefresh: () => context.read<LoyaltyAchievementsCubit>().refresh(),
           child: ListView(
             physics: const AlwaysScrollableScrollPhysics(),
             padding: EdgeInsets.symmetric(
@@ -140,11 +140,7 @@ class AchievementView extends StatelessWidget {
 }
 
 class _BadgeRowCard extends StatelessWidget {
-  const _BadgeRowCard({
-    required this.badge,
-    this.rule,
-    required this.isDark,
-  });
+  const _BadgeRowCard({required this.badge, this.rule, required this.isDark});
 
   final LoyaltyBadge badge;
   final LoyaltyAchievementRule? rule;
@@ -198,9 +194,9 @@ class _BadgeRowCard extends StatelessWidget {
                     context.l10n.points_short(matchedRule.rewardPoints),
                     style: (context) =>
                         AppTextStyles.captionText(context).copyWith(
-                      color: AppColors.languageIcon,
-                      fontWeight: FontWeight.w600,
-                    ),
+                          color: AppColors.languageIcon,
+                          fontWeight: FontWeight.w600,
+                        ),
                   ),
                 ],
               ],
@@ -222,11 +218,11 @@ class _BadgeRowCard extends StatelessWidget {
                 context.l10n.session_card_status_completed,
                 style: (context) =>
                     AppTextStyles.splashVersion(context).copyWith(
-                  color: isDark
-                      ? AppColors.successBorderDark
-                      : AppColors.successColor,
-                  height: 1.6,
-                ),
+                      color: isDark
+                          ? AppColors.successBorderDark
+                          : AppColors.successColor,
+                      height: 1.6,
+                    ),
               ),
             ),
         ],

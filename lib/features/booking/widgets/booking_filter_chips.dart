@@ -208,10 +208,21 @@ class BookingFilterChips extends StatelessWidget {
   String? _normalizeGenderOption(String? value) {
     final raw = value?.trim();
     if (raw == null || raw.isEmpty) return null;
-    final normalized = raw.toLowerCase().replaceAll(RegExp(r'[\s_-]+'), '').trim();
+    final normalized = raw
+        .toLowerCase()
+        .replaceAll(RegExp(r'[\s_-]+'), '')
+        .trim();
     const maleTokens = {'male', 'man', 'men', 'boy', 'boys', 'm'};
     const femaleTokens = {'female', 'woman', 'women', 'girl', 'girls', 'f'};
-    const allTokens = {'all', 'any', 'mixed', 'unisex', 'coed', 'both', 'everyone'};
+    const allTokens = {
+      'all',
+      'any',
+      'mixed',
+      'unisex',
+      'coed',
+      'both',
+      'everyone',
+    };
     if (maleTokens.contains(normalized)) return 'Male';
     if (femaleTokens.contains(normalized)) return 'Female';
     if (allTokens.contains(normalized)) return 'All Gender';

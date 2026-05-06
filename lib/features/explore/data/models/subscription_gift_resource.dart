@@ -23,9 +23,11 @@ class SubscriptionGiftResource {
     return SubscriptionGiftResource(
       id: json['id']?.toString(),
       redemptionCode:
-          '${json['redemptionCode'] ?? json['redemption_code'] ?? ''}'.trim().isEmpty
-              ? null
-              : '${json['redemptionCode'] ?? json['redemption_code']}',
+          '${json['redemptionCode'] ?? json['redemption_code'] ?? ''}'
+              .trim()
+              .isEmpty
+          ? null
+          : '${json['redemptionCode'] ?? json['redemption_code']}',
       subscription: sub,
     );
   }

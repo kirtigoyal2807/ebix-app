@@ -16,6 +16,9 @@ class AppTextField extends StatefulWidget {
   final String? initialValue;
   final int? maxLines;
   final int? maxLength;
+  final bool? enabled;
+  final bool readOnly;
+  final void Function()? onTap;
 
   /// Shown under the field when [maxLength] is set (e.g. `12/100`).
   final bool showCharacterCounter;
@@ -44,6 +47,9 @@ class AppTextField extends StatefulWidget {
     this.controller,
     this.showClearButton = false,
     this.scrollPadding = const EdgeInsets.all(20.0),
+    this.enabled = true,
+    this.readOnly = false,
+    this.onTap,
   });
 
   @override
@@ -75,6 +81,16 @@ class _AppTextFieldState extends State<AppTextField> {
   }
 
   @override
+  void didUpdateWidget(AppTextField oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.initialValue != oldWidget.initialValue) {
+      if (widget.initialValue != _controller.text) {
+        _controller.text = widget.initialValue ?? "";
+      }
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final theme = Theme.of(context);
@@ -92,6 +108,9 @@ class _AppTextFieldState extends State<AppTextField> {
         Stack(
           children: [
             TextFormField(
+              enabled: widget.enabled,
+              readOnly: widget.readOnly,
+              onTap: widget.onTap,
               controller: _controller,
               focusNode: _focusNode,
               scrollPadding: widget.scrollPadding,
@@ -181,31 +200,30 @@ class _AppTextFieldState extends State<AppTextField> {
                         },
                       )
                     : widget.showClearButton
-                        ? AnimatedBuilder(
-                            animation: _controller,
-                            builder: (context, _) {
-                              if (_controller.text.isEmpty) {
-                                return const SizedBox.shrink();
-                              }
-                              return IconButton(
-                                icon: Icon(
-                                  Icons.close,
-                                  size: 20,
-                                  color: AppColors.lightGrey,
-                                ),
-                                onPressed: () {
-                                  _controller.clear();
-                                  widget.onChanged?.call('');
-                                },
-                              );
+                    ? AnimatedBuilder(
+                        animation: _controller,
+                        builder: (context, _) {
+                          if (_controller.text.isEmpty) {
+                            return const SizedBox.shrink();
+                          }
+                          return IconButton(
+                            icon: Icon(
+                              Icons.close,
+                              size: 20,
+                              color: AppColors.lightGrey,
+                            ),
+                            onPressed: () {
+                              _controller.clear();
+                              widget.onChanged?.call('');
                             },
-                          )
-                        : null,
+                          );
+                        },
+                      )
+                    : null,
               ),
             ),
             Visibility(
-              visible:
-                  widget.maxLength != null && widget.showCharacterCounter,
+              visible: widget.maxLength != null && widget.showCharacterCounter,
               child: Positioned(
                 left: 12,
                 bottom: 8,

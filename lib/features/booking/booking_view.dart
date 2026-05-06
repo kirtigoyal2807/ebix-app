@@ -31,9 +31,7 @@ class BookingView extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(
-          create: (_) => BookingCubit(initialTab: initialTab),
-        ),
+        BlocProvider(create: (_) => BookingCubit(initialTab: initialTab)),
         BlocProvider(
           create: (ctx) => TrainersCubit(ctx.read<TrainersRepository>()),
         ),
@@ -52,10 +50,10 @@ class BookingView extends StatelessWidget {
               bookingCubit.state.selectedTab == BookingTab.classes) {
             final booking = bookingCubit.state;
             context.read<ClassesCubit>().load(
-                  search: booking.searchQuery.trim().isEmpty
-                      ? null
-                      : booking.searchQuery.trim(),
-                );
+              search: booking.searchQuery.trim().isEmpty
+                  ? null
+                  : booking.searchQuery.trim(),
+            );
           }
         },
         child: const BookingBody(),
@@ -87,10 +85,10 @@ class _BookingBodyState extends State<BookingBody> {
           },
           listener: (context, bookingState) {
             context.read<ClassesCubit>().load(
-                  search: bookingState.searchQuery.trim().isEmpty
-                      ? null
-                      : bookingState.searchQuery.trim(),
-                );
+              search: bookingState.searchQuery.trim().isEmpty
+                  ? null
+                  : bookingState.searchQuery.trim(),
+            );
           },
         ),
         // Trainers tab: reload on tab change / search / type filter
@@ -103,12 +101,13 @@ class _BookingBodyState extends State<BookingBody> {
           },
           listener: (context, bookingState) {
             context.read<TrainersCubit>().load(
-                  specialty:
-                      trainerSpecialtyQuery(bookingState.selectedTrainerType),
-                  search: bookingState.searchQuery.trim().isEmpty
-                      ? null
-                      : bookingState.searchQuery.trim(),
-                );
+              specialty: trainerSpecialtyQuery(
+                bookingState.selectedTrainerType,
+              ),
+              search: bookingState.searchQuery.trim().isEmpty
+                  ? null
+                  : bookingState.searchQuery.trim(),
+            );
           },
         ),
         // Classes tab: reload from API when search query changes
@@ -119,17 +118,18 @@ class _BookingBodyState extends State<BookingBody> {
           },
           listener: (context, bookingState) {
             context.read<ClassesCubit>().load(
-                  search: bookingState.searchQuery.trim().isEmpty
-                      ? null
-                      : bookingState.searchQuery.trim(),
-                  force: true,
-                );
+              search: bookingState.searchQuery.trim().isEmpty
+                  ? null
+                  : bookingState.searchQuery.trim(),
+              force: true,
+            );
           },
         ),
       ],
       child: Scaffold(
-        backgroundColor:
-            isDark ? AppColors.homeBackground : AppColors.whiteColor,
+        backgroundColor: isDark
+            ? AppColors.homeBackground
+            : AppColors.whiteColor,
         body: SafeArea(
           child: Column(
             children: [
@@ -190,27 +190,29 @@ class _ClassesTab extends StatelessWidget {
 
               if (classesState.hasError && classesState.allClasses.isEmpty) {
                 return _ErrorView(
-                  message: classesState.errorMessage ??
+                  message:
+                      classesState.errorMessage ??
                       context.l10n.somethingWentWrong,
                   onRetry: () => context.read<ClassesCubit>().refresh(
-                        search: bookingState.searchQuery.trim().isEmpty
-                            ? null
-                            : bookingState.searchQuery.trim(),
-                      ),
+                    search: bookingState.searchQuery.trim().isEmpty
+                        ? null
+                        : bookingState.searchQuery.trim(),
+                  ),
                 );
               }
 
               return RefreshIndicator(
                 onRefresh: () => context.read<ClassesCubit>().refresh(
-                      search: bookingState.searchQuery.trim().isEmpty
-                          ? null
-                          : bookingState.searchQuery.trim(),
-                    ),
+                  search: bookingState.searchQuery.trim().isEmpty
+                      ? null
+                      : bookingState.searchQuery.trim(),
+                ),
                 child: Stack(
                   children: [
                     ListView(
-                      padding:
-                          const EdgeInsets.symmetric(vertical: AppSpacing.lg),
+                      padding: const EdgeInsets.symmetric(
+                        vertical: AppSpacing.lg,
+                      ),
                       children: _buildClassCards(
                         context,
                         classesState,
@@ -241,10 +243,7 @@ class _ClassesTab extends StatelessWidget {
     BookingState bookingState,
     bool isDark,
   ) {
-    final filtered = _applyLocalFilters(
-      classesState.allSlots,
-      bookingState,
-    );
+    final filtered = _applyLocalFilters(classesState.allSlots, bookingState);
 
     if (filtered.isEmpty && classesState.isLoaded) {
       return [
@@ -264,9 +263,7 @@ class _ClassesTab extends StatelessWidget {
     final widgets = <Widget>[];
     for (var i = 0; i < filtered.length; i++) {
       final slot = filtered[i];
-      widgets.add(
-        BookingClassCard.fromSlot(slot),
-      );
+      widgets.add(BookingClassCard.fromSlot(slot));
       if (i < filtered.length - 1) {
         widgets.add(const SizedBox(height: AppSpacing.md));
       }
@@ -285,31 +282,27 @@ class _ClassesTab extends StatelessWidget {
     // Branch filter
     if (state.selectedBranch != 'All Branches') {
       final selectedBranch = _normalizedToken(state.selectedBranch);
-      result = result
-          .where((s) {
-            final branchName = _normalizedToken(s.branchName);
-            return branchName == selectedBranch ||
-                branchName.contains(selectedBranch) ||
-                selectedBranch.contains(branchName);
-          })
-          .toList();
+      result = result.where((s) {
+        final branchName = _normalizedToken(s.branchName);
+        return branchName == selectedBranch ||
+            branchName.contains(selectedBranch) ||
+            selectedBranch.contains(branchName);
+      }).toList();
     }
 
     // Category filter (class name match)
     if (state.selectedCategory != 'All Categories') {
       final selectedCategory = _normalizedToken(state.selectedCategory);
-      result = result
-          .where((s) {
-            final slotCategory = _normalizedToken(s.category ?? '');
-            final slotName = _normalizedToken(s.name);
-            if (slotCategory.isNotEmpty) {
-              return slotCategory == selectedCategory ||
-                  slotCategory.contains(selectedCategory) ||
-                  selectedCategory.contains(slotCategory);
-            }
-            return slotName.contains(selectedCategory);
-          })
-          .toList();
+      result = result.where((s) {
+        final slotCategory = _normalizedToken(s.category ?? '');
+        final slotName = _normalizedToken(s.name);
+        if (slotCategory.isNotEmpty) {
+          return slotCategory == selectedCategory ||
+              slotCategory.contains(selectedCategory) ||
+              selectedCategory.contains(slotCategory);
+        }
+        return slotName.contains(selectedCategory);
+      }).toList();
     }
 
     // Gender filter
@@ -336,15 +329,12 @@ class _ClassesTab extends StatelessWidget {
           case 'Today':
             return slotDay == today;
           case 'Tomorrow':
-            return slotDay ==
-                today.add(const Duration(days: 1));
+            return slotDay == today.add(const Duration(days: 1));
           case 'This Week':
             final weekEnd = today.add(Duration(days: 7 - today.weekday));
-            return !slotDay.isBefore(today) &&
-                !slotDay.isAfter(weekEnd);
+            return !slotDay.isBefore(today) && !slotDay.isAfter(weekEnd);
           case 'Next Week':
-            final nextWeekStart =
-                today.add(Duration(days: 8 - today.weekday));
+            final nextWeekStart = today.add(Duration(days: 8 - today.weekday));
             final nextWeekEnd = nextWeekStart.add(const Duration(days: 6));
             return !slotDay.isBefore(nextWeekStart) &&
                 !slotDay.isAfter(nextWeekEnd);
@@ -372,7 +362,15 @@ class _ClassesTab extends StatelessWidget {
     if (normalized.isEmpty) return null;
     const maleTokens = {'male', 'man', 'men', 'boy', 'boys', 'm'};
     const femaleTokens = {'female', 'woman', 'women', 'girl', 'girls', 'f'};
-    const allTokens = {'all', 'any', 'mixed', 'unisex', 'coed', 'both', 'everyone'};
+    const allTokens = {
+      'all',
+      'any',
+      'mixed',
+      'unisex',
+      'coed',
+      'both',
+      'everyone',
+    };
     if (maleTokens.contains(normalized)) return 'male';
     if (femaleTokens.contains(normalized)) return 'female';
     if (allTokens.contains(normalized)) return 'all';

@@ -15,6 +15,7 @@ class InvoiceHistoryState extends Equatable {
     this.errorMessage,
     this.pagination,
     this.sortBy = SortBy.newest,
+
     /// Default matches previous behavior when filters were not applied (full history).
     this.dateRange = DateRange.allTime,
   });
@@ -54,15 +55,15 @@ class InvoiceHistoryState extends Equatable {
 
   @override
   List<Object?> get props => [
-        invoiceCategoryList,
-        selectedInvoiceCategory,
-        loadStatus,
-        invoices,
-        errorMessage,
-        pagination,
-        sortBy,
-        dateRange,
-      ];
+    invoiceCategoryList,
+    selectedInvoiceCategory,
+    loadStatus,
+    invoices,
+    errorMessage,
+    pagination,
+    sortBy,
+    dateRange,
+  ];
 }
 
 enum InvoiceCategory { all, subscriptions, classes, refunds }

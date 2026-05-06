@@ -22,12 +22,17 @@ class TrainersRepository extends BaseRepository {
     try {
       final query = <String, dynamic>{
         'page': page,
-        if (branchId != null && branchId.trim().isNotEmpty) 'branch_id': branchId.trim(),
-        if (specialty != null && specialty.trim().isNotEmpty) 'specialty': specialty.trim(),
+        if (branchId != null && branchId.trim().isNotEmpty)
+          'branch_id': branchId.trim(),
+        if (specialty != null && specialty.trim().isNotEmpty)
+          'specialty': specialty.trim(),
         if (search != null && search.trim().isNotEmpty) 'search': search.trim(),
       };
 
-      final response = await httpClient.get<dynamic>('trainers', queryParameters: query);
+      final response = await httpClient.get<dynamic>(
+        'trainers',
+        queryParameters: query,
+      );
       final code = response.statusCode;
       if (code == null) {
         return ApiFailure(
@@ -69,7 +74,9 @@ class TrainersRepository extends BaseRepository {
           return ApiFailure(
             NetworkException.fromApiEnvelope(
               statusCode: code,
-              message: envelope.message.isEmpty ? 'Request failed' : envelope.message,
+              message: envelope.message.isEmpty
+                  ? 'Request failed'
+                  : envelope.message,
               fieldErrors: envelope.fieldErrors,
               responseData: raw,
             ),
@@ -98,7 +105,8 @@ class TrainersRepository extends BaseRepository {
     final trimmed = id.trim();
     return get<TrainerResource>(
       'trainers/$trimmed',
-      fromJson: (json) => TrainerResource.fromJson(json as Map<String, dynamic>),
+      fromJson: (json) =>
+          TrainerResource.fromJson(json as Map<String, dynamic>),
     );
   }
 

@@ -21,22 +21,22 @@ class DioClient {
     Map<String, dynamic>? defaultHeaders,
     List<Interceptor>? interceptors,
   }) : dio = Dio(
-          BaseOptions(
-            baseUrl: baseUrl,
-            connectTimeout: connectTimeout,
-            receiveTimeout: receiveTimeout,
-            sendTimeout: sendTimeout,
-            headers: {
-              Headers.acceptHeader: Headers.jsonContentType,
-              Headers.contentTypeHeader: Headers.jsonContentType,
-              ...?defaultHeaders,
-            },
-            // Non-2xx responses throw [DioException] so failures go through
-            // [NetworkException.fromDioException] (envelope-aware).
-            validateStatus: (status) =>
-                status != null && status >= 200 && status < 300,
-          ),
-        ) {
+         BaseOptions(
+           baseUrl: baseUrl,
+           connectTimeout: connectTimeout,
+           receiveTimeout: receiveTimeout,
+           sendTimeout: sendTimeout,
+           headers: {
+             Headers.acceptHeader: Headers.jsonContentType,
+             Headers.contentTypeHeader: Headers.jsonContentType,
+             ...?defaultHeaders,
+           },
+           // Non-2xx responses throw [DioException] so failures go through
+           // [NetworkException.fromDioException] (envelope-aware).
+           validateStatus: (status) =>
+               status != null && status >= 200 && status < 300,
+         ),
+       ) {
     dio.interceptors.add(
       InterceptorsWrapper(
         onRequest: (options, handler) {
