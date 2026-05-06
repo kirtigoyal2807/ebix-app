@@ -26,6 +26,7 @@ class ClassSlotViewModel {
     this.basePrice,
     this.recentReviews,
     this.gender,
+    this.category,
     this.reviewsCount,
   });
 
@@ -53,6 +54,7 @@ class ClassSlotViewModel {
 
   /// From event / class payload when the API includes a gender restriction.
   final String? gender;
+  final String? category;
 
   /// From `GET /classes` class-level `reviewsCount` when present.
   final int? reviewsCount;
@@ -101,7 +103,8 @@ class ClassSlotViewModel {
       durationMinutes: gymClass.defaultDurationMinutes,
       basePrice: gymClass.basePrice,
       recentReviews: gymClass.recentReviews,
-      gender: event.gender,
+      gender: event.gender ?? gymClass.gender,
+      category: event.category ?? gymClass.category,
       reviewsCount: gymClass.reviewsCount,
     );
   }
@@ -153,7 +156,8 @@ class ClassSlotViewModel {
       durationMinutes: gymClass.defaultDurationMinutes,
       basePrice: gymClass.basePrice,
       recentReviews: gymClass.recentReviews,
-      gender: null,
+      gender: gymClass.gender,
+      category: gymClass.category,
       reviewsCount: gymClass.reviewsCount,
     );
   }
@@ -181,6 +185,7 @@ class ClassSlotViewModel {
       basePrice: detail.gymClass?.basePrice,
       recentReviews: detail.gymClass?.recentReviews,
       gender: detail.gender,
+      category: null,
       reviewsCount: detail.gymClass?.reviewsCount,
     );
   }
@@ -206,6 +211,7 @@ class ClassSlotViewModel {
     double? basePrice,
     List<ReviewResource>? recentReviews,
     String? gender,
+    String? category,
     int? reviewsCount,
   }) {
     return ClassSlotViewModel(
@@ -229,6 +235,7 @@ class ClassSlotViewModel {
       basePrice: basePrice ?? this.basePrice,
       recentReviews: recentReviews ?? this.recentReviews,
       gender: gender ?? this.gender,
+      category: category ?? this.category,
       reviewsCount: reviewsCount ?? this.reviewsCount,
     );
   }

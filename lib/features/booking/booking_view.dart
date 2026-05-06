@@ -284,31 +284,41 @@ class _ClassesTab extends StatelessWidget {
 
     // Branch filter
     if (state.selectedBranch != 'All Branches') {
+      final selectedBranch = _normalizedToken(state.selectedBranch);
       result = result
-          .where(
-            (s) => s.branchName
-                .toLowerCase()
-                .contains(state.selectedBranch.toLowerCase()),
-          )
+          .where((s) {
+            final branchName = _normalizedToken(s.branchName);
+            return branchName == selectedBranch ||
+                branchName.contains(selectedBranch) ||
+                selectedBranch.contains(branchName);
+          })
           .toList();
     }
 
     // Category filter (class name match)
     if (state.selectedCategory != 'All Categories') {
+      final selectedCategory = _normalizedToken(state.selectedCategory);
       result = result
-          .where(
-            (s) => s.name
-                .toLowerCase()
-                .contains(state.selectedCategory.toLowerCase()),
-          )
+          .where((s) {
+            final slotCategory = _normalizedToken(s.category ?? '');
+            final slotName = _normalizedToken(s.name);
+            if (slotCategory.isNotEmpty) {
+              return slotCategory == selectedCategory ||
+                  slotCategory.contains(selectedCategory) ||
+                  selectedCategory.contains(slotCategory);
+            }
+            return slotName.contains(selectedCategory);
+          })
           .toList();
     }
 
     // Gender filter
     if (state.selectedGender != 'All Gender') {
+      final selectedGender = _normalizedGender(state.selectedGender);
       result = result.where((s) {
-        if (s.gender == null) return true;
-        return s.gender!.toLowerCase() == state.selectedGender.toLowerCase();
+        final slotGender = _normalizedGender(s.gender);
+        if (slotGender == null || slotGender == 'all') return false;
+        return slotGender == selectedGender;
       }).toList();
     }
 
@@ -350,6 +360,23 @@ class _ClassesTab extends StatelessWidget {
     }
 
     return result;
+  }
+
+  String _normalizedToken(String value) {
+    return value.trim().toLowerCase().replaceAll(RegExp(r'[\s_-]+'), '');
+  }
+
+  String? _normalizedGender(String? value) {
+    if (value == null) return null;
+    final normalized = _normalizedToken(value);
+    if (normalized.isEmpty) return null;
+    const maleTokens = {'male', 'man', 'men', 'boy', 'boys', 'm'};
+    const femaleTokens = {'female', 'woman', 'women', 'girl', 'girls', 'f'};
+    const allTokens = {'all', 'any', 'mixed', 'unisex', 'coed', 'both', 'everyone'};
+    if (maleTokens.contains(normalized)) return 'male';
+    if (femaleTokens.contains(normalized)) return 'female';
+    if (allTokens.contains(normalized)) return 'all';
+    return normalized;
   }
 }
 
