@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:pilates_app/core/models/membership_snapshot.dart';
+import 'package:pilates_app/core/utils/api_media_url.dart';
 
 class HomeResponse {
   const HomeResponse({
@@ -91,7 +92,7 @@ class HomeBanner {
       id: _toIntOrNull(json['id']),
       title: json['title']?.toString(),
       subtitle: json['subtitle']?.toString(),
-      imageUrl: json['imageUrl']?.toString(),
+      imageUrl: resolveApiMediaUrl(json['imageUrl']?.toString()),
       actionType: json['actionType']?.toString(),
       actionPayload: _toMapOrNull(json['actionPayload']),
     );
@@ -174,7 +175,7 @@ class HomeFeaturedClass {
       trainerName: json['trainerName']?.toString(),
       branchName: json['branchName']?.toString(),
       startAt: DateTime.tryParse(json['startAt']?.toString() ?? ''),
-      image: json['image']?.toString(),
+      image: resolveApiMediaUrl(json['image']?.toString()),
       spotsLeft: _toIntOrNull(availability?['spotsLeft']),
       inPlan: flags?['inPlan'] is bool ? flags!['inPlan'] as bool : null,
       calendarEventId:
@@ -207,7 +208,7 @@ class HomeClassType {
     return HomeClassType(
       id: _toIntOrNull(json['id']),
       name: json['name']?.toString(),
-      imageUrl: json['imageUrl']?.toString(),
+      imageUrl: resolveApiMediaUrl(json['imageUrl']?.toString()),
       sortOrder: _toIntOrNull(json['sortOrder']),
     );
   }
@@ -237,7 +238,13 @@ class HomeTrainer {
           .map((item) => item.toString())
           .where((item) => item.trim().isNotEmpty)
           .toList(),
-      imageUrl: json['imageUrl']?.toString(),
+      imageUrl: resolveApiMediaUrl(
+        json['imageUrl']?.toString() ??
+            json['avatar_url']?.toString() ??
+            json['avatarUrl']?.toString() ??
+            json['image']?.toString() ??
+            json['photo']?.toString(),
+      ),
     );
   }
 }

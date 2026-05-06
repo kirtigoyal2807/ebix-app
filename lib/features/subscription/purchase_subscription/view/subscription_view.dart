@@ -80,6 +80,8 @@ class _SubscriptionViewContent extends StatelessWidget {
         }
 
         return Scaffold(
+          // Plan details (step 9) has voucher + text fields — must resize with keyboard.
+          resizeToAvoidBottomInset: true,
           backgroundColor: isDark
               ? AppColors.homeBackground
               : AppColors.whiteColor,

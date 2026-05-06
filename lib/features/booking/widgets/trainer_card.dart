@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pilates_app/config/theme/app_colors.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
@@ -11,6 +12,7 @@ import '../../../config/theme/app_radius.dart';
 import '../../../widgets/app_shadow.dart';
 import '../data/models/trainer_resource.dart';
 import 'trainer_average_stars.dart';
+import '../cubit/booking_cubit.dart';
 import '../views/trainer_details_view.dart';
 
 class TrainerCard extends StatelessWidget {
@@ -28,10 +30,14 @@ class TrainerCard extends StatelessWidget {
 
     return GestureDetector(
       onTap: () {
+        final bookingCubit = context.read<BookingCubit>();
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => TrainerDetailsView(trainer: trainer),
+            builder: (newContext) => BlocProvider.value(
+              value: bookingCubit,
+              child: TrainerDetailsView(trainer: trainer),
+            ),
           ),
         );
       },
@@ -338,8 +344,7 @@ class _TrainerAvatar extends StatelessWidget {
   Widget build(BuildContext context) {
     final url = trainer.avatarUrl;
     if (url != null && url.isNotEmpty) {
-      return ClipRRect(
-        borderRadius: BorderRadius.circular(8),
+      return ClipOval(
         child: Image.network(
           url,
           height: 56,
@@ -353,10 +358,13 @@ class _TrainerAvatar extends StatelessWidget {
         ),
       );
     }
-    return Image.asset(
-      'assets/images/demo images/Trainer Avatar.png',
-      height: 56,
-      width: 56,
+    return ClipOval(
+      child: Image.asset(
+        'assets/images/demo images/Trainer Avatar.png',
+        height: 56,
+        width: 56,
+        fit: BoxFit.cover,
+      ),
     );
   }
 }

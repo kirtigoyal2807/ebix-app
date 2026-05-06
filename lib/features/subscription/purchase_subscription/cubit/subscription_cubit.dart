@@ -4,6 +4,7 @@ import 'package:equatable/equatable.dart';
 import 'package:pilates_app/core/validation/contact_validators.dart';
 import 'package:pilates_app/core/validation/personal_information_validators.dart';
 import 'package:pilates_app/features/checkout/data/checkout_repository.dart';
+import 'package:pilates_app/features/checkout/data/models/checkout_payment_intent_result.dart';
 import 'package:pilates_app/features/checkout/data/models/product_health_question.dart';
 import 'package:pilates_app/features/checkout/data/models/product_health_questionnaire.dart';
 import 'package:pilates_app/features/subscription/purchase_subscription/subscription_api_ids.dart';
@@ -17,6 +18,32 @@ class SubscriptionCubit extends Cubit<SubscriptionState> {
   /// Last product id used for a successful `GET …/questionnaires/product/{id}`.
   /// Used to skip redundant prefetches when the schema is already in memory.
   int? _cachedQuestionnaireProductId;
+
+  /// After hosted payment succeeds, receipt navigation may be deferred until the user
+  /// completes [RequiredInformationView]. Intent + callback are stored here until then.
+  CheckoutPaymentIntentResult? _deferredReceiptPaymentIntent;
+  Map<String, dynamic>? _deferredReceiptGatewayCallback;
+
+  bool get hasDeferredPostPaymentReceipt => _deferredReceiptPaymentIntent != null;
+
+  CheckoutPaymentIntentResult? get deferredPostPaymentReceiptIntent =>
+      _deferredReceiptPaymentIntent;
+
+  Map<String, dynamic>? get deferredPostPaymentGatewayCallback =>
+      _deferredReceiptGatewayCallback;
+
+  void setDeferredPostPaymentReceiptContext(
+    CheckoutPaymentIntentResult intent, {
+    Map<String, dynamic>? gatewayCallback,
+  }) {
+    _deferredReceiptPaymentIntent = intent;
+    _deferredReceiptGatewayCallback = gatewayCallback;
+  }
+
+  void clearDeferredPostPaymentReceiptContext() {
+    _deferredReceiptPaymentIntent = null;
+    _deferredReceiptGatewayCallback = null;
+  }
 
   void selectPlan(String planId, {bool? requiresHealthIntake}) {
     final nextIntake =
@@ -485,11 +512,6 @@ class SubscriptionCubit extends Cubit<SubscriptionState> {
     emit(state.copyWith(currentStep: step.clamp(0, 10)));
   }
 
-  /// After required-information (step 10), return to checkout review to pay.
-  void goToCheckoutReviewStep() {
-    emit(state.copyWith(currentStep: 9));
-  }
-
   /// Current value for an API-driven personal field (step 1).
   String apiPersonalFieldValue(ProductHealthQuestion q) {
     final slot = q.personalInformationStateSlot;
@@ -680,8 +702,12 @@ class SubscriptionCubit extends Cubit<SubscriptionState> {
   void updateEmergencyContactRelationship(String val) =>
       emit(state.copyWith(emergencyContactRelationship: val));
 
-  void updateEmergencyContactPhone(String val) =>
-      emit(state.copyWith(emergencyContactPhone: val));
+  void updateEmergencyContactPhone(String val) {
+    final digits = val.replaceAll(RegExp(r'\D'), '');
+    final limited =
+        digits.length > 10 ? digits.substring(0, 10) : digits;
+    emit(state.copyWith(emergencyContactPhone: limited));
+  }
 
   void updateIdType(String val) => emit(state.copyWith(idType: val));
 

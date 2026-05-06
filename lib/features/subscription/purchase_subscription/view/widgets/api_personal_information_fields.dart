@@ -112,6 +112,7 @@ class _ApiPersonalFieldRowState extends State<_ApiPersonalFieldRow> {
         flagAsset: '',
         controller: _controller,
         maxPhoneDigits: 10,
+        onCountryChanged: (_) {},
         onChanged: (v) => cubit.applyApiPersonalInformationAnswer(q, v),
       );
     }

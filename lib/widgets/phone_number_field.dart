@@ -21,6 +21,9 @@ class PhoneNumberField extends StatefulWidget {
   /// When set, the phone text field only accepts this many digits (e.g. `10`).
   final int? maxPhoneDigits;
 
+  /// ISO 3166-1 alpha-2 for [CountryCodePicker.initialSelection] (e.g. `SA`).
+  final String initialCountryIso;
+
   const PhoneNumberField({
     super.key,
     required this.label,
@@ -31,6 +34,7 @@ class PhoneNumberField extends StatefulWidget {
     this.onCountryChanged,
     this.onChanged,
     this.maxPhoneDigits,
+    this.initialCountryIso = 'SA',
   });
 
   @override
@@ -93,8 +97,7 @@ class _PhoneNumberFieldState extends State<PhoneNumberField> {
                 onChanged: (CountryCode countryCode) {
                   widget.onCountryChanged?.call(countryCode);
                 },
-                initialSelection:"+966",
-                // widget.countryCode.replaceFirst('+', ''),
+                initialSelection: widget.initialCountryIso,
                 showCountryOnly: false,
                 showOnlyCountryWhenClosed: false,
                 alignLeft: false,

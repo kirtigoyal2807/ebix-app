@@ -23,6 +23,12 @@ class AppTextField extends StatefulWidget {
   /// When set, the parent owns disposal. Otherwise an internal controller is used.
   final TextEditingController? controller;
 
+  /// Shows a clear icon when the field has text (non-[obscure] fields only).
+  final bool showClearButton;
+
+  /// Passed to the underlying [TextField.scrollPadding] (e.g. room above keyboard).
+  final EdgeInsets scrollPadding;
+
   const AppTextField({
     super.key,
     this.label,
@@ -36,6 +42,8 @@ class AppTextField extends StatefulWidget {
     this.maxLength,
     this.showCharacterCounter = true,
     this.controller,
+    this.showClearButton = false,
+    this.scrollPadding = const EdgeInsets.all(20.0),
   });
 
   @override
@@ -86,6 +94,7 @@ class _AppTextFieldState extends State<AppTextField> {
             TextFormField(
               controller: _controller,
               focusNode: _focusNode,
+              scrollPadding: widget.scrollPadding,
               maxLength: widget.maxLength,
               buildCounter:
                   (
@@ -171,7 +180,27 @@ class _AppTextFieldState extends State<AppTextField> {
                           );
                         },
                       )
-                    : null,
+                    : widget.showClearButton
+                        ? AnimatedBuilder(
+                            animation: _controller,
+                            builder: (context, _) {
+                              if (_controller.text.isEmpty) {
+                                return const SizedBox.shrink();
+                              }
+                              return IconButton(
+                                icon: Icon(
+                                  Icons.close,
+                                  size: 20,
+                                  color: AppColors.lightGrey,
+                                ),
+                                onPressed: () {
+                                  _controller.clear();
+                                  widget.onChanged?.call('');
+                                },
+                              );
+                            },
+                          )
+                        : null,
               ),
             ),
             Visibility(

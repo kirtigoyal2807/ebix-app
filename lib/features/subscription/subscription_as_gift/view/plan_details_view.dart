@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/core/utils/checkout_payment_launcher.dart';
 import 'package:pilates_app/core/utils/hosted_payment_webview_page.dart';
-import 'package:pilates_app/core/utils/post_hosted_payment_receipt.dart';
 import 'package:pilates_app/features/checkout/data/checkout_repository.dart';
 import 'package:pilates_app/features/checkout/data/models/checkout_payment_intent_result.dart';
 
@@ -14,6 +13,9 @@ import '../../../../config/theme/app_colors.dart';
 import '../../../../core/localization/arb/app_localizations.dart';
 import '../../../../widgets/app_button.dart';
 import '../../purchase_subscription/view/review_screen_details_view.dart';
+import '../cubit/gift_subscription_cubit.dart';
+import '../cubit/gift_subscription_state.dart';
+import 'gift_successfully_view.dart';
 
 class PlanDetailsView extends StatelessWidget {
   const PlanDetailsView({super.key, this.checkoutId});
@@ -21,21 +23,36 @@ class PlanDetailsView extends StatelessWidget {
   /// Checkout session UUID (same as used for `POST …/gift` and payment intent).
   final String? checkoutId;
 
-  static Future<void> _pushReceiptScreen(
-    BuildContext context,
-    CheckoutRepository repo,
-    String checkoutId,
-    CheckoutPaymentIntentResult intent, {
-    Map<String, dynamic>? gatewayCallback,
-    bool dismissRootOverlayBeforeReceipt = false,
-  }) async {
-    await pushReceiptAfterHostedPayment(
-      context: context,
-      repo: repo,
-      checkoutSessionId: checkoutId,
-      paymentIntent: intent,
-      gatewayCallback: gatewayCallback,
-      dismissRootOverlayBeforeReceipt: dismissRootOverlayBeforeReceipt,
+  static Future<void> _pushGiftSentSuccessScreen(BuildContext context) async {
+    final l10n = AppLocalizations.of(context)!;
+    GiftSubscriptionCubit? giftCubit;
+    try {
+      giftCubit = context.read<GiftSubscriptionCubit>();
+    } catch (_) {}
+
+    final state = giftCubit?.state;
+    final name = state?.submittedRecipientName?.trim();
+    final email = state?.submittedRecipientEmail?.trim();
+
+    var deliveryValue = l10n.deliveryMethodInstant;
+    if (state != null &&
+        state.selectedDeliveryOption == DeliveryOption.scheduledDelivery) {
+      final iso = state.scheduledDeliveryDateIso?.trim();
+      if (iso != null && iso.isNotEmpty) {
+        deliveryValue = iso;
+      }
+    }
+
+    if (!context.mounted) return;
+    await Navigator.of(context, rootNavigator: true).push<void>(
+      MaterialPageRoute<void>(
+        fullscreenDialog: true,
+        builder: (ctx) => GiftSuccessfullyView(
+          recipientName: name,
+          recipientEmail: email,
+          deliveryMethodValue: deliveryValue,
+        ),
+      ),
     );
   }
 
@@ -74,7 +91,7 @@ class PlanDetailsView extends StatelessWidget {
         messenger.showSnackBar(
           SnackBar(content: Text(l10n.checkoutPaymentAlreadyCompleted)),
         );
-        await _pushReceiptScreen(context, repo, id, data);
+        await _pushGiftSentSuccessScreen(context);
         return;
       }
 
@@ -90,29 +107,8 @@ class PlanDetailsView extends StatelessWidget {
         if (paymentResult?.outcome != HostedPaymentWebViewOutcome.success) {
           return;
         }
-        final paid = paymentResult!;
-
-        showDialog<void>(
-          context: context,
-          barrierDismissible: false,
-          builder: (dialogContext) => const Center(
-            child: CircularProgressIndicator(),
-          ),
-        );
-        try {
-          await _pushReceiptScreen(
-            context,
-            repo,
-            id,
-            data,
-            gatewayCallback: paid.gatewayPayload,
-            dismissRootOverlayBeforeReceipt: true,
-          );
-        } catch (_) {
-          if (context.mounted) {
-            Navigator.of(context, rootNavigator: true).pop();
-          }
-        }
+        if (!context.mounted) return;
+        await _pushGiftSentSuccessScreen(context);
         return;
       }
 
@@ -141,6 +137,7 @@ class PlanDetailsView extends StatelessWidget {
     final l10n = AppLocalizations.of(context);
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       appBar: AppAppBar(
         title: l10n.planDetails,
         isMoreMenu: false,
@@ -148,16 +145,20 @@ class PlanDetailsView extends StatelessWidget {
           Navigator.of(context).pop();
         },
       ),
-      body: Padding(
-        padding: EdgeInsets.only(
-          bottom: AppSpacing.xl,
-        ),
+      body: SafeArea(
         child: Column(
           children: [
-            ReviewScreenDetailsView(checkoutSessionId: checkoutId),
-
+            Expanded(
+              child: ReviewScreenDetailsView(
+                checkoutSessionId: checkoutId,
+              ),
+            ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+              padding: const EdgeInsets.only(
+                left: AppSpacing.lg,
+                right: AppSpacing.lg,
+                bottom: AppSpacing.sm,
+              ),
               child: AppButton(
                 label: l10n.continueToPayment,
                 onPressed: () => _onContinueToPayment(context),

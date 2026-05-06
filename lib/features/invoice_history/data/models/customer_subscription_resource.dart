@@ -19,6 +19,7 @@ class CustomerSubscriptionResource {
     this.createdAt,
     this.updatedAt,
     this.invoicePdfUrl,
+    this.maxFreezeDays,
   });
 
   final String id;
@@ -43,6 +44,9 @@ class CustomerSubscriptionResource {
 
   /// Invoice / receipt PDF URL if the API provides one (various key names).
   final String? invoicePdfUrl;
+
+  /// Max calendar days allowed for a single freeze/pause (§9.1); may mirror [SubscriptionProductRef.maxFreezeDays].
+  final int? maxFreezeDays;
 
   factory CustomerSubscriptionResource.fromJson(Map<String, dynamic> json) {
     final productRaw = json['product'];
@@ -99,6 +103,7 @@ class CustomerSubscriptionResource {
         json['downloadUrl'],
         json['download_url'],
       ]),
+      maxFreezeDays: _mergeMaxFreezeDays(json, product),
     );
   }
 
@@ -130,6 +135,24 @@ class CustomerSubscriptionResource {
     return double.tryParse('$v') ?? 0;
   }
 
+  static int? _mergeMaxFreezeDays(
+    Map<String, dynamic> json,
+    SubscriptionProductRef? product,
+  ) {
+    int? top = SubscriptionSessions._intOrNull(
+      json['maxFreezeDays'] ??
+          json['max_freeze_days'] ??
+          json['maxPauseDays'] ??
+          json['max_pause_days'] ??
+          json['freezeQuotaDays'] ??
+          json['freeze_quota_days'],
+    );
+    final fromProduct = product?.maxFreezeDays;
+    if (top != null && top > 0) return top;
+    if (fromProduct != null && fromProduct > 0) return fromProduct;
+    return null;
+  }
+
   static DateTime? _parseDate(dynamic v) {
     if (v == null) return null;
     if (v is DateTime) return v.toUtc();
@@ -141,10 +164,11 @@ class CustomerSubscriptionResource {
 }
 
 class SubscriptionProductRef {
-  const SubscriptionProductRef({this.id, this.name});
+  const SubscriptionProductRef({this.id, this.name, this.maxFreezeDays});
 
   final int? id;
   final String? name;
+  final int? maxFreezeDays;
 
   factory SubscriptionProductRef.fromJson(Map<String, dynamic> json) {
     final idRaw = json['id'];
@@ -157,9 +181,16 @@ class SubscriptionProductRef {
       id = int.tryParse('$idRaw');
     }
     final name = '${json['name'] ?? ''}'.trim();
+    final maxFreeze = SubscriptionSessions._intOrNull(
+      json['maxFreezeDays'] ??
+          json['max_freeze_days'] ??
+          json['maxPauseDays'] ??
+          json['max_pause_days'],
+    );
     return SubscriptionProductRef(
       id: id,
       name: name.isEmpty ? null : name,
+      maxFreezeDays: maxFreeze,
     );
   }
 }

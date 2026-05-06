@@ -24,7 +24,9 @@ class ReviewResource {
   });
 
   final String id;
-  final int rating;
+
+  /// 0…5; may be fractional when the API sends decimals.
+  final double rating;
   final String? body;
   final String status;
   final DateTime createdAt;
@@ -40,7 +42,7 @@ class ReviewResource {
     }
     return ReviewResource(
       id: '${json['id'] ?? ''}',
-      rating: _int(json['rating'], 0).clamp(1, 5),
+      rating: _ratingValue(json['rating']),
       body: json['body'] is String
           ? (json['body'] as String).trim()
           : json['body']?.toString().trim().isNotEmpty == true
@@ -53,11 +55,12 @@ class ReviewResource {
     );
   }
 
-  static int _int(dynamic v, int fallback) {
-    if (v == null) return fallback;
-    if (v is int) return v;
-    if (v is num) return v.toInt();
-    return int.tryParse('$v') ?? fallback;
+  static double _ratingValue(dynamic v) {
+    if (v == null) return 0;
+    if (v is num) return v.toDouble().clamp(0, 5);
+    final n = double.tryParse('$v'.replaceAll(',', '.'));
+    if (n == null) return 0;
+    return n.clamp(0, 5);
   }
 
   static DateTime? _parseDate(dynamic v) {

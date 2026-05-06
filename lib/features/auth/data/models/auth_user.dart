@@ -10,6 +10,7 @@ class AuthUser {
     this.email,
     this.phone,
     this.avatar,
+    this.dateOfBirth,
 
     /// From `membership[]` / `planName` on profile (aligned with [`GET /home`] `membership`).
     this.membershipPlanName,
@@ -29,6 +30,9 @@ class AuthUser {
   final String? phone;
   final String? avatar;
 
+  /// From profile / login payload when the API sends `dob`, `date_of_birth`, etc.
+  final DateTime? dateOfBirth;
+
   final String? membershipPlanName;
   final int? membershipTotalSessions;
   final int? membershipSessionsRemaining;
@@ -43,6 +47,12 @@ class AuthUser {
       email: json['email'] as String?,
       phone: json['phone'] as String?,
       avatar: json['avatar'] as String?,
+      dateOfBirth: _parseDateOfBirth(
+        json['dob'] ??
+            json['date_of_birth'] ??
+            json['dateOfBirth'] ??
+            json['birth_date'],
+      ),
       membershipPlanName:
           membershipSnap?.planName ??
           _trimOrNull(json['membershipPlanName']) ??
@@ -69,10 +79,23 @@ class AuthUser {
     'email': email,
     'phone': phone,
     'avatar': avatar,
+    if (dateOfBirth != null)
+      'dob': dateOfBirth!.toIso8601String().split('T').first,
     'membershipPlanName': membershipPlanName,
     'membershipTotalSessions': membershipTotalSessions,
     'membershipSessionsRemaining': membershipSessionsRemaining,
   };
+
+  int? get ageYears {
+    final d = dateOfBirth;
+    if (d == null) return null;
+    final now = DateTime.now();
+    var age = now.year - d.year;
+    if (now.month < d.month || (now.month == d.month && now.day < d.day)) {
+      age--;
+    }
+    return age;
+  }
 
   bool get _hasStoredMembershipHints =>
       (membershipPlanName?.trim().isNotEmpty ?? false) ||
@@ -106,5 +129,13 @@ class AuthUser {
     if (value is int) return value;
     if (value is num) return value.toInt();
     return int.tryParse(value.toString());
+  }
+
+  static DateTime? _parseDateOfBirth(dynamic value) {
+    if (value == null) return null;
+    if (value is DateTime) return value;
+    final s = value.toString().trim();
+    if (s.isEmpty) return null;
+    return DateTime.tryParse(s);
   }
 }

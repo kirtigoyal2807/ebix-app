@@ -13,14 +13,101 @@ import 'package:url_launcher/url_launcher.dart';
 class InvoiceListPanel extends StatelessWidget {
   const InvoiceListPanel({super.key});
 
+  static _InvoiceEmptyState _emptyStateForCategory(
+    BuildContext context,
+    InvoiceCategory category,
+    bool isDark,
+  ) {
+    final l10n = context.l10n;
+    switch (category) {
+      case InvoiceCategory.all:
+        return _InvoiceEmptyState(
+          title: l10n.noInvoicesYet,
+          subtitle: l10n.invoiceHistorySubtitle,
+          assetPath: isDark
+              ? 'assets/images/svg/invoice_history/ic_dark_no_invoice.svg'
+              : 'assets/images/svg/invoice_history/ic_no_invoice.svg',
+        );
+      case InvoiceCategory.subscriptions:
+        return _InvoiceEmptyState(
+          title: l10n.noSubscriptionsYet,
+          subtitle: l10n.noSubscriptionsSubtitle,
+          assetPath: isDark
+              ? 'assets/images/svg/invoice_history/ic_dark_no_subscription.svg'
+              : 'assets/images/svg/invoice_history/ic_no_subscription.svg',
+        );
+      case InvoiceCategory.classes:
+        return _InvoiceEmptyState(
+          title: l10n.noClassesYet,
+          subtitle: l10n.classInvoiceSubtitle,
+          assetPath: isDark
+              ? 'assets/images/svg/invoice_history/ic_dark_no_class.svg'
+              : 'assets/images/svg/invoice_history/ic_no_class.svg',
+        );
+      case InvoiceCategory.refunds:
+        return _InvoiceEmptyState(
+          title: l10n.noRefundsYet,
+          subtitle: l10n.noRefundsSubtitle,
+          assetPath: isDark
+              ? 'assets/images/svg/invoice_history/ic_dark_no_refund.svg'
+              : 'assets/images/svg/invoice_history/ic_no_refund.svg',
+        );
+    }
+  }
+
+  /// Whether to use Arabic-script currency marks (﷼, د.إ, …). For English and
+  /// other Latin UI languages we use Latin abbreviations so amounts do not look
+  /// like Urdu/Arabic when the app is in English.
+  static bool _useArabicScriptCurrency(String languageCode) {
+    final lc = languageCode.toLowerCase();
+    return lc.startsWith('ar') ||
+        lc.startsWith('ur') ||
+        lc.startsWith('fa') ||
+        lc.startsWith('ckb');
+  }
+
+  /// Short symbols / abbreviations — avoids [NumberFormat.simpleCurrency] showing
+  /// full currency names (e.g. "Saudi riyals") next to amounts.
+  static String _displayCurrencySymbol(String iso4217, String languageCode) {
+    final arabic = _useArabicScriptCurrency(languageCode);
+    switch (iso4217.toUpperCase()) {
+      case 'SAR':
+        // Latin UI: match API ISO code `currency: "SAR"`; Arabic UI: riyal sign.
+        return arabic ? '\uFDFC' : 'SAR';
+      case 'USD':
+        return r'$';
+      case 'EUR':
+        return '€';
+      case 'GBP':
+        return '£';
+      case 'AED':
+        return arabic ? 'د.إ' : 'AED';
+      case 'KWD':
+        return arabic ? 'د.ك' : 'KWD';
+      case 'BHD':
+        return arabic ? 'د.ب' : 'BHD';
+      case 'QAR':
+        return arabic ? 'ر.ق' : 'QAR';
+      case 'OMR':
+        return arabic ? 'ر.ع' : 'OMR';
+      case 'EGP':
+        return arabic ? 'ج.م' : 'EGP';
+      default:
+        return iso4217;
+    }
+  }
+
   static String _formatMoney(InvoiceResource inv, String languageCode) {
+    final code = inv.currency.trim().toUpperCase();
+    final symbol = _displayCurrencySymbol(code, languageCode);
     try {
-      return NumberFormat.simpleCurrency(
-        name: inv.currency,
+      return NumberFormat.currency(
         locale: languageCode,
+        symbol: symbol,
+        decimalDigits: 2,
       ).format(inv.amount);
     } catch (_) {
-      return '${inv.amount.toStringAsFixed(2)} ${inv.currency}';
+      return '${inv.amount.toStringAsFixed(2)} $symbol';
     }
   }
 
@@ -117,12 +204,20 @@ class InvoiceListPanel extends StatelessWidget {
         }
 
         if (state.invoices.isEmpty) {
-          return EmptyDataView(
-            title: context.l10n.noInvoicesYet,
-            subTitle: context.l10n.invoiceHistorySubtitle,
-            image: isDark
-                ? 'assets/images/svg/invoice_history/ic_dark_no_invoice.svg'
-                : 'assets/images/svg/invoice_history/ic_no_invoice.svg',
+          final empty = _emptyStateForCategory(
+            context,
+            state.selectedInvoiceCategory,
+            isDark,
+          );
+          return Center(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+              child: EmptyDataView(
+                title: empty.title,
+                subTitle: empty.subtitle,
+                image: empty.assetPath,
+              ),
+            ),
           );
         }
 
@@ -155,4 +250,16 @@ class InvoiceListPanel extends StatelessWidget {
       },
     );
   }
+}
+
+class _InvoiceEmptyState {
+  const _InvoiceEmptyState({
+    required this.title,
+    required this.subtitle,
+    required this.assetPath,
+  });
+
+  final String title;
+  final String subtitle;
+  final String assetPath;
 }

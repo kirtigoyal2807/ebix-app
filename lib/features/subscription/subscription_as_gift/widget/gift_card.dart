@@ -8,13 +8,21 @@ import '../../../../config/theme/app_colors.dart';
 import '../../../../core/localization/arb/app_localizations.dart';
 import '../../../../widgets/dotted_underline.dart';
 
+/// Live preview of the gift card; updates as [nameController] / [messageController] change.
 class PilatesGiftCard extends StatelessWidget {
-  const PilatesGiftCard({super.key});
+  const PilatesGiftCard({
+    super.key,
+    required this.nameController,
+    required this.messageController,
+  });
+
+  final TextEditingController nameController;
+  final TextEditingController messageController;
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
 
-    final l10n = AppLocalizations.of(context);
     return ClipRRect(
       borderRadius: BorderRadius.circular(21),
       child: Stack(
@@ -31,7 +39,6 @@ class PilatesGiftCard extends StatelessWidget {
                 ],
               ),
             ),
-
             padding: EdgeInsets.all(AppSpacing.lmd),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -60,9 +67,7 @@ class PilatesGiftCard extends StatelessWidget {
                     ),
                   ],
                 ),
-
                 SizedBox(height: AppSpacing.xi),
-
                 AppText(
                   l10n.giftCard,
                   style: (context) => AppTextStyles.bodyText(
@@ -88,37 +93,78 @@ class PilatesGiftCard extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: AppSpacing.md),
-                AppText(
-                  l10n.message,
-                  style: (context) => AppTextStyles.captionText(
-                    context,
-                  ).copyWith(height: 1, color: AppColors.lightGreyText),
-                ),
-                SizedBox(height: AppSpacing.sm),
-                AppText(
-                  l10n.giftMessageLine1,
-                  style: (context) => AppTextStyles.bodyText(
-                    context,
-                  ).copyWith(height: 1.5, color: AppColors.seekBarLight),
-                ),
-                AppText(
-                  l10n.giftMessageLine2,
-                  style: (context) => AppTextStyles.bodyText(
-                    context,
-                  ).copyWith(height: 1.5, color: AppColors.seekBarLight),
+                ListenableBuilder(
+                  listenable: Listenable.merge([
+                    nameController,
+                    messageController,
+                  ]),
+                  builder: (context, _) {
+                    final name = nameController.text.trim();
+                    final message = messageController.text.trim();
+                    final hasName = name.isNotEmpty;
+                    final hasMessage = message.isNotEmpty;
+
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        AppText(
+                          l10n.message,
+                          style: (context) => AppTextStyles.captionText(
+                            context,
+                          ).copyWith(height: 1, color: AppColors.lightGreyText),
+                        ),
+                        SizedBox(height: AppSpacing.sm),
+                        AppText(
+                          hasName
+                              ? l10n.giftCardRecipientGreeting(name)
+                              : l10n.recipientNameHint,
+                          style: (context) => AppTextStyles.bodyText(
+                            context,
+                          ).copyWith(
+                            height: 1.5,
+                            color: hasName
+                                ? AppColors.seekBarLight
+                                : AppColors.lightGreyText,
+                          ),
+                          maxLines: 2,
+                        ),
+                        if (hasMessage) ...[
+                          SizedBox(height: AppSpacing.sm),
+                          Text(
+                            message,
+                            style: AppTextStyles.bodyText(context).copyWith(
+                              height: 1.5,
+                              color: AppColors.seekBarLight,
+                            ),
+                            maxLines: 8,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ] else ...[
+                          SizedBox(height: AppSpacing.sm),
+                          AppText(
+                            l10n.giftCardMessagePlaceholder,
+                            style: (context) => AppTextStyles.bodyText(
+                              context,
+                            ).copyWith(
+                              height: 1.5,
+                              color: AppColors.lightGreyText,
+                            ),
+                            maxLines: 3,
+                          ),
+                        ],
+                      ],
+                    );
+                  },
                 ),
               ],
             ),
           ),
           Positioned.fill(
             top: AppSpacing.lmd,
-
             left: 0,
             right: 0,
             child: SvgPicture.asset(
               "assets/images/svg/ic_master_card_light_effect.svg",
-
-              // height: 150,
               fit: BoxFit.fill,
             ),
           ),

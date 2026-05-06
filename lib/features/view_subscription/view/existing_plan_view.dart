@@ -253,8 +253,13 @@ class ExistingPlanView extends StatelessWidget {
                   Navigator.push<bool>(
                     context,
                     MaterialPageRoute<bool>(
-                      builder: (context) =>
-                          PauseSubscriptionView(subscriptionId: s.id),
+                      builder: (context) => PauseSubscriptionView(
+                        subscriptionId: s.id,
+                        planStartsAt: s.startsAt ?? DateTime.now(),
+                        planExpiresAt: s.expiresAt,
+                        maxFreezeDays:
+                            s.maxFreezeDays ?? s.product?.maxFreezeDays ?? 30,
+                      ),
                     ),
                   ).then((refreshed) {
                     if (refreshed == true && context.mounted) {

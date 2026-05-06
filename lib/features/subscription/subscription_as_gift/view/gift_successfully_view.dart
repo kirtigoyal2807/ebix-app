@@ -4,6 +4,7 @@ import 'package:lottie/lottie.dart';
 import 'package:pilates_app/config/theme/app_colors.dart';
 import 'package:pilates_app/config/theme/app_radius.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
+import 'package:pilates_app/features/home/home_tab_intent.dart';
 import 'package:pilates_app/widgets/app_button.dart';
 import 'package:pilates_app/widgets/app_text.dart';
 
@@ -13,7 +14,41 @@ import '../../../../widgets/dotted_underline.dart';
 import '../../purchase_subscription/view/widgets/plan_details_modal.dart';
 
 class GiftSuccessfullyView extends StatelessWidget {
-  const GiftSuccessfullyView({super.key});
+  const GiftSuccessfullyView({
+    super.key,
+    this.recipientName,
+    this.recipientEmail,
+    this.deliveryMethodValue,
+  });
+
+  /// When both [recipientName] and [recipientEmail] are null, demo placeholders
+  /// are used (e.g. entry from [WelcomeToPilateView]). Otherwise missing strings
+  /// show an em dash.
+  final String? recipientName;
+  final String? recipientEmail;
+
+  /// Shown as the delivery row value; defaults to [AppLocalizations.deliveryMethodInstant].
+  final String? deliveryMethodValue;
+
+  bool get _useDemoPlaceholders =>
+      recipientName == null && recipientEmail == null;
+
+  String _displayName() {
+    if (_useDemoPlaceholders) return 'Sarah';
+    final t = recipientName?.trim();
+    return (t != null && t.isNotEmpty) ? t : '—';
+  }
+
+  String _displayEmail() {
+    if (_useDemoPlaceholders) return 'Sarah@gmail.com';
+    final t = recipientEmail?.trim();
+    return (t != null && t.isNotEmpty) ? t : '—';
+  }
+
+  String _deliveryDisplay(AppLocalizations l10n) {
+    final t = deliveryMethodValue?.trim();
+    return (t != null && t.isNotEmpty) ? t : l10n.deliveryMethodInstant;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -78,7 +113,7 @@ class GiftSuccessfullyView extends StatelessWidget {
 
                   const SizedBox(height: 46),
 
-                  _buildRow(l10n.recipientName, "Sarah", isDark),
+                  _buildRow(l10n.recipientName, _displayName(), isDark),
 
                   const SizedBox(height: AppSpacing.sm),
                   SizedBox(
@@ -93,7 +128,7 @@ class GiftSuccessfullyView extends StatelessWidget {
                   ),
 
                   const SizedBox(height: AppSpacing.sm),
-                  _buildRow(l10n.email, "Sarah@gmail.com", isDark),
+                  _buildRow(l10n.email, _displayEmail(), isDark),
                   const SizedBox(height: AppSpacing.sm),
                   SizedBox(
                     width: double.infinity,
@@ -108,7 +143,7 @@ class GiftSuccessfullyView extends StatelessWidget {
                   const SizedBox(height: AppSpacing.sm),
                   _buildRow(
                     l10n.deliveryMethod,
-                    l10n.deliveryMethodInstant,
+                    _deliveryDisplay(l10n),
                     isDark,
                   ),
                   const SizedBox(height: AppSpacing.sm),
@@ -169,7 +204,11 @@ class GiftSuccessfullyView extends StatelessWidget {
             Spacer(),
             AppButton(
               label: l10n.startExploringClasses,
-              onPressed: () {},
+              onPressed: () {
+                homeTabIntent.value = 0;
+                Navigator.of(context, rootNavigator: true)
+                    .popUntil((route) => route.isFirst);
+              },
               variant: AppButtonVariant.primary,
             ),
             SizedBox(height: AppSpacing.sm),

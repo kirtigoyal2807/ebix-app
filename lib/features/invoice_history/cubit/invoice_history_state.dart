@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 
 import 'package:pilates_app/features/auth/data/models/pagination_meta.dart';
+import 'package:pilates_app/features/invoice_history/cubit/filter_state.dart';
 import 'package:pilates_app/features/invoice_history/data/models/invoice_resource.dart';
 
 enum InvoicesLoadStatus { initial, loading, success, failure }
@@ -13,6 +14,9 @@ class InvoiceHistoryState extends Equatable {
     this.invoices = const [],
     this.errorMessage,
     this.pagination,
+    this.sortBy = SortBy.newest,
+    /// Default matches previous behavior when filters were not applied (full history).
+    this.dateRange = DateRange.allTime,
   });
 
   final List<InvoiceCategory> invoiceCategoryList;
@@ -21,6 +25,8 @@ class InvoiceHistoryState extends Equatable {
   final List<InvoiceResource> invoices;
   final String? errorMessage;
   final PaginationMeta? pagination;
+  final SortBy sortBy;
+  final DateRange dateRange;
 
   InvoiceHistoryState copyWith({
     List<InvoiceCategory>? invoiceCategoryList,
@@ -29,6 +35,8 @@ class InvoiceHistoryState extends Equatable {
     List<InvoiceResource>? invoices,
     String? errorMessage,
     PaginationMeta? pagination,
+    SortBy? sortBy,
+    DateRange? dateRange,
     bool clearError = false,
   }) {
     return InvoiceHistoryState(
@@ -39,6 +47,8 @@ class InvoiceHistoryState extends Equatable {
       invoices: invoices ?? this.invoices,
       errorMessage: clearError ? null : (errorMessage ?? this.errorMessage),
       pagination: pagination ?? this.pagination,
+      sortBy: sortBy ?? this.sortBy,
+      dateRange: dateRange ?? this.dateRange,
     );
   }
 
@@ -50,6 +60,8 @@ class InvoiceHistoryState extends Equatable {
         invoices,
         errorMessage,
         pagination,
+        sortBy,
+        dateRange,
       ];
 }
 

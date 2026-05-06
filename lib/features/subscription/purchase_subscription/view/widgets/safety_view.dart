@@ -4,6 +4,8 @@ import 'package:pilates_app/config/theme/app_colors.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/core/localization/arb/app_localizations.dart';
+import 'package:pilates_app/core/validation/contact_validators.dart';
+import 'package:pilates_app/core/validation/subscription_declaration_validators.dart';
 import 'package:pilates_app/features/subscription/purchase_subscription/cubit/subscription_cubit.dart';
 import 'package:pilates_app/features/subscription/purchase_subscription/view/widgets/subscription_calendar_date_field.dart';
 import 'package:pilates_app/widgets/app_button.dart';
@@ -21,6 +23,14 @@ class _SafetyViewState extends State<SafetyView> {
   late final TextEditingController _nameController;
   late final TextEditingController _signatureController;
   late final TextEditingController _dateController;
+  late final ScrollController _legalScrollController;
+
+  /// User has reached the bottom of the safety legal text (or it did not scroll).
+  bool _legalTextScrolledToEnd = false;
+
+  String? _nameError;
+  String? _signatureError;
+  String? _dateError;
 
   @override
   void initState() {
@@ -29,14 +39,88 @@ class _SafetyViewState extends State<SafetyView> {
     _nameController = TextEditingController(text: s.declarationName);
     _signatureController = TextEditingController(text: s.declarationSignature);
     _dateController = TextEditingController(text: s.declarationDate);
+    _legalScrollController = ScrollController();
+    _legalScrollController.addListener(_onLegalScroll);
+    WidgetsBinding.instance.addPostFrameCallback((_) => _maybeMarkShortLegalContentRead());
   }
 
   @override
   void dispose() {
+    _legalScrollController.removeListener(_onLegalScroll);
+    _legalScrollController.dispose();
     _nameController.dispose();
     _signatureController.dispose();
     _dateController.dispose();
     super.dispose();
+  }
+
+  void _onLegalScroll() {
+    if (!mounted) return;
+    if (!_legalScrollController.hasClients) return;
+    _syncLegalReadProgress();
+  }
+
+  void _syncLegalReadProgress() {
+    if (!mounted) return;
+    if (!_legalScrollController.hasClients) return;
+    final p = _legalScrollController.position;
+    final atEnd = p.maxScrollExtent <= 8 || p.extentAfter <= 8;
+    if (atEnd && !_legalTextScrolledToEnd) {
+      setState(() => _legalTextScrolledToEnd = true);
+    }
+  }
+
+  void _maybeMarkShortLegalContentRead() {
+    if (!mounted) return;
+    if (!_legalScrollController.hasClients) return;
+    _syncLegalReadProgress();
+  }
+
+  void _unfocusKeyboard() {
+    FocusManager.instance.primaryFocus?.unfocus();
+  }
+
+  void _onContinueToNext(AppLocalizations l10n) {
+    if (!_legalTextScrolledToEnd) {
+      return;
+    }
+    _unfocusKeyboard();
+    final cubit = context.read<SubscriptionCubit>();
+    cubit.updateDeclarationName(_nameController.text);
+    cubit.updateDeclarationSignature(_signatureController.text);
+    cubit.updateDeclarationDate(_dateController.text);
+
+    final name = _nameController.text.trim();
+    final sig = _signatureController.text.trim();
+    final date = _dateController.text.trim();
+
+    setState(() {
+      _nameError = name.isEmpty
+          ? l10n.declarationNameRequired
+          : (!ContactValidators.isValidPersonName(name)
+                ? l10n.enterValidName
+                : null);
+      _signatureError = sig.isEmpty
+          ? l10n.declarationSignatureRequired
+          : (!SubscriptionDeclarationValidators.isValidSignature(sig)
+                ? l10n.declarationSignatureInvalid
+                : null);
+      _dateError = date.isEmpty
+          ? l10n.declarationDateRequired
+          : (!SubscriptionDeclarationValidators.isValidDeclarationDate(date)
+                ? l10n.declarationDateInvalid
+                : null);
+    });
+
+    if (name.isEmpty ||
+        !ContactValidators.isValidPersonName(name) ||
+        sig.isEmpty ||
+        !SubscriptionDeclarationValidators.isValidSignature(sig) ||
+        date.isEmpty ||
+        !SubscriptionDeclarationValidators.isValidDeclarationDate(date)) {
+      return;
+    }
+    cubit.nextStep();
   }
 
   @override
@@ -54,15 +138,20 @@ class _SafetyViewState extends State<SafetyView> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Title
-          // Note: The screenshot shows "Terms & Conditions" as the screen header, so we might want to check the AppBar title.
-          // But it typically has a secondary header inside or just relies on the AppBar.
-          // The screenshot shows "Terms & Conditions" as a large title inside the page too.
           Expanded(
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
+            child: GestureDetector(
+              behavior: HitTestBehavior.translucent,
+              onTap: _unfocusKeyboard,
+              child: SingleChildScrollView(
+                // Block skipping the legal read by scrolling past the inner box.
+                physics: _legalTextScrolledToEnd
+                    ? const AlwaysScrollableScrollPhysics()
+                    : const NeverScrollableScrollPhysics(),
+                keyboardDismissBehavior:
+                    ScrollViewKeyboardDismissBehavior.onDrag,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
                   AppText(
                     l10n.safetyConsent,
                     style: (style) => AppTextStyles.heading1(context),
@@ -74,13 +163,10 @@ class _SafetyViewState extends State<SafetyView> {
                   ),
                   const SizedBox(height: AppSpacing.lg),
 
-                  // Scrollable Terms Container
                   SizedBox(
                     height: size.height * 0.4,
-                    // adjust if needed to match design
                     child: Container(
                       width: double.infinity,
-                      // padding: const EdgeInsets.all(AppSpacing.md),
                       decoration: BoxDecoration(
                         color: isDark
                             ? AppColors.homeBackground
@@ -108,44 +194,58 @@ class _SafetyViewState extends State<SafetyView> {
                           ),
                           child: Scrollbar(
                             thumbVisibility: true,
+                            controller: _legalScrollController,
                             thickness: 4,
                             radius: const Radius.circular(16),
-                            child: SingleChildScrollView(
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(vertical: AppSpacing.md,horizontal: AppSpacing.md),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    AppText(
-                                      l10n.subscriptionAgreement,
-                                      style: (style) =>
-                                          AppTextStyles.helpAndSupportItemLabel(
-                                            context,
-                                          ).copyWith(
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w500,
-                                            height: 1.5
-                                          ),
-                                    ),
-
-                                    const SizedBox(height: AppSpacing.md),
-
-                                    AppText(
-                                      l10n.safetyText,
-                                      style: (style) =>
-                                          AppTextStyles.helpAndSupportItemLabel(
-                                            context,
-                                          ).copyWith(
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w400,
-                                            color: isDark
-                                                ? AppColors.darkGreyText
-                                                : AppColors.greyText,
-                                            height: 1.5
-                                          ),
-                                      maxLines: 100,
-                                    ),
-                                  ],
+                            child: NotificationListener<ScrollNotification>(
+                              onNotification: (ScrollNotification n) {
+                                if (n.metrics.axis != Axis.vertical) {
+                                  return false;
+                                }
+                                _syncLegalReadProgress();
+                                return false;
+                              },
+                              child: SingleChildScrollView(
+                                controller: _legalScrollController,
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: AppSpacing.md,
+                                    horizontal: AppSpacing.md,
+                                  ),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      AppText(
+                                        l10n.subscriptionAgreement,
+                                        style: (style) =>
+                                            AppTextStyles
+                                                .helpAndSupportItemLabel(
+                                              context,
+                                            ).copyWith(
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.w500,
+                                              height: 1.5,
+                                            ),
+                                        maxLines: 4,
+                                      ),
+                                      const SizedBox(height: AppSpacing.md),
+                                      Text(
+                                        l10n.safetyText,
+                                        style: AppTextStyles
+                                            .helpAndSupportItemLabel(
+                                          context,
+                                        ).copyWith(
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w400,
+                                          color: isDark
+                                              ? AppColors.darkGreyText
+                                              : AppColors.greyText,
+                                          height: 1.5,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
@@ -154,53 +254,82 @@ class _SafetyViewState extends State<SafetyView> {
                       ),
                     ),
                   ),
+
+                  if (!_legalTextScrolledToEnd) ...[
+                    const SizedBox(height: AppSpacing.sm),
+                    AppText(
+                      l10n.scrollLegalContentToContinue,
+                      style: (c) => AppTextStyles.captionText(c).copyWith(
+                        color: isDark
+                            ? AppColors.languageTextDark
+                            : AppColors.languageIcon,
+                        fontWeight: FontWeight.w500,
+                      ),
+                      maxLines: 3,
+                    ),
+                  ],
                   const SizedBox(height: AppSpacing.lg),
 
                   AppTextField(
                     label: l10n.name,
                     hint: l10n.name,
                     controller: _nameController,
-                    onChanged: cubit.updateDeclarationName,
+                    errorText: _nameError,
+                    keyboardType: TextInputType.name,
+                    onChanged: (_) {
+                      cubit.updateDeclarationName(_nameController.text);
+                      setState(() => _nameError = null);
+                    },
                   ),
                   const SizedBox(height: AppSpacing.md),
 
-                  // Signature Field
                   AppTextField(
                     label: l10n.signature,
                     hint: l10n.signature,
                     controller: _signatureController,
-                    onChanged: cubit.updateDeclarationSignature,
+                    errorText: _signatureError,
+                    onChanged: (_) {
+                      cubit.updateDeclarationSignature(
+                        _signatureController.text,
+                      );
+                      setState(() => _signatureError = null);
+                    },
                   ),
                   const SizedBox(height: AppSpacing.md),
 
-                  // Date — calendar picker (same pattern as pause / gift date rows)
                   SubscriptionCalendarDateField(
                     label: l10n.date,
                     hint: l10n.date,
                     controller: _dateController,
-                    onDateSelected: cubit.updateDeclarationDate,
+                    onDateSelected: (d) {
+                      cubit.updateDeclarationDate(d);
+                      setState(() => _dateError = null);
+                    },
                   ),
+                  if (_dateError != null) ...[
+                    const SizedBox(height: 6),
+                    Text(
+                      _dateError!,
+                      style: AppTextStyles.bodyText(context).copyWith(
+                        fontSize: 12,
+                        color: isDark ? AppColors.redDark : AppColors.redLight,
+                      ),
+                    ),
+                  ],
                   const SizedBox(height: AppSpacing.lg),
                 ],
               ),
             ),
+            ),
           ),
 
-          // Continue Button
-          BlocBuilder<SubscriptionCubit, SubscriptionState>(
-            buildWhen: (previous, current) =>
-                previous.isTermsAccepted != current.isTermsAccepted,
-            builder: (context, state) {
-              return AppButton(
-                label: l10n.continueToPayment,
-                onPressed:  () {
-                        // Navigate to payment or finish flow
-                        cubit.nextStep(); // Or handle payment logic
-                      }, // Disable if not accepted
-                buttonColor:isDark ?AppColors.primary: AppColors.primaryBrown,
-                expanded: true,
-              );
-            },
+          AppButton(
+            label: l10n.continueToPayment,
+            onPressed: _legalTextScrolledToEnd
+                ? () => _onContinueToNext(l10n)
+                : null,
+            buttonColor: isDark ? AppColors.primary : AppColors.primaryBrown,
+            expanded: true,
           ),
         ],
       ),

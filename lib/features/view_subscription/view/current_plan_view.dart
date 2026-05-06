@@ -412,6 +412,11 @@ class CurrentPlanView extends StatelessWidget {
                           MaterialPageRoute<bool>(
                             builder: (context) => PauseSubscriptionView(
                               subscriptionId: primary.id,
+                              planStartsAt: primary.startsAt ?? DateTime.now(),
+                              planExpiresAt: primary.expiresAt,
+                              maxFreezeDays: primary.maxFreezeDays ??
+                                  primary.product?.maxFreezeDays ??
+                                  30,
                             ),
                           ),
                         ).then((refreshed) {

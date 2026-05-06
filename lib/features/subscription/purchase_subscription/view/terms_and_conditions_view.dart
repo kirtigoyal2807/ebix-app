@@ -8,13 +8,79 @@ import 'package:pilates_app/features/subscription/purchase_subscription/cubit/su
 import 'package:pilates_app/widgets/app_button.dart';
 import 'package:pilates_app/widgets/app_text.dart';
 
-class TermsAndConditionsView extends StatelessWidget {
+class TermsAndConditionsView extends StatefulWidget {
   const TermsAndConditionsView({super.key});
+
+  @override
+  State<TermsAndConditionsView> createState() => _TermsAndConditionsViewState();
+}
+
+class _TermsAndConditionsViewState extends State<TermsAndConditionsView> {
+  late final ScrollController _legalScrollController;
+
+  /// User has reached the bottom of the terms legal text (or it did not scroll).
+  bool _legalTextScrolledToEnd = false;
+
+  /// Shown when the user tries to continue without accepting the terms checkbox.
+  String? _termsAcceptanceError;
+
+  @override
+  void initState() {
+    super.initState();
+    _legalScrollController = ScrollController();
+    _legalScrollController.addListener(_onLegalScroll);
+    WidgetsBinding.instance.addPostFrameCallback((_) => _maybeMarkShortLegalContentRead());
+  }
+
+  @override
+  void dispose() {
+    _legalScrollController.removeListener(_onLegalScroll);
+    _legalScrollController.dispose();
+    super.dispose();
+  }
+
+  void _onLegalScroll() {
+    if (!mounted) return;
+    if (!_legalScrollController.hasClients) return;
+    _syncLegalReadProgress();
+  }
+
+  void _syncLegalReadProgress() {
+    if (!mounted) return;
+    if (!_legalScrollController.hasClients) return;
+    final p = _legalScrollController.position;
+    // Short copy: nothing to scroll — treat as read.
+    // Long copy: require near bottom of the *inner* legal scroller only
+    // ([extentAfter] shrinks as the user scrolls down).
+    final atEnd = p.maxScrollExtent <= 8 || p.extentAfter <= 8;
+    if (atEnd && !_legalTextScrolledToEnd) {
+      setState(() => _legalTextScrolledToEnd = true);
+    }
+  }
+
+  void _maybeMarkShortLegalContentRead() {
+    if (!mounted) return;
+    if (!_legalScrollController.hasClients) return;
+    _syncLegalReadProgress();
+  }
+
+  void _onContinueToPayment(AppLocalizations l10n) {
+    final cubit = context.read<SubscriptionCubit>();
+    if (!cubit.state.isTermsAccepted) {
+      setState(() {
+        _termsAcceptanceError = l10n.pleaseAcceptTermsCheckbox;
+      });
+      return;
+    }
+    setState(() => _termsAcceptanceError = null);
+    cubit.nextStep();
+  }
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final cubit = context.read<SubscriptionCubit>();
+    final state = context.watch<SubscriptionCubit>().state;
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final size = MediaQuery.sizeOf(context);
 
@@ -26,12 +92,13 @@ class TermsAndConditionsView extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Title
-          // Note: The screenshot shows "Terms & Conditions" as the screen header, so we might want to check the AppBar title.
-          // But it typically has a secondary header inside or just relies on the AppBar.
-          // The screenshot shows "Terms & Conditions" as a large title inside the page too.
           Expanded(
             child: SingleChildScrollView(
+              // Until the inner legal scroller reaches the bottom, do not allow
+              // scrolling this outer view (avoids skipping the legal read gate).
+              physics: _legalTextScrolledToEnd
+                  ? const AlwaysScrollableScrollPhysics()
+                  : const NeverScrollableScrollPhysics(),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -46,13 +113,10 @@ class TermsAndConditionsView extends StatelessWidget {
                   ),
                   const SizedBox(height: AppSpacing.lg),
 
-                  // Scrollable Terms Container
                   SizedBox(
                     height: size.height * 0.5,
-                    // adjust if needed to match design
                     child: Container(
                       width: double.infinity,
-                      // padding: const EdgeInsets.all(AppSpacing.md),
                       decoration: BoxDecoration(
                         color: isDark
                             ? AppColors.homeBackground
@@ -80,43 +144,58 @@ class TermsAndConditionsView extends StatelessWidget {
                           ),
                           child: Scrollbar(
                             thumbVisibility: true,
+                            controller: _legalScrollController,
                             thickness: 4,
                             radius: const Radius.circular(16),
-                            child: SingleChildScrollView(
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(vertical: AppSpacing.md,horizontal: AppSpacing.md),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    AppText(
-                                      l10n.subscriptionAgreement,
-                                      style: (style) =>
-                                          AppTextStyles.helpAndSupportItemLabel(
-                                            context,
-                                          ).copyWith(
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w500,
-                                            height: 1.5
-                                          ),
-                                    ),
-                        
-                                    const SizedBox(height: AppSpacing.md),
-                        
-                                    AppText(
-                                      l10n.subscriptionTermsText,
-                                      style: (style) =>
-                                          AppTextStyles.helpAndSupportItemLabel(
-                                            context,
-                                          ).copyWith(
-                                            fontSize: 12,
-                                            color: isDark
-                                                ? AppColors.darkGreyText
-                                                : AppColors.greyText,
-                                            fontWeight: FontWeight.w400,
-                                          ),
-                                      maxLines: 100,
-                                    ),
-                                  ],
+                            child: NotificationListener<ScrollNotification>(
+                              onNotification: (ScrollNotification n) {
+                                if (n.metrics.axis != Axis.vertical) {
+                                  return false;
+                                }
+                                _syncLegalReadProgress();
+                                return false;
+                              },
+                              child: SingleChildScrollView(
+                                controller: _legalScrollController,
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: AppSpacing.md,
+                                    horizontal: AppSpacing.md,
+                                  ),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      AppText(
+                                        l10n.subscriptionAgreement,
+                                        style: (style) =>
+                                            AppTextStyles
+                                                .helpAndSupportItemLabel(
+                                              context,
+                                            ).copyWith(
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.w500,
+                                              height: 1.5,
+                                            ),
+                                        maxLines: 4,
+                                      ),
+                                      const SizedBox(height: AppSpacing.md),
+                                      Text(
+                                        l10n.subscriptionTermsText,
+                                        style: AppTextStyles
+                                            .helpAndSupportItemLabel(
+                                          context,
+                                        ).copyWith(
+                                          fontSize: 12,
+                                          color: isDark
+                                              ? AppColors.darkGreyText
+                                              : AppColors.greyText,
+                                          fontWeight: FontWeight.w400,
+                                          height: 1.5,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
@@ -126,80 +205,89 @@ class TermsAndConditionsView extends StatelessWidget {
                     ),
                   ),
 
+                  if (!_legalTextScrolledToEnd) ...[
+                    const SizedBox(height: AppSpacing.sm),
+                    AppText(
+                      l10n.scrollLegalContentToContinue,
+                      style: (c) => AppTextStyles.captionText(c).copyWith(
+                        color: isDark
+                            ? AppColors.languageTextDark
+                            : AppColors.languageIcon,
+                        fontWeight: FontWeight.w500,
+                      ),
+                      maxLines: 3,
+                    ),
+                  ],
+
                   const SizedBox(height: AppSpacing.lg),
 
-                  BlocBuilder<SubscriptionCubit, SubscriptionState>(
-                    buildWhen: (previous, current) =>
-                        previous.isTermsAccepted != current.isTermsAccepted,
-                    builder: (context, state) {
-                      return Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          SizedBox(
-                            height: 24,
-                            width: 24,
-                            child: Checkbox(
-                              value: state.isTermsAccepted,
-                              onChanged: (val) {
-                                cubit.toggleTermsAccepted(val ?? false);
-                              },
-                              activeColor: AppColors.primaryBrown,
-                              checkColor: isDark?AppColors.lightText:AppColors.darkText,
-                              side: BorderSide(
-                                color: isDark
-                                    ? AppColors.greyText
-                                    : AppColors.buttonBorder,
-                                width: 1,
-                              ),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(4),
-                              ),
-                            ),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        height: 24,
+                        width: 24,
+                        child: Checkbox(
+                          value: state.isTermsAccepted,
+                          onChanged: _legalTextScrolledToEnd
+                              ? (val) {
+                                  cubit.toggleTermsAccepted(val ?? false);
+                                  setState(() => _termsAcceptanceError = null);
+                                }
+                              : null,
+                          activeColor: AppColors.primaryBrown,
+                          checkColor: isDark ? AppColors.lightText : AppColors.darkText,
+                          side: BorderSide(
+                            color: isDark
+                                ? AppColors.greyText
+                                : AppColors.buttonBorder,
+                            width: 1,
                           ),
-                          const SizedBox(width: 8),
-                          Expanded(
-                            child: Padding(
-                              padding: const EdgeInsets.only(top: 2),
-                              child: AppText(
-                                l10n.agreeToTermsAndConditions,
-                                style: (style) =>
-                                    AppTextStyles.helpAndSupportItemLabel(
-                                      context,
-                                    ).copyWith(fontWeight: FontWeight.w400),
-                                maxLines: 2,
-                              ),
-                            ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(4),
                           ),
-                        ],
-                      );
-                    },
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 2),
+                          child: AppText(
+                            l10n.agreeToTermsAndConditions,
+                            style: (style) =>
+                                AppTextStyles.helpAndSupportItemLabel(
+                                  context,
+                                ).copyWith(fontWeight: FontWeight.w400),
+                            maxLines: 4,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
+                  if (_termsAcceptanceError != null) ...[
+                    const SizedBox(height: AppSpacing.sm),
+                    Text(
+                      _termsAcceptanceError!,
+                      style: AppTextStyles.bodyText(context).copyWith(
+                        fontSize: 12,
+                        color: isDark ? AppColors.redDark : AppColors.redLight,
+                      ),
+                    ),
+                  ],
                   const SizedBox(height: AppSpacing.lg),
                 ],
               ),
             ),
           ),
 
-          // Checkbox
-
-          // Continue Button
-          BlocBuilder<SubscriptionCubit, SubscriptionState>(
-            buildWhen: (previous, current) =>
-                previous.isTermsAccepted != current.isTermsAccepted,
-            builder: (context, state) {
-              return AppButton(
-                label: l10n.continueToPayment,
-                onPressed: state.isTermsAccepted
-                    ? () {
-                        // Navigate to payment or finish flow
-                        cubit.nextStep(); // Or handle payment logic
-                      }
-                    : null, // Disable if not accepted
-                buttonColor:isDark ?AppColors.primary: AppColors.primaryBrown,
-                expanded: true,
-              );
-            },
+          AppButton(
+            label: l10n.continueToPayment,
+            onPressed: _legalTextScrolledToEnd
+                ? () => _onContinueToPayment(l10n)
+                : null,
+            buttonColor: isDark ? AppColors.primary : AppColors.primaryBrown,
+            expanded: true,
           ),
         ],
       ),

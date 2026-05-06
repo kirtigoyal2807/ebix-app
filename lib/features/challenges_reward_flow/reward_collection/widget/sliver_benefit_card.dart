@@ -7,6 +7,7 @@ import 'package:pilates_app/widgets/app_button.dart';
 import '../../../../config/theme/app_spacing.dart';
 import '../../../../config/theme/app_text_styles.dart';
 import '../../../../widgets/app_text.dart';
+import '../view/loyalty_tiers_view.dart';
 
 class SliverBenefitCard extends StatelessWidget {
   const SliverBenefitCard({super.key});
@@ -60,7 +61,13 @@ class SliverBenefitCard extends StatelessWidget {
             ),
             child: AppButton(
               label: context.l10n.viewAllTiers,
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context).push<void>(
+                  MaterialPageRoute<void>(
+                    builder: (_) => const LoyaltyTiersView(),
+                  ),
+                );
+              },
               variant: AppButtonVariant.secondary,
             ),
           ),

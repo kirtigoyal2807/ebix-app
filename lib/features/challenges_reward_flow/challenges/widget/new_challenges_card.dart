@@ -18,9 +18,9 @@ class NewChallengesCard extends StatelessWidget {
   final int days;
   final double point;
 
-  void Function()? onTap;
+  final void Function()? onCardTap;
 
-  NewChallengesCard({
+  const NewChallengesCard({
     super.key,
     required this.imageIcon,
     required this.title,
@@ -28,21 +28,22 @@ class NewChallengesCard extends StatelessWidget {
     required this.people,
     required this.days,
     required this.point,
-    this.onTap,
+    this.onCardTap,
   });
 
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return GestureDetector(
-      onTap: () {
-        showModalBottomSheet(
-          context: context,
-          isScrollControlled: true,
-          barrierColor: AppColors.bottomSheetShadow,
-          builder: (_) => const JoinChallengeBottomSheet(),
-        );
-      },
+      onTap: onCardTap ??
+          () {
+            showModalBottomSheet(
+              context: context,
+              isScrollControlled: true,
+              barrierColor: AppColors.bottomSheetShadow,
+              builder: (_) => const JoinChallengeBottomSheet(),
+            );
+          },
       child: Container(
         padding: EdgeInsets.all(AppSpacing.lmd),
         decoration: BoxDecoration(

@@ -16,13 +16,15 @@ class PauseSubscriptionState extends Equatable {
   PauseSubscriptionState copyWith({
     DateTime? startDate,
     DateTime? endDate,
+    bool clearStartDate = false,
+    bool clearEndDate = false,
     bool? isSubmitting,
     String? submitError,
     bool clearSubmitError = false,
   }) {
     return PauseSubscriptionState(
-      startDate: startDate ?? this.startDate,
-      endDate: endDate ?? this.endDate,
+      startDate: clearStartDate ? null : (startDate ?? this.startDate),
+      endDate: clearEndDate ? null : (endDate ?? this.endDate),
       isSubmitting: isSubmitting ?? this.isSubmitting,
       submitError:
           clearSubmitError ? null : (submitError ?? this.submitError),

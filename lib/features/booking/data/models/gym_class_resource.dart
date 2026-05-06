@@ -1,3 +1,5 @@
+import 'package:pilates_app/core/utils/api_media_url.dart';
+
 import 'review_resource.dart';
 
 /// §13.2 List All Class Types — `GET /classes`
@@ -160,7 +162,7 @@ class GymClassResource {
           json['allow_package_booking'] == true,
       isActive:
           json['isActive'] == true || json['is_active'] == true,
-      image: json['image']?.toString(),
+      image: resolveApiMediaUrl(json['image']?.toString()),
       avgRating: _doubleOrNull(json['avgRating'] ?? json['avg_rating']),
       reviewsCount:
           _intOrNull(json['reviewsCount'] ?? json['reviews_count']),

@@ -61,6 +61,10 @@ class _GiftSubscriptionViewState extends State<GiftSubscriptionView> {
     super.dispose();
   }
 
+  void _unfocusKeyboard() {
+    FocusManager.instance.primaryFocus?.unfocus();
+  }
+
   String? _effectiveCheckoutId(BuildContext context) {
     final w = widget.checkoutId?.trim();
     if (w != null && w.isNotEmpty) return w;
@@ -101,6 +105,7 @@ class _GiftSubscriptionViewState extends State<GiftSubscriptionView> {
   }
 
   Future<void> _onContinue(BuildContext context) async {
+    _unfocusKeyboard();
     final messenger = ScaffoldMessenger.of(context);
     final l10n = context.l10n;
 
@@ -156,23 +161,13 @@ class _GiftSubscriptionViewState extends State<GiftSubscriptionView> {
     String? deliveryDate;
     if (cubit.state.selectedDeliveryOption ==
         DeliveryOption.scheduledDelivery) {
-      final now = DateTime.now();
-      final today = DateTime(now.year, now.month, now.day);
-      final picked = await showDatePicker(
-        context: context,
-        initialDate: today.add(const Duration(days: 7)),
-        firstDate: today,
-        lastDate: today.add(const Duration(days: 730)),
-      );
-      if (!context.mounted) return;
-      if (picked == null) {
+      deliveryDate = cubit.state.scheduledDeliveryDateIso?.trim();
+      if (deliveryDate == null || deliveryDate.isEmpty) {
         messenger.showSnackBar(
           SnackBar(content: Text(l10n.giftValidationScheduleDate)),
         );
         return;
       }
-      deliveryDate =
-          '${picked.year}-${picked.month.toString().padLeft(2, '0')}-${picked.day.toString().padLeft(2, '0')}';
     }
 
     await cubit.submitGift(
@@ -198,13 +193,16 @@ class _GiftSubscriptionViewState extends State<GiftSubscriptionView> {
         MaterialPageRoute<void>(
           builder: (context) {
             final child = PlanDetailsView(checkoutId: sessionId);
-            if (subscriptionCubit != null) {
-              return BlocProvider<SubscriptionCubit>.value(
-                value: subscriptionCubit,
-                child: child,
-              );
-            }
-            return child;
+            return MultiBlocProvider(
+              providers: [
+                BlocProvider<GiftSubscriptionCubit>.value(value: cubit),
+                if (subscriptionCubit != null)
+                  BlocProvider<SubscriptionCubit>.value(
+                    value: subscriptionCubit,
+                  ),
+              ],
+              child: child,
+            );
           },
         ),
       );
@@ -261,22 +259,31 @@ class _GiftSubscriptionViewState extends State<GiftSubscriptionView> {
           child: Column(
             children: [
               Expanded(
-                child: SingleChildScrollView(
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(vertical: AppSpacing.md),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const PilatesGiftCard(),
+                child: GestureDetector(
+                  behavior: HitTestBehavior.translucent,
+                  onTap: _unfocusKeyboard,
+                  child: SingleChildScrollView(
+                    keyboardDismissBehavior:
+                        ScrollViewKeyboardDismissBehavior.onDrag,
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(vertical: AppSpacing.md),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          PilatesGiftCard(
+                            nameController: _name,
+                            messageController: _message,
+                          ),
 
-                        SizedBox(height: AppSpacing.lg),
-                        ReceiptDetails(
-                          nameController: _name,
-                          emailController: _email,
-                          phoneController: _phone,
-                          messageController: _message,
-                        ),
-                      ],
+                          SizedBox(height: AppSpacing.lg),
+                          ReceiptDetails(
+                            nameController: _name,
+                            emailController: _email,
+                            phoneController: _phone,
+                            messageController: _message,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),

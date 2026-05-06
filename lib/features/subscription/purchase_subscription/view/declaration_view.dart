@@ -4,6 +4,8 @@ import 'package:pilates_app/config/theme/app_colors.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/core/localization/arb/app_localizations.dart';
+import 'package:pilates_app/core/validation/contact_validators.dart';
+import 'package:pilates_app/core/validation/subscription_declaration_validators.dart';
 import 'package:pilates_app/features/subscription/purchase_subscription/cubit/subscription_cubit.dart';
 import 'package:pilates_app/features/subscription/purchase_subscription/view/widgets/subscription_calendar_date_field.dart';
 import 'package:pilates_app/features/subscription/purchase_subscription/view/widgets/subscription_header.dart';
@@ -24,6 +26,14 @@ class _DeclarationViewState extends State<DeclarationView> {
   late final TextEditingController _signatureController;
   late final TextEditingController _dateController;
 
+  String? _nameError;
+  String? _signatureError;
+  String? _dateError;
+
+  void _unfocusKeyboard() {
+    FocusManager.instance.primaryFocus?.unfocus();
+  }
+
   @override
   void initState() {
     super.initState();
@@ -41,6 +51,46 @@ class _DeclarationViewState extends State<DeclarationView> {
     super.dispose();
   }
 
+  void _onContinue(AppLocalizations l10n) {
+    _unfocusKeyboard();
+    final cubit = context.read<SubscriptionCubit>();
+    cubit.updateDeclarationName(_nameController.text);
+    cubit.updateDeclarationSignature(_signatureController.text);
+    cubit.updateDeclarationDate(_dateController.text);
+
+    final name = _nameController.text.trim();
+    final sig = _signatureController.text.trim();
+    final date = _dateController.text.trim();
+
+    setState(() {
+      _nameError = name.isEmpty
+          ? l10n.declarationNameRequired
+          : (!ContactValidators.isValidPersonName(name)
+                ? l10n.enterValidName
+                : null);
+      _signatureError = sig.isEmpty
+          ? l10n.declarationSignatureRequired
+          : (!SubscriptionDeclarationValidators.isValidSignature(sig)
+                ? l10n.declarationSignatureInvalid
+                : null);
+      _dateError = date.isEmpty
+          ? l10n.declarationDateRequired
+          : (!SubscriptionDeclarationValidators.isValidDeclarationDate(date)
+                ? l10n.declarationDateInvalid
+                : null);
+    });
+
+    if (name.isEmpty ||
+        !ContactValidators.isValidPersonName(name) ||
+        sig.isEmpty ||
+        !SubscriptionDeclarationValidators.isValidSignature(sig) ||
+        date.isEmpty ||
+        !SubscriptionDeclarationValidators.isValidDeclarationDate(date)) {
+      return;
+    }
+    cubit.nextStep();
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
@@ -55,10 +105,15 @@ class _DeclarationViewState extends State<DeclarationView> {
       child: Column(
         children: [
           Expanded(
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
+            child: GestureDetector(
+              behavior: HitTestBehavior.translucent,
+              onTap: _unfocusKeyboard,
+              child: SingleChildScrollView(
+                keyboardDismissBehavior:
+                    ScrollViewKeyboardDismissBehavior.onDrag,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
                   SubscriptionStepHeader(
                     currentStep: 5,
                     totalSteps: 6,
@@ -77,32 +132,57 @@ class _DeclarationViewState extends State<DeclarationView> {
                     label: l10n.name,
                     hint: l10n.name,
                     controller: _nameController,
-                    onChanged: cubit.updateDeclarationName,
+                    errorText: _nameError,
+                    keyboardType: TextInputType.name,
+                    onChanged: (_) {
+                      cubit.updateDeclarationName(_nameController.text);
+                      setState(() => _nameError = null);
+                    },
                   ),
                   const SizedBox(height: AppSpacing.md),
                   AppTextField(
                     label: l10n.signature,
                     hint: l10n.signature,
                     controller: _signatureController,
-                    onChanged: cubit.updateDeclarationSignature,
+                    errorText: _signatureError,
+                    onChanged: (_) {
+                      cubit.updateDeclarationSignature(
+                        _signatureController.text,
+                      );
+                      setState(() => _signatureError = null);
+                    },
                   ),
                   const SizedBox(height: AppSpacing.md),
                   SubscriptionCalendarDateField(
                     label: l10n.date,
                     hint: l10n.date,
                     controller: _dateController,
-                    onDateSelected: cubit.updateDeclarationDate,
+                    onDateSelected: (d) {
+                      cubit.updateDeclarationDate(d);
+                      setState(() => _dateError = null);
+                    },
                   ),
+                  if (_dateError != null) ...[
+                    const SizedBox(height: 6),
+                    Text(
+                      _dateError!,
+                      style: AppTextStyles.bodyText(context).copyWith(
+                        fontSize: 12,
+                        color: Theme.of(context).brightness == Brightness.dark
+                            ? AppColors.redDark
+                            : AppColors.redLight,
+                      ),
+                    ),
+                  ],
                   const SizedBox(height: AppSpacing.lg),
                 ],
               ),
             ),
+            ),
           ),
           AppButton(
             label: l10n.continueTxt,
-            onPressed: () {
-              cubit.nextStep();
-            },
+            onPressed: () => _onContinue(l10n),
             buttonColor: isDark ? AppColors.primary : AppColors.primaryBrown,
             expanded: true,
           ),

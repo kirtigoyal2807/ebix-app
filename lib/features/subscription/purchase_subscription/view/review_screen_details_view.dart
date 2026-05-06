@@ -23,9 +23,17 @@ import '../cubit/subscription_cubit.dart';
 /// Cart review + voucher. Pass [checkoutSessionId] when this widget is not under
 /// [SubscriptionCubit] with a bound session (e.g. gift [PlanDetailsView]).
 class ReviewScreenDetailsView extends StatefulWidget {
-  const ReviewScreenDetailsView({super.key, this.checkoutSessionId});
+  const ReviewScreenDetailsView({
+    super.key,
+    this.checkoutSessionId,
+    this.scrollKeyboardInset,
+  });
 
   final String? checkoutSessionId;
+
+  /// When non-null, used as extra bottom inset for the scroll view (keyboard).
+  /// Lets parents adjust keyboard handling without relying only on [MediaQuery].
+  final double? scrollKeyboardInset;
 
   @override
   State<ReviewScreenDetailsView> createState() =>
@@ -35,6 +43,7 @@ class ReviewScreenDetailsView extends StatefulWidget {
 class _ReviewScreenDetailsViewState extends State<ReviewScreenDetailsView> {
   final TextEditingController _couponCode = TextEditingController();
   bool _applyingCoupon = false;
+  String? _voucherSectionError;
 
   CheckoutStartResult? _checkout;
   bool _checkoutLoading = false;
@@ -43,8 +52,15 @@ class _ReviewScreenDetailsViewState extends State<ReviewScreenDetailsView> {
   @override
   void initState() {
     super.initState();
+    _couponCode.addListener(_onCouponCodeEdited);
     WidgetsBinding.instance
         .addPostFrameCallback((_) => _refreshCheckoutDetails());
+  }
+
+  void _onCouponCodeEdited() {
+    if (_voucherSectionError != null && mounted) {
+      setState(() => _voucherSectionError = null);
+    }
   }
 
   @override
@@ -57,6 +73,7 @@ class _ReviewScreenDetailsViewState extends State<ReviewScreenDetailsView> {
 
   @override
   void dispose() {
+    _couponCode.removeListener(_onCouponCodeEdited);
     _couponCode.dispose();
     super.dispose();
   }
@@ -122,24 +139,26 @@ class _ReviewScreenDetailsViewState extends State<ReviewScreenDetailsView> {
 
   Future<void> _onApplyCoupon() async {
     final l10n = AppLocalizations.of(context)!;
-    final messenger = ScaffoldMessenger.of(context);
     final id = _effectiveCheckoutId();
     if (id == null || id.isEmpty) {
-      messenger.showSnackBar(
-        SnackBar(content: Text(l10n.giftCheckoutSessionRequired)),
-      );
+      setState(() {
+        _voucherSectionError = l10n.voucherCheckoutSessionMissing;
+      });
       return;
     }
     final code = _couponCode.text.trim();
     if (code.isEmpty) {
-      messenger.showSnackBar(
-        SnackBar(content: Text(l10n.enterVoucherCode)),
-      );
+      setState(() {
+        _voucherSectionError = l10n.voucherEnterCodeMessage;
+      });
       return;
     }
 
     final repo = context.read<CheckoutRepository>();
-    setState(() => _applyingCoupon = true);
+    setState(() {
+      _applyingCoupon = true;
+      _voucherSectionError = null;
+    });
     final result = await repo.applyCoupon(checkoutId: id, code: code);
     if (!mounted) return;
     setState(() => _applyingCoupon = false);
@@ -156,46 +175,105 @@ class _ReviewScreenDetailsViewState extends State<ReviewScreenDetailsView> {
             requiresHealthIntake: session.resolvedRequiresHealthIntake,
           );
         } catch (_) {}
-        messenger.showSnackBar(
-          SnackBar(content: Text(l10n.voucherAppliedSuccess)),
-        );
         unawaited(_refreshCheckoutDetails());
       },
       failure: (e) {
-        messenger.showSnackBar(
-          SnackBar(
-            content: Text(
-              (e.message != null && e.message!.trim().isNotEmpty)
-                  ? e.message!
-                  : l10n.loginErrorGeneric,
-            ),
-          ),
-        );
+        setState(() {
+          final msg = e.message?.trim();
+          _voucherSectionError =
+              (msg != null && msg.isNotEmpty) ? msg : l10n.voucherCodeInvalid;
+        });
       },
     );
   }
 
-  String _startDateValue(
+  String _cartDateDisplay(
     AppLocalizations l10n,
     String locale,
     CheckoutStartResult? s,
   ) {
     final iso = s?.createdAt;
-    String datePart;
     if (iso != null && iso.trim().isNotEmpty) {
-      datePart =
-          MembershipReceiptSummary.formatPaidDate(iso, locale) ?? iso.trim();
-    } else {
-      try {
-        datePart = DateFormat.yMMMd(locale).format(DateTime.now());
-      } catch (_) {
-        datePart = '';
+      final formatted = MembershipReceiptSummary.formatPaidDate(iso, locale);
+      if (formatted != null && formatted.trim().isNotEmpty) {
+        return formatted.trim();
       }
     }
-    if (datePart.isEmpty) {
+    try {
+      return DateFormat.yMMMd(locale).format(DateTime.now());
+    } catch (_) {
       return l10n.today;
     }
-    return '${l10n.today} ($datePart)';
+  }
+
+  /// Discount in minor units from API or implied from subtotal − total.
+  int _effectiveDiscountMinor(CheckoutPricing? pricing) {
+    final explicit = pricing?.discountAmount;
+    if (explicit != null && explicit > 0) return explicit;
+    final sub = pricing?.subtotal;
+    final total = pricing?.totalAmount;
+    if (sub != null && total != null && sub > total) {
+      return sub - total;
+    }
+    return 0;
+  }
+
+  Widget _buildVoucherFeedback({
+    required AppLocalizations l10n,
+    required String locale,
+  }) {
+    final session = _checkout;
+    if (session == null || _voucherSectionError != null) {
+      return const SizedBox.shrink();
+    }
+
+    final appliedCode = session.appliedOffer?.code?.trim();
+    final entered = _couponCode.text.trim();
+    final disc = _effectiveDiscountMinor(session.pricing);
+    final hasAppliedOffer =
+        appliedCode != null && appliedCode.isNotEmpty;
+
+    // User is typing a different code than the one on the session — hide success.
+    if (hasAppliedOffer &&
+        entered.isNotEmpty &&
+        entered.toUpperCase() != appliedCode.toUpperCase()) {
+      return const SizedBox.shrink();
+    }
+
+    // Discount visible in pricing but API omitted appliedOffer.code — still show savings.
+    if (!hasAppliedOffer && disc <= 0) {
+      return const SizedBox.shrink();
+    }
+
+    final pricing = session.pricing;
+    final cur = pricing?.currency?.trim();
+    final currency = (cur != null && cur.isNotEmpty) ? cur : 'SAR';
+
+    final successStyle = (BuildContext context) =>
+        AppTextStyles.bodyText(context).copyWith(
+          color: AppColors.successColor,
+          fontWeight: FontWeight.w600,
+          height: 1.35,
+        );
+
+    if (disc > 0) {
+      final amt = MembershipReceiptSummary.formatMoney(disc, currency, locale);
+      return Padding(
+        padding: const EdgeInsets.only(top: AppSpacing.sm),
+        child: AppText(
+          l10n.voucherAppliedSavings(amt),
+          style: successStyle,
+        ),
+      );
+    }
+
+    return Padding(
+      padding: const EdgeInsets.only(top: AppSpacing.sm),
+      child: AppText(
+        l10n.voucherAppliedSuccess,
+        style: successStyle,
+      ),
+    );
   }
 
   Widget _buildPlanSummaryCard({
@@ -212,9 +290,33 @@ class _ReviewScreenDetailsViewState extends State<ReviewScreenDetailsView> {
 
     final cur = pricing?.currency?.trim();
     final currency = (cur != null && cur.isNotEmpty) ? cur : 'SAR';
+    final discountMinor = _effectiveDiscountMinor(pricing);
+    final subtotalMinor = pricing?.subtotal;
     final totalMinor = pricing?.totalAmount ?? pricing?.subtotal;
+    final impliedSubtotal = (subtotalMinor != null && subtotalMinor > 0)
+        ? subtotalMinor
+        : (totalMinor != null &&
+                totalMinor > 0 &&
+                discountMinor > 0)
+            ? totalMinor + discountMinor
+            : subtotalMinor;
+    final showPriceBreakdown = discountMinor > 0 &&
+        impliedSubtotal != null &&
+        impliedSubtotal > 0;
+    final headlineTotalMinor =
+        (totalMinor != null && totalMinor > 0) ? totalMinor : impliedSubtotal;
     final priceText = MembershipReceiptSummary.formatMoney(
-      totalMinor,
+      headlineTotalMinor,
+      currency,
+      locale,
+    );
+    final subtotalText = MembershipReceiptSummary.formatMoney(
+      impliedSubtotal,
+      currency,
+      locale,
+    );
+    final discountText = MembershipReceiptSummary.formatMoney(
+      discountMinor,
       currency,
       locale,
     );
@@ -274,15 +376,15 @@ class _ReviewScreenDetailsViewState extends State<ReviewScreenDetailsView> {
               horizontal: AppSpacing.sm,
             ),
             decoration: BoxDecoration(
-              color: AppColors.successColor,
+              color: AppColors.warningColor,
               borderRadius: BorderRadius.circular(AppRadius.base),
             ),
             child: AppText(
-              l10n.active,
+              l10n.planReviewPendingPayment,
               style: (context) =>
                   AppTextStyles.bodyText(context, fontWeight: FontWeight.w500)
                       .copyWith(
-                color: Colors.white,
+                color: AppColors.darkText,
                 fontSize: 12,
                 height: 1.8,
               ),
@@ -360,10 +462,24 @@ class _ReviewScreenDetailsViewState extends State<ReviewScreenDetailsView> {
                   ),
               ],
             ),
+            if (showPriceBreakdown) ...[
+              SizedBox(height: AppSpacing.md),
+              _buildClassDetailRow(
+                label: '${l10n.checkoutSubtotal}:',
+                value: subtotalText,
+                isDark: isDark,
+              ),
+              const SizedBox(height: AppSpacing.sm),
+              _buildClassDetailRow(
+                label: '${l10n.checkoutVoucherDiscount}:',
+                value: '- $discountText',
+                isDark: isDark,
+              ),
+            ],
             SizedBox(height: AppSpacing.xl),
             _buildClassDetailRow(
-              label: '${l10n.startDate}:',
-              value: _startDateValue(l10n, locale, session),
+              label: '${l10n.cartDateLabel}:',
+              value: _cartDateDisplay(l10n, locale, session),
               isDark: isDark,
             ),
             const SizedBox(height: AppSpacing.sm),
@@ -375,8 +491,7 @@ class _ReviewScreenDetailsViewState extends State<ReviewScreenDetailsView> {
               ),
               const SizedBox(height: AppSpacing.sm),
             ],
-            if (validityDays > 0 &&
-                (sessionCount == null || sessionCount <= 0)) ...[
+            if (validityDays > 0) ...[
               _buildClassDetailRow(
                 label: '${l10n.redeem_valid_for}:',
                 value: '$validityDays',
@@ -408,122 +523,136 @@ class _ReviewScreenDetailsViewState extends State<ReviewScreenDetailsView> {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final l10n = AppLocalizations.of(context)!;
+    final locale = Localizations.localeOf(context).languageCode;
+    final bottomInset = widget.scrollKeyboardInset ??
+        MediaQuery.viewInsetsOf(context).bottom;
 
-    final scrollBody = Expanded(
-      child: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              AppText(
-                l10n.reviewYourSelection,
-                style: (style) => AppTextStyles.heading1(context),
-              ),
-              const SizedBox(height: 4),
-              AppText(
-                l10n.confirmPlanDetails,
-                style: (context) => AppTextStyles.bodyText(context),
-              ),
-              const SizedBox(height: AppSpacing.md),
-              _buildPlanSummaryCard(
-                context: context,
-                isDark: isDark,
-                l10n: l10n,
-              ),
-              const SizedBox(height: AppSpacing.lg),
-              Container(
-                padding: EdgeInsets.all(AppSpacing.lmd),
-                decoration: BoxDecoration(
-                  color: isDark ? AppColors.homeBackground : Colors.white,
-                  borderRadius: BorderRadius.circular(AppRadius.md),
-                  border: Border.all(
-                    color: isDark ? AppColors.greyText : AppColors.buttonBorder,
-                    width: 1,
-                  ),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    AppText(
-                      l10n.haveVoucherCode,
-                      style: (context) => AppTextStyles.gelasioRegular(
-                        context,
-                        fontWeight: FontWeight.w500,
-                      ).copyWith(height: 1.2),
-                    ),
-                    SizedBox(height: AppSpacing.md),
-                    AppTextField(
-                      hint: l10n.enterVoucherCode,
-                      controller: _couponCode,
-                    ),
-                    SizedBox(height: AppSpacing.base),
-                    AppButton(
-                      label: l10n.apply,
-                      isLoading: _applyingCoupon,
-                      onPressed: _applyingCoupon ? null : _onApplyCoupon,
-                    ),
-                  ],
+    final scrollView = SingleChildScrollView(
+      keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+      child: Padding(
+        padding: EdgeInsets.only(
+          left: AppSpacing.lg,
+          right: AppSpacing.lg,
+          bottom: bottomInset + AppSpacing.xl,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            AppText(
+              l10n.reviewYourSelection,
+              style: (style) => AppTextStyles.heading1(context),
+            ),
+            const SizedBox(height: 4),
+            AppText(
+              l10n.confirmPlanDetails,
+              style: (context) => AppTextStyles.bodyText(context),
+            ),
+            const SizedBox(height: AppSpacing.md),
+            _buildPlanSummaryCard(
+              context: context,
+              isDark: isDark,
+              l10n: l10n,
+            ),
+            const SizedBox(height: AppSpacing.lg),
+            Container(
+              padding: EdgeInsets.all(AppSpacing.lmd),
+              decoration: BoxDecoration(
+                color: isDark ? AppColors.homeBackground : Colors.white,
+                borderRadius: BorderRadius.circular(AppRadius.md),
+                border: Border.all(
+                  color: isDark ? AppColors.greyText : AppColors.buttonBorder,
+                  width: 1,
                 ),
               ),
-              const SizedBox(height: AppSpacing.lg),
-              AppText(
-                '${l10n.acceptedPaymentMethods}:',
-                style: (context) =>
-                    AppTextStyles.bodyTextSmall(context).copyWith(height: 1.2),
-              ),
-              const SizedBox(height: AppSpacing.md),
-              Row(
+              child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  SvgPicture.asset(
-                    isDark
-                        ? 'assets/images/svg/ic_dark_cs_mada.svg'
-                        : 'assets/images/svg/ic_cs_mada.svg',
+                  AppText(
+                    l10n.haveVoucherCode,
+                    style: (context) => AppTextStyles.gelasioRegular(
+                      context,
+                      fontWeight: FontWeight.w500,
+                    ).copyWith(height: 1.2),
                   ),
-                  SizedBox(width: AppSpacing.sm),
-                  SvgPicture.asset(
-                    isDark
-                        ? 'assets/images/svg/ic_dark_tabby.svg'
-                        : 'assets/images/svg/ic_tabby.svg',
+                  SizedBox(height: AppSpacing.md),
+                  AppTextField(
+                    hint: l10n.enterVoucherCode,
+                    controller: _couponCode,
+                    showClearButton: true,
+                    scrollPadding: const EdgeInsets.only(bottom: 220),
+                    errorText: _voucherSectionError,
+                    onChanged: (_) => setState(() {}),
                   ),
-                  SizedBox(width: AppSpacing.sm),
-                  SvgPicture.asset(
-                    isDark
-                        ? 'assets/images/svg/ic_dark_master.svg'
-                        : 'assets/images/svg/ic_master.svg',
+                  _buildVoucherFeedback(
+                    l10n: l10n,
+                    locale: locale,
                   ),
-                  SizedBox(width: AppSpacing.sm),
-                  SvgPicture.asset(
-                    isDark
-                        ? 'assets/images/svg/ic_dark_visa.svg'
-                        : 'assets/images/svg/ic_visa.svg',
-                  ),
-                  SizedBox(width: AppSpacing.sm),
-                  SvgPicture.asset(
-                    isDark
-                        ? 'assets/images/svg/ic_dark_tamara.svg'
-                        : 'assets/images/svg/ic_tamara.svg',
+                  SizedBox(height: AppSpacing.md),
+                  AppButton(
+                    label: l10n.apply,
+                    isLoading: _applyingCoupon,
+                    onPressed: _applyingCoupon ? null : _onApplyCoupon,
                   ),
                 ],
               ),
-              const SizedBox(height: 90),
-            ],
-          ),
+            ),
+            const SizedBox(height: AppSpacing.lg),
+            AppText(
+              '${l10n.acceptedPaymentMethods}:',
+              style: (context) =>
+                  AppTextStyles.bodyTextSmall(context).copyWith(height: 1.2),
+            ),
+            const SizedBox(height: AppSpacing.md),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                SvgPicture.asset(
+                  isDark
+                      ? 'assets/images/svg/ic_dark_cs_mada.svg'
+                      : 'assets/images/svg/ic_cs_mada.svg',
+                ),
+                SizedBox(width: AppSpacing.sm),
+                SvgPicture.asset(
+                  isDark
+                      ? 'assets/images/svg/ic_dark_tabby.svg'
+                      : 'assets/images/svg/ic_tabby.svg',
+                ),
+                SizedBox(width: AppSpacing.sm),
+                SvgPicture.asset(
+                  isDark
+                      ? 'assets/images/svg/ic_dark_master.svg'
+                      : 'assets/images/svg/ic_master.svg',
+                ),
+                SizedBox(width: AppSpacing.sm),
+                SvgPicture.asset(
+                  isDark
+                      ? 'assets/images/svg/ic_dark_visa.svg'
+                      : 'assets/images/svg/ic_visa.svg',
+                ),
+                SizedBox(width: AppSpacing.sm),
+                SvgPicture.asset(
+                  isDark
+                      ? 'assets/images/svg/ic_dark_tamara.svg'
+                      : 'assets/images/svg/ic_tamara.svg',
+                ),
+              ],
+            ),
+            const SizedBox(height: AppSpacing.xl),
+          ],
         ),
       ),
     );
 
     if (!_listenSubscriptionCubitCheckout) {
-      return scrollBody;
+      return scrollView;
     }
     return BlocListener<SubscriptionCubit, SubscriptionState>(
       listenWhen: (p, c) => p.checkoutSessionId != c.checkoutSessionId,
       listener: (context, state) {
         unawaited(_refreshCheckoutDetails());
       },
-      child: scrollBody,
+      child: scrollView,
     );
   }
 

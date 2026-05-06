@@ -8,6 +8,7 @@ import 'package:pilates_app/core/localization/localization_extension.dart';
 import 'package:pilates_app/widgets/app_text.dart';
 
 import '../cubit/reward_cubit.dart';
+import '../cubit/reward_state.dart';
 import '../widget/filter_tab_widget.dart';
 import '../widget/reward_card.dart';
 import '../widget/select_branch_sheet.dart';
@@ -56,28 +57,66 @@ class RewardOverviewView extends StatelessWidget {
               ),
             ),
             SizedBox(height: AppSpacing.md),
-            RewardCard(
-              title: context.l10n.priority_booking_week,
-              subTitle: context.l10n.priority_booking_desc,
-              point: 200,
-            ),
-            SizedBox(height: AppSpacing.md),
-            RewardCard(
-              title: context.l10n.exclusive_workshop,
-              subTitle: context.l10n.exclusive_workshop_desc,
-              point: 400,
-            ),
-            SizedBox(height: AppSpacing.md),
-            RewardCard(
-              title: context.l10n.guest_pass_3,
-              subTitle: context.l10n.guest_pass_desc,
-              point: 350,
-            ),
-            SizedBox(height: AppSpacing.md),
-            RewardCard(
-              title: context.l10n.meditation_session,
-              subTitle: context.l10n.meditation_session_desc,
-              point: 300,
+            BlocBuilder<RewardCubit, RewardState>(
+              buildWhen: (p, c) =>
+                  p.rewardsLoadStatus != c.rewardsLoadStatus ||
+                  p.filteredRewards != c.filteredRewards ||
+                  p.rewardsError != c.rewardsError ||
+                  p.selectedRewardFilter != c.selectedRewardFilter,
+              builder: (context, state) {
+                switch (state.rewardsLoadStatus) {
+                  case RewardListLoadStatus.initial:
+                  case RewardListLoadStatus.loading:
+                    return const Padding(
+                      padding: EdgeInsets.symmetric(vertical: AppSpacing.xl),
+                      child: Center(child: CircularProgressIndicator()),
+                    );
+                  case RewardListLoadStatus.failure:
+                    return Padding(
+                      padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          AppText(
+                            state.rewardsError.isNotEmpty
+                                ? state.rewardsError
+                                : context.l10n.loginErrorGeneric,
+                            style: (context) =>
+                                AppTextStyles.bodyLightText(context),
+                          ),
+                          TextButton(
+                            onPressed: () =>
+                                context.read<RewardCubit>().loadRewards(),
+                            child: AppText(
+                              context.l10n.retry,
+                              style: (c) => AppTextStyles.button(c),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  case RewardListLoadStatus.loaded:
+                    final list = state.filteredRewards;
+                    if (list.isEmpty) {
+                      return Padding(
+                        padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+                        child: AppText(
+                          context.l10n.rewardsCatalogSubtitle,
+                          style: (context) =>
+                              AppTextStyles.bodyLightText(context),
+                        ),
+                      );
+                    }
+                    return Column(
+                      children: [
+                        for (var i = 0; i < list.length; i++) ...[
+                          if (i > 0) SizedBox(height: AppSpacing.md),
+                          RewardCard(reward: list[i]),
+                        ],
+                      ],
+                    );
+                }
+              },
             ),
           ],
         ),
@@ -199,11 +238,24 @@ class RewardOverviewView extends StatelessWidget {
                     ).copyWith(color: AppColors.placeHolderText),
                   ),
                   SizedBox(height: AppSpacing.xs),
-                  AppText(
-                    "Branch 1",
-                    style: (context) => AppTextStyles.textFieldHeading(
-                      context,
-                    ).copyWith(height: 1.55, fontSize: 16),
+                  BlocBuilder<RewardCubit, RewardState>(
+                    buildWhen: (p, c) =>
+                        p.selectedBranch != c.selectedBranch ||
+                        p.branchList != c.branchList,
+                    builder: (context, state) {
+                      final title = state.branchList.isNotEmpty
+                          ? state.branchList[state.selectedBranch.clamp(
+                              0,
+                              state.branchList.length - 1,
+                            )].title
+                          : '';
+                      return AppText(
+                        title,
+                        style: (context) => AppTextStyles.textFieldHeading(
+                          context,
+                        ).copyWith(height: 1.55, fontSize: 16),
+                      );
+                    },
                   ),
                 ],
               ),

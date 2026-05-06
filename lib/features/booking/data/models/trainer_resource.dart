@@ -1,3 +1,4 @@
+import 'package:pilates_app/core/utils/api_media_url.dart';
 import 'package:pilates_app/core/utils/html_plain_text.dart';
 
 import 'review_resource.dart';
@@ -20,6 +21,10 @@ class TrainerResource {
     this.avatarUrl,
     this.recentReviews,
     this.classesThisWeekCount,
+    this.totalClassesTaught,
+    this.returnRatePercent,
+    this.teachingStyles = const [],
+    this.ratingBreakdown,
   });
 
   final String id;
@@ -40,6 +45,18 @@ class TrainerResource {
 
   /// When present (e.g. `classesThisWeek`), shown on the trainer list card.
   final int? classesThisWeekCount;
+
+  /// Lifetime / total sessions taught (trainer detail).
+  final int? totalClassesTaught;
+
+  /// Return / repeat rate as a whole percent, e.g. `92` for 92%.
+  final int? returnRatePercent;
+
+  /// Short labels for teaching style (detail screen).
+  final List<String> teachingStyles;
+
+  /// Optional counts per star level from the API: index `0` = 5★ … index `4` = 1★.
+  final List<int>? ratingBreakdown;
 
   factory TrainerResource.fromJson(Map<String, dynamic> json) {
     final specialtiesRaw = json['specialties'];
@@ -93,10 +110,16 @@ class TrainerResource {
       isActive: json['is_active'] != false && json['isActive'] != false,
       certifications: certifications,
       branches: branches,
-      avatarUrl: json['avatar_url'] as String? ??
-          json['avatarUrl'] as String? ??
-          json['image'] as String? ??
-          json['photo'] as String?,
+      avatarUrl: resolveApiMediaUrl(
+        _nullableString(
+          json['imageUrl'] ??
+              json['image_url'] ??
+              json['avatar_url'] ??
+              json['avatarUrl'] ??
+              json['image'] ??
+              json['photo'],
+        ),
+      ),
       recentReviews: recentReviews,
       classesThisWeekCount: _optionalInt(
         json['classesThisWeek'] ??
@@ -104,7 +127,79 @@ class TrainerResource {
             json['weeklyClassesCount'] ??
             json['weekly_classes_count'],
       ),
+      totalClassesTaught: _optionalInt(
+        json['total_classes_taught'] ??
+            json['totalClassesTaught'] ??
+            json['lifetime_classes'] ??
+            json['classes_taught'],
+      ),
+      returnRatePercent: _returnRatePercent(
+        json['return_rate'] ?? json['returnRate'] ?? json['repeat_rate'],
+      ),
+      teachingStyles: _stringList(
+        json['teaching_styles'] ??
+            json['teachingStyles'] ??
+            json['style_tags'] ??
+            json['teaching_style'],
+      ),
+      ratingBreakdown: _ratingBreakdown(
+        json['ratingBreakdown'] ?? json['rating_breakdown'],
+      ),
     );
+  }
+
+  /// Five integers: `[5★, 4★, 3★, 2★, 1★]` counts; shorter lists are padded with zeros.
+  static List<int>? _ratingBreakdown(dynamic v) {
+    if (v is! List) return null;
+    final out = <int>[];
+    for (final e in v.take(5)) {
+      if (e is int) {
+        out.add(e < 0 ? 0 : e);
+      } else if (e is num) {
+        out.add(e.toInt().clamp(0, 1 << 20));
+      } else {
+        out.add(int.tryParse('$e') ?? 0);
+      }
+    }
+    while (out.length < 5) {
+      out.add(0);
+    }
+    return out;
+  }
+
+  static List<String> _stringList(dynamic v) {
+    if (v is List) {
+      return v.map((e) => '$e'.trim()).where((s) => s.isNotEmpty).toList();
+    }
+    if (v is String) {
+      final t = v.trim();
+      if (t.isEmpty) return const [];
+      return [t];
+    }
+    return const [];
+  }
+
+  static int? _returnRatePercent(dynamic v) {
+    if (v == null) return null;
+    if (v is int) return v.clamp(0, 100);
+    if (v is num) {
+      final d = v.toDouble();
+      if (d > 0 && d <= 1) return (d * 100).round().clamp(0, 100);
+      return d.round().clamp(0, 100);
+    }
+    final s = '$v'.trim();
+    if (s.isEmpty) return null;
+    final n = double.tryParse(s.replaceAll('%', '').replaceAll(',', '.'));
+    if (n == null) return null;
+    if (n > 0 && n <= 1) return (n * 100).round().clamp(0, 100);
+    return n.round().clamp(0, 100);
+  }
+
+  static String? _nullableString(dynamic v) {
+    if (v == null) return null;
+    final s = v is String ? v : '$v';
+    final t = s.trim();
+    return t.isEmpty ? null : t;
   }
 
   static int? _optionalInt(dynamic v) {

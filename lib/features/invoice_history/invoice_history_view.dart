@@ -19,44 +19,52 @@ class InvoiceHistoryView extends StatelessWidget {
     return BlocProvider(
       create: (context) =>
           InvoiceHistoryCubit(context.read<InvoicesRepository>()),
-      child: Scaffold(
-        appBar: AppAppBar(
-          title: context.l10n.invoiceHistory,
-          leading: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: IconButton(
-              icon: const Icon(Icons.arrow_back_ios_rounded, size: 20),
-              onPressed: Navigator.of(context).pop,
+      child: Builder(
+        builder: (context) {
+          return Scaffold(
+            appBar: AppAppBar(
+              title: context.l10n.invoiceHistory,
+              leading: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: IconButton(
+                  icon: const Icon(Icons.arrow_back_ios_rounded, size: 20),
+                  onPressed: Navigator.of(context).pop,
+                ),
+              ),
+              isMoreMenu: false,
+              actions: [
+                IconButton(
+                  icon: const Icon(Icons.filter_list),
+                  onPressed: () {
+                    final cubit = context.read<InvoiceHistoryCubit>();
+                    showModalBottomSheet<void>(
+                      context: context,
+                      isScrollControlled: true,
+                      backgroundColor: Colors.transparent,
+                      barrierColor: AppColors.bottomSheetShadow,
+                      builder: (_) => BlocProvider.value(
+                        value: cubit,
+                        child: const FilterSelectionBottomSheet(),
+                      ),
+                    );
+                  },
+                ),
+              ],
             ),
-          ),
-          isMoreMenu: false,
-          actions: [
-            IconButton(
-              icon: const Icon(Icons.filter_list),
-              onPressed: () {
-                showModalBottomSheet(
-                  context: context,
-                  isScrollControlled: true,
-                  backgroundColor: Colors.transparent,
-                  barrierColor: AppColors.bottomSheetShadow,
-                  builder: (_) => const FilterSelectionBottomSheet(),
-                );
-              },
+            body: Padding(
+              padding: const EdgeInsets.symmetric(
+                vertical: AppSpacing.sm,
+                horizontal: AppSpacing.lg,
+              ),
+              child: const Column(
+                children: [
+                  InvoiceCategoryButtons(),
+                  Expanded(child: InvoiceListPanel()),
+                ],
+              ),
             ),
-          ],
-        ),
-        body: Padding(
-          padding: const EdgeInsets.symmetric(
-            vertical: AppSpacing.sm,
-            horizontal: AppSpacing.lg,
-          ),
-          child: const Column(
-            children: [
-              InvoiceCategoryButtons(),
-              Expanded(child: InvoiceListPanel()),
-            ],
-          ),
-        ),
+          );
+        },
       ),
     );
   }
