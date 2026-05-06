@@ -13,9 +13,10 @@ class ActiveChallengesCard extends StatelessWidget {
   final String title;
   final String subtitle;
   final double completePR;
-  final int rank;
+  final int? rank;
   final int days;
   final double point;
+  final double linearProgress;
   final void Function()? onTap;
 
   const ActiveChallengesCard({
@@ -24,9 +25,10 @@ class ActiveChallengesCard extends StatelessWidget {
     required this.title,
     required this.subtitle,
     required this.completePR,
-    required this.rank,
+    this.rank,
     required this.days,
     required this.point,
+    this.linearProgress = 0.6,
     this.onTap,
   });
 
@@ -82,17 +84,18 @@ class ActiveChallengesCard extends StatelessWidget {
                   context.l10n.percent_complete(completePR.toInt()),
                   style: (context) => AppTextStyles.bodyLightText(context),
                 ),
-                AppText(
-                  context.l10n.rank_number(rank),
-                  style: (context) => AppTextStyles.boldBody(context),
-                ),
+                if (rank != null)
+                  AppText(
+                    context.l10n.rank_number(rank!),
+                    style: (context) => AppTextStyles.boldBody(context),
+                  ),
               ],
             ),
             SizedBox(height: AppSpacing.sm),
             ClipRRect(
               borderRadius: BorderRadius.circular(AppRadius.sm),
               child: LinearProgressIndicator(
-                value: 0.6,
+                value: linearProgress.clamp(0.0, 1.0),
                 minHeight: 6,
                 backgroundColor: isDark
                     ? AppColors.lightBlackColor

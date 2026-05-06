@@ -30,14 +30,19 @@ class GoalsView extends StatelessWidget {
       child: Column(
         children: [
           Expanded(
-            child: SingleChildScrollView(
-              child: BlocBuilder<SubscriptionCubit, SubscriptionState>(
-                buildWhen: (p, c) =>
-                    p.healthQuestionnaireQuestions !=
-                        c.healthQuestionnaireQuestions ||
-                    p.selectedProductRequiresHealthIntake !=
-                        c.selectedProductRequiresHealthIntake,
-                builder: (context, state) {
+            child: GestureDetector(
+              behavior: HitTestBehavior.translucent,
+              onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+              child: SingleChildScrollView(
+                keyboardDismissBehavior:
+                    ScrollViewKeyboardDismissBehavior.onDrag,
+                child: BlocBuilder<SubscriptionCubit, SubscriptionState>(
+                  buildWhen: (p, c) =>
+                      p.healthQuestionnaireQuestions !=
+                          c.healthQuestionnaireQuestions ||
+                      p.selectedProductRequiresHealthIntake !=
+                          c.selectedProductRequiresHealthIntake,
+                  builder: (context, state) {
                   final intake = state.selectedProductRequiresHealthIntake;
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -78,6 +83,7 @@ class GoalsView extends StatelessWidget {
                   );
                 },
               ),
+            ),
             ),
           ),
           AppButton(

@@ -14,27 +14,44 @@ import '../../../widgets/app_button.dart';
 import '../cubit/pause_subscription_cubit.dart';
 import '../cubit/pause_subscription_state.dart';
 
-/// §9.1 freeze — requires the subscription row `id` from §9.3.
+/// Freeze flow — requires the subscription row `id` from the subscriptions API.
 class PauseSubscriptionView extends StatelessWidget {
   const PauseSubscriptionView({
     super.key,
     required this.subscriptionId,
+    required this.planStartsAt,
+    this.planExpiresAt,
+    required this.maxFreezeDays,
   });
 
   final String subscriptionId;
 
-  static int _inclusiveDayCount(DateTime? start, DateTime? end) {
-    if (start == null || end == null) return 0;
-    final a = DateTime(start.year, start.month, start.day);
-    final b = DateTime(end.year, end.month, end.day);
-    final d = b.difference(a).inDays;
-    return d < 0 ? 0 : d + 1;
+  /// Subscription/plan start (UTC or local from API); used to bound pause dates.
+  final DateTime planStartsAt;
+
+  /// Optional plan end; pause window cannot extend past this day.
+  final DateTime? planExpiresAt;
+
+  /// Max inclusive calendar days for one pause (from subscription or product).
+  final int maxFreezeDays;
+
+  static DateTime _dateOnly(DateTime d) {
+    final l = d.toLocal();
+    return DateTime(l.year, l.month, l.day);
+  }
+
+  static DateTime _clampDay(DateTime day, DateTime min, DateTime max) {
+    if (day.isBefore(min)) return min;
+    if (day.isAfter(max)) return max;
+    return day;
   }
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final locale = Localizations.localeOf(context).toLanguageTag();
+    final effectiveMaxFreezeDays = maxFreezeDays < 1 ? 1 : maxFreezeDays;
+
     return Scaffold(
       appBar: AppAppBar(
         title: context.l10n.pauseSubscription,
@@ -57,10 +74,19 @@ class PauseSubscriptionView extends StatelessWidget {
             create: (context) => PauseSubscriptionCubit(
               subscriptionId: subscriptionId,
               repository: context.read<SubscriptionsRepository>(),
+              planStartDateLocal: _dateOnly(planStartsAt),
+              planExpiresAtLocal:
+                  planExpiresAt != null ? _dateOnly(planExpiresAt!) : null,
+              maxFreezeDays: effectiveMaxFreezeDays,
             ),
             child: BlocBuilder<PauseSubscriptionCubit, PauseSubscriptionState>(
               builder: (context, state) {
-                final days = _inclusiveDayCount(state.startDate, state.endDate);
+                final cubit = context.read<PauseSubscriptionCubit>();
+                final days =
+                    PauseSubscriptionCubit.inclusivePauseDays(
+                      state.startDate,
+                      state.endDate,
+                    );
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -94,7 +120,6 @@ class PauseSubscriptionView extends StatelessWidget {
                                 size: 20,
                               ),
                               SizedBox(width: AppSpacing.sm),
-
                               AppText(
                                 context.l10n.cannotPauseTitle,
                                 style: (context) =>
@@ -108,7 +133,6 @@ class PauseSubscriptionView extends StatelessWidget {
                               ),
                             ],
                           ),
-
                           SizedBox(height: AppSpacing.sm),
                           AppText(
                             context.l10n.cannotPauseMessage,
@@ -130,6 +154,15 @@ class PauseSubscriptionView extends StatelessWidget {
                       style: (context) =>
                           AppTextStyles.gelasioRegular(context).copyWith(),
                     ),
+                    SizedBox(height: AppSpacing.xi),
+                    AppText(
+                      context.l10n.pauseMaxFreezeDaysHint(effectiveMaxFreezeDays),
+                      style: (context) => AppTextStyles.bodyText(context).copyWith(
+                            fontSize: 12,
+                            color: AppColors.lightGrey,
+                            height: 1.35,
+                          ),
+                    ),
                     SizedBox(height: AppSpacing.base),
                     AppText(
                       context.l10n.startDate,
@@ -138,10 +171,13 @@ class PauseSubscriptionView extends StatelessWidget {
                       ).copyWith(height: 1.55),
                     ),
                     SizedBox(height: AppSpacing.xi),
-                    buildDateRow(
-                      context,
-                      state.startDate ?? DateTime.now(),
-                      true,
+                    _buildDateRow(
+                      context: context,
+                      cubit: cubit,
+                      state: state,
+                      isDark: isDark,
+                      locale: locale,
+                      isStart: true,
                     ),
                     SizedBox(height: AppSpacing.base),
                     AppText(
@@ -151,10 +187,13 @@ class PauseSubscriptionView extends StatelessWidget {
                       ).copyWith(height: 1.55),
                     ),
                     SizedBox(height: AppSpacing.xi),
-                    buildDateRow(
-                      context,
-                      state.endDate ?? DateTime.now(),
-                      false,
+                    _buildDateRow(
+                      context: context,
+                      cubit: cubit,
+                      state: state,
+                      isDark: isDark,
+                      locale: locale,
+                      isStart: false,
                     ),
                     SizedBox(height: AppSpacing.base),
                     Container(
@@ -195,7 +234,6 @@ class PauseSubscriptionView extends StatelessWidget {
                         ],
                       ),
                     ),
-
                     SizedBox(height: AppSpacing.lg),
                     AppText(
                       context.l10n.yourPlan,
@@ -242,7 +280,6 @@ class PauseSubscriptionView extends StatelessWidget {
                             ],
                           ),
                           SizedBox(height: AppSpacing.md),
-
                           Divider(
                             color: isDark
                                 ? AppColors.greyText
@@ -327,7 +364,7 @@ class PauseSubscriptionView extends StatelessWidget {
                           ),
                           _buildRow(
                             label: context.l10n.nextBillingDate(
-                              "Feb 22, 2026",
+                              'Feb 22, 2026',
                               7,
                             ),
                             isDark: isDark,
@@ -339,7 +376,6 @@ class PauseSubscriptionView extends StatelessWidget {
                         ],
                       ),
                     ),
-
                     if (state.submitError != null) ...[
                       AppText(
                         state.submitError!,
@@ -355,20 +391,16 @@ class PauseSubscriptionView extends StatelessWidget {
                       onPressed: () async {
                         final ok = await context
                             .read<PauseSubscriptionCubit>()
-                            .confirmFreeze();
+                            .confirmFreeze(context.l10n);
                         if (!context.mounted) return;
                         if (ok) Navigator.of(context).pop(true);
                       },
                       variant: AppButtonVariant.primary,
                     ),
-
                     const SizedBox(height: AppSpacing.sm),
-
-                    // Cancel
                     Center(
                       child: GestureDetector(
                         onTap: () => Navigator.pop(context),
-
                         child: Padding(
                           padding: EdgeInsets.symmetric(
                             vertical: (AppSpacing.buttonHeight - 30) / 2,
@@ -393,55 +425,119 @@ class PauseSubscriptionView extends StatelessWidget {
     );
   }
 
-  Widget buildDateRow(BuildContext context, DateTime date, bool isStart) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-    return GestureDetector(
-      onTap: () async {
-        final DateTime? picked = await showDatePicker(
-          context: context,
-          initialDate: date,
-          firstDate: DateTime(2000),
-          lastDate: DateTime(2100),
-        );
+  Widget _buildDateRow({
+    required BuildContext context,
+    required PauseSubscriptionCubit cubit,
+    required PauseSubscriptionState state,
+    required bool isDark,
+    required String locale,
+    required bool isStart,
+  }) {
+    final firstStart = cubit.earliestPauseStart;
+    final lastStart = cubit.latestPauseStart;
 
-        if (picked != null) {
-          date = picked;
-          if (isStart) {
-            context.read<PauseSubscriptionCubit>().setStartDate(date);
-          } else {
-            context.read<PauseSubscriptionCubit>().setEndDate(date);
+    if (isStart) {
+      final selected = state.startDate;
+      final initial =
+          _clampDay(selected ?? firstStart, firstStart, lastStart);
+      return GestureDetector(
+        onTap: () async {
+          final picked = await showDatePicker(
+            context: context,
+            initialDate: initial,
+            firstDate: firstStart,
+            lastDate: lastStart,
+          );
+          if (picked != null) {
+            cubit.setStartDate(picked);
           }
-
-          // context.read<PauseSubscriptionCubit>().emit(state.copyWith>()
-          // use selected date
-        }
-      },
-      child: Container(
-        height: 48,
-        padding: EdgeInsets.symmetric(horizontal: AppSpacing.base),
-        decoration: BoxDecoration(
-          color: isDark ? AppColors.homeBackground : Colors.white,
-          border: Border.all(
-            color: isDark ? AppColors.greyText : AppColors.buttonBorder,
+        },
+        child: _dateFieldShell(
+          isDark: isDark,
+          child: AppText(
+            selected != null
+                ? DateFormat.yMMMd(locale).format(selected)
+                : context.l10n.tapToSelectDate,
+            style: (context) => AppTextStyles.textField(context).copyWith(
+                  color: selected != null
+                      ? (isDark ? AppColors.lightText : AppColors.darkText)
+                      : AppColors.lightGrey,
+                ),
           ),
-          borderRadius: BorderRadius.circular(AppRadius.md),
         ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            AppText(
-              DateFormat("dd-MM-yyyy").format(date),
-              style: (context) => AppTextStyles.textField(
-                context,
-              ).copyWith(color: AppColors.lightGrey),
-            ),
-            Icon(
-              Icons.calendar_today_outlined,
-              color: AppColors.darkGreyText,
-              size: 20,
-            ),
-          ],
+      );
+    }
+
+    final start = state.startDate;
+    final enabled = start != null;
+
+    return Opacity(
+      opacity: enabled ? 1 : 0.45,
+      child: GestureDetector(
+        onTap: () async {
+          if (!enabled) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(context.l10n.pauseSelectStartFirst)),
+            );
+            return;
+          }
+          final s = start;
+          final lastEnd = cubit.latestPauseEndFor(s);
+          final picked = await showDatePicker(
+            context: context,
+            initialDate: _clampDay(state.endDate ?? s, s, lastEnd),
+            firstDate: s,
+            lastDate: lastEnd,
+          );
+          if (picked != null) {
+            cubit.setEndDate(picked);
+          }
+        },
+        child: _dateFieldShell(
+          isDark: isDark,
+          child: AppText(
+            !enabled
+                ? context.l10n.tapToSelectDate
+                : (state.endDate != null
+                    ? DateFormat.yMMMd(locale).format(state.endDate!)
+                    : context.l10n.tapToSelectDate),
+            style: (context) => AppTextStyles.textField(context).copyWith(
+                  color: !enabled
+                      ? AppColors.lightGrey
+                      : (state.endDate != null
+                          ? (isDark ? AppColors.lightText : AppColors.darkText)
+                          : AppColors.lightGrey),
+                ),
+          ),
         ),
+      ),
+    );
+  }
+
+  Widget _dateFieldShell({
+    required bool isDark,
+    required Widget child,
+  }) {
+    return Container(
+      height: 48,
+      padding: EdgeInsets.symmetric(horizontal: AppSpacing.base),
+      decoration: BoxDecoration(
+        color: isDark ? AppColors.homeBackground : Colors.white,
+        border: Border.all(
+          color: isDark ? AppColors.greyText : AppColors.buttonBorder,
+        ),
+        borderRadius: BorderRadius.circular(AppRadius.md),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Expanded(child: child),
+          Icon(
+            Icons.calendar_today_outlined,
+            color: AppColors.darkGreyText,
+            size: 20,
+          ),
+        ],
       ),
     );
   }
@@ -453,22 +549,21 @@ class PauseSubscriptionView extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           AppText(
-            "• ",
+            '• ',
             style: (context) => AppTextStyles.bodyText(context).copyWith(
-              fontSize: 12,
-              color: isDark ? AppColors.darkGreyText : AppColors.lightGrey,
-              height: 1.2,
-            ),
+                  fontSize: 12,
+                  color: isDark ? AppColors.darkGreyText : AppColors.lightGrey,
+                  height: 1.2,
+                ),
           ),
-
           Expanded(
             child: AppText(
               label,
               style: (context) => AppTextStyles.bodyText(context).copyWith(
-                fontSize: 12,
-                color: isDark ? AppColors.darkGreyText : AppColors.lightGrey,
-                height: 1.2,
-              ),
+                    fontSize: 12,
+                    color: isDark ? AppColors.darkGreyText : AppColors.lightGrey,
+                    height: 1.2,
+                  ),
             ),
           ),
         ],

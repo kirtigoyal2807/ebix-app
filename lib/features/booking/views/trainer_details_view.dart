@@ -4,6 +4,11 @@ import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/core/localization/localization_extension.dart';
 import 'package:pilates_app/core/network/api_result.dart';
+import 'package:pilates_app/features/booking/cubit/booking_cubit.dart';
+import 'package:pilates_app/features/booking/cubit/booking_state.dart';
+import 'package:pilates_app/features/booking/data/classes_repository.dart';
+import 'package:pilates_app/features/booking/data/models/class_slot_view_model.dart';
+import 'package:pilates_app/features/booking/data/models/gym_class_resource.dart';
 import 'package:pilates_app/features/booking/data/models/trainer_certification.dart';
 import 'package:pilates_app/features/booking/data/models/trainer_resource.dart';
 import 'package:pilates_app/features/booking/data/trainers_repository.dart';
@@ -16,6 +21,44 @@ import '../widgets/booking_class_card.dart';
 import '../widgets/class_reviews_section.dart';
 import '../widgets/tag_chip.dart';
 import '../widgets/trainer_average_stars.dart';
+
+typedef _TrainerDetailBundle = ({
+  ApiResult<TrainerResource> trainer,
+  ApiResult<List<GymClassResource>> classes,
+});
+
+List<ClassSlotViewModel> _trainerUpcomingSlots(
+  TrainerResource trainer,
+  List<GymClassResource> catalog,
+) {
+  final id = trainer.id.trim();
+  final nameNorm = trainer.displayName.trim().toLowerCase();
+  final now = DateTime.now();
+  final out = <ClassSlotViewModel>[];
+  for (final gc in catalog) {
+    for (final ev in gc.upcomingEvents) {
+      if (ev.startAt.isBefore(now)) continue;
+      final tid = ev.trainerId?.trim();
+      final matchesId = tid != null && tid.isNotEmpty && tid == id;
+      final evName = ev.trainerName?.trim().toLowerCase() ?? '';
+      final matchesName =
+          (tid == null || tid.isEmpty) && nameNorm.isNotEmpty && evName == nameNorm;
+      if (!matchesId && !matchesName) continue;
+      out.add(ClassSlotViewModel.fromClassAndEvent(gc, ev));
+    }
+  }
+  out.sort((a, b) => a.startAt.compareTo(b.startAt));
+  return out;
+}
+
+void _openBrowseAllClasses(BuildContext context) {
+  try {
+    context.read<BookingCubit>().setTab(BookingTab.classes);
+  } catch (_) {}
+  if (Navigator.of(context).canPop()) {
+    Navigator.of(context).pop();
+  }
+}
 
 /// Trainer profile: pass [trainer] from §12.1 list for API-backed details (`GET /trainers/{id}`).
 /// Omit [trainer] to keep the legacy marketing/demo layout (home shortcuts).
@@ -43,29 +86,52 @@ class _TrainerDetailsApiRoute extends StatefulWidget {
 }
 
 class _TrainerDetailsApiRouteState extends State<_TrainerDetailsApiRoute> {
-  late Future<ApiResult<TrainerResource>> _future;
+  late Future<_TrainerDetailBundle> _bundleFuture;
   var _futureInitialized = false;
+
   /// Bumps to remount [ClassReviewsSection] so pull-to-refresh reloads `GET /reviews`.
   var _reviewsRefreshEpoch = 0;
+
+  void _reloadBundle() {
+    final trainers = context.read<TrainersRepository>();
+    final classesRepo = context.read<ClassesRepository>();
+    _bundleFuture = () async {
+      final trainer = await trainers.getTrainer(widget.summary.id);
+      final classes = await classesRepo.listClasses();
+      return (trainer: trainer, classes: classes);
+    }();
+  }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     if (_futureInitialized) return;
     _futureInitialized = true;
-    _future = context.read<TrainersRepository>().getTrainer(widget.summary.id);
+    _reloadBundle();
   }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<ApiResult<TrainerResource>>(
-      future: _future,
+    return FutureBuilder<_TrainerDetailBundle>(
+      future: _bundleFuture,
       builder: (context, snapshot) {
-        final data = snapshot.data;
+        final bundle = snapshot.data;
+        final data = bundle?.trainer;
         final TrainerResource effective = data != null && data.isSuccess && data.dataOrNull != null
             ? data.dataOrNull!
             : widget.summary;
         final err = data?.exceptionOrNull?.message;
+
+        final classesRes = bundle?.classes;
+        final catalog = classesRes != null && classesRes.isSuccess
+            ? (classesRes.dataOrNull ?? const <GymClassResource>[])
+            : const <GymClassResource>[];
+        final slots = _trainerUpcomingSlots(effective, catalog);
+
+        final embedded = effective.recentReviews;
+        final useEmbeddedReviews = embedded != null && embedded.isNotEmpty;
+
+        final isDark = Theme.of(context).brightness == Brightness.dark;
 
         return Scaffold(
           appBar: AppAppBar(
@@ -73,106 +139,328 @@ class _TrainerDetailsApiRouteState extends State<_TrainerDetailsApiRoute> {
             isMoreMenu: false,
             onBack: () => Navigator.of(context).pop(),
           ),
+          bottomNavigationBar: SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(
+                AppSpacing.lg,
+                AppSpacing.sm,
+                AppSpacing.lg,
+                AppSpacing.md,
+              ),
+              child: SizedBox(
+                width: double.infinity,
+                child: FilledButton(
+                  style: FilledButton.styleFrom(
+                    backgroundColor: AppColors.primary,
+                    foregroundColor: AppColors.whiteColor,
+                    padding: const EdgeInsets.symmetric(vertical: 14),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(AppRadius.md),
+                    ),
+                  ),
+                  onPressed: () => _openBrowseAllClasses(context),
+                  child: AppText(
+                    context.l10n.browseAllClasses,
+                    textAlign: TextAlign.center,
+                    maxLines: 2,
+                    style: (c) => AppTextStyles.boldBody(c).copyWith(
+                      color: AppColors.whiteColor,
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
           body: RefreshIndicator(
             onRefresh: () async {
               setState(() {
                 _reviewsRefreshEpoch++;
-                _future = context.read<TrainersRepository>().getTrainer(widget.summary.id);
+                _reloadBundle();
               });
-              await _future;
+              await _bundleFuture;
             },
-            child: SingleChildScrollView(
+            child: CustomScrollView(
               physics: const AlwaysScrollableScrollPhysics(),
-              padding: EdgeInsets.symmetric(vertical: AppSpacing.sm),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  if (err != null && err.isNotEmpty && data != null && data.isFailure)
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
-                      child: AppText(
-                        err,
-                        maxLines: 6,
-                        style: (c) => AppTextStyles.bodyText(c).copyWith(color: AppColors.error),
-                      ),
-                    ),
-                  _TrainerApiHeader(trainer: effective),
-                  SizedBox(height: AppSpacing.md),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
-                    child: Wrap(
-                      spacing: AppSpacing.sm,
-                      runSpacing: AppSpacing.sm,
+              slivers: [
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(vertical: AppSpacing.sm),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        if (effective.yearsExperience != null)
-                          TagChip(
-                            label: context.l10n.yearsExperience(effective.yearsExperience!),
-                            fontSize: 14,
+                        if (err != null && err.isNotEmpty && data != null && data.isFailure)
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+                            child: AppText(
+                              err,
+                              maxLines: 6,
+                              style: (c) =>
+                                  AppTextStyles.bodyText(c).copyWith(color: AppColors.error),
+                            ),
                           ),
-                        for (final s in effective.specialties)
-                          TagChip(label: s, fontSize: 14),
+                        _TrainerApiHeader(trainer: effective),
+                        SizedBox(height: AppSpacing.md),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+                          child: Wrap(
+                            spacing: AppSpacing.sm,
+                            runSpacing: AppSpacing.sm,
+                            children: [
+                              if (effective.yearsExperience != null)
+                                TagChip(
+                                  label: context.l10n.yearsExperience(effective.yearsExperience!),
+                                  fontSize: 14,
+                                ),
+                              for (final s in effective.specialties)
+                                TagChip(label: s, fontSize: 14),
+                            ],
+                          ),
+                        ),
+                        _TrainerStatsRow(trainer: effective, isDark: isDark),
+                        if (effective.bio != null && effective.bio!.trim().isNotEmpty) ...[
+                          SizedBox(height: AppSpacing.lg),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+                            child: AppText(
+                              '${context.l10n.about} ${effective.displayName}',
+                              maxLines: 4,
+                              style: (c) => AppTextStyles.gelasioRegular(c),
+                            ),
+                          ),
+                          SizedBox(height: AppSpacing.xs),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+                            child: AppText(
+                              effective.bio!,
+                              maxLines: 200,
+                              style: (c) => AppTextStyles.bodyText(c).copyWith(height: 1.55),
+                            ),
+                          ),
+                        ],
+                        if (effective.certifications.isNotEmpty) ...[
+                          SizedBox(height: AppSpacing.lg),
+                          _ApiCertificationsCard(
+                            certifications: effective.certifications,
+                          ),
+                        ],
+                        _TrainerTeachingStylesSection(
+                          trainer: effective,
+                          isDark: isDark,
+                        ),
+                        if (effective.branches.isNotEmpty) ...[
+                          SizedBox(height: AppSpacing.md),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+                            child: AppText(
+                              context.l10n.branch,
+                              style: (c) => AppTextStyles.textFieldHeading(c),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+                            child: AppText(
+                              effective.branches.map((b) => b.name).join(', '),
+                              maxLines: 8,
+                              style: (c) => AppTextStyles.bodyText(c).copyWith(height: 1.4),
+                            ),
+                          ),
+                        ],
+                        SizedBox(height: AppSpacing.xl),
+                        ClassReviewsSection(
+                          key: ValueKey(
+                            'trainer_reviews_${effective.id}_$_reviewsRefreshEpoch',
+                          ),
+                          embeddedRecentReviews: useEmbeddedReviews ? embedded : null,
+                          reviewableType: useEmbeddedReviews ? null : 'trainer',
+                          reviewableId: useEmbeddedReviews ? null : effective.id,
+                          summaryAvgRating: effective.avgRating,
+                          summaryReviewsCount: effective.reviewsCount,
+                          summaryRatingBreakdown: effective.ratingBreakdown,
+                        ),
+                        SizedBox(height: AppSpacing.lg),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: AppText(
+                                  context.l10n.upcomingClasses,
+                                  maxLines: 2,
+                                  style: (c) => AppTextStyles.heading1(c).copyWith(
+                                    color: isDark ? AppColors.lightText : AppColors.darkText,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                ),
+                              ),
+                              InkWell(
+                                onTap: () => _openBrowseAllClasses(context),
+                                child: AppText(
+                                  context.l10n.seeAll,
+                                  maxLines: 1,
+                                  style: (c) =>
+                                      AppTextStyles.captionText(c, fontWeight: FontWeight.w500)
+                                          .copyWith(
+                                    color: isDark
+                                        ? AppColors.languageTextDark
+                                        : AppColors.languageIcon,
+                                    fontSize: 14,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(height: AppSpacing.base),
+                        if (snapshot.connectionState == ConnectionState.waiting && bundle == null)
+                          const Padding(
+                            padding: EdgeInsets.symmetric(vertical: 24),
+                            child: Center(child: CircularProgressIndicator.adaptive()),
+                          )
+                        else if (classesRes != null &&
+                            classesRes.isFailure &&
+                            slots.isEmpty)
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+                            child: AppText(
+                              (classesRes.exceptionOrNull?.message ?? '').trim().isEmpty
+                                  ? context.l10n.noClassesFound
+                                  : classesRes.exceptionOrNull!.message!,
+                              maxLines: 3,
+                              style: (c) => AppTextStyles.captionText(c),
+                            ),
+                          )
+                        else if (slots.isEmpty)
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+                            child: AppText(
+                              context.l10n.noUpcomingClasses,
+                              style: (c) => AppTextStyles.bodyText(c).copyWith(
+                                color: AppColors.lightGrey,
+                              ),
+                            ),
+                          )
+                        else
+                          for (final slot in slots.take(6)) ...[
+                            BookingClassCard.fromSlot(slot),
+                            const SizedBox(height: AppSpacing.md),
+                          ],
+                        SizedBox(height: AppSpacing.xl),
                       ],
                     ),
                   ),
-                  if (effective.bio != null && effective.bio!.trim().isNotEmpty) ...[
-                    SizedBox(height: AppSpacing.lg),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
-                      child: AppText(
-                        '${context.l10n.about} ${effective.displayName}',
-                        maxLines: 4,
-                        style: (c) => AppTextStyles.gelasioRegular(c),
-                      ),
-                    ),
-                    SizedBox(height: AppSpacing.xs),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
-                      child: AppText(
-                        effective.bio!,
-                        maxLines: 200,
-                        style: (c) => AppTextStyles.bodyText(c).copyWith(height: 1.55),
-                      ),
-                    ),
-                  ],
-                  if (effective.certifications.isNotEmpty) ...[
-                    SizedBox(height: AppSpacing.lg),
-                    _ApiCertificationsCard(
-                      certifications: effective.certifications,
-                    ),
-                  ],
-                  if (effective.branches.isNotEmpty) ...[
-                    SizedBox(height: AppSpacing.md),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
-                      child: AppText(
-                        context.l10n.branch,
-                        style: (c) => AppTextStyles.textFieldHeading(c),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
-                      child: AppText(
-                        effective.branches.map((b) => b.name).join(', '),
-                        maxLines: 8,
-                        style: (c) => AppTextStyles.bodyText(c).copyWith(height: 1.4),
-                      ),
-                    ),
-                  ],
-                  SizedBox(height: AppSpacing.xl),
-                  ClassReviewsSection(
-                    key: ValueKey(
-                      'trainer_reviews_${effective.id}_$_reviewsRefreshEpoch',
-                    ),
-                    embeddedRecentReviews: effective.recentReviews,
-                    reviewableType: effective.recentReviews == null ? 'trainer' : null,
-                    reviewableId: effective.recentReviews == null ? effective.id : null,
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         );
       },
+    );
+  }
+}
+
+class _TrainerStatsRow extends StatelessWidget {
+  const _TrainerStatsRow({
+    required this.trainer,
+    required this.isDark,
+  });
+
+  final TrainerResource trainer;
+  final bool isDark;
+
+  @override
+  Widget build(BuildContext context) {
+    final entries = <({String value, String label})>[];
+    final taught = trainer.totalClassesTaught;
+    if (taught != null) {
+      entries.add((value: '$taught', label: context.l10n.classesTaught));
+    }
+    final week = trainer.classesThisWeekCount;
+    if (week != null) {
+      entries.add((value: '$week', label: context.l10n.thisWeek));
+    }
+    final rr = trainer.returnRatePercent;
+    if (rr != null) {
+      entries.add((value: '$rr%', label: context.l10n.returnRate));
+    }
+    if (entries.isEmpty) return const SizedBox.shrink();
+
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(
+        AppSpacing.lg,
+        AppSpacing.md,
+        AppSpacing.lg,
+        0,
+      ),
+      child: Row(
+        children: [
+          for (var i = 0; i < entries.length; i++) ...[
+            if (i > 0) SizedBox(width: AppSpacing.md),
+            Expanded(
+              child: _TrainerDetailsDemoView._totalCard(
+                value: entries[i].value,
+                label: entries[i].label,
+                isDark: isDark,
+                context: context,
+              ),
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+}
+
+class _TrainerTeachingStylesSection extends StatelessWidget {
+  const _TrainerTeachingStylesSection({
+    required this.trainer,
+    required this.isDark,
+  });
+
+  final TrainerResource trainer;
+  final bool isDark;
+
+  @override
+  Widget build(BuildContext context) {
+    final styles = trainer.teachingStyles.isNotEmpty
+        ? trainer.teachingStyles
+        : [
+            context.l10n.dynamicTxt,
+            context.l10n.motivating,
+            context.l10n.detailOriented,
+            context.l10n.challenging,
+            context.l10n.supporting,
+          ];
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(height: AppSpacing.lg),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+          child: AppText(
+            context.l10n.teachingStyle,
+            style: (c) => AppTextStyles.gelasioRegular(c).copyWith(height: 1.55),
+          ),
+        ),
+        SizedBox(height: AppSpacing.sm),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+          child: Wrap(
+            direction: Axis.horizontal,
+            spacing: AppSpacing.sm,
+            runSpacing: AppSpacing.sm,
+            children: [
+              for (final label in styles)
+                _TrainerDetailsDemoView._teachingStyleCard(
+                  label: label,
+                  isDark: isDark,
+                ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }

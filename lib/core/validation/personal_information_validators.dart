@@ -26,4 +26,26 @@ abstract final class PersonalInformationValidators {
     final n = int.tryParse(raw.trim());
     return n != null && n >= 20 && n <= 400;
   }
+
+  /// National digits for the subscription health step (max 10), from profile / E.164.
+  ///
+  /// Strips leading [966] for KSA; if nine digits remain starting with [5], prefixes [0].
+  static String profilePhoneToNationalDigits(String? raw) {
+    var d = _digitsOnly(raw ?? '');
+    if (d.isEmpty) return '';
+    if (d.startsWith('966')) {
+      d = d.substring(3);
+      if (d.length >= 10) {
+        return d.substring(0, 10);
+      }
+      if (d.length == 9 && d.startsWith('5')) {
+        return '0$d';
+      }
+      return d;
+    }
+    if (d.length > 10) {
+      return d.substring(d.length - 10);
+    }
+    return d;
+  }
 }

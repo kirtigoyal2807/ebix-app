@@ -10,20 +10,23 @@ import 'package:pilates_app/core/network/api_result.dart';
 import 'package:pilates_app/features/booking/data/models/review_resource.dart';
 import 'package:pilates_app/features/booking/data/models/reviews_list_result.dart';
 import 'package:pilates_app/features/booking/data/reviews_repository.dart';
+import 'package:pilates_app/features/booking/widgets/trainer_average_stars.dart';
 import 'package:pilates_app/widgets/app_text.dart';
 
-/// **Static demo** when [reviewableType] / [reviewableId] are null and [embeddedRecentReviews] is null.
+/// When [reviewableType] + [reviewableId] are set: `GET /reviews` (§14.1).
 ///
-/// If [embeddedRecentReviews] is non-null (including when the API sends `recentReviews: []`),
-/// that list is shown and **no** `GET /reviews` call is made.
-///
-/// Otherwise, when [reviewableType] + [reviewableId] are set: `GET /reviews` (§14.1).
+/// Optional [summaryAvgRating], [summaryReviewsCount], and [summaryRatingBreakdown]
+/// mirror list/detail payloads (`avgRating`, `reviewsCount`, `ratingBreakdown`) so the
+/// summary + distribution bars reflect **all** reviews, not only the first page of rows.
 class ClassReviewsSection extends StatelessWidget {
   const ClassReviewsSection({
     super.key,
     this.reviewableType,
     this.reviewableId,
     this.embeddedRecentReviews,
+    this.summaryAvgRating,
+    this.summaryReviewsCount,
+    this.summaryRatingBreakdown,
   });
 
   final String? reviewableType;
@@ -33,10 +36,24 @@ class ClassReviewsSection extends StatelessWidget {
   /// when the payload includes `recentReviews` (use `[]` for none).
   final List<ReviewResource>? embeddedRecentReviews;
 
+  /// API aggregate average (e.g. trainer `avgRating` or class average as string).
+  final String? summaryAvgRating;
+
+  /// Total review count from API (`reviewsCount`).
+  final int? summaryReviewsCount;
+
+  /// Five counts: index 0 = 5★ … index 4 = 1★ (`ratingBreakdown`).
+  final List<int>? summaryRatingBreakdown;
+
   @override
   Widget build(BuildContext context) {
     if (embeddedRecentReviews != null) {
-      return _EmbeddedRecentReviewsBody(reviews: embeddedRecentReviews!);
+      return _EmbeddedRecentReviewsBody(
+        reviews: embeddedRecentReviews!,
+        summaryAvgRating: summaryAvgRating,
+        summaryReviewsCount: summaryReviewsCount,
+        summaryRatingBreakdown: summaryRatingBreakdown,
+      );
     }
     final t = reviewableType?.trim();
     final id = reviewableId?.trim();
@@ -46,15 +63,26 @@ class ClassReviewsSection extends StatelessWidget {
     return _DynamicReviewsSection(
       reviewableType: t,
       reviewableId: id,
+      summaryAvgRating: summaryAvgRating,
+      summaryReviewsCount: summaryReviewsCount,
+      summaryRatingBreakdown: summaryRatingBreakdown,
     );
   }
 }
 
 /// Trainer (or other) payload already includes review rows; empty list → [noReviewsYet] UI.
 class _EmbeddedRecentReviewsBody extends StatelessWidget {
-  const _EmbeddedRecentReviewsBody({required this.reviews});
+  const _EmbeddedRecentReviewsBody({
+    required this.reviews,
+    this.summaryAvgRating,
+    this.summaryReviewsCount,
+    this.summaryRatingBreakdown,
+  });
 
   final List<ReviewResource> reviews;
+  final String? summaryAvgRating;
+  final int? summaryReviewsCount;
+  final List<int>? summaryRatingBreakdown;
 
   @override
   Widget build(BuildContext context) {
@@ -83,7 +111,13 @@ class _EmbeddedRecentReviewsBody extends StatelessWidget {
           ),
         ),
         const SizedBox(height: AppSpacing.base),
-        _DynamicReviewsContent(reviews: reviews, isDark: isDark),
+        _DynamicReviewsContent(
+          reviews: reviews,
+          isDark: isDark,
+          summaryAvgRating: summaryAvgRating,
+          summaryReviewsCount: summaryReviewsCount,
+          summaryRatingBreakdown: summaryRatingBreakdown,
+        ),
         const SizedBox(height: AppSpacing.md),
       ],
     );
@@ -96,10 +130,16 @@ class _DynamicReviewsSection extends StatefulWidget {
   const _DynamicReviewsSection({
     required this.reviewableType,
     required this.reviewableId,
+    this.summaryAvgRating,
+    this.summaryReviewsCount,
+    this.summaryRatingBreakdown,
   });
 
   final String reviewableType;
   final String reviewableId;
+  final String? summaryAvgRating;
+  final int? summaryReviewsCount;
+  final List<int>? summaryRatingBreakdown;
 
   @override
   State<_DynamicReviewsSection> createState() => _DynamicReviewsSectionState();
@@ -171,7 +211,13 @@ class _DynamicReviewsSectionState extends State<_DynamicReviewsSection> {
             return data.when(
               success: (raw, _) {
                 final list = raw.items;
-                return _DynamicReviewsContent(reviews: list, isDark: isDark);
+                return _DynamicReviewsContent(
+                  reviews: list,
+                  isDark: isDark,
+                  summaryAvgRating: widget.summaryAvgRating,
+                  summaryReviewsCount: widget.summaryReviewsCount,
+                  summaryRatingBreakdown: widget.summaryRatingBreakdown,
+                );
               },
               failure: (e) {
                 return Padding(
@@ -204,14 +250,48 @@ class _DynamicReviewsContent extends StatelessWidget {
   const _DynamicReviewsContent({
     required this.reviews,
     required this.isDark,
+    this.summaryAvgRating,
+    this.summaryReviewsCount,
+    this.summaryRatingBreakdown,
   });
 
   final List<ReviewResource> reviews;
   final bool isDark;
+  final String? summaryAvgRating;
+  final int? summaryReviewsCount;
+  final List<int>? summaryRatingBreakdown;
+
+  static double? _parseAvgString(String? raw) {
+    if (raw == null) return null;
+    var t = raw.trim();
+    if (t.isEmpty || t == '—' || t == '-') return null;
+    return double.tryParse(t.replaceAll(',', '.'));
+  }
+
+  static String _formatAverage(double v) {
+    if (v <= 0) return '—';
+    if (v == v.roundToDouble()) return v.round().toString();
+    return v.toStringAsFixed(1);
+  }
+
+  static String _formatSingleReviewRating(double r) {
+    if (r <= 0) return '—';
+    if (r == r.roundToDouble()) return r.round().toString();
+    return r.toStringAsFixed(1);
+  }
 
   @override
   Widget build(BuildContext context) {
-    if (reviews.isEmpty) {
+    final bd = summaryRatingBreakdown;
+    final bdTotal = (bd != null && bd.length == 5)
+        ? bd.fold<int>(0, (a, b) => a + b)
+        : 0;
+    final listLen = reviews.length;
+    final displayCount = (summaryReviewsCount != null && summaryReviewsCount! > 0)
+        ? summaryReviewsCount!
+        : (bdTotal > 0 ? bdTotal : listLen);
+
+    if (reviews.isEmpty && displayCount == 0) {
       return Padding(
         padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg, vertical: 8),
         child: AppText(
@@ -221,13 +301,30 @@ class _DynamicReviewsContent extends StatelessWidget {
       );
     }
 
-    final n = reviews.length;
-    var sum = 0;
-    for (final r in reviews) {
-      sum += r.rating;
+    final parsedAgg = _parseAvgString(summaryAvgRating);
+    double averageFromList() {
+      if (reviews.isEmpty) return 0;
+      return reviews.fold<double>(0, (s, r) => s + r.rating) / reviews.length;
     }
-    final average = n > 0 ? sum / n : 0.0;
-    final avgText = n > 0 ? average.toStringAsFixed(1) : '—';
+
+    double averageFromBreakdown() {
+      if (bd == null || bd.length != 5 || bdTotal <= 0) return 0;
+      var w = 0.0;
+      for (var i = 0; i < 5; i++) {
+        w += (5 - i) * bd[i];
+      }
+      return w / bdTotal;
+    }
+
+    final displayAverage = () {
+      if (parsedAgg != null && displayCount > 0) return parsedAgg;
+      if (reviews.isNotEmpty) return averageFromList();
+      if (bdTotal > 0) return averageFromBreakdown();
+      return 0.0;
+    }();
+
+    final avgText = _formatAverage(displayAverage);
+    final barDenominator = bdTotal > 0 ? bdTotal : (reviews.isNotEmpty ? reviews.length : 1);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -265,13 +362,16 @@ class _DynamicReviewsContent extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          _StarRating(
-                            rating: n > 0 ? average.clamp(1, 5).round() : 0,
-                            size: 14,
-                          ),
+                          if (displayAverage > 0)
+                            TrainerAverageStars(
+                              rating: displayAverage.clamp(0, 5),
+                              itemSize: 14,
+                            )
+                          else
+                            const _StarRating(rating: 0, size: 14),
                           const SizedBox(height: 4),
                           AppText(
-                            context.l10n.basedOnReviews(n),
+                            context.l10n.basedOnReviews(displayCount),
                             maxLines: 2,
                             style: (context) =>
                                 AppTextStyles.captionText(context).copyWith(
@@ -290,8 +390,17 @@ class _DynamicReviewsContent extends StatelessWidget {
                 Column(
                   children: List.generate(5, (i) {
                     final stars = 5 - i;
-                    final c = reviews.where((r) => r.rating == stars).length;
-                    final p = n > 0 ? c / n : 0.0;
+                    final int c;
+                    if (bd != null && bd.length == 5 && bdTotal > 0) {
+                      c = bd[i];
+                    } else if (reviews.isNotEmpty) {
+                      c = reviews
+                          .where((r) => r.rating.round().clamp(1, 5) == stars)
+                          .length;
+                    } else {
+                      c = 0;
+                    }
+                    final p = barDenominator > 0 ? c / barDenominator : 0.0;
                     return _RatingBar(
                       stars: stars,
                       progress: p,
@@ -303,25 +412,27 @@ class _DynamicReviewsContent extends StatelessWidget {
             ),
           ),
         ),
-        const SizedBox(height: AppSpacing.sm),
-        SizedBox(
-          height: 168,
-          child: ListView.separated(
-            scrollDirection: Axis.horizontal,
-            itemCount: reviews.length,
-            separatorBuilder: (context, index) => const SizedBox(width: AppSpacing.md),
-            itemBuilder: (context, index) => Align(
-              alignment: Alignment.topCenter,
-              child: Padding(
-                padding: EdgeInsets.only(
-                  left: index == 0 ? AppSpacing.lg : 0,
-                  right: index == reviews.length - 1 ? AppSpacing.lg : 0,
+        if (reviews.isNotEmpty) ...[
+          const SizedBox(height: AppSpacing.sm),
+          SizedBox(
+            height: 168,
+            child: ListView.separated(
+              scrollDirection: Axis.horizontal,
+              itemCount: reviews.length,
+              separatorBuilder: (context, index) => const SizedBox(width: AppSpacing.md),
+              itemBuilder: (context, index) => Align(
+                alignment: Alignment.topCenter,
+                child: Padding(
+                  padding: EdgeInsets.only(
+                    left: index == 0 ? AppSpacing.lg : 0,
+                    right: index == reviews.length - 1 ? AppSpacing.lg : 0,
+                  ),
+                  child: _ApiReviewCard(review: reviews[index]),
                 ),
-                child: _ApiReviewCard(review: reviews[index]),
               ),
             ),
           ),
-        ),
+        ],
       ],
     );
   }
@@ -389,7 +500,7 @@ class _ApiReviewCard extends StatelessWidget {
                   ),
                   const SizedBox(width: 4),
                   AppText(
-                    '${review.rating}',
+                    _DynamicReviewsContent._formatSingleReviewRating(review.rating),
                     maxLines: 1,
                     style: (context) => AppTextStyles.boldBody(context).copyWith(
                       fontSize: 14,

@@ -1094,6 +1094,26 @@ class AppLocalizationsAr extends AppLocalizations {
   String get signature => 'التوقيع';
 
   @override
+  String get declarationNameRequired => 'يُرجى إدخال الاسم.';
+
+  @override
+  String get declarationSignatureRequired => 'يُرجى إدخال التوقيع.';
+
+  @override
+  String get declarationDateRequired => 'يُرجى اختيار التاريخ.';
+
+  @override
+  String get declarationSignatureInvalid =>
+      'يُرجى إدخال توقيع صالح (حرفان على الأقل).';
+
+  @override
+  String get declarationDateInvalid => 'يُرجى اختيار تاريخ صالح.';
+
+  @override
+  String get pleaseAcceptTermsCheckbox =>
+      'يُرجى الموافقة على الشروط والأحكام للمتابعة.';
+
+  @override
   String get accountTitle => 'الحساب';
 
   @override
@@ -1254,6 +1274,25 @@ class AppLocalizationsAr extends AppLocalizations {
   String get selectPausePeriod => 'اختر فترة الإيقاف';
 
   @override
+  String get tapToSelectDate => 'اضغط لاختيار التاريخ';
+
+  @override
+  String get pauseSelectBothDates => 'يرجى اختيار تاريخ البدء وتاريخ الانتهاء.';
+
+  @override
+  String pausePeriodTooLong(int maxDays) {
+    return 'لا يمكن أن تتجاوز فترة الإيقاف $maxDays يومًا.';
+  }
+
+  @override
+  String pauseMaxFreezeDaysHint(int maxDays) {
+    return 'يمكنك الإيقاف حتى $maxDays يومًا في المرة الواحدة. يجب أن تقع تواريخ البدء والانتهاء ضمن خطتك.';
+  }
+
+  @override
+  String get pauseSelectStartFirst => 'يرجى اختيار تاريخ البدء أولاً.';
+
+  @override
   String get startDate => 'تاريخ البدء';
 
   @override
@@ -1377,6 +1416,10 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get pleaseReviewTerms => 'يرجى مراجعة وقبول شروطنا';
+
+  @override
+  String get scrollLegalContentToContinue =>
+      'مرّر إلى أسفل النص أعلاه للمتابعة.';
 
   @override
   String get subscriptionAgreement => 'اتفاقية الاشتراك';
@@ -1551,6 +1594,38 @@ class AppLocalizationsAr extends AppLocalizations {
   String get voucherAppliedSuccess => 'تم تطبيق القسيمة بنجاح.';
 
   @override
+  String get planReviewPendingPayment => 'في انتظار الدفع';
+
+  @override
+  String get cartDateLabel => 'تاريخ السلة';
+
+  @override
+  String get checkoutSubtotal => 'المجموع الفرعي';
+
+  @override
+  String get checkoutVoucherDiscount => 'خصم القسيمة';
+
+  @override
+  String voucherAppliedSavings(String amount) {
+    return 'تم تطبيق القسيمة. توفيرك $amount.';
+  }
+
+  @override
+  String voucherAppliedDiscountMessage(String amount) {
+    return 'وفّرت $amount. تم تطبيق القسيمة بنجاح.';
+  }
+
+  @override
+  String get voucherCodeInvalid => 'رمز القسيمة غير صالح';
+
+  @override
+  String get voucherEnterCodeMessage => 'أدخل رمز القسيمة للتطبيق.';
+
+  @override
+  String get voucherCheckoutSessionMissing =>
+      'جلسة الدفع غير متوفرة. ارجع وحاول مرة أخرى.';
+
+  @override
   String get acceptedPaymentMethods => 'طرق الدفع المقبولة:';
 
   @override
@@ -1598,6 +1673,14 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get giftMessageLine2 => 'سنة جديدة سعيدة 2027';
+
+  @override
+  String giftCardRecipientGreeting(String name) {
+    return 'مرحبًا $name،';
+  }
+
+  @override
+  String get giftCardMessagePlaceholder => 'ستظهر رسالتك الشخصية هنا.';
 
   @override
   String get recipientDetails => 'تفاصيل المستلم';

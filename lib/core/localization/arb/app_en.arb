@@ -438,6 +438,12 @@
   "declarationText": "I declare that all information provided is true and accurate. I understand that any incorrect information may affect my safety during exercises.",
   "signature": "Signature",
   "date": "Date",
+  "declarationNameRequired": "Please enter your name.",
+  "declarationSignatureRequired": "Please enter your signature.",
+  "declarationDateRequired": "Please select the date.",
+  "declarationSignatureInvalid": "Please enter a valid signature (at least 2 characters).",
+  "declarationDateInvalid": "Please select a valid date.",
+  "pleaseAcceptTermsCheckbox": "Please accept the Terms & Conditions to continue.",
   "accountTitle": "Account",
   "logout": "Logout",
   "logoutConfirmationMessage": "Are you sure you want to log out of your account?",
@@ -505,6 +511,25 @@
   "cannotPauseTitle": "Cannot Pause Subscription",
   "cannotPauseMessage": "You only have 7 freeze days remaining. Please select a shorter pause period or upgrade your plan.",
   "selectPausePeriod": "Select Pause Period",
+  "tapToSelectDate": "Tap to select date",
+  "pauseSelectBothDates": "Please select both a start date and an end date.",
+  "pausePeriodTooLong": "Pause cannot exceed {maxDays} days.",
+  "@pausePeriodTooLong": {
+    "placeholders": {
+      "maxDays": {
+        "type": "int"
+      }
+    }
+  },
+  "pauseMaxFreezeDaysHint": "You can pause up to {maxDays} days at a time. Start and end dates must fall within your plan.",
+  "@pauseMaxFreezeDaysHint": {
+    "placeholders": {
+      "maxDays": {
+        "type": "int"
+      }
+    }
+  },
+  "pauseSelectStartFirst": "Select a start date first.",
   "startDate": "Start Date",
   "endDate": "End Date",
   "duration": "Duration",
@@ -578,6 +603,7 @@
   "date": "Date",
   "termsAndConditions": "Terms & Conditions",
   "pleaseReviewTerms": "Please review and accept our terms",
+  "scrollLegalContentToContinue": "Scroll to the bottom of the text above to continue.",
   "subscriptionAgreement": "Subscription Agreement",
   "subscriptionTermsText": "By subscribing to our Pilates membership, you agree to the following terms and conditions:\n\n1. Membership Terms\n- Your membership will automatically renew each month unless cancelled\n- Cancel anytime with 7 days notice before next billing cycle\n- No refunds for partial months\n\n2. Class Booking\n- Book classes 24 hours in advance\n- Cancel bookings minimum 2 hours before class\n- Late cancellations will deduct from your monthly credits\n- No-shows forfeit the class credit\n\n3. Branch Access\n- Your plan determines which branches you can access\n- Upgrade required to access additional locations...",
   "agreeToTermsAndConditions": "I have read and agree to the Terms & Conditions and Privacy Policy",
@@ -634,6 +660,29 @@
   "enterVoucherCode": "Enter voucher code",
   "apply": "Apply",
   "voucherAppliedSuccess": "Voucher applied successfully.",
+  "planReviewPendingPayment": "Pending payment",
+  "cartDateLabel": "Cart date",
+  "checkoutSubtotal": "Subtotal",
+  "checkoutVoucherDiscount": "Voucher discount",
+  "voucherAppliedSavings": "Voucher applied. You save {amount}.",
+  "@voucherAppliedSavings": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "voucherAppliedDiscountMessage": "You got {amount} off. Voucher applied successfully.",
+  "@voucherAppliedDiscountMessage": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "voucherCodeInvalid": "Voucher code invalid",
+  "voucherEnterCodeMessage": "Enter a voucher code to apply.",
+  "voucherCheckoutSessionMissing": "Checkout session is missing. Go back and try again.",
   "acceptedPaymentMethods": "Accepted methods of payment",
   "giftSentSuccessfully": "Gift Sent Successfully",
   "giftProcessedMessage": "Your gift subscription has been processed",
@@ -656,6 +705,15 @@
   "message": "Message",
   "giftMessageLine1": "Hi Taha,\nHave a great month ahead.",
   "giftMessageLine2": "Happy New Year 2027",
+  "giftCardRecipientGreeting": "Hi {name},",
+  "@giftCardRecipientGreeting": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "giftCardMessagePlaceholder": "Your personal message will appear here.",
   "recipientDetails": "Recipient Details",
   "fullName": "Full Name",
   "recipientNameHint": "Recipient Name",

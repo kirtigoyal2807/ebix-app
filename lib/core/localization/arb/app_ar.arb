@@ -438,6 +438,12 @@
   "declarationText": "أقر بأن جميع المعلومات المقدمة صحيحة ودقيقة. أفهم أن أي معلومات غير صحيحة قد تؤثر على سلامتي أثناء التمارين.",
   "signature": "التوقيع",
   "date": "التاريخ",
+  "declarationNameRequired": "يُرجى إدخال الاسم.",
+  "declarationSignatureRequired": "يُرجى إدخال التوقيع.",
+  "declarationDateRequired": "يُرجى اختيار التاريخ.",
+  "declarationSignatureInvalid": "يُرجى إدخال توقيع صالح (حرفان على الأقل).",
+  "declarationDateInvalid": "يُرجى اختيار تاريخ صالح.",
+  "pleaseAcceptTermsCheckbox": "يُرجى الموافقة على الشروط والأحكام للمتابعة.",
   "accountTitle": "الحساب",
   "logout": "تسجيل الخروج",
   "logoutConfirmationMessage": "هل أنت متأكد أنك تريد تسجيل الخروج من حسابك؟",
@@ -505,6 +511,25 @@
   "cannotPauseTitle": "لا يمكن إيقاف الاشتراك",
   "cannotPauseMessage": "لديك 7 أيام تجميد متبقية فقط. يرجى اختيار فترة إيقاف أقصر أو ترقية خطتك.",
   "selectPausePeriod": "اختر فترة الإيقاف",
+  "tapToSelectDate": "اضغط لاختيار التاريخ",
+  "pauseSelectBothDates": "يرجى اختيار تاريخ البدء وتاريخ الانتهاء.",
+  "pausePeriodTooLong": "لا يمكن أن تتجاوز فترة الإيقاف {maxDays} يومًا.",
+  "@pausePeriodTooLong": {
+    "placeholders": {
+      "maxDays": {
+        "type": "int"
+      }
+    }
+  },
+  "pauseMaxFreezeDaysHint": "يمكنك الإيقاف حتى {maxDays} يومًا في المرة الواحدة. يجب أن تقع تواريخ البدء والانتهاء ضمن خطتك.",
+  "@pauseMaxFreezeDaysHint": {
+    "placeholders": {
+      "maxDays": {
+        "type": "int"
+      }
+    }
+  },
+  "pauseSelectStartFirst": "يرجى اختيار تاريخ البدء أولاً.",
   "startDate": "تاريخ البدء",
   "endDate": "تاريخ الانتهاء",
   "duration": "المدة",
@@ -559,6 +584,7 @@
   "date": "التاريخ",
   "termsAndConditions": "الشروط والأحكام",
   "pleaseReviewTerms": "يرجى مراجعة وقبول شروطنا",
+  "scrollLegalContentToContinue": "مرّر إلى أسفل النص أعلاه للمتابعة.",
   "subscriptionAgreement": "اتفاقية الاشتراك",
   "subscriptionTermsText": "من خلال الاشتراك في عضوية البيلاتس الخاصة بنا، فإنك توافق على الشروط والأحكام التالية:\n\n1. شروط العضوية\n- سيتم تجديد عضويتك تلقائيًا كل شهر ما لم يتم إلغاؤها\n- الإلغاء في أي وقت مع إشعار قبل 7 أيام من دورة الفوترة التالية\n- لا توجد مبالغ مستردة للأشهر الجزئية\n\n2. حجز الحصص\n- احجز الحصص قبل 24 ساعة\n- إلغاء الحجوزات قبل ساعتين كحد أدنى من موعد الحصة\n- سيتم خصم الإلغاءات المتأخرة من رصيدك الشهري\n- عدم الحضور يفقدك رصيد الحصة\n\n3. الوصول إلى الفروع\n- تحدد خطتك الفروع التي يمكنك الوصول إليها\n- الترقية مطلوبة للوصول إلى مواقع إضافية...",
   "agreeToTermsAndConditions": "لقت قرأت ووافقت على الشروط والأحكام وسياسة الخصوصية",
@@ -615,6 +641,29 @@
   "enterVoucherCode": "أدخل رمز القسيمة",
   "apply": "تطبيق",
   "voucherAppliedSuccess": "تم تطبيق القسيمة بنجاح.",
+  "planReviewPendingPayment": "في انتظار الدفع",
+  "cartDateLabel": "تاريخ السلة",
+  "checkoutSubtotal": "المجموع الفرعي",
+  "checkoutVoucherDiscount": "خصم القسيمة",
+  "voucherAppliedSavings": "تم تطبيق القسيمة. توفيرك {amount}.",
+  "@voucherAppliedSavings": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "voucherAppliedDiscountMessage": "وفّرت {amount}. تم تطبيق القسيمة بنجاح.",
+  "@voucherAppliedDiscountMessage": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "voucherCodeInvalid": "رمز القسيمة غير صالح",
+  "voucherEnterCodeMessage": "أدخل رمز القسيمة للتطبيق.",
+  "voucherCheckoutSessionMissing": "جلسة الدفع غير متوفرة. ارجع وحاول مرة أخرى.",
   "acceptedPaymentMethods": "طرق الدفع المقبولة:",
   "giftSentSuccessfully": "تم إرسال الهدية بنجاح",
   "giftProcessedMessage": "تمت معالجة اشتراك الهدية الخاص بك",
@@ -637,6 +686,15 @@
   "message": "رسالة",
   "giftMessageLine1": "مرحبًا طه،\nأتمنى لك شهرًا رائعًا.",
   "giftMessageLine2": "سنة جديدة سعيدة 2027",
+  "giftCardRecipientGreeting": "مرحبًا {name}،",
+  "@giftCardRecipientGreeting": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "giftCardMessagePlaceholder": "ستظهر رسالتك الشخصية هنا.",
   "recipientDetails": "تفاصيل المستلم",
   "fullName": "الاسم الكامل",
   "recipientNameHint": "اسم المستلم",

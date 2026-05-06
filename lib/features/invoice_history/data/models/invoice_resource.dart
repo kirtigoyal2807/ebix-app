@@ -27,8 +27,14 @@ class InvoiceResource {
   final DateTime issuedAt;
   final String? pdfUrl;
 
-  bool get isRefund =>
-      type.toLowerCase() == 'refund' || status.toLowerCase() == 'refunded';
+  bool get isRefund {
+    final t = type.toLowerCase();
+    final st = status.toLowerCase();
+    return t == 'refund' ||
+        t.contains('refund') ||
+        st == 'refunded' ||
+        st.contains('refund');
+  }
 
   /// Row from subscription entitlements; [type] matches API `entitlementType`.
   factory InvoiceResource.fromCustomerSubscription(
@@ -65,10 +71,19 @@ class InvoiceResource {
       invoiceNumber:
           '${json['number'] ?? json['invoice_number'] ?? json['invoiceNumber'] ?? ''}',
       title: titleRaw.isEmpty ? '—' : titleRaw,
-      type: '${json['type'] ?? json['invoice_type'] ?? 'subscription'}',
+      type: _parseStringField(
+        json['type'] ??
+            json['invoice_type'] ??
+            json['invoiceType'] ??
+            json['kind'] ??
+            json['category'],
+      ),
       amount: _double(json['amount'] ?? json['total'] ?? json['total_amount']),
       currency: '${json['currency'] ?? 'SAR'}',
-      status: '${json['status'] ?? 'paid'}',
+      status: _parseStringField(
+        json['status'] ?? json['payment_status'] ?? json['paymentStatus'],
+        fallback: 'paid',
+      ),
       issuedAt: _parseDate(issuedRaw),
       pdfUrl: _firstNonEmptyString([
         json['invoiceUrl'],
@@ -79,6 +94,18 @@ class InvoiceResource {
         json['downloadUrl'],
       ]),
     );
+  }
+
+  /// Normalizes API fields that may be a plain string or `{ "value": "...", "label": "..." }`.
+  static String _parseStringField(dynamic raw, {String fallback = ''}) {
+    if (raw == null) return fallback;
+    if (raw is Map) {
+      final m = Map<String, dynamic>.from(raw);
+      final v = '${m['value'] ?? m['label'] ?? ''}'.trim();
+      return v.isEmpty ? fallback : v;
+    }
+    final s = '$raw'.trim();
+    return s.isEmpty ? fallback : s;
   }
 
   static String? _firstNonEmptyString(List<dynamic> candidates) {

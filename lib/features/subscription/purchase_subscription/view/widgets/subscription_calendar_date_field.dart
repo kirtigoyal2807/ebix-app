@@ -6,8 +6,8 @@ import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/widgets/app_text.dart';
 
-/// Same interaction as [PauseSubscriptionView.buildDateRow]: tap opens
-/// [showDatePicker], value shown as `dd-MM-yyyy` and passed to [onDateSelected].
+/// Same interaction as [PauseSubscriptionView] date rows: tap opens
+/// [showDatePicker], formatted date passed to [onDateSelected].
 class SubscriptionCalendarDateField extends StatelessWidget {
   const SubscriptionCalendarDateField({
     super.key,

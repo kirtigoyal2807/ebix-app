@@ -8,6 +8,7 @@ import 'package:pilates_app/core/network/network_exception.dart';
 import 'package:pilates_app/features/checkout/data/models/catalog_product.dart';
 import 'package:pilates_app/features/checkout/data/models/checkout_payment_intent_result.dart';
 import 'package:pilates_app/features/checkout/data/models/checkout_start_result.dart';
+import 'package:pilates_app/features/checkout/data/models/payment_success_summary.dart';
 import 'package:pilates_app/features/checkout/data/models/product_health_question.dart';
 import 'package:pilates_app/features/checkout/data/models/product_health_questionnaire.dart';
 
@@ -30,8 +31,9 @@ import 'package:pilates_app/features/checkout/data/models/product_health_questio
 ///    ([applyCoupon]); adjust to `coupon` if needed.
 /// 8. Payment: `POST checkout/{id}/payment/intent` — same resource as
 ///    `…/checkout/019c70d5-…/payment/intent` under the API base ([fetchPaymentIntent]).
-/// 9. After hosted WebView success: poll `GET checkout/{id}` ([refreshCheckoutAfterHostedPayment])
-///    so `payment` / receipt fields match the server before navigating to the receipt UI.
+/// 9. After hosted WebView success: prefer `GET payments/{checkoutId}/success-summary`
+///    ([getPaymentSuccessSummary]) for the receipt; if unavailable, poll `GET checkout/{id}`
+///    ([refreshCheckoutAfterHostedPayment]) so `payment` / receipt fields match the server.
 class CheckoutRepository extends BaseRepository {
   CheckoutRepository(super.dio);
 
@@ -528,6 +530,42 @@ class CheckoutRepository extends BaseRepository {
     }
 
     return result;
+  }
+
+/// `GET payments/{checkoutId}/success-summary` — canonical paid receipt (invoice,
+  /// package, pricing, payment) after the PSP return / webhook.
+  ///
+  /// Until the server marks the checkout paid, the API may respond with **422** and
+  /// a message such as *"Payment for this checkout has not been completed yet."*
+  /// — callers should retry (see [pushReceiptAfterHostedPayment]).
+  Future<ApiResult<PaymentSuccessSummary>> getPaymentSuccessSummary(
+    String checkoutId,
+  ) async {
+    final id = checkoutId.trim();
+    if (id.isEmpty) {
+      return ApiFailure(
+        NetworkException(
+          type: NetworkFailureType.validation,
+          message: 'Missing checkout session id.',
+        ),
+      );
+    }
+
+    if (kDebugMode) {
+      debugPrint('[Checkout] request GET payments/$id/success-summary');
+    }
+
+    return get<PaymentSuccessSummary>(
+      'payments/${Uri.encodeComponent(id)}/success-summary',
+      fromJson: (payload) {
+        if (payload is! Map) {
+          throw StateError('Expected payment success summary object');
+        }
+        return PaymentSuccessSummary.fromJson(
+          Map<String, dynamic>.from(payload),
+        );
+      },
+    );
   }
 
   /// Polls `GET checkout/{id}` after hosted payment so receipt data matches the

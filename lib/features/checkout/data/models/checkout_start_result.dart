@@ -183,10 +183,17 @@ class CheckoutPricing {
     if (raw is! Map) return null;
     final m = Map<String, dynamic>.from(raw);
     return CheckoutPricing(
-      subtotal: _readInt(m['subtotal']),
-      discountAmount: _readInt(m['discountAmount']),
-      totalAmount: _readInt(m['totalAmount']),
-      currency: m['currency'] as String?,
+      subtotal: _readInt(m['subtotal'] ?? m['sub_total']),
+      discountAmount: _readInt(
+        m['discountAmount'] ??
+            m['discount_amount'] ??
+            m['couponDiscount'] ??
+            m['coupon_discount'],
+      ),
+      totalAmount: _readInt(
+        m['totalAmount'] ?? m['total_amount'] ?? m['total'],
+      ),
+      currency: (m['currency'] ?? m['currency_code']) as String?,
       taxAmount: _readInt(
         m['taxAmount'] ??
             m['tax'] ??

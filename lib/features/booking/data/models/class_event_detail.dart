@@ -16,6 +16,7 @@ class ClassEventDetailClass {
     this.image,
     this.avgRating,
     this.recentReviews,
+    this.reviewsCount,
   });
 
   final String id;
@@ -33,6 +34,8 @@ class ClassEventDetailClass {
 
   /// Embedded on `class` when the API includes `recentReviews` (may be `[]`).
   final List<ReviewResource>? recentReviews;
+
+  final int? reviewsCount;
 
   factory ClassEventDetailClass.fromJson(Map<String, dynamic> json) {
     List<ReviewResource>? recentReviews;
@@ -63,6 +66,9 @@ class ClassEventDetailClass {
       image: json['image']?.toString(),
       avgRating: _doubleOrNull(json['avgRating'] ?? json['avg_rating']),
       recentReviews: recentReviews,
+      reviewsCount: _intOrNull(
+        json['reviewsCount'] ?? json['reviews_count'],
+      ),
     );
   }
 

@@ -30,11 +30,12 @@ class HostedPaymentWebViewResult {
 
 /// Hosted PayTabs (or similar) checkout in a full-screen [WebViewWidget].
 ///
-/// When the return URL renders **raw JSON** (e.g.
-/// `{"success":true,"message":"PayTabs callback processed successfully","data":null}`),
+/// When the return URL renders **raw JSON** (e.g. PayTabs server callback at
+/// `…/payments/callback/paytabs` with
+/// `{"success":true,"message":"PayTabs callback processed successfully",…}`),
 /// this reads the DOM with retries (Android often finishes [onPageFinished] before
 /// [innerText]/[textContent] is populated) and pops with success so the app can
-/// refresh checkout and open the receipt.
+/// call `GET payments/{checkoutId}/success-summary` and open the receipt.
 ///
 /// **Android back:** [PopScope] maps the system back button to a **cancelled** result
 /// so callers do not fall through to opening the same URL in an external browser
@@ -60,6 +61,11 @@ class _HostedPaymentWebViewPageState extends State<HostedPaymentWebViewPage> {
   var _loading = true;
   var _popped = false;
 
+  /// Covers the [WebViewWidget] while the gateway serves a raw JSON callback page
+  /// (or while we poll the DOM) so users never see the response body — callers can
+  /// navigate straight to success (e.g. gift sent) after pop.
+  var _maskWebView = false;
+
   /// Delays after [onPageFinished] to re-read DOM — Android WebView often reports
   /// an empty body on the first finish for `application/json` responses.
   static const List<Duration> _jsonRetryDelays = <Duration>[
@@ -69,6 +75,18 @@ class _HostedPaymentWebViewPageState extends State<HostedPaymentWebViewPage> {
     Duration(milliseconds: 700),
     Duration(milliseconds: 1400),
     Duration(milliseconds: 2600),
+  ];
+
+  /// `GET …/payments/callback/paytabs` often returns JSON slightly after paint;
+  /// allow a bit longer polling than generic return pages.
+  static const List<Duration> _paytabsCallbackJsonRetryDelays = <Duration>[
+    Duration.zero,
+    Duration(milliseconds: 150),
+    Duration(milliseconds: 400),
+    Duration(milliseconds: 900),
+    Duration(milliseconds: 1800),
+    Duration(milliseconds: 3200),
+    Duration(milliseconds: 5000),
   ];
 
   @override
@@ -84,8 +102,14 @@ class _HostedPaymentWebViewPageState extends State<HostedPaymentWebViewPage> {
       )
       ..setNavigationDelegate(
         NavigationDelegate(
-          onPageStarted: (_) {
-            if (mounted) setState(() => _loading = true);
+          onPageStarted: (String url) {
+            if (!mounted) return;
+            final uri = Uri.tryParse(url);
+            final mask = _isLikelyRawGatewayCallbackUri(uri);
+            setState(() {
+              _loading = true;
+              _maskWebView = mask;
+            });
           },
           onPageFinished: _handlePageFinished,
         ),
@@ -122,7 +146,6 @@ class _HostedPaymentWebViewPageState extends State<HostedPaymentWebViewPage> {
 
   Future<void> _handlePageFinished(String url) async {
     if (!mounted || _popped) return;
-    setState(() => _loading = false);
 
     final uri = Uri.tryParse(url);
     if (uri != null) {
@@ -141,28 +164,57 @@ class _HostedPaymentWebViewPageState extends State<HostedPaymentWebViewPage> {
         );
         return;
       }
+
+      if (_isLikelyRawGatewayCallbackUri(uri)) {
+        if (mounted) {
+          setState(() {
+            _loading = false;
+            _maskWebView = true;
+          });
+        }
+        unawaited(
+          _pollDomForPayTabsJson(delays: _paytabsCallbackJsonRetryDelays),
+        );
+        return;
+      }
     }
 
+    if (mounted) setState(() => _loading = false);
     unawaited(_pollDomForPayTabsJson());
   }
 
-  /// Reads `document.body` / `<pre>` / `documentElement` text and parses PayTabs-style JSON.
-  Future<void> _pollDomForPayTabsJson() async {
-    for (final delay in _jsonRetryDelays) {
-      if (!mounted || _popped) return;
-      if (delay > Duration.zero) {
-        await Future<void>.delayed(delay);
-      }
-      if (!mounted || _popped) return;
+  static bool _isLikelyRawGatewayCallbackUri(Uri? uri) {
+    if (uri == null) return false;
+    final path = uri.path.toLowerCase();
+    return path.contains('payments/callback/paytabs') ||
+        path.contains('payments/callback');
+  }
 
-      try {
-        final raw = await _controller.runJavaScriptReturningResult(
-          _extractJsonFromDomJs,
-        );
-        final text = _javaScriptResultToString(raw);
-        if (_tryPopFromJsonText(text)) return;
-      } catch (_) {
-        // Ignore transient JS errors while DOM settles.
+  /// Reads `document.body` / `<pre>` / `documentElement` text and parses PayTabs-style JSON.
+  Future<void> _pollDomForPayTabsJson({
+    List<Duration> delays = _jsonRetryDelays,
+  }) async {
+    try {
+      for (final delay in delays) {
+        if (!mounted || _popped) return;
+        if (delay > Duration.zero) {
+          await Future<void>.delayed(delay);
+        }
+        if (!mounted || _popped) return;
+
+        try {
+          final raw = await _controller.runJavaScriptReturningResult(
+            _extractJsonFromDomJs,
+          );
+          final text = _javaScriptResultToString(raw);
+          if (_tryPopFromJsonText(text)) return;
+        } catch (_) {
+          // Ignore transient JS errors while DOM settles.
+        }
+      }
+    } finally {
+      if (mounted && !_popped) {
+        setState(() => _maskWebView = false);
       }
     }
   }
@@ -209,7 +261,8 @@ return '';
           success == 'true' ||
           success == '1' ||
           m['status']?.toString().toLowerCase() == 'success' ||
-          (message.contains('paytabs') && message.contains('success'));
+          (message.contains('paytabs') && message.contains('success')) ||
+          message.contains('callback processed successfully');
       if (ok && mounted) {
         final payload = <String, dynamic>{
           'source': 'return_page_json',
@@ -275,6 +328,15 @@ return '';
           children: [
             WebViewWidget(controller: _controller),
             if (_loading) const LinearProgressIndicator(minHeight: 3),
+            if (_maskWebView)
+              Positioned.fill(
+                child: ColoredBox(
+                  color: Theme.of(context).scaffoldBackgroundColor,
+                  child: const Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                ),
+              ),
           ],
         ),
       ),

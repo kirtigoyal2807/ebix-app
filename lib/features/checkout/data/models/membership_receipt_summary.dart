@@ -2,6 +2,7 @@ import 'package:intl/intl.dart';
 
 import 'checkout_payment_intent_result.dart';
 import 'checkout_start_result.dart';
+import 'payment_success_summary.dart';
 
 /// Values for [InvoiceDetailsCard] / [SuccessMembershipView] after payment intent.
 class MembershipReceiptSummary {
@@ -127,6 +128,53 @@ class MembershipReceiptSummary {
       cardLastFour: pick(overlay.cardLastFour, base.cardLastFour),
       paymentBrand: pick(overlay.paymentBrand, base.paymentBrand),
       nextBillingAt: pick(overlay.nextBillingAt, base.nextBillingAt),
+    );
+  }
+
+  /// Receipt from `GET payments/{checkoutId}/success-summary` (`data`).
+  ///
+  /// Pricing amounts on this API are **major** currency units (e.g. `799` SAR);
+  /// they are converted to **minor** units for [formatMoney] / [InvoiceDetailsCard].
+  static MembershipReceiptSummary fromPaymentSuccessSummary(
+    PaymentSuccessSummary summary,
+  ) {
+    int? majorToMinor(num? v) {
+      if (v == null) return null;
+      return (v * 100).round();
+    }
+
+    final pricing = summary.pricing;
+    final pay = summary.payment;
+    final method = pay?.method?.trim();
+    final provider = pay?.provider?.trim();
+    final providerName = (method != null && method.isNotEmpty)
+        ? method
+        : (provider != null && provider.isNotEmpty ? provider : 'PayTabs');
+
+    final paidAt = pay?.paidAt?.trim();
+    final invoiceDate = summary.invoiceDate?.trim();
+    final discountMajor = pricing?.discountAmount;
+
+    return MembershipReceiptSummary(
+      paymentReference: pay?.reference?.trim(),
+      paidAtIso: (paidAt != null && paidAt.isNotEmpty)
+          ? paidAt
+          : (invoiceDate != null && invoiceDate.isNotEmpty ? invoiceDate : null),
+      planName: summary.package?.name?.trim(),
+      subtotalMinor: majorToMinor(pricing?.subtotal),
+      discountMinor: discountMajor != null ? majorToMinor(discountMajor) : null,
+      totalMinor: majorToMinor(pricing?.totalPaid ?? pricing?.subtotal),
+      currency: (pricing?.currency != null && pricing!.currency!.trim().isNotEmpty)
+          ? pricing.currency!.trim()
+          : 'SAR',
+      providerName: providerName,
+      pdfUrl: summary.invoiceUrl,
+      invoiceNumber: summary.invoiceNumber?.trim(),
+      taxMinor: null,
+      setupFeeMinor: null,
+      nextBillingAtIso: summary.subscriptionNextBillingIso,
+      cardLastFour: null,
+      paymentBrand: null,
     );
   }
 

@@ -134,6 +134,8 @@ class _ClassDetailBody extends StatelessWidget {
                           slot.recentReviews == null ? 'class' : null,
                       reviewableId:
                           slot.recentReviews == null ? slot.classId : null,
+                      summaryAvgRating: slot.averageRatingDisplayLabel,
+                      summaryReviewsCount: slot.reviewsCount,
                     ),
                   ],
                 ),

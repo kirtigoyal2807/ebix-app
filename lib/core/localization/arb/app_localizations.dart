@@ -2138,6 +2138,42 @@ abstract class AppLocalizations {
   /// **'Signature'**
   String get signature;
 
+  /// No description provided for @declarationNameRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your name.'**
+  String get declarationNameRequired;
+
+  /// No description provided for @declarationSignatureRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your signature.'**
+  String get declarationSignatureRequired;
+
+  /// No description provided for @declarationDateRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select the date.'**
+  String get declarationDateRequired;
+
+  /// No description provided for @declarationSignatureInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a valid signature (at least 2 characters).'**
+  String get declarationSignatureInvalid;
+
+  /// No description provided for @declarationDateInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select a valid date.'**
+  String get declarationDateInvalid;
+
+  /// No description provided for @pleaseAcceptTermsCheckbox.
+  ///
+  /// In en, this message translates to:
+  /// **'Please accept the Terms & Conditions to continue.'**
+  String get pleaseAcceptTermsCheckbox;
+
   /// No description provided for @accountTitle.
   ///
   /// In en, this message translates to:
@@ -2444,6 +2480,36 @@ abstract class AppLocalizations {
   /// **'Select Pause Period'**
   String get selectPausePeriod;
 
+  /// No description provided for @tapToSelectDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to select date'**
+  String get tapToSelectDate;
+
+  /// No description provided for @pauseSelectBothDates.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select both a start date and an end date.'**
+  String get pauseSelectBothDates;
+
+  /// No description provided for @pausePeriodTooLong.
+  ///
+  /// In en, this message translates to:
+  /// **'Pause cannot exceed {maxDays} days.'**
+  String pausePeriodTooLong(int maxDays);
+
+  /// No description provided for @pauseMaxFreezeDaysHint.
+  ///
+  /// In en, this message translates to:
+  /// **'You can pause up to {maxDays} days at a time. Start and end dates must fall within your plan.'**
+  String pauseMaxFreezeDaysHint(int maxDays);
+
+  /// No description provided for @pauseSelectStartFirst.
+  ///
+  /// In en, this message translates to:
+  /// **'Select a start date first.'**
+  String get pauseSelectStartFirst;
+
   /// No description provided for @startDate.
   ///
   /// In en, this message translates to:
@@ -2671,6 +2737,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Please review and accept our terms'**
   String get pleaseReviewTerms;
+
+  /// No description provided for @scrollLegalContentToContinue.
+  ///
+  /// In en, this message translates to:
+  /// **'Scroll to the bottom of the text above to continue.'**
+  String get scrollLegalContentToContinue;
 
   /// No description provided for @subscriptionAgreement.
   ///
@@ -3008,6 +3080,60 @@ abstract class AppLocalizations {
   /// **'Voucher applied successfully.'**
   String get voucherAppliedSuccess;
 
+  /// No description provided for @planReviewPendingPayment.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending payment'**
+  String get planReviewPendingPayment;
+
+  /// No description provided for @cartDateLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cart date'**
+  String get cartDateLabel;
+
+  /// No description provided for @checkoutSubtotal.
+  ///
+  /// In en, this message translates to:
+  /// **'Subtotal'**
+  String get checkoutSubtotal;
+
+  /// No description provided for @checkoutVoucherDiscount.
+  ///
+  /// In en, this message translates to:
+  /// **'Voucher discount'**
+  String get checkoutVoucherDiscount;
+
+  /// No description provided for @voucherAppliedSavings.
+  ///
+  /// In en, this message translates to:
+  /// **'Voucher applied. You save {amount}.'**
+  String voucherAppliedSavings(String amount);
+
+  /// No description provided for @voucherAppliedDiscountMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'You got {amount} off. Voucher applied successfully.'**
+  String voucherAppliedDiscountMessage(String amount);
+
+  /// No description provided for @voucherCodeInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Voucher code invalid'**
+  String get voucherCodeInvalid;
+
+  /// No description provided for @voucherEnterCodeMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a voucher code to apply.'**
+  String get voucherEnterCodeMessage;
+
+  /// No description provided for @voucherCheckoutSessionMissing.
+  ///
+  /// In en, this message translates to:
+  /// **'Checkout session is missing. Go back and try again.'**
+  String get voucherCheckoutSessionMissing;
+
   /// No description provided for @acceptedPaymentMethods.
   ///
   /// In en, this message translates to:
@@ -3103,6 +3229,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Happy New Year 2027'**
   String get giftMessageLine2;
+
+  /// No description provided for @giftCardRecipientGreeting.
+  ///
+  /// In en, this message translates to:
+  /// **'Hi {name},'**
+  String giftCardRecipientGreeting(String name);
+
+  /// No description provided for @giftCardMessagePlaceholder.
+  ///
+  /// In en, this message translates to:
+  /// **'Your personal message will appear here.'**
+  String get giftCardMessagePlaceholder;
 
   /// No description provided for @recipientDetails.
   ///

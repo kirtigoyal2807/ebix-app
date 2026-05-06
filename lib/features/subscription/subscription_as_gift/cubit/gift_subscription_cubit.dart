@@ -14,6 +14,7 @@ class GiftSubscriptionCubit extends Cubit<GiftSubscriptionState> {
           const GiftSubscriptionState(
             deliveryOptions: DeliveryOption.values,
             selectedDeliveryOption: DeliveryOption.instantDelivery,
+            scheduledDeliveryDateIso: null,
           ),
         );
 
@@ -22,8 +23,22 @@ class GiftSubscriptionCubit extends Cubit<GiftSubscriptionState> {
   /// Checkout session id from the purchase flow.
   final String? checkoutId;
 
-  void changeDeliveryOption(DeliveryOption value) {
-    emit(state.copyWith(selectedDeliveryOption: value));
+  void selectInstantDelivery() {
+    emit(
+      state.copyWith(
+        selectedDeliveryOption: DeliveryOption.instantDelivery,
+        clearScheduledDeliveryDateIso: true,
+      ),
+    );
+  }
+
+  void selectScheduledDeliveryWithDate(String yyyyMmDd) {
+    emit(
+      state.copyWith(
+        selectedDeliveryOption: DeliveryOption.scheduledDelivery,
+        scheduledDeliveryDateIso: yyyyMmDd,
+      ),
+    );
   }
 
   /// `POST .../checkout/{id}/gift` — envelope `message` (e.g. `"Not a gift"`) on failure.
@@ -68,6 +83,8 @@ class GiftSubscriptionCubit extends Cubit<GiftSubscriptionState> {
         state.copyWith(
           submitStatus: GiftSubmitStatus.success,
           clearSubmitError: true,
+          submittedRecipientName: recipientName.trim(),
+          submittedRecipientEmail: recipientEmail.trim(),
         ),
       );
       return;

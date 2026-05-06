@@ -1103,6 +1103,26 @@ class AppLocalizationsEn extends AppLocalizations {
   String get signature => 'Signature';
 
   @override
+  String get declarationNameRequired => 'Please enter your name.';
+
+  @override
+  String get declarationSignatureRequired => 'Please enter your signature.';
+
+  @override
+  String get declarationDateRequired => 'Please select the date.';
+
+  @override
+  String get declarationSignatureInvalid =>
+      'Please enter a valid signature (at least 2 characters).';
+
+  @override
+  String get declarationDateInvalid => 'Please select a valid date.';
+
+  @override
+  String get pleaseAcceptTermsCheckbox =>
+      'Please accept the Terms & Conditions to continue.';
+
+  @override
   String get accountTitle => 'Account';
 
   @override
@@ -1263,6 +1283,26 @@ class AppLocalizationsEn extends AppLocalizations {
   String get selectPausePeriod => 'Select Pause Period';
 
   @override
+  String get tapToSelectDate => 'Tap to select date';
+
+  @override
+  String get pauseSelectBothDates =>
+      'Please select both a start date and an end date.';
+
+  @override
+  String pausePeriodTooLong(int maxDays) {
+    return 'Pause cannot exceed $maxDays days.';
+  }
+
+  @override
+  String pauseMaxFreezeDaysHint(int maxDays) {
+    return 'You can pause up to $maxDays days at a time. Start and end dates must fall within your plan.';
+  }
+
+  @override
+  String get pauseSelectStartFirst => 'Select a start date first.';
+
+  @override
   String get startDate => 'Start Date';
 
   @override
@@ -1389,6 +1429,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get pleaseReviewTerms => 'Please review and accept our terms';
+
+  @override
+  String get scrollLegalContentToContinue =>
+      'Scroll to the bottom of the text above to continue.';
 
   @override
   String get subscriptionAgreement => 'Subscription Agreement';
@@ -1563,6 +1607,38 @@ class AppLocalizationsEn extends AppLocalizations {
   String get voucherAppliedSuccess => 'Voucher applied successfully.';
 
   @override
+  String get planReviewPendingPayment => 'Pending payment';
+
+  @override
+  String get cartDateLabel => 'Cart date';
+
+  @override
+  String get checkoutSubtotal => 'Subtotal';
+
+  @override
+  String get checkoutVoucherDiscount => 'Voucher discount';
+
+  @override
+  String voucherAppliedSavings(String amount) {
+    return 'Voucher applied. You save $amount.';
+  }
+
+  @override
+  String voucherAppliedDiscountMessage(String amount) {
+    return 'You got $amount off. Voucher applied successfully.';
+  }
+
+  @override
+  String get voucherCodeInvalid => 'Voucher code invalid';
+
+  @override
+  String get voucherEnterCodeMessage => 'Enter a voucher code to apply.';
+
+  @override
+  String get voucherCheckoutSessionMissing =>
+      'Checkout session is missing. Go back and try again.';
+
+  @override
   String get acceptedPaymentMethods => 'Accepted methods of payment';
 
   @override
@@ -1611,6 +1687,15 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get giftMessageLine2 => 'Happy New Year 2027';
+
+  @override
+  String giftCardRecipientGreeting(String name) {
+    return 'Hi $name,';
+  }
+
+  @override
+  String get giftCardMessagePlaceholder =>
+      'Your personal message will appear here.';
 
   @override
   String get recipientDetails => 'Recipient Details';

@@ -19,19 +19,23 @@ class EmptyDataView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        SizedBox(height: 146),
-
         SvgPicture.asset(image),
         SizedBox(height: AppSpacing.lmd),
         AppText(
           title,
+          textAlign: TextAlign.center,
+          maxLines: 3,
           style: (context) =>
               AppTextStyles.gelasioMedium(context).copyWith(height: 1.55),
         ),
         SizedBox(height: AppSpacing.xs),
         AppText(
           subTitle,
+          textAlign: TextAlign.center,
+          maxLines: 4,
           style: (context) =>
               AppTextStyles.bodyText(context).copyWith(height: 1.55),
         ),

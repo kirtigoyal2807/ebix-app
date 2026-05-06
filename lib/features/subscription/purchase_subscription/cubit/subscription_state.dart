@@ -13,7 +13,7 @@ class SubscriptionState extends Equatable {
   final String selectedPlanId;
   final int? selectedBranchId;
   final bool isGift;
-  final int currentStep; // 0: Plan, 1-6: Health Info Flow
+  final int currentStep; // 0: Plan, 1–6: Health, 7: Safety, 8: Terms, 9: Review, 10: Required info
 
   /// From catalog `requiresHealthIntake` / checkout session; when `false`, steps 2–6
   /// (medical → declaration) are skipped and `POST …/health-intake` is not sent.

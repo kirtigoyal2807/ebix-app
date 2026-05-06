@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:pilates_app/config/theme/app_colors.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
@@ -26,9 +27,60 @@ class ReceiptDetails extends StatelessWidget {
   final TextEditingController phoneController;
   final TextEditingController messageController;
 
+  static String _formatScheduledDate(BuildContext context, String iso) {
+    final parsed = DateTime.tryParse(iso);
+    if (parsed == null) return iso;
+    final d = DateTime(parsed.year, parsed.month, parsed.day);
+    final locale = Localizations.localeOf(context).toString();
+    return DateFormat.yMMMd(locale).format(d);
+  }
+
+  static Future<void> _onDeliveryTileTap(
+    BuildContext context,
+    DeliveryOption option,
+  ) async {
+    final cubit = context.read<GiftSubscriptionCubit>();
+    final state = cubit.state;
+
+    if (option == DeliveryOption.instantDelivery) {
+      cubit.selectInstantDelivery();
+      return;
+    }
+
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+    FocusManager.instance.primaryFocus?.unfocus();
+    var initialDate = today.add(const Duration(days: 7));
+    final stored = state.scheduledDeliveryDateIso;
+    if (stored != null && stored.isNotEmpty) {
+      final parsed = DateTime.tryParse(stored);
+      if (parsed != null) {
+        var d = DateTime(parsed.year, parsed.month, parsed.day);
+        if (d.isBefore(today)) {
+          d = today;
+        }
+        initialDate = d;
+      }
+    }
+
+    final picked = await showDatePicker(
+      context: context,
+      initialDate: initialDate,
+      firstDate: today,
+      lastDate: today.add(const Duration(days: 730)),
+    );
+    if (!context.mounted) return;
+    if (picked == null) return;
+
+    final iso =
+        '${picked.year}-${picked.month.toString().padLeft(2, '0')}-${picked.day.toString().padLeft(2, '0')}';
+    cubit.selectScheduledDeliveryWithDate(iso);
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -60,6 +112,7 @@ class ReceiptDetails extends StatelessWidget {
           flagAsset: '',
           controller: phoneController,
           maxPhoneDigits: 10,
+          onCountryChanged: (_) {},
         ),
         SizedBox(height: AppSpacing.md),
 
@@ -67,6 +120,9 @@ class ReceiptDetails extends StatelessWidget {
         SizedBox(height: AppSpacing.base),
 
         BlocBuilder<GiftSubscriptionCubit, GiftSubscriptionState>(
+          buildWhen: (p, c) =>
+              p.selectedDeliveryOption != c.selectedDeliveryOption ||
+              p.scheduledDeliveryDateIso != c.scheduledDeliveryDateIso,
           builder: (context, state) {
             final options = state.deliveryOptions;
             return Column(
@@ -75,16 +131,39 @@ class ReceiptDetails extends StatelessWidget {
                 for (var i = 0; i < options.length; i++) ...[
                   if (i > 0) SizedBox(height: AppSpacing.sm),
                   InkWell(
-                    onTap: () {
-                      context.read<GiftSubscriptionCubit>().changeDeliveryOption(
-                            options[i],
-                          );
-                    },
+                    onTap: () => _onDeliveryTileTap(context, options[i]),
                     child: DeliveryOptionTile(
                       label: getLabel(options[i], l10n),
-                      isSelected:
-                          state.selectedDeliveryOption == options[i],
+                      isSelected: state.selectedDeliveryOption == options[i],
                     ),
+                  ),
+                ],
+                if (state.selectedDeliveryOption ==
+                        DeliveryOption.scheduledDelivery &&
+                    (state.scheduledDeliveryDateIso?.isNotEmpty ?? false)) ...[
+                  SizedBox(height: AppSpacing.sm),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Icon(
+                        Icons.event_outlined,
+                        size: 20,
+                        color: isDark
+                            ? AppColors.languageIconDark
+                            : AppColors.languageIcon,
+                      ),
+                      SizedBox(width: AppSpacing.sm),
+                      Expanded(
+                        child: AppText(
+                          '${l10n.date}: ${_formatScheduledDate(context, state.scheduledDeliveryDateIso!)}',
+                          style: (c) => AppTextStyles.bodyText(c).copyWith(
+                            fontWeight: FontWeight.w500,
+                            height: 1.35,
+                          ),
+                          maxLines: 2,
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ],
