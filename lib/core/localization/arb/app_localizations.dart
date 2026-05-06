@@ -3548,6 +3548,12 @@ abstract class AppLocalizations {
   /// **'Invalid gift card code'**
   String get invalidGiftCardCode;
 
+  /// No description provided for @redeemCodeRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your gift card code'**
+  String get redeemCodeRequired;
+
   /// No description provided for @redeemGift.
   ///
   /// In en, this message translates to:
@@ -5017,6 +5023,96 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Recent Referrals'**
   String get recentReferrals;
+
+  /// No description provided for @referralCodeCopied.
+  ///
+  /// In en, this message translates to:
+  /// **'Referral code copied to clipboard'**
+  String get referralCodeCopied;
+
+  /// No description provided for @referralProgramLoadError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load referral program. Please try again.'**
+  String get referralProgramLoadError;
+
+  /// No description provided for @referralRetry.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get referralRetry;
+
+  /// No description provided for @referralYourReward.
+  ///
+  /// In en, this message translates to:
+  /// **'You earn {reward}'**
+  String referralYourReward(String reward);
+
+  /// No description provided for @referralFriendReward.
+  ///
+  /// In en, this message translates to:
+  /// **'They get {reward}'**
+  String referralFriendReward(String reward);
+
+  /// No description provided for @referralOrDivider.
+  ///
+  /// In en, this message translates to:
+  /// **'OR'**
+  String get referralOrDivider;
+
+  /// No description provided for @referralRewardDiscountPercent.
+  ///
+  /// In en, this message translates to:
+  /// **'{percent}% off'**
+  String referralRewardDiscountPercent(String percent);
+
+  /// No description provided for @referralRewardDiscountAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'{amount} off'**
+  String referralRewardDiscountAmount(String amount);
+
+  /// No description provided for @referralRewardFreeSession.
+  ///
+  /// In en, this message translates to:
+  /// **'Free session'**
+  String get referralRewardFreeSession;
+
+  /// No description provided for @referralRewardFallback.
+  ///
+  /// In en, this message translates to:
+  /// **'{label}'**
+  String referralRewardFallback(String label);
+
+  /// No description provided for @referralInviteSent.
+  ///
+  /// In en, this message translates to:
+  /// **'Invitation sent'**
+  String get referralInviteSent;
+
+  /// No description provided for @referralInvitePhoneTooLong.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone number must be at most 30 characters'**
+  String get referralInvitePhoneTooLong;
+
+  /// No description provided for @referralHistoryLoadError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load referral history.'**
+  String get referralHistoryLoadError;
+
+  /// No description provided for @referralHistoryRewardEarned.
+  ///
+  /// In en, this message translates to:
+  /// **'Rewarded'**
+  String get referralHistoryRewardEarned;
+
+  /// No description provided for @referralHistoryRewardPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending'**
+  String get referralHistoryRewardPending;
 
   /// No description provided for @joinedDaysAgo.
   ///

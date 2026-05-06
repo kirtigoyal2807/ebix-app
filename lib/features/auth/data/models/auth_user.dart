@@ -9,6 +9,7 @@ class AuthUser {
     this.name,
     this.email,
     this.phone,
+    this.avatar,
 
     /// From `membership[]` / `planName` on profile (aligned with [`GET /home`] `membership`).
     this.membershipPlanName,
@@ -26,6 +27,7 @@ class AuthUser {
   final String? name;
   final String? email;
   final String? phone;
+  final String? avatar;
 
   final String? membershipPlanName;
   final int? membershipTotalSessions;
@@ -40,6 +42,7 @@ class AuthUser {
       name: json['name'] as String? ?? json['full_name'] as String?,
       email: json['email'] as String?,
       phone: json['phone'] as String?,
+      avatar: json['avatar'] as String?,
       membershipPlanName:
           membershipSnap?.planName ??
           _trimOrNull(json['membershipPlanName']) ??
@@ -65,6 +68,7 @@ class AuthUser {
     'name': name,
     'email': email,
     'phone': phone,
+    'avatar': avatar,
     'membershipPlanName': membershipPlanName,
     'membershipTotalSessions': membershipTotalSessions,
     'membershipSessionsRemaining': membershipSessionsRemaining,

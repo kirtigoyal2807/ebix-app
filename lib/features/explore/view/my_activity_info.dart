@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
-import 'package:pilates_app/features/explore/view/redeem_card_view.dart';
+import 'package:pilates_app/features/explore/widget/redeem_gift_card_sheet.dart';
 import 'package:pilates_app/features/explore/view/referral_program_view.dart';
 
 import '../../../config/theme/app_colors.dart';
@@ -98,10 +98,7 @@ class MyActivityInfo extends StatelessWidget {
         SizedBox(height: AppSpacing.lmd),
         AccountInfoTile(
           onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => RedeemCardView()),
-            );
+            showRedeemGiftCardBottomSheet(context);
           },
           icon: isDark
               ? "assets/images/svg/explore/ic_dark_redeem_gift.svg"

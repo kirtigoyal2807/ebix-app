@@ -750,6 +750,7 @@
   "enterGiftCardCode": "Enter Gift Card Code",
   "enterRedeemCode": "Enter Redeem Code",
   "invalidGiftCardCode": "Invalid gift card code",
+  "redeemCodeRequired": "Please enter your gift card code",
   "redeemGift": "Redeem Gift",
   "giftReceivedTitle": "You received a gift card",
   "viewGift": "View Gift",
@@ -1068,6 +1069,58 @@
 
   "recentReferrals": "Recent Referrals",
 
+  "referralCodeCopied": "Referral code copied to clipboard",
+  "referralProgramLoadError": "Could not load referral program. Please try again.",
+  "referralRetry": "Retry",
+  "referralYourReward": "You earn {reward}",
+  "@referralYourReward": {
+    "placeholders": {
+      "reward": {
+        "type": "String"
+      }
+    }
+  },
+  "referralFriendReward": "They get {reward}",
+  "@referralFriendReward": {
+    "placeholders": {
+      "reward": {
+        "type": "String"
+      }
+    }
+  },
+  "referralOrDivider": "OR",
+  "referralRewardDiscountPercent": "{percent}% off",
+  "@referralRewardDiscountPercent": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "referralRewardDiscountAmount": "{amount} off",
+  "@referralRewardDiscountAmount": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "referralRewardFreeSession": "Free session",
+  "referralRewardFallback": "{label}",
+  "@referralRewardFallback": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+
+  "referralInviteSent": "Invitation sent",
+  "referralInvitePhoneTooLong": "Phone number must be at most 30 characters",
+
+  "referralHistoryLoadError": "Could not load referral history.",
+  "referralHistoryRewardEarned": "Rewarded",
+  "referralHistoryRewardPending": "Pending",
 
   "joinedDaysAgo": "Joined {days} days ago",
   "@joinedDaysAgo": {

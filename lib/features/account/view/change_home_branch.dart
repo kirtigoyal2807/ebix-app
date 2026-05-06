@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/core/localization/localization_extension.dart';
+import 'package:pilates_app/core/network/api_result.dart';
+import 'package:pilates_app/features/auth/cubit/auth_cubit.dart';
+import 'package:pilates_app/features/auth/data/models/branch.dart';
 import 'package:pilates_app/widgets/app_app_bar.dart';
 import 'package:pilates_app/widgets/app_button.dart';
 
@@ -21,7 +25,89 @@ class ChangeHomeBranch extends StatefulWidget {
 }
 
 class _ChangeHomeBranchState extends State<ChangeHomeBranch> {
-  int _selectedIndex = 0;
+  bool _isLoadingBranches = true;
+  bool _isUpdatingHomeBranch = false;
+  String _loadErrorMessage = '';
+  List<Branch> _branches = const [];
+  int? _selectedBranchId;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchBranches();
+  }
+
+  Future<void> _fetchBranches() async {
+    setState(() {
+      _isLoadingBranches = true;
+      _loadErrorMessage = '';
+    });
+
+    final result = await context.read<AuthCubit>().authRepository.listBranches(
+      queryParameters: const {'page': 1, 'per_page': 50},
+    );
+
+    if (!mounted) return;
+
+    switch (result) {
+      case ApiSuccess(:final data):
+        setState(() {
+          _branches = data.branches;
+          _isLoadingBranches = false;
+          if (_branches.isNotEmpty) {
+            _selectedBranchId ??= _branches.first.id;
+          }
+        });
+      case ApiFailure(:final exception):
+        setState(() {
+          _isLoadingBranches = false;
+          _loadErrorMessage =
+              (exception.message ?? '').trim().isNotEmpty
+              ? exception.message!.trim()
+              : context.l10n.branchesCouldNotLoad;
+        });
+    }
+  }
+
+  Future<void> _updateHomeBranch() async {
+    if (_selectedBranchId == null || _isUpdatingHomeBranch) return;
+    final authCubit = context.read<AuthCubit>();
+    final messenger = ScaffoldMessenger.of(context);
+    final navigator = Navigator.of(context);
+
+    setState(() {
+      _isUpdatingHomeBranch = true;
+    });
+
+    final result = await authCubit.authRepository.setHomeBranch(
+      homeBranchId: _selectedBranchId!,
+    );
+
+    if (!mounted) return;
+
+    switch (result) {
+      case ApiSuccess<bool>():
+        setState(() {
+          _isUpdatingHomeBranch = false;
+        });
+        await authCubit.loadProfile();
+        if (!mounted) return;
+        messenger.showSnackBar(
+          SnackBar(content: Text(context.l10n.updateHomeBranch)),
+        );
+        navigator.pop();
+      case ApiFailure(:final exception):
+        setState(() {
+          _isUpdatingHomeBranch = false;
+        });
+        final message = (exception.message ?? '').trim().isNotEmpty
+            ? exception.message!.trim()
+            : context.l10n.somethingWentWrong;
+        messenger.showSnackBar(
+          SnackBar(content: Text(message)),
+        );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,60 +129,76 @@ class _ChangeHomeBranchState extends State<ChangeHomeBranch> {
         child: Column(
           children: [
             Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    BranchOption(
-                      title: 'Balad, Al Al Munawarah',
-                      city: 'Al Madinah Al Munawarah',
-                      distance: '5 km away',
-                      type: 'Premium',
-                      selected: !widget.readOnly && _selectedIndex == 0,
-                      isOnBoarding: false,
-                      onTap: widget.readOnly ? () {} : () => setState(() => _selectedIndex = 0),
-                    ),
-                    SizedBox(
-                      height: AppSpacing.base,
-                    ),
-                    BranchOption(
-                      title: 'Balad, Al Al Munawarah',
-                      city: 'Al Madinah Al Munawarah',
-                      distance: '5 km away',
-                      type: 'Premium',
-                      isOnBoarding: false,
-                      selected: !widget.readOnly && _selectedIndex == 1,
-                      onTap: widget.readOnly ? () {} : () => setState(() => _selectedIndex = 1),
-                    ),
-                    SizedBox(
-                      height: AppSpacing.base,
-                    ),
-                    BranchOption(
-                      title: 'Balad, Al Al Munawarah',
-                      city: 'Al Madinah Al Munawarah',
-                      distance: '5 km away',
-                      type: 'Premium',
-                      isOnBoarding: false,
-                      selected: !widget.readOnly && _selectedIndex == 2,
-                      onTap: widget.readOnly ? () {} : () => setState(() => _selectedIndex = 2),
-                    ),
-                
-                
-                
-                
-                  ],
-                ),
-              ),
+              child: _buildBranchesContent(context),
             ),
             if (!widget.readOnly)
               AppButton(
                 label: context.l10n.updateHomeBranch,
                 variant: AppButtonVariant.primary,
-                onPressed: () {},
-              )
+                isLoading: _isUpdatingHomeBranch,
+                onPressed: (_selectedBranchId == null ||
+                        _isLoadingBranches ||
+                        _isUpdatingHomeBranch)
+                    ? null
+                    : _updateHomeBranch,
+              ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildBranchesContent(BuildContext context) {
+    if (_isLoadingBranches) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    if (_loadErrorMessage.isNotEmpty) {
+      return Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(_loadErrorMessage),
+            const SizedBox(height: AppSpacing.md),
+            AppButton(
+              label: context.l10n.retry,
+              variant: AppButtonVariant.secondary,
+              onPressed: _fetchBranches,
+            ),
+          ],
+        ),
+      );
+    }
+
+    if (_branches.isEmpty) {
+      return Center(
+        child: Text(context.l10n.noBranchesAvailable),
+      );
+    }
+
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: _branches
+            .map(
+              (branch) => Padding(
+                padding: const EdgeInsets.only(bottom: AppSpacing.base),
+                child: BranchOption(
+                  title: branch.title,
+                  city: branch.city,
+                  distance: branch.distance,
+                  type: branch.typeLabel,
+                  imageUrl: branch.imageUrl,
+                  isOnBoarding: false,
+                  selected: _selectedBranchId == branch.id,
+                  onTap: widget.readOnly
+                      ? () {}
+                      : () => setState(() => _selectedBranchId = branch.id),
+                ),
+              ),
+            )
+            .toList(),
       ),
     );
   }

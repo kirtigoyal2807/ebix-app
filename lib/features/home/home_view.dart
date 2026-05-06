@@ -106,7 +106,14 @@ class HomeView extends StatelessWidget {
       ),
       child: BottomNavigationBar(
         currentIndex: currentIndex,
-        onTap: (index) => context.read<HomeCubit>().setTab(index),
+        onTap: (index) {
+          final homeCubit = context.read<HomeCubit>();
+          final previousIndex = homeCubit.state.currentIndex;
+          homeCubit.setTab(index);
+          if (index == 3 && previousIndex != 3) {
+            context.read<AuthCubit>().refreshProfileWhenSelectingAccountTab();
+          }
+        },
         type: BottomNavigationBarType.fixed,
         backgroundColor: Colors.transparent,
         elevation: 0,

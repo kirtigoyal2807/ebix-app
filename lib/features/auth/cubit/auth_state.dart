@@ -24,6 +24,9 @@ enum SignUpPhoneOtpUiStatus { idle, loading }
 /// `/auth/phone/send` (resend code) — separate from verify loading.
 enum PhoneOtpSendUiStatus { idle, loading }
 
+/// Shown on Account tab while [`GET customers/profile`] runs after switching to that tab.
+enum AccountProfileRefreshStatus { idle, loading }
+
 class AuthState extends Equatable {
   final AuthFlow flow;
   final int signUpStep; // 0 → 4
@@ -39,6 +42,8 @@ class AuthState extends Equatable {
   final String signInPendingPhone;
 
   final AuthUser? user;
+
+  final AccountProfileRefreshStatus accountProfileRefreshStatus;
 
   /// One-shot: phone OTP request succeeded — UI shows snackbar then clears.
   final bool showPhoneOtpSuccess;
@@ -105,6 +110,7 @@ class AuthState extends Equatable {
     required this.loginFieldErrors,
     required this.signInPendingPhone,
     this.user,
+    required this.accountProfileRefreshStatus,
     required this.showPhoneOtpSuccess,
     required this.registerUiStatus,
     required this.registerErrorMessage,
@@ -149,6 +155,7 @@ class AuthState extends Equatable {
       loginFieldErrors: {},
       signInPendingPhone: '',
       user: null,
+      accountProfileRefreshStatus: AccountProfileRefreshStatus.idle,
       showPhoneOtpSuccess: false,
       registerUiStatus: RegisterUiStatus.idle,
       registerErrorMessage: '',
@@ -195,6 +202,7 @@ class AuthState extends Equatable {
     bool clearSignInPendingPhone = false,
     AuthUser? user,
     bool clearUser = false,
+    AccountProfileRefreshStatus? accountProfileRefreshStatus,
     bool? showPhoneOtpSuccess,
     RegisterUiStatus? registerUiStatus,
     String? registerErrorMessage,
@@ -242,6 +250,8 @@ class AuthState extends Equatable {
           ? ''
           : (signInPendingPhone ?? this.signInPendingPhone),
       user: clearUser ? null : (user ?? this.user),
+      accountProfileRefreshStatus:
+          accountProfileRefreshStatus ?? this.accountProfileRefreshStatus,
       showPhoneOtpSuccess: showPhoneOtpSuccess ?? this.showPhoneOtpSuccess,
       registerUiStatus: registerUiStatus ?? this.registerUiStatus,
       registerErrorMessage:
@@ -372,6 +382,7 @@ class AuthState extends Equatable {
         loginFieldErrors,
         signInPendingPhone,
         user,
+        accountProfileRefreshStatus,
         showPhoneOtpSuccess,
         registerUiStatus,
         registerErrorMessage,

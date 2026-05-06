@@ -5,6 +5,7 @@ import '../../../config/theme/app_colors.dart';
 import '../../../config/theme/app_text_styles.dart';
 import '../../../core/localization/localization_extension.dart';
 import '../../../widgets/app_text.dart';
+import '../../explore/view/referral_program_view.dart';
 import '../../invoice_history/invoice_history_view.dart';
 import '../../view_subscription/view_subscription_view.dart';
 import 'account_info_tile.dart';
@@ -56,6 +57,22 @@ class BillingAndSubscription extends StatelessWidget {
               : "assets/images/svg/account/ic_gift_subscription.svg",
           title: context.l10n.giftSubscription,
           subtitle: context.l10n.sendGiftToSomeone,
+        ),
+        SizedBox(height: AppSpacing.lmd),
+        AccountInfoTile(
+          icon: isDark
+              ? "assets/images/svg/explore/Ic_dark_referral_program.svg"
+              : "assets/images/svg/explore/Ic_referral_program.svg",
+          title: context.l10n.referralProgram,
+          subtitle: context.l10n.referralProgramSubtitle,
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const ReferralProgramView(),
+              ),
+            );
+          },
         ),
         SizedBox(height: AppSpacing.lmd),
         AccountInfoTile(
