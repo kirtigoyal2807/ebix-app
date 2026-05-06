@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/core/localization/localization_extension.dart';
@@ -25,9 +26,25 @@ class PersonalView extends StatelessWidget {
   Widget build(BuildContext context) {
     final user = context.read<AuthCubit>().state.user;
     return BlocProvider(
-      create: (context) => PersonalInfoCubit(),
+      create: (context) => PersonalInfoCubit(
+        authRepository: context.read<AuthCubit>().authRepository,
+        initialGender: _normalizeGenderValue(user?.gender),
+        initialDateOfBirth: user?.dateOfBirth,
+      ),
       child: _PersonalViewBody(initialUser: user),
     );
+  }
+
+  String? _normalizeGenderValue(String? gender) {
+    final normalized = gender?.trim().toLowerCase();
+    switch (normalized) {
+      case 'male':
+      case 'female':
+      case 'other':
+        return normalized;
+      default:
+        return null;
+    }
   }
 }
 
@@ -45,6 +62,7 @@ class _PersonalViewBodyState extends State<_PersonalViewBody> {
   late final TextEditingController _lastNameController;
   late final TextEditingController _emailController;
   late final TextEditingController _phoneController;
+  late final TextEditingController _dobController;
 
   @override
   void initState() {
@@ -58,6 +76,9 @@ class _PersonalViewBodyState extends State<_PersonalViewBody> {
     _phoneController = TextEditingController(
       text: _nationalPhoneDigits(widget.initialUser?.phone),
     );
+    _dobController = TextEditingController(
+      text: _formatDate(widget.initialUser?.dateOfBirth),
+    );
   }
 
   @override
@@ -66,6 +87,7 @@ class _PersonalViewBodyState extends State<_PersonalViewBody> {
     _lastNameController.dispose();
     _emailController.dispose();
     _phoneController.dispose();
+    _dobController.dispose();
     super.dispose();
   }
 
@@ -92,17 +114,68 @@ class _PersonalViewBodyState extends State<_PersonalViewBody> {
     return p;
   }
 
+  String _formatDate(DateTime? value) {
+    if (value == null) return '';
+    return DateFormat('yyyy-MM-dd').format(value);
+  }
+
+  Future<void> _pickDateOfBirth(BuildContext context) async {
+    final personalInfoCubit = context.read<PersonalInfoCubit>();
+    final state = personalInfoCubit.state;
+    final now = DateTime.now();
+    final initialDate =
+        state.dateOfBirth ?? widget.initialUser?.dateOfBirth ?? DateTime(now.year - 18, now.month, now.day);
+    final picked = await showDatePicker(
+      context: context,
+      initialDate: initialDate.isAfter(now) ? now : initialDate,
+      firstDate: DateTime(1900),
+      lastDate: now,
+    );
+    if (!mounted || picked == null) return;
+    personalInfoCubit.updateDateOfBirth(picked);
+    _dobController.text = _formatDate(picked);
+  }
+
+  void _submit(BuildContext context) {
+    final phone = _phoneController.text.trim();
+    context.read<PersonalInfoCubit>().saveProfile(
+          firstName: _firstNameController.text.trim(),
+          lastName: _lastNameController.text.trim(),
+          phone: phone.isNotEmpty ? '+966$phone' : '',
+        );
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    return Scaffold(
-      appBar: AppAppBar(
-        onBack: () => Navigator.of(context).pop(),
-        title: l10n.personalData,
-        isMoreMenu: false,
-      ),
-      body: SingleChildScrollView(
+    return BlocConsumer<PersonalInfoCubit, PersonalInfoState>(
+      listenWhen: (prev, curr) => prev.saveStatus != curr.saveStatus,
+      listener: (context, state) {
+        if (state.saveStatus == PersonalInfoSaveStatus.success) {
+          context.read<AuthCubit>().refreshProfileWhenSelectingAccountTab();
+          Navigator.of(context).pop();
+        } else if (state.saveStatus == PersonalInfoSaveStatus.failure) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                state.errorMessage.isNotEmpty
+                    ? state.errorMessage
+                    : context.l10n.loginErrorGeneric,
+              ),
+            ),
+          );
+        }
+      },
+      builder: (context, state) {
+        final isLoading = state.saveStatus == PersonalInfoSaveStatus.loading;
+        return Scaffold(
+          appBar: AppAppBar(
+            onBack: () => Navigator.of(context).pop(),
+            title: l10n.personalData,
+            isMoreMenu: false,
+          ),
+          body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.symmetric(
             horizontal: AppSpacing.lg,
@@ -155,45 +228,39 @@ class _PersonalViewBodyState extends State<_PersonalViewBody> {
                 controller: _phoneController,
               ),
               SizedBox(height: AppSpacing.md),
-
-              AppTextField(
-                hint: context.l10n.fullName,
-                label: l10n.emergencyContactName,
-              ),
-              SizedBox(height: AppSpacing.md),
-              AppTextField(
-                hint: "XXXXXXXXXXX",
-                label: l10n.emergencyContactPhoneNumber,
-              ),
-              SizedBox(height: AppSpacing.md),
-
-              // Relationship Dropdown
               BlocBuilder<PersonalInfoCubit, PersonalInfoState>(
-                buildWhen: (p, c) =>
-                    p.emergencyContactRelationship !=
-                    c.emergencyContactRelationship,
+                buildWhen: (p, c) => p.gender != c.gender,
                 builder: (context, state) {
                   return AppDropDown<String>(
-                    label: l10n.relationship,
-                    hint: l10n.selectRelationship,
-                    value: state.emergencyContactRelationship,
-                    items:
-                        ['Parent', 'Spouse', 'Sibling', 'Friend', 'Other'].map((
-                          e,
-                        ) {
-                          return DropdownMenuItem(
-                            value: e,
-                            child: Text(
-                              e,
-                              style: AppTextStyles.textField(context),
-                            ),
-                          );
-                        }).toList(),
+                    label: context.l10n.gender,
+                    hint: context.l10n.selectGender,
+                    value: state.gender,
+                    items: [
+                      DropdownMenuItem(
+                        value: 'male',
+                        child: Text(
+                          context.l10n.male,
+                          style: AppTextStyles.textField(context),
+                        ),
+                      ),
+                      DropdownMenuItem(
+                        value: 'female',
+                        child: Text(
+                          context.l10n.female,
+                          style: AppTextStyles.textField(context),
+                        ),
+                      ),
+                      DropdownMenuItem(
+                        value: 'other',
+                        child: Text(
+                          context.l10n.other,
+                          style: AppTextStyles.textField(context),
+                        ),
+                      ),
+                    ],
                     onChanged: (val) {
                       if (val != null) {
-                        context
-                            .read<PersonalInfoCubit>()
-                            .updateEmergencyContactRelationship(val);
+                        context.read<PersonalInfoCubit>().updateGender(val);
                       }
                     },
                   );
@@ -201,34 +268,21 @@ class _PersonalViewBodyState extends State<_PersonalViewBody> {
               ),
               SizedBox(height: AppSpacing.md),
               BlocBuilder<PersonalInfoCubit, PersonalInfoState>(
-                buildWhen: (p, c) => p.idType != c.idType,
+                buildWhen: (p, c) => p.dateOfBirth != c.dateOfBirth,
                 builder: (context, state) {
-                  return AppDropDown<String>(
-                    label: l10n.idType,
-                    hint: l10n.selectIdType,
-                    value: state.idType,
-                    items:
-                        ['National ID', 'Passport', 'Driver License'].map((
-                          e,
-                        ) {
-                          return DropdownMenuItem(
-                            value: e,
-                            child: Text(
-                              e,
-                              style: AppTextStyles.textField(context),
-                            ),
-                          );
-                        }).toList(),
-                    onChanged: (val) {
-                      if (val != null) {
-                        context.read<PersonalInfoCubit>().updateIdType(val);
-                      }
-                    },
+                  _dobController.text = _formatDate(state.dateOfBirth);
+                  return GestureDetector(
+                    onTap: () => _pickDateOfBirth(context),
+                    child: AbsorbPointer(
+                      child: AppTextField(
+                        hint: 'Select date of birth',
+                        label: 'Date of Birth',
+                        controller: _dobController,
+                      ),
+                    ),
                   );
                 },
               ),
-              SizedBox(height: AppSpacing.md),
-              AppTextField(hint: l10n.idNumber, label: l10n.idNumber),
               SizedBox(height: AppSpacing.lg),
               Container(
                 decoration: BoxDecoration(
@@ -245,7 +299,8 @@ class _PersonalViewBodyState extends State<_PersonalViewBody> {
                 ),
                 child: AppButton(
                   label: l10n.editDetails,
-                  onPressed: () {},
+                  isLoading: isLoading,
+                  onPressed: isLoading ? null : () => _submit(context),
                   variant: AppButtonVariant.secondary,
                 ),
               ),
@@ -256,6 +311,8 @@ class _PersonalViewBodyState extends State<_PersonalViewBody> {
           ),
         ),
       ),
+    );
+      },
     );
   }
 }

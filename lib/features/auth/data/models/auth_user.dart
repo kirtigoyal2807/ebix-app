@@ -9,6 +9,7 @@ class AuthUser {
     this.name,
     this.email,
     this.phone,
+    this.gender,
     this.avatar,
     this.dateOfBirth,
 
@@ -28,6 +29,7 @@ class AuthUser {
   final String? name;
   final String? email;
   final String? phone;
+  final String? gender;
   final String? avatar;
 
   /// From profile / login payload when the API sends `dob`, `date_of_birth`, etc.
@@ -46,6 +48,7 @@ class AuthUser {
       name: json['name'] as String? ?? json['full_name'] as String?,
       email: json['email'] as String?,
       phone: json['phone'] as String?,
+      gender: _trimOrNull(json['gender']),
       avatar: json['avatar'] as String?,
       dateOfBirth: _parseDateOfBirth(
         json['dob'] ??
@@ -78,6 +81,7 @@ class AuthUser {
     'name': name,
     'email': email,
     'phone': phone,
+    'gender': gender,
     'avatar': avatar,
     if (dateOfBirth != null)
       'dob': dateOfBirth!.toIso8601String().split('T').first,

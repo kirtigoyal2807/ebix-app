@@ -273,6 +273,31 @@ class AuthRepository extends BaseRepository {
     );
   }
 
+  /// Update customer profile — `PUT /customers/profile`. All fields optional.
+  /// Send only the fields the user changed. Returns the updated [AuthUser].
+  Future<ApiResult<AuthUser>> updateProfile({
+    String? name,
+    String? phone,
+    String? gender,
+    DateTime? dob,
+  }) {
+    final data = <String, dynamic>{};
+    if (name != null && name.isNotEmpty) data['name'] = name;
+    if (phone != null && phone.isNotEmpty) data['phone'] = phone;
+    if (gender != null && gender.isNotEmpty) data['gender'] = gender;
+    if (dob != null) {
+      final y = dob.year.toString().padLeft(4, '0');
+      final m = dob.month.toString().padLeft(2, '0');
+      final d = dob.day.toString().padLeft(2, '0');
+      data['dob'] = '$y-$m-$d';
+    }
+    return put<AuthUser>(
+      'customers/profile',
+      data: data,
+      fromJson: (json) => AuthUser.fromJson(json as Map<String, dynamic>),
+    );
+  }
+
   /// Customer profile — requires JWT (saved after login).
   Future<ApiResult<bool>> submitUserGoal({
     required String experience,
