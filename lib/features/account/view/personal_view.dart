@@ -1,9 +1,12 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/core/localization/localization_extension.dart';
+import 'package:pilates_app/core/utils/api_media_url.dart';
 import 'package:pilates_app/features/auth/cubit/auth_cubit.dart';
 import 'package:pilates_app/features/auth/data/models/auth_user.dart';
 import 'package:pilates_app/widgets/app_app_bar.dart';
@@ -18,6 +21,7 @@ import '../../../widgets/app_dropdown.dart';
 import '../../../widgets/phone_number_field.dart';
 import '../cubit/personal_info_cubit.dart';
 import '../cubit/personal_info_state.dart';
+import '../widget/profile_picture_bottom_sheet.dart';
 
 class PersonalView extends StatelessWidget {
   const PersonalView({super.key});
@@ -136,6 +140,68 @@ class _PersonalViewBodyState extends State<_PersonalViewBody> {
     _dobController.text = _formatDate(picked);
   }
 
+  Future<void> _showProfilePictureOptions(BuildContext context) async {
+    final cubit = context.read<PersonalInfoCubit>();
+    final action = await showModalBottomSheet<ProfilePictureAction>(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (context) => const ProfilePictureBottomSheet(),
+    );
+    if (!mounted || action == null) return;
+
+    switch (action) {
+      case ProfilePictureAction.camera:
+        await cubit.pickImageFromCamera();
+        break;
+      case ProfilePictureAction.gallery:
+        await cubit.pickImageFromGallery();
+        break;
+      case ProfilePictureAction.remove:
+        cubit.removeProfilePicture();
+        break;
+    }
+  }
+
+  Widget _buildProfileImage(PersonalInfoState state) {
+    final selectedPath = state.selectedAvatarPath;
+    final apiAvatar = resolveApiMediaUrl(widget.initialUser?.avatar);
+
+    if (selectedPath != null && selectedPath.isNotEmpty) {
+      return ClipOval(
+        child: Image.file(
+          File(selectedPath),
+          height: 90,
+          width: 90,
+          fit: BoxFit.cover,
+        ),
+      );
+    }
+
+    if (!state.removeAvatar && apiAvatar != null && apiAvatar.isNotEmpty) {
+      return ClipOval(
+        child: Image.network(
+          apiAvatar,
+          height: 90,
+          width: 90,
+          fit: BoxFit.cover,
+          errorBuilder: (context, error, stackTrace) => Image.asset(
+            "assets/images/demo images/Trainer Avatar.png",
+            height: 90,
+            width: 90,
+          ),
+        ),
+      );
+    }
+
+    return Image.asset(
+      "assets/images/demo images/Trainer Avatar.png",
+      height: 90,
+      width: 90,
+    );
+  }
+
   void _submit(BuildContext context) {
     final phone = _phoneController.text.trim();
     context.read<PersonalInfoCubit>().saveProfile(
@@ -184,22 +250,32 @@ class _PersonalViewBodyState extends State<_PersonalViewBody> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Align(
-                alignment: Alignment.center,
-                child: Image.asset(
-                  "assets/images/demo images/Trainer Avatar.png",
-                  height: 90,
-                  width: 90,
-                ),
-              ),
-              SizedBox(height: AppSpacing.sm),
-              Center(
-                child: AppText(
-                  l10n.changeProfilePicture,
-                  style: (context) => AppTextStyles.body(
-                    context,
-                  ).copyWith(fontWeight: FontWeight.w400, height: 1.55),
-                ),
+              BlocBuilder<PersonalInfoCubit, PersonalInfoState>(
+                buildWhen: (p, c) =>
+                    p.selectedAvatarPath != c.selectedAvatarPath ||
+                    p.removeAvatar != c.removeAvatar,
+                builder: (context, picState) {
+                  return GestureDetector(
+                    onTap: () => _showProfilePictureOptions(context),
+                    child: Column(
+                      children: [
+                        Align(
+                          alignment: Alignment.center,
+                          child: _buildProfileImage(picState),
+                        ),
+                        SizedBox(height: AppSpacing.sm),
+                        Center(
+                          child: AppText(
+                            l10n.changeProfilePicture,
+                            style: (context) => AppTextStyles.body(
+                              context,
+                            ).copyWith(fontWeight: FontWeight.w400, height: 1.55),
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                },
               ),
               SizedBox(height: AppSpacing.lg),
               AppTextField(

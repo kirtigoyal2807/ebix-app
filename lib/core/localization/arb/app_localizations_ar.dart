@@ -3035,4 +3035,13 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get notNow => 'ليس الآن';
+
+  @override
+  String get takePicture => 'التقاط صورة';
+
+  @override
+  String get accessFromGallery => 'الوصول من المعرض';
+
+  @override
+  String get removeProfilePicture => 'إزالة صورة الملف الشخصي';
 }

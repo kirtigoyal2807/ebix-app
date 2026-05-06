@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:pilates_app/core/network/api_result.dart';
 import 'package:pilates_app/features/account/cubit/personal_info_state.dart';
 import 'package:pilates_app/features/auth/data/auth_repository.dart';
@@ -10,6 +11,7 @@ class PersonalInfoCubit extends Cubit<PersonalInfoState> {
     String? initialGender,
     DateTime? initialDateOfBirth,
   }) : _authRepository = authRepository,
+       _imagePicker = ImagePicker(),
        super(
          PersonalInfoState(
            gender: initialGender,
@@ -18,11 +20,49 @@ class PersonalInfoCubit extends Cubit<PersonalInfoState> {
        );
 
   final AuthRepository _authRepository;
+  final ImagePicker _imagePicker;
 
   void updateGender(String val) => emit(state.copyWith(gender: val));
 
   void updateDateOfBirth(DateTime val) =>
       emit(state.copyWith(dateOfBirth: val));
+
+  Future<void> pickImageFromCamera() async {
+    final XFile? image = await _imagePicker.pickImage(
+      source: ImageSource.camera,
+      maxWidth: 1024,
+      maxHeight: 1024,
+      imageQuality: 85,
+    );
+    if (image != null) {
+      emit(state.copyWith(
+        selectedAvatarPath: image.path,
+        removeAvatar: false,
+      ));
+    }
+  }
+
+  Future<void> pickImageFromGallery() async {
+    final XFile? image = await _imagePicker.pickImage(
+      source: ImageSource.gallery,
+      maxWidth: 1024,
+      maxHeight: 1024,
+      imageQuality: 85,
+    );
+    if (image != null) {
+      emit(state.copyWith(
+        selectedAvatarPath: image.path,
+        removeAvatar: false,
+      ));
+    }
+  }
+
+  void removeProfilePicture() {
+    emit(state.copyWith(
+      clearSelectedAvatar: true,
+      removeAvatar: true,
+    ));
+  }
 
   /// Calls `PUT /customers/profile`. On success emits [PersonalInfoSaveStatus.success]
   /// with the refreshed [AuthUser]; on failure emits [PersonalInfoSaveStatus.failure].
@@ -47,6 +87,7 @@ class PersonalInfoCubit extends Cubit<PersonalInfoState> {
       phone: phone.isNotEmpty ? phone : null,
       gender: state.gender,
       dob: state.dateOfBirth,
+      avatarPath: state.selectedAvatarPath,
     );
 
     switch (result) {

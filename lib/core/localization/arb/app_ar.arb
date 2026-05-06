@@ -1285,7 +1285,10 @@
   "locationPermissionTitle": "الوصول إلى الموقع",
   "locationPermissionMessage": "إذن الموقع معطّل. يُرجى تفعيله من إعدادات التطبيق حتى نتمكن من اقتراح أقرب فرع إليك.",
   "openSettings": "فتح الإعدادات",
-  "notNow": "ليس الآن"
+  "notNow": "ليس الآن",
+  "takePicture": "التقاط صورة",
+  "accessFromGallery": "الوصول من المعرض",
+  "removeProfilePicture": "إزالة صورة الملف الشخصي"
 }
 
 

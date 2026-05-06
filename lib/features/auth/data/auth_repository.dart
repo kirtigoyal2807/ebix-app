@@ -275,25 +275,50 @@ class AuthRepository extends BaseRepository {
 
   /// Update customer profile — `PUT /customers/profile`. All fields optional.
   /// Send only the fields the user changed. Returns the updated [AuthUser].
+  /// When [avatarPath] is provided, uses `multipart/form-data`; otherwise JSON.
   Future<ApiResult<AuthUser>> updateProfile({
     String? name,
     String? phone,
     String? gender,
     DateTime? dob,
-  }) {
-    final data = <String, dynamic>{};
-    if (name != null && name.isNotEmpty) data['name'] = name;
-    if (phone != null && phone.isNotEmpty) data['phone'] = phone;
-    if (gender != null && gender.isNotEmpty) data['gender'] = gender;
+    String? avatarPath,
+  }) async {
+    final fields = <String, dynamic>{};
+    if (name != null && name.isNotEmpty) fields['name'] = name;
+    if (phone != null && phone.isNotEmpty) fields['phone'] = phone;
+    if (gender != null && gender.isNotEmpty) fields['gender'] = gender;
     if (dob != null) {
       final y = dob.year.toString().padLeft(4, '0');
       final m = dob.month.toString().padLeft(2, '0');
       final d = dob.day.toString().padLeft(2, '0');
-      data['dob'] = '$y-$m-$d';
+      fields['dob'] = '$y-$m-$d';
     }
+
+    final hasAvatar = avatarPath != null && avatarPath.isNotEmpty;
+
+    if (hasAvatar) {
+      // PHP/Laravel backends don't parse multipart/form-data on PUT requests,
+      // so we POST with `_method: PUT` (Laravel method-spoofing).
+      final formData = FormData.fromMap({
+        '_method': 'PUT',
+        ...fields,
+        'avatar': await MultipartFile.fromFile(
+          avatarPath,
+          filename: avatarPath.split('/').last,
+        ),
+      });
+      return post<AuthUser>(
+        'customers/profile',
+        data: formData,
+        options: Options(contentType: 'multipart/form-data'),
+        fromJson: (json) => AuthUser.fromJson(json as Map<String, dynamic>),
+      );
+    }
+
     return put<AuthUser>(
       'customers/profile',
-      data: data,
+      data: fields,
+      options: Options(contentType: 'application/json'),
       fromJson: (json) => AuthUser.fromJson(json as Map<String, dynamic>),
     );
   }

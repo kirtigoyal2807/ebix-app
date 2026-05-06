@@ -1281,7 +1281,10 @@
   "locationPermissionTitle": "Location Access",
   "locationPermissionMessage": "Location permission is disabled. Please enable it in app settings so we can suggest the nearest branch.",
   "openSettings": "Open Settings",
-  "notNow": "Not Now"
+  "notNow": "Not Now",
+  "takePicture": "Take Picture",
+  "accessFromGallery": "Access from gallery",
+  "removeProfilePicture": "Remove Profile Picture"
 }
 
 

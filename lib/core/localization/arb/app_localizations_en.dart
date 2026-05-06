@@ -3056,4 +3056,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get notNow => 'Not Now';
+
+  @override
+  String get takePicture => 'Take Picture';
+
+  @override
+  String get accessFromGallery => 'Access from gallery';
+
+  @override
+  String get removeProfilePicture => 'Remove Profile Picture';
 }

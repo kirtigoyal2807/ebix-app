@@ -5755,6 +5755,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Not Now'**
   String get notNow;
+
+  /// No description provided for @takePicture.
+  ///
+  /// In en, this message translates to:
+  /// **'Take Picture'**
+  String get takePicture;
+
+  /// No description provided for @accessFromGallery.
+  ///
+  /// In en, this message translates to:
+  /// **'Access from gallery'**
+  String get accessFromGallery;
+
+  /// No description provided for @removeProfilePicture.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove Profile Picture'**
+  String get removeProfilePicture;
 }
 
 class _AppLocalizationsDelegate
