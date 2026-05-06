@@ -1837,6 +1837,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get invalidGiftCardCode => 'Invalid gift card code';
 
   @override
+  String get redeemCodeRequired => 'Please enter your gift card code';
+
+  @override
   String get redeemGift => 'Redeem Gift';
 
   @override
@@ -2634,6 +2637,63 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get recentReferrals => 'Recent Referrals';
+
+  @override
+  String get referralCodeCopied => 'Referral code copied to clipboard';
+
+  @override
+  String get referralProgramLoadError =>
+      'Could not load referral program. Please try again.';
+
+  @override
+  String get referralRetry => 'Retry';
+
+  @override
+  String referralYourReward(String reward) {
+    return 'You earn $reward';
+  }
+
+  @override
+  String referralFriendReward(String reward) {
+    return 'They get $reward';
+  }
+
+  @override
+  String get referralOrDivider => 'OR';
+
+  @override
+  String referralRewardDiscountPercent(String percent) {
+    return '$percent% off';
+  }
+
+  @override
+  String referralRewardDiscountAmount(String amount) {
+    return '$amount off';
+  }
+
+  @override
+  String get referralRewardFreeSession => 'Free session';
+
+  @override
+  String referralRewardFallback(String label) {
+    return '$label';
+  }
+
+  @override
+  String get referralInviteSent => 'Invitation sent';
+
+  @override
+  String get referralInvitePhoneTooLong =>
+      'Phone number must be at most 30 characters';
+
+  @override
+  String get referralHistoryLoadError => 'Could not load referral history.';
+
+  @override
+  String get referralHistoryRewardEarned => 'Rewarded';
+
+  @override
+  String get referralHistoryRewardPending => 'Pending';
 
   @override
   String joinedDaysAgo(int days) {

@@ -4,7 +4,6 @@ import 'package:pilates_app/config/theme/app_colors.dart';
 import 'package:pilates_app/config/theme/app_radius.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/core/localization/localization_extension.dart';
-import 'package:pilates_app/widgets/app_app_bar.dart';
 import 'package:pilates_app/widgets/app_button.dart';
 
 import '../../../config/theme/app_text_styles.dart';
@@ -101,13 +100,7 @@ class RedeemCardView extends StatelessWidget {
                 AppButton(
                   label: context.l10n.redeemYourGift,
                   onPressed: () {
-                    showModalBottomSheet(
-                      context: context,
-                      isScrollControlled: true,
-                      backgroundColor: Colors.transparent,
-                      barrierColor: AppColors.bottomSheetShadow,
-                      builder: (_) => RedeemGiftCardSheet(),
-                    );
+                    showRedeemGiftCardBottomSheet(context);
                   },
                   variant: AppButtonVariant.primary,
                 ),

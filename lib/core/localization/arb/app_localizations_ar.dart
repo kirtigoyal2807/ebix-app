@@ -1824,6 +1824,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get invalidGiftCardCode => 'رمز بطاقة الهدية غير صالح';
 
   @override
+  String get redeemCodeRequired => 'يرجى إدخال رمز بطاقة الهدية';
+
+  @override
   String get redeemGift => 'استرداد الهدية';
 
   @override
@@ -2616,6 +2619,63 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get recentReferrals => 'الإحالات الأخيرة';
+
+  @override
+  String get referralCodeCopied => 'تم نسخ رمز الإحالة';
+
+  @override
+  String get referralProgramLoadError =>
+      'تعذّر تحميل برنامج الإحالة. يُرجى المحاولة مرة أخرى.';
+
+  @override
+  String get referralRetry => 'إعادة المحاولة';
+
+  @override
+  String referralYourReward(String reward) {
+    return 'تربح $reward';
+  }
+
+  @override
+  String referralFriendReward(String reward) {
+    return 'يحصل صديقك على $reward';
+  }
+
+  @override
+  String get referralOrDivider => 'أو';
+
+  @override
+  String referralRewardDiscountPercent(String percent) {
+    return 'خصم $percent٪';
+  }
+
+  @override
+  String referralRewardDiscountAmount(String amount) {
+    return 'خصم $amount';
+  }
+
+  @override
+  String get referralRewardFreeSession => 'جلسة مجانية';
+
+  @override
+  String referralRewardFallback(String label) {
+    return '$label';
+  }
+
+  @override
+  String get referralInviteSent => 'تم إرسال الدعوة';
+
+  @override
+  String get referralInvitePhoneTooLong =>
+      'يجب ألا يزيد رقم الهاتف عن 30 حرفاً';
+
+  @override
+  String get referralHistoryLoadError => 'تعذّر تحميل سجل الإحالة.';
+
+  @override
+  String get referralHistoryRewardEarned => 'تم صرف المكافأة';
+
+  @override
+  String get referralHistoryRewardPending => 'قيد الانتظار';
 
   @override
   String joinedDaysAgo(int days) {

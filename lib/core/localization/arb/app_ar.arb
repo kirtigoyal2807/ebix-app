@@ -747,6 +747,7 @@
   "enterGiftCardCode": "أدخل رمز بطاقة الهدية",
   "enterRedeemCode": "أدخل رمز الاسترداد",
   "invalidGiftCardCode": "رمز بطاقة الهدية غير صالح",
+  "redeemCodeRequired": "يرجى إدخال رمز بطاقة الهدية",
   "redeemGift": "استرداد الهدية",
   "giftReceivedTitle": "لقد استلمت بطاقة هدية",
   "viewGift": "عرض الهدية",
@@ -1082,6 +1083,58 @@
 
   "recentReferrals": "الإحالات الأخيرة",
 
+  "referralCodeCopied": "تم نسخ رمز الإحالة",
+  "referralProgramLoadError": "تعذّر تحميل برنامج الإحالة. يُرجى المحاولة مرة أخرى.",
+  "referralRetry": "إعادة المحاولة",
+  "referralYourReward": "تربح {reward}",
+  "@referralYourReward": {
+    "placeholders": {
+      "reward": {
+        "type": "String"
+      }
+    }
+  },
+  "referralFriendReward": "يحصل صديقك على {reward}",
+  "@referralFriendReward": {
+    "placeholders": {
+      "reward": {
+        "type": "String"
+      }
+    }
+  },
+  "referralOrDivider": "أو",
+  "referralRewardDiscountPercent": "خصم {percent}٪",
+  "@referralRewardDiscountPercent": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "referralRewardDiscountAmount": "خصم {amount}",
+  "@referralRewardDiscountAmount": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "referralRewardFreeSession": "جلسة مجانية",
+  "referralRewardFallback": "{label}",
+  "@referralRewardFallback": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+
+  "referralInviteSent": "تم إرسال الدعوة",
+  "referralInvitePhoneTooLong": "يجب ألا يزيد رقم الهاتف عن 30 حرفاً",
+
+  "referralHistoryLoadError": "تعذّر تحميل سجل الإحالة.",
+  "referralHistoryRewardEarned": "تم صرف المكافأة",
+  "referralHistoryRewardPending": "قيد الانتظار",
 
   "joinedDaysAgo": "انضم منذ {days} أيام",
   "@joinedDaysAgo": {

@@ -17,6 +17,9 @@ class AppTextField extends StatefulWidget {
   final int? maxLines;
   final int? maxLength;
 
+  /// Shown under the field when [maxLength] is set (e.g. `12/100`).
+  final bool showCharacterCounter;
+
   /// When set, the parent owns disposal. Otherwise an internal controller is used.
   final TextEditingController? controller;
 
@@ -31,6 +34,7 @@ class AppTextField extends StatefulWidget {
     this.initialValue,
     this.maxLines,
     this.maxLength,
+    this.showCharacterCounter = true,
     this.controller,
   });
 
@@ -171,7 +175,8 @@ class _AppTextFieldState extends State<AppTextField> {
               ),
             ),
             Visibility(
-              visible: widget.maxLength != null,
+              visible:
+                  widget.maxLength != null && widget.showCharacterCounter,
               child: Positioned(
                 left: 12,
                 bottom: 8,
