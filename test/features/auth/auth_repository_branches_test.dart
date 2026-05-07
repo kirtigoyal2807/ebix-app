@@ -27,6 +27,7 @@ void main() {
                     'city': 'Riyadh',
                     'distance': '3 km',
                     'type': 'Premium',
+                    'rewardsCount': 9,
                   },
                 ],
                 'meta': {
@@ -57,6 +58,7 @@ void main() {
       expect(data.branches, hasLength(1));
       expect(data.branches.first.id, 10);
       expect(data.branches.first.title, 'Downtown');
+      expect(data.branches.first.rewardsCount, 9);
       expect(data.pagination, isA<PaginationMeta>());
       expect(data.pagination!.currentPage, 1);
       expect(data.pagination!.lastPage, 3);

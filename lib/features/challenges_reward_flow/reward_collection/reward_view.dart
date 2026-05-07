@@ -5,6 +5,7 @@ import 'package:pilates_app/features/challenges_reward_flow/reward_collection/vi
 import 'package:pilates_app/features/challenges_reward_flow/reward_collection/view/reward_overview_view.dart';
 import 'package:pilates_app/features/challenges_reward_flow/reward_collection/widget/reward_tab.dart';
 
+import 'package:pilates_app/features/auth/data/auth_repository.dart';
 import 'package:pilates_app/features/loyalty/data/loyalty_repository.dart';
 
 import '../../../config/theme/app_colors.dart';
@@ -19,7 +20,11 @@ class RewardView extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return BlocProvider(
-      create: (context) => RewardCubit(context.read<LoyaltyRepository>())
+      create: (context) => RewardCubit(
+        context.read<LoyaltyRepository>(),
+        context.read<AuthRepository>(),
+      )
+        ..loadBranches()
         ..loadRewards()
         ..loadPointsHistory(),
       child: DefaultTabController(

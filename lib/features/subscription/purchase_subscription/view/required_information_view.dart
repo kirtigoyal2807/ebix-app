@@ -10,6 +10,7 @@ import 'package:pilates_app/core/localization/arb/app_localizations.dart';
 import 'package:pilates_app/core/validation/contact_validators.dart';
 import 'package:pilates_app/core/validation/personal_information_validators.dart';
 import 'package:pilates_app/features/checkout/data/checkout_repository.dart';
+import 'package:pilates_app/features/subscription/purchase_subscription/data/subscription_emergency_contact_body.dart';
 import 'package:pilates_app/features/subscription/purchase_subscription/cubit/subscription_cubit.dart';
 import 'package:pilates_app/features/subscription/purchase_subscription/view/subscription_hosted_payment_flow.dart';
 import 'package:pilates_app/widgets/app_button.dart';
@@ -95,7 +96,7 @@ class _RequiredInformationViewState extends State<RequiredInformationView> {
         s.emergencyContactRelationship!.trim().isNotEmpty;
     final typeOk = s.idType != null && s.idType!.trim().isNotEmpty;
     final idLen = idNum.length;
-    final idOk = idLen >= 4 && idLen <= 48;
+    final idOk = idLen >= 1 && idLen <= 100;
 
     setState(() {
       _nameError = name.isEmpty
@@ -122,13 +123,49 @@ class _RequiredInformationViewState extends State<RequiredInformationView> {
       return;
     }
 
+    final messenger = ScaffoldMessenger.of(context);
     final checkoutId = cubit.state.checkoutSessionId.trim();
     final deferred = cubit.deferredPostPaymentReceiptIntent;
 
     setState(() => _isSubmitting = true);
     try {
-      if (deferred != null && checkoutId.isNotEmpty) {
-        final repo = context.read<CheckoutRepository>();
+      if (checkoutId.isEmpty) {
+        messenger.showSnackBar(
+          SnackBar(content: Text(l10n.giftCheckoutSessionRequired)),
+        );
+        return;
+      }
+
+      final repo = context.read<CheckoutRepository>();
+      final formattedEmergencyPhone = _formatEmergencyPhoneForApi(
+        _emergencyPhoneCountry,
+        cubit.state.emergencyContactPhone,
+      );
+
+      final emergencyResult = await repo.submitEmergencyContact(
+        checkoutId: checkoutId,
+        body: subscriptionEmergencyContactBody(
+          state: cubit.state,
+          formattedEmergencyPhone: formattedEmergencyPhone,
+        ),
+      );
+
+      if (!emergencyResult.isSuccess) {
+        if (!context.mounted) return;
+        final ex = emergencyResult.exceptionOrNull;
+        messenger.showSnackBar(
+          SnackBar(
+            content: Text(
+              (ex?.message != null && ex!.message!.trim().isNotEmpty)
+                  ? ex.message!
+                  : l10n.loginErrorGeneric,
+            ),
+          ),
+        );
+        return;
+      }
+
+      if (deferred != null) {
         try {
           await pushSubscriptionReceiptScreen(
             context,
@@ -152,6 +189,18 @@ class _RequiredInformationViewState extends State<RequiredInformationView> {
         setState(() => _isSubmitting = false);
       }
     }
+  }
+
+  /// Builds E.164-style emergency phone for the API (`dialCode` + national digits), max 30 chars.
+  String _formatEmergencyPhoneForApi(
+    CountryCode? country,
+    String nationalDigits,
+  ) {
+    final dial = country?.dialCode ?? '+966';
+    final digits = nationalDigits.replaceAll(RegExp(r'\D'), '');
+    final combined = '$dial$digits';
+    if (combined.length <= 30) return combined;
+    return combined.substring(0, 30);
   }
 
   @override
@@ -396,6 +445,7 @@ class _RequiredInformationViewState extends State<RequiredInformationView> {
                       label: l10n.idNumber,
                       hint: l10n.idNumber,
                       controller: _idNumberController,
+                      maxLength: 100,
                       errorText: _idNumberError,
                       onChanged: (_) {
                         cubit.updateIdNumber(_idNumberController.text);

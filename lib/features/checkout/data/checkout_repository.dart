@@ -27,6 +27,7 @@ import 'package:pilates_app/features/checkout/data/models/product_health_questio
 /// 6. `POST checkout/{id}/health-intake` — submit answers; response `data` is the
 ///    same shape as checkout detail, including object `metadata` (e.g.
 ///    `health_intake_id`) ([submitHealthIntake]).
+/// 6b. `POST checkout/{id}/emergency-contact` — emergency contact + ID ([submitEmergencyContact]).
 /// 7. After cart review: `POST checkout/{id}/apply-coupon` — voucher
 ///    ([applyCoupon]); adjust to `coupon` if needed.
 /// 8. Payment: `POST checkout/{id}/payment/intent` — same resource as
@@ -373,6 +374,79 @@ class CheckoutRepository extends BaseRepository {
 
     return post<CheckoutStartResult>(
       'checkout/${Uri.encodeComponent(id)}/health-intake',
+      data: body,
+      fromJson: (payload) {
+        if (payload is! Map) {
+          throw StateError('Expected checkout session object');
+        }
+        return CheckoutStartResult.fromJson(
+          Map<String, dynamic>.from(payload),
+        );
+      },
+    );
+  }
+
+  /// `POST /checkout/{checkout}/emergency-contact` — emergency contact + government ID.
+  ///
+  /// Body: `emergencyContactName`, `emergencyContactPhone` (max 30),
+  /// `emergencyContactRelationship`, `idType`, `idNumber` (max 100).
+  /// Success envelope `data` matches [CheckoutStartResult].
+  Future<ApiResult<CheckoutStartResult>> submitEmergencyContact({
+    required String checkoutId,
+    required Map<String, dynamic> body,
+  }) async {
+    final id = checkoutId.trim();
+    if (id.isEmpty) {
+      return ApiFailure(
+        NetworkException(
+          type: NetworkFailureType.validation,
+          message: 'Missing checkout session id.',
+        ),
+      );
+    }
+
+    final name = (body['emergencyContactName'] as String?)?.trim() ?? '';
+    final phone = (body['emergencyContactPhone'] as String?)?.trim() ?? '';
+    final relationship =
+        (body['emergencyContactRelationship'] as String?)?.trim() ?? '';
+    final idType = (body['idType'] as String?)?.trim() ?? '';
+    final idNumber = (body['idNumber'] as String?)?.trim() ?? '';
+
+    if (name.isEmpty ||
+        phone.isEmpty ||
+        relationship.isEmpty ||
+        idType.isEmpty ||
+        idNumber.isEmpty) {
+      return ApiFailure(
+        NetworkException(
+          type: NetworkFailureType.validation,
+          message: 'Complete emergency contact and ID fields.',
+        ),
+      );
+    }
+    if (phone.length > 30) {
+      return ApiFailure(
+        NetworkException(
+          type: NetworkFailureType.validation,
+          message: 'Emergency phone must be at most 30 characters.',
+        ),
+      );
+    }
+    if (idNumber.length > 100) {
+      return ApiFailure(
+        NetworkException(
+          type: NetworkFailureType.validation,
+          message: 'ID number must be at most 100 characters.',
+        ),
+      );
+    }
+
+    if (kDebugMode) {
+      debugPrint('[Checkout] request POST checkout/$id/emergency-contact');
+    }
+
+    return post<CheckoutStartResult>(
+      'checkout/${Uri.encodeComponent(id)}/emergency-contact',
       data: body,
       fromJson: (payload) {
         if (payload is! Map) {
