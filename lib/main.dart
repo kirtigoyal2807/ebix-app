@@ -130,6 +130,13 @@ class PilatesApp extends StatelessWidget {
             theme: AppTheme.light(),
             darkTheme: AppTheme.dark(),
             themeMode: state.themeMode,
+            builder: (context, child) {
+              return GestureDetector(
+                behavior: HitTestBehavior.translucent,
+                onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+                child: child ?? const SizedBox.shrink(),
+              );
+            },
             home: const AuthRootView(),
           );
         },
