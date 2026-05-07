@@ -101,6 +101,14 @@ class _SignUpPersonalInfoViewState extends State<SignUpPersonalInfoView> {
       return;
     }
 
+    final authState = context.read<AuthCubit>().state;
+    DateTime? dob;
+    try {
+      dob = DateFormat('dd/MM/yyyy').parse(authState.dateOfBirth.trim());
+    } catch (_) {
+      dob = null;
+    }
+
     context.read<AuthCubit>().register(
       firstName: first,
       lastName: last,
@@ -108,6 +116,7 @@ class _SignUpPersonalInfoViewState extends State<SignUpPersonalInfoView> {
       phone: phone,
       password: password,
       gender: _mapGender(_genderValue),
+      dob: dob,
     );
   }
 

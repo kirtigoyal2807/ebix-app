@@ -127,6 +127,9 @@ class _AppTextFieldState extends State<AppTextField> {
               // initialValue: widget.initialValue,
               obscureText: _obscure,
               keyboardType: widget.keyboardType,
+              textDirection: widget.keyboardType == TextInputType.phone
+                  ? TextDirection.ltr
+                  : null,
               style: AppTextStyles.textField(context),
               maxLines: widget.maxLines,
               decoration: InputDecoration(
