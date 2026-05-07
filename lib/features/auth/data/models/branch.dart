@@ -12,6 +12,7 @@ class Branch extends Equatable {
     this.lng,
     this.imageUrl,
     this.isActive = true,
+    this.rewardsCount = 0,
   });
 
   final int id;
@@ -23,17 +24,13 @@ class Branch extends Equatable {
   final double? lng;
   final String? imageUrl;
   final bool isActive;
+  final int rewardsCount;
 
   factory Branch.fromJson(Map<String, dynamic> json) {
     return Branch(
       id: _asInt(json['id']),
       title: _string(json['name'] ?? json['title'] ?? json['branch_name']),
-      city: _string(
-        json['city'] ??
-            json['city_name'] ??
-            json['address'] ??
-            json['location'],
-      ),
+      city: _cityFromJson(json),
       distance: _string(json['distance_label'] ?? json['distance'] ?? json['km_away']),
       typeLabel: _typeLabelFromJson(json),
       lat: _asDouble(json['lat'] ?? json['latitude']),
@@ -42,6 +39,7 @@ class Branch extends Equatable {
         json['image_url'] ?? json['imageUrl'] ?? json['image'] ?? json['photo'],
       ),
       isActive: json['isActive'] as bool? ?? json['active'] as bool? ?? true,
+      rewardsCount: _asInt(json['rewardsCount'] ?? json['rewards_count']),
     );
   }
 
@@ -55,6 +53,24 @@ class Branch extends Equatable {
     if (v == null) return '';
     final s = '$v'.trim();
     return s;
+  }
+
+  /// Prefer structured city/address; avoid using `location` when it is a maps URL.
+  static String _cityFromJson(Map<String, dynamic> json) {
+    final direct = _string(
+      json['city'] ?? json['city_name'] ?? json['address'],
+    );
+    if (direct.isNotEmpty) return direct;
+    final loc = _string(json['location']);
+    if (loc.isNotEmpty && !_isProbablyUrl(loc)) return loc;
+    return '';
+  }
+
+  static bool _isProbablyUrl(String s) {
+    final t = s.trim().toLowerCase();
+    if (t.startsWith('http://') || t.startsWith('https://')) return true;
+    if (t.contains('maps.app') || t.contains('goo.gl')) return true;
+    return false;
   }
 
   static String _typeLabelFromJson(Map<String, dynamic> json) {
@@ -86,5 +102,6 @@ class Branch extends Equatable {
   }
 
   @override
-  List<Object?> get props => [id, title, city, distance, typeLabel, lat, lng, imageUrl, isActive];
+  List<Object?> get props =>
+      [id, title, city, distance, typeLabel, lat, lng, imageUrl, isActive, rewardsCount];
 }

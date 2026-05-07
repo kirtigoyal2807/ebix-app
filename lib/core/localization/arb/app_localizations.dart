@@ -5120,6 +5120,18 @@ abstract class AppLocalizations {
   /// **'Select Branch'**
   String get select_branch;
 
+  /// No description provided for @rewards_all_locations_title.
+  ///
+  /// In en, this message translates to:
+  /// **'All locations'**
+  String get rewards_all_locations_title;
+
+  /// No description provided for @rewards_at_branch_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} rewards available'**
+  String rewards_at_branch_subtitle(int count);
+
   /// No description provided for @featurePriorityBookingDesc.
   ///
   /// In en, this message translates to:

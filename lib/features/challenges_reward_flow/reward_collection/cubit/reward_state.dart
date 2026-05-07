@@ -37,10 +37,10 @@ class RewardState extends Equatable {
     return RewardState(
       rewardFilterList: RewardFilter.values,
       branchList: [
-        BranchModel(
+        const BranchModel(
           id: 0,
-          title: 'All locations',
-          subTitle: '',
+          title: '',
+          rewardsCount: 0,
         ),
       ],
       rewardsLoadStatus: RewardListLoadStatus.initial,

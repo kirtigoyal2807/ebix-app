@@ -19,6 +19,9 @@ class SelectBranchSheet extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return BlocBuilder<RewardCubit, RewardState>(
       builder: (context, state) {
+        final maxListHeight = MediaQuery.sizeOf(context).height * 0.62;
+        final onSurface = Theme.of(context).colorScheme.onSurface;
+
         return Material(
           color: isDark ? AppColors.homeBackground : Colors.white,
           borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
@@ -26,73 +29,60 @@ class SelectBranchSheet extends StatelessWidget {
             top: false,
             child: Column(
               mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Padding(
-                  padding: const EdgeInsets.symmetric(vertical: AppSpacing.lg),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  padding: EdgeInsetsDirectional.only(
+                    start: AppSpacing.lg,
+                    end: AppSpacing.base,
+                    top: AppSpacing.lg,
+                    bottom: AppSpacing.sm,
+                  ),
+                  child: Row(
                     children: [
-                      // Header with title and close button
-                      Padding(
-                        padding: EdgeInsets.only(
-                          left: isRTL ? AppSpacing.base : AppSpacing.lg,
-                          right: isRTL ? AppSpacing.lg : AppSpacing.base,
-                        ),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: AppText(
-                               context.l10n.select_branch,
-                                style: AppTextStyles.bottomSheetTitle,
-                              ),
-                            ),
-                            Align(
-                              alignment: Alignment.centerRight,
-                              child: IconButton(
-                                icon: const Icon(
-                                  Icons.close,
-                                  color: Color(0xff1C1B1F),
-                                ),
-                                onPressed: () => Navigator.of(context).pop(),
-                              ),
-                            ),
-                          ],
+                      Expanded(
+                        child: AppText(
+                          context.l10n.select_branch,
+                          style: AppTextStyles.bottomSheetTitle,
+                          textAlign: isRTL ? TextAlign.right : TextAlign.left,
                         ),
                       ),
-
-                      const SizedBox(height: AppSpacing.lmd),
-
-                      ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: state.branchList.length,
-                        physics: NeverScrollableScrollPhysics(),
-                        itemBuilder: (context, index) {
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: AppSpacing.lg,
-                              vertical: AppSpacing.xi,
-                            ),
-                            child: Column(
-                              children: [
-                                _BranchOption(
-                                  title: state.branchList[index].title,
-                                  subTitle: state.branchList[index].subTitle,
-                                  selected: state.selectedBranch == index,
-                                  onTap: () {
-                                    Navigator.of(context).pop();
-                                    context
-                                        .read<RewardCubit>()
-                                        .setSelectedBranch(index);
-                                  },
-                                ),
-                              ],
-                            ),
-                          );
-                        },
+                      IconButton(
+                        visualDensity: VisualDensity.compact,
+                        icon: Icon(Icons.close, color: onSurface),
+                        onPressed: () => Navigator.of(context).pop(),
                       ),
                     ],
+                  ),
+                ),
+                const SizedBox(height: AppSpacing.xs),
+                ConstrainedBox(
+                  constraints: BoxConstraints(maxHeight: maxListHeight),
+                  child: ListView.separated(
+                    padding: const EdgeInsets.fromLTRB(
+                      AppSpacing.lg,
+                      0,
+                      AppSpacing.lg,
+                      AppSpacing.lg,
+                    ),
+                    shrinkWrap: true,
+                    physics: const ClampingScrollPhysics(),
+                    itemCount: state.branchList.length,
+                    separatorBuilder: (_, __) =>
+                        const SizedBox(height: AppSpacing.sm),
+                    itemBuilder: (context, index) {
+                      return _BranchOption(
+                        title: state.branchList[index].id == 0
+                            ? context.l10n.rewards_all_locations_title
+                            : state.branchList[index].title,
+                        rewardsCount: state.branchList[index].rewardsCount,
+                        selected: state.selectedBranch == index,
+                        onTap: () {
+                          Navigator.of(context).pop();
+                          context.read<RewardCubit>().selectBranchAtIndex(index);
+                        },
+                      );
+                    },
                   ),
                 ),
               ],
@@ -106,20 +96,19 @@ class SelectBranchSheet extends StatelessWidget {
 
 class _BranchOption extends StatelessWidget {
   final String title;
-  final String subTitle;
+  final int rewardsCount;
   final bool selected;
   final VoidCallback onTap;
 
   const _BranchOption({
     required this.title,
-    required this.subTitle,
+    required this.rewardsCount,
     required this.selected,
     required this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return InkWell(
@@ -147,6 +136,7 @@ class _BranchOption extends StatelessWidget {
               isDark ? AppColors.homeBackground : AppColors.whiteColor,
         ),
         child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
               child: Column(
@@ -154,51 +144,53 @@ class _BranchOption extends StatelessWidget {
                 children: [
                   AppText(
                     title,
+                    maxLines: 3,
                     style: (context) => AppTextStyles.experienceButton(
                       context,
-                    ).copyWith(fontSize: 14, height: 1.2),
+                    ).copyWith(fontSize: 14, height: 1.25),
                   ),
-                  SizedBox(height: AppSpacing.xs,),
+                  SizedBox(height: AppSpacing.xs),
                   AppText(
-                    subTitle,
-                    style: (context) => AppTextStyles.bodyText(
-                      context,
-                    ).copyWith(fontSize: 12, height: 1.4),
+                    context.l10n.rewards_at_branch_subtitle(rewardsCount),
+                    maxLines: 1,
+                    style: (context) {
+                      final base = AppTextStyles.bodyText(context).copyWith(
+                        fontSize: 12,
+                        height: 1.35,
+                      );
+                      return base.copyWith(
+                        color: isDark
+                            ? AppColors.goldStarColor.withValues(alpha: 0.95)
+                            : AppColors.goldStarColor,
+                      );
+                    },
                   ),
                 ],
               ),
             ),
-            if (selected)
-              Container(
-                width: 20,
-                height: 20,
-                decoration: BoxDecoration(
-                  color:
-                      (
-                      // isDark
-                      // ? AppColors.languageIconDark
-                      // :
-                      AppColors.primary),
-                  borderRadius: BorderRadius.circular(6),
-                ),
-                child: Center(
-                  child: SvgPicture.asset(
-                    "assets/images/svg/ic_checkbox_white.svg",
-                    width: 10,
-                    height: 10,
-                    fit: BoxFit.contain,
-
-                    // colorFilter: ColorFilter.mode(
-                    //   selected ? theme.colorScheme.primary : theme.hintColor,
-                    //   BlendMode.srcIn,
-                    // ),
-                    alignment: Alignment.center,
-                  ),
-                ),
-                // child: const Icon(Icons.check, color: Colors.white, size: 14),
-              )
-            else
-              const SizedBox(width: 20),
+            SizedBox(width: AppSpacing.sm),
+            Padding(
+              padding: const EdgeInsets.only(top: 2),
+              child: selected
+                  ? Container(
+                      width: 20,
+                      height: 20,
+                      decoration: BoxDecoration(
+                        color: AppColors.primary,
+                        borderRadius: BorderRadius.circular(6),
+                      ),
+                      child: Center(
+                        child: SvgPicture.asset(
+                          'assets/images/svg/ic_checkbox_white.svg',
+                          width: 10,
+                          height: 10,
+                          fit: BoxFit.contain,
+                          alignment: Alignment.center,
+                        ),
+                      ),
+                    )
+                  : const SizedBox(width: 20, height: 20),
+            ),
           ],
         ),
       ),
