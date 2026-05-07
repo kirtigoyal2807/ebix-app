@@ -1,5 +1,19 @@
 import 'package:pilates_app/core/models/membership_snapshot.dart';
 
+int? _jsonInt(dynamic value) {
+  if (value == null) return null;
+  if (value is int) return value;
+  if (value is num) return value.toInt();
+  return int.tryParse(value.toString());
+}
+
+double? _jsonDouble(dynamic value) {
+  if (value == null) return null;
+  if (value is double) return value;
+  if (value is num) return value.toDouble();
+  return double.tryParse(value.toString());
+}
+
 /// Subset of profile fields from `POST /auth/login` → `data.user`, or [`GET /auth/me`].
 class AuthUser {
   const AuthUser({
@@ -279,7 +293,7 @@ class UserHomeBranch {
 
   factory UserHomeBranch.fromJson(Map<String, dynamic> json) {
     return UserHomeBranch(
-      id: json['id'] as int?,
+      id: _jsonInt(json['id']),
       name: json['name'] as String?,
       slug: json['slug'] as String?,
       code: json['code'] as String?,
@@ -302,7 +316,7 @@ class UserBrand {
   final String? name;
 
   factory UserBrand.fromJson(Map<String, dynamic> json) {
-    return UserBrand(id: json['id'] as int?, name: json['name'] as String?);
+    return UserBrand(id: _jsonInt(json['id']), name: json['name'] as String?);
   }
 
   Map<String, dynamic> toJson() => {'id': id, 'name': name};
@@ -320,7 +334,8 @@ class UserGoals {
     return UserGoals(
       experience: json['experience'] as String?,
       goal: json['goal'] as String?,
-      monthlyGoal: json['monthlyGoal'] as int?,
+      monthlyGoal:
+          _jsonInt(json['monthlyGoal']) ?? _jsonInt(json['monthly_goal']),
     );
   }
 
@@ -370,7 +385,7 @@ class UserSubscription {
       expiresAt: json['expiresAt'] as String?,
       isActive: json['isActive'] as bool?,
       isPaid: json['isPaid'] as bool?,
-      pricePaid: (json['pricePaid'] as num?)?.toDouble(),
+      pricePaid: _jsonDouble(json['pricePaid']),
       isTransferable: json['isTransferable'] as bool?,
       product: json['product'] != null
           ? SubscriptionProduct.fromJson(
@@ -411,7 +426,7 @@ class SubscriptionProduct {
 
   factory SubscriptionProduct.fromJson(Map<String, dynamic> json) {
     return SubscriptionProduct(
-      id: json['id'] as int?,
+      id: _jsonInt(json['id']),
       name: json['name'] as String?,
     );
   }
@@ -541,9 +556,9 @@ class SubscriptionSessions {
 
   factory SubscriptionSessions.fromJson(Map<String, dynamic> json) {
     return SubscriptionSessions(
-      total: json['total'] as int?,
-      used: json['used'] as int?,
-      remaining: json['remaining'] as int?,
+      total: _jsonInt(json['total']),
+      used: _jsonInt(json['used']),
+      remaining: _jsonInt(json['remaining']),
     );
   }
 
