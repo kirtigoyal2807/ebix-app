@@ -45,6 +45,10 @@ class AuthState extends Equatable {
 
   final AuthUser? user;
 
+  /// ID of the last `pendingGift` for which we surfaced the redemption popup.
+  /// Used to ensure the popup is shown only once per gift across home-tab visits.
+  final String? lastShownPendingGiftId;
+
   final AccountProfileRefreshStatus accountProfileRefreshStatus;
 
   /// One-shot: phone OTP request succeeded — UI shows snackbar then clears.
@@ -112,6 +116,7 @@ class AuthState extends Equatable {
     required this.loginFieldErrors,
     required this.signInPendingPhone,
     this.user,
+    this.lastShownPendingGiftId,
     required this.accountProfileRefreshStatus,
     required this.showPhoneOtpSuccess,
     required this.registerUiStatus,
@@ -158,6 +163,7 @@ class AuthState extends Equatable {
       loginFieldErrors: const {},
       signInPendingPhone: '',
       user: null,
+      lastShownPendingGiftId: null,
       accountProfileRefreshStatus: AccountProfileRefreshStatus.idle,
       showPhoneOtpSuccess: false,
       registerUiStatus: RegisterUiStatus.idle,
@@ -206,6 +212,8 @@ class AuthState extends Equatable {
     bool clearSignInPendingPhone = false,
     AuthUser? user,
     bool clearUser = false,
+    String? lastShownPendingGiftId,
+    bool clearLastShownPendingGiftId = false,
     AccountProfileRefreshStatus? accountProfileRefreshStatus,
     bool? showPhoneOtpSuccess,
     RegisterUiStatus? registerUiStatus,
@@ -255,6 +263,9 @@ class AuthState extends Equatable {
           ? ''
           : (signInPendingPhone ?? this.signInPendingPhone),
       user: clearUser ? null : (user ?? this.user),
+      lastShownPendingGiftId: clearLastShownPendingGiftId
+          ? null
+          : (lastShownPendingGiftId ?? this.lastShownPendingGiftId),
       accountProfileRefreshStatus:
           accountProfileRefreshStatus ?? this.accountProfileRefreshStatus,
       showPhoneOtpSuccess: showPhoneOtpSuccess ?? this.showPhoneOtpSuccess,
@@ -388,6 +399,7 @@ class AuthState extends Equatable {
     loginFieldErrors,
     signInPendingPhone,
     user,
+    lastShownPendingGiftId,
     accountProfileRefreshStatus,
     showPhoneOtpSuccess,
     registerUiStatus,

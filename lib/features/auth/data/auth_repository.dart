@@ -249,9 +249,10 @@ class AuthRepository extends BaseRepository {
   }
 
   /// Customer profile — requires JWT (saved after login).
+  /// Uses `GET /auth/me` which returns full profile with goals, subscriptions, etc.
   Future<ApiResult<AuthUser>> getProfile() {
     return get<AuthUser>(
-      'customers/profile',
+      'auth/me',
       fromJson: (json) => AuthUser.fromJson(json as Map<String, dynamic>),
     );
   }

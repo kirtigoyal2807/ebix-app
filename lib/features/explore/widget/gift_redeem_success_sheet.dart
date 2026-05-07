@@ -11,7 +11,11 @@ import 'package:pilates_app/widgets/app_text.dart';
 import 'package:pilates_app/widgets/app_text_field.dart';
 
 class GiftRedeemSuccessSheet extends StatelessWidget {
-  const GiftRedeemSuccessSheet({super.key});
+  const GiftRedeemSuccessSheet({super.key, this.onContinue});
+
+  /// When provided, replaces the legacy "open ReceiveGiftSheet again" behavior
+  /// so callers (e.g. the pending-gift home flow) can dismiss and refresh state.
+  final VoidCallback? onContinue;
 
   @override
   Widget build(BuildContext context) {
@@ -80,6 +84,10 @@ class GiftRedeemSuccessSheet extends StatelessWidget {
               AppButton(
                 label: context.l10n.continueTxt,
                 onPressed: () {
+                  if (onContinue != null) {
+                    onContinue!();
+                    return;
+                  }
                   Navigator.of(context).pop();
                   showModalBottomSheet(
                     context: context,

@@ -485,6 +485,7 @@ class AuthCubit extends Cubit<AuthState> {
           .copyWith(
             flow: AuthFlow.signIn,
             clearUser: true,
+            clearLastShownPendingGiftId: true,
             loginUiStatus: LoginUiStatus.idle,
             loginErrorMessage: '',
             loginFieldErrors: {},
@@ -1033,7 +1034,7 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
-  /// [`GET customers/profile`] after switching to the Account tab (not when already on it).
+  /// [`GET /auth/me`] after switching to the Account tab (not when already on it).
   Future<void> refreshProfileWhenSelectingAccountTab() async {
     emit(
       state.copyWith(
@@ -1049,6 +1050,14 @@ class AuthCubit extends Cubit<AuthState> {
         ),
       );
     }
+  }
+
+  /// Mark the redemption popup as already presented for [giftId] so we don't
+  /// re-open it on the next home-tab visit. Cleared on logout / when a new gift
+  /// arrives (different ID).
+  void markPendingGiftPopupShown(String giftId) {
+    if (state.lastShownPendingGiftId == giftId) return;
+    emit(state.copyWith(lastShownPendingGiftId: giftId));
   }
 
   Map<String, String> _mapFieldErrors(NetworkException exception) {

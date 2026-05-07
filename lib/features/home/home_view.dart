@@ -5,6 +5,8 @@ import 'package:pilates_app/config/theme/app_colors.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/core/localization/localization_extension.dart';
+import 'package:pilates_app/features/explore/view/redeem_card_view.dart';
+import 'package:pilates_app/features/explore/widget/receive_gift_sheet.dart';
 import 'package:pilates_app/widgets/app_text.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../account/account_view.dart';
@@ -102,25 +104,30 @@ class _HomeShell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<HomeCubit, HomeState>(
-      builder: (context, state) {
-        final isDark = Theme.of(context).brightness == Brightness.dark;
-        return Scaffold(
-          backgroundColor: isDark
-              ? AppColors.homeBackground
-              : AppColors.whiteColor,
-          body: IndexedStack(
-            index: state.currentIndex,
-            children: [
-              const HomeContentView(),
-              BookingView(initialTab: state.selectedBookingTab),
-              const ExploreView(),
-              const AccountView(),
-            ],
-          ),
-          bottomNavigationBar: _buildBottomNavBar(context, state.currentIndex),
-        );
-      },
+    return _PendingGiftPopupTrigger(
+      child: BlocBuilder<HomeCubit, HomeState>(
+        builder: (context, state) {
+          final isDark = Theme.of(context).brightness == Brightness.dark;
+          return Scaffold(
+            backgroundColor: isDark
+                ? AppColors.homeBackground
+                : AppColors.whiteColor,
+            body: IndexedStack(
+              index: state.currentIndex,
+              children: [
+                const HomeContentView(),
+                BookingView(initialTab: state.selectedBookingTab),
+                const ExploreView(),
+                const AccountView(),
+              ],
+            ),
+            bottomNavigationBar: _buildBottomNavBar(
+              context,
+              state.currentIndex,
+            ),
+          );
+        },
+      ),
     );
   }
 
@@ -149,7 +156,9 @@ class _HomeShell extends StatelessWidget {
           final homeCubit = context.read<HomeCubit>();
           final previousIndex = homeCubit.state.currentIndex;
           homeCubit.setTab(index);
-          if (index == 3 && previousIndex != 3) {
+          // Refresh profile when switching to home tab (0) or account tab (3)
+          if ((index == 0 && previousIndex != 0) ||
+              (index == 3 && previousIndex != 3)) {
             context.read<AuthCubit>().refreshProfileWhenSelectingAccountTab();
           }
         },
@@ -225,6 +234,81 @@ class _HomeShell extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+/// Surfaces the [`/auth/me`] `pendingGift` redemption popup when the home tab
+/// is active, the gift's `canBeRedeemed` is true, and we haven't already shown
+/// it for the current gift id (tracked in [AuthState.lastShownPendingGiftId]).
+class _PendingGiftPopupTrigger extends StatefulWidget {
+  const _PendingGiftPopupTrigger({required this.child});
+
+  final Widget child;
+
+  @override
+  State<_PendingGiftPopupTrigger> createState() =>
+      _PendingGiftPopupTriggerState();
+}
+
+class _PendingGiftPopupTriggerState extends State<_PendingGiftPopupTrigger> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      _maybeShow(context.read<AuthCubit>().state);
+    });
+  }
+
+  void _maybeShow(AuthState state) {
+    if (!mounted) return;
+    final homeIndex = context.read<HomeCubit>().state.currentIndex;
+    if (homeIndex != 0) return;
+    final gift = state.user?.pendingGift;
+    if (gift == null) return;
+    if (gift.canBeRedeemed != true) return;
+    final id = gift.id;
+    if (id == null || id.isEmpty) return;
+    if (state.lastShownPendingGiftId == id) return;
+
+    context.read<AuthCubit>().markPendingGiftPopupShown(id);
+    showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      barrierColor: AppColors.bottomSheetShadow,
+      builder: (_) => ReceiveGiftSheet(
+        pendingGift: gift,
+        onViewGift: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (_) => RedeemCardView(
+                pendingGift: gift,
+                onRedeemed: () {
+                  context
+                      .read<AuthCubit>()
+                      .refreshProfileWhenSelectingAccountTab();
+                },
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocListener<AuthCubit, AuthState>(
+      listenWhen: (previous, current) {
+        final prev = previous.user?.pendingGift?.id;
+        final curr = current.user?.pendingGift?.id;
+        return prev != curr ||
+            previous.lastShownPendingGiftId != current.lastShownPendingGiftId;
+      },
+      listener: (_, state) => _maybeShow(state),
+      child: widget.child,
     );
   }
 }
