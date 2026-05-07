@@ -53,6 +53,8 @@ void main() {
 
       await tester.pumpAndSettle();
 
+      await tester.tap(find.text('Build Strength'));
+      await tester.pump();
       await tester.tap(find.byKey(const ValueKey('sign_up_goal_submit')));
       await tester.pumpAndSettle();
 

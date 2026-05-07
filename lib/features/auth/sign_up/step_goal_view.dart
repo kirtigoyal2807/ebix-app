@@ -24,7 +24,7 @@ class SignUpGoalView extends StatefulWidget {
 }
 
 class _SignUpGoalViewState extends State<SignUpGoalView> {
-  int _selectedIndex = 0;
+  int? _selectedIndex;
   int _monthlyClasses = 8;
 
   @override
@@ -201,14 +201,14 @@ class _SignUpGoalViewState extends State<SignUpGoalView> {
                     key: const ValueKey('sign_up_goal_submit'),
                     label: context.l10n.continueTxt,
                     isLoading: loading,
-                    onPressed: loading
+                    onPressed: loading || _selectedIndex == null
                         ? null
                         : () {
                             context
                                 .read<AuthCubit>()
                                 .submitSignUpGoalAndAdvance(
                                   goal:
-                                      PostLoginGoalApi.ordered[_selectedIndex],
+                                      PostLoginGoalApi.ordered[_selectedIndex!],
                                   monthlyGoal: _monthlyClasses,
                                 );
                           },

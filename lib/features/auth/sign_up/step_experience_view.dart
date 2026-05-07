@@ -21,7 +21,7 @@ class SignUpExperienceView extends StatefulWidget {
 }
 
 class _SignUpExperienceViewState extends State<SignUpExperienceView> {
-  int _selectedIndex = 0;
+  int? _selectedIndex;
 
   static const _api = [
     PostLoginExperienceApi.beginner,
@@ -124,11 +124,13 @@ class _SignUpExperienceViewState extends State<SignUpExperienceView> {
             AppButton(
               key: const ValueKey('sign_up_experience_continue'),
               label: context.l10n.continueTxt,
-              onPressed: () {
-                context.read<AuthCubit>().continueSignUpExperience(
-                  _api[_selectedIndex],
-                );
-              },
+              onPressed: _selectedIndex == null
+                  ? null
+                  : () {
+                      context.read<AuthCubit>().continueSignUpExperience(
+                        _api[_selectedIndex!],
+                      );
+                    },
             ),
           ],
         ),
