@@ -217,7 +217,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get experience => 'Experience';
 
   @override
-  String get selectedBranch => 'Selected Branch';
+  String get selectedBranch => 'Select Branch';
 
   @override
   String get selectLanguage => 'Select Language';
@@ -319,7 +319,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get readyToFlow => 'Ready to flow?';
 
   @override
-  String get bookNow => 'Book Now';
+  String get bookNow => 'Book\nNow';
 
   @override
   String get exploreBranches => 'Explore Branches';
@@ -483,7 +483,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get tomorrow => 'Tomorrow';
 
   @override
-  String get thisWeek => 'This Week';
+  String get thisWeek => 'This\nWeek';
 
   @override
   String get nextWeek => 'Next Week';
@@ -1646,7 +1646,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get giftProcessedMessage =>
-      'Your gift subscription has been processed';
+      'Your gift subscription has been\nprocessed';
 
   @override
   String get deliverySummary => 'Delivery Summary';
@@ -2905,10 +2905,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get reviews => 'Reviews';
 
   @override
-  String get classesTaught => 'Classes Taught';
+  String get classesTaught => 'Classes\nTaught';
 
   @override
-  String get returnRate => 'Return Rate';
+  String get returnRate => 'Return\nRate';
 
   @override
   String get about => 'About';
@@ -3089,4 +3089,16 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get remove_profile_picture => 'Remove Profile Picture';
+
+  @override
+  String get rewardsEarned => 'Rewards Earned';
+
+  @override
+  String get pointsAndAchievements => 'Points and achievements';
+
+  @override
+  String get selectDOB => 'Select Date of birth';
+
+  @override
+  String get reformerTower => 'Reformer & Tower Equipment Specialist';
 }

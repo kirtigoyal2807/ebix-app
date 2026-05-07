@@ -209,7 +209,7 @@ class _SignUpBranchViewState extends State<SignUpBranchView> {
                               ],
                             ),
                           ),
-                          const SizedBox(height: AppSpacing.xxl),
+                          const SizedBox(height: AppSpacing.xl),
                           SignUpHeader(
                             title: context.l10n.branchTitle,
                             subtitle: context.l10n.branchSubtitle,

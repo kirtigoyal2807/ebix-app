@@ -52,23 +52,25 @@ class PlanCard extends StatelessWidget {
               border: Border.all(
                 color: isDark ? AppColors.greyText : AppColors.buttonBorder,
               ),
-              boxShadow: [
-                AppShadows.lightShadow,
-                AppShadows.mediumShadow,
-                AppShadows.mediumHeavyShadow,
-                BoxShadow(
-                  color: AppColors.shadowColor.withValues(alpha: 0.01),
-                  offset: const Offset(0, 64),
-                  blurRadius: 25,
-                  spreadRadius: 0,
-                ),
-                BoxShadow(
-                  color: AppColors.shadowColor.withValues(alpha: 0.00),
-                  offset: const Offset(0, 99),
-                  blurRadius: 28,
-                  spreadRadius: 0,
-                ),
-              ],
+              boxShadow: isDark
+                  ? null
+                  : [
+                      AppShadows.lightShadow,
+                      AppShadows.mediumShadow,
+                      AppShadows.mediumHeavyShadow,
+                      BoxShadow(
+                        color: AppColors.shadowColor.withValues(alpha: 0.01),
+                        offset: const Offset(0, 64),
+                        blurRadius: 25,
+                        spreadRadius: 0,
+                      ),
+                      BoxShadow(
+                        color: AppColors.shadowColor.withValues(alpha: 0.00),
+                        offset: const Offset(0, 99),
+                        blurRadius: 28,
+                        spreadRadius: 0,
+                      ),
+                    ],
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

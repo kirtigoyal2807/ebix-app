@@ -18,7 +18,7 @@ class BookingTabs extends StatelessWidget {
     return BlocBuilder<BookingCubit, BookingState>(
       builder: (context, state) {
         return Container(
-          margin: EdgeInsets.only(top: AppSpacing.lmd),
+          margin: EdgeInsets.only(top: AppSpacing.md),
           decoration: BoxDecoration(
             border: Border(
               bottom: BorderSide(
@@ -72,6 +72,7 @@ class _TabItem extends StatelessWidget {
         child: Container(
           // padding: const EdgeInsets.symmetric(vertical: AppSpacing.md),
           margin: const EdgeInsets.symmetric(horizontal: 24),
+          padding: EdgeInsets.only(bottom: AppSpacing.base),
           decoration: BoxDecoration(
             border: Border(
               bottom: BorderSide(

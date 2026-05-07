@@ -3068,4 +3068,16 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get remove_profile_picture => 'إزالة صورة الملف الشخصي';
+
+  @override
+  String get rewardsEarned => 'المكافآت المكتسبة';
+
+  @override
+  String get pointsAndAchievements => 'النقاط والإنجازات';
+
+  @override
+  String get selectDOB => 'اختر تاريخ الميلاد';
+
+  @override
+  String get reformerTower => 'أخصائي أجهزة الريفورمر والتاور';
 }

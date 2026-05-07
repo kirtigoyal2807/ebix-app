@@ -52,6 +52,7 @@ class GoalsView extends StatelessWidget {
                           totalSteps: 6,
                           isDark: isDark,
                         ),
+                        const SizedBox(height: AppSpacing.xl),
                         AppText(
                           l10n.goals,
                           style: (style) => AppTextStyles.gelasioMedium(

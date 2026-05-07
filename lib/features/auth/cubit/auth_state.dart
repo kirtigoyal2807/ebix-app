@@ -196,7 +196,7 @@ class AuthState extends Equatable {
       signUpHomeBranchErrorMessage: '',
       signUpHomeBranchFieldErrors: const {},
       selectedSignUpBranchId: null,
-      dateOfBirth: DateFormat("dd/MM/yyyy").format(DateTime.now()),
+      dateOfBirth: '',
     );
   }
 

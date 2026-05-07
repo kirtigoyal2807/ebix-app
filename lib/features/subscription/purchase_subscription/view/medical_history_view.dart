@@ -125,6 +125,7 @@ class _MedicalHistoryViewState extends State<MedicalHistoryView> {
                         totalSteps: 6,
                         isDark: isDark,
                       ),
+                      const SizedBox(height: AppSpacing.xl),
                       AppText(
                         l10n.medicalHistory,
                         style: (style) => AppTextStyles.heading1(context),

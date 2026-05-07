@@ -147,4 +147,8 @@ class PushNotificationCubit extends Cubit<PushNotificationState> {
       },
     });
   }
+
+  void changeRewardEarn(bool value) {
+    emit(state.copyWith(rewardEarn: value));
+  }
 }

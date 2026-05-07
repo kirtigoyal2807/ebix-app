@@ -182,7 +182,8 @@ class ProgressCard extends StatelessWidget {
             ),
             const SizedBox(height: AppSpacing.md),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Expanded(
                   child: _buildProgressStat(

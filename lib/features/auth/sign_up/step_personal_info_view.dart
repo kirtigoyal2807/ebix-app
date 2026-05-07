@@ -181,7 +181,7 @@ class _SignUpPersonalInfoViewState extends State<SignUpPersonalInfoView> {
                             ],
                           ),
                         ),
-                        const SizedBox(height: AppSpacing.xxl),
+                        const SizedBox(height: AppSpacing.xl),
                         SignUpHeader(
                           title: context.l10n.letsGo,
                           subtitle: context.l10n.tellYourName,
@@ -271,12 +271,19 @@ class _SignUpPersonalInfoViewState extends State<SignUpPersonalInfoView> {
                         BlocBuilder<AuthCubit, AuthState>(
                           builder: (context, state) {
                             return AppTextField(
+                              style: AppTextStyles.textField(context).copyWith(
+                                color: state.dateOfBirth.isEmpty
+                                    ? AppColors.lightGrey
+                                    : null,
+                              ),
                               onTap: () async {
                                 final DateTime? picked = await showDatePicker(
                                   context: context,
-                                  initialDate: DateFormat(
-                                    "dd/MM/yyyy",
-                                  ).parse(state.dateOfBirth),
+                                  initialDate: state.dateOfBirth.isEmpty
+                                      ? DateTime.now()
+                                      : DateFormat(
+                                          "dd/MM/yyyy",
+                                        ).parse(state.dateOfBirth),
                                   firstDate: DateTime(1900),
                                   lastDate: DateTime(2100),
                                 );
@@ -287,9 +294,12 @@ class _SignUpPersonalInfoViewState extends State<SignUpPersonalInfoView> {
                                 }
                               },
                               readOnly: true,
-                              initialValue: state.dateOfBirth,
+                              initialValue: state.dateOfBirth.isEmpty
+                                  ? context.l10n.selectDOB
+                                  : state.dateOfBirth,
                               label: context.l10n.date_of_birth,
-                              hint: '',
+
+                              hint: context.l10n.selectDOB,
                               keyboardType: TextInputType.emailAddress,
                             );
                           },

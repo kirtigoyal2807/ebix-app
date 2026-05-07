@@ -7,6 +7,7 @@ import 'package:pilates_app/features/checkout/data/models/membership_receipt_sum
 import '../../../../../config/theme/app_text_styles.dart';
 import '../../../../../core/localization/localization_extension.dart';
 import '../../../../../widgets/app_text.dart';
+import 'package:pilates_app/config/theme/app_radius.dart';
 
 class InvoiceDetailsCard extends StatelessWidget {
   const InvoiceDetailsCard({super.key, this.receipt});
@@ -30,14 +31,16 @@ class InvoiceDetailsCard extends StatelessWidget {
             color: isDark
                 ? AppColors.trainerBlackBackgroundColor
                 : Colors.white,
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withValues(alpha: 0.5),
-                blurRadius: 5.6,
-                offset: const Offset(0, 2.24),
-                spreadRadius: 0,
-              ),
-            ],
+            boxShadow: isDark
+                ? null
+                : [
+                    BoxShadow(
+                      color: Colors.black.withValues(alpha: 0.5),
+                      blurRadius: 5.6,
+                      offset: const Offset(0, 2.24),
+                      spreadRadius: 0,
+                    ),
+                  ],
           ),
           padding: const EdgeInsets.only(
             top: 22,
@@ -339,14 +342,14 @@ class ReceiptClipper extends CustomClipper<Path> {
     path.quadraticBezierTo(size.width, 0, size.width, topRadius);
 
     // ---- Right Side ----
-    path.lineTo(size.width, size.height - cutRadius - bottomRadius);
+    path.lineTo(size.width, size.height - bottomRadius);
 
     // ---- Bottom Right Rounded ----
     path.quadraticBezierTo(
-      size.width - 8,
-      size.height - cutRadius,
+      size.width,
+      size.height,
       size.width - bottomRadius,
-      size.height - cutRadius,
+      size.height,
     );
 
     // ---- Bottom Cuts Area ----
@@ -368,12 +371,8 @@ class ReceiptClipper extends CustomClipper<Path> {
     }
 
     // ---- Bottom Left Rounded ----
-    path.quadraticBezierTo(
-      0,
-      size.height - cutRadius,
-      0,
-      size.height - cutRadius - bottomRadius,
-    );
+
+    path.quadraticBezierTo(0, size.height, 0, size.height - bottomRadius);
 
     // ---- Left Side ----
     path.lineTo(0, topRadius);

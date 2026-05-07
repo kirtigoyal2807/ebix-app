@@ -334,22 +334,24 @@ class _ReferralProgramScaffoldState extends State<_ReferralProgramScaffold> {
               color: isDark ? AppColors.greyText : AppColors.buttonBorder,
               width: 1,
             ),
-            boxShadow: [
-              AppShadows.lightShadow,
-              AppShadows.mediumShadow,
-              BoxShadow(
-                color: AppColors.shadowColor.withValues(alpha: 0.01),
-                offset: const Offset(0, 64),
-                blurRadius: 25,
-                spreadRadius: 0,
-              ),
-              BoxShadow(
-                color: AppColors.shadowColor.withValues(alpha: 0.00),
-                offset: const Offset(0, 99),
-                blurRadius: 28,
-                spreadRadius: 0,
-              ),
-            ],
+            boxShadow: isDark
+                ? null
+                : [
+                    AppShadows.lightShadow,
+                    AppShadows.mediumShadow,
+                    BoxShadow(
+                      color: AppColors.shadowColor.withValues(alpha: 0.01),
+                      offset: const Offset(0, 64),
+                      blurRadius: 25,
+                      spreadRadius: 0,
+                    ),
+                    BoxShadow(
+                      color: AppColors.shadowColor.withValues(alpha: 0.00),
+                      offset: const Offset(0, 99),
+                      blurRadius: 28,
+                      spreadRadius: 0,
+                    ),
+                  ],
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -402,14 +404,18 @@ class _ReferralProgramScaffoldState extends State<_ReferralProgramScaffold> {
                 decoration: BoxDecoration(
                   color: isDark ? AppColors.homeBackground : Colors.white,
                   borderRadius: BorderRadius.circular(AppRadius.xl),
-                  boxShadow: [
-                    BoxShadow(
-                      color: AppColors.shadowColor.withValues(alpha: 0.06),
-                      offset: const Offset(0, 1),
-                      blurRadius: 2,
-                      spreadRadius: 0,
-                    ),
-                  ],
+                  boxShadow: isDark
+                      ? null
+                      : [
+                          BoxShadow(
+                            color: AppColors.shadowColor.withValues(
+                              alpha: 0.06,
+                            ),
+                            offset: const Offset(0, 1),
+                            blurRadius: 2,
+                            spreadRadius: 0,
+                          ),
+                        ],
                 ),
                 child: AppButton(
                   label: l10n.shareViaWhatsapp,
@@ -483,23 +489,25 @@ class _ReferralProgramScaffoldState extends State<_ReferralProgramScaffold> {
               color: isDark ? AppColors.greyText : AppColors.buttonBorder,
               width: 1,
             ),
-            boxShadow: [
-              AppShadows.lightShadow,
-              AppShadows.mediumShadow,
-              AppShadows.mediumHeavyShadow,
-              BoxShadow(
-                color: AppColors.shadowColor.withValues(alpha: 0.01),
-                offset: const Offset(0, 64),
-                blurRadius: 25,
-                spreadRadius: 0,
-              ),
-              BoxShadow(
-                color: AppColors.shadowColor.withValues(alpha: 0.00),
-                offset: const Offset(0, 99),
-                blurRadius: 28,
-                spreadRadius: 0,
-              ),
-            ],
+            boxShadow: isDark
+                ? null
+                : [
+                    AppShadows.lightShadow,
+                    AppShadows.mediumShadow,
+                    AppShadows.mediumHeavyShadow,
+                    BoxShadow(
+                      color: AppColors.shadowColor.withValues(alpha: 0.01),
+                      offset: const Offset(0, 64),
+                      blurRadius: 25,
+                      spreadRadius: 0,
+                    ),
+                    BoxShadow(
+                      color: AppColors.shadowColor.withValues(alpha: 0.00),
+                      offset: const Offset(0, 99),
+                      blurRadius: 28,
+                      spreadRadius: 0,
+                    ),
+                  ],
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,

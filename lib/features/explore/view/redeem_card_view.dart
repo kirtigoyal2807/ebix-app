@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:lottie/lottie.dart';
 import 'package:pilates_app/config/theme/app_colors.dart';
 import 'package:pilates_app/config/theme/app_radius.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
@@ -110,10 +111,11 @@ class _RedeemCardBody extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            SvgPicture.asset(
-              "assets/images/svg/ic_gift.svg",
-              height: 64,
-              width: 64,
+            Lottie.asset(
+              "assets/json/gift.json",
+              height: 120,
+              width: 120,
+              repeat: false,
             ),
             const SizedBox(height: AppSpacing.md),
             AppText(

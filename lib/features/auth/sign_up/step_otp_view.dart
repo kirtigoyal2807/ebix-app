@@ -147,7 +147,7 @@ class _SignUpOtpViewState extends State<SignUpOtpView>
                                   ],
                                 ),
                               ),
-                              const SizedBox(height: AppSpacing.xxl),
+                              const SizedBox(height: AppSpacing.xl),
 
                               SignUpHeader(
                                 title: context.l10n.verifyPhone,

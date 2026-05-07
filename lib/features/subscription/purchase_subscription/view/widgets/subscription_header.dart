@@ -46,7 +46,7 @@ class SubscriptionStepHeader extends StatelessWidget {
           ),
         ),
 
-        const SizedBox(height: AppSpacing.xxl),
+        const SizedBox(height: AppSpacing.sm),
       ],
     );
   }

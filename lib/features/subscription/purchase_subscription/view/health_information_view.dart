@@ -256,6 +256,7 @@ class _HealthInformationViewState extends State<HealthInformationView> {
                 totalSteps: 6,
                 isDark: isDark,
               ),
+              const SizedBox(height: AppSpacing.xl),
               Expanded(
                 child: GestureDetector(
                   behavior: HitTestBehavior.translucent,

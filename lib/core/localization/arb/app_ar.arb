@@ -1297,7 +1297,11 @@
   "date_of_birth": "تاريخ الميلاد",
   "take_picture": "التقاط صورة",
   "access_gallery": "اختيار من المعرض",
-  "remove_profile_picture": "إزالة صورة الملف الشخصي"
+  "remove_profile_picture": "إزالة صورة الملف الشخصي",
+  "rewardsEarned": "المكافآت المكتسبة",
+  "pointsAndAchievements": "النقاط والإنجازات",
+  "selectDOB": "اختر تاريخ الميلاد",
+  "reformerTower": "أخصائي أجهزة الريفورمر والتاور"
 }
 
 

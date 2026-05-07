@@ -270,12 +270,7 @@ class AuthUser {
 
 /// Home branch from `/auth/me` response.
 class UserHomeBranch {
-  const UserHomeBranch({
-    this.id,
-    this.name,
-    this.slug,
-    this.code,
-  });
+  const UserHomeBranch({this.id, this.name, this.slug, this.code});
 
   final int? id;
   final String? name;
@@ -307,10 +302,7 @@ class UserBrand {
   final String? name;
 
   factory UserBrand.fromJson(Map<String, dynamic> json) {
-    return UserBrand(
-      id: json['id'] as int?,
-      name: json['name'] as String?,
-    );
+    return UserBrand(id: json['id'] as int?, name: json['name'] as String?);
   }
 
   Map<String, dynamic> toJson() => {'id': id, 'name': name};
@@ -318,11 +310,7 @@ class UserBrand {
 
 /// Goals from `/auth/me` response.
 class UserGoals {
-  const UserGoals({
-    this.experience,
-    this.goal,
-    this.monthlyGoal,
-  });
+  const UserGoals({this.experience, this.goal, this.monthlyGoal});
 
   final String? experience;
   final String? goal;
@@ -385,10 +373,14 @@ class UserSubscription {
       pricePaid: (json['pricePaid'] as num?)?.toDouble(),
       isTransferable: json['isTransferable'] as bool?,
       product: json['product'] != null
-          ? SubscriptionProduct.fromJson(json['product'] as Map<String, dynamic>)
+          ? SubscriptionProduct.fromJson(
+              json['product'] as Map<String, dynamic>,
+            )
           : null,
       sessions: json['sessions'] != null
-          ? SubscriptionSessions.fromJson(json['sessions'] as Map<String, dynamic>)
+          ? SubscriptionSessions.fromJson(
+              json['sessions'] as Map<String, dynamic>,
+            )
           : null,
       freezes: json['freezes'] as List<dynamic>?,
     );
@@ -541,11 +533,7 @@ class PendingGiftRecipient {
 
 /// Sessions in subscription from `/auth/me` response.
 class SubscriptionSessions {
-  const SubscriptionSessions({
-    this.total,
-    this.used,
-    this.remaining,
-  });
+  const SubscriptionSessions({this.total, this.used, this.remaining});
 
   final int? total;
   final int? used;

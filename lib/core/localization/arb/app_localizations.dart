@@ -497,7 +497,7 @@ abstract class AppLocalizations {
   /// No description provided for @selectedBranch.
   ///
   /// In en, this message translates to:
-  /// **'Selected Branch'**
+  /// **'Select Branch'**
   String get selectedBranch;
 
   /// No description provided for @selectLanguage.
@@ -689,7 +689,7 @@ abstract class AppLocalizations {
   /// No description provided for @bookNow.
   ///
   /// In en, this message translates to:
-  /// **'Book Now'**
+  /// **'Book\nNow'**
   String get bookNow;
 
   /// No description provided for @exploreBranches.
@@ -995,7 +995,7 @@ abstract class AppLocalizations {
   /// No description provided for @thisWeek.
   ///
   /// In en, this message translates to:
-  /// **'This Week'**
+  /// **'This\nWeek'**
   String get thisWeek;
 
   /// No description provided for @nextWeek.
@@ -3149,7 +3149,7 @@ abstract class AppLocalizations {
   /// No description provided for @giftProcessedMessage.
   ///
   /// In en, this message translates to:
-  /// **'Your gift subscription has been processed'**
+  /// **'Your gift subscription has been\nprocessed'**
   String get giftProcessedMessage;
 
   /// No description provided for @deliverySummary.
@@ -5465,13 +5465,13 @@ abstract class AppLocalizations {
   /// No description provided for @classesTaught.
   ///
   /// In en, this message translates to:
-  /// **'Classes Taught'**
+  /// **'Classes\nTaught'**
   String get classesTaught;
 
   /// No description provided for @returnRate.
   ///
   /// In en, this message translates to:
-  /// **'Return Rate'**
+  /// **'Return\nRate'**
   String get returnRate;
 
   /// No description provided for @about.
@@ -5821,6 +5821,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Remove Profile Picture'**
   String get remove_profile_picture;
+
+  /// No description provided for @rewardsEarned.
+  ///
+  /// In en, this message translates to:
+  /// **'Rewards Earned'**
+  String get rewardsEarned;
+
+  /// No description provided for @pointsAndAchievements.
+  ///
+  /// In en, this message translates to:
+  /// **'Points and achievements'**
+  String get pointsAndAchievements;
+
+  /// No description provided for @selectDOB.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Date of birth'**
+  String get selectDOB;
+
+  /// No description provided for @reformerTower.
+  ///
+  /// In en, this message translates to:
+  /// **'Reformer & Tower Equipment Specialist'**
+  String get reformerTower;
 }
 
 class _AppLocalizationsDelegate

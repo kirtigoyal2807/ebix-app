@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:lottie/lottie.dart';
 import 'package:pilates_app/config/theme/app_colors.dart';
 import 'package:pilates_app/config/theme/app_radius.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
@@ -56,17 +57,10 @@ class GiftRedeemSuccessSheet extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: AppSpacing.xl),
-              Container(
-                height: 100,
-                width: 100,
+              Lottie.asset(
+                "assets/json/tick.json",
                 alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  color: isDark
-                      ? AppColors.successColor.withValues(alpha: 0.61)
-                      : AppColors.successColor,
-                  borderRadius: BorderRadius.circular(AppRadius.pillRadius),
-                ),
-                child: const Icon(Icons.done, color: Colors.white, size: 80),
+                repeat: false,
               ),
 
               const SizedBox(height: AppSpacing.md),
