@@ -119,6 +119,7 @@ class _DeclarationViewState extends State<DeclarationView> {
                       totalSteps: 6,
                       isDark: isDark,
                     ),
+                    const SizedBox(height: AppSpacing.xl),
                     AppText(
                       l10n.declaration,
                       style: (style) => AppTextStyles.gelasioMedium(

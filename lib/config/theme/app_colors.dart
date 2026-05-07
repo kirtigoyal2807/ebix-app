@@ -127,4 +127,6 @@ class AppColors {
   static final lightBlue = Color(0xffDCEBF5);
   static final darkBlue = Color(0xff124061);
   static final darkLightBlue = Color(0xff173447);
+
+  static final darkShadow = Color(0xff120F0D);
 }

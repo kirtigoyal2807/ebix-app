@@ -998,7 +998,7 @@ class _TrainerDetailsDemoView extends StatelessWidget {
           ),
           SizedBox(height: AppSpacing.xs),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xl),
+            padding: const EdgeInsets.symmetric(horizontal: AppSpacing.base),
             child: AppText(
               label,
               maxLines: 4,
@@ -1039,6 +1039,7 @@ class _TrainerDetailsDemoView extends StatelessWidget {
             context: context,
           ),
           _demoRow(label: context.l10n.matPilatesLevel3, context: context),
+          _demoRow(label: context.l10n.reformerTower, context: context),
           _demoRow(
             label: context.l10n.sportsRehabilitationTraining,
             context: context,

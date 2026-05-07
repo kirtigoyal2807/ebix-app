@@ -56,12 +56,14 @@ class ProgressTrackingView extends StatelessWidget {
             isMoreMenu: false,
 
             bottomPreferredSize: PreferredSize(
-              preferredSize: const Size.fromHeight(94),
+              preferredSize: const Size.fromHeight(110),
               child: Column(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: AppSpacing.lg,
+                    padding: const EdgeInsets.only(
+                      left: AppSpacing.lg,
+                      right: AppSpacing.lg,
+                      top: AppSpacing.md,
                     ),
                     child: progressTabBar(context: context, isDark: isDark),
                   ),

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -74,7 +75,7 @@ class PushNotificationView extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         titleText(text: l10n.allNotifications),
-                        SizedBox(height: AppSpacing.md),
+                        SizedBox(height: AppSpacing.sm),
                         SwitchWidget(
                           title: l10n.allNotifications,
                           switchValue: state.allNotification,
@@ -84,9 +85,9 @@ class PushNotificationView extends StatelessWidget {
                                 .changeAllNotification(p1);
                           },
                         ),
-                        SizedBox(height: AppSpacing.xl),
-                        titleText(text: l10n.classNotifications),
                         SizedBox(height: AppSpacing.md),
+                        titleText(text: l10n.classNotifications),
+                        SizedBox(height: AppSpacing.sm),
                         SwitchWidget(
                           title: l10n.beforeClassStarts,
                           subTitle: l10n.beforeClassStartsSubtitle(
@@ -99,7 +100,7 @@ class PushNotificationView extends StatelessWidget {
                                 .changeBeforeClassStart(p1);
                           },
                         ),
-                        SizedBox(height: AppSpacing.md),
+                        SizedBox(height: AppSpacing.sm),
                         Divider(
                           height: 1,
                           color: isDark
@@ -117,7 +118,7 @@ class PushNotificationView extends StatelessWidget {
                                 .changeDayBeforeRemainder(p1);
                           },
                         ),
-                        SizedBox(height: AppSpacing.xxxl),
+                        SizedBox(height: AppSpacing.xl),
                         titleText(text: l10n.subscriptionBilling),
                         SizedBox(height: AppSpacing.md),
                         SwitchWidget(
@@ -130,14 +131,14 @@ class PushNotificationView extends StatelessWidget {
                                 .changePaymentConfirmation(p1);
                           },
                         ),
-                        SizedBox(height: AppSpacing.md),
+                        SizedBox(height: AppSpacing.sm),
                         Divider(
                           height: 1,
                           color: isDark
                               ? AppColors.greyText
                               : AppColors.divider,
                         ),
-                        SizedBox(height: AppSpacing.md),
+                        SizedBox(height: AppSpacing.sm),
                         SwitchWidget(
                           title: l10n.renewalReminders,
                           subTitle: l10n.renewalRemindersSubtitle,
@@ -148,9 +149,9 @@ class PushNotificationView extends StatelessWidget {
                                 .changeRenewalRemainder(p1);
                           },
                         ),
-                        SizedBox(height: AppSpacing.xxxl),
+                        SizedBox(height: AppSpacing.xl),
                         titleText(text: l10n.marketingUpdates),
-                        SizedBox(height: AppSpacing.md),
+                        SizedBox(height: AppSpacing.sm),
                         SwitchWidget(
                           title: l10n.promotionsOffers,
                           subTitle: l10n.promotionsOffersSubtitle,
@@ -168,7 +169,7 @@ class PushNotificationView extends StatelessWidget {
                               ? AppColors.greyText
                               : AppColors.divider,
                         ),
-                        SizedBox(height: AppSpacing.md),
+                        SizedBox(height: AppSpacing.sm),
                         SwitchWidget(
                           title: l10n.appUpdates,
                           subTitle: l10n.appUpdatesSubtitle,
@@ -179,9 +180,9 @@ class PushNotificationView extends StatelessWidget {
                                 .changeAppUpdate(p1);
                           },
                         ),
-                        SizedBox(height: AppSpacing.xxxl),
+                        SizedBox(height: AppSpacing.xl),
                         titleText(text: l10n.challengesRewards),
-                        SizedBox(height: AppSpacing.md),
+                        SizedBox(height: AppSpacing.sm),
                         SwitchWidget(
                           title: l10n.newChallenges,
                           subTitle: l10n.newChallengesSubtitle,
@@ -193,6 +194,75 @@ class PushNotificationView extends StatelessWidget {
                           },
                         ),
                         SizedBox(height: AppSpacing.md),
+                        Divider(
+                          height: 1,
+                          color: isDark
+                              ? AppColors.greyText
+                              : AppColors.divider,
+                        ),
+                        SizedBox(height: AppSpacing.sm),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                AppText(
+                                  l10n.rewardsEarned,
+                                  style: (context) =>
+                                      AppTextStyles.textFieldHeading(
+                                        context,
+                                      ).copyWith(
+                                        fontSize: 15,
+                                        height: 1.60,
+                                        color: isDark
+                                            ? AppColors.lightText
+                                            : AppColors.darkText,
+                                      ),
+                                ),
+
+                                SizedBox(height: 2),
+
+                                AppText(
+                                  l10n.pointsAndAchievements,
+                                  style: (context) =>
+                                      AppTextStyles.bodyText(context).copyWith(
+                                        color: AppColors.lightGrey,
+                                        height: 1.60,
+                                      ),
+                                ),
+                              ],
+                            ),
+
+                            Transform.scale(
+                              scale:
+                                  0.8, // 👈 reduce overall size (try 0.7–0.9)
+                              child: CupertinoSwitch(
+                                value: state.rewardEarn,
+                                onChanged: (bool p1) {
+                                  context
+                                      .read<PushNotificationCubit>()
+                                      .changeRewardEarn(p1);
+                                },
+
+                                inactiveThumbColor: isDark
+                                    ? AppColors.primary
+                                    : AppColors.whiteColor,
+                                inactiveTrackColor: isDark
+                                    ? Color(0xff1C1917)
+                                    : AppColors.seekBarLight,
+                                activeTrackColor: isDark
+                                    ? AppColors.primary
+                                    : AppColors.primary,
+
+                                thumbColor: isDark
+                                    ? AppColors.lightText
+                                    : AppColors.whiteColor,
+                              ),
+                            ),
+                          ],
+                        ),
                       ],
                     ),
                   ),

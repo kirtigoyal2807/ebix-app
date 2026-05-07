@@ -6,6 +6,11 @@ import '../../../config/theme/app_text_styles.dart';
 import '../../../core/localization/localization_extension.dart';
 import '../../../widgets/app_text.dart';
 import '../../account/widget/account_info_tile.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../booking/cubit/booking_cubit.dart';
+import '../../booking/cubit/booking_state.dart';
+import '../../home/cubit/home_cubit.dart';
 
 class DiscoverInfo extends StatelessWidget {
   const DiscoverInfo({super.key});
@@ -27,6 +32,10 @@ class DiscoverInfo extends StatelessWidget {
         ),
         SizedBox(height: AppSpacing.lmd),
         AccountInfoTile(
+          onTap: () {
+            context.read<HomeCubit>().setTab(1);
+            context.read<BookingCubit>().setTab(BookingTab.trainers);
+          },
           icon: isDark
               ? "assets/images/svg/account/ic_dark_personal_data.svg"
               : "assets/images/svg/account/ic_personal_data.svg",

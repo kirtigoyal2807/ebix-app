@@ -137,7 +137,7 @@ class _HomeShell extends StatelessWidget {
     final activeColor = isDark
         ? AppColors.languageIconDark
         : AppColors.languageIcon;
-    final inactiveColor = isDark ? Colors.grey : Colors.grey.shade400;
+    final inactiveColor = isDark ? AppColors.lightGrey : AppColors.lightGrey;
 
     return Container(
       padding: EdgeInsets.only(bottom: 12),

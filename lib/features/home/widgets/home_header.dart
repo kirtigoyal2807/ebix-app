@@ -52,30 +52,33 @@ class HomeHeader extends StatelessWidget {
                   : 'assets/images/png/ic_home_top_light.png',
               // height: 222,
               // size.height * 0.33,
+              height: size.width * 0.6,
               width: size.width,
               // * 0.5,
               fit: BoxFit.fill,
             ),
           ),
           Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: AppSpacing.lg,
-              vertical: isSmallScreen ? AppSpacing.xxl : AppSpacing.xxxl,
+            padding: EdgeInsets.only(
+              left: AppSpacing.lg,
+              right: AppSpacing.lg,
+              top: size.width * 0.16,
+              // vertical: isSmallScreen ? AppSpacing.xxl : AppSpacing.xxxl,
             ),
-            child: SafeArea(
-              bottom: false,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            AppText(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(top: AppSpacing.sm),
+                            child: AppText(
                               context.l10n.hiUser(userName),
                               style: (context) =>
                                   AppTextStyles.heading1(context).copyWith(
@@ -87,27 +90,27 @@ class HomeHeader extends StatelessWidget {
                                         : AppColors.languageIcon,
                                   ),
                             ),
-                            const SizedBox(height: AppSpacing.xs),
-                            AppText(
-                              context.l10n.readyToFlow,
-                              style: (context) =>
-                                  AppTextStyles.body(context).copyWith(
-                                    fontSize: size.width * 0.04 > 14
-                                        ? 14
-                                        : size.width * 0.04,
-                                    color: isDark
-                                        ? AppColors.lightText
-                                        : AppColors.languageIcon,
-                                  ),
-                            ),
-                          ],
-                        ),
+                          ),
+                          const SizedBox(height: AppSpacing.xs),
+                          AppText(
+                            context.l10n.readyToFlow,
+                            style: (context) =>
+                                AppTextStyles.body(context).copyWith(
+                                  fontSize: size.width * 0.04 > 14
+                                      ? 14
+                                      : size.width * 0.04,
+                                  color: isDark
+                                      ? AppColors.lightText
+                                      : AppColors.languageIcon,
+                                ),
+                          ),
+                        ],
                       ),
-                      _buildLanguageSelector(context, isDark),
-                    ],
-                  ),
-                ],
-              ),
+                    ),
+                    _buildLanguageSelector(context, isDark),
+                  ],
+                ),
+              ],
             ),
           ),
         ],

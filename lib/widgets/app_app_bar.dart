@@ -26,22 +26,28 @@ class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return AppBar(
       surfaceTintColor: Colors.transparent,
+      shadowColor: Colors.transparent,
+      forceMaterialTransparency: true,
       // IMPORTANT (Material 3)
       backgroundColor: isDark ? AppColors.homeBackground : AppColors.whiteColor,
       scrolledUnderElevation: 0,
       // IMPORTANT
-      leading:
-          leading ??
-          (onBack != null
-              ? IconButton(
-                  icon: const Icon(Icons.arrow_back_ios_rounded, size: 20),
-                  onPressed: onBack,
-                )
-              : null),
+      leading: Padding(
+        padding: const EdgeInsets.only(top: 16),
+        child:
+            leading ??
+            (onBack != null
+                ? IconButton(
+                    icon: const Icon(Icons.arrow_back_ios_rounded, size: 20),
+                    onPressed: onBack,
+                  )
+                : null),
+      ),
 
-      title: title != null
-          ? AppText(title!, style: AppTextStyles.appBarTitle)
-          : null,
+      title: Padding(
+        padding: const EdgeInsets.only(top: 16),
+        child: AppText(title!, style: AppTextStyles.appBarTitle),
+      ),
       centerTitle: true,
       elevation: 0,
       actions:
@@ -63,5 +69,5 @@ class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Size get preferredSize =>
       bottomPreferredSize?.preferredSize ??
-      const Size.fromHeight(kToolbarHeight);
+      const Size.fromHeight(kToolbarHeight + 16);
 }

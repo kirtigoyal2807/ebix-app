@@ -112,10 +112,10 @@ class BookingClassCard extends StatelessWidget {
             );
           }
         },
-        borderRadius: BorderRadius.circular(AppRadius.lg),
+        borderRadius: BorderRadius.circular(AppRadius.md),
         child: Container(
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(AppRadius.lg),
+            borderRadius: BorderRadius.circular(14),
             color: isDark ? AppColors.surfaceDark : Colors.white,
 
             border: Border.all(
@@ -144,8 +144,9 @@ class BookingClassCard extends StatelessWidget {
             children: [
               // Image part with tags
               ClipRRect(
-                borderRadius: const BorderRadius.vertical(
-                  top: Radius.circular(AppRadius.lg),
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(AppRadius.md),
+                  topRight: Radius.circular(AppRadius.md),
                 ),
                 child: _classListImage(
                   imageUrl: imageUrl,

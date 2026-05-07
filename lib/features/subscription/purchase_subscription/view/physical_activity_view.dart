@@ -46,6 +46,7 @@ class PhysicalActivityView extends StatelessWidget {
                         totalSteps: 6,
                         isDark: isDark,
                       ),
+                      const SizedBox(height: AppSpacing.xl),
                       AppText(
                         l10n.physicalActivityLevel,
                         style: (style) => AppTextStyles.heading1(context),

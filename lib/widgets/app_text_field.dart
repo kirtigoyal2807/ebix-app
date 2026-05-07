@@ -19,6 +19,7 @@ class AppTextField extends StatefulWidget {
   final bool? enabled;
   final bool readOnly;
   final void Function()? onTap;
+  final TextStyle? style;
 
   /// Shown under the field when [maxLength] is set (e.g. `12/100`).
   final bool showCharacterCounter;
@@ -50,6 +51,7 @@ class AppTextField extends StatefulWidget {
     this.enabled = true,
     this.readOnly = false,
     this.onTap,
+    this.style,
   });
 
   @override
@@ -127,7 +129,7 @@ class _AppTextFieldState extends State<AppTextField> {
               // initialValue: widget.initialValue,
               obscureText: _obscure,
               keyboardType: widget.keyboardType,
-              style: AppTextStyles.textField(context),
+              style: widget.style ?? AppTextStyles.textField(context),
               maxLines: widget.maxLines,
               decoration: InputDecoration(
                 hintText: widget.hint,

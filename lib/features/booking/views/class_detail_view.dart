@@ -138,6 +138,48 @@ class _ClassDetailBody extends StatelessWidget {
                 ),
               ),
 
+              Positioned(
+                bottom: 0,
+                left: 0,
+                right: 0,
+                child: Container(
+                  height: size.height * 0.04 + 48,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.bottomCenter, // start from bottom
+                      end: Alignment.topCenter, // fade to top
+                      colors: isDark
+                          ? [
+                              AppColors.darkShadow,
+                              AppColors.darkShadow.withValues(alpha: 0),
+                            ]
+                          : [Colors.white, Colors.white.withValues(alpha: 0)],
+                    ),
+                  ),
+                ),
+              ),
+
+              Positioned(
+                bottom: 0,
+                left: 0,
+                right: 0,
+                child: Container(
+                  height: size.height * 0.04 + 48,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.bottomCenter, // start from bottom
+                      end: Alignment.topCenter, // fade to top
+                      colors: isDark
+                          ? [
+                              AppColors.darkShadow,
+                              AppColors.darkShadow.withValues(alpha: 0),
+                            ]
+                          : [Colors.white, Colors.white.withValues(alpha: 0)],
+                    ),
+                  ),
+                ),
+              ),
+
               // Sticky action button
               Positioned(
                 left: 0,
