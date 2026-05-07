@@ -39,12 +39,14 @@ class ViewSubscriptionView extends StatelessWidget {
             title: context.l10n.mySubscription,
             isMoreMenu: false,
             bottomPreferredSize: PreferredSize(
-              preferredSize: const Size.fromHeight(94),
+              preferredSize: const Size.fromHeight(110),
               child: Column(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: AppSpacing.lg,
+                    padding: const EdgeInsets.only(
+                      left: AppSpacing.lg,
+                      right: AppSpacing.lg,
+                      top: AppSpacing.md,
                     ),
                     child: subscriptionTabBar(context: context, isDark: isDark),
                   ),

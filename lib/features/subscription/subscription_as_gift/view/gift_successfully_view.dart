@@ -188,7 +188,7 @@ class GiftSuccessfullyView extends StatelessWidget {
                     size: 16,
                     color: isDark
                         ? AppColors.successBorderDark
-                        : Color(0xff1C1B1F),
+                        : AppColors.GreyColor,
                     fontWeight: FontWeight.bold,
                   ),
                   SizedBox(width: AppSpacing.sm),
@@ -199,7 +199,7 @@ class GiftSuccessfullyView extends StatelessWidget {
                           AppTextStyles.bodyText(context).copyWith(
                             color: isDark
                                 ? AppColors.lightGreyColor
-                                : AppColors.greyText,
+                                : AppColors.GreyColor,
                             fontWeight: FontWeight.w600,
                             height: 1.55,
                             fontSize: 12,

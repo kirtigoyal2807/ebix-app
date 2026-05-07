@@ -318,6 +318,9 @@ class _SignUpPersonalInfoViewState extends State<SignUpPersonalInfoView> {
                             _clientPasswordError = null;
                           }),
                         ),
+                        SizedBox(height: 6,),
+
+                        Text("Minimum 8 characters",style: AppTextStyles.body(context,fontWeight: FontWeight.w400).copyWith(height: 1.55,color: AppColors.lightGrey),),
                         const SizedBox(height: AppSpacing.md),
                         PhoneNumberField(
                           key: const ValueKey('signup_phone'),
