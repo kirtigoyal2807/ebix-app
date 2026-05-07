@@ -30,6 +30,7 @@ class _ChangeHomeBranchState extends State<ChangeHomeBranch> {
   @override
   void initState() {
     super.initState();
+    _selectedBranchId = context.read<AuthCubit>().state.user?.homeBranch?.id;
     _fetchBranches();
   }
 
@@ -51,7 +52,11 @@ class _ChangeHomeBranchState extends State<ChangeHomeBranch> {
           _branches = data.branches;
           _isLoadingBranches = false;
           if (_branches.isNotEmpty) {
-            _selectedBranchId ??= _branches.first.id;
+            final selectedExists = _selectedBranchId != null &&
+                _branches.any((branch) => branch.id == _selectedBranchId);
+            if (!selectedExists) {
+              _selectedBranchId = _branches.first.id;
+            }
           }
         });
       case ApiFailure(:final exception):
