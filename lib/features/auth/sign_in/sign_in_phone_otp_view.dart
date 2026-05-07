@@ -4,6 +4,7 @@ import 'package:pilates_app/config/theme/app_colors.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/core/localization/localization_extension.dart';
+import 'package:pilates_app/core/mixins/resend_code_cooldown_mixin.dart';
 import 'package:pilates_app/features/auth/cubit/auth_cubit.dart';
 import 'package:pilates_app/features/auth/cubit/auth_state.dart';
 import 'package:pilates_app/features/auth/sign_up/widgets/otp_field.dart';
@@ -19,10 +20,13 @@ class SignInPhoneOtpView extends StatefulWidget {
   State<SignInPhoneOtpView> createState() => _SignInPhoneOtpViewState();
 }
 
-class _SignInPhoneOtpViewState extends State<SignInPhoneOtpView> {
+class _SignInPhoneOtpViewState extends State<SignInPhoneOtpView>
+    with ResendCodeCooldownMixin {
   String _code = '';
 
   Future<void> _resend(BuildContext context) async {
+    if (isResendCodeOnCooldown) return;
+    startResendCodeCooldown();
     await context.read<AuthCubit>().resendSignInPhoneOtp();
   }
 
@@ -140,7 +144,10 @@ class _SignInPhoneOtpViewState extends State<SignInPhoneOtpView> {
                               const SizedBox(height: AppSpacing.lg),
                               Center(
                                 child: GestureDetector(
-                                  onTap: blockInteraction || loading
+                                  onTap:
+                                      blockInteraction ||
+                                          loading ||
+                                          isResendCodeOnCooldown
                                       ? null
                                       : () => _resend(context),
                                   child: RichText(

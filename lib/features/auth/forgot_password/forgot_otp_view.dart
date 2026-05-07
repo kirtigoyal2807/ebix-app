@@ -12,6 +12,7 @@ import 'package:pilates_app/widgets/app_button.dart';
 import 'package:pilates_app/widgets/app_scaffold.dart';
 
 import '../../../core/localization/localization_extension.dart';
+import '../../../core/mixins/resend_code_cooldown_mixin.dart';
 import 'create_new_password_view.dart';
 
 class ForgotOtpView extends StatefulWidget {
@@ -23,7 +24,8 @@ class ForgotOtpView extends StatefulWidget {
   State<ForgotOtpView> createState() => _ForgotOtpViewState();
 }
 
-class _ForgotOtpViewState extends State<ForgotOtpView> {
+class _ForgotOtpViewState extends State<ForgotOtpView>
+    with ResendCodeCooldownMixin {
   String _code = '';
 
   Future<void> _verify(BuildContext context) async {
@@ -41,6 +43,8 @@ class _ForgotOtpViewState extends State<ForgotOtpView> {
   }
 
   Future<void> _resend(BuildContext context) async {
+    if (isResendCodeOnCooldown) return;
+    startResendCodeCooldown();
     await context.read<AuthCubit>().resendForgotPasswordEmail(widget.email);
   }
 
@@ -150,7 +154,9 @@ class _ForgotOtpViewState extends State<ForgotOtpView> {
                         Center(
                           child: GestureDetector(
                             key: const ValueKey('forgot_resend_code'),
-                            onTap: loading ? null : () => _resend(context),
+                            onTap: loading || isResendCodeOnCooldown
+                                ? null
+                                : () => _resend(context),
                             child: RichText(
                               text: TextSpan(
                                 children: [
