@@ -60,7 +60,8 @@ class RewardOverviewView extends StatelessWidget {
                   p.rewardsLoadStatus != c.rewardsLoadStatus ||
                   p.filteredRewards != c.filteredRewards ||
                   p.rewardsError != c.rewardsError ||
-                  p.selectedRewardFilter != c.selectedRewardFilter,
+                  p.selectedRewardFilter != c.selectedRewardFilter ||
+                  p.selectedBranch != c.selectedBranch,
               builder: (context, state) {
                 switch (state.rewardsLoadStatus) {
                   case RewardListLoadStatus.initial:
@@ -243,16 +244,20 @@ class RewardOverviewView extends StatelessWidget {
                         p.selectedBranch != c.selectedBranch ||
                         p.branchList != c.branchList,
                     builder: (context, state) {
-                      final title = state.branchList.isNotEmpty
-                          ? state
-                                .branchList[state.selectedBranch.clamp(
-                                  0,
-                                  state.branchList.length - 1,
-                                )]
-                                .title
-                          : '';
+                      final branch = state.branchList.isNotEmpty
+                          ? state.branchList[state.selectedBranch.clamp(
+                              0,
+                              state.branchList.length - 1,
+                            )]
+                          : null;
+                      final title = branch == null
+                          ? ''
+                          : branch.id == 0
+                              ? context.l10n.rewards_all_locations_title
+                              : branch.title;
                       return AppText(
                         title,
+                        maxLines: 2,
                         style: (context) => AppTextStyles.textFieldHeading(
                           context,
                         ).copyWith(height: 1.55, fontSize: 16),

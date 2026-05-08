@@ -108,9 +108,15 @@ class LoyaltyRepository extends BaseRepository {
   }
 
   /// Catalog of redeemable loyalty rewards.
-  Future<ApiResult<List<LoyaltyReward>>> getRewards() {
+  ///
+  /// Pass [branchId] to scope the catalog to a studio branch when the API supports
+  /// `GET loyalty/rewards?branchId=…`. Omit or use `null` for all locations.
+  Future<ApiResult<List<LoyaltyReward>>> getRewards({int? branchId}) {
     return get<List<LoyaltyReward>>(
       'loyalty/rewards',
+      queryParameters: (branchId != null && branchId > 0)
+          ? <String, dynamic>{'branchId': branchId}
+          : null,
       fromJson: _rewardsFromJson,
     );
   }

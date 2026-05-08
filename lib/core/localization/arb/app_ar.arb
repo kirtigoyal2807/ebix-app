@@ -1121,6 +1121,16 @@
   "collected": "تم الاستلام",
   "select_branch": "اختر الفرع",
 
+  "rewards_all_locations_title": "جميع المواقع",
+  "rewards_at_branch_subtitle": "{count} مكافآت متاحة",
+  "@rewards_at_branch_subtitle": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+
   "featurePriorityBookingDesc": "احجز الحصص قبل 24 ساعة",
 
   "featureMerchDiscount": "خصم على المنتجات",

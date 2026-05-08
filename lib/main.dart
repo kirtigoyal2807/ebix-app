@@ -108,38 +108,41 @@ class PilatesApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => AuthCubit(
-        authRepository: authRepository,
-        tokenStorage: tokenStorage,
-        localeBridge: localeBridge,
-        seed: authInitialState,
-      ),
-      child: BlocBuilder<AuthCubit, AuthState>(
-        builder: (context, state) {
-          return MaterialApp(
-            debugShowCheckedModeBanner: false,
-            locale: state.locale,
-            supportedLocales: const [Locale('en'), Locale('ar')],
-            localizationsDelegates: const [
-              AppLocalizations.delegate,
-              GlobalMaterialLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
-              GlobalCupertinoLocalizations.delegate,
-            ],
-            theme: AppTheme.light(),
-            darkTheme: AppTheme.dark(),
-            themeMode: state.themeMode,
-            builder: (context, child) {
-              return GestureDetector(
-                behavior: HitTestBehavior.translucent,
-                onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-                child: child ?? const SizedBox.shrink(),
-              );
-            },
-            home: const AuthRootView(),
-          );
-        },
+    return RepositoryProvider<AuthRepository>.value(
+      value: authRepository,
+      child: BlocProvider(
+        create: (_) => AuthCubit(
+          authRepository: authRepository,
+          tokenStorage: tokenStorage,
+          localeBridge: localeBridge,
+          seed: authInitialState,
+        ),
+        child: BlocBuilder<AuthCubit, AuthState>(
+          builder: (context, state) {
+            return MaterialApp(
+              debugShowCheckedModeBanner: false,
+              locale: state.locale,
+              supportedLocales: const [Locale('en'), Locale('ar')],
+              localizationsDelegates: const [
+                AppLocalizations.delegate,
+                GlobalMaterialLocalizations.delegate,
+                GlobalWidgetsLocalizations.delegate,
+                GlobalCupertinoLocalizations.delegate,
+              ],
+              theme: AppTheme.light(),
+              darkTheme: AppTheme.dark(),
+              themeMode: state.themeMode,
+              builder: (context, child) {
+                return GestureDetector(
+                  behavior: HitTestBehavior.translucent,
+                  onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+                  child: child ?? const SizedBox.shrink(),
+                );
+              },
+              home: const AuthRootView(),
+            );
+          },
+        ),
       ),
     );
   }

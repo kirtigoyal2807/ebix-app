@@ -2689,6 +2689,14 @@ class AppLocalizationsAr extends AppLocalizations {
   String get select_branch => 'اختر الفرع';
 
   @override
+  String get rewards_all_locations_title => 'جميع المواقع';
+
+  @override
+  String rewards_at_branch_subtitle(int count) {
+    return '$count مكافآت متاحة';
+  }
+
+  @override
   String get featurePriorityBookingDesc => 'احجز الحصص قبل 24 ساعة';
 
   @override
