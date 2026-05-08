@@ -15,6 +15,8 @@ class ClassSlotViewModel {
     required this.allowPackageBooking,
     required this.allowSinglePurchase,
     required this.trainerName,
+    this.trainerId,
+    this.trainerImageUrl,
     required this.branchName,
     this.branchLocation,
     this.branchAddress,
@@ -39,6 +41,8 @@ class ClassSlotViewModel {
   final bool allowPackageBooking;
   final bool allowSinglePurchase;
   final String trainerName;
+  final String? trainerId;
+  final String? trainerImageUrl;
   final String branchName;
   final String? branchLocation;
   final String? branchAddress;
@@ -93,6 +97,8 @@ class ClassSlotViewModel {
       allowPackageBooking: gymClass.allowPackageBooking,
       allowSinglePurchase: gymClass.allowSinglePurchase,
       trainerName: event.trainerName ?? '',
+      trainerId: event.trainerId,
+      trainerImageUrl: event.trainerImageUrl,
       branchName: event.branchName,
       branchLocation: event.branchLocation,
       branchAddress: event.branchAddress,
@@ -147,6 +153,8 @@ class ClassSlotViewModel {
       allowPackageBooking: gymClass.allowPackageBooking,
       allowSinglePurchase: gymClass.allowSinglePurchase,
       trainerName: '',
+      trainerId: null,
+      trainerImageUrl: null,
       branchName: '',
       branchLocation: null,
       branchAddress: null,
@@ -175,6 +183,8 @@ class ClassSlotViewModel {
       allowPackageBooking: detail.gymClass?.allowPackageBooking ?? false,
       allowSinglePurchase: detail.gymClass?.allowSinglePurchase ?? false,
       trainerName: detail.trainerName ?? '',
+      trainerId: detail.trainerId,
+      trainerImageUrl: null,
       branchName: detail.branchName ?? '',
       branchLocation: detail.branchLocation,
       branchAddress: detail.branchAddress,
@@ -201,6 +211,8 @@ class ClassSlotViewModel {
     bool? allowPackageBooking,
     bool? allowSinglePurchase,
     String? trainerName,
+    String? trainerId,
+    String? trainerImageUrl,
     String? branchName,
     String? branchLocation,
     String? branchAddress,
@@ -225,6 +237,8 @@ class ClassSlotViewModel {
       allowPackageBooking: allowPackageBooking ?? this.allowPackageBooking,
       allowSinglePurchase: allowSinglePurchase ?? this.allowSinglePurchase,
       trainerName: trainerName ?? this.trainerName,
+      trainerId: trainerId ?? this.trainerId,
+      trainerImageUrl: trainerImageUrl ?? this.trainerImageUrl,
       branchName: branchName ?? this.branchName,
       branchLocation: branchLocation ?? this.branchLocation,
       branchAddress: branchAddress ?? this.branchAddress,

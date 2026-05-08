@@ -169,6 +169,8 @@ class _ReferralProgramScaffoldState extends State<_ReferralProgramScaffold> {
                             previous.referralHistoryErrorMessage !=
                                 current.referralHistoryErrorMessage,
                         builder: (context, state) {
+                          final isDark = Theme.of(context).brightness ==
+                              Brightness.dark;
                           if (state.referralHistoryStatus ==
                               ReferralHistoryStatus.loading) {
                             return Padding(
@@ -198,6 +200,29 @@ class _ReferralProgramScaffoldState extends State<_ReferralProgramScaffold> {
                             );
                           }
                           final items = state.referralHistory;
+                          if (items.isEmpty) {
+                            return Padding(
+                              padding: EdgeInsets.only(
+                                left: AppSpacing.lg,
+                                right: AppSpacing.lg,
+                                top: AppSpacing.md,
+                                bottom: AppSpacing.xxl,
+                              ),
+                              child: Center(
+                                child: AppText(
+                                  l10n.noRecentReferrals,
+                                  textAlign: TextAlign.center,
+                                  style: (context) =>
+                                      AppTextStyles.bodyText(context).copyWith(
+                                    color: isDark
+                                        ? AppColors.placeHolderText
+                                        : AppColors.greyText,
+                                    height: 1.55,
+                                  ),
+                                ),
+                              ),
+                            );
+                          }
                           final cards = <Widget>[];
                           for (var i = 0; i < items.length; i++) {
                             if (i > 0) {

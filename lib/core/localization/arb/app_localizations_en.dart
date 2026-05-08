@@ -2779,6 +2779,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get recentReferrals => 'Recent Referrals';
 
   @override
+  String get noRecentReferrals => 'No recent referrals';
+
+  @override
   String get referralCodeCopied => 'Referral code copied to clipboard';
 
   @override

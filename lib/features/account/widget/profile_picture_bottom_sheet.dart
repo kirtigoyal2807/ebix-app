@@ -55,7 +55,7 @@ class ProfilePictureBottomSheet extends StatelessWidget {
                       ],
                     ),
                   ),
-                  const SizedBox(height: AppSpacing.lg),
+                  // const SizedBox(height: AppSpacing.lg),
                   _ProfilePictureOption(
                     title: context.l10n.takePicture,
                     onTap: () =>
@@ -111,7 +111,7 @@ class _ProfilePictureOptionState extends State<_ProfilePictureOption> {
           horizontal: AppSpacing.base,
           vertical: AppSpacing.md,
         ),
-        margin: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+        margin: const EdgeInsets.symmetric(horizontal: AppSpacing.base),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(AppRadius.md),
           border: Border.all(

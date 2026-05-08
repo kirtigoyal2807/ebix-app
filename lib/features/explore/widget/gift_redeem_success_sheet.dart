@@ -61,18 +61,23 @@ class GiftRedeemSuccessSheet extends StatelessWidget {
                 "assets/json/tick.json",
                 alignment: Alignment.center,
                 repeat: false,
+                width: 150,
+                height: 150,
               ),
 
               const SizedBox(height: AppSpacing.md),
-              AppText(
-                context.l10n.giftRedeemedSuccess,
-                style: (context) =>
-                    AppTextStyles.gelasioMedium(context).copyWith(
-                      fontSize: 24,
-                      color: isDark ? AppColors.lightText : Color(0xff0D0D12),
-                      height: 1.2,
-                    ),
-                textAlign: TextAlign.center,
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+                child: AppText(
+                  context.l10n.giftRedeemedSuccess,
+                  style: (context) =>
+                      AppTextStyles.gelasioMedium(context).copyWith(
+                        fontSize: 24,
+                        color: isDark ? AppColors.lightText : Color(0xff0D0D12),
+                        height: 1.2,
+                      ),
+                  textAlign: TextAlign.center,
+                ),
               ),
               const SizedBox(height: AppSpacing.xl),
               AppButton(

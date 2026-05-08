@@ -46,6 +46,13 @@ class BookingView extends StatelessWidget {
               bookingCubit.state.selectedTab != homeState.selectedBookingTab) {
             bookingCubit.setTab(homeState.selectedBookingTab);
           }
+          final selectedClassCategory = homeState.selectedClassCategory;
+          if (homeState.currentIndex == 1 &&
+              selectedClassCategory != null &&
+              selectedClassCategory.trim().isNotEmpty) {
+            bookingCubit.setCategory(selectedClassCategory);
+            context.read<HomeCubit>().clearSelectedClassCategory();
+          }
           if (homeState.currentIndex == 1 &&
               bookingCubit.state.selectedTab == BookingTab.classes) {
             final booking = bookingCubit.state;

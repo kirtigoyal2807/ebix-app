@@ -290,7 +290,7 @@ class _MessageCard extends StatelessWidget {
     );
     final senderLabel = senderName != null && senderName.isNotEmpty
         ? '— $senderName'
-        : context.l10n.giftSender;
+        : "";
 
     return Container(
       padding: const EdgeInsets.all(AppSpacing.md),
@@ -313,6 +313,7 @@ class _MessageCard extends StatelessWidget {
             maxLines: 6,
           ),
           const SizedBox(height: AppSpacing.sm),
+          if(senderLabel.isNotEmpty)
           AppText(
             senderLabel,
             style: (context) => AppTextStyles.captionText(context).copyWith(

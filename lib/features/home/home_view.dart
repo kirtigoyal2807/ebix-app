@@ -11,6 +11,7 @@ import 'package:pilates_app/widgets/app_text.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../account/account_view.dart';
 import '../auth/cubit/auth_cubit.dart';
+import '../auth/cubit/auth_flow.dart';
 import '../auth/cubit/auth_state.dart';
 import '../auth/data/models/auth_user.dart';
 import '../explore/explore_view.dart';
@@ -238,9 +239,8 @@ class _HomeShell extends StatelessWidget {
   }
 }
 
-/// Surfaces the [`/auth/me`] `pendingGift` redemption popup when the home tab
-/// is active, the gift's `canBeRedeemed` is true, and we haven't already shown
-/// it for the current gift id (tracked in [AuthState.lastShownPendingGiftId]).
+/// Loads [`/auth/me`] on home entry and opens `RedeemCardView` directly
+/// when `pendingGift` is available. No local tracking; shows every time.
 class _PendingGiftPopupTrigger extends StatefulWidget {
   const _PendingGiftPopupTrigger({required this.child});
 
@@ -255,7 +255,9 @@ class _PendingGiftPopupTriggerState extends State<_PendingGiftPopupTrigger> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (!mounted) return;
+      await context.read<AuthCubit>().loadProfile();
       if (!mounted) return;
       _maybeShow(context.read<AuthCubit>().state);
     });
@@ -263,6 +265,7 @@ class _PendingGiftPopupTriggerState extends State<_PendingGiftPopupTrigger> {
 
   void _maybeShow(AuthState state) {
     if (!mounted) return;
+    if (state.flow != AuthFlow.authenticated) return;
     final homeIndex = context.read<HomeCubit>().state.currentIndex;
     if (homeIndex != 0) return;
     final gift = state.user?.pendingGift;
@@ -270,9 +273,7 @@ class _PendingGiftPopupTriggerState extends State<_PendingGiftPopupTrigger> {
     if (gift.canBeRedeemed != true) return;
     final id = gift.id;
     if (id == null || id.isEmpty) return;
-    if (state.lastShownPendingGiftId == id) return;
 
-    context.read<AuthCubit>().markPendingGiftPopupShown(id);
     showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
@@ -301,12 +302,8 @@ class _PendingGiftPopupTriggerState extends State<_PendingGiftPopupTrigger> {
   @override
   Widget build(BuildContext context) {
     return BlocListener<AuthCubit, AuthState>(
-      listenWhen: (previous, current) {
-        final prev = previous.user?.pendingGift?.id;
-        final curr = current.user?.pendingGift?.id;
-        return prev != curr ||
-            previous.lastShownPendingGiftId != current.lastShownPendingGiftId;
-      },
+      listenWhen: (previous, current) =>
+          previous.user?.pendingGift?.id != current.user?.pendingGift?.id,
       listener: (_, state) => _maybeShow(state),
       child: widget.child,
     );

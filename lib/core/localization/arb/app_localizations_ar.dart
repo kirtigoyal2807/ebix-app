@@ -2757,6 +2757,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get recentReferrals => 'الإحالات الأخيرة';
 
   @override
+  String get noRecentReferrals => 'لا توجد إحالات حديثة';
+
+  @override
   String get referralCodeCopied => 'تم نسخ رمز الإحالة';
 
   @override

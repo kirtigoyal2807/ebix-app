@@ -16,6 +16,7 @@ class UpcomingEvent {
     this.branchAddress,
     this.trainerId,
     this.trainerName,
+    this.trainerImageUrl,
     this.capacity,
     this.slotsLeft,
     this.waitlistCount,
@@ -33,6 +34,7 @@ class UpcomingEvent {
   final String? branchAddress;
   final String? trainerId;
   final String? trainerName;
+  final String? trainerImageUrl;
   final int? capacity;
   final int? slotsLeft;
   final int? waitlistCount;
@@ -43,6 +45,8 @@ class UpcomingEvent {
 
   factory UpcomingEvent.fromJson(Map<String, dynamic> json) {
     final branchMap = _mapOrNull(json['branch']);
+    final trainerMap = _mapOrNull(json['trainer']);
+    final trainerUserMap = _mapOrNull(trainerMap?['user']);
     final genderRaw =
         json['gender'] ?? json['targetGender'] ?? json['target_gender'];
     final categoryRaw =
@@ -83,9 +87,47 @@ class UpcomingEvent {
           branchMap?['branchAddress']?.toString() ??
           branchMap?['branch_address']?.toString(),
       trainerId:
-          json['trainerId']?.toString() ?? json['trainer_id']?.toString(),
+          json['trainerId']?.toString() ??
+          json['trainer_id']?.toString() ??
+          trainerMap?['id']?.toString() ??
+          trainerMap?['trainerId']?.toString() ??
+          trainerMap?['trainer_id']?.toString() ??
+          trainerUserMap?['id']?.toString(),
       trainerName:
-          json['trainerName']?.toString() ?? json['trainer_name']?.toString(),
+          json['trainerName']?.toString() ??
+          json['trainer_name']?.toString() ??
+          trainerMap?['displayName']?.toString() ??
+          trainerMap?['display_name']?.toString() ??
+          trainerMap?['name']?.toString() ??
+          trainerUserMap?['displayName']?.toString() ??
+          trainerUserMap?['display_name']?.toString() ??
+          trainerUserMap?['name']?.toString(),
+      trainerImageUrl: resolveApiMediaUrl(
+        json['trainerImageUrl']?.toString() ??
+            json['trainer_image_url']?.toString() ??
+            json['trainerAvatarUrl']?.toString() ??
+            json['trainer_avatar_url']?.toString() ??
+            json['trainerPhotoUrl']?.toString() ??
+            json['trainer_photo_url']?.toString() ??
+            json['trainerImage']?.toString() ??
+            json['trainer_image']?.toString() ??
+            trainerMap?['imageUrl']?.toString() ??
+            trainerMap?['image_url']?.toString() ??
+            trainerMap?['avatarUrl']?.toString() ??
+            trainerMap?['avatar_url']?.toString() ??
+            trainerMap?['profileImage']?.toString() ??
+            trainerMap?['profile_image']?.toString() ??
+            trainerMap?['image']?.toString() ??
+            trainerMap?['photo']?.toString() ??
+            trainerUserMap?['imageUrl']?.toString() ??
+            trainerUserMap?['image_url']?.toString() ??
+            trainerUserMap?['avatarUrl']?.toString() ??
+            trainerUserMap?['avatar_url']?.toString() ??
+            trainerUserMap?['profileImage']?.toString() ??
+            trainerUserMap?['profile_image']?.toString() ??
+            trainerUserMap?['image']?.toString() ??
+            trainerUserMap?['photo']?.toString(),
+      ),
       capacity: _intOrNull(json['capacity']),
       slotsLeft: _intOrNull(json['slotsLeft'] ?? json['slots_left']),
       waitlistCount: _intOrNull(

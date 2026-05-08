@@ -5252,6 +5252,12 @@ abstract class AppLocalizations {
   /// **'Recent Referrals'**
   String get recentReferrals;
 
+  /// No description provided for @noRecentReferrals.
+  ///
+  /// In en, this message translates to:
+  /// **'No recent referrals'**
+  String get noRecentReferrals;
+
   /// No description provided for @referralCodeCopied.
   ///
   /// In en, this message translates to:

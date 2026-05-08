@@ -1141,6 +1141,7 @@
   "youBothGetRewardsDesc": "You earn 500 points, they get 20% off first month",
 
   "recentReferrals": "Recent Referrals",
+  "noRecentReferrals": "No recent referrals",
 
   "referralCodeCopied": "Referral code copied to clipboard",
   "referralProgramLoadError": "Could not load referral program. Please try again.",

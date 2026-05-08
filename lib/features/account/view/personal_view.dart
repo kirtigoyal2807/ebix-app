@@ -381,7 +381,7 @@ class _PersonalViewBodyState extends State<_PersonalViewBody> {
                       label: l10n.editDetails,
                       isLoading: isLoading,
                       onPressed: isLoading ? null : () => _submit(context),
-                      variant: AppButtonVariant.secondary,
+                      variant: AppButtonVariant.primary,
                     ),
                   ),
                   SizedBox(height: AppSpacing.xl),

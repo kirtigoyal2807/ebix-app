@@ -6,6 +6,7 @@ import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/core/localization/localization_extension.dart';
 import 'package:pilates_app/features/booking/data/models/class_slot_view_model.dart';
+import 'package:pilates_app/features/booking/data/models/trainer_resource.dart';
 import 'package:pilates_app/widgets/app_text.dart';
 
 import '../views/trainer_details_view.dart';
@@ -40,7 +41,16 @@ class ClassInfoGrid extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => TrainerDetailsView(),
+                      builder: (context) => TrainerDetailsView(
+                        trainer: TrainerResource(
+                          id: slot.trainerId ?? '',
+                          displayName: slot.trainerName,
+                          specialties: const [],
+                          certifications: const [],
+                          branches: const [],
+                          avatarUrl: slot.trainerImageUrl,
+                        ),
+                      ),
                     ),
                   );
                 },
@@ -50,6 +60,7 @@ class ClassInfoGrid extends StatelessWidget {
                       ? slot.trainerName
                       : context.l10n.trainerUnknown,
                   showAvatar: true,
+                  imageUrl: slot.trainerImageUrl,
                 ),
               ),
             ),
@@ -97,11 +108,13 @@ class _InfoCard extends StatelessWidget {
   final String label;
   final String value;
   final bool showAvatar;
+  final String? imageUrl;
 
   const _InfoCard({
     required this.label,
     required this.value,
     this.showAvatar = false,
+    this.imageUrl,
   });
 
   @override
@@ -131,11 +144,14 @@ class _InfoCard extends StatelessWidget {
           Row(
             children: [
               if (showAvatar) ...[
-                Image.asset(
-                  'assets/images/png/ic_trainer.png',
-                  height: 24,
-                  width: 24,
-                  fit: BoxFit.fill,
+                CircleAvatar(
+                  radius: 12,
+                  backgroundImage: (imageUrl ?? '').trim().isNotEmpty
+                      ? NetworkImage(imageUrl!)
+                      : const AssetImage(
+                              "assets/images/demo images/Trainer Avatar.png",
+                            )
+                            as ImageProvider,
                 ),
                 const SizedBox(width: 8),
               ] else ...[

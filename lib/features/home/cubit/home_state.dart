@@ -7,12 +7,15 @@ enum HomeUserStatus { empty, existing, expired }
 
 enum HomeLoadStatus { initial, loading, loaded, failure }
 
+const Object _unsetClassCategory = Object();
+
 class HomeState extends Equatable {
   final int currentIndex;
   final HomeLoadStatus loadStatus;
   final String errorMessage;
   final HomeResponse? data;
   final BookingTab selectedBookingTab;
+  final String? selectedClassCategory;
 
   const HomeState({
     required this.currentIndex,
@@ -20,6 +23,7 @@ class HomeState extends Equatable {
     required this.errorMessage,
     required this.data,
     required this.selectedBookingTab,
+    required this.selectedClassCategory,
   });
 
   factory HomeState.initial() {
@@ -29,6 +33,7 @@ class HomeState extends Equatable {
       errorMessage: '',
       data: null,
       selectedBookingTab: BookingTab.classes,
+      selectedClassCategory: null,
     );
   }
 
@@ -38,6 +43,7 @@ class HomeState extends Equatable {
     String? errorMessage,
     HomeResponse? data,
     BookingTab? selectedBookingTab,
+    Object? selectedClassCategory = _unsetClassCategory,
     bool clearData = false,
   }) {
     return HomeState(
@@ -46,6 +52,9 @@ class HomeState extends Equatable {
       errorMessage: errorMessage ?? this.errorMessage,
       data: clearData ? null : (data ?? this.data),
       selectedBookingTab: selectedBookingTab ?? this.selectedBookingTab,
+      selectedClassCategory: selectedClassCategory == _unsetClassCategory
+          ? this.selectedClassCategory
+          : selectedClassCategory as String?,
     );
   }
 
@@ -56,5 +65,6 @@ class HomeState extends Equatable {
     errorMessage,
     data,
     selectedBookingTab,
+    selectedClassCategory,
   ];
 }
