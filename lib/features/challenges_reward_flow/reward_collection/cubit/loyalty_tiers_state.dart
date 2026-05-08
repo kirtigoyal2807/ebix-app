@@ -15,10 +15,10 @@ class LoyaltyTiersState extends Equatable {
   final String errorMessage;
 
   factory LoyaltyTiersState.initial() => const LoyaltyTiersState(
-        status: LoyaltyTiersLoadStatus.initial,
-        tiers: [],
-        errorMessage: '',
-      );
+    status: LoyaltyTiersLoadStatus.initial,
+    tiers: [],
+    errorMessage: '',
+  );
 
   LoyaltyTiersState copyWith({
     LoyaltyTiersLoadStatus? status,

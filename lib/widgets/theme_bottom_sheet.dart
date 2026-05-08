@@ -52,8 +52,8 @@ class _ThemeBottomSheetState extends State<ThemeBottomSheet> {
                       // Header with title and close button
                       Padding(
                         padding: EdgeInsets.only(
-                          left: isRTL ? AppSpacing.base : AppSpacing.lg,
-                          right: isRTL ? AppSpacing.lg : AppSpacing.base,
+                          left: AppSpacing.lg,
+                          right: AppSpacing.lg,
                         ),
                         child: Row(
                           children: [
@@ -87,7 +87,7 @@ class _ThemeBottomSheetState extends State<ThemeBottomSheet> {
                         child: Column(
                           children: [
                             _ThemeOption(
-                              title:        context.l10n.lightTheme,
+                              title: context.l10n.lightTheme,
 
                               selected: _selectedThemeMode == ThemeMode.light,
                               onTap: () {
@@ -107,7 +107,7 @@ class _ThemeBottomSheetState extends State<ThemeBottomSheet> {
                           horizontal: AppSpacing.lg,
                         ),
                         child: _ThemeOption(
-                          title:        context.l10n.darkTheme,
+                          title: context.l10n.darkTheme,
 
                           selected: _selectedThemeMode == ThemeMode.dark,
                           onTap: () {
@@ -149,7 +149,7 @@ class _ThemeBottomSheetState extends State<ThemeBottomSheet> {
                     AppSpacing.md + 2,
                   ),
                   child: AppButton(
-                    label:  context.l10n.switchTheme,
+                    label: context.l10n.switchTheme,
                     onPressed: () {
                       context.read<AuthCubit>().changeTheme(_selectedThemeMode);
                       Navigator.of(context).pop();
@@ -206,7 +206,11 @@ class _ThemeOption extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            AppText(title, style: AppTextStyles.experienceButton),
+            AppText(
+              title,
+              style: (context) =>
+                  AppTextStyles.experienceButton(context).copyWith(height: 1.6),
+            ),
             if (selected)
               SvgPicture.asset(
                 // isDark

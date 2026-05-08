@@ -31,7 +31,9 @@ class Branch extends Equatable {
       id: _asInt(json['id']),
       title: _string(json['name'] ?? json['title'] ?? json['branch_name']),
       city: _cityFromJson(json),
-      distance: _string(json['distance_label'] ?? json['distance'] ?? json['km_away']),
+      distance: _string(
+        json['distance_label'] ?? json['distance'] ?? json['km_away'],
+      ),
       typeLabel: _typeLabelFromJson(json),
       lat: _asDouble(json['lat'] ?? json['latitude']),
       lng: _asDouble(json['lng'] ?? json['longitude']),
@@ -102,6 +104,16 @@ class Branch extends Equatable {
   }
 
   @override
-  List<Object?> get props =>
-      [id, title, city, distance, typeLabel, lat, lng, imageUrl, isActive, rewardsCount];
+  List<Object?> get props => [
+    id,
+    title,
+    city,
+    distance,
+    typeLabel,
+    lat,
+    lng,
+    imageUrl,
+    isActive,
+    rewardsCount,
+  ];
 }

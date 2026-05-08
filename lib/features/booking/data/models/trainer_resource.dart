@@ -88,13 +88,16 @@ class TrainerResource {
         if (e is Map<String, dynamic>) {
           branches.add(TrainerBranchSummary.fromJson(e));
         } else if (e is Map) {
-          branches.add(TrainerBranchSummary.fromJson(Map<String, dynamic>.from(e)));
+          branches.add(
+            TrainerBranchSummary.fromJson(Map<String, dynamic>.from(e)),
+          );
         }
       }
     }
 
     List<ReviewResource>? recentReviews;
-    if (json.containsKey('recentReviews') || json.containsKey('recent_reviews')) {
+    if (json.containsKey('recentReviews') ||
+        json.containsKey('recent_reviews')) {
       final raw = json['recentReviews'] ?? json['recent_reviews'];
       recentReviews = parseRecentReviewsList(raw);
     }
@@ -104,8 +107,11 @@ class TrainerResource {
       displayName: '${json['display_name'] ?? json['displayName'] ?? ''}',
       bio: _bioFromJson(json['bio']),
       specialties: specialties,
-      yearsExperience: _optionalInt(json['years_experience'] ?? json['yearsExperience']),
-      avgRating: json['avg_rating']?.toString() ?? json['avgRating']?.toString(),
+      yearsExperience: _optionalInt(
+        json['years_experience'] ?? json['yearsExperience'],
+      ),
+      avgRating:
+          json['avg_rating']?.toString() ?? json['avgRating']?.toString(),
       reviewsCount: _int(json['reviews_count'] ?? json['reviewsCount'], 0),
       isActive: json['is_active'] != false && json['isActive'] != false,
       certifications: certifications,

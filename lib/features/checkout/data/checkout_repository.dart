@@ -169,7 +169,9 @@ class CheckoutRepository extends BaseRepository {
           return ApiFailure(
             NetworkException.fromApiEnvelope(
               statusCode: code,
-              message: envelope.message.isEmpty ? 'Request failed' : envelope.message,
+              message: envelope.message.isEmpty
+                  ? 'Request failed'
+                  : envelope.message,
               fieldErrors: envelope.fieldErrors,
               responseData: raw,
             ),
@@ -342,9 +344,7 @@ class CheckoutRepository extends BaseRepository {
         if (payload is! Map) {
           throw StateError('Expected checkout session object');
         }
-        return CheckoutStartResult.fromJson(
-          Map<String, dynamic>.from(payload),
-        );
+        return CheckoutStartResult.fromJson(Map<String, dynamic>.from(payload));
       },
     );
   }
@@ -380,9 +380,7 @@ class CheckoutRepository extends BaseRepository {
         if (payload is! Map) {
           throw StateError('Expected checkout session object');
         }
-        return CheckoutStartResult.fromJson(
-          Map<String, dynamic>.from(payload),
-        );
+        return CheckoutStartResult.fromJson(Map<String, dynamic>.from(payload));
       },
     );
   }
@@ -551,9 +549,7 @@ class CheckoutRepository extends BaseRepository {
         if (payload is! Map) {
           throw StateError('Expected checkout session object');
         }
-        return CheckoutStartResult.fromJson(
-          Map<String, dynamic>.from(payload),
-        );
+        return CheckoutStartResult.fromJson(Map<String, dynamic>.from(payload));
       },
     );
   }
@@ -608,7 +604,7 @@ class CheckoutRepository extends BaseRepository {
     return result;
   }
 
-/// `GET payments/{checkoutId}/success-summary` — canonical paid receipt (invoice,
+  /// `GET payments/{checkoutId}/success-summary` — canonical paid receipt (invoice,
   /// package, pricing, payment) after the PSP return / webhook.
   ///
   /// Until the server marks the checkout paid, the API may respond with **422** and
@@ -676,7 +672,8 @@ class CheckoutRepository extends BaseRepository {
     final hasRef = p?.reference != null && p!.reference!.trim().isNotEmpty;
     final hasPaidAt = p?.paidAt != null && p!.paidAt!.trim().isNotEmpty;
     final statusVal = s.status?.value?.toLowerCase().trim() ?? '';
-    final statusPaid = statusVal == 'paid' ||
+    final statusPaid =
+        statusVal == 'paid' ||
         statusVal == 'completed' ||
         statusVal == 'complete' ||
         statusVal == 'success' ||

@@ -23,10 +23,13 @@ class SubscriptionsState extends Equatable {
     if (subscriptions.isEmpty) return null;
     final active = subscriptions.where((s) => s.isActive).toList();
     final pool = active.isNotEmpty ? active : subscriptions;
-    final membership =
-        pool.where((s) => s.entitlementType == 'subscription').toList();
+    final membership = pool
+        .where((s) => s.entitlementType == 'subscription')
+        .toList();
     if (membership.isNotEmpty) return membership.first;
-    final packs = pool.where((s) => s.entitlementType == 'session_pack').toList();
+    final packs = pool
+        .where((s) => s.entitlementType == 'session_pack')
+        .toList();
     if (packs.isNotEmpty) return packs.first;
     return pool.first;
   }
@@ -39,8 +42,9 @@ class SubscriptionsState extends Equatable {
   }) {
     return SubscriptionsState(
       status: status ?? this.status,
-      errorMessage:
-          clearErrorMessage ? null : (errorMessage ?? this.errorMessage),
+      errorMessage: clearErrorMessage
+          ? null
+          : (errorMessage ?? this.errorMessage),
       subscriptions: subscriptions ?? this.subscriptions,
     );
   }

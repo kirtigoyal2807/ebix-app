@@ -37,9 +37,7 @@ class _MonthlyTargetSliderState extends State<MonthlyTargetSlider> {
   }
 
   int _nearestStep(double raw) {
-    return steps.reduce(
-      (a, b) => (raw - a).abs() <= (raw - b).abs() ? a : b,
-    );
+    return steps.reduce((a, b) => (raw - a).abs() <= (raw - b).abs() ? a : b);
   }
 
   @override
@@ -55,23 +53,25 @@ class _MonthlyTargetSliderState extends State<MonthlyTargetSlider> {
           width: 0.5,
         ),
         borderRadius: BorderRadius.circular(AppRadius.md),
-        boxShadow: [
-          AppShadows.lightShadow,
-          AppShadows.mediumShadow,
-          AppShadows.mediumHeavyShadow,
-          BoxShadow(
-            color: AppColors.shadowColor.withValues(alpha: 0.01),
-            offset: const Offset(0, 64),
-            blurRadius: 25,
-            spreadRadius: 0,
-          ),
-          BoxShadow(
-            color: AppColors.shadowColor.withValues(alpha: 0.00),
-            offset: const Offset(0, 99),
-            blurRadius: 28,
-            spreadRadius: 0,
-          ),
-        ],
+        boxShadow: isDark
+            ? null
+            : [
+                AppShadows.lightShadow,
+                AppShadows.mediumShadow,
+                AppShadows.mediumHeavyShadow,
+                BoxShadow(
+                  color: AppColors.shadowColor.withValues(alpha: 0.01),
+                  offset: const Offset(0, 64),
+                  blurRadius: 25,
+                  spreadRadius: 0,
+                ),
+                BoxShadow(
+                  color: AppColors.shadowColor.withValues(alpha: 0.00),
+                  offset: const Offset(0, 99),
+                  blurRadius: 28,
+                  spreadRadius: 0,
+                ),
+              ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,

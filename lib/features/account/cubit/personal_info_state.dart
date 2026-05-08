@@ -1,44 +1,52 @@
 import 'package:equatable/equatable.dart';
 
+enum PersonalInfoSaveStatus { idle, loading, success, failure }
+
 class PersonalInfoState extends Equatable {
-  final String emergencyContactName;
-  final String? emergencyContactRelationship;
-  final String emergencyContactPhone;
-  final String? idType;
-  final String idNumber;
+  final String? gender;
+  final DateTime? dateOfBirth;
+  final PersonalInfoSaveStatus saveStatus;
+  final String errorMessage;
+  final String? selectedAvatarPath;
+  final bool removeAvatar;
 
   const PersonalInfoState({
-    this.emergencyContactName = '',
-    this.emergencyContactRelationship,
-    this.emergencyContactPhone = '',
-    this.idType,
-    this.idNumber = '',
+    this.gender,
+    this.dateOfBirth,
+    this.saveStatus = PersonalInfoSaveStatus.idle,
+    this.errorMessage = '',
+    this.selectedAvatarPath,
+    this.removeAvatar = false,
   });
 
-
   PersonalInfoState copyWith({
-    String? emergencyContactName,
-    String? emergencyContactRelationship,
-    String? emergencyContactPhone,
-    String? idType,
-    String? idNumber,
-  }){
+    String? gender,
+    DateTime? dateOfBirth,
+    PersonalInfoSaveStatus? saveStatus,
+    String? errorMessage,
+    String? selectedAvatarPath,
+    bool? removeAvatar,
+    bool clearSelectedAvatar = false,
+  }) {
     return PersonalInfoState(
-      emergencyContactName: emergencyContactName ?? this.emergencyContactName,
-      emergencyContactRelationship: emergencyContactRelationship ?? this.emergencyContactRelationship,
-      emergencyContactPhone: emergencyContactPhone ?? this.emergencyContactPhone,
-      idType: idType ?? this.idType,
-      idNumber: idNumber ?? this.idNumber,
+      gender: gender ?? this.gender,
+      dateOfBirth: dateOfBirth ?? this.dateOfBirth,
+      saveStatus: saveStatus ?? this.saveStatus,
+      errorMessage: errorMessage ?? this.errorMessage,
+      selectedAvatarPath: clearSelectedAvatar
+          ? null
+          : (selectedAvatarPath ?? this.selectedAvatarPath),
+      removeAvatar: removeAvatar ?? this.removeAvatar,
     );
   }
 
   @override
-  // TODO: implement props
   List<Object?> get props => [
-    emergencyContactName,
-    emergencyContactRelationship,
-    emergencyContactPhone,
-    idType,
-    idNumber,
+    gender,
+    dateOfBirth,
+    saveStatus,
+    errorMessage,
+    selectedAvatarPath,
+    removeAvatar,
   ];
 }

@@ -86,18 +86,18 @@ class _ReferralProgramScaffoldState extends State<_ReferralProgramScaffold> {
       listener: (context, state) {
         final loc = AppLocalizations.of(context);
         if (state.inviteSuccessSnackPending) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(loc.referralInviteSent)),
-          );
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(loc.referralInviteSent)));
           _inviteeNameController.clear();
           _inviteePhoneController.clear();
           context.read<ReferralProgramCubit>().consumeInviteSuccessSnack();
         }
         final err = state.inviteErrorSnackMessage?.trim();
         if (err != null && err.isNotEmpty) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(err)),
-          );
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(err)));
           context.read<ReferralProgramCubit>().consumeInviteErrorSnack();
         }
       },
@@ -125,7 +125,9 @@ class _ReferralProgramScaffoldState extends State<_ReferralProgramScaffold> {
                       _inviteDirectCard(context: context),
                       SizedBox(height: AppSpacing.xl),
                       Padding(
-                        padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+                        padding: EdgeInsets.symmetric(
+                          horizontal: AppSpacing.lg,
+                        ),
                         child: AppText(
                           l10n.howItWorks,
                           style: (context) => AppTextStyles.gelasioMedium(
@@ -137,16 +139,17 @@ class _ReferralProgramScaffoldState extends State<_ReferralProgramScaffold> {
                       _howItWorksCard(context: context),
                       SizedBox(height: AppSpacing.xl),
                       Padding(
-                        padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+                        padding: EdgeInsets.symmetric(
+                          horizontal: AppSpacing.lg,
+                        ),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             AppText(
                               l10n.recentReferrals,
-                              style: (context) =>
-                                  AppTextStyles.gelasioMedium(
-                                    context,
-                                  ).copyWith(height: 1),
+                              style: (context) => AppTextStyles.gelasioMedium(
+                                context,
+                              ).copyWith(height: 1),
                             ),
                             // AppText(
                             //   l10n.seeAll,
@@ -161,10 +164,13 @@ class _ReferralProgramScaffoldState extends State<_ReferralProgramScaffold> {
                         buildWhen: (previous, current) =>
                             previous.referralHistoryStatus !=
                                 current.referralHistoryStatus ||
-                            previous.referralHistory != current.referralHistory ||
+                            previous.referralHistory !=
+                                current.referralHistory ||
                             previous.referralHistoryErrorMessage !=
                                 current.referralHistoryErrorMessage,
                         builder: (context, state) {
+                          final isDark = Theme.of(context).brightness ==
+                              Brightness.dark;
                           if (state.referralHistoryStatus ==
                               ReferralHistoryStatus.loading) {
                             return Padding(
@@ -194,6 +200,29 @@ class _ReferralProgramScaffoldState extends State<_ReferralProgramScaffold> {
                             );
                           }
                           final items = state.referralHistory;
+                          if (items.isEmpty) {
+                            return Padding(
+                              padding: EdgeInsets.only(
+                                left: AppSpacing.lg,
+                                right: AppSpacing.lg,
+                                top: AppSpacing.md,
+                                bottom: AppSpacing.xxl,
+                              ),
+                              child: Center(
+                                child: AppText(
+                                  l10n.noRecentReferrals,
+                                  textAlign: TextAlign.center,
+                                  style: (context) =>
+                                      AppTextStyles.bodyText(context).copyWith(
+                                    color: isDark
+                                        ? AppColors.placeHolderText
+                                        : AppColors.greyText,
+                                    height: 1.55,
+                                  ),
+                                ),
+                              ),
+                            );
+                          }
                           final cards = <Widget>[];
                           for (var i = 0; i < items.length; i++) {
                             if (i > 0) {
@@ -244,10 +273,10 @@ class _ReferralProgramScaffoldState extends State<_ReferralProgramScaffold> {
     return BlocBuilder<ReferralProgramCubit, ReferralProgramState>(
       builder: (context, state) {
         final program = state.program;
-        final loading = state.status == ReferralProgramStatus.loading &&
-            program == null;
-        final failedFirstLoad = state.status == ReferralProgramStatus.failure &&
-            program == null;
+        final loading =
+            state.status == ReferralProgramStatus.loading && program == null;
+        final failedFirstLoad =
+            state.status == ReferralProgramStatus.failure && program == null;
 
         final code = program?.referralCode ?? '';
         final spacedCode = code.isEmpty ? '' : code.split('').join(' ');
@@ -286,9 +315,8 @@ class _ReferralProgramScaffoldState extends State<_ReferralProgramScaffold> {
             children: [
               AppText(
                 spacedCode.isEmpty ? code : spacedCode,
-                style: (context) => AppTextStyles.bottomSheetTitle(
-                  context,
-                ).copyWith(height: 1),
+                style: (context) =>
+                    AppTextStyles.bottomSheetTitle(context).copyWith(height: 1),
               ),
               SizedBox(height: AppSpacing.md),
               AppText(
@@ -331,22 +359,24 @@ class _ReferralProgramScaffoldState extends State<_ReferralProgramScaffold> {
               color: isDark ? AppColors.greyText : AppColors.buttonBorder,
               width: 1,
             ),
-            boxShadow: [
-              AppShadows.lightShadow,
-              AppShadows.mediumShadow,
-              BoxShadow(
-                color: AppColors.shadowColor.withValues(alpha: 0.01),
-                offset: const Offset(0, 64),
-                blurRadius: 25,
-                spreadRadius: 0,
-              ),
-              BoxShadow(
-                color: AppColors.shadowColor.withValues(alpha: 0.00),
-                offset: const Offset(0, 99),
-                blurRadius: 28,
-                spreadRadius: 0,
-              ),
-            ],
+            boxShadow: isDark
+                ? null
+                : [
+                    AppShadows.lightShadow,
+                    AppShadows.mediumShadow,
+                    BoxShadow(
+                      color: AppColors.shadowColor.withValues(alpha: 0.01),
+                      offset: const Offset(0, 64),
+                      blurRadius: 25,
+                      spreadRadius: 0,
+                    ),
+                    BoxShadow(
+                      color: AppColors.shadowColor.withValues(alpha: 0.00),
+                      offset: const Offset(0, 99),
+                      blurRadius: 28,
+                      spreadRadius: 0,
+                    ),
+                  ],
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -399,18 +429,23 @@ class _ReferralProgramScaffoldState extends State<_ReferralProgramScaffold> {
                 decoration: BoxDecoration(
                   color: isDark ? AppColors.homeBackground : Colors.white,
                   borderRadius: BorderRadius.circular(AppRadius.xl),
-                  boxShadow: [
-                    BoxShadow(
-                      color: AppColors.shadowColor.withValues(alpha: 0.06),
-                      offset: const Offset(0, 1),
-                      blurRadius: 2,
-                      spreadRadius: 0,
-                    ),
-                  ],
+                  boxShadow: isDark
+                      ? null
+                      : [
+                          BoxShadow(
+                            color: AppColors.shadowColor.withValues(
+                              alpha: 0.06,
+                            ),
+                            offset: const Offset(0, 1),
+                            blurRadius: 2,
+                            spreadRadius: 0,
+                          ),
+                        ],
                 ),
                 child: AppButton(
                   label: l10n.shareViaWhatsapp,
-                  onPressed: loading ||
+                  onPressed:
+                      loading ||
                           failedFirstLoad ||
                           (program?.shareUrl ?? '').isEmpty
                       ? null
@@ -479,23 +514,25 @@ class _ReferralProgramScaffoldState extends State<_ReferralProgramScaffold> {
               color: isDark ? AppColors.greyText : AppColors.buttonBorder,
               width: 1,
             ),
-            boxShadow: [
-              AppShadows.lightShadow,
-              AppShadows.mediumShadow,
-              AppShadows.mediumHeavyShadow,
-              BoxShadow(
-                color: AppColors.shadowColor.withValues(alpha: 0.01),
-                offset: const Offset(0, 64),
-                blurRadius: 25,
-                spreadRadius: 0,
-              ),
-              BoxShadow(
-                color: AppColors.shadowColor.withValues(alpha: 0.00),
-                offset: const Offset(0, 99),
-                blurRadius: 28,
-                spreadRadius: 0,
-              ),
-            ],
+            boxShadow: isDark
+                ? null
+                : [
+                    AppShadows.lightShadow,
+                    AppShadows.mediumShadow,
+                    AppShadows.mediumHeavyShadow,
+                    BoxShadow(
+                      color: AppColors.shadowColor.withValues(alpha: 0.01),
+                      offset: const Offset(0, 64),
+                      blurRadius: 25,
+                      spreadRadius: 0,
+                    ),
+                    BoxShadow(
+                      color: AppColors.shadowColor.withValues(alpha: 0.00),
+                      offset: const Offset(0, 99),
+                      blurRadius: 28,
+                      spreadRadius: 0,
+                    ),
+                  ],
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,

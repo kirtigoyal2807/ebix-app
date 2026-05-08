@@ -17,15 +17,15 @@ class ClassDetailCubit extends Cubit<ClassDetailState> {
     this._repository,
     String classId, {
     ClassSlotViewModel? preloadedSlot,
-  })  : _classId = classId.trim(),
-        super(
-          ClassDetailState(
-            status: preloadedSlot != null
-                ? ClassDetailLoadStatus.loaded
-                : ClassDetailLoadStatus.initial,
-            slot: preloadedSlot,
-          ),
-        );
+  }) : _classId = classId.trim(),
+       super(
+         ClassDetailState(
+           status: preloadedSlot != null
+               ? ClassDetailLoadStatus.loaded
+               : ClassDetailLoadStatus.initial,
+           slot: preloadedSlot,
+         ),
+       );
 
   final ClassesRepository _repository;
   final String _classId;
@@ -34,15 +34,19 @@ class ClassDetailCubit extends Cubit<ClassDetailState> {
   Future<void> loadClassDetail() async {
     if (state.isLoading) return;
 
-    emit(state.copyWith(status: ClassDetailLoadStatus.loading, errorMessage: null));
+    emit(
+      state.copyWith(status: ClassDetailLoadStatus.loading, errorMessage: null),
+    );
 
     final result = await _repository.getClassDetail(_classId);
 
     switch (result) {
       case ApiSuccess(:final data):
         final picked = _pickMatchingOrUpcomingEvent(data);
-        final resolved =
-            ClassSlotViewModel.fromGymClassResource(data, event: picked);
+        final resolved = ClassSlotViewModel.fromGymClassResource(
+          data,
+          event: picked,
+        );
         final mergedSlot = resolved.copyWith(
           recentReviews: resolved.recentReviews ?? state.slot?.recentReviews,
           avgRating: resolved.avgRating ?? state.slot?.avgRating,

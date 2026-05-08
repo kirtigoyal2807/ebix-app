@@ -27,4 +27,3 @@ class BadgeState extends Equatable {
 }
 
 enum BadgeType { all, bronze, silver, gold }
-

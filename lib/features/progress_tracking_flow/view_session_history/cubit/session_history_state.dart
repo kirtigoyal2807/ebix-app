@@ -59,16 +59,16 @@ class SessionHistoryState extends Equatable {
 
   @override
   List<Object?> get props => [
-        sessionHistoryList,
-        selectedSessionHistory,
-        isLoading,
-        errorMessage,
-        sessions,
-        total,
-        currentPage,
-        lastPage,
-        perPage,
-      ];
+    sessionHistoryList,
+    selectedSessionHistory,
+    isLoading,
+    errorMessage,
+    sessions,
+    total,
+    currentPage,
+    lastPage,
+    perPage,
+  ];
 }
 
 enum SessionHistory { allTime, thisMonth, last30Days }

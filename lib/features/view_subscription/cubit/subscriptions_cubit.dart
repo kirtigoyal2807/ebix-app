@@ -10,7 +10,7 @@ import 'subscriptions_state.dart';
 /// falls back to `/subscriptions/me` on 404.
 class SubscriptionsCubit extends Cubit<SubscriptionsState> {
   SubscriptionsCubit(this._repository, this._authCubit)
-      : super(const SubscriptionsState());
+    : super(const SubscriptionsState());
 
   final SubscriptionsRepository _repository;
   final AuthCubit _authCubit;

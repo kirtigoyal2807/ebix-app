@@ -30,10 +30,7 @@ class ReferralRepository extends BaseRepository {
         }
         final list = json;
         return list
-            .map(
-              (e) =>
-                  ReferralHistoryItem.fromJson(e as Map<String, dynamic>),
-            )
+            .map((e) => ReferralHistoryItem.fromJson(e as Map<String, dynamic>))
             .toList();
       },
     );
@@ -56,10 +53,6 @@ class ReferralRepository extends BaseRepository {
           ? trimmedName.substring(0, 100)
           : trimmedName;
     }
-    return post<bool>(
-      '/referral/invite',
-      data: body,
-      fromJson: (_) => true,
-    );
+    return post<bool>('/referral/invite', data: body, fromJson: (_) => true);
   }
 }

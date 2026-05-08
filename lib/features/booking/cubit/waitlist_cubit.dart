@@ -37,10 +37,7 @@ class WaitlistCubit extends Cubit<WaitlistState> {
         return true;
       case ApiFailure(:final exception):
         emit(
-          state.copyWith(
-            isSubmitting: false,
-            errorMessage: exception.message,
-          ),
+          state.copyWith(isSubmitting: false, errorMessage: exception.message),
         );
         return false;
     }

@@ -22,7 +22,9 @@ class HomeResponse {
   final List<HomeReceivedGift> receivedGifts;
 
   factory HomeResponse.fromJson(Map<String, dynamic> json) {
-    debugPrint('[HomeResponse.fromJson] progress raw value: ${json['progress']}');
+    debugPrint(
+      '[HomeResponse.fromJson] progress raw value: ${json['progress']}',
+    );
     return HomeResponse(
       banners: _toList(
         json['banners'],
@@ -127,9 +129,7 @@ class HomeProgress {
             json['targetClasses'] ??
             json['target_classes'],
       ),
-      goalPercent: _toIntOrZero(
-        json['goalPercent'] ?? json['goal_percent'],
-      ),
+      goalPercent: _toIntOrZero(json['goalPercent'] ?? json['goal_percent']),
     );
     debugPrint(
       '[HomeProgress.fromJson] parsed → classes=${parsed.mtdAttendedClasses} '

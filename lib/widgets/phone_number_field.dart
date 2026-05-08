@@ -72,86 +72,90 @@ class _PhoneNumberFieldState extends State<PhoneNumberField> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         /// LABEL
-        AppText(
-          widget.label,
-          style: AppTextStyles.textFieldHeading,
-        ),
+        AppText(widget.label, style: AppTextStyles.textFieldHeading),
 
         const SizedBox(height: AppSpacing.sm),
 
-        /// FIELD
-        Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(AppRadius.md),
-            border: Border.all(
-              color: hasError
-                  ? (isDark ? AppColors.redDark : AppColors.redLight)
-                  : (_isFocused ? theme.colorScheme.primary : theme.dividerColor),
-              width: _isFocused ? 1.5 : 1,
+        /// FIELD — phone UX must stay left-to-right in RTL locales.
+        Directionality(
+          textDirection: TextDirection.ltr,
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(AppRadius.md),
+              border: Border.all(
+                color: hasError
+                    ? (isDark ? AppColors.redDark : AppColors.redLight)
+                    : (_isFocused
+                          ? theme.colorScheme.primary
+                          : theme.dividerColor),
+                width: _isFocused ? 1.5 : 1,
+              ),
             ),
-          ),
-          child: Row(
-            children: [
-              CountryCodePicker(
-                headerText: context.l10n.selectCountry,
-                onChanged: (CountryCode countryCode) {
-                  widget.onCountryChanged?.call(countryCode);
-                },
-                initialSelection: widget.initialCountryIso,
-                showCountryOnly: false,
-                showOnlyCountryWhenClosed: false,
-                alignLeft: false,
-                padding: const EdgeInsets.symmetric(horizontal: 2),
-                boxDecoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(AppRadius.md),
-                ),
-                searchDecoration: InputDecoration(
-                  hintText: context.l10n.searchCountry,
-                  border: OutlineInputBorder(
+            child: Row(
+              children: [
+                CountryCodePicker(
+                  headerText: context.l10n.selectCountry,
+                  onChanged: (CountryCode countryCode) {
+                    widget.onCountryChanged?.call(countryCode);
+                  },
+                  initialSelection: widget.initialCountryIso,
+                  showCountryOnly: false,
+                  showOnlyCountryWhenClosed: false,
+                  alignLeft: false,
+                  padding: const EdgeInsets.symmetric(horizontal: 2),
+                  boxDecoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(AppRadius.md),
                   ),
-                  contentPadding: const EdgeInsets.symmetric(
-                    horizontal: AppSpacing.md,
-                    vertical: AppSpacing.md,
-                  ),
-                ),
-                textStyle: theme.textTheme.bodyMedium,
-                flagWidth: 24,
-              ),
-
-              /// DIVIDER
-              Container(
-                width: 1,
-                height: 24,
-                color: theme.dividerColor,
-              ),
-
-              /// PHONE INPUT
-              Expanded(
-                child: TextField(
-                  controller: widget.controller,
-                  focusNode: _focusNode,
-                  keyboardType: TextInputType.phone,
-                  inputFormatters: widget.maxPhoneDigits != null
-                      ? <TextInputFormatter>[
-                          FilteringTextInputFormatter.digitsOnly,
-                          LengthLimitingTextInputFormatter(widget.maxPhoneDigits),
-                        ]
-                      : null,
-                  onChanged: widget.onChanged,
-                  style: AppTextStyles.textField(context),
-                  decoration: InputDecoration(
-                    hintText: 'XXXXXXXXXX',
-                    hintStyle: AppTextStyles.textField(context).copyWith(color: AppColors.lightGrey),
-                    border: InputBorder.none,
+                  searchDecoration: InputDecoration(
+                    hintText: context.l10n.searchCountry,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(AppRadius.md),
+                    ),
                     contentPadding: const EdgeInsets.symmetric(
-                      horizontal: 14,
-                      vertical: 14,
+                      horizontal: AppSpacing.md,
+                      vertical: AppSpacing.md,
+                    ),
+                  ),
+                  textStyle: theme.textTheme.bodyMedium,
+                  flagWidth: 24,
+                ),
+
+                /// DIVIDER
+                Container(width: 1, height: 24, color: theme.dividerColor),
+
+                /// PHONE INPUT
+                Expanded(
+                  child: TextField(
+                    controller: widget.controller,
+                    focusNode: _focusNode,
+                    keyboardType: TextInputType.phone,
+                    textDirection: TextDirection.ltr,
+                    textAlign: TextAlign.left,
+                    inputFormatters: widget.maxPhoneDigits != null
+                        ? <TextInputFormatter>[
+                            FilteringTextInputFormatter.digitsOnly,
+                            LengthLimitingTextInputFormatter(
+                              widget.maxPhoneDigits,
+                            ),
+                          ]
+                        : null,
+                    onChanged: widget.onChanged,
+                    style: AppTextStyles.textField(context),
+                    decoration: InputDecoration(
+                      hintText: 'XXXXXXXXXX',
+                      hintStyle: AppTextStyles.textField(
+                        context,
+                      ).copyWith(color: AppColors.lightGrey),
+                      border: InputBorder.none,
+                      contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 14,
+                        vertical: 14,
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
 

@@ -43,47 +43,48 @@ class GoalsView extends StatelessWidget {
                       p.selectedProductRequiresHealthIntake !=
                           c.selectedProductRequiresHealthIntake,
                   builder: (context, state) {
-                  final intake = state.selectedProductRequiresHealthIntake;
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SubscriptionStepHeader(
-                        currentStep: 4,
-                        totalSteps: 6,
-                        isDark: isDark,
-                      ),
-                      AppText(
-                        l10n.goals,
-                        style: (style) => AppTextStyles.gelasioMedium(
-                          context,
-                        ).copyWith(fontSize: 24, height: 1.2),
-                      ),
-                      const SizedBox(height: AppSpacing.lg),
-                      if (intake)
-                        const ApiGoalsQuestionBlock()
-                      else
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            _buildSectionHeader(context, l10n.whatIsYourGoal),
-                            Stack(
-                              children: [
-                                AppTextField(
-                                  hint: l10n.enterYourGoals,
-                                  label: '',
-                                  maxLength: 200,
-                                  onChanged: (val) => cubit.updateGoals(val),
-                                  maxLines: 8,
-                                ),
-                              ],
-                            ),
-                          ],
+                    final intake = state.selectedProductRequiresHealthIntake;
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SubscriptionStepHeader(
+                          currentStep: 4,
+                          totalSteps: 6,
+                          isDark: isDark,
                         ),
-                    ],
-                  );
-                },
+                        const SizedBox(height: AppSpacing.xl),
+                        AppText(
+                          l10n.goals,
+                          style: (style) => AppTextStyles.gelasioMedium(
+                            context,
+                          ).copyWith(fontSize: 24, height: 1.2),
+                        ),
+                        const SizedBox(height: AppSpacing.lg),
+                        if (intake)
+                          const ApiGoalsQuestionBlock()
+                        else
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              _buildSectionHeader(context, l10n.whatIsYourGoal),
+                              Stack(
+                                children: [
+                                  AppTextField(
+                                    hint: l10n.enterYourGoals,
+                                    label: '',
+                                    maxLength: 200,
+                                    onChanged: (val) => cubit.updateGoals(val),
+                                    maxLines: 8,
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                      ],
+                    );
+                  },
+                ),
               ),
-            ),
             ),
           ),
           AppButton(

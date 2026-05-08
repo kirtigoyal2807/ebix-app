@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:lottie/lottie.dart';
 import 'package:pilates_app/config/theme/app_colors.dart';
 import 'package:pilates_app/config/theme/app_radius.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
@@ -11,7 +12,11 @@ import 'package:pilates_app/widgets/app_text.dart';
 import 'package:pilates_app/widgets/app_text_field.dart';
 
 class GiftRedeemSuccessSheet extends StatelessWidget {
-  const GiftRedeemSuccessSheet({super.key});
+  const GiftRedeemSuccessSheet({super.key, this.onContinue});
+
+  /// When provided, replaces the legacy "open ReceiveGiftSheet again" behavior
+  /// so callers (e.g. the pending-gift home flow) can dismiss and refresh state.
+  final VoidCallback? onContinue;
 
   @override
   Widget build(BuildContext context) {
@@ -52,34 +57,36 @@ class GiftRedeemSuccessSheet extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: AppSpacing.xl),
-              Container(
-                height: 100,
-                width: 100,
+              Lottie.asset(
+                "assets/json/tick.json",
                 alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  color: isDark
-                      ? AppColors.successColor.withValues(alpha: 0.61)
-                      : AppColors.successColor,
-                  borderRadius: BorderRadius.circular(AppRadius.pillRadius),
-                ),
-                child: const Icon(Icons.done, color: Colors.white, size: 80),
+                repeat: false,
+                width: 150,
+                height: 150,
               ),
 
               const SizedBox(height: AppSpacing.md),
-              AppText(
-                context.l10n.giftRedeemedSuccess,
-                style: (context) =>
-                    AppTextStyles.gelasioMedium(context).copyWith(
-                      fontSize: 24,
-                      color: isDark ? AppColors.lightText : Color(0xff0D0D12),
-                      height: 1.2,
-                    ),
-                textAlign: TextAlign.center,
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+                child: AppText(
+                  context.l10n.giftRedeemedSuccess,
+                  style: (context) =>
+                      AppTextStyles.gelasioMedium(context).copyWith(
+                        fontSize: 24,
+                        color: isDark ? AppColors.lightText : Color(0xff0D0D12),
+                        height: 1.2,
+                      ),
+                  textAlign: TextAlign.center,
+                ),
               ),
               const SizedBox(height: AppSpacing.xl),
               AppButton(
                 label: context.l10n.continueTxt,
                 onPressed: () {
+                  if (onContinue != null) {
+                    onContinue!();
+                    return;
+                  }
                   Navigator.of(context).pop();
                   showModalBottomSheet(
                     context: context,

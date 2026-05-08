@@ -15,6 +15,8 @@ class ClassSlotViewModel {
     required this.allowPackageBooking,
     required this.allowSinglePurchase,
     required this.trainerName,
+    this.trainerId,
+    this.trainerImageUrl,
     required this.branchName,
     this.branchLocation,
     this.branchAddress,
@@ -26,6 +28,7 @@ class ClassSlotViewModel {
     this.basePrice,
     this.recentReviews,
     this.gender,
+    this.category,
     this.reviewsCount,
   });
 
@@ -38,6 +41,8 @@ class ClassSlotViewModel {
   final bool allowPackageBooking;
   final bool allowSinglePurchase;
   final String trainerName;
+  final String? trainerId;
+  final String? trainerImageUrl;
   final String branchName;
   final String? branchLocation;
   final String? branchAddress;
@@ -53,6 +58,7 @@ class ClassSlotViewModel {
 
   /// From event / class payload when the API includes a gender restriction.
   final String? gender;
+  final String? category;
 
   /// From `GET /classes` class-level `reviewsCount` when present.
   final int? reviewsCount;
@@ -91,6 +97,8 @@ class ClassSlotViewModel {
       allowPackageBooking: gymClass.allowPackageBooking,
       allowSinglePurchase: gymClass.allowSinglePurchase,
       trainerName: event.trainerName ?? '',
+      trainerId: event.trainerId,
+      trainerImageUrl: event.trainerImageUrl,
       branchName: event.branchName,
       branchLocation: event.branchLocation,
       branchAddress: event.branchAddress,
@@ -101,7 +109,8 @@ class ClassSlotViewModel {
       durationMinutes: gymClass.defaultDurationMinutes,
       basePrice: gymClass.basePrice,
       recentReviews: gymClass.recentReviews,
-      gender: event.gender,
+      gender: event.gender ?? gymClass.gender,
+      category: event.category ?? gymClass.category,
       reviewsCount: gymClass.reviewsCount,
     );
   }
@@ -116,8 +125,9 @@ class ClassSlotViewModel {
     final now = referenceTime ?? DateTime.now();
     final events = gymClass.upcomingEvents;
     if (events.isEmpty) return null;
-    final upcoming =
-        events.where((e) => !e.startAt.isBefore(now)).toList(growable: false);
+    final upcoming = events
+        .where((e) => !e.startAt.isBefore(now))
+        .toList(growable: false);
     if (upcoming.isEmpty) return null;
     final sorted = List<UpcomingEvent>.from(upcoming)
       ..sort((a, b) => a.startAt.compareTo(b.startAt));
@@ -143,6 +153,8 @@ class ClassSlotViewModel {
       allowPackageBooking: gymClass.allowPackageBooking,
       allowSinglePurchase: gymClass.allowSinglePurchase,
       trainerName: '',
+      trainerId: null,
+      trainerImageUrl: null,
       branchName: '',
       branchLocation: null,
       branchAddress: null,
@@ -153,7 +165,8 @@ class ClassSlotViewModel {
       durationMinutes: gymClass.defaultDurationMinutes,
       basePrice: gymClass.basePrice,
       recentReviews: gymClass.recentReviews,
-      gender: null,
+      gender: gymClass.gender,
+      category: gymClass.category,
       reviewsCount: gymClass.reviewsCount,
     );
   }
@@ -170,6 +183,8 @@ class ClassSlotViewModel {
       allowPackageBooking: detail.gymClass?.allowPackageBooking ?? false,
       allowSinglePurchase: detail.gymClass?.allowSinglePurchase ?? false,
       trainerName: detail.trainerName ?? '',
+      trainerId: detail.trainerId,
+      trainerImageUrl: null,
       branchName: detail.branchName ?? '',
       branchLocation: detail.branchLocation,
       branchAddress: detail.branchAddress,
@@ -181,6 +196,7 @@ class ClassSlotViewModel {
       basePrice: detail.gymClass?.basePrice,
       recentReviews: detail.gymClass?.recentReviews,
       gender: detail.gender,
+      category: null,
       reviewsCount: detail.gymClass?.reviewsCount,
     );
   }
@@ -195,6 +211,8 @@ class ClassSlotViewModel {
     bool? allowPackageBooking,
     bool? allowSinglePurchase,
     String? trainerName,
+    String? trainerId,
+    String? trainerImageUrl,
     String? branchName,
     String? branchLocation,
     String? branchAddress,
@@ -206,6 +224,7 @@ class ClassSlotViewModel {
     double? basePrice,
     List<ReviewResource>? recentReviews,
     String? gender,
+    String? category,
     int? reviewsCount,
   }) {
     return ClassSlotViewModel(
@@ -218,6 +237,8 @@ class ClassSlotViewModel {
       allowPackageBooking: allowPackageBooking ?? this.allowPackageBooking,
       allowSinglePurchase: allowSinglePurchase ?? this.allowSinglePurchase,
       trainerName: trainerName ?? this.trainerName,
+      trainerId: trainerId ?? this.trainerId,
+      trainerImageUrl: trainerImageUrl ?? this.trainerImageUrl,
       branchName: branchName ?? this.branchName,
       branchLocation: branchLocation ?? this.branchLocation,
       branchAddress: branchAddress ?? this.branchAddress,
@@ -229,6 +250,7 @@ class ClassSlotViewModel {
       basePrice: basePrice ?? this.basePrice,
       recentReviews: recentReviews ?? this.recentReviews,
       gender: gender ?? this.gender,
+      category: category ?? this.category,
       reviewsCount: reviewsCount ?? this.reviewsCount,
     );
   }

@@ -140,7 +140,9 @@ class _PlanSelectionStepState extends State<_PlanSelectionStep> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) => _loadBranchesAndProducts());
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) => _loadBranchesAndProducts(),
+    );
   }
 
   Future<void> _loadBranchesAndProducts() async {
@@ -261,24 +263,18 @@ class _PlanSelectionStepState extends State<_PlanSelectionStep> {
     var state = cubit.state;
 
     if (state.selectedPlanId.trim().isEmpty) {
-      messenger.showSnackBar(
-        SnackBar(content: Text(l10n.pleaseSelectPlan)),
-      );
+      messenger.showSnackBar(SnackBar(content: Text(l10n.pleaseSelectPlan)));
       return;
     }
     if (state.selectedBranchId == null || state.selectedBranchId! <= 0) {
-      messenger.showSnackBar(
-        SnackBar(content: Text(l10n.pleaseSelectBranch)),
-      );
+      messenger.showSnackBar(SnackBar(content: Text(l10n.pleaseSelectBranch)));
       return;
     }
 
     final productId = subscriptionProductApiId(state.selectedPlanId);
     final branchId = state.selectedBranchId!;
     if (productId <= 0) {
-      messenger.showSnackBar(
-        SnackBar(content: Text(l10n.loginErrorGeneric)),
-      );
+      messenger.showSnackBar(SnackBar(content: Text(l10n.loginErrorGeneric)));
       return;
     }
 
@@ -287,9 +283,8 @@ class _PlanSelectionStepState extends State<_PlanSelectionStep> {
     showDialog<void>(
       context: context,
       barrierDismissible: false,
-      builder: (dialogContext) => const Center(
-        child: CircularProgressIndicator(),
-      ),
+      builder: (dialogContext) =>
+          const Center(child: CircularProgressIndicator()),
     );
 
     state = cubit.state;
@@ -345,7 +340,9 @@ class _PlanSelectionStepState extends State<_PlanSelectionStep> {
   /// Prefer membership subscriptions in the list so default selection and
   /// questionnaire prefetch follow the chosen plan; API order may list session
   /// packs first (e.g. product id 1).
-  List<CatalogProduct> _orderedCatalogForDisplay(List<CatalogProduct> products) {
+  List<CatalogProduct> _orderedCatalogForDisplay(
+    List<CatalogProduct> products,
+  ) {
     final out = List<CatalogProduct>.from(products);
     int rank(CatalogProduct p) {
       final et = p.entitlementType.toLowerCase();
@@ -419,9 +416,9 @@ class _PlanSelectionStepState extends State<_PlanSelectionStep> {
 
   List<Map<String, dynamic>> _resolvedPlans(AppLocalizations l10n) {
     if (_catalogProducts.isNotEmpty) {
-      return _orderedCatalogForDisplay(_catalogProducts)
-          .map((p) => p.toPlanMap(l10n))
-          .toList();
+      return _orderedCatalogForDisplay(
+        _catalogProducts,
+      ).map((p) => p.toPlanMap(l10n)).toList();
     }
     return _staticPlans(l10n);
   }
@@ -434,8 +431,8 @@ class _PlanSelectionStepState extends State<_PlanSelectionStep> {
     if (!plans.any((p) => p['id'] == selected)) {
       effectivePlan = plans.first;
     } else {
-      effectivePlan = plans.firstWhere((p) => p['id'] == selected)
-          as Map<String, dynamic>;
+      effectivePlan =
+          plans.firstWhere((p) => p['id'] == selected) as Map<String, dynamic>;
     }
     final req = effectivePlan['requiresHealthIntake'] as bool? ?? false;
     cubit.selectPlan(effectivePlan['id'] as String, requiresHealthIntake: req);
@@ -517,7 +514,9 @@ class _PlanSelectionStepState extends State<_PlanSelectionStep> {
                       const SizedBox(height: AppSpacing.sm),
                       if (_branchesLoading)
                         const Padding(
-                          padding: EdgeInsets.symmetric(vertical: AppSpacing.md),
+                          padding: EdgeInsets.symmetric(
+                            vertical: AppSpacing.md,
+                          ),
                           child: Center(
                             child: SizedBox(
                               width: 28,
@@ -621,8 +620,8 @@ class _PlanSelectionStepState extends State<_PlanSelectionStep> {
                               isPopular: plan['isPopular'] as bool? ?? false,
                               badgeText: plan['badge'] as String?,
                               priceSuffix: () {
-                                final s =
-                                    (plan['priceSubtitle'] as String?)?.trim();
+                                final s = (plan['priceSubtitle'] as String?)
+                                    ?.trim();
                                 if (s != null && s.isNotEmpty) return s;
                                 return ' / Month';
                               }(),
@@ -631,11 +630,14 @@ class _PlanSelectionStepState extends State<_PlanSelectionStep> {
                                   plan['id'] as String,
                                   requiresHealthIntake:
                                       plan['requiresHealthIntake'] as bool? ??
-                                          false,
+                                      false,
                                 );
-                                if (cubit.state
+                                if (cubit
+                                        .state
                                         .selectedProductRequiresHealthIntake &&
-                                    cubit.state.healthQuestionnaireQuestions
+                                    cubit
+                                        .state
+                                        .healthQuestionnaireQuestions
                                         .isEmpty) {
                                   _prefetchQuestionnaireAfterCatalog();
                                 }

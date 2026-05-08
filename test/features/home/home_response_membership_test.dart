@@ -30,10 +30,7 @@ void main() {
     test('AuthUser-style flat keys still work on single map', () {
       final response = HomeResponse.fromJson(<String, dynamic>{
         'banners': <dynamic>[],
-        'membership': <String, dynamic>{
-          'planName': 'Solo',
-          'totalSessions': 5,
-        },
+        'membership': <String, dynamic>{'planName': 'Solo', 'totalSessions': 5},
         'progress': null,
         'featuredClass': <dynamic>[],
         'classTypes': <dynamic>[],

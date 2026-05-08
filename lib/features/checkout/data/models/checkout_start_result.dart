@@ -290,7 +290,10 @@ class CheckoutPaymentSummary {
   static String? invoicePdfUrlFromMap(Map<String, dynamic> m) =>
       _invoiceUrlFromMap(m);
 
-  static String? _firstNonEmptyString(Map<String, dynamic> m, List<String> keys) {
+  static String? _firstNonEmptyString(
+    Map<String, dynamic> m,
+    List<String> keys,
+  ) {
     for (final k in keys) {
       final v = m[k];
       if (v is String && v.trim().isNotEmpty) return v.trim();
@@ -430,11 +433,7 @@ class CheckoutProductSummary {
 }
 
 class CheckoutBranchSummary {
-  const CheckoutBranchSummary({
-    this.id,
-    this.name,
-    this.shortCode,
-  });
+  const CheckoutBranchSummary({this.id, this.name, this.shortCode});
 
   final int? id;
   final String? name;

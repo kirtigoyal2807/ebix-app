@@ -160,10 +160,9 @@ class ReceiptDetails extends StatelessWidget {
                       Expanded(
                         child: AppText(
                           '${l10n.date}: ${_formatScheduledDate(context, state.scheduledDeliveryDateIso!)}',
-                          style: (c) => AppTextStyles.bodyText(c).copyWith(
-                            fontWeight: FontWeight.w500,
-                            height: 1.35,
-                          ),
+                          style: (c) => AppTextStyles.bodyText(
+                            c,
+                          ).copyWith(fontWeight: FontWeight.w500, height: 1.35),
                           maxLines: 2,
                         ),
                       ),

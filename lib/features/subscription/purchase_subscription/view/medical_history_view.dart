@@ -107,13 +107,14 @@ class _MedicalHistoryViewState extends State<MedicalHistoryView> {
                       c.selectedProductRequiresHealthIntake,
               builder: (context, state) {
                 final cubit = context.read<SubscriptionCubit>();
-                final medicalQs =
-                    medicalQuestionsFromApi(state.healthQuestionnaireQuestions);
+                final medicalQs = medicalQuestionsFromApi(
+                  state.healthQuestionnaireQuestions,
+                );
                 final hasApiMedical = medicalQs.isNotEmpty;
                 final intake = state.selectedProductRequiresHealthIntake;
+
                 /// Legacy checkboxes only when this product does not use API health intake.
-                final showStaticLegacy =
-                    !intake && !_questionnaireLoading;
+                final showStaticLegacy = !intake && !_questionnaireLoading;
 
                 return SingleChildScrollView(
                   child: Column(
@@ -124,6 +125,7 @@ class _MedicalHistoryViewState extends State<MedicalHistoryView> {
                         totalSteps: 6,
                         isDark: isDark,
                       ),
+                      const SizedBox(height: AppSpacing.xl),
                       AppText(
                         l10n.medicalHistory,
                         style: (style) => AppTextStyles.heading1(context),
@@ -131,7 +133,9 @@ class _MedicalHistoryViewState extends State<MedicalHistoryView> {
                       const SizedBox(height: AppSpacing.lg),
                       if (_questionnaireLoading)
                         const Padding(
-                          padding: EdgeInsets.symmetric(vertical: AppSpacing.md),
+                          padding: EdgeInsets.symmetric(
+                            vertical: AppSpacing.md,
+                          ),
                           child: Center(
                             child: SizedBox(
                               width: 28,
@@ -402,7 +406,8 @@ class _MedicalHistoryViewState extends State<MedicalHistoryView> {
               final hasApiMedical = medicalQuestionsFromApi(
                 state.healthQuestionnaireQuestions,
               ).isNotEmpty;
-              final disableContinue = intake &&
+              final disableContinue =
+                  intake &&
                   !_questionnaireLoading &&
                   _questionnaireLoadFailed &&
                   !hasApiMedical;
@@ -426,8 +431,9 @@ class _MedicalHistoryViewState extends State<MedicalHistoryView> {
                         }
                         cubit.nextStep();
                       },
-                buttonColor:
-                    isDark ? AppColors.primary : AppColors.primaryBrown,
+                buttonColor: isDark
+                    ? AppColors.primary
+                    : AppColors.primaryBrown,
                 expanded: true,
               );
             },
@@ -494,10 +500,13 @@ class _MedicalHistoryViewState extends State<MedicalHistoryView> {
             Expanded(
               child: AppText(
                 label,
-                style: (style) => AppTextStyles.bodyTextSmall(context,   fontWeight: FontWeight.w500,).copyWith(
-                  color: isDark ? AppColors.lightGrey : AppColors.lightGrey,
-
-                ),
+                style: (style) =>
+                    AppTextStyles.bodyTextSmall(
+                      context,
+                      fontWeight: FontWeight.w500,
+                    ).copyWith(
+                      color: isDark ? AppColors.lightGrey : AppColors.lightGrey,
+                    ),
               ),
             ),
           ],

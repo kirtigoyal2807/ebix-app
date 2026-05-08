@@ -9,10 +9,7 @@ import 'package:pilates_app/features/booking/widgets/booking_search_bar.dart';
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  Future<void> pumpSearchHarness(
-    WidgetTester tester, {
-    required Widget child,
-  }) {
+  Future<void> pumpSearchHarness(WidgetTester tester, {required Widget child}) {
     return tester.pumpWidget(
       MaterialApp(
         localizationsDelegates: const [
@@ -74,9 +71,7 @@ void main() {
       tester,
       child: BlocProvider<BookingCubit>.value(
         value: cubit,
-        child: const Scaffold(
-          body: BookingSearchBar(),
-        ),
+        child: const Scaffold(body: BookingSearchBar()),
       ),
     );
 

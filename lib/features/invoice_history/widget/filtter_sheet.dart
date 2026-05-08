@@ -115,9 +115,9 @@ class FilterSelectionBottomSheet extends StatelessWidget {
                       label: getDateRangeLabel(context, option),
                       isSelected: isSelected,
                       onTap: () {
-                        context
-                            .read<InvoiceHistoryCubit>()
-                            .setDateRange(option);
+                        context.read<InvoiceHistoryCubit>().setDateRange(
+                          option,
+                        );
                       },
                     );
                   },
@@ -157,9 +157,7 @@ class _OptionTile extends StatelessWidget {
         focusColor: Colors.transparent,
         borderRadius: BorderRadius.circular(AppRadius.lg),
         child: Container(
-          padding: const EdgeInsets.only(
-            bottom: 10,
-          ),
+          padding: const EdgeInsets.only(bottom: 10),
           margin: const EdgeInsets.only(bottom: AppSpacing.xs),
           child: Row(
             children: [

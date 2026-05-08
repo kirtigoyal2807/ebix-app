@@ -12,5 +12,13 @@ String? resolveApiMediaUrl(String? raw) {
   if (t.startsWith('//')) {
     return '${baseUri.scheme}:$t';
   }
-  return baseUri.resolve(t).toString();
+  final withoutLeadingSlash = t.startsWith('/') ? t.substring(1) : t;
+  if (withoutLeadingSlash.startsWith('customers/avatars/')) {
+    return baseUri.resolve('/storage/$withoutLeadingSlash').toString();
+  }
+  // Payloads often return site-root paths without a leading slash (e.g.
+  // `customers/avatars/…`). Resolving those against `…/api/v1/` yields
+  // `…/api/v1/customers/avatars/…`, which 404s for static files.
+  final rootPath = t.startsWith('/') ? t : '/$t';
+  return baseUri.resolve(rootPath).toString();
 }

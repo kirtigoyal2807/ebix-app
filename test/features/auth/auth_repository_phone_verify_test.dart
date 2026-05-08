@@ -19,10 +19,7 @@ void main() {
                 'success': true,
                 'message': 'ok',
                 'data': {
-                  'user': {
-                    'email': 'a@b.com',
-                    'phone': '+966500000001',
-                  },
+                  'user': {'email': 'a@b.com', 'phone': '+966500000001'},
                   'token': 'jwt-from-phone',
                 },
               },
@@ -59,10 +56,7 @@ void main() {
             Response(
               requestOptions: options,
               statusCode: 200,
-              data: {
-                'success': true,
-                'message': 'ok',
-              },
+              data: {'success': true, 'message': 'ok'},
             ),
           );
         },

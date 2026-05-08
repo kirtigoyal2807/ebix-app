@@ -42,7 +42,7 @@ class WelcomeToPilateView extends StatelessWidget {
 
               SizedBox(height: AppSpacing.xs),
               AppText(
-               l10n.membershipSetup,
+                l10n.membershipSetup,
                 style: (context) =>
                     AppTextStyles.bodyText(context).copyWith(height: 1.55),
               ),
@@ -79,8 +79,7 @@ class WelcomeToPilateView extends StatelessWidget {
                         SvgPicture.asset(
                           isDark
                               ? "assets/images/svg/ic_dark_the_pilates_studio.svg"
-                              :
-                          "assets/images/svg/ic_the_pilates_studio.svg",
+                              : "assets/images/svg/ic_the_pilates_studio.svg",
                         ),
                       ],
                     ),
@@ -250,7 +249,7 @@ class WelcomeToPilateView extends StatelessWidget {
           style: (context) => AppTextStyles.textFieldHeading(context).copyWith(
             fontSize: 12,
             fontWeight: FontWeight.w400,
-            color:isDark ?   AppColors.darkGreyText: AppColors.lightGrey,
+            color: isDark ? AppColors.darkGreyText : AppColors.lightGrey,
             height: 1.2,
           ),
         ),

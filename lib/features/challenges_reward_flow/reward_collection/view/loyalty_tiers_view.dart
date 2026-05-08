@@ -91,10 +91,7 @@ class _LoyaltyTiersScaffold extends StatelessWidget {
                 itemCount: state.tiers.length,
                 separatorBuilder: (_, __) => SizedBox(height: AppSpacing.lg),
                 itemBuilder: (context, i) {
-                  return _TierSection(
-                    isDark: isDark,
-                    tier: state.tiers[i],
-                  );
+                  return _TierSection(isDark: isDark, tier: state.tiers[i]);
                 },
               );
           }
@@ -105,10 +102,7 @@ class _LoyaltyTiersScaffold extends StatelessWidget {
 }
 
 class _TierSection extends StatelessWidget {
-  const _TierSection({
-    required this.isDark,
-    required this.tier,
-  });
+  const _TierSection({required this.isDark, required this.tier});
 
   final bool isDark;
   final LoyaltyTier tier;
@@ -168,10 +162,9 @@ class _TierSection extends StatelessWidget {
               Expanded(
                 child: AppText(
                   tier.name.trim().isNotEmpty ? tier.name : (tier.key ?? ''),
-                  style: (ctx) => AppTextStyles.gelasioRegular(ctx).copyWith(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
-                  ),
+                  style: (ctx) => AppTextStyles.gelasioRegular(
+                    ctx,
+                  ).copyWith(fontSize: 18, fontWeight: FontWeight.w600),
                 ),
               ),
               if (tier.isCurrent) ...[

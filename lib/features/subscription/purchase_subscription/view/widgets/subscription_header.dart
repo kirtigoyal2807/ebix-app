@@ -23,10 +23,7 @@ class SubscriptionStepHeader extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SubscriptionProgress(
-          currentStep: currentStep,
-          totalSteps: totalSteps,
-        ),
+        SubscriptionProgress(currentStep: currentStep, totalSteps: totalSteps),
 
         const SizedBox(height: AppSpacing.sm),
 
@@ -49,7 +46,7 @@ class SubscriptionStepHeader extends StatelessWidget {
           ),
         ),
 
-        const SizedBox(height: AppSpacing.xxl),
+        const SizedBox(height: AppSpacing.sm),
       ],
     );
   }

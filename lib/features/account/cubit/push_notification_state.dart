@@ -17,6 +17,7 @@ class PushNotificationState extends Equatable {
   final bool promotionOffer;
   final bool appUpdate;
   final bool newChallenges;
+  final bool rewardEarn;
 
   const PushNotificationState({
     this.status = PushNotificationStatus.initial,
@@ -30,6 +31,7 @@ class PushNotificationState extends Equatable {
     this.promotionOffer = false,
     this.appUpdate = false,
     this.newChallenges = false,
+    this.rewardEarn = false,
   });
 
   bool get isLoading =>
@@ -48,6 +50,7 @@ class PushNotificationState extends Equatable {
     bool? promotionOffer,
     bool? appUpdate,
     bool? newChallenges,
+    bool? rewardEarn,
   }) {
     return PushNotificationState(
       status: status ?? this.status,
@@ -61,21 +64,23 @@ class PushNotificationState extends Equatable {
       promotionOffer: promotionOffer ?? this.promotionOffer,
       appUpdate: appUpdate ?? this.appUpdate,
       newChallenges: newChallenges ?? this.newChallenges,
+      rewardEarn: rewardEarn ?? this.rewardEarn,
     );
   }
 
   @override
   List<Object?> get props => [
-        status,
-        preferences,
-        errorMessage,
-        allNotification,
-        beforeClassStart,
-        dayBeforeRemainder,
-        paymentConfirmation,
-        renewalRemainder,
-        promotionOffer,
-        appUpdate,
-        newChallenges,
-      ];
+    status,
+    preferences,
+    errorMessage,
+    allNotification,
+    beforeClassStart,
+    dayBeforeRemainder,
+    paymentConfirmation,
+    renewalRemainder,
+    promotionOffer,
+    appUpdate,
+    newChallenges,
+    rewardEarn,
+  ];
 }

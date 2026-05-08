@@ -240,8 +240,8 @@ class _HealthInformationViewState extends State<HealthInformationView> {
         );
         final waitingForQuestionnaire =
             state.selectedProductRequiresHealthIntake &&
-                state.healthQuestionnaireQuestions.isEmpty &&
-                _questionnaireLoading;
+            state.healthQuestionnaireQuestions.isEmpty &&
+            _questionnaireLoading;
 
         return Padding(
           padding: const EdgeInsets.symmetric(
@@ -256,6 +256,7 @@ class _HealthInformationViewState extends State<HealthInformationView> {
                 totalSteps: 6,
                 isDark: isDark,
               ),
+              const SizedBox(height: AppSpacing.xl),
               Expanded(
                 child: GestureDetector(
                   behavior: HitTestBehavior.translucent,
@@ -278,7 +279,9 @@ class _HealthInformationViewState extends State<HealthInformationView> {
                               child: SizedBox(
                                 width: 24,
                                 height: 24,
-                                child: CircularProgressIndicator(strokeWidth: 2),
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                ),
                               ),
                             ),
                           ),
@@ -375,7 +378,9 @@ class _HealthInformationViewState extends State<HealthInformationView> {
                 onPressed: waitingForQuestionnaire
                     ? null
                     : () => _onContinuePersonalInformation(context),
-                buttonColor: isDark ? AppColors.primary : AppColors.primaryBrown,
+                buttonColor: isDark
+                    ? AppColors.primary
+                    : AppColors.primaryBrown,
                 expanded: true,
               ),
             ],

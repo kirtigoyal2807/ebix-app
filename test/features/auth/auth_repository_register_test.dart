@@ -7,49 +7,51 @@ import '../../core/network/test_repository.dart';
 
 void main() {
   group('AuthRepository.register', () {
-    test('POST /auth/register includes required fields and optional gender/dob',
-        () async {
-      RequestOptions? seen;
-      final dio = createTestDio(
-        onRequest: (options, handler) {
-          seen = options;
-          handler.resolve(
-            Response(
-              requestOptions: options,
-              statusCode: 200,
-              data: const {
-                'success': true,
-                'message': 'OTP sent',
-                'data': null,
-              },
-            ),
-          );
-        },
-      );
-      final repo = AuthRepository(dio);
+    test(
+      'POST /auth/register includes required fields and optional gender/dob',
+      () async {
+        RequestOptions? seen;
+        final dio = createTestDio(
+          onRequest: (options, handler) {
+            seen = options;
+            handler.resolve(
+              Response(
+                requestOptions: options,
+                statusCode: 200,
+                data: const {
+                  'success': true,
+                  'message': 'OTP sent',
+                  'data': null,
+                },
+              ),
+            );
+          },
+        );
+        final repo = AuthRepository(dio);
 
-      final result = await repo.register(
-        firstName: 'Noor',
-        lastName: 'Ali',
-        email: 'noor@example.com',
-        phone: '+966500000001',
-        password: 'Secret@123',
-        gender: RegisterGender.female,
-        dob: DateTime(1995, 1, 20),
-      );
+        final result = await repo.register(
+          firstName: 'Noor',
+          lastName: 'Ali',
+          email: 'noor@example.com',
+          phone: '+966500000001',
+          password: 'Secret@123',
+          gender: RegisterGender.female,
+          dob: DateTime(1995, 1, 20),
+        );
 
-      expect(result.isSuccess, isTrue);
-      expect(seen?.method, 'POST');
-      expect(seen?.path, '/auth/register');
-      final data = seen?.data as Map<String, dynamic>;
-      expect(data['firstName'], 'Noor');
-      expect(data['lastName'], 'Ali');
-      expect(data['email'], 'noor@example.com');
-      expect(data['phone'], '+966500000001');
-      expect(data['password'], 'Secret@123');
-      expect(data['gender'], 'female');
-      expect(data['dob'], '1995-01-20');
-    });
+        expect(result.isSuccess, isTrue);
+        expect(seen?.method, 'POST');
+        expect(seen?.path, '/auth/register');
+        final data = seen?.data as Map<String, dynamic>;
+        expect(data['firstName'], 'Noor');
+        expect(data['lastName'], 'Ali');
+        expect(data['email'], 'noor@example.com');
+        expect(data['phone'], '+966500000001');
+        expect(data['password'], 'Secret@123');
+        expect(data['gender'], 'female');
+        expect(data['dob'], '1995-01-20');
+      },
+    );
 
     test('omits lastName when empty and optional fields when null', () async {
       RequestOptions? seen;
@@ -60,11 +62,7 @@ void main() {
             Response(
               requestOptions: options,
               statusCode: 200,
-              data: const {
-                'success': true,
-                'message': 'ok',
-                'data': null,
-              },
+              data: const {'success': true, 'message': 'ok', 'data': null},
             ),
           );
         },

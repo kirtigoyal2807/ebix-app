@@ -5,7 +5,9 @@ import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/core/localization/localization_extension.dart';
 import 'package:pilates_app/widgets/app_text.dart';
+import 'package:url_launcher/url_launcher.dart';
 
+import '../../../core/constants/constant.dart';
 import '../../../widgets/app_app_bar.dart';
 
 class HelpSupportView extends StatelessWidget {
@@ -29,6 +31,18 @@ class HelpSupportView extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _buildCard(
+              onTap: () async {
+                final Uri url = Uri.parse(
+                  "https://wa.me/${AppConstant.supportNumber.trim()}",
+                );
+
+                debugPrint("whatsapp url::${url}");
+                if (await canLaunchUrl(url)) {
+                  await launchUrl(url, mode: LaunchMode.externalApplication);
+                } else {
+                  throw "WhatsApp not installed";
+                }
+              },
               icon: isDark
                   ? 'assets/images/svg/explore/ic_dark_chat.svg'
                   : 'assets/images/svg/explore/ic_chat.svg',
@@ -37,6 +51,14 @@ class HelpSupportView extends StatelessWidget {
             ),
             SizedBox(height: AppSpacing.md),
             _buildCard(
+              onTap: () {
+                final Uri emailLaunchUri = Uri(
+                  scheme: 'mailto',
+                  path: AppConstant.supportEmail,
+                );
+
+                launchUrl(emailLaunchUri);
+              },
               icon: isDark
                   ? 'assets/images/svg/explore/ic_dark_email.svg'
                   : 'assets/images/svg/explore/Ic_email.svg',
@@ -45,6 +67,15 @@ class HelpSupportView extends StatelessWidget {
             ),
             SizedBox(height: AppSpacing.md),
             _buildCard(
+              onTap: () async {
+                final Uri url = Uri.parse("tel:${AppConstant.supportNumber}");
+
+                if (await canLaunchUrl(url)) {
+                  await launchUrl(url);
+                } else {
+                  throw "Cannot open dialer";
+                }
+              },
               icon: isDark
                   ? "assets/images/svg/explore/ic_dark_phone.svg"
                   : 'assets/images/svg/explore/ic_phone.svg',
@@ -61,32 +92,36 @@ class HelpSupportView extends StatelessWidget {
     required String icon,
     required String title,
     required String subtitle,
+    required VoidCallback onTap,
   }) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        SvgPicture.asset(icon),
-        SizedBox(width: AppSpacing.md),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            AppText(
-              title,
-              style: (context) => AppTextStyles.textFieldHeading(
-                context,
-              ).copyWith(height: 1.60),
-            ),
-            SizedBox(height: 2),
-            AppText(
-              subtitle,
-              style: (context) => AppTextStyles.helpAndSupportItemSubLabel(
-                context,
-              ).copyWith(height: 1.60),
-            ),
-          ],
-        ),
-      ],
+    return GestureDetector(
+      onTap: onTap,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SvgPicture.asset(icon),
+          SizedBox(width: AppSpacing.md),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              AppText(
+                title,
+                style: (context) => AppTextStyles.textFieldHeading(
+                  context,
+                ).copyWith(height: 1.60),
+              ),
+              SizedBox(height: 2),
+              AppText(
+                subtitle,
+                style: (context) => AppTextStyles.helpAndSupportItemSubLabel(
+                  context,
+                ).copyWith(height: 1.60),
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }

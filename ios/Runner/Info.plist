@@ -83,5 +83,9 @@
 	<string>Add your booked class to your calendar when you choose Add to Calendar.</string>
 	<key>NSContactsUsageDescription</key>
 	<string>May be used by the calendar app when saving events with a location.</string>
+	<key>LSApplicationQueriesSchemes</key>
+    <array>
+      <string>tel</string>
+    </array>
 </dict>
 </plist>

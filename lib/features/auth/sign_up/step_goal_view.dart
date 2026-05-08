@@ -24,7 +24,7 @@ class SignUpGoalView extends StatefulWidget {
 }
 
 class _SignUpGoalViewState extends State<SignUpGoalView> {
-  int _selectedIndex = 0;
+  int? _selectedIndex;
   int _monthlyClasses = 8;
 
   @override
@@ -33,7 +33,8 @@ class _SignUpGoalViewState extends State<SignUpGoalView> {
 
     return BlocConsumer<AuthCubit, AuthState>(
       listenWhen: (previous, current) {
-        return previous.postLoginGoalUiStatus == PostLoginGoalUiStatus.loading &&
+        return previous.postLoginGoalUiStatus ==
+                PostLoginGoalUiStatus.loading &&
             current.postLoginGoalUiStatus == PostLoginGoalUiStatus.idle &&
             current.postLoginGoalErrorMessage.isNotEmpty &&
             current.postLoginGoalFieldErrors.isEmpty;
@@ -42,9 +43,9 @@ class _SignUpGoalViewState extends State<SignUpGoalView> {
         final text = state.postLoginGoalErrorMessage.trim().isEmpty
             ? context.l10n.loginErrorGeneric
             : state.postLoginGoalErrorMessage;
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(text)),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(text)));
       },
       builder: (context, state) {
         final fe = state.postLoginGoalFieldErrors;
@@ -60,9 +61,7 @@ class _SignUpGoalViewState extends State<SignUpGoalView> {
             isMoreMenu: false,
           ),
           body: Padding(
-            padding: const EdgeInsets.symmetric(
-              vertical: AppSpacing.md,
-            ),
+            padding: const EdgeInsets.symmetric(vertical: AppSpacing.md),
             child: Column(
               children: [
                 Expanded(
@@ -93,7 +92,7 @@ class _SignUpGoalViewState extends State<SignUpGoalView> {
                             ],
                           ),
                         ),
-                        const SizedBox(height: AppSpacing.xxl),
+                        const SizedBox(height: AppSpacing.xl),
                         AppText(
                           context.l10n.pilatesPrimaryFocusTitle,
                           style: AppTextStyles.heading1,
@@ -145,10 +144,10 @@ class _SignUpGoalViewState extends State<SignUpGoalView> {
                               fe['goal']!,
                               style: (context) =>
                                   AppTextStyles.caption(context).copyWith(
-                                color: isDark
-                                    ? AppColors.redDark
-                                    : AppColors.redLight,
-                              ),
+                                    color: isDark
+                                        ? AppColors.redDark
+                                        : AppColors.redLight,
+                                  ),
                               textAlign: TextAlign.center,
                             ),
                           ),
@@ -172,21 +171,22 @@ class _SignUpGoalViewState extends State<SignUpGoalView> {
                             fe['monthlygoal']!,
                             style: (context) =>
                                 AppTextStyles.caption(context).copyWith(
-                              color: isDark
-                                  ? AppColors.redDark
-                                  : AppColors.redLight,
-                            ),
+                                  color: isDark
+                                      ? AppColors.redDark
+                                      : AppColors.redLight,
+                                ),
                           ),
                         ],
                         const SizedBox(height: AppSpacing.lg),
                         AppText(
                           context.l10n.dontWorry,
-                          style: (context) => AppTextStyles.body(context).copyWith(
-                            fontWeight: FontWeight.w400,
-                            color: isDark
-                                ? AppColors.darkGreyText
-                                : const Color(0xff79716B),
-                          ),
+                          style: (context) =>
+                              AppTextStyles.body(context).copyWith(
+                                fontWeight: FontWeight.w400,
+                                color: isDark
+                                    ? AppColors.darkGreyText
+                                    : const Color(0xff79716B),
+                              ),
                         ),
                         const SizedBox(height: AppSpacing.lg),
                       ],
@@ -194,17 +194,21 @@ class _SignUpGoalViewState extends State<SignUpGoalView> {
                   ),
                 ),
                 Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: AppSpacing.lg,
+                  ),
                   child: AppButton(
                     key: const ValueKey('sign_up_goal_submit'),
                     label: context.l10n.continueTxt,
                     isLoading: loading,
-                    onPressed: loading
+                    onPressed: loading || _selectedIndex == null
                         ? null
                         : () {
-                            context.read<AuthCubit>().submitSignUpGoalAndAdvance(
-                                  goal: PostLoginGoalApi.ordered[_selectedIndex],
+                            context
+                                .read<AuthCubit>()
+                                .submitSignUpGoalAndAdvance(
+                                  goal:
+                                      PostLoginGoalApi.ordered[_selectedIndex!],
                                   monthlyGoal: _monthlyClasses,
                                 );
                           },

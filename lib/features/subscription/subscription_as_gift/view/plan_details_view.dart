@@ -72,9 +72,8 @@ class PlanDetailsView extends StatelessWidget {
     showDialog<void>(
       context: context,
       barrierDismissible: false,
-      builder: (dialogContext) => const Center(
-        child: CircularProgressIndicator(),
-      ),
+      builder: (dialogContext) =>
+          const Center(child: CircularProgressIndicator()),
     );
 
     final result = await repo.fetchPaymentIntent(id);
@@ -98,10 +97,7 @@ class PlanDetailsView extends StatelessWidget {
       final url = data.paymentUrl;
       if (url != null && url.trim().isNotEmpty) {
         final paymentResult =
-            await CheckoutPaymentLauncher.openInAppPaymentWebView(
-          context,
-          url,
-        );
+            await CheckoutPaymentLauncher.openInAppPaymentWebView(context, url);
         if (!context.mounted) return;
 
         if (paymentResult?.outcome != HostedPaymentWebViewOutcome.success) {
@@ -113,9 +109,7 @@ class PlanDetailsView extends StatelessWidget {
       }
 
       if (context.mounted) {
-        messenger.showSnackBar(
-          SnackBar(content: Text(l10n.loginErrorGeneric)),
-        );
+        messenger.showSnackBar(SnackBar(content: Text(l10n.loginErrorGeneric)));
       }
       return;
     }
@@ -149,9 +143,7 @@ class PlanDetailsView extends StatelessWidget {
         child: Column(
           children: [
             Expanded(
-              child: ReviewScreenDetailsView(
-                checkoutSessionId: checkoutId,
-              ),
+              child: ReviewScreenDetailsView(checkoutSessionId: checkoutId),
             ),
             Padding(
               padding: const EdgeInsets.only(

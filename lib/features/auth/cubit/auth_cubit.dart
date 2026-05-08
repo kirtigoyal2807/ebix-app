@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:pilates_app/core/network/api_result.dart';
 import 'package:pilates_app/core/network/network_exception.dart';
 import 'package:pilates_app/core/network/auth_locale_bridge.dart';
@@ -484,6 +485,7 @@ class AuthCubit extends Cubit<AuthState> {
           .copyWith(
             flow: AuthFlow.signIn,
             clearUser: true,
+            clearLastShownPendingGiftId: true,
             loginUiStatus: LoginUiStatus.idle,
             loginErrorMessage: '',
             loginFieldErrors: {},
@@ -1032,7 +1034,7 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
-  /// [`GET customers/profile`] after switching to the Account tab (not when already on it).
+  /// [`GET /auth/me`] after switching to the Account tab (not when already on it).
   Future<void> refreshProfileWhenSelectingAccountTab() async {
     emit(
       state.copyWith(
@@ -1048,6 +1050,14 @@ class AuthCubit extends Cubit<AuthState> {
         ),
       );
     }
+  }
+
+  /// Mark the redemption popup as already presented for [giftId] so we don't
+  /// re-open it on the next home-tab visit. Cleared on logout / when a new gift
+  /// arrives (different ID).
+  void markPendingGiftPopupShown(String giftId) {
+    if (state.lastShownPendingGiftId == giftId) return;
+    emit(state.copyWith(lastShownPendingGiftId: giftId));
   }
 
   Map<String, String> _mapFieldErrors(NetworkException exception) {
@@ -1071,5 +1081,10 @@ class AuthCubit extends Cubit<AuthState> {
 
   void changeTheme(ThemeMode mode) {
     emit(state.copyWith(themeMode: mode));
+  }
+
+  void changeDOB(DateTime date) {
+    String formattedDate = DateFormat("dd/MM/yyyy").format(date);
+    emit(state.copyWith(dateOfBirth: formattedDate));
   }
 }

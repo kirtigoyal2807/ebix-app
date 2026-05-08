@@ -9,30 +9,21 @@ final class SupportLauncher {
   static Future<bool> openWhatsApp() {
     final digits = supportPhoneDigits;
     if (digits.isEmpty) return Future.value(false);
-    return _launch(
-      Uri.parse('https://wa.me/$digits'),
-    );
+    return _launch(Uri.parse('https://wa.me/$digits'));
   }
 
   static Future<bool> openEmail() {
-    return _launch(
-      Uri.parse('mailto:${SupportContact.supportEmail}'),
-    );
+    return _launch(Uri.parse('mailto:${SupportContact.supportEmail}'));
   }
 
   static Future<bool> openPhone() {
-    return _launch(
-      Uri.parse('tel:${SupportContact.supportPhoneE164}'),
-    );
+    return _launch(Uri.parse('tel:${SupportContact.supportPhoneE164}'));
   }
 
   static String get supportPhoneDigits =>
       SupportContact.supportPhoneE164.replaceAll(RegExp(r'[^0-9]'), '');
 
   static Future<bool> _launch(Uri uri) {
-    return launchUrl(
-      uri,
-      mode: LaunchMode.externalApplication,
-    );
+    return launchUrl(uri, mode: LaunchMode.externalApplication);
   }
 }

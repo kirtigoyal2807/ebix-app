@@ -102,7 +102,9 @@ class BillingAndSubscription extends StatelessWidget {
           onTap: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => const InvoiceHistoryView()),
+              MaterialPageRoute(
+                builder: (context) => const InvoiceHistoryView(),
+              ),
             );
           },
         ),

@@ -60,10 +60,7 @@ class RewardView extends StatelessWidget {
             ),
           ),
           body: const TabBarView(
-            children: [
-              RewardOverviewView(),
-              RewardHistoryView(),
-            ],
+            children: [RewardOverviewView(), RewardHistoryView()],
           ),
         ),
       ),

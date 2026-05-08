@@ -22,14 +22,14 @@ sealed class ApiResult<T> {
   }
 
   T? get dataOrNull => switch (this) {
-        ApiSuccess<T>(:final data) => data,
-        _ => null,
-      };
+    ApiSuccess<T>(:final data) => data,
+    _ => null,
+  };
 
   NetworkException? get exceptionOrNull => switch (this) {
-        ApiFailure<T>(:final exception) => exception,
-        _ => null,
-      };
+    ApiFailure<T>(:final exception) => exception,
+    _ => null,
+  };
 }
 
 final class ApiSuccess<T> extends ApiResult<T> {

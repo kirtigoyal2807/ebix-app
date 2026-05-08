@@ -28,7 +28,10 @@ class ReviewsRepository extends BaseRepository {
         'per_page': perPage.clamp(1, 100),
       };
 
-      final response = await httpClient.get<dynamic>('reviews', queryParameters: query);
+      final response = await httpClient.get<dynamic>(
+        'reviews',
+        queryParameters: query,
+      );
       final code = response.statusCode;
       if (code == null) {
         return ApiFailure(
@@ -70,7 +73,9 @@ class ReviewsRepository extends BaseRepository {
           return ApiFailure(
             NetworkException.fromApiEnvelope(
               statusCode: code,
-              message: envelope.message.isEmpty ? 'Request failed' : envelope.message,
+              message: envelope.message.isEmpty
+                  ? 'Request failed'
+                  : envelope.message,
               fieldErrors: envelope.fieldErrors,
               responseData: raw,
             ),
@@ -102,7 +107,11 @@ class ReviewsRepository extends BaseRepository {
     if (payload is Map) {
       final m = Map<String, dynamic>.from(payload);
       final inner =
-          m['data'] ?? m['items'] ?? m['reviews'] ?? m['recentReviews'] ?? m['recent_reviews'];
+          m['data'] ??
+          m['items'] ??
+          m['reviews'] ??
+          m['recentReviews'] ??
+          m['recent_reviews'];
       if (inner is List) return _parseList(inner);
     }
     return [];
@@ -153,10 +162,6 @@ class ReviewsRepository extends BaseRepository {
     if (eventId != null && eventId.isNotEmpty) {
       data['calendarEventId'] = eventId;
     }
-    return post<bool>(
-      'reviews',
-      data: data,
-      fromJson: (_) => true,
-    );
+    return post<bool>('reviews', data: data, fromJson: (_) => true);
   }
 }

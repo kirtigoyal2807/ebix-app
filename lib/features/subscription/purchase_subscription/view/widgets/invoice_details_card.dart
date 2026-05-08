@@ -7,6 +7,7 @@ import 'package:pilates_app/features/checkout/data/models/membership_receipt_sum
 import '../../../../../config/theme/app_text_styles.dart';
 import '../../../../../core/localization/localization_extension.dart';
 import '../../../../../widgets/app_text.dart';
+import 'package:pilates_app/config/theme/app_radius.dart';
 
 class InvoiceDetailsCard extends StatelessWidget {
   const InvoiceDetailsCard({super.key, this.receipt});
@@ -30,14 +31,16 @@ class InvoiceDetailsCard extends StatelessWidget {
             color: isDark
                 ? AppColors.trainerBlackBackgroundColor
                 : Colors.white,
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withValues(alpha: 0.5),
-                blurRadius: 5.6,
-                offset: const Offset(0, 2.24),
-                spreadRadius: 0,
-              ),
-            ],
+            boxShadow: isDark
+                ? null
+                : [
+                    BoxShadow(
+                      color: Colors.black.withValues(alpha: 0.5),
+                      blurRadius: 5.6,
+                      offset: const Offset(0, 2.24),
+                      spreadRadius: 0,
+                    ),
+                  ],
           ),
           padding: const EdgeInsets.only(
             top: 22,
@@ -74,36 +77,36 @@ class InvoiceDetailsCard extends StatelessWidget {
                   context.l10n.invoiceHistorySubtitle,
                   style: (context) =>
                       AppTextStyles.textFieldHeading(context).copyWith(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w400,
-                    color: isDark
-                        ? AppColors.darkGreyText
-                        : AppColors.lightGrey,
-                    height: 1.45,
-                  ),
+                        fontSize: 12,
+                        fontWeight: FontWeight.w400,
+                        color: isDark
+                            ? AppColors.darkGreyText
+                            : AppColors.lightGrey,
+                        height: 1.45,
+                      ),
                 ),
               ] else ...[
                 AppText(
                   context.l10n.invoiceNumber(r.displayInvoiceCode ?? '—'),
                   style: (context) =>
                       AppTextStyles.textFieldHeading(context).copyWith(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w400,
-                    color: isDark
-                        ? AppColors.darkGreyText
-                        : AppColors.lightGrey,
-                  ),
+                        fontSize: 12,
+                        fontWeight: FontWeight.w400,
+                        color: isDark
+                            ? AppColors.darkGreyText
+                            : AppColors.lightGrey,
+                      ),
                 ),
                 AppText(
                   _paidDateLine(r, lang),
                   style: (context) =>
                       AppTextStyles.textFieldHeading(context).copyWith(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w400,
-                    color: isDark
-                        ? AppColors.darkGreyText
-                        : AppColors.lightGrey,
-                  ),
+                        fontSize: 12,
+                        fontWeight: FontWeight.w400,
+                        color: isDark
+                            ? AppColors.darkGreyText
+                            : AppColors.lightGrey,
+                      ),
                 ),
                 const SizedBox(height: 64),
                 _buildRow(
@@ -136,11 +139,7 @@ class InvoiceDetailsCard extends StatelessWidget {
                   _buildRow(
                     context,
                     context.l10n.tax,
-                    MembershipReceiptSummary.formatMoney(
-                      r.taxMinor,
-                      cur,
-                      lang,
-                    ),
+                    MembershipReceiptSummary.formatMoney(r.taxMinor, cur, lang),
                     isDark,
                   ),
                 ],
@@ -162,11 +161,7 @@ class InvoiceDetailsCard extends StatelessWidget {
                 _buildRow(
                   context,
                   context.l10n.totalPaid,
-                  MembershipReceiptSummary.formatMoney(
-                    r.totalMinor,
-                    cur,
-                    lang,
-                  ),
+                  MembershipReceiptSummary.formatMoney(r.totalMinor, cur, lang),
                   isDark,
                   isBold: true,
                 ),
@@ -211,8 +206,8 @@ class InvoiceDetailsCard extends StatelessWidget {
     }
     final formatted =
         MembershipReceiptSummary.formatPaidDate(raw, languageCode) ??
-            MembershipReceiptSummary.shortDateFromIso(raw) ??
-            raw;
+        MembershipReceiptSummary.shortDateFromIso(raw) ??
+        raw;
     return 'Date: $formatted';
   }
 
@@ -347,27 +342,22 @@ class ReceiptClipper extends CustomClipper<Path> {
     path.quadraticBezierTo(size.width, 0, size.width, topRadius);
 
     // ---- Right Side ----
-    path.lineTo(size.width, size.height - cutRadius - bottomRadius);
+    path.lineTo(size.width, size.height - bottomRadius);
 
     // ---- Bottom Right Rounded ----
     path.quadraticBezierTo(
-      size.width-8,
-      size.height - cutRadius,
+      size.width,
+      size.height,
       size.width - bottomRadius,
-      size.height - cutRadius,
+      size.height,
     );
-
-
-
-
 
     // ---- Bottom Cuts Area ----
     double availableWidth = size.width - (bottomRadius * 2);
     double sectionWidth = availableWidth / cutCount;
 
     for (int i = cutCount; i > 0; i--) {
-      double centerX =
-          bottomRadius + (sectionWidth * i) - sectionWidth / 2;
+      double centerX = bottomRadius + (sectionWidth * i) - sectionWidth / 2;
 
       path.arcTo(
         Rect.fromCircle(
@@ -381,12 +371,8 @@ class ReceiptClipper extends CustomClipper<Path> {
     }
 
     // ---- Bottom Left Rounded ----
-    path.quadraticBezierTo(
-      0,
-      size.height - cutRadius,
-      0,
-      size.height - cutRadius - bottomRadius,
-    );
+
+    path.quadraticBezierTo(0, size.height, 0, size.height - bottomRadius);
 
     // ---- Left Side ----
     path.lineTo(0, topRadius);

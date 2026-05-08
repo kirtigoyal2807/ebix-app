@@ -46,7 +46,7 @@ class BookingState extends Equatable {
       selectedGender: selectedGender ?? this.selectedGender,
       classDetailStatus: classDetailStatus ?? this.classDetailStatus,
       selectedTrainerType: selectedTrainerType ?? this.selectedTrainerType,
-      trainerTypeList: trainerTypeList
+      trainerTypeList: trainerTypeList,
     );
   }
 

@@ -35,7 +35,8 @@ class NewChallengesCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return GestureDetector(
-      onTap: onCardTap ??
+      onTap:
+          onCardTap ??
           () {
             showModalBottomSheet(
               context: context,

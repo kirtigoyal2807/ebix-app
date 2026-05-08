@@ -16,6 +16,7 @@ class ProgressCard extends StatelessWidget {
   final int classesDone;
   final double totalHours;
   final int goalClasses;
+
   /// Server-computed goal percentage. When provided, used directly instead of
   /// recomputing from classesDone / goalClasses.
   final int? goalPercent;
@@ -120,106 +121,117 @@ class ProgressCard extends StatelessWidget {
         ? (goalPercent! / 100).clamp(0.0, 1.0)
         : (classesDone / safeGoal).clamp(0.0, 1.0);
 
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
-      padding: EdgeInsets.all(size.width * 0.05),
-      decoration: BoxDecoration(
-        color: isDark ? AppColors.homeBackground : Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color: isDark ? AppColors.greyText : AppColors.buttonBorder,
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => ProgressTrackingView()),
+        );
+      },
+      child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+        padding: EdgeInsets.all(size.width * 0.05),
+        decoration: BoxDecoration(
+          color: isDark ? AppColors.homeBackground : Colors.white,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(
+            color: isDark ? AppColors.greyText : AppColors.buttonBorder,
+          ),
         ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              SvgPicture.asset(
-                isDark
-                    ? 'assets/images/svg/ic_monthly_progress_dark.svg'
-                    : 'assets/images/svg/ic_monthly_progress_light.svg',
-                // height: size.height * 0.06,
-                height: 56,
-                width: 56,
-                fit: BoxFit.contain,
-              ),
-              const SizedBox(width: AppSpacing.base),
-              Expanded(
-                child: AppText(
-                  context.l10n.monthlyProgress,
-                  style: (context) =>
-                      AppTextStyles.heading1(context).copyWith(fontSize: 16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                SvgPicture.asset(
+                  isDark
+                      ? 'assets/images/svg/ic_monthly_progress_dark.svg'
+                      : 'assets/images/svg/ic_monthly_progress_light.svg',
+                  // height: size.height * 0.06,
+                  height: 56,
+                  width: 56,
+                  fit: BoxFit.contain,
                 ),
-              ),
-              GestureDetector(
-                onTap: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => const ProgressTrackingView(),
-                    ),
-                  );
-                },
-                child: Icon(
-                  Icons.chevron_right,
-                  color: isDark ? AppColors.lightGrey : AppColors.darkGreyText,
-                  size: 24,
+                const SizedBox(width: AppSpacing.base),
+                Expanded(
+                  child: AppText(
+                    context.l10n.monthlyProgress,
+                    style: (context) =>
+                        AppTextStyles.heading1(context).copyWith(fontSize: 16),
+                  ),
                 ),
-              ),
-            ],
-          ),
-          const SizedBox(height: AppSpacing.md),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Expanded(
-                child: _buildProgressStat(
-                  context,
-                  classesDone.toString(),
-                  context.l10n.classes,
+                GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const ProgressTrackingView(),
+                      ),
+                    );
+                  },
+                  child: Icon(
+                    Icons.chevron_right,
+                    color: isDark
+                        ? AppColors.lightGrey
+                        : AppColors.darkGreyText,
+                    size: 24,
+                  ),
                 ),
-              ),
-              Expanded(
-                child: _buildProgressStat(
-                  context,
-                  context.l10n.hoursCount(totalHours.toStringAsFixed(2)),
-                  context.l10n.totalTime,
-                ),
-              ),
-              Expanded(
-                child: _buildProgressStat(
-                  context,
-                  '${(progress * 100).round()}%',
-                  context.l10n.goal,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: AppSpacing.md),
-          ClipRRect(
-            borderRadius: BorderRadius.circular(AppRadius.pillRadius),
-            child: LinearProgressIndicator(
-              value: progress,
-              backgroundColor: isDark
-                  ? AppColors.lightBlackColor
-                  : AppColors.darkGreyBorder,
-              color: isDark
-                  ? AppColors.languageIconDark
-                  : AppColors.languageIcon,
-              minHeight: 8,
+              ],
             ),
-          ),
-          const SizedBox(height: AppSpacing.sm),
-          AppText(
-            context.l10n.ofClassesThisMonth(classesDone, safeGoal),
-            style: (context) =>
-                AppTextStyles.helpAndSupportItemSubLabel(context).copyWith(
-                  fontSize: size.width * 0.03 > 14 ? 14 : size.width * 0.03,
+            const SizedBox(height: AppSpacing.md),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: _buildProgressStat(
+                    context,
+                    classesDone.toString(),
+                    context.l10n.classes,
+                  ),
                 ),
-          ),
-        ],
+                Expanded(
+                  child: _buildProgressStat(
+                    context,
+                    context.l10n.hoursCount(totalHours.toStringAsFixed(2)),
+                    context.l10n.totalTime,
+                  ),
+                ),
+                Expanded(
+                  child: _buildProgressStat(
+                    context,
+                    '${(progress * 100).round()}%',
+                    context.l10n.goal,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: AppSpacing.md),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(AppRadius.pillRadius),
+              child: LinearProgressIndicator(
+                value: progress,
+                backgroundColor: isDark
+                    ? AppColors.lightBlackColor
+                    : AppColors.darkGreyBorder,
+                color: isDark
+                    ? AppColors.languageIconDark
+                    : AppColors.languageIcon,
+                minHeight: 8,
+              ),
+            ),
+            const SizedBox(height: AppSpacing.sm),
+            AppText(
+              context.l10n.ofClassesThisMonth(classesDone, safeGoal),
+              style: (context) =>
+                  AppTextStyles.helpAndSupportItemSubLabel(context).copyWith(
+                    fontSize: size.width * 0.03 > 14 ? 14 : size.width * 0.03,
+                  ),
+            ),
+          ],
+        ),
       ),
     );
   }

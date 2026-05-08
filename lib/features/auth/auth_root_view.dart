@@ -26,9 +26,9 @@ class AuthRootView extends StatelessWidget {
       listenWhen: (previous, current) =>
           current.showRegisterOtpSuccess && !previous.showRegisterOtpSuccess,
       listener: (context, state) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(context.l10n.registerOtpSent)),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(context.l10n.registerOtpSent)));
         context.read<AuthCubit>().clearRegisterOtpSuccessBanner();
       },
       child: BlocBuilder<AuthCubit, AuthState>(

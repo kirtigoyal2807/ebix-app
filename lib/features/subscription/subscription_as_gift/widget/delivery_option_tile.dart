@@ -26,12 +26,8 @@ class DeliveryOptionTile extends StatelessWidget {
         borderRadius: BorderRadius.circular(AppRadius.md),
         border: Border.all(
           color: isDark
-              ? (isSelected
-              ? AppColors.darkGreyBorder
-              : AppColors.greyText)
-              : (isSelected
-              ? AppColors.primary
-              : AppColors.buttonBorder),
+              ? (isSelected ? AppColors.darkGreyBorder : AppColors.greyText)
+              : (isSelected ? AppColors.primary : AppColors.buttonBorder),
         ),
       ),
       child: Row(
@@ -43,7 +39,11 @@ class DeliveryOptionTile extends StatelessWidget {
           ),
 
           isSelected
-              ? SvgPicture.asset( isDark ? "assets/images/svg/ic_dark_radio_check.svg":"assets/images/svg/ic_radio_check.svg")
+              ? SvgPicture.asset(
+                  isDark
+                      ? "assets/images/svg/ic_dark_radio_check.svg"
+                      : "assets/images/svg/ic_radio_check.svg",
+                )
               : Icon(
                   Icons.radio_button_off,
                   color: AppColors.buttonBorder,

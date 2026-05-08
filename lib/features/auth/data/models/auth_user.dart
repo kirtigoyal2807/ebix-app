@@ -1,6 +1,20 @@
 import 'package:pilates_app/core/models/membership_snapshot.dart';
 
-/// Subset of profile fields from `POST /auth/login` → `data.user`, or [`GET /me`].
+int? _jsonInt(dynamic value) {
+  if (value == null) return null;
+  if (value is int) return value;
+  if (value is num) return value.toInt();
+  return int.tryParse(value.toString());
+}
+
+double? _jsonDouble(dynamic value) {
+  if (value == null) return null;
+  if (value is double) return value;
+  if (value is num) return value.toDouble();
+  return double.tryParse(value.toString());
+}
+
+/// Subset of profile fields from `POST /auth/login` → `data.user`, or [`GET /auth/me`].
 class AuthUser {
   const AuthUser({
     this.id,
@@ -9,8 +23,20 @@ class AuthUser {
     this.name,
     this.email,
     this.phone,
+    this.gender,
     this.avatar,
     this.dateOfBirth,
+    this.language,
+    this.homeBranch,
+    this.brands,
+    this.goals,
+    this.subscriptions,
+    this.pendingGift,
+    this.hasPendingGiftKey = false,
+    this.emailVerified,
+    this.phoneVerified,
+    this.createdAt,
+    this.updatedAt,
 
     /// From `membership[]` / `planName` on profile (aligned with [`GET /home`] `membership`).
     this.membershipPlanName,
@@ -28,10 +54,48 @@ class AuthUser {
   final String? name;
   final String? email;
   final String? phone;
+  final String? gender;
   final String? avatar;
 
   /// From profile / login payload when the API sends `dob`, `date_of_birth`, etc.
   final DateTime? dateOfBirth;
+
+  /// Preferred language: `en` | `ar`.
+  final String? language;
+
+  /// Home branch from `/auth/me` — abbreviated BranchResource.
+  final UserHomeBranch? homeBranch;
+
+  /// Brands the customer belongs to: `[{ id, name }]`.
+  final List<UserBrand>? brands;
+
+  /// Goals from `/auth/me`: `{ experience, goal, monthlyGoal }`.
+  final UserGoals? goals;
+
+  /// Active subscriptions from `/auth/me`.
+  final List<UserSubscription>? subscriptions;
+
+  /// Oldest unredeemed gift sent to this customer's phone.
+  /// Null when there's no pending gift.
+  final PendingGift? pendingGift;
+
+  /// True when the API response contained the `pendingGift` key — used to
+  /// distinguish "no pending gift" (null) from "field absent" (e.g. login response
+  /// that never carries this field). When the key was present and explicitly null,
+  /// we should clear any previously stored pending gift.
+  final bool hasPendingGiftKey;
+
+  /// Whether email has been verified.
+  final bool? emailVerified;
+
+  /// Whether phone has been verified.
+  final bool? phoneVerified;
+
+  /// ISO 8601 created timestamp.
+  final DateTime? createdAt;
+
+  /// ISO 8601 updated timestamp.
+  final DateTime? updatedAt;
 
   final String? membershipPlanName;
   final int? membershipTotalSessions;
@@ -39,6 +103,13 @@ class AuthUser {
 
   factory AuthUser.fromJson(Map<String, dynamic> json) {
     final membershipSnap = parseMembershipField(json['membership']);
+
+    // Parse subscriptions for membership info fallback
+    final subscriptionsList = _parseSubscriptions(json['subscriptions']);
+    final activeSubscription = subscriptionsList?.isNotEmpty == true
+        ? subscriptionsList!.first
+        : null;
+
     return AuthUser(
       id: json['id']?.toString(),
       firstName: json['first_name'] as String? ?? json['firstName'] as String?,
@@ -46,6 +117,7 @@ class AuthUser {
       name: json['name'] as String? ?? json['full_name'] as String?,
       email: json['email'] as String?,
       phone: json['phone'] as String?,
+      gender: _trimOrNull(json['gender']),
       avatar: json['avatar'] as String?,
       dateOfBirth: _parseDateOfBirth(
         json['dob'] ??
@@ -53,18 +125,32 @@ class AuthUser {
             json['dateOfBirth'] ??
             json['birth_date'],
       ),
+      language: _trimOrNull(json['language']),
+      homeBranch: _parseHomeBranch(json['homeBranch']),
+      brands: _parseBrands(json['brands']),
+      goals: _parseGoals(json['goals']),
+      subscriptions: subscriptionsList,
+      pendingGift: _parsePendingGift(json['pendingGift']),
+      hasPendingGiftKey: json.containsKey('pendingGift'),
+      emailVerified: json['emailVerified'] as bool?,
+      phoneVerified: json['phoneVerified'] as bool?,
+      createdAt: _parseDateTime(json['createdAt']),
+      updatedAt: _parseDateTime(json['updatedAt']),
       membershipPlanName:
           membershipSnap?.planName ??
+          activeSubscription?.product?.name ??
           _trimOrNull(json['membershipPlanName']) ??
           _trimOrNull(json['planName']) ??
           _trimOrNull(json['plan_name']),
       membershipTotalSessions:
           membershipSnap?.totalSessions ??
+          activeSubscription?.sessions?.total ??
           _parseInt(json['membershipTotalSessions']) ??
           _parseInt(json['totalSessions']) ??
           _parseInt(json['total_sessions']),
       membershipSessionsRemaining:
           membershipSnap?.sessionsRemaining ??
+          activeSubscription?.sessions?.remaining ??
           _parseInt(json['membershipSessionsRemaining']) ??
           _parseInt(json['sessionsRemaining']) ??
           _parseInt(json['sessions_remaining']),
@@ -78,9 +164,21 @@ class AuthUser {
     'name': name,
     'email': email,
     'phone': phone,
+    'gender': gender,
     'avatar': avatar,
     if (dateOfBirth != null)
       'dob': dateOfBirth!.toIso8601String().split('T').first,
+    'language': language,
+    if (homeBranch != null) 'homeBranch': homeBranch!.toJson(),
+    if (brands != null) 'brands': brands!.map((b) => b.toJson()).toList(),
+    if (goals != null) 'goals': goals!.toJson(),
+    if (subscriptions != null)
+      'subscriptions': subscriptions!.map((s) => s.toJson()).toList(),
+    'pendingGift': pendingGift?.toJson(),
+    'emailVerified': emailVerified,
+    'phoneVerified': phoneVerified,
+    if (createdAt != null) 'createdAt': createdAt!.toIso8601String(),
+    if (updatedAt != null) 'updatedAt': updatedAt!.toIso8601String(),
     'membershipPlanName': membershipPlanName,
     'membershipTotalSessions': membershipTotalSessions,
     'membershipSessionsRemaining': membershipSessionsRemaining,
@@ -138,4 +236,335 @@ class AuthUser {
     if (s.isEmpty) return null;
     return DateTime.tryParse(s);
   }
+
+  static DateTime? _parseDateTime(dynamic value) {
+    if (value == null) return null;
+    if (value is DateTime) return value;
+    final s = value.toString().trim();
+    if (s.isEmpty) return null;
+    return DateTime.tryParse(s);
+  }
+
+  static UserHomeBranch? _parseHomeBranch(dynamic value) {
+    if (value == null) return null;
+    if (value is! Map<String, dynamic>) return null;
+    return UserHomeBranch.fromJson(value);
+  }
+
+  static List<UserBrand>? _parseBrands(dynamic value) {
+    if (value == null) return null;
+    if (value is! List) return null;
+    return value
+        .whereType<Map<String, dynamic>>()
+        .map((e) => UserBrand.fromJson(e))
+        .toList();
+  }
+
+  static UserGoals? _parseGoals(dynamic value) {
+    if (value == null) return null;
+    if (value is! Map<String, dynamic>) return null;
+    return UserGoals.fromJson(value);
+  }
+
+  static List<UserSubscription>? _parseSubscriptions(dynamic value) {
+    if (value == null) return null;
+    if (value is! List) return null;
+    return value
+        .whereType<Map<String, dynamic>>()
+        .map((e) => UserSubscription.fromJson(e))
+        .toList();
+  }
+
+  static PendingGift? _parsePendingGift(dynamic value) {
+    if (value == null) return null;
+    if (value is! Map<String, dynamic>) return null;
+    return PendingGift.fromJson(value);
+  }
+}
+
+/// Home branch from `/auth/me` response.
+class UserHomeBranch {
+  const UserHomeBranch({this.id, this.name, this.slug, this.code});
+
+  final int? id;
+  final String? name;
+  final String? slug;
+  final String? code;
+
+  factory UserHomeBranch.fromJson(Map<String, dynamic> json) {
+    return UserHomeBranch(
+      id: _jsonInt(json['id']),
+      name: json['name'] as String?,
+      slug: json['slug'] as String?,
+      code: json['code'] as String?,
+    );
+  }
+
+  Map<String, dynamic> toJson() => {
+    'id': id,
+    'name': name,
+    'slug': slug,
+    'code': code,
+  };
+}
+
+/// Brand from `/auth/me` response.
+class UserBrand {
+  const UserBrand({this.id, this.name});
+
+  final int? id;
+  final String? name;
+
+  factory UserBrand.fromJson(Map<String, dynamic> json) {
+    return UserBrand(id: _jsonInt(json['id']), name: json['name'] as String?);
+  }
+
+  Map<String, dynamic> toJson() => {'id': id, 'name': name};
+}
+
+/// Goals from `/auth/me` response.
+class UserGoals {
+  const UserGoals({this.experience, this.goal, this.monthlyGoal});
+
+  final String? experience;
+  final String? goal;
+  final int? monthlyGoal;
+
+  factory UserGoals.fromJson(Map<String, dynamic> json) {
+    return UserGoals(
+      experience: json['experience'] as String?,
+      goal: json['goal'] as String?,
+      monthlyGoal:
+          _jsonInt(json['monthlyGoal']) ?? _jsonInt(json['monthly_goal']),
+    );
+  }
+
+  Map<String, dynamic> toJson() => {
+    'experience': experience,
+    'goal': goal,
+    'monthlyGoal': monthlyGoal,
+  };
+}
+
+/// Subscription from `/auth/me` response.
+class UserSubscription {
+  const UserSubscription({
+    this.id,
+    this.status,
+    this.entitlementType,
+    this.startsAt,
+    this.expiresAt,
+    this.isActive,
+    this.isPaid,
+    this.pricePaid,
+    this.isTransferable,
+    this.product,
+    this.sessions,
+    this.freezes,
+  });
+
+  final String? id;
+  final String? status;
+  final String? entitlementType;
+  final String? startsAt;
+  final String? expiresAt;
+  final bool? isActive;
+  final bool? isPaid;
+  final double? pricePaid;
+  final bool? isTransferable;
+  final SubscriptionProduct? product;
+  final SubscriptionSessions? sessions;
+  final List<dynamic>? freezes;
+
+  factory UserSubscription.fromJson(Map<String, dynamic> json) {
+    return UserSubscription(
+      id: json['id']?.toString(),
+      status: json['status'] as String?,
+      entitlementType: json['entitlementType'] as String?,
+      startsAt: json['startsAt'] as String?,
+      expiresAt: json['expiresAt'] as String?,
+      isActive: json['isActive'] as bool?,
+      isPaid: json['isPaid'] as bool?,
+      pricePaid: _jsonDouble(json['pricePaid']),
+      isTransferable: json['isTransferable'] as bool?,
+      product: json['product'] != null
+          ? SubscriptionProduct.fromJson(
+              json['product'] as Map<String, dynamic>,
+            )
+          : null,
+      sessions: json['sessions'] != null
+          ? SubscriptionSessions.fromJson(
+              json['sessions'] as Map<String, dynamic>,
+            )
+          : null,
+      freezes: json['freezes'] as List<dynamic>?,
+    );
+  }
+
+  Map<String, dynamic> toJson() => {
+    'id': id,
+    'status': status,
+    'entitlementType': entitlementType,
+    'startsAt': startsAt,
+    'expiresAt': expiresAt,
+    'isActive': isActive,
+    'isPaid': isPaid,
+    'pricePaid': pricePaid,
+    'isTransferable': isTransferable,
+    'product': product?.toJson(),
+    'sessions': sessions?.toJson(),
+    'freezes': freezes,
+  };
+}
+
+/// Product in subscription from `/auth/me` response.
+class SubscriptionProduct {
+  const SubscriptionProduct({this.id, this.name});
+
+  final int? id;
+  final String? name;
+
+  factory SubscriptionProduct.fromJson(Map<String, dynamic> json) {
+    return SubscriptionProduct(
+      id: _jsonInt(json['id']),
+      name: json['name'] as String?,
+    );
+  }
+
+  Map<String, dynamic> toJson() => {'id': id, 'name': name};
+}
+
+/// Pending gift from `/auth/me` response — oldest unredeemed gift sent to this
+/// customer's phone. Use [canBeRedeemed] to gate the redemption UI.
+class PendingGift {
+  const PendingGift({
+    this.id,
+    this.status,
+    this.statusLabel,
+    this.redemptionCode,
+    this.recipient,
+    this.message,
+    this.deliveryDate,
+    this.sentAt,
+    this.redeemedAt,
+    this.expiresAt,
+    this.isRedeemed,
+    this.isExpired,
+    this.canBeRedeemed,
+    this.createdAt,
+  });
+
+  final String? id;
+  final String? status;
+  final String? statusLabel;
+  final String? redemptionCode;
+  final PendingGiftRecipient? recipient;
+  final String? message;
+  final String? deliveryDate;
+  final String? sentAt;
+  final String? redeemedAt;
+  final String? expiresAt;
+  final bool? isRedeemed;
+  final bool? isExpired;
+  final bool? canBeRedeemed;
+  final String? createdAt;
+
+  factory PendingGift.fromJson(Map<String, dynamic> json) {
+    final statusRaw = json['status'];
+    String? statusValue;
+    String? statusLabel;
+    if (statusRaw is Map<String, dynamic>) {
+      statusValue = statusRaw['value'] as String?;
+      statusLabel = statusRaw['label'] as String?;
+    } else if (statusRaw is String) {
+      statusValue = statusRaw;
+    }
+
+    PendingGiftRecipient? recipient;
+    final recipientRaw = json['recipient'];
+    if (recipientRaw is Map<String, dynamic>) {
+      recipient = PendingGiftRecipient.fromJson(recipientRaw);
+    }
+
+    return PendingGift(
+      id: json['id']?.toString(),
+      status: statusValue,
+      statusLabel: statusLabel,
+      redemptionCode: json['redemptionCode'] as String?,
+      recipient: recipient,
+      message: json['message'] as String?,
+      deliveryDate: json['deliveryDate'] as String?,
+      sentAt: json['sentAt'] as String?,
+      redeemedAt: json['redeemedAt'] as String?,
+      expiresAt: json['expiresAt'] as String?,
+      isRedeemed: json['isRedeemed'] as bool?,
+      isExpired: json['isExpired'] as bool?,
+      canBeRedeemed: json['canBeRedeemed'] as bool?,
+      createdAt: json['createdAt'] as String?,
+    );
+  }
+
+  Map<String, dynamic> toJson() => {
+    'id': id,
+    'status': status == null
+        ? null
+        : {'value': status, if (statusLabel != null) 'label': statusLabel},
+    'redemptionCode': redemptionCode,
+    'recipient': recipient?.toJson(),
+    'message': message,
+    'deliveryDate': deliveryDate,
+    'sentAt': sentAt,
+    'redeemedAt': redeemedAt,
+    'expiresAt': expiresAt,
+    'isRedeemed': isRedeemed,
+    'isExpired': isExpired,
+    'canBeRedeemed': canBeRedeemed,
+    'createdAt': createdAt,
+  };
+}
+
+/// Recipient block on a [PendingGift].
+class PendingGiftRecipient {
+  const PendingGiftRecipient({this.name, this.phone, this.email});
+
+  final String? name;
+  final String? phone;
+  final String? email;
+
+  factory PendingGiftRecipient.fromJson(Map<String, dynamic> json) {
+    return PendingGiftRecipient(
+      name: json['name'] as String?,
+      phone: json['phone'] as String?,
+      email: json['email'] as String?,
+    );
+  }
+
+  Map<String, dynamic> toJson() => {
+    'name': name,
+    'phone': phone,
+    'email': email,
+  };
+}
+
+/// Sessions in subscription from `/auth/me` response.
+class SubscriptionSessions {
+  const SubscriptionSessions({this.total, this.used, this.remaining});
+
+  final int? total;
+  final int? used;
+  final int? remaining;
+
+  factory SubscriptionSessions.fromJson(Map<String, dynamic> json) {
+    return SubscriptionSessions(
+      total: _jsonInt(json['total']),
+      used: _jsonInt(json['used']),
+      remaining: _jsonInt(json['remaining']),
+    );
+  }
+
+  Map<String, dynamic> toJson() => {
+    'total': total,
+    'used': used,
+    'remaining': remaining,
+  };
 }

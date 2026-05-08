@@ -7,16 +7,14 @@ import 'package:pilates_app/features/checkout/data/checkout_repository.dart';
 import 'gift_subscription_state.dart';
 
 class GiftSubscriptionCubit extends Cubit<GiftSubscriptionState> {
-  GiftSubscriptionCubit(
-    this._checkoutRepository, {
-    required this.checkoutId,
-  }) : super(
-          const GiftSubscriptionState(
-            deliveryOptions: DeliveryOption.values,
-            selectedDeliveryOption: DeliveryOption.instantDelivery,
-            scheduledDeliveryDateIso: null,
-          ),
-        );
+  GiftSubscriptionCubit(this._checkoutRepository, {required this.checkoutId})
+    : super(
+        const GiftSubscriptionState(
+          deliveryOptions: DeliveryOption.values,
+          selectedDeliveryOption: DeliveryOption.instantDelivery,
+          scheduledDeliveryDateIso: null,
+        ),
+      );
 
   final CheckoutRepository _checkoutRepository;
 
@@ -95,8 +93,9 @@ class GiftSubscriptionCubit extends Cubit<GiftSubscriptionState> {
     emit(
       state.copyWith(
         submitStatus: GiftSubmitStatus.failure,
-        submitErrorMessage:
-            (raw != null && raw.isNotEmpty) ? raw : 'Request failed',
+        submitErrorMessage: (raw != null && raw.isNotEmpty)
+            ? raw
+            : 'Request failed',
       ),
     );
   }

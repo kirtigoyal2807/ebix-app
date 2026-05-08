@@ -15,11 +15,7 @@ void main() {
             Response(
               requestOptions: options,
               statusCode: 200,
-              data: const {
-                'success': true,
-                'message': 'ok',
-                'data': null,
-              },
+              data: const {'success': true, 'message': 'ok', 'data': null},
             ),
           );
         },

@@ -12,10 +12,7 @@ class WeeklyActivityCubit extends Cubit<WeeklyActivityState> {
 
   Future<void> load() async {
     emit(
-      state.copyWith(
-        status: WeeklyActivityStatus.loading,
-        errorMessage: null,
-      ),
+      state.copyWith(status: WeeklyActivityStatus.loading, errorMessage: null),
     );
     final result = await _repository.getWeeklyActivity();
     switch (result) {

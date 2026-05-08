@@ -113,10 +113,9 @@ class JoinChallengeBottomSheet extends StatelessWidget {
                             ),
                             child: AppText(
                               c.description,
-                              style: (context) =>
-                                  AppTextStyles.bodyLightText(context).copyWith(
-                                height: 1.4,
-                              ),
+                              style: (context) => AppTextStyles.bodyLightText(
+                                context,
+                              ).copyWith(height: 1.4),
                               maxLines: 6,
                             ),
                           ),
@@ -159,11 +158,7 @@ class JoinChallengeBottomSheet extends StatelessWidget {
     return _legacySheet(context, isRTL, isDarkMode);
   }
 
-  Widget _legacySheet(
-    BuildContext context,
-    bool isRTL,
-    bool isDark,
-  ) {
+  Widget _legacySheet(BuildContext context, bool isRTL, bool isDark) {
     return Material(
       color: isDark ? AppColors.homeBackground : Colors.white,
       borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
@@ -233,8 +228,9 @@ class JoinChallengeBottomSheet extends StatelessWidget {
                         Container(
                           padding: EdgeInsets.all(AppSpacing.lmd),
                           decoration: BoxDecoration(
-                            color:
-                                isDark ? AppColors.homeBackground : AppColors.whiteColor,
+                            color: isDark
+                                ? AppColors.homeBackground
+                                : AppColors.whiteColor,
                             borderRadius: BorderRadius.circular(AppRadius.md),
                             border: Border.all(
                               color: isDark
@@ -244,14 +240,10 @@ class JoinChallengeBottomSheet extends StatelessWidget {
                             ),
                           ),
                           child: AppText(
-                            context.l10n.challenge_description(
-                              20,
-                              "February",
-                            ),
-                            style: (context) =>
-                                AppTextStyles.bodyLightText(context).copyWith(
-                              height: 1.4,
-                            ),
+                            context.l10n.challenge_description(20, "February"),
+                            style: (context) => AppTextStyles.bodyLightText(
+                              context,
+                            ).copyWith(height: 1.4),
                             maxLines: 3,
                           ),
                         ),
@@ -262,7 +254,7 @@ class JoinChallengeBottomSheet extends StatelessWidget {
                               AppTextStyles.gelasioMedium(context),
                         ),
                         SizedBox(height: AppSpacing.md),
-                        ChallengesBenefit()
+                        ChallengesBenefit(),
                       ],
                     ),
                   ),

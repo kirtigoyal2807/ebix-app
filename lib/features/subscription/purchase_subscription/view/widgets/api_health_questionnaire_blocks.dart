@@ -29,7 +29,10 @@ List<ProductHealthQuestion> pickQuestionsByIds(
       byId[n] = q;
     }
   }
-  return [for (final id in ids) if (byId[id] != null) byId[id]!];
+  return [
+    for (final id in ids)
+      if (byId[id] != null) byId[id]!,
+  ];
 }
 
 /// All questions for the Medical History step from
@@ -48,8 +51,7 @@ List<ProductHealthQuestion> medicalQuestionsFromApi(
     if (q.isPersonalInformationEnvelopeField) return false;
     return !reservedForOtherSteps.contains(id);
   }).toList();
-  int sortKey(ProductHealthQuestion q) =>
-      q.order ?? q.numericQuestionId ?? 0;
+  int sortKey(ProductHealthQuestion q) => q.order ?? q.numericQuestionId ?? 0;
   filtered.sort((a, b) => sortKey(a).compareTo(sortKey(b)));
   return filtered;
 }
@@ -148,10 +150,7 @@ class _MedicalQuestionBody extends StatelessWidget {
       );
     }
     if (question.isFreeTextQuestion) {
-      return _MedicalTextQuestion(
-        question: question,
-        rawAnswer: raw,
-      );
+      return _MedicalTextQuestion(question: question, rawAnswer: raw);
     }
     if (question.isBooleanQuestion ||
         (question.isCheckboxQuestion && question.resolvedOptionRows.isEmpty)) {
@@ -209,7 +208,11 @@ class ApiCheckboxQuestionBlock extends StatelessWidget {
             isDark: isDark,
             onTap: () {
               final on = !_answerContainsOption(rawAnswer, row.value);
-              cubit.toggleHealthQuestionnaireOption(id, row.value, selected: on);
+              cubit.toggleHealthQuestionnaireOption(
+                id,
+                row.value,
+                selected: on,
+              );
             },
           ),
         if (question.allowOther == true) ...[
@@ -268,10 +271,7 @@ class _MedicalRadioQuestion extends StatelessWidget {
 }
 
 class _MedicalTextQuestion extends StatelessWidget {
-  const _MedicalTextQuestion({
-    required this.question,
-    required this.rawAnswer,
-  });
+  const _MedicalTextQuestion({required this.question, required this.rawAnswer});
 
   final ProductHealthQuestion question;
   final Object? rawAnswer;
@@ -379,8 +379,10 @@ class ApiBooleanQuestionsBlock extends StatelessWidget {
           p.healthQuestionnaireAnswers != c.healthQuestionnaireAnswers ||
           p.healthQuestionnaireAnswerNotes != c.healthQuestionnaireAnswerNotes,
       builder: (context, state) {
-        final picked =
-            pickQuestionsByIds(state.healthQuestionnaireQuestions, questionIds);
+        final picked = pickQuestionsByIds(
+          state.healthQuestionnaireQuestions,
+          questionIds,
+        );
         if (picked.isEmpty) {
           return const SizedBox.shrink();
         }
@@ -428,13 +430,15 @@ class _BooleanAnswerExplainField extends StatefulWidget {
       _BooleanAnswerExplainFieldState();
 }
 
-class _BooleanAnswerExplainFieldState extends State<_BooleanAnswerExplainField> {
+class _BooleanAnswerExplainFieldState
+    extends State<_BooleanAnswerExplainField> {
   late final TextEditingController _controller;
 
   @override
   void initState() {
     super.initState();
-    final initial = context
+    final initial =
+        context
             .read<SubscriptionCubit>()
             .state
             .healthQuestionnaireAnswerNotes[widget.questionId] ??
@@ -457,7 +461,8 @@ class _BooleanAnswerExplainFieldState extends State<_BooleanAnswerExplainField> 
       hint: l10n.healthAnswerExplainHint,
       controller: _controller,
       maxLines: 4,
-      onChanged: (t) => cubit.setHealthQuestionnaireAnswerNote(widget.questionId, t),
+      onChanged: (t) =>
+          cubit.setHealthQuestionnaireAnswerNote(widget.questionId, t),
     );
   }
 }
@@ -526,9 +531,7 @@ class _BooleanYesNoRow extends StatelessWidget {
             question.numericQuestionId != null &&
             question.allowOther == true) ...[
           const SizedBox(height: AppSpacing.md),
-          _BooleanAnswerExplainField(
-            questionId: question.numericQuestionId!,
-          ),
+          _BooleanAnswerExplainField(questionId: question.numericQuestionId!),
         ],
       ],
     );
@@ -563,11 +566,7 @@ class ApiActivityLevelQuestionBlock extends StatelessWidget {
           return const SizedBox.shrink();
         }
         final raw = state.healthQuestionnaireAnswers[id];
-        return _MedicalQuestionBody(
-          question: q,
-          isDark: isDark,
-          answer: raw,
-        );
+        return _MedicalQuestionBody(question: q, isDark: isDark, answer: raw);
       },
     );
   }

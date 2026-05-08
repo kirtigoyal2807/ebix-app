@@ -108,7 +108,10 @@ void main() {
       );
       final repo = TestRepository(dio);
 
-      final result = await repo.post<Map<String, dynamic>>('/x', data: const {});
+      final result = await repo.post<Map<String, dynamic>>(
+        '/x',
+        data: const {},
+      );
 
       expect(result.isFailure, isTrue);
       final ex = result.exceptionOrNull!;
@@ -169,30 +172,32 @@ void main() {
       expect(result.dataOrNull, const {'id': 7, 'name': 'Test'});
     });
 
-    test('GET: 200 success envelope without fromJson returns data payload',
-        () async {
-      final dio = createTestDio(
-        onRequest: (options, handler) {
-          handler.resolve(
-            Response(
-              requestOptions: options,
-              statusCode: 200,
-              data: const {
-                'success': true,
-                'message': 'Success',
-                'data': {'k': 'v'},
-              },
-            ),
-          );
-        },
-      );
-      final repo = TestRepository(dio);
+    test(
+      'GET: 200 success envelope without fromJson returns data payload',
+      () async {
+        final dio = createTestDio(
+          onRequest: (options, handler) {
+            handler.resolve(
+              Response(
+                requestOptions: options,
+                statusCode: 200,
+                data: const {
+                  'success': true,
+                  'message': 'Success',
+                  'data': {'k': 'v'},
+                },
+              ),
+            );
+          },
+        );
+        final repo = TestRepository(dio);
 
-      final result = await repo.get<Map<String, dynamic>>('/resource');
+        final result = await repo.get<Map<String, dynamic>>('/resource');
 
-      expect(result.isSuccess, isTrue);
-      expect(result.dataOrNull, const {'k': 'v'});
-    });
+        expect(result.isSuccess, isTrue);
+        expect(result.dataOrNull, const {'k': 'v'});
+      },
+    );
 
     test('GET: 200 with success false envelope maps to ApiFailure', () async {
       final dio = createTestDio(
@@ -204,7 +209,9 @@ void main() {
               data: const {
                 'success': false,
                 'message': 'Not allowed',
-                'errors': {'field': ['x']},
+                'errors': {
+                  'field': ['x'],
+                },
               },
             ),
           );
@@ -217,7 +224,9 @@ void main() {
       expect(result.isFailure, isTrue);
       final ex = result.exceptionOrNull!;
       expect(ex.message, 'Not allowed');
-      expect(ex.fieldErrors, const {'field': ['x']});
+      expect(ex.fieldErrors, const {
+        'field': ['x'],
+      });
       expect(ex.type, NetworkFailureType.validation);
     });
 
@@ -234,40 +243,8 @@ void main() {
                 data: const {
                   'success': false,
                   'message': 'Validation failed',
-                  'errors': {'email': ['invalid']},
-                },
-              ),
-            ),
-          );
-        },
-      );
-      final repo = TestRepository(dio);
-
-      final result = await repo.post<Map<String, dynamic>>('/x', data: const {});
-
-      expect(result.isFailure, isTrue);
-      final ex = result.exceptionOrNull!;
-      expect(ex.type, NetworkFailureType.validation);
-      expect(ex.statusCode, 422);
-      expect(ex.fieldErrors, const {'email': ['invalid']});
-    });
-
-    test('POST: 422 envelope with empty message uses first field error',
-        () async {
-      final dio = createTestDio(
-        onRequest: (options, handler) {
-          handler.reject(
-            DioException(
-              requestOptions: options,
-              type: DioExceptionType.badResponse,
-              response: Response(
-                requestOptions: options,
-                statusCode: 422,
-                data: const {
-                  'success': false,
-                  'message': '',
                   'errors': {
-                    'password': ['Password must be at least 8 chars'],
+                    'email': ['invalid'],
                   },
                 },
               ),
@@ -277,52 +254,95 @@ void main() {
       );
       final repo = TestRepository(dio);
 
-      final result = await repo.post<Map<String, dynamic>>('/x', data: const {});
-      expect(result.isFailure, isTrue);
-      final ex = result.exceptionOrNull!;
-      expect(ex.message, 'Password must be at least 8 chars');
-      expect(ex.type, NetworkFailureType.validation);
-    });
-
-    test('POST: 422 plain message (no envelope) maps to validation message', () async {
-      final dio = createTestDio(
-        onRequest: (options, handler) {
-          handler.reject(
-            DioException(
-              requestOptions: options,
-              type: DioExceptionType.badResponse,
-              response: Response(
-                requestOptions: options,
-                statusCode: 422,
-                data: const {'message': 'Check-in is too early'},
-              ),
-            ),
-          );
-        },
-      );
-      final repo = TestRepository(dio);
-
       final result = await repo.post<Map<String, dynamic>>(
-        '/enrollments/1/check-in',
-        data: const <String, dynamic>{},
+        '/x',
+        data: const {},
       );
 
       expect(result.isFailure, isTrue);
       final ex = result.exceptionOrNull!;
       expect(ex.type, NetworkFailureType.validation);
       expect(ex.statusCode, 422);
-      expect(ex.message, 'Check-in is too early');
+      expect(ex.fieldErrors, const {
+        'email': ['invalid'],
+      });
     });
+
+    test(
+      'POST: 422 envelope with empty message uses first field error',
+      () async {
+        final dio = createTestDio(
+          onRequest: (options, handler) {
+            handler.reject(
+              DioException(
+                requestOptions: options,
+                type: DioExceptionType.badResponse,
+                response: Response(
+                  requestOptions: options,
+                  statusCode: 422,
+                  data: const {
+                    'success': false,
+                    'message': '',
+                    'errors': {
+                      'password': ['Password must be at least 8 chars'],
+                    },
+                  },
+                ),
+              ),
+            );
+          },
+        );
+        final repo = TestRepository(dio);
+
+        final result = await repo.post<Map<String, dynamic>>(
+          '/x',
+          data: const {},
+        );
+        expect(result.isFailure, isTrue);
+        final ex = result.exceptionOrNull!;
+        expect(ex.message, 'Password must be at least 8 chars');
+        expect(ex.type, NetworkFailureType.validation);
+      },
+    );
+
+    test(
+      'POST: 422 plain message (no envelope) maps to validation message',
+      () async {
+        final dio = createTestDio(
+          onRequest: (options, handler) {
+            handler.reject(
+              DioException(
+                requestOptions: options,
+                type: DioExceptionType.badResponse,
+                response: Response(
+                  requestOptions: options,
+                  statusCode: 422,
+                  data: const {'message': 'Check-in is too early'},
+                ),
+              ),
+            );
+          },
+        );
+        final repo = TestRepository(dio);
+
+        final result = await repo.post<Map<String, dynamic>>(
+          '/enrollments/1/check-in',
+          data: const <String, dynamic>{},
+        );
+
+        expect(result.isFailure, isTrue);
+        final ex = result.exceptionOrNull!;
+        expect(ex.type, NetworkFailureType.validation);
+        expect(ex.statusCode, 422);
+        expect(ex.message, 'Check-in is too early');
+      },
+    );
 
     test('GET: missing statusCode maps to ApiFailure', () async {
       final dio = createTestDio(
         onRequest: (options, handler) {
           handler.resolve(
-            Response(
-              requestOptions: options,
-              statusCode: null,
-              data: const {},
-            ),
+            Response(requestOptions: options, statusCode: null, data: const {}),
           );
         },
       );
@@ -373,8 +393,10 @@ void main() {
       );
       final repo = TestRepository(dio);
 
-      final result =
-          await repo.put<Map<String, dynamic>>('/items/1', data: const {});
+      final result = await repo.put<Map<String, dynamic>>(
+        '/items/1',
+        data: const {},
+      );
 
       expect(result.isSuccess, isTrue);
     });
@@ -417,8 +439,7 @@ void main() {
       );
       final repo = TestRepository(dio);
 
-      final result =
-          await repo.delete<Map<String, dynamic>>('/items/1');
+      final result = await repo.delete<Map<String, dynamic>>('/items/1');
 
       expect(result.isSuccess, isTrue);
     });
@@ -549,23 +570,25 @@ void main() {
       expect(result.exceptionOrNull?.statusCode, 502);
     });
 
-    test('DioException: unknown with nested SocketException → connection',
-        () async {
-      final dio = createTestDio(
-        onRequest: (options, handler) {
-          handler.reject(
-            DioException(
-              requestOptions: options,
-              type: DioExceptionType.unknown,
-              error: SocketException('no host'),
-            ),
-          );
-        },
-      );
-      final repo = TestRepository(dio);
-      final result = await repo.get<dynamic>('/x');
-      expect(result.exceptionOrNull?.type, NetworkFailureType.connection);
-    });
+    test(
+      'DioException: unknown with nested SocketException → connection',
+      () async {
+        final dio = createTestDio(
+          onRequest: (options, handler) {
+            handler.reject(
+              DioException(
+                requestOptions: options,
+                type: DioExceptionType.unknown,
+                error: SocketException('no host'),
+              ),
+            );
+          },
+        );
+        final repo = TestRepository(dio);
+        final result = await repo.get<dynamic>('/x');
+        expect(result.exceptionOrNull?.type, NetworkFailureType.connection);
+      },
+    );
 
     test('DioException: unknown with generic error', () async {
       final dio = createTestDio(
@@ -588,11 +611,7 @@ void main() {
       final dio = createTestDio(
         onRequest: (options, handler) {
           handler.resolve(
-            Response(
-              requestOptions: options,
-              statusCode: 200,
-              data: 42,
-            ),
+            Response(requestOptions: options, statusCode: 200, data: 42),
           );
         },
       );
@@ -608,11 +627,7 @@ void main() {
       final dio = createTestDio(
         onRequest: (options, handler) {
           handler.resolve(
-            Response(
-              requestOptions: options,
-              statusCode: 200,
-              data: const {},
-            ),
+            Response(requestOptions: options, statusCode: 200, data: const {}),
           );
         },
       );
@@ -628,26 +643,26 @@ void main() {
       expect(result.exceptionOrNull?.cause, isA<FormatException>());
     });
 
-    test('sync throw in interceptor becomes DioException then ApiFailure',
-        () async {
-      final dio = Dio(
-        BaseOptions(baseUrl: 'https://test.local'),
-      );
-      dio.interceptors.add(
-        InterceptorsWrapper(
-          onRequest: (options, handler) {
-            throw StateError('unexpected');
-          },
-        ),
-      );
-      final repo = TestRepository(dio);
+    test(
+      'sync throw in interceptor becomes DioException then ApiFailure',
+      () async {
+        final dio = Dio(BaseOptions(baseUrl: 'https://test.local'));
+        dio.interceptors.add(
+          InterceptorsWrapper(
+            onRequest: (options, handler) {
+              throw StateError('unexpected');
+            },
+          ),
+        );
+        final repo = TestRepository(dio);
 
-      final result = await repo.get<dynamic>('/x');
-      expect(result.isFailure, isTrue);
-      expect(result.exceptionOrNull?.cause, isA<DioException>());
-      final dioErr = result.exceptionOrNull!.cause! as DioException;
-      expect(dioErr.error, isA<StateError>());
-    });
+        final result = await repo.get<dynamic>('/x');
+        expect(result.isFailure, isTrue);
+        expect(result.exceptionOrNull?.cause, isA<DioException>());
+        final dioErr = result.exceptionOrNull!.cause! as DioException;
+        expect(dioErr.error, isA<StateError>());
+      },
+    );
 
     test('queryParameters forwarded to Dio', () async {
       Map<String, dynamic>? seen;
@@ -661,7 +676,10 @@ void main() {
       );
       final repo = TestRepository(dio);
 
-      await repo.get<dynamic>('/search', queryParameters: const {'q': 'pilates'});
+      await repo.get<dynamic>(
+        '/search',
+        queryParameters: const {'q': 'pilates'},
+      );
 
       expect(seen, const {'q': 'pilates'});
     });

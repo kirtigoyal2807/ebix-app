@@ -97,17 +97,17 @@ class RewardState extends Equatable {
 
   @override
   List<Object?> get props => [
-        rewardFilterList,
-        selectedRewardFilter,
-        branchList,
-        selectedBranch,
-        rewardsLoadStatus,
-        rewards,
-        rewardsError,
-        historyLoadStatus,
-        pointsHistory,
-        pointsHistoryError,
-      ];
+    rewardFilterList,
+    selectedRewardFilter,
+    branchList,
+    selectedBranch,
+    rewardsLoadStatus,
+    rewards,
+    rewardsError,
+    historyLoadStatus,
+    pointsHistory,
+    pointsHistoryError,
+  ];
 }
 
 enum RewardFilter { all, experiences, classes, discounts }

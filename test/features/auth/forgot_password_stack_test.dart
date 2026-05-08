@@ -17,7 +17,9 @@ import 'fake_auth_repository.dart';
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  testWidgets('Resend on OTP does not stack a second ForgotOtpView route', (tester) async {
+  testWidgets('Resend on OTP does not stack a second ForgotOtpView route', (
+    tester,
+  ) async {
     SharedPreferences.setMockInitialValues({});
     final prefs = await SharedPreferences.getInstance();
     final storage = TokenStorage(prefs);

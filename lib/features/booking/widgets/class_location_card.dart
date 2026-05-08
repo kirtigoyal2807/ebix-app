@@ -16,14 +16,15 @@ class ClassLocationCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    final branchName = slot.branchName.isNotEmpty
-        ? slot.branchName
-        : "";
+    final branchName = slot.branchName.isNotEmpty ? slot.branchName : "";
     final branchAddress = slot.branchAddress ?? "";
 
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(AppSpacing.lg),
+      padding: EdgeInsets.symmetric(
+        horizontal: AppSpacing.md,
+        vertical: AppSpacing.lmd,
+      ),
       decoration: BoxDecoration(
         color: isDark ? AppColors.homeBackground : AppColors.whiteColor,
         borderRadius: BorderRadius.circular(AppRadius.md),

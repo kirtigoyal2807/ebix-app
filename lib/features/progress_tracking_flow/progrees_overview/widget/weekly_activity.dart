@@ -140,7 +140,9 @@ class WeeklyGraph extends StatelessWidget {
                   children: [
                     TextSpan(
                       text: context.l10n.weekly_activity_mindful_movement,
-                      style: AppTextStyles.bodyText(context).copyWith(height: 1.55),
+                      style: AppTextStyles.bodyText(
+                        context,
+                      ).copyWith(height: 1.55),
                     ),
                     TextSpan(
                       text: state.result != null
@@ -227,11 +229,11 @@ class _WeekBarSlot extends StatelessWidget {
                         decoration: BoxDecoration(
                           color: isDark
                               ? (isZero
-                                  ? AppColors.lightBlackColor
-                                  : AppColors.primary)
+                                    ? AppColors.lightBlackColor
+                                    : AppColors.primary)
                               : (isZero
-                                  ? AppColors.darkGreyBorder
-                                  : AppColors.primary),
+                                    ? AppColors.darkGreyBorder
+                                    : AppColors.primary),
                           borderRadius: const BorderRadius.only(
                             topRight: Radius.circular(4),
                             topLeft: Radius.circular(4),
@@ -254,14 +256,14 @@ class _WeekBarSlot extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                     style: (context) =>
                         AppTextStyles.captionText(context).copyWith(
-                      color: isDark
-                          ? (isZero
-                              ? AppColors.lightDarkGrey
-                              : AppColors.lightText)
-                          : (isZero
-                              ? AppColors.languageTextDark
-                              : AppColors.darkText),
-                    ),
+                          color: isDark
+                              ? (isZero
+                                    ? AppColors.lightDarkGrey
+                                    : AppColors.lightText)
+                              : (isZero
+                                    ? AppColors.languageTextDark
+                                    : AppColors.darkText),
+                        ),
                   ),
                 ),
               ),

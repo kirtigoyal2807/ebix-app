@@ -117,7 +117,9 @@ class _RedeemRewardViewState extends State<RedeemRewardView> {
                 ),
                 child: AppButton(
                   label: context.l10n.cancel,
-                  onPressed: _submitting ? null : () => Navigator.of(context).pop(),
+                  onPressed: _submitting
+                      ? null
+                      : () => Navigator.of(context).pop(),
                   variant: AppButtonVariant.secondary,
                 ),
               ),

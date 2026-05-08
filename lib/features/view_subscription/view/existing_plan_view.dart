@@ -99,17 +99,14 @@ class ExistingPlanView extends StatelessWidget {
   String _formatFreezeBoundary(String? raw, BuildContext context) {
     if (raw == null || raw.trim().isEmpty) return '';
     final t = raw.trim();
-    final d = DateTime.tryParse(t) ??
-        DateTime.tryParse(t.replaceFirst(' ', 'T'));
+    final d =
+        DateTime.tryParse(t) ?? DateTime.tryParse(t.replaceFirst(' ', 'T'));
     if (d == null) return t;
     final locale = Localizations.localeOf(context).toLanguageTag();
     return DateFormat.yMMMd(locale).format(d.toLocal());
   }
 
-  String _freezeSummary(
-    BuildContext context,
-    SubscriptionFreeze f,
-  ) {
+  String _freezeSummary(BuildContext context, SubscriptionFreeze f) {
     final a = _formatFreezeBoundary(f.startDate, context);
     final b = _formatFreezeBoundary(f.endDate, context);
     if (a.isNotEmpty && b.isNotEmpty) return '$a — $b';
@@ -152,9 +149,7 @@ class ExistingPlanView extends StatelessWidget {
       },
       failure: (e) {
         messenger?.showSnackBar(
-          SnackBar(
-            content: Text(e.message ?? context.l10n.loginErrorGeneric),
-          ),
+          SnackBar(content: Text(e.message ?? context.l10n.loginErrorGeneric)),
         );
       },
     );
@@ -187,13 +182,12 @@ class ExistingPlanView extends StatelessWidget {
                   ),
                   SizedBox(height: AppSpacing.md),
                   TextButton(
-                    onPressed: () =>
-                        context.read<SubscriptionsCubit>().load(),
+                    onPressed: () => context.read<SubscriptionsCubit>().load(),
                     child: AppText(
                       context.l10n.retry,
-                      style: (context) => AppTextStyles.body(context).copyWith(
-                            color: AppColors.languageIcon,
-                          ),
+                      style: (context) => AppTextStyles.body(
+                        context,
+                      ).copyWith(color: AppColors.languageIcon),
                     ),
                   ),
                 ],
@@ -246,8 +240,7 @@ class ExistingPlanView extends StatelessWidget {
                 periodLine: _periodLine(context, s),
                 freezeSummary: (f) => _freezeSummary(context, f),
                 canCancelFreeze: _canCancelFreeze,
-                onCancelFreeze: (freeze) =>
-                    _cancelFreeze(context, s, freeze),
+                onCancelFreeze: (freeze) => _cancelFreeze(context, s, freeze),
                 showPause: _canPause(s),
                 onPause: () {
                   Navigator.push<bool>(
@@ -356,8 +349,7 @@ class _SubscriptionHistoryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final borderColor =
-        isDark ? AppColors.greyText : AppColors.buttonBorder;
+    final borderColor = isDark ? AppColors.greyText : AppColors.buttonBorder;
 
     return Container(
       width: double.infinity,
@@ -388,11 +380,11 @@ class _SubscriptionHistoryCard extends StatelessWidget {
                 child: AppText(
                   _timelineLabel(context),
                   style: (ctx) => AppTextStyles.bodyTextSmall(ctx).copyWith(
-                        color: _toneForeground(context),
-                        fontWeight: FontWeight.w600,
-                        fontSize: 11,
-                        height: 1.2,
-                      ),
+                    color: _toneForeground(context),
+                    fontWeight: FontWeight.w600,
+                    fontSize: 11,
+                    height: 1.2,
+                  ),
                 ),
               ),
               if (isPrimaryOnOtherTab)
@@ -408,11 +400,11 @@ class _SubscriptionHistoryCard extends StatelessWidget {
                   child: AppText(
                     context.l10n.currentPlan,
                     style: (ctx) => AppTextStyles.bodyTextSmall(ctx).copyWith(
-                          color: AppColors.primary,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 11,
-                          height: 1.2,
-                        ),
+                      color: AppColors.primary,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 11,
+                      height: 1.2,
+                    ),
                   ),
                 ),
               if (subscription.isTransferable)
@@ -465,25 +457,22 @@ class _SubscriptionHistoryCard extends StatelessWidget {
           AppText(
             planTitle,
             style: (ctx) => AppTextStyles.experienceButton(ctx).copyWith(
-                  color: isDark ? AppColors.lightText : AppColors.darkText,
-                ),
+              color: isDark ? AppColors.lightText : AppColors.darkText,
+            ),
             maxLines: 4,
           ),
           if (entitlementLine.isNotEmpty) ...[
             SizedBox(height: AppSpacing.sm),
             AppText(
               entitlementLine,
-              style: (ctx) => AppTextStyles.bodyTextSmall(ctx).copyWith(
-                    color: AppColors.lightGrey,
-                  ),
+              style: (ctx) => AppTextStyles.bodyTextSmall(
+                ctx,
+              ).copyWith(color: AppColors.lightGrey),
               maxLines: 3,
             ),
           ],
           SizedBox(height: AppSpacing.md),
-          Divider(
-            height: 1,
-            color: borderColor,
-          ),
+          Divider(height: 1, color: borderColor),
           SizedBox(height: AppSpacing.md),
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -494,21 +483,19 @@ class _SubscriptionHistoryCard extends StatelessWidget {
                   children: [
                     AppText(
                       context.l10n.totalPaid,
-                      style: (ctx) =>
-                          AppTextStyles.bodyTextSmall(ctx).copyWith(
-                            color: AppColors.lightGrey,
-                          ),
+                      style: (ctx) => AppTextStyles.bodyTextSmall(
+                        ctx,
+                      ).copyWith(color: AppColors.lightGrey),
                     ),
                     SizedBox(height: AppSpacing.xi),
                     AppText(
                       priceLine,
-                      style: (ctx) =>
-                          AppTextStyles.bodyText(ctx).copyWith(
-                            fontWeight: FontWeight.w600,
-                            color: isDark
-                                ? AppColors.lightText
-                                : AppColors.darkText,
-                          ),
+                      style: (ctx) => AppTextStyles.bodyText(ctx).copyWith(
+                        fontWeight: FontWeight.w600,
+                        color: isDark
+                            ? AppColors.lightText
+                            : AppColors.darkText,
+                      ),
                       maxLines: 2,
                     ),
                   ],
@@ -520,21 +507,19 @@ class _SubscriptionHistoryCard extends StatelessWidget {
                   children: [
                     AppText(
                       context.l10n.classesUsed,
-                      style: (ctx) =>
-                          AppTextStyles.bodyTextSmall(ctx).copyWith(
-                            color: AppColors.lightGrey,
-                          ),
+                      style: (ctx) => AppTextStyles.bodyTextSmall(
+                        ctx,
+                      ).copyWith(color: AppColors.lightGrey),
                     ),
                     SizedBox(height: AppSpacing.xi),
                     AppText(
                       sessionsLine,
-                      style: (ctx) =>
-                          AppTextStyles.bodyText(ctx).copyWith(
-                            fontWeight: FontWeight.w600,
-                            color: isDark
-                                ? AppColors.lightText
-                                : AppColors.darkText,
-                          ),
+                      style: (ctx) => AppTextStyles.bodyText(ctx).copyWith(
+                        fontWeight: FontWeight.w600,
+                        color: isDark
+                            ? AppColors.lightText
+                            : AppColors.darkText,
+                      ),
                       maxLines: 3,
                     ),
                   ],
@@ -555,10 +540,9 @@ class _SubscriptionHistoryCard extends StatelessWidget {
               Expanded(
                 child: AppText(
                   periodLine,
-                  style: (ctx) => AppTextStyles.bodyTextSmall(ctx).copyWith(
-                        color: AppColors.lightGrey,
-                        height: 1.35,
-                      ),
+                  style: (ctx) => AppTextStyles.bodyTextSmall(
+                    ctx,
+                  ).copyWith(color: AppColors.lightGrey, height: 1.35),
                   maxLines: 4,
                 ),
               ),
@@ -571,12 +555,10 @@ class _SubscriptionHistoryCard extends StatelessWidget {
             AppText(
               context.l10n.pauseHistory,
               style: (ctx) => AppTextStyles.bodyText(ctx).copyWith(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 13,
-                    color: isDark
-                        ? AppColors.lightText
-                        : AppColors.darkText,
-                  ),
+                fontWeight: FontWeight.w600,
+                fontSize: 13,
+                color: isDark ? AppColors.lightText : AppColors.darkText,
+              ),
             ),
             SizedBox(height: AppSpacing.sm),
             ...subscription.freezes.map((f) {
@@ -659,8 +641,9 @@ class _SubscriptionHistoryCard extends StatelessWidget {
               child: OutlinedButton(
                 onPressed: onPause,
                 style: OutlinedButton.styleFrom(
-                  foregroundColor:
-                      isDark ? AppColors.lightText : AppColors.darkText,
+                  foregroundColor: isDark
+                      ? AppColors.lightText
+                      : AppColors.darkText,
                   side: BorderSide(color: borderColor),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(AppRadius.md),

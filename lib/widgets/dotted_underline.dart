@@ -34,7 +34,7 @@ class DashedUnderlinePainter extends CustomPainter {
 
     final path = Path();
 
-    final r =  top== false? 0.0: radius;
+    final r = top == false ? 0.0 : radius;
     final w = size.width;
     final h = size.height;
 

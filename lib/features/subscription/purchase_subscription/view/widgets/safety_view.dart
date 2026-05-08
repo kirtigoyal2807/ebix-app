@@ -41,7 +41,9 @@ class _SafetyViewState extends State<SafetyView> {
     _dateController = TextEditingController(text: s.declarationDate);
     _legalScrollController = ScrollController();
     _legalScrollController.addListener(_onLegalScroll);
-    WidgetsBinding.instance.addPostFrameCallback((_) => _maybeMarkShortLegalContentRead());
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) => _maybeMarkShortLegalContentRead(),
+    );
   }
 
   @override
@@ -152,99 +154,103 @@ class _SafetyViewState extends State<SafetyView> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                  AppText(
-                    l10n.safetyConsent,
-                    style: (style) => AppTextStyles.heading1(context),
-                  ),
-                  const SizedBox(height: 4),
-                  AppText(
-                    l10n.pleaseReviewTerms,
-                    style: (context) => AppTextStyles.bodyText(context),
-                  ),
-                  const SizedBox(height: AppSpacing.lg),
+                    AppText(
+                      l10n.safetyConsent,
+                      style: (style) => AppTextStyles.heading1(context),
+                    ),
+                    const SizedBox(height: 4),
+                    AppText(
+                      l10n.pleaseReviewTerms,
+                      style: (context) => AppTextStyles.bodyText(context),
+                    ),
+                    const SizedBox(height: AppSpacing.lg),
 
-                  SizedBox(
-                    height: size.height * 0.4,
-                    child: Container(
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        color: isDark
-                            ? AppColors.homeBackground
-                            : AppColors.whiteColor,
-                        borderRadius: BorderRadius.circular(16),
-                        border: Border.all(
+                    SizedBox(
+                      height: size.height * 0.4,
+                      child: Container(
+                        width: double.infinity,
+                        decoration: BoxDecoration(
                           color: isDark
-                              ? AppColors.greyText
-                              : AppColors.buttonBorder,
-                        ),
-                      ),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(12),
-                        child: ScrollbarTheme(
-                          data: ScrollbarThemeData(
-                            thumbColor: WidgetStateProperty.all(
-                              isDark ? AppColors.languageIconDark : AppColors.languageIcon,
-                            ),
-                            trackColor: WidgetStateProperty.all(
-                              isDark ? AppColors.greyText : AppColors.buttonBorder,
-                            ),
-                            trackVisibility: WidgetStateProperty.all(true),
-                            thickness: WidgetStateProperty.all(4),
-                            radius: const Radius.circular(16),
+                              ? AppColors.homeBackground
+                              : AppColors.whiteColor,
+                          borderRadius: BorderRadius.circular(16),
+                          border: Border.all(
+                            color: isDark
+                                ? AppColors.greyText
+                                : AppColors.buttonBorder,
                           ),
-                          child: Scrollbar(
-                            thumbVisibility: true,
-                            controller: _legalScrollController,
-                            thickness: 4,
-                            radius: const Radius.circular(16),
-                            child: NotificationListener<ScrollNotification>(
-                              onNotification: (ScrollNotification n) {
-                                if (n.metrics.axis != Axis.vertical) {
+                        ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(12),
+                          child: ScrollbarTheme(
+                            data: ScrollbarThemeData(
+                              thumbColor: WidgetStateProperty.all(
+                                isDark
+                                    ? AppColors.languageIconDark
+                                    : AppColors.languageIcon,
+                              ),
+                              trackColor: WidgetStateProperty.all(
+                                isDark
+                                    ? AppColors.greyText
+                                    : AppColors.buttonBorder,
+                              ),
+                              trackVisibility: WidgetStateProperty.all(true),
+                              thickness: WidgetStateProperty.all(4),
+                              radius: const Radius.circular(16),
+                            ),
+                            child: Scrollbar(
+                              thumbVisibility: true,
+                              controller: _legalScrollController,
+                              thickness: 4,
+                              radius: const Radius.circular(16),
+                              child: NotificationListener<ScrollNotification>(
+                                onNotification: (ScrollNotification n) {
+                                  if (n.metrics.axis != Axis.vertical) {
+                                    return false;
+                                  }
+                                  _syncLegalReadProgress();
                                   return false;
-                                }
-                                _syncLegalReadProgress();
-                                return false;
-                              },
-                              child: SingleChildScrollView(
-                                controller: _legalScrollController,
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    vertical: AppSpacing.md,
-                                    horizontal: AppSpacing.md,
-                                  ),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      AppText(
-                                        l10n.subscriptionAgreement,
-                                        style: (style) =>
-                                            AppTextStyles
-                                                .helpAndSupportItemLabel(
-                                              context,
-                                            ).copyWith(
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.w500,
-                                              height: 1.5,
-                                            ),
-                                        maxLines: 4,
-                                      ),
-                                      const SizedBox(height: AppSpacing.md),
-                                      Text(
-                                        l10n.safetyText,
-                                        style: AppTextStyles
-                                            .helpAndSupportItemLabel(
-                                          context,
-                                        ).copyWith(
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w400,
-                                          color: isDark
-                                              ? AppColors.darkGreyText
-                                              : AppColors.greyText,
-                                          height: 1.5,
+                                },
+                                child: SingleChildScrollView(
+                                  controller: _legalScrollController,
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                      vertical: AppSpacing.md,
+                                      horizontal: AppSpacing.md,
+                                    ),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        AppText(
+                                          l10n.subscriptionAgreement,
+                                          style: (style) =>
+                                              AppTextStyles.helpAndSupportItemLabel(
+                                                context,
+                                              ).copyWith(
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.w500,
+                                                height: 1.5,
+                                              ),
+                                          maxLines: 4,
                                         ),
-                                      ),
-                                    ],
+                                        const SizedBox(height: AppSpacing.md),
+                                        Text(
+                                          l10n.safetyText,
+                                          style:
+                                              AppTextStyles.helpAndSupportItemLabel(
+                                                context,
+                                              ).copyWith(
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.w400,
+                                                color: isDark
+                                                    ? AppColors.darkGreyText
+                                                    : AppColors.greyText,
+                                                height: 1.5,
+                                              ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),
@@ -253,73 +259,74 @@ class _SafetyViewState extends State<SafetyView> {
                         ),
                       ),
                     ),
-                  ),
 
-                  if (!_legalTextScrolledToEnd) ...[
-                    const SizedBox(height: AppSpacing.sm),
-                    AppText(
-                      l10n.scrollLegalContentToContinue,
-                      style: (c) => AppTextStyles.captionText(c).copyWith(
-                        color: isDark
-                            ? AppColors.languageTextDark
-                            : AppColors.languageIcon,
-                        fontWeight: FontWeight.w500,
+                    if (!_legalTextScrolledToEnd) ...[
+                      const SizedBox(height: AppSpacing.sm),
+                      AppText(
+                        l10n.scrollLegalContentToContinue,
+                        style: (c) => AppTextStyles.captionText(c).copyWith(
+                          color: isDark
+                              ? AppColors.languageTextDark
+                              : AppColors.languageIcon,
+                          fontWeight: FontWeight.w500,
+                        ),
+                        maxLines: 3,
                       ),
-                      maxLines: 3,
+                    ],
+                    const SizedBox(height: AppSpacing.lg),
+
+                    AppTextField(
+                      label: l10n.name,
+                      hint: l10n.name,
+                      controller: _nameController,
+                      errorText: _nameError,
+                      keyboardType: TextInputType.name,
+                      onChanged: (_) {
+                        cubit.updateDeclarationName(_nameController.text);
+                        setState(() => _nameError = null);
+                      },
                     ),
-                  ],
-                  const SizedBox(height: AppSpacing.lg),
+                    const SizedBox(height: AppSpacing.md),
 
-                  AppTextField(
-                    label: l10n.name,
-                    hint: l10n.name,
-                    controller: _nameController,
-                    errorText: _nameError,
-                    keyboardType: TextInputType.name,
-                    onChanged: (_) {
-                      cubit.updateDeclarationName(_nameController.text);
-                      setState(() => _nameError = null);
-                    },
-                  ),
-                  const SizedBox(height: AppSpacing.md),
+                    AppTextField(
+                      label: l10n.signature,
+                      hint: l10n.signature,
+                      controller: _signatureController,
+                      errorText: _signatureError,
+                      onChanged: (_) {
+                        cubit.updateDeclarationSignature(
+                          _signatureController.text,
+                        );
+                        setState(() => _signatureError = null);
+                      },
+                    ),
+                    const SizedBox(height: AppSpacing.md),
 
-                  AppTextField(
-                    label: l10n.signature,
-                    hint: l10n.signature,
-                    controller: _signatureController,
-                    errorText: _signatureError,
-                    onChanged: (_) {
-                      cubit.updateDeclarationSignature(
-                        _signatureController.text,
-                      );
-                      setState(() => _signatureError = null);
-                    },
-                  ),
-                  const SizedBox(height: AppSpacing.md),
-
-                  SubscriptionCalendarDateField(
-                    label: l10n.date,
-                    hint: l10n.date,
-                    controller: _dateController,
-                    onDateSelected: (d) {
-                      cubit.updateDeclarationDate(d);
-                      setState(() => _dateError = null);
-                    },
-                  ),
-                  if (_dateError != null) ...[
-                    const SizedBox(height: 6),
-                    Text(
-                      _dateError!,
-                      style: AppTextStyles.bodyText(context).copyWith(
-                        fontSize: 12,
-                        color: isDark ? AppColors.redDark : AppColors.redLight,
+                    SubscriptionCalendarDateField(
+                      label: l10n.date,
+                      hint: l10n.date,
+                      controller: _dateController,
+                      onDateSelected: (d) {
+                        cubit.updateDeclarationDate(d);
+                        setState(() => _dateError = null);
+                      },
+                    ),
+                    if (_dateError != null) ...[
+                      const SizedBox(height: 6),
+                      Text(
+                        _dateError!,
+                        style: AppTextStyles.bodyText(context).copyWith(
+                          fontSize: 12,
+                          color: isDark
+                              ? AppColors.redDark
+                              : AppColors.redLight,
+                        ),
                       ),
-                    ),
+                    ],
+                    const SizedBox(height: AppSpacing.lg),
                   ],
-                  const SizedBox(height: AppSpacing.lg),
-                ],
+                ),
               ),
-            ),
             ),
           ),
 

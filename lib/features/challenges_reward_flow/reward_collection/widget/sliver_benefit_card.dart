@@ -16,14 +16,15 @@ class SliverBenefitCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
-      margin: EdgeInsets.symmetric(
-        horizontal: AppSpacing.lg,
-      ),
+      margin: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
       padding: EdgeInsets.all(AppSpacing.lmd),
       decoration: BoxDecoration(
-        color:isDark ? AppColors.homeBackground: AppColors.whiteColor,
+        color: isDark ? AppColors.homeBackground : AppColors.whiteColor,
         borderRadius: BorderRadius.circular(AppRadius.md),
-        border: Border.all(color: isDark ? AppColors.greyText:AppColors.buttonBorder, width: 1),
+        border: Border.all(
+          color: isDark ? AppColors.greyText : AppColors.buttonBorder,
+          width: 1,
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -31,7 +32,7 @@ class SliverBenefitCard extends StatelessWidget {
           _buildRow(
             isDark: isDark,
             title: context.l10n.featurePriorityBooking,
-            subtitle:context.l10n.featurePriorityBookingDesc,
+            subtitle: context.l10n.featurePriorityBookingDesc,
           ),
           SizedBox(height: AppSpacing.base),
           _buildRow(
@@ -43,7 +44,7 @@ class SliverBenefitCard extends StatelessWidget {
           _buildRow(
             isDark: isDark,
             title: context.l10n.featureGuestPass,
-            subtitle:context.l10n.featureGuestPassDesc,
+            subtitle: context.l10n.featureGuestPassDesc,
           ),
           SizedBox(height: AppSpacing.md),
           Container(
@@ -87,7 +88,7 @@ class SliverBenefitCard extends StatelessWidget {
         Icon(
           Icons.check_circle_outline_rounded,
           size: 24,
-          color: isDark ? AppColors.successBorderDark: AppColors.successColor,
+          color: isDark ? AppColors.successBorderDark : AppColors.successColor,
         ),
         SizedBox(width: 10),
         Column(

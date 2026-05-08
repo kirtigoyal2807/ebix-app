@@ -62,13 +62,13 @@ class GiftToggleCard extends StatelessWidget {
             child: CupertinoSwitch(
               value: isGift,
               onChanged: onToggle,
-              activeColor:
-                  isDark ? AppColors.switchInactiveDark : AppColors.primary,
+              activeColor: isDark
+                  ? AppColors.switchInactiveDark
+                  : AppColors.primary,
               trackColor: isDark
                   ? AppColors.switchInactiveDark
                   : AppColors.buttonBorder,
-              thumbColor:
-                  isDark ? AppColors.primary : AppColors.whiteColor,
+              thumbColor: isDark ? AppColors.primary : AppColors.whiteColor,
             ),
           ),
         ],

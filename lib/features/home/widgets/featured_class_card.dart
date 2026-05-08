@@ -28,34 +28,36 @@ class FeaturedClassCard extends StatelessWidget {
       margin: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
       decoration: BoxDecoration(
         color: isDark ? AppColors.surfaceDark : Colors.white,
-        borderRadius: BorderRadius.circular(AppRadius.lg),
+        borderRadius: BorderRadius.circular(AppRadius.md),
         border: Border.all(
           color: isDark ? AppColors.greyText : AppColors.buttonBorder,
         ),
-        boxShadow: [
-          AppShadows.lightShadow,
-          AppShadows.mediumShadow,
-          AppShadows.mediumHeavyShadow,
-          BoxShadow(
-            color: AppColors.shadowColor.withValues(alpha: 0.01),
-            offset: const Offset(0, 64),
-            blurRadius: 25,
-            spreadRadius: 0,
-          ),
-          BoxShadow(
-            color: AppColors.shadowColor.withValues(alpha: 0.00),
-            offset: const Offset(0, 99),
-            blurRadius: 28,
-            spreadRadius: 0,
-          ),
-        ],
+        boxShadow: isDark
+            ? null
+            : [
+                AppShadows.lightShadow,
+                AppShadows.mediumShadow,
+                AppShadows.mediumHeavyShadow,
+                BoxShadow(
+                  color: AppColors.shadowColor.withValues(alpha: 0.01),
+                  offset: const Offset(0, 64),
+                  blurRadius: 25,
+                  spreadRadius: 0,
+                ),
+                BoxShadow(
+                  color: AppColors.shadowColor.withValues(alpha: 0.00),
+                  offset: const Offset(0, 99),
+                  blurRadius: 28,
+                  spreadRadius: 0,
+                ),
+              ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           ClipRRect(
             borderRadius: const BorderRadius.vertical(
-              top: Radius.circular(AppRadius.lg),
+              top: Radius.circular(AppRadius.md),
             ),
             child: SizedBox(
               width: double.infinity,
@@ -149,9 +151,7 @@ class FeaturedClassCard extends StatelessWidget {
                     if (classId.isEmpty) return;
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (_) => ClassDetailView(
-                          classId: classId,
-                        ),
+                        builder: (_) => ClassDetailView(classId: classId),
                       ),
                     );
                   },

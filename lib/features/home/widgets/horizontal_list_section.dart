@@ -5,6 +5,7 @@ import 'package:pilates_app/config/theme/app_radius.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/core/localization/localization_extension.dart';
+import 'package:pilates_app/features/booking/data/models/trainer_resource.dart';
 import 'package:pilates_app/features/home/data/models/home_response.dart';
 import 'package:pilates_app/widgets/app_text.dart';
 
@@ -37,7 +38,10 @@ class ClassTypesSection extends StatelessWidget {
             itemBuilder: (BuildContext context, int index) {
               final classType = classTypes[index];
               return GestureDetector(
-                onTap: () => context.read<HomeCubit>().setTab(1),
+                onTap: () => context.read<HomeCubit>().setTab(
+                  1,
+                  classCategory: (classType.name ?? '').trim(),
+                ),
                 child: SizedBox(
                   width: 140,
                   child: Column(
@@ -95,6 +99,18 @@ class TopTrainersSection extends StatelessWidget {
 
   final List<HomeTrainer> trainers;
 
+  TrainerResource _toTrainerResource(HomeTrainer trainer) {
+    return TrainerResource(
+      id: (trainer.id ?? '').trim(),
+      displayName: trainer.displayName ?? '',
+      specialties: trainer.specialties,
+      certifications: const [],
+      branches: const [],
+      avatarUrl: trainer.imageUrl,
+      avgRating: trainer.avgRating,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
@@ -147,8 +163,8 @@ class TopTrainersSection extends StatelessWidget {
                                 : AppColors.whiteColor,
                             backgroundImage:
                                 (trainer.imageUrl ?? '').trim().isEmpty
-                                    ? null
-                                    : NetworkImage(trainer.imageUrl!),
+                                ? null
+                                : NetworkImage(trainer.imageUrl!),
                             child: (trainer.imageUrl ?? '').trim().isEmpty
                                 ? const Icon(Icons.person)
                                 : null,
@@ -190,7 +206,9 @@ class TopTrainersSection extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const TrainerDetailsView(),
+                          builder: (context) => TrainerDetailsView(
+                            trainer: _toTrainerResource(trainer),
+                          ),
                         ),
                       );
                     },

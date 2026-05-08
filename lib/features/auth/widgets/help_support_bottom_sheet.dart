@@ -90,7 +90,7 @@ class HelpSupportBottomSheet extends StatelessWidget {
                         const SizedBox(height: AppSpacing.md),
 
                         _HelpOption(
-                           svgImage: "assets/images/svg/explore/ic_phone.svg",
+                          svgImage: "assets/images/svg/explore/ic_phone.svg",
                           icon: Icons.phone_outlined,
                           title: context.l10n.phoneSupport,
                           subtitle: context.l10n.phoneSupportDesc,
@@ -131,12 +131,7 @@ Future<void> _openSupport(
   final ok = await launch();
   if (ok) return;
   messenger?.showSnackBar(
-    SnackBar(
-      content: AppText(
-        message,
-        style: AppTextStyles.body,
-      ),
-    ),
+    SnackBar(content: AppText(message, style: AppTextStyles.body)),
   );
 }
 
@@ -152,7 +147,7 @@ class _HelpOption extends StatelessWidget {
     required this.title,
     required this.subtitle,
     required this.onTap,
-    this.svgImage
+    this.svgImage,
   });
 
   @override
@@ -166,18 +161,19 @@ class _HelpOption extends StatelessWidget {
         children: [
           Padding(
             padding: const EdgeInsets.only(top: 2),
-            child:
-            svgImage != null ?
-                SvgPicture.asset(svgImage??"", color: isDark
-                    ? AppColors.languageIconDark
-                    : AppColors.languageIcon)
-                :
-            Icon(
-              icon,
-              color: isDark
-                  ? AppColors.languageIconDark
-                  : AppColors.languageIcon, // Brownish color from theme
-            ),
+            child: svgImage != null
+                ? SvgPicture.asset(
+                    svgImage ?? "",
+                    color: isDark
+                        ? AppColors.languageIconDark
+                        : AppColors.languageIcon,
+                  )
+                : Icon(
+                    icon,
+                    color: isDark
+                        ? AppColors.languageIconDark
+                        : AppColors.languageIcon, // Brownish color from theme
+                  ),
           ),
           const SizedBox(width: AppSpacing.lg),
           Expanded(

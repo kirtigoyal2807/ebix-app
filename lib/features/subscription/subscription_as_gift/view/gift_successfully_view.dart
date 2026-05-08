@@ -67,9 +67,12 @@ class GiftSuccessfullyView extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-
-
-            Lottie.asset("assets/json/gift.json",height: 120,width: 120,repeat: false),
+            Lottie.asset(
+              "assets/json/gift.json",
+              height: 120,
+              width: 120,
+              repeat: false,
+            ),
 
             SizedBox(height: AppSpacing.md),
             AppText(
@@ -120,7 +123,9 @@ class GiftSuccessfullyView extends StatelessWidget {
                     width: double.infinity,
                     child: CustomPaint(
                       painter: DashedUnderlinePainter(
-                        color:  isDark ? AppColors.greyText : AppColors.buttonBorder,
+                        color: isDark
+                            ? AppColors.greyText
+                            : AppColors.buttonBorder,
                         dashWidth: 3,
                         dashSpace: 3,
                       ),
@@ -134,7 +139,9 @@ class GiftSuccessfullyView extends StatelessWidget {
                     width: double.infinity,
                     child: CustomPaint(
                       painter: DashedUnderlinePainter(
-                        color:  isDark ? AppColors.greyText : AppColors.buttonBorder,
+                        color: isDark
+                            ? AppColors.greyText
+                            : AppColors.buttonBorder,
                         dashWidth: 3,
                         dashSpace: 3,
                       ),
@@ -151,7 +158,9 @@ class GiftSuccessfullyView extends StatelessWidget {
                     width: double.infinity,
                     child: CustomPaint(
                       painter: DashedUnderlinePainter(
-                        color:  isDark ? AppColors.greyText : AppColors.buttonBorder,
+                        color: isDark
+                            ? AppColors.greyText
+                            : AppColors.buttonBorder,
                         dashWidth: 3,
                         dashSpace: 3,
                       ),
@@ -179,7 +188,7 @@ class GiftSuccessfullyView extends StatelessWidget {
                     size: 16,
                     color: isDark
                         ? AppColors.successBorderDark
-                        : Color(0xff1C1B1F),
+                        : AppColors.GreyColor,
                     fontWeight: FontWeight.bold,
                   ),
                   SizedBox(width: AppSpacing.sm),
@@ -190,7 +199,7 @@ class GiftSuccessfullyView extends StatelessWidget {
                           AppTextStyles.bodyText(context).copyWith(
                             color: isDark
                                 ? AppColors.lightGreyColor
-                                : AppColors.greyText,
+                                : AppColors.GreyColor,
                             fontWeight: FontWeight.w600,
                             height: 1.55,
                             fontSize: 12,
@@ -206,8 +215,10 @@ class GiftSuccessfullyView extends StatelessWidget {
               label: l10n.startExploringClasses,
               onPressed: () {
                 homeTabIntent.value = 0;
-                Navigator.of(context, rootNavigator: true)
-                    .popUntil((route) => route.isFirst);
+                Navigator.of(
+                  context,
+                  rootNavigator: true,
+                ).popUntil((route) => route.isFirst);
               },
               variant: AppButtonVariant.primary,
             ),

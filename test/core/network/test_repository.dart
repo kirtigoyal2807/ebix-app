@@ -7,8 +7,11 @@ class TestRepository extends BaseRepository {
 }
 
 Dio createTestDio({
-  required void Function(RequestOptions options, RequestInterceptorHandler handler)
-      onRequest,
+  required void Function(
+    RequestOptions options,
+    RequestInterceptorHandler handler,
+  )
+  onRequest,
 }) {
   final dio = Dio(
     BaseOptions(
@@ -17,10 +20,6 @@ Dio createTestDio({
           status != null && status >= 200 && status < 300,
     ),
   );
-  dio.interceptors.add(
-    InterceptorsWrapper(
-      onRequest: onRequest,
-    ),
-  );
+  dio.interceptors.add(InterceptorsWrapper(onRequest: onRequest));
   return dio;
 }

@@ -23,9 +23,11 @@ class SubscriptionProgress extends StatelessWidget {
       child: LinearProgressIndicator(
         value: progress,
         minHeight: 6,
-        backgroundColor: isDark ? AppColors.primaryDarkButton : AppColors.seekBarLight,
+        backgroundColor: isDark
+            ? AppColors.primaryDarkButton
+            : AppColors.seekBarLight,
         valueColor: AlwaysStoppedAnimation<Color>(
-          isDark ?AppColors.languageIconDark:AppColors.languageTextDark,
+          isDark ? AppColors.languageIconDark : AppColors.languageTextDark,
         ),
       ),
     );

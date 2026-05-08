@@ -146,7 +146,7 @@ class MembershipCard extends StatelessWidget {
                             style: ElevatedButton.styleFrom(
                               backgroundColor: isDark
                                   ? AppColors.seekBarLight
-                                  : AppColors.whiteColor,
+                                  : AppColors.lightGreyText,
                               // foregroundColor: const Color(0xFF65422C),
                               elevation: 0,
                               shape: RoundedRectangleBorder(

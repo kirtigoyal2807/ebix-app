@@ -21,11 +21,7 @@ import 'book_class_confirm_view.dart';
 import 'join_waitlist_view.dart';
 
 class ClassDetailView extends StatelessWidget {
-  const ClassDetailView({
-    super.key,
-    required this.classId,
-    this.preloadedSlot,
-  });
+  const ClassDetailView({super.key, required this.classId, this.preloadedSlot});
 
   /// Class type id for `GET /classes/{classId}`.
   final String classId;
@@ -73,8 +69,7 @@ class _ClassDetailBody extends StatelessWidget {
           if (state.hasError && state.slot == null) {
             return _ErrorBody(
               message: state.errorMessage ?? context.l10n.somethingWentWrong,
-              onRetry: () =>
-                  context.read<ClassDetailCubit>().loadClassDetail(),
+              onRetry: () => context.read<ClassDetailCubit>().loadClassDetail(),
             );
           }
 
@@ -130,14 +125,58 @@ class _ClassDetailBody extends StatelessWidget {
                     const SizedBox(height: AppSpacing.lg),
                     ClassReviewsSection(
                       embeddedRecentReviews: slot.recentReviews,
-                      reviewableType:
-                          slot.recentReviews == null ? 'class' : null,
-                      reviewableId:
-                          slot.recentReviews == null ? slot.classId : null,
+                      reviewableType: slot.recentReviews == null
+                          ? 'class'
+                          : null,
+                      reviewableId: slot.recentReviews == null
+                          ? slot.classId
+                          : null,
                       summaryAvgRating: slot.averageRatingDisplayLabel,
                       summaryReviewsCount: slot.reviewsCount,
                     ),
                   ],
+                ),
+              ),
+
+              Positioned(
+                bottom: 0,
+                left: 0,
+                right: 0,
+                child: Container(
+                  height: size.height * 0.04 + 48,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.bottomCenter, // start from bottom
+                      end: Alignment.topCenter, // fade to top
+                      colors: isDark
+                          ? [
+                              AppColors.darkShadow,
+                              AppColors.darkShadow.withValues(alpha: 0),
+                            ]
+                          : [Colors.white, Colors.white.withValues(alpha: 0)],
+                    ),
+                  ),
+                ),
+              ),
+
+              Positioned(
+                bottom: 0,
+                left: 0,
+                right: 0,
+                child: Container(
+                  height: size.height * 0.04 + 48,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.bottomCenter, // start from bottom
+                      end: Alignment.topCenter, // fade to top
+                      colors: isDark
+                          ? [
+                              AppColors.darkShadow,
+                              AppColors.darkShadow.withValues(alpha: 0),
+                            ]
+                          : [Colors.white, Colors.white.withValues(alpha: 0)],
+                    ),
+                  ),
                 ),
               ),
 
@@ -185,8 +224,8 @@ class _ClassDetailBody extends StatelessWidget {
                       !canBookOrWaitlist
                           ? context.l10n.noUpcomingClasses
                           : slot.hasOpenSpots
-                              ? context.l10n.bookThisClass
-                              : context.l10n.joinWailList,
+                          ? context.l10n.bookThisClass
+                          : context.l10n.joinWailList,
                       style: (ctx) => AppTextStyles.button(ctx).copyWith(
                         fontSize: size.width * 0.04 > 16
                             ? 16

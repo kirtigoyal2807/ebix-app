@@ -27,6 +27,9 @@ void main() {
     );
     expect(roundTrip.membershipPlanName, u.membershipPlanName);
     expect(roundTrip.membershipTotalSessions, u.membershipTotalSessions);
-    expect(roundTrip.membershipSessionsRemaining, u.membershipSessionsRemaining);
+    expect(
+      roundTrip.membershipSessionsRemaining,
+      u.membershipSessionsRemaining,
+    );
   });
 }

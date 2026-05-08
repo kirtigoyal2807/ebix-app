@@ -31,10 +31,10 @@ class ClassAboutSection extends StatelessWidget {
         AppText(
           context.l10n.aboutThisClass,
           style: (ctx) => AppTextStyles.heading1(ctx).copyWith(
-                color: isDark ? AppColors.lightText : AppColors.darkText,
-                fontSize: size.width * 0.055 > 18 ? 18 : size.width * 0.055,
-                fontWeight: FontWeight.w400,
-              ),
+            color: isDark ? AppColors.lightText : AppColors.darkText,
+            fontSize: size.width * 0.055 > 18 ? 18 : size.width * 0.055,
+            fontWeight: FontWeight.w400,
+          ),
         ),
         const SizedBox(height: AppSpacing.sm),
         Html(
@@ -48,24 +48,12 @@ class ClassAboutSection extends StatelessWidget {
               color: baseBody.color,
               fontFamily: baseBody.fontFamily,
             ),
-            'p': Style(
-              margin: Margins.only(bottom: 8),
-            ),
-            'h1': Style(
-              margin: Margins.only(top: 8, bottom: 8),
-            ),
-            'h2': Style(
-              margin: Margins.only(top: 8, bottom: 8),
-            ),
-            'h3': Style(
-              margin: Margins.only(top: 8, bottom: 8),
-            ),
-            'ul': Style(
-              margin: Margins.only(bottom: 8),
-            ),
-            'ol': Style(
-              margin: Margins.only(bottom: 8),
-            ),
+            'p': Style(margin: Margins.only(bottom: 8)),
+            'h1': Style(margin: Margins.only(top: 8, bottom: 8)),
+            'h2': Style(margin: Margins.only(top: 8, bottom: 8)),
+            'h3': Style(margin: Margins.only(top: 8, bottom: 8)),
+            'ul': Style(margin: Margins.only(bottom: 8)),
+            'ol': Style(margin: Margins.only(bottom: 8)),
           },
           onLinkTap: (url, attributes, element) async {
             if (url == null || url.isEmpty) return;

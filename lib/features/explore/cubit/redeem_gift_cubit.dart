@@ -53,16 +53,10 @@ class RedeemGiftCubit extends Cubit<RedeemGiftState> {
 
     switch (result) {
       case ApiSuccess():
-        emit(
-          state.copyWith(
-            isSubmitting: false,
-            successPending: true,
-          ),
-        );
+        emit(state.copyWith(isSubmitting: false, successPending: true));
       case ApiFailure(:final exception):
         final fields = _mapFieldErrors(exception);
-        final fieldMsg =
-            fields['redemptioncode'] ?? fields['redemption_code'];
+        final fieldMsg = fields['redemptioncode'] ?? fields['redemption_code'];
         final message = (fieldMsg ?? exception.message ?? '').trim();
         emit(
           state.copyWith(

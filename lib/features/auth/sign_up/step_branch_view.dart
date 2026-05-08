@@ -126,9 +126,9 @@ class _SignUpBranchViewState extends State<SignUpBranchView> {
   void _onFinish(BuildContext context) {
     final cubit = context.read<AuthCubit>();
     if (cubit.state.selectedSignUpBranchId == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(context.l10n.pleaseSelectBranch)),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(context.l10n.pleaseSelectBranch)));
       return;
     }
     cubit.submitSignUpHomeBranchAndFinish();
@@ -140,7 +140,8 @@ class _SignUpBranchViewState extends State<SignUpBranchView> {
 
     return BlocConsumer<AuthCubit, AuthState>(
       listenWhen: (previous, current) {
-        return previous.signUpHomeBranchStatus == SignUpHomeBranchStatus.loading &&
+        return previous.signUpHomeBranchStatus ==
+                SignUpHomeBranchStatus.loading &&
             current.signUpHomeBranchStatus == SignUpHomeBranchStatus.idle &&
             current.signUpHomeBranchErrorMessage.isNotEmpty &&
             current.signUpHomeBranchFieldErrors.isEmpty;
@@ -149,17 +150,20 @@ class _SignUpBranchViewState extends State<SignUpBranchView> {
         final text = state.signUpHomeBranchErrorMessage.trim().isEmpty
             ? context.l10n.loginErrorGeneric
             : state.signUpHomeBranchErrorMessage;
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(text)),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(text)));
       },
       builder: (context, state) {
         final branches = state.signUpBranches;
-        final loading = _awaitingPermission ||
+        final loading =
+            _awaitingPermission ||
             state.signUpBranchesLoadStatus == SignUpBranchesLoadStatus.loading;
-        final failure = state.signUpBranchesLoadStatus == SignUpBranchesLoadStatus.failure;
+        final failure =
+            state.signUpBranchesLoadStatus == SignUpBranchesLoadStatus.failure;
         final fe = state.signUpHomeBranchFieldErrors;
-        final saving = state.signUpHomeBranchStatus == SignUpHomeBranchStatus.loading;
+        final saving =
+            state.signUpHomeBranchStatus == SignUpHomeBranchStatus.loading;
 
         return AppScaffold(
           appBar: AppAppBar(
@@ -191,11 +195,12 @@ class _SignUpBranchViewState extends State<SignUpBranchView> {
                               children: [
                                 TextSpan(
                                   text: '${context.l10n.step} 5',
-                                  style: AppTextStyles.caption(context).copyWith(
-                                    color: isDark
-                                        ? AppColors.languageTextDark
-                                        : AppColors.languageIcon,
-                                  ),
+                                  style: AppTextStyles.caption(context)
+                                      .copyWith(
+                                        color: isDark
+                                            ? AppColors.languageTextDark
+                                            : AppColors.languageIcon,
+                                      ),
                                 ),
                                 TextSpan(
                                   text: ' ${context.l10n.offf} 5',
@@ -204,7 +209,7 @@ class _SignUpBranchViewState extends State<SignUpBranchView> {
                               ],
                             ),
                           ),
-                          const SizedBox(height: AppSpacing.xxl),
+                          const SizedBox(height: AppSpacing.xl),
                           SignUpHeader(
                             title: context.l10n.branchTitle,
                             subtitle: context.l10n.branchSubtitle,
@@ -214,7 +219,9 @@ class _SignUpBranchViewState extends State<SignUpBranchView> {
                           const SizedBox(height: AppSpacing.lg),
                           if (loading)
                             const Padding(
-                              padding: EdgeInsets.symmetric(vertical: AppSpacing.xxl),
+                              padding: EdgeInsets.symmetric(
+                                vertical: AppSpacing.xxl,
+                              ),
                               child: Center(child: CircularProgressIndicator()),
                             )
                           else if (failure)
@@ -227,17 +234,18 @@ class _SignUpBranchViewState extends State<SignUpBranchView> {
                                       : state.signUpBranchesErrorMessage,
                                   style: (context) =>
                                       AppTextStyles.body(context).copyWith(
-                                    color: isDark
-                                        ? AppColors.redDark
-                                        : AppColors.redLight,
-                                  ),
+                                        color: isDark
+                                            ? AppColors.redDark
+                                            : AppColors.redLight,
+                                      ),
                                 ),
                                 const SizedBox(height: AppSpacing.md),
                                 AppButton(
                                   key: const ValueKey('sign_up_branches_retry'),
                                   label: context.l10n.retry,
-                                  onPressed: () =>
-                                      context.read<AuthCubit>().loadSignUpBranches(),
+                                  onPressed: () => context
+                                      .read<AuthCubit>()
+                                      .loadSignUpBranches(),
                                 ),
                               ],
                             )
@@ -250,26 +258,26 @@ class _SignUpBranchViewState extends State<SignUpBranchView> {
                                 child: Column(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
-                                  
                                     const SizedBox(height: AppSpacing.md),
                                     AppText(
                                       context.l10n.noBranchesAvailable,
                                       style: (context) =>
                                           AppTextStyles.body(context).copyWith(
-                                        color: Theme.of(context).hintColor,
-                                      ),
+                                            color: Theme.of(context).hintColor,
+                                          ),
                                       textAlign: TextAlign.center,
                                     ),
                                   ],
                                 ),
                               ),
                             )
-                          else ..._branchTiles(
-                            context,
-                            branches,
-                            state.selectedSignUpBranchId,
-                            fe,
-                          ),
+                          else
+                            ..._branchTiles(
+                              context,
+                              branches,
+                              state.selectedSignUpBranchId,
+                              fe,
+                            ),
                           const SizedBox(height: AppSpacing.lg),
                         ],
                       ),
@@ -309,7 +317,10 @@ class _SignUpBranchViewState extends State<SignUpBranchView> {
       // Priority: calculate locally if we have both positions; otherwise fall
       // back to the server-provided label; otherwise show '-'.
       final String distance;
-      if (_userLat != null && _userLng != null && b.lat != null && b.lng != null) {
+      if (_userLat != null &&
+          _userLng != null &&
+          b.lat != null &&
+          b.lng != null) {
         final meters = Geolocator.distanceBetween(
           _userLat!,
           _userLng!,
@@ -351,9 +362,9 @@ class _SignUpBranchViewState extends State<SignUpBranchView> {
         Center(
           child: AppText(
             homeErr,
-            style: (c) => AppTextStyles.caption(c).copyWith(
-                  color: isDark ? AppColors.redDark : AppColors.redLight,
-                ),
+            style: (c) => AppTextStyles.caption(
+              c,
+            ).copyWith(color: isDark ? AppColors.redDark : AppColors.redLight),
             textAlign: TextAlign.center,
           ),
         ),
@@ -362,4 +373,3 @@ class _SignUpBranchViewState extends State<SignUpBranchView> {
     return out;
   }
 }
-

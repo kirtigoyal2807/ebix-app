@@ -75,18 +75,18 @@ class PauseSubscriptionView extends StatelessWidget {
               subscriptionId: subscriptionId,
               repository: context.read<SubscriptionsRepository>(),
               planStartDateLocal: _dateOnly(planStartsAt),
-              planExpiresAtLocal:
-                  planExpiresAt != null ? _dateOnly(planExpiresAt!) : null,
+              planExpiresAtLocal: planExpiresAt != null
+                  ? _dateOnly(planExpiresAt!)
+                  : null,
               maxFreezeDays: effectiveMaxFreezeDays,
             ),
             child: BlocBuilder<PauseSubscriptionCubit, PauseSubscriptionState>(
               builder: (context, state) {
                 final cubit = context.read<PauseSubscriptionCubit>();
-                final days =
-                    PauseSubscriptionCubit.inclusivePauseDays(
-                      state.startDate,
-                      state.endDate,
-                    );
+                final days = PauseSubscriptionCubit.inclusivePauseDays(
+                  state.startDate,
+                  state.endDate,
+                );
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -156,8 +156,11 @@ class PauseSubscriptionView extends StatelessWidget {
                     ),
                     SizedBox(height: AppSpacing.xi),
                     AppText(
-                      context.l10n.pauseMaxFreezeDaysHint(effectiveMaxFreezeDays),
-                      style: (context) => AppTextStyles.bodyText(context).copyWith(
+                      context.l10n.pauseMaxFreezeDaysHint(
+                        effectiveMaxFreezeDays,
+                      ),
+                      style: (context) =>
+                          AppTextStyles.bodyText(context).copyWith(
                             fontSize: 12,
                             color: AppColors.lightGrey,
                             height: 1.35,
@@ -379,8 +382,9 @@ class PauseSubscriptionView extends StatelessWidget {
                     if (state.submitError != null) ...[
                       AppText(
                         state.submitError!,
-                        style: (context) => AppTextStyles.bodyText(context)
-                            .copyWith(color: AppColors.redLight),
+                        style: (context) => AppTextStyles.bodyText(
+                          context,
+                        ).copyWith(color: AppColors.redLight),
                       ),
                       SizedBox(height: AppSpacing.md),
                     ],
@@ -438,8 +442,7 @@ class PauseSubscriptionView extends StatelessWidget {
 
     if (isStart) {
       final selected = state.startDate;
-      final initial =
-          _clampDay(selected ?? firstStart, firstStart, lastStart);
+      final initial = _clampDay(selected ?? firstStart, firstStart, lastStart);
       return GestureDetector(
         onTap: () async {
           final picked = await showDatePicker(
@@ -459,10 +462,10 @@ class PauseSubscriptionView extends StatelessWidget {
                 ? DateFormat.yMMMd(locale).format(selected)
                 : context.l10n.tapToSelectDate,
             style: (context) => AppTextStyles.textField(context).copyWith(
-                  color: selected != null
-                      ? (isDark ? AppColors.lightText : AppColors.darkText)
-                      : AppColors.lightGrey,
-                ),
+              color: selected != null
+                  ? (isDark ? AppColors.lightText : AppColors.darkText)
+                  : AppColors.lightGrey,
+            ),
           ),
         ),
       );
@@ -499,25 +502,22 @@ class PauseSubscriptionView extends StatelessWidget {
             !enabled
                 ? context.l10n.tapToSelectDate
                 : (state.endDate != null
-                    ? DateFormat.yMMMd(locale).format(state.endDate!)
-                    : context.l10n.tapToSelectDate),
+                      ? DateFormat.yMMMd(locale).format(state.endDate!)
+                      : context.l10n.tapToSelectDate),
             style: (context) => AppTextStyles.textField(context).copyWith(
-                  color: !enabled
-                      ? AppColors.lightGrey
-                      : (state.endDate != null
-                          ? (isDark ? AppColors.lightText : AppColors.darkText)
-                          : AppColors.lightGrey),
-                ),
+              color: !enabled
+                  ? AppColors.lightGrey
+                  : (state.endDate != null
+                        ? (isDark ? AppColors.lightText : AppColors.darkText)
+                        : AppColors.lightGrey),
+            ),
           ),
         ),
       ),
     );
   }
 
-  Widget _dateFieldShell({
-    required bool isDark,
-    required Widget child,
-  }) {
+  Widget _dateFieldShell({required bool isDark, required Widget child}) {
     return Container(
       height: 48,
       padding: EdgeInsets.symmetric(horizontal: AppSpacing.base),
@@ -551,19 +551,19 @@ class PauseSubscriptionView extends StatelessWidget {
           AppText(
             '• ',
             style: (context) => AppTextStyles.bodyText(context).copyWith(
-                  fontSize: 12,
-                  color: isDark ? AppColors.darkGreyText : AppColors.lightGrey,
-                  height: 1.2,
-                ),
+              fontSize: 12,
+              color: isDark ? AppColors.darkGreyText : AppColors.lightGrey,
+              height: 1.2,
+            ),
           ),
           Expanded(
             child: AppText(
               label,
               style: (context) => AppTextStyles.bodyText(context).copyWith(
-                    fontSize: 12,
-                    color: isDark ? AppColors.darkGreyText : AppColors.lightGrey,
-                    height: 1.2,
-                  ),
+                fontSize: 12,
+                color: isDark ? AppColors.darkGreyText : AppColors.lightGrey,
+                height: 1.2,
+              ),
             ),
           ),
         ],

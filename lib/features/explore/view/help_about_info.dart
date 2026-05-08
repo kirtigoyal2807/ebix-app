@@ -21,7 +21,6 @@ class HelpAboutInfo extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         AppText(
-
           context.l10n.helpAbout,
           style: (context) => AppTextStyles.captionText(context).copyWith(
             fontWeight: FontWeight.w500,
@@ -31,7 +30,7 @@ class HelpAboutInfo extends StatelessWidget {
         ),
         SizedBox(height: AppSpacing.lmd),
         AccountInfoTile(
-          onTap:  () {
+          onTap: () {
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => HelpSupportView()),

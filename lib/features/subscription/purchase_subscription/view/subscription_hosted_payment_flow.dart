@@ -54,9 +54,8 @@ Future<void> runSubscriptionHostedPaymentFlow(
   showDialog<void>(
     context: context,
     barrierDismissible: false,
-    builder: (dialogContext) => const Center(
-      child: CircularProgressIndicator(),
-    ),
+    builder: (dialogContext) =>
+        const Center(child: CircularProgressIndicator()),
   );
 
   final requiresIntake = cubit.state.selectedProductRequiresHealthIntake;
@@ -68,9 +67,7 @@ Future<void> runSubscriptionHostedPaymentFlow(
         Navigator.of(context, rootNavigator: true).pop();
       }
       if (!context.mounted) return;
-      messenger.showSnackBar(
-        SnackBar(content: Text(l10n.loginErrorGeneric)),
-      );
+      messenger.showSnackBar(SnackBar(content: Text(l10n.loginErrorGeneric)));
       return;
     }
 
@@ -124,10 +121,7 @@ Future<void> runSubscriptionHostedPaymentFlow(
     final url = data.paymentUrl;
     if (url != null && url.trim().isNotEmpty) {
       final paymentResult =
-          await CheckoutPaymentLauncher.openInAppPaymentWebView(
-        context,
-        url,
-      );
+          await CheckoutPaymentLauncher.openInAppPaymentWebView(context, url);
       if (!context.mounted) return;
 
       if (paymentResult?.outcome != HostedPaymentWebViewOutcome.success) {
@@ -147,9 +141,8 @@ Future<void> runSubscriptionHostedPaymentFlow(
       showDialog<void>(
         context: context,
         barrierDismissible: false,
-        builder: (dialogContext) => const Center(
-          child: CircularProgressIndicator(),
-        ),
+        builder: (dialogContext) =>
+            const Center(child: CircularProgressIndicator()),
       );
       try {
         await pushSubscriptionReceiptScreen(
@@ -169,9 +162,7 @@ Future<void> runSubscriptionHostedPaymentFlow(
     }
 
     if (context.mounted) {
-      messenger.showSnackBar(
-        SnackBar(content: Text(l10n.loginErrorGeneric)),
-      );
+      messenger.showSnackBar(SnackBar(content: Text(l10n.loginErrorGeneric)));
     }
     return;
   }

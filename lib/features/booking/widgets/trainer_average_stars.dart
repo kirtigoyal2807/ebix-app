@@ -25,10 +25,8 @@ class TrainerAverageStars extends StatelessWidget {
       textDirection: TextDirection.ltr,
       itemPadding: EdgeInsets.zero,
       unratedColor: unrated,
-      itemBuilder: (context, _) => const Icon(
-        Icons.star_rounded,
-        color: AppColors.goldStarColor,
-      ),
+      itemBuilder: (context, _) =>
+          const Icon(Icons.star_rounded, color: AppColors.goldStarColor),
     );
   }
 }

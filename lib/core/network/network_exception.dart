@@ -295,7 +295,9 @@ class NetworkException implements Exception {
     return null;
   }
 
-  static String? _firstFieldErrorMessage(Map<String, List<String>>? fieldErrors) {
+  static String? _firstFieldErrorMessage(
+    Map<String, List<String>>? fieldErrors,
+  ) {
     if (fieldErrors == null || fieldErrors.isEmpty) return null;
     for (final value in fieldErrors.values) {
       if (value.isNotEmpty) {

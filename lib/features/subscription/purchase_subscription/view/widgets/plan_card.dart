@@ -52,23 +52,25 @@ class PlanCard extends StatelessWidget {
               border: Border.all(
                 color: isDark ? AppColors.greyText : AppColors.buttonBorder,
               ),
-              boxShadow: [
-                AppShadows.lightShadow,
-                AppShadows.mediumShadow,
-                AppShadows.mediumHeavyShadow,
-                BoxShadow(
-                  color: AppColors.shadowColor.withValues(alpha: 0.01),
-                  offset: const Offset(0, 64),
-                  blurRadius: 25,
-                  spreadRadius: 0,
-                ),
-                BoxShadow(
-                  color: AppColors.shadowColor.withValues(alpha: 0.00),
-                  offset: const Offset(0, 99),
-                  blurRadius: 28,
-                  spreadRadius: 0,
-                ),
-              ],
+              boxShadow: isDark
+                  ? null
+                  : [
+                      AppShadows.lightShadow,
+                      AppShadows.mediumShadow,
+                      AppShadows.mediumHeavyShadow,
+                      BoxShadow(
+                        color: AppColors.shadowColor.withValues(alpha: 0.01),
+                        offset: const Offset(0, 64),
+                        blurRadius: 25,
+                        spreadRadius: 0,
+                      ),
+                      BoxShadow(
+                        color: AppColors.shadowColor.withValues(alpha: 0.00),
+                        offset: const Offset(0, 99),
+                        blurRadius: 28,
+                        spreadRadius: 0,
+                      ),
+                    ],
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -92,11 +94,12 @@ class PlanCard extends StatelessWidget {
                           vertical: 4,
                         ),
                         decoration: BoxDecoration(
-                          color: (
+                          color:
+                              (
                               // isDark
                               // ? const Color(0x3BFDC700)
                               // :
-                          AppColors.goldStarColor), // Gold for popular
+                              AppColors.goldStarColor), // Gold for popular
                           borderRadius: BorderRadius.circular(20),
                           // border: isPopular ? null : Border.all(color: AppColors.lightGreyBorder),
                         ),
@@ -125,7 +128,9 @@ class PlanCard extends StatelessWidget {
                     ),
                     SvgPicture.asset(
                       "assets/images/svg/ic_Saudi_Riyal_Symbol.svg",
-                      color: isDark ? AppColors.languageTextDark : AppColors.languageIcon,
+                      color: isDark
+                          ? AppColors.languageTextDark
+                          : AppColors.languageIcon,
                     ),
                     if (priceSuffix.isNotEmpty)
                       AppText(

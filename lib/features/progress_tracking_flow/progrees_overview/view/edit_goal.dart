@@ -70,8 +70,7 @@ class _EditGoalState extends State<EditGoal> {
   Future<void> _onSave(BuildContext context) async {
     final cubit = context.read<ProgressGoalCubit>();
     final l10n = context.l10n;
-    final experience =
-        cubit.state.goal?.experience ?? 'intermediate';
+    final experience = cubit.state.goal?.experience ?? 'intermediate';
     final ok = await cubit.save(
       monthlyGoal: _monthly,
       goal: GoalFormMapping.goalTitleForIndex(l10n, _selectedIndex),
@@ -115,8 +114,7 @@ class _EditGoalState extends State<EditGoal> {
                     AppButton(
                       label: context.l10n.retry,
                       expanded: false,
-                      onPressed: () =>
-                          context.read<ProgressGoalCubit>().load(),
+                      onPressed: () => context.read<ProgressGoalCubit>().load(),
                     ),
                   ],
                 ),
@@ -127,13 +125,10 @@ class _EditGoalState extends State<EditGoal> {
           final goal = state.goal;
           _scheduleHydrate(goal);
 
-          final currentTitle = goal?.goal != null &&
-                  goal!.goal!.trim().isNotEmpty
+          final currentTitle =
+              goal?.goal != null && goal!.goal!.trim().isNotEmpty
               ? goal.goal!.trim()
-              : GoalFormMapping.goalTitleForIndex(
-                  context.l10n,
-                  _selectedIndex,
-                );
+              : GoalFormMapping.goalTitleForIndex(context.l10n, _selectedIndex);
           final currentSubtitle = goal != null
               ? ProgressGoalSettings.experienceLabel(
                   context.l10n,
@@ -189,9 +184,7 @@ class _EditGoalState extends State<EditGoal> {
                           children: [
                             AppText(
                               context.l10n.edit_goal_current_goal,
-                              style: (c) => AppTextStyles.body(
-                                c,
-                              ).copyWith(
+                              style: (c) => AppTextStyles.body(c).copyWith(
                                 color: AppColors.lightGrey,
                                 height: 1.55,
                               ),
@@ -207,15 +200,13 @@ class _EditGoalState extends State<EditGoal> {
                               ),
                               title: AppText(
                                 currentTitle,
-                                style: (c) =>
-                                    AppTextStyles.experienceButton(
+                                style: (c) => AppTextStyles.experienceButton(
                                   c,
                                 ).copyWith(fontSize: 18),
                               ),
                               subtitle: AppText(
                                 currentSubtitle,
-                                style: (c) =>
-                                    AppTextStyles.body(c).copyWith(
+                                style: (c) => AppTextStyles.body(c).copyWith(
                                   color: isDark
                                       ? AppColors.darkGreyText
                                       : AppColors.greyText,
@@ -320,9 +311,7 @@ class _EditGoalState extends State<EditGoal> {
                 child: AppButton(
                   label: context.l10n.edit_goal_save_changes,
                   isLoading: state.isSubmitting,
-                  onPressed: state.isSubmitting
-                      ? null
-                      : () => _onSave(context),
+                  onPressed: state.isSubmitting ? null : () => _onSave(context),
                   variant: AppButtonVariant.primary,
                 ),
               ),

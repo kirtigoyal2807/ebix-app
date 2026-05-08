@@ -70,17 +70,16 @@ class _BookingSearchBarState extends State<BookingSearchBar> {
             ),
             filled: false,
             hintText: widget.hintText ?? context.l10n.searchClassesHint,
-            hintStyle: AppTextStyles.textField(context)
-                .copyWith(color: AppColors.lightGrey),
+            hintStyle: AppTextStyles.textField(
+              context,
+            ).copyWith(color: AppColors.lightGrey),
             contentPadding: const EdgeInsets.symmetric(
               horizontal: 14,
               vertical: 14,
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(AppRadius.md),
-              borderSide: BorderSide(
-                color: theme.dividerColor,
-              ),
+              borderSide: BorderSide(color: theme.dividerColor),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(AppRadius.md),

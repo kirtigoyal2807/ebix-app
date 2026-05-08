@@ -55,7 +55,12 @@ class SuccessMembershipView extends StatelessWidget {
                 //   ),
                 //   child: Icon(Icons.check, color: Colors.white, size: 48),
                 // ),
-                Lottie.asset("assets/json/tick.json",height: 100,width: 100,repeat: false),
+                Lottie.asset(
+                  "assets/json/tick.json",
+                  height: 100,
+                  width: 100,
+                  repeat: false,
+                ),
 
                 SizedBox(height: AppSpacing.md),
 
@@ -139,8 +144,10 @@ class SuccessMembershipView extends StatelessWidget {
                   label: context.l10n.startExploring,
                   onPressed: () {
                     homeTabIntent.value = 0;
-                    Navigator.of(context, rootNavigator: true)
-                        .popUntil((route) => route.isFirst);
+                    Navigator.of(
+                      context,
+                      rootNavigator: true,
+                    ).popUntil((route) => route.isFirst);
                   },
                   variant: AppButtonVariant.primary,
                 ),

@@ -49,7 +49,8 @@ class InvoiceResource {
       amount: s.pricePaid,
       currency: 'SAR',
       status: s.status,
-      issuedAt: s.createdAt ??
+      issuedAt:
+          s.createdAt ??
           s.startsAt ??
           s.expiresAt ??
           DateTime.fromMillisecondsSinceEpoch(0, isUtc: true),
@@ -58,7 +59,8 @@ class InvoiceResource {
   }
 
   factory InvoiceResource.fromJson(Map<String, dynamic> json) {
-    final issuedRaw = json['date'] ??
+    final issuedRaw =
+        json['date'] ??
         json['paidAt'] ??
         json['paid_at'] ??
         json['issued_at'] ??

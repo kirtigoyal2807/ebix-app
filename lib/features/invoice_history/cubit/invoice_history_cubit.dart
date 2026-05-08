@@ -7,11 +7,7 @@ import 'package:pilates_app/features/invoice_history/data/models/invoice_resourc
 
 class InvoiceHistoryCubit extends Cubit<InvoiceHistoryState> {
   InvoiceHistoryCubit(this._invoicesRepository)
-      : super(
-          InvoiceHistoryState(
-            invoiceCategoryList: InvoiceCategory.values,
-          ),
-        ) {
+    : super(InvoiceHistoryState(invoiceCategoryList: InvoiceCategory.values)) {
     refresh();
   }
 
@@ -124,12 +120,7 @@ class InvoiceHistoryCubit extends Cubit<InvoiceHistoryState> {
         .where((r) => _inDateRange(r.issuedAt, state.dateRange))
         .toList();
     _applySort(rows, state.sortBy);
-    emit(
-      state.copyWith(
-        invoices: rows,
-        clearError: true,
-      ),
-    );
+    emit(state.copyWith(invoices: rows, clearError: true));
   }
 
   Future<void> refresh() => _fetchAndCache();
@@ -161,10 +152,7 @@ class InvoiceHistoryCubit extends Cubit<InvoiceHistoryState> {
 
   Future<void> _fetchAndCache() async {
     emit(
-      state.copyWith(
-        loadStatus: InvoicesLoadStatus.loading,
-        clearError: true,
-      ),
+      state.copyWith(loadStatus: InvoicesLoadStatus.loading, clearError: true),
     );
 
     final result = await _invoicesRepository.listInvoices();

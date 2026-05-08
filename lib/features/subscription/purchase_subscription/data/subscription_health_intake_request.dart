@@ -88,9 +88,7 @@ Map<String, dynamic> subscriptionHealthIntakeRequestBody(
       'exerciseRegularly': state.exerciseRegularly,
       'activityFrequency': state.activityFrequency?.name,
     },
-    'pregnancy': <String, dynamic>{
-      'isPregnant': state.isPregnant,
-    },
+    'pregnancy': <String, dynamic>{'isPregnant': state.isPregnant},
     'goals': state.goals,
     'declaration': <String, dynamic>{
       'name': state.declarationName,

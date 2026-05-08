@@ -16,10 +16,12 @@ class UpcomingEvent {
     this.branchAddress,
     this.trainerId,
     this.trainerName,
+    this.trainerImageUrl,
     this.capacity,
     this.slotsLeft,
     this.waitlistCount,
     this.gender,
+    this.category,
   });
 
   final String id;
@@ -32,13 +34,29 @@ class UpcomingEvent {
   final String? branchAddress;
   final String? trainerId;
   final String? trainerName;
+  final String? trainerImageUrl;
   final int? capacity;
   final int? slotsLeft;
   final int? waitlistCount;
+
   /// Gender restriction for this event: 'Male', 'Female', or null (all genders).
   final String? gender;
+  final String? category;
 
   factory UpcomingEvent.fromJson(Map<String, dynamic> json) {
+    final branchMap = _mapOrNull(json['branch']);
+    final trainerMap = _mapOrNull(json['trainer']);
+    final trainerUserMap = _mapOrNull(trainerMap?['user']);
+    final genderRaw =
+        json['gender'] ?? json['targetGender'] ?? json['target_gender'];
+    final categoryRaw =
+        json['category'] ??
+        json['classCategory'] ??
+        json['class_category'] ??
+        json['classType'] ??
+        json['class_type'] ??
+        json['type'];
+
     return UpcomingEvent(
       id: '${json['id'] ?? ''}',
       startAt:
@@ -49,24 +67,74 @@ class UpcomingEvent {
           DateTime.now(),
       status: '${json['status'] ?? 'scheduled'}',
       branchId:
-          json['branchId']?.toString() ?? json['branch_id']?.toString(),
-      branchName: '${json['branchName'] ?? json['branch_name'] ?? ''}',
+          json['branchId']?.toString() ??
+          json['branch_id']?.toString() ??
+          branchMap?['id']?.toString() ??
+          branchMap?['branchId']?.toString() ??
+          branchMap?['branch_id']?.toString(),
+      branchName:
+          '${json['branchName'] ?? json['branch_name'] ?? branchMap?['name'] ?? branchMap?['branchName'] ?? branchMap?['branch_name'] ?? ''}',
       branchLocation:
           json['branchLocation']?.toString() ??
-          json['branch_location']?.toString(),
+          json['branch_location']?.toString() ??
+          branchMap?['location']?.toString() ??
+          branchMap?['branchLocation']?.toString() ??
+          branchMap?['branch_location']?.toString(),
       branchAddress:
           json['branchAddress']?.toString() ??
-          json['branch_address']?.toString(),
+          json['branch_address']?.toString() ??
+          branchMap?['address']?.toString() ??
+          branchMap?['branchAddress']?.toString() ??
+          branchMap?['branch_address']?.toString(),
       trainerId:
-          json['trainerId']?.toString() ?? json['trainer_id']?.toString(),
+          json['trainerId']?.toString() ??
+          json['trainer_id']?.toString() ??
+          trainerMap?['id']?.toString() ??
+          trainerMap?['trainerId']?.toString() ??
+          trainerMap?['trainer_id']?.toString() ??
+          trainerUserMap?['id']?.toString(),
       trainerName:
-          json['trainerName']?.toString() ?? json['trainer_name']?.toString(),
+          json['trainerName']?.toString() ??
+          json['trainer_name']?.toString() ??
+          trainerMap?['displayName']?.toString() ??
+          trainerMap?['display_name']?.toString() ??
+          trainerMap?['name']?.toString() ??
+          trainerUserMap?['displayName']?.toString() ??
+          trainerUserMap?['display_name']?.toString() ??
+          trainerUserMap?['name']?.toString(),
+      trainerImageUrl: resolveApiMediaUrl(
+        json['trainerImageUrl']?.toString() ??
+            json['trainer_image_url']?.toString() ??
+            json['trainerAvatarUrl']?.toString() ??
+            json['trainer_avatar_url']?.toString() ??
+            json['trainerPhotoUrl']?.toString() ??
+            json['trainer_photo_url']?.toString() ??
+            json['trainerImage']?.toString() ??
+            json['trainer_image']?.toString() ??
+            trainerMap?['imageUrl']?.toString() ??
+            trainerMap?['image_url']?.toString() ??
+            trainerMap?['avatarUrl']?.toString() ??
+            trainerMap?['avatar_url']?.toString() ??
+            trainerMap?['profileImage']?.toString() ??
+            trainerMap?['profile_image']?.toString() ??
+            trainerMap?['image']?.toString() ??
+            trainerMap?['photo']?.toString() ??
+            trainerUserMap?['imageUrl']?.toString() ??
+            trainerUserMap?['image_url']?.toString() ??
+            trainerUserMap?['avatarUrl']?.toString() ??
+            trainerUserMap?['avatar_url']?.toString() ??
+            trainerUserMap?['profileImage']?.toString() ??
+            trainerUserMap?['profile_image']?.toString() ??
+            trainerUserMap?['image']?.toString() ??
+            trainerUserMap?['photo']?.toString(),
+      ),
       capacity: _intOrNull(json['capacity']),
-      slotsLeft:
-          _intOrNull(json['slotsLeft'] ?? json['slots_left']),
-      waitlistCount:
-          _intOrNull(json['waitlistCount'] ?? json['waitlist_count']),
-      gender: json['gender']?.toString(),
+      slotsLeft: _intOrNull(json['slotsLeft'] ?? json['slots_left']),
+      waitlistCount: _intOrNull(
+        json['waitlistCount'] ?? json['waitlist_count'],
+      ),
+      gender: _stringOrNull(genderRaw),
+      category: _stringOrNull(categoryRaw),
     );
   }
 
@@ -75,6 +143,24 @@ class UpcomingEvent {
     if (v is int) return v;
     if (v is num) return v.toInt();
     return int.tryParse('$v');
+  }
+
+  static Map<String, dynamic>? _mapOrNull(dynamic value) {
+    if (value is Map<String, dynamic>) return value;
+    if (value is Map) return Map<String, dynamic>.from(value);
+    return null;
+  }
+
+  static String? _stringOrNull(dynamic value) {
+    if (value == null) return null;
+    if (value is Map) {
+      final map = _mapOrNull(value);
+      final nestedValue =
+          map?['value'] ?? map?['name'] ?? map?['label'] ?? map?['code'];
+      return _stringOrNull(nestedValue);
+    }
+    final text = value.toString().trim();
+    return text.isEmpty ? null : text;
   }
 
   bool get isFull => slotsLeft != null && slotsLeft! <= 0;
@@ -96,6 +182,8 @@ class GymClassResource {
     this.avgRating,
     this.reviewsCount,
     this.recentReviews,
+    this.category,
+    this.gender,
     required this.upcomingEvents,
   });
 
@@ -116,12 +204,13 @@ class GymClassResource {
   /// Present when the API includes `recentReviews` / `recent_reviews` (may be `[]`).
   /// If omitted, this is null and the client may load reviews via `GET /reviews`.
   final List<ReviewResource>? recentReviews;
+  final String? category;
+  final String? gender;
 
   final List<UpcomingEvent> upcomingEvents;
 
   factory GymClassResource.fromJson(Map<String, dynamic> json) {
-    final eventsRaw =
-        json['upcomingEvents'] ?? json['upcoming_events'];
+    final eventsRaw = json['upcomingEvents'] ?? json['upcoming_events'];
     final parsedEvents = <UpcomingEvent>[];
     if (eventsRaw is List) {
       for (final e in eventsRaw) {
@@ -136,17 +225,27 @@ class GymClassResource {
     }
 
     List<ReviewResource>? recentReviews;
-    if (json.containsKey('recentReviews') || json.containsKey('recent_reviews')) {
+    if (json.containsKey('recentReviews') ||
+        json.containsKey('recent_reviews')) {
       final raw = json['recentReviews'] ?? json['recent_reviews'];
       recentReviews = parseRecentReviewsList(raw);
     }
+
+    final classGenderRaw =
+        json['gender'] ?? json['targetGender'] ?? json['target_gender'];
+    final classCategoryRaw =
+        json['category'] ??
+        json['classCategory'] ??
+        json['class_category'] ??
+        json['classType'] ??
+        json['class_type'] ??
+        json['type'];
 
     return GymClassResource(
       id: '${json['id'] ?? ''}',
       name: '${json['name'] ?? ''}',
       description: json['description']?.toString(),
-      branchId:
-          json['branchId']?.toString() ?? json['branch_id']?.toString(),
+      branchId: json['branchId']?.toString() ?? json['branch_id']?.toString(),
       defaultDurationMinutes: _intOrNull(
         json['defaultDurationMinutes'] ?? json['default_duration_minutes'],
       ),
@@ -160,13 +259,13 @@ class GymClassResource {
       allowPackageBooking:
           json['allowPackageBooking'] == true ||
           json['allow_package_booking'] == true,
-      isActive:
-          json['isActive'] == true || json['is_active'] == true,
+      isActive: json['isActive'] == true || json['is_active'] == true,
       image: resolveApiMediaUrl(json['image']?.toString()),
       avgRating: _doubleOrNull(json['avgRating'] ?? json['avg_rating']),
-      reviewsCount:
-          _intOrNull(json['reviewsCount'] ?? json['reviews_count']),
+      reviewsCount: _intOrNull(json['reviewsCount'] ?? json['reviews_count']),
       recentReviews: recentReviews,
+      category: _stringOrNull(classCategoryRaw),
+      gender: _stringOrNull(classGenderRaw),
       upcomingEvents: parsedEvents,
     );
   }
@@ -183,5 +282,19 @@ class GymClassResource {
     if (v is double) return v;
     if (v is num) return v.toDouble();
     return double.tryParse('$v');
+  }
+
+  static String? _stringOrNull(dynamic value) {
+    if (value == null) return null;
+    if (value is Map) {
+      final map = value is Map<String, dynamic>
+          ? value
+          : Map<String, dynamic>.from(value);
+      final nestedValue =
+          map['value'] ?? map['name'] ?? map['label'] ?? map['code'];
+      return _stringOrNull(nestedValue);
+    }
+    final text = value.toString().trim();
+    return text.isEmpty ? null : text;
   }
 }

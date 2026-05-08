@@ -10,18 +10,20 @@ import 'package:pilates_app/features/auth/data/models/register_gender.dart';
 
 /// Test double with configurable outcomes for auth API methods.
 class FakeAuthRepository extends AuthRepository {
-  FakeAuthRepository() : super(Dio(BaseOptions(baseUrl: 'https://test.local/')));
+  FakeAuthRepository()
+    : super(Dio(BaseOptions(baseUrl: 'https://test.local/')));
 
   ApiResult<LoginEmailResult> loginResult = ApiFailure<LoginEmailResult>(
     NetworkException(type: NetworkFailureType.unknown, message: 'unset'),
   );
   ApiResult<bool> registerResult = const ApiSuccess<bool>(true);
-  ApiResult<LoginEmailResult> verifyPhoneOtpResult = ApiSuccess<LoginEmailResult>(
-    LoginEmailResult(
-      user: AuthUser(email: 'verified@example.com', phone: '+966500000000'),
-      token: 'phone-verify-jwt',
-    ),
-  );
+  ApiResult<LoginEmailResult> verifyPhoneOtpResult =
+      ApiSuccess<LoginEmailResult>(
+        LoginEmailResult(
+          user: AuthUser(email: 'verified@example.com', phone: '+966500000000'),
+          token: 'phone-verify-jwt',
+        ),
+      );
   ApiResult<bool> phoneOtpResult = const ApiSuccess<bool>(true);
   ApiResult<bool> sendPhoneOtpResult = const ApiSuccess<bool>(true);
   ApiResult<bool> passwordForgotResult = const ApiSuccess<bool>(true);
@@ -29,19 +31,20 @@ class FakeAuthRepository extends AuthRepository {
   ApiResult<bool> verifyEmailCodeResult = const ApiSuccess<bool>(true);
   ApiResult<bool> resetPasswordResult = const ApiSuccess<bool>(true);
   ApiResult<bool> submitUserGoalResult = const ApiSuccess<bool>(true);
-  ApiResult<BranchesListResult> listBranchesResult = ApiSuccess<BranchesListResult>(
-    BranchesListResult(
-      branches: [
-        Branch(
-          id: 1,
-          title: 'Branch One',
-          city: 'City',
-          distance: '1 km',
-          typeLabel: 'Standard',
+  ApiResult<BranchesListResult> listBranchesResult =
+      ApiSuccess<BranchesListResult>(
+        BranchesListResult(
+          branches: [
+            Branch(
+              id: 1,
+              title: 'Branch One',
+              city: 'City',
+              distance: '1 km',
+              typeLabel: 'Standard',
+            ),
+          ],
         ),
-      ],
-    ),
-  );
+      );
   ApiResult<bool> setHomeBranchResult = const ApiSuccess<bool>(true);
   ApiResult<bool> logoutResult = const ApiSuccess<bool>(true);
 
@@ -181,8 +184,9 @@ class FakeAuthRepository extends AuthRepository {
     Map<String, dynamic>? queryParameters,
   }) async {
     listBranchesCalls++;
-    lastListBranchesQuery =
-        queryParameters == null ? null : Map<String, dynamic>.from(queryParameters);
+    lastListBranchesQuery = queryParameters == null
+        ? null
+        : Map<String, dynamic>.from(queryParameters);
     return listBranchesResult;
   }
 

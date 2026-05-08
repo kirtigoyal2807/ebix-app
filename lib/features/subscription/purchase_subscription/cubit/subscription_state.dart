@@ -13,7 +13,8 @@ class SubscriptionState extends Equatable {
   final String selectedPlanId;
   final int? selectedBranchId;
   final bool isGift;
-  final int currentStep; // 0: Plan, 1–6: Health, 7: Safety, 8: Terms, 9: Review, 10: Required info
+  final int
+  currentStep; // 0: Plan, 1–6: Health, 7: Safety, 8: Terms, 9: Review, 10: Required info
 
   /// From catalog `requiresHealthIntake` / checkout session; when `false`, steps 2–6
   /// (medical → declaration) are skipped and `POST …/health-intake` is not sent.
@@ -160,20 +161,23 @@ class SubscriptionState extends Equatable {
       selectedBranchId: selectedBranchId ?? this.selectedBranchId,
       isGift: isGift ?? this.isGift,
       currentStep: currentStep ?? this.currentStep,
-      selectedProductRequiresHealthIntake: selectedProductRequiresHealthIntake ??
+      selectedProductRequiresHealthIntake:
+          selectedProductRequiresHealthIntake ??
           this.selectedProductRequiresHealthIntake,
       checkoutSessionId: checkoutSessionId ?? this.checkoutSessionId,
       checkoutProductId: checkoutProductId ?? this.checkoutProductId,
       healthQuestionnaireQuestions:
           healthQuestionnaireQuestions ?? this.healthQuestionnaireQuestions,
-      healthQuestionnaireId: identical(healthQuestionnaireId, _unsetQuestionnaireId)
+      healthQuestionnaireId:
+          identical(healthQuestionnaireId, _unsetQuestionnaireId)
           ? this.healthQuestionnaireId
           : healthQuestionnaireId as int?,
       healthQuestionnaireAnswers:
           healthQuestionnaireAnswers ?? this.healthQuestionnaireAnswers,
       healthQuestionnaireAnswerNotes:
           healthQuestionnaireAnswerNotes ?? this.healthQuestionnaireAnswerNotes,
-      personalInformationDynamicFields: personalInformationDynamicFields ??
+      personalInformationDynamicFields:
+          personalInformationDynamicFields ??
           this.personalInformationDynamicFields,
       name: name ?? this.name,
       age: age ?? this.age,
@@ -206,42 +210,42 @@ class SubscriptionState extends Equatable {
 
   @override
   List<Object?> get props => [
-        status,
-        selectedPlanId,
-        selectedBranchId,
-        isGift,
-        currentStep,
-        selectedProductRequiresHealthIntake,
-        checkoutSessionId,
-        checkoutProductId,
-        healthQuestionnaireQuestions,
-        healthQuestionnaireId,
-        healthQuestionnaireAnswers,
-        healthQuestionnaireAnswerNotes,
-        personalInformationDynamicFields,
-        name,
-        age,
-        height,
-        weight,
-        phoneNumber,
-        email,
-        chronicConditions,
-        surgeriesInjuries,
-        painBonesMuscles,
-        respiratoryProblems,
-        medications,
-        exerciseRegularly,
-        activityFrequency,
-        isPregnant,
-        goals,
-        declarationName,
-        declarationSignature,
-        declarationDate,
-        isTermsAccepted,
-        emergencyContactName,
-        emergencyContactRelationship,
-        emergencyContactPhone,
-        idType,
-        idNumber,
-      ];
+    status,
+    selectedPlanId,
+    selectedBranchId,
+    isGift,
+    currentStep,
+    selectedProductRequiresHealthIntake,
+    checkoutSessionId,
+    checkoutProductId,
+    healthQuestionnaireQuestions,
+    healthQuestionnaireId,
+    healthQuestionnaireAnswers,
+    healthQuestionnaireAnswerNotes,
+    personalInformationDynamicFields,
+    name,
+    age,
+    height,
+    weight,
+    phoneNumber,
+    email,
+    chronicConditions,
+    surgeriesInjuries,
+    painBonesMuscles,
+    respiratoryProblems,
+    medications,
+    exerciseRegularly,
+    activityFrequency,
+    isPregnant,
+    goals,
+    declarationName,
+    declarationSignature,
+    declarationDate,
+    isTermsAccepted,
+    emergencyContactName,
+    emergencyContactRelationship,
+    emergencyContactPhone,
+    idType,
+    idNumber,
+  ];
 }

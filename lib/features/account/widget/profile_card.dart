@@ -4,6 +4,7 @@ import 'package:pilates_app/config/theme/app_colors.dart';
 import 'package:pilates_app/config/theme/app_radius.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
+import 'package:pilates_app/core/utils/api_media_url.dart';
 import 'package:pilates_app/features/auth/cubit/auth_cubit.dart';
 import 'package:pilates_app/features/auth/cubit/auth_state.dart';
 import 'package:pilates_app/widgets/app_text.dart';
@@ -24,12 +25,12 @@ class ProfileCard extends StatelessWidget {
             ? userName
             : context.l10n.name;
         final email = user?.email?.trim();
-        final displayEmail =
-            (email != null && email.isNotEmpty) ? email : context.l10n.email;
-        final avatar = user?.avatar?.trim();
-        final avatarProvider =
-            (avatar != null && avatar.isNotEmpty)
-            ? NetworkImage(avatar)
+        final displayEmail = (email != null && email.isNotEmpty)
+            ? email
+            : context.l10n.email;
+        final avatarUrl = resolveApiMediaUrl(user?.avatar);
+        final avatarProvider = (avatarUrl != null && avatarUrl.isNotEmpty)
+            ? NetworkImage(avatarUrl)
             : const AssetImage("assets/images/demo images/Trainer Avatar.png")
                   as ImageProvider;
 
@@ -63,6 +64,11 @@ class ProfileCard extends StatelessWidget {
                           height: 64,
                           width: 64,
                           decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                              color: Colors.white,
+                              width: 1,
+                            ),
                             image: DecorationImage(
                               image: avatarProvider,
                               fit: BoxFit.cover,

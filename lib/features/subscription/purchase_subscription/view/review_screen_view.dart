@@ -20,15 +20,11 @@ class ReviewScreenView extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final l10n = AppLocalizations.of(context)!;
     return Padding(
-      padding: const EdgeInsets.symmetric(
-        vertical: AppSpacing.lg,
-      ),
+      padding: const EdgeInsets.symmetric(vertical: AppSpacing.lg),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Expanded(
-            child: ReviewScreenDetailsView(),
-          ),
+          Expanded(child: ReviewScreenDetailsView()),
           Padding(
             padding: const EdgeInsets.only(
               left: AppSpacing.lg,
@@ -51,8 +47,9 @@ class ReviewScreenView extends StatelessWidget {
                           );
                         }
                       : null,
-                  buttonColor:
-                      isDark ? AppColors.primary : AppColors.primaryBrown,
+                  buttonColor: isDark
+                      ? AppColors.primary
+                      : AppColors.primaryBrown,
                   expanded: true,
                 );
               },

@@ -24,7 +24,9 @@ class LoyaltyChallengeDetail {
         if (e is Map<String, dynamic>) {
           list.add(LoyaltyLeaderboardEntry.fromJson(e));
         } else if (e is Map) {
-          list.add(LoyaltyLeaderboardEntry.fromJson(Map<String, dynamic>.from(e)));
+          list.add(
+            LoyaltyLeaderboardEntry.fromJson(Map<String, dynamic>.from(e)),
+          );
         }
       }
     }

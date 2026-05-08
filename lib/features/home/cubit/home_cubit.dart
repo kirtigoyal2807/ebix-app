@@ -19,15 +19,21 @@ class HomeCubit extends Cubit<HomeState> {
   final HomeRepository _homeRepository;
   final TokenStorage _tokenStorage;
 
-  void setTab(int index, {BookingTab? bookingTab}) {
+  void setTab(int index, {BookingTab? bookingTab, String? classCategory}) {
     emit(
       state.copyWith(
         currentIndex: index,
         selectedBookingTab:
             bookingTab ??
             (index == 1 ? BookingTab.classes : state.selectedBookingTab),
+        selectedClassCategory: classCategory,
       ),
     );
+  }
+
+  void clearSelectedClassCategory() {
+    if (state.selectedClassCategory == null) return;
+    emit(state.copyWith(selectedClassCategory: null));
   }
 
   Future<void> loadHome() async {

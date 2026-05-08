@@ -40,9 +40,7 @@ void main() {
             }
             if (state.flow == AuthFlow.authenticated) {
               return const Scaffold(
-                body: Center(
-                  child: Text('TEST_AUTHENTICATED'),
-                ),
+                body: Center(child: Text('TEST_AUTHENTICATED')),
               );
             }
             return const SizedBox.shrink();
@@ -89,8 +87,10 @@ void main() {
         await tester.pumpWidget(buildPostLoginShell(cubit));
         await tester.pumpAndSettle();
 
-        expect(find.byKey(const ValueKey('post_login_experience_continue')),
-            findsOneWidget);
+        expect(
+          find.byKey(const ValueKey('post_login_experience_continue')),
+          findsOneWidget,
+        );
 
         await tester.tap(
           find.byKey(const ValueKey('post_login_experience_continue')),
@@ -114,46 +114,47 @@ void main() {
       },
     );
 
-    testWidgets(
-      'selecting Intermediate sends experience intermediate to API',
-      (tester) async {
-        SharedPreferences.setMockInitialValues({});
-        final fake = FakeAuthRepository();
-        fake.submitUserGoalResult = const ApiSuccess<bool>(true);
+    testWidgets('selecting Intermediate sends experience intermediate to API', (
+      tester,
+    ) async {
+      SharedPreferences.setMockInitialValues({});
+      final fake = FakeAuthRepository();
+      fake.submitUserGoalResult = const ApiSuccess<bool>(true);
 
-        final cubit = AuthCubit.forTesting(
-          authRepository: fake,
-          tokenStorage: TokenStorage(await SharedPreferences.getInstance()),
-          localeBridge: AuthLocaleBridge(),
-          seed: AuthState.initial().copyWith(
-            flow: AuthFlow.postLoginSetup,
-            postLoginStep: 0,
-          ),
-        );
+      final cubit = AuthCubit.forTesting(
+        authRepository: fake,
+        tokenStorage: TokenStorage(await SharedPreferences.getInstance()),
+        localeBridge: AuthLocaleBridge(),
+        seed: AuthState.initial().copyWith(
+          flow: AuthFlow.postLoginSetup,
+          postLoginStep: 0,
+        ),
+      );
 
-        await tester.pumpWidget(buildPostLoginShell(cubit));
-        await tester.pumpAndSettle();
+      await tester.pumpWidget(buildPostLoginShell(cubit));
+      await tester.pumpAndSettle();
 
-        await tester.tap(find.text('Intermediate'));
-        await tester.pumpAndSettle();
+      await tester.tap(find.text('Intermediate'));
+      await tester.pumpAndSettle();
 
-        await tester.tap(
-          find.byKey(const ValueKey('post_login_experience_continue')),
-        );
-        await tester.pumpAndSettle();
+      await tester.tap(
+        find.byKey(const ValueKey('post_login_experience_continue')),
+      );
+      await tester.pumpAndSettle();
 
-        expect(cubit.state.postLoginExperience, 'intermediate');
+      expect(cubit.state.postLoginExperience, 'intermediate');
 
-        await tester.tap(find.byKey(const ValueKey('post_login_goal_submit')));
-        await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const ValueKey('post_login_goal_submit')));
+      await tester.pumpAndSettle();
 
-        expect(fake.lastSubmitExperience, 'intermediate');
+      expect(fake.lastSubmitExperience, 'intermediate');
 
-        await cubit.close();
-      },
-    );
+      await cubit.close();
+    });
 
-    testWidgets('API failure shows snackbar with error message', (tester) async {
+    testWidgets('API failure shows snackbar with error message', (
+      tester,
+    ) async {
       SharedPreferences.setMockInitialValues({});
       final fake = FakeAuthRepository();
       fake.submitUserGoalResult = ApiFailure<bool>(
@@ -187,44 +188,43 @@ void main() {
       await cubit.close();
     });
 
-    testWidgets(
-      'field errors from API show under goal / monthly sections',
-      (tester) async {
-        SharedPreferences.setMockInitialValues({});
-        final fake = FakeAuthRepository();
-        fake.submitUserGoalResult = ApiFailure<bool>(
-          NetworkException(
-            type: NetworkFailureType.validation,
-            message: '',
-            fieldErrors: {
-              'goal': ['Pick a valid goal'],
-              'monthlyGoal': ['Invalid'],
-            },
-          ),
-        );
+    testWidgets('field errors from API show under goal / monthly sections', (
+      tester,
+    ) async {
+      SharedPreferences.setMockInitialValues({});
+      final fake = FakeAuthRepository();
+      fake.submitUserGoalResult = ApiFailure<bool>(
+        NetworkException(
+          type: NetworkFailureType.validation,
+          message: '',
+          fieldErrors: {
+            'goal': ['Pick a valid goal'],
+            'monthlyGoal': ['Invalid'],
+          },
+        ),
+      );
 
-        final cubit = AuthCubit.forTesting(
-          authRepository: fake,
-          tokenStorage: TokenStorage(await SharedPreferences.getInstance()),
-          localeBridge: AuthLocaleBridge(),
-          seed: AuthState.initial().copyWith(
-            flow: AuthFlow.postLoginSetup,
-            postLoginStep: 1,
-            postLoginExperience: 'advanced',
-          ),
-        );
+      final cubit = AuthCubit.forTesting(
+        authRepository: fake,
+        tokenStorage: TokenStorage(await SharedPreferences.getInstance()),
+        localeBridge: AuthLocaleBridge(),
+        seed: AuthState.initial().copyWith(
+          flow: AuthFlow.postLoginSetup,
+          postLoginStep: 1,
+          postLoginExperience: 'advanced',
+        ),
+      );
 
-        await tester.pumpWidget(buildGoalOnlyTestApp(cubit));
-        await tester.pumpAndSettle();
+      await tester.pumpWidget(buildGoalOnlyTestApp(cubit));
+      await tester.pumpAndSettle();
 
-        await tester.tap(find.byKey(const ValueKey('post_login_goal_submit')));
-        await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const ValueKey('post_login_goal_submit')));
+      await tester.pumpAndSettle();
 
-        expect(find.text('Pick a valid goal'), findsOneWidget);
-        expect(find.text('Invalid'), findsOneWidget);
+      expect(find.text('Pick a valid goal'), findsOneWidget);
+      expect(find.text('Invalid'), findsOneWidget);
 
-        await cubit.close();
-      },
-    );
+      await cubit.close();
+    });
   });
 }

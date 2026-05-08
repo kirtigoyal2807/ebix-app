@@ -19,7 +19,9 @@ import 'fake_auth_repository.dart';
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  testWidgets('SignUpOtpView verify submits 6-digit code and advances', (tester) async {
+  testWidgets('SignUpOtpView verify submits 6-digit code and advances', (
+    tester,
+  ) async {
     SharedPreferences.setMockInitialValues({});
     final prefs = await SharedPreferences.getInstance();
     final storage = TokenStorage(prefs);

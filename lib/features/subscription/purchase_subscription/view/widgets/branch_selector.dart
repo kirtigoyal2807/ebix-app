@@ -25,7 +25,7 @@ class BranchSelector extends StatelessWidget {
       scrollDirection: Axis.horizontal,
       physics: const BouncingScrollPhysics(),
       child: Padding(
-        padding: const EdgeInsets.only(left:AppSpacing.lg),
+        padding: const EdgeInsets.only(left: AppSpacing.lg),
         child: Row(
           children: branches.map((branch) {
             final isSelected = branch.id == selectedBranchId;

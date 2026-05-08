@@ -44,18 +44,18 @@ class BookingClassCard extends StatelessWidget {
 
   /// Construct directly from a [ClassSlotViewModel] returned by the API.
   BookingClassCard.fromSlot(ClassSlotViewModel slot, {super.key})
-      : title = slot.name,
-        trainerName = slot.trainerName,
-        studio = slot.branchName,
-        time = _formatSlotTime(slot),
-        spotsLeft = slot.slotsLeft ?? 0,
-        avgRating = slot.avgRating,
-        isInPlan = slot.allowPackageBooking,
-        upgradeRequired = slot.upgradeRequired,
-        calendarEventId = slot.calendarEventId,
-        classId = slot.classId,
-        imageUrl = _nonEmptyUrl(slot.imageUrl),
-        _slot = slot;
+    : title = slot.name,
+      trainerName = slot.trainerName,
+      studio = slot.branchName,
+      time = _formatSlotTime(slot),
+      spotsLeft = slot.slotsLeft ?? 0,
+      avgRating = slot.avgRating,
+      isInPlan = slot.allowPackageBooking,
+      upgradeRequired = slot.upgradeRequired,
+      calendarEventId = slot.calendarEventId,
+      classId = slot.classId,
+      imageUrl = _nonEmptyUrl(slot.imageUrl),
+      _slot = slot;
 
   static String? _nonEmptyUrl(String? raw) {
     final u = raw?.trim();
@@ -106,18 +106,16 @@ class BookingClassCard extends StatelessWidget {
           } else {
             Navigator.of(context).push(
               MaterialPageRoute(
-                builder: (newContext) => ClassDetailView(
-                  classId: classId,
-                  preloadedSlot: _slot,
-                ),
+                builder: (newContext) =>
+                    ClassDetailView(classId: classId, preloadedSlot: _slot),
               ),
             );
           }
         },
-        borderRadius: BorderRadius.circular(AppRadius.lg),
+        borderRadius: BorderRadius.circular(AppRadius.md),
         child: Container(
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(AppRadius.lg),
+            borderRadius: BorderRadius.circular(14),
             color: isDark ? AppColors.surfaceDark : Colors.white,
 
             border: Border.all(
@@ -146,8 +144,9 @@ class BookingClassCard extends StatelessWidget {
             children: [
               // Image part with tags
               ClipRRect(
-                borderRadius: const BorderRadius.vertical(
-                  top: Radius.circular(AppRadius.lg),
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(AppRadius.md),
+                  topRight: Radius.circular(AppRadius.md),
                 ),
                 child: _classListImage(
                   imageUrl: imageUrl,
@@ -425,19 +424,15 @@ class _BookingClassCardRatingRow extends StatelessWidget {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        const Icon(
-          Icons.star,
-          color: Color(0xFFEAB308),
-          size: 16,
-        ),
+        const Icon(Icons.star, color: Color(0xFFEAB308), size: 16),
         const SizedBox(width: 4),
         AppText(
           label,
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
-          style: (context) => AppTextStyles.boldBody(context).copyWith(
-            color: isDark ? AppColors.lightText : AppColors.darkText,
-          ),
+          style: (context) => AppTextStyles.boldBody(
+            context,
+          ).copyWith(color: isDark ? AppColors.lightText : AppColors.darkText),
         ),
       ],
     );

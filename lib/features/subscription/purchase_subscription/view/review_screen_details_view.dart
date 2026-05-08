@@ -53,8 +53,9 @@ class _ReviewScreenDetailsViewState extends State<ReviewScreenDetailsView> {
   void initState() {
     super.initState();
     _couponCode.addListener(_onCouponCodeEdited);
-    WidgetsBinding.instance
-        .addPostFrameCallback((_) => _refreshCheckoutDetails());
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) => _refreshCheckoutDetails(),
+    );
   }
 
   void _onCouponCodeEdited() {
@@ -87,8 +88,11 @@ class _ReviewScreenDetailsViewState extends State<ReviewScreenDetailsView> {
     final w = widget.checkoutSessionId?.trim();
     if (w != null && w.isNotEmpty) return w;
     try {
-      final fromCubit =
-          context.read<SubscriptionCubit>().state.checkoutSessionId.trim();
+      final fromCubit = context
+          .read<SubscriptionCubit>()
+          .state
+          .checkoutSessionId
+          .trim();
       if (fromCubit.isNotEmpty) return fromCubit;
     } catch (_) {
       return null;
@@ -130,8 +134,8 @@ class _ReviewScreenDetailsViewState extends State<ReviewScreenDetailsView> {
           _checkoutLoading = false;
           _checkoutLoadError =
               (e.message != null && e.message!.trim().isNotEmpty)
-                  ? e.message!.trim()
-                  : null;
+              ? e.message!.trim()
+              : null;
         });
       },
     );
@@ -180,8 +184,9 @@ class _ReviewScreenDetailsViewState extends State<ReviewScreenDetailsView> {
       failure: (e) {
         setState(() {
           final msg = e.message?.trim();
-          _voucherSectionError =
-              (msg != null && msg.isNotEmpty) ? msg : l10n.voucherCodeInvalid;
+          _voucherSectionError = (msg != null && msg.isNotEmpty)
+              ? msg
+              : l10n.voucherCodeInvalid;
         });
       },
     );
@@ -230,8 +235,7 @@ class _ReviewScreenDetailsViewState extends State<ReviewScreenDetailsView> {
     final appliedCode = session.appliedOffer?.code?.trim();
     final entered = _couponCode.text.trim();
     final disc = _effectiveDiscountMinor(session.pricing);
-    final hasAppliedOffer =
-        appliedCode != null && appliedCode.isNotEmpty;
+    final hasAppliedOffer = appliedCode != null && appliedCode.isNotEmpty;
 
     // User is typing a different code than the one on the session — hide success.
     if (hasAppliedOffer &&
@@ -260,19 +264,13 @@ class _ReviewScreenDetailsViewState extends State<ReviewScreenDetailsView> {
       final amt = MembershipReceiptSummary.formatMoney(disc, currency, locale);
       return Padding(
         padding: const EdgeInsets.only(top: AppSpacing.sm),
-        child: AppText(
-          l10n.voucherAppliedSavings(amt),
-          style: successStyle,
-        ),
+        child: AppText(l10n.voucherAppliedSavings(amt), style: successStyle),
       );
     }
 
     return Padding(
       padding: const EdgeInsets.only(top: AppSpacing.sm),
-      child: AppText(
-        l10n.voucherAppliedSuccess,
-        style: successStyle,
-      ),
+      child: AppText(l10n.voucherAppliedSuccess, style: successStyle),
     );
   }
 
@@ -295,16 +293,14 @@ class _ReviewScreenDetailsViewState extends State<ReviewScreenDetailsView> {
     final totalMinor = pricing?.totalAmount ?? pricing?.subtotal;
     final impliedSubtotal = (subtotalMinor != null && subtotalMinor > 0)
         ? subtotalMinor
-        : (totalMinor != null &&
-                totalMinor > 0 &&
-                discountMinor > 0)
-            ? totalMinor + discountMinor
-            : subtotalMinor;
-    final showPriceBreakdown = discountMinor > 0 &&
-        impliedSubtotal != null &&
-        impliedSubtotal > 0;
-    final headlineTotalMinor =
-        (totalMinor != null && totalMinor > 0) ? totalMinor : impliedSubtotal;
+        : (totalMinor != null && totalMinor > 0 && discountMinor > 0)
+        ? totalMinor + discountMinor
+        : subtotalMinor;
+    final showPriceBreakdown =
+        discountMinor > 0 && impliedSubtotal != null && impliedSubtotal > 0;
+    final headlineTotalMinor = (totalMinor != null && totalMinor > 0)
+        ? totalMinor
+        : impliedSubtotal;
     final priceText = MembershipReceiptSummary.formatMoney(
       headlineTotalMinor,
       currency,
@@ -322,8 +318,9 @@ class _ReviewScreenDetailsViewState extends State<ReviewScreenDetailsView> {
     );
     final suffix = product?.billingPriceSuffix ?? '';
     final planName = product?.name?.trim();
-    final planTitle =
-        (planName != null && planName.isNotEmpty) ? planName : l10n.premiumPlan;
+    final planTitle = (planName != null && planName.isNotEmpty)
+        ? planName
+        : l10n.premiumPlan;
 
     final nextBilling = MembershipReceiptSummary.formatNextBilling(
       payment?.nextBillingAt,
@@ -381,13 +378,10 @@ class _ReviewScreenDetailsViewState extends State<ReviewScreenDetailsView> {
             ),
             child: AppText(
               l10n.planReviewPendingPayment,
-              style: (context) =>
-                  AppTextStyles.bodyText(context, fontWeight: FontWeight.w500)
-                      .copyWith(
-                color: AppColors.darkText,
-                fontSize: 12,
-                height: 1.8,
-              ),
+              style: (context) => AppTextStyles.bodyText(
+                context,
+                fontWeight: FontWeight.w500,
+              ).copyWith(color: AppColors.darkText, fontSize: 12, height: 1.8),
             ),
           ),
           SizedBox(height: AppSpacing.base),
@@ -415,11 +409,13 @@ class _ReviewScreenDetailsViewState extends State<ReviewScreenDetailsView> {
             AppText(
               planTitle,
               style: (context) =>
-                  AppTextStyles.bodyText(context, fontWeight: FontWeight.w500)
-                      .copyWith(
-                color: isDark ? AppColors.lightText : AppColors.darkText,
-                fontSize: 24,
-              ),
+                  AppTextStyles.bodyText(
+                    context,
+                    fontWeight: FontWeight.w500,
+                  ).copyWith(
+                    color: isDark ? AppColors.lightText : AppColors.darkText,
+                    fontSize: 24,
+                  ),
             ),
             SizedBox(height: AppSpacing.md),
             Row(
@@ -428,14 +424,16 @@ class _ReviewScreenDetailsViewState extends State<ReviewScreenDetailsView> {
                 AppText(
                   priceText,
                   style: (context) =>
-                      AppTextStyles.bodyText(context, fontWeight: FontWeight.w500)
-                          .copyWith(
-                    color: isDark
-                        ? AppColors.languageTextDark
-                        : AppColors.languageIcon,
-                    fontSize: 18,
-                    height: 1.1,
-                  ),
+                      AppTextStyles.bodyText(
+                        context,
+                        fontWeight: FontWeight.w500,
+                      ).copyWith(
+                        color: isDark
+                            ? AppColors.languageTextDark
+                            : AppColors.languageIcon,
+                        fontSize: 18,
+                        height: 1.1,
+                      ),
                 ),
                 SvgPicture.asset(
                   'assets/images/svg/ic_Saudi_Riyal_Symbol.svg',
@@ -449,15 +447,17 @@ class _ReviewScreenDetailsViewState extends State<ReviewScreenDetailsView> {
                   Expanded(
                     child: AppText(
                       suffix,
-                      style: (context) => AppTextStyles.bodyText(context,
-                              fontWeight: FontWeight.w500)
-                          .copyWith(
-                        color: isDark
-                            ? AppColors.languageTextDark
-                            : AppColors.languageIcon,
-                        fontSize: 18,
-                        height: 1.1,
-                      ),
+                      style: (context) =>
+                          AppTextStyles.bodyText(
+                            context,
+                            fontWeight: FontWeight.w500,
+                          ).copyWith(
+                            color: isDark
+                                ? AppColors.languageTextDark
+                                : AppColors.languageIcon,
+                            fontSize: 18,
+                            height: 1.1,
+                          ),
                     ),
                   ),
               ],
@@ -524,8 +524,8 @@ class _ReviewScreenDetailsViewState extends State<ReviewScreenDetailsView> {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final l10n = AppLocalizations.of(context)!;
     final locale = Localizations.localeOf(context).languageCode;
-    final bottomInset = widget.scrollKeyboardInset ??
-        MediaQuery.viewInsetsOf(context).bottom;
+    final bottomInset =
+        widget.scrollKeyboardInset ?? MediaQuery.viewInsetsOf(context).bottom;
 
     final scrollView = SingleChildScrollView(
       keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
@@ -548,11 +548,7 @@ class _ReviewScreenDetailsViewState extends State<ReviewScreenDetailsView> {
               style: (context) => AppTextStyles.bodyText(context),
             ),
             const SizedBox(height: AppSpacing.md),
-            _buildPlanSummaryCard(
-              context: context,
-              isDark: isDark,
-              l10n: l10n,
-            ),
+            _buildPlanSummaryCard(context: context, isDark: isDark, l10n: l10n),
             const SizedBox(height: AppSpacing.lg),
             Container(
               padding: EdgeInsets.all(AppSpacing.lmd),
@@ -583,10 +579,7 @@ class _ReviewScreenDetailsViewState extends State<ReviewScreenDetailsView> {
                     errorText: _voucherSectionError,
                     onChanged: (_) => setState(() {}),
                   ),
-                  _buildVoucherFeedback(
-                    l10n: l10n,
-                    locale: locale,
-                  ),
+                  _buildVoucherFeedback(l10n: l10n, locale: locale),
                   SizedBox(height: AppSpacing.md),
                   AppButton(
                     label: l10n.apply,

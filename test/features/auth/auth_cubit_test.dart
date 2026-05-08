@@ -32,37 +32,37 @@ void main() {
       authRepository: fakeRepo,
       tokenStorage: storage,
       localeBridge: bridge,
-      seed: seed ??
-          AuthState.initial().copyWith(
-            flow: AuthFlow.onboarding,
-          ),
+      seed: seed ?? AuthState.initial().copyWith(flow: AuthFlow.onboarding),
     );
   }
 
   group('AuthCubit register + navigation', () {
-    test('register success moves signUpStep 0 to 1 and sets OTP flag', () async {
-      fakeRepo.registerResult = const ApiSuccess<bool>(true);
-      final cubit = buildCubit(
-        seed: AuthState.initial().copyWith(
-          flow: AuthFlow.signUp,
-          signUpStep: 0,
-        ),
-      );
+    test(
+      'register success moves signUpStep 0 to 1 and sets OTP flag',
+      () async {
+        fakeRepo.registerResult = const ApiSuccess<bool>(true);
+        final cubit = buildCubit(
+          seed: AuthState.initial().copyWith(
+            flow: AuthFlow.signUp,
+            signUpStep: 0,
+          ),
+        );
 
-      await cubit.register(
-        firstName: 'Noor',
-        email: 'noor@example.com',
-        phone: '+966500000001',
-        password: 'Secret@123',
-      );
+        await cubit.register(
+          firstName: 'Noor',
+          email: 'noor@example.com',
+          phone: '+966500000001',
+          password: 'Secret@123',
+        );
 
-      expect(cubit.state.signUpStep, 1);
-      expect(cubit.state.showRegisterOtpSuccess, isTrue);
-      expect(cubit.state.registerUiStatus, RegisterUiStatus.idle);
-      expect(cubit.state.signUpPendingPhone, '+966500000001');
-      expect(fakeRepo.registerCalls, 1);
-      await cubit.close();
-    });
+        expect(cubit.state.signUpStep, 1);
+        expect(cubit.state.showRegisterOtpSuccess, isTrue);
+        expect(cubit.state.registerUiStatus, RegisterUiStatus.idle);
+        expect(cubit.state.signUpPendingPhone, '+966500000001');
+        expect(fakeRepo.registerCalls, 1);
+        await cubit.close();
+      },
+    );
 
     test('previousSignUpStep from step 0 navigates to onboarding', () async {
       final cubit = buildCubit(
@@ -120,53 +120,62 @@ void main() {
       await cubit.close();
     });
 
-    test('verifySignUpPhoneOtp does nothing when code length is not 6', () async {
-      final cubit = buildCubit(
-        seed: AuthState.initial().copyWith(
-          flow: AuthFlow.signUp,
-          signUpStep: 1,
-          signUpPendingPhone: '+966500000001',
-        ),
-      );
+    test(
+      'verifySignUpPhoneOtp does nothing when code length is not 6',
+      () async {
+        final cubit = buildCubit(
+          seed: AuthState.initial().copyWith(
+            flow: AuthFlow.signUp,
+            signUpStep: 1,
+            signUpPendingPhone: '+966500000001',
+          ),
+        );
 
-      await cubit.verifySignUpPhoneOtp(code: '12345');
+        await cubit.verifySignUpPhoneOtp(code: '12345');
 
-      expect(fakeRepo.verifyPhoneOtpCalls, 0);
-      await cubit.close();
-    });
+        expect(fakeRepo.verifyPhoneOtpCalls, 0);
+        await cubit.close();
+      },
+    );
 
-    test('resendSignUpPhoneOtp calls sendPhoneOtp with pending phone', () async {
-      fakeRepo.sendPhoneOtpResult = const ApiSuccess<bool>(true);
-      final cubit = buildCubit(
-        seed: AuthState.initial().copyWith(
-          flow: AuthFlow.signUp,
-          signUpStep: 1,
-          signUpPendingPhone: '+966500000001',
-        ),
-      );
+    test(
+      'resendSignUpPhoneOtp calls sendPhoneOtp with pending phone',
+      () async {
+        fakeRepo.sendPhoneOtpResult = const ApiSuccess<bool>(true);
+        final cubit = buildCubit(
+          seed: AuthState.initial().copyWith(
+            flow: AuthFlow.signUp,
+            signUpStep: 1,
+            signUpPendingPhone: '+966500000001',
+          ),
+        );
 
-      await cubit.resendSignUpPhoneOtp();
+        await cubit.resendSignUpPhoneOtp();
 
-      expect(cubit.state.phoneOtpSendUiStatus, PhoneOtpSendUiStatus.idle);
-      expect(fakeRepo.sendPhoneOtpCalls, 1);
-      expect(fakeRepo.lastSendPhoneOtpPhone, '+966500000001');
-      await cubit.close();
-    });
+        expect(cubit.state.phoneOtpSendUiStatus, PhoneOtpSendUiStatus.idle);
+        expect(fakeRepo.sendPhoneOtpCalls, 1);
+        expect(fakeRepo.lastSendPhoneOtpPhone, '+966500000001');
+        await cubit.close();
+      },
+    );
 
-    test('resendSignUpPhoneOtp is no-op when not on sign-up OTP step', () async {
-      final cubit = buildCubit(
-        seed: AuthState.initial().copyWith(
-          flow: AuthFlow.signUp,
-          signUpStep: 0,
-          signUpPendingPhone: '+966500000001',
-        ),
-      );
+    test(
+      'resendSignUpPhoneOtp is no-op when not on sign-up OTP step',
+      () async {
+        final cubit = buildCubit(
+          seed: AuthState.initial().copyWith(
+            flow: AuthFlow.signUp,
+            signUpStep: 0,
+            signUpPendingPhone: '+966500000001',
+          ),
+        );
 
-      await cubit.resendSignUpPhoneOtp();
+        await cubit.resendSignUpPhoneOtp();
 
-      expect(fakeRepo.sendPhoneOtpCalls, 0);
-      await cubit.close();
-    });
+        expect(fakeRepo.sendPhoneOtpCalls, 0);
+        await cubit.close();
+      },
+    );
 
     test('previousSignUpStep from OTP step clears pending phone', () async {
       final cubit = buildCubit(
@@ -186,43 +195,49 @@ void main() {
   });
 
   group('AuthCubit sign-up experience/goals (POST /auth/goal)', () {
-    test('continueSignUpExperience sets experience and opens goals step', () async {
-      final cubit = buildCubit(
-        seed: AuthState.initial().copyWith(
-          flow: AuthFlow.signUp,
-          signUpStep: 2,
-        ),
-      );
+    test(
+      'continueSignUpExperience sets experience and opens goals step',
+      () async {
+        final cubit = buildCubit(
+          seed: AuthState.initial().copyWith(
+            flow: AuthFlow.signUp,
+            signUpStep: 2,
+          ),
+        );
 
-      cubit.continueSignUpExperience('intermediate');
+        cubit.continueSignUpExperience('intermediate');
 
-      expect(cubit.state.signUpStep, 3);
-      expect(cubit.state.signUpExperience, 'intermediate');
-      await cubit.close();
-    });
+        expect(cubit.state.signUpStep, 3);
+        expect(cubit.state.signUpExperience, 'intermediate');
+        await cubit.close();
+      },
+    );
 
-    test('submitSignUpGoalAndAdvance calls API and advances to step 4', () async {
-      fakeRepo.submitUserGoalResult = const ApiSuccess<bool>(true);
-      final cubit = buildCubit(
-        seed: AuthState.initial().copyWith(
-          flow: AuthFlow.signUp,
-          signUpStep: 3,
-          signUpExperience: 'beginner',
-        ),
-      );
+    test(
+      'submitSignUpGoalAndAdvance calls API and advances to step 4',
+      () async {
+        fakeRepo.submitUserGoalResult = const ApiSuccess<bool>(true);
+        final cubit = buildCubit(
+          seed: AuthState.initial().copyWith(
+            flow: AuthFlow.signUp,
+            signUpStep: 3,
+            signUpExperience: 'beginner',
+          ),
+        );
 
-      await cubit.submitSignUpGoalAndAdvance(
-        goal: 'Build Strength',
-        monthlyGoal: 8,
-      );
+        await cubit.submitSignUpGoalAndAdvance(
+          goal: 'Build Strength',
+          monthlyGoal: 8,
+        );
 
-      expect(cubit.state.signUpStep, 4);
-      expect(fakeRepo.submitUserGoalCalls, 1);
-      expect(fakeRepo.lastSubmitExperience, 'beginner');
-      expect(fakeRepo.lastSubmitGoal, 'Build Strength');
-      expect(fakeRepo.lastSubmitMonthlyGoal, 8);
-      await cubit.close();
-    });
+        expect(cubit.state.signUpStep, 4);
+        expect(fakeRepo.submitUserGoalCalls, 1);
+        expect(fakeRepo.lastSubmitExperience, 'beginner');
+        expect(fakeRepo.lastSubmitGoal, 'Build Strength');
+        expect(fakeRepo.lastSubmitMonthlyGoal, 8);
+        await cubit.close();
+      },
+    );
 
     test('previousSignUpStep from goals clears stored experience', () async {
       final cubit = buildCubit(
@@ -322,51 +337,55 @@ void main() {
       await cubit.close();
     });
 
-    test('submitSignUpHomeBranchAndFinish calls API and completes sign-up',
-        () async {
-      fakeRepo.setHomeBranchResult = const ApiSuccess<bool>(true);
-      final cubit = buildCubit(
-        seed: AuthState.initial().copyWith(
-          flow: AuthFlow.signUp,
-          signUpStep: 4,
-          selectedSignUpBranchId: 7,
-          signUpBranchesLoadStatus: SignUpBranchesLoadStatus.loaded,
-          signUpBranches: const [
-            Branch(
-              id: 7,
-              title: 'X',
-              city: 'Y',
-              distance: '1',
-              typeLabel: 'Standard',
-            ),
-          ],
-        ),
-      );
+    test(
+      'submitSignUpHomeBranchAndFinish calls API and completes sign-up',
+      () async {
+        fakeRepo.setHomeBranchResult = const ApiSuccess<bool>(true);
+        final cubit = buildCubit(
+          seed: AuthState.initial().copyWith(
+            flow: AuthFlow.signUp,
+            signUpStep: 4,
+            selectedSignUpBranchId: 7,
+            signUpBranchesLoadStatus: SignUpBranchesLoadStatus.loaded,
+            signUpBranches: const [
+              Branch(
+                id: 7,
+                title: 'X',
+                city: 'Y',
+                distance: '1',
+                typeLabel: 'Standard',
+              ),
+            ],
+          ),
+        );
 
-      await cubit.submitSignUpHomeBranchAndFinish();
+        await cubit.submitSignUpHomeBranchAndFinish();
 
-      expect(cubit.state.flow, AuthFlow.authenticated);
-      expect(fakeRepo.setHomeBranchCalls, 1);
-      expect(fakeRepo.lastHomeBranchId, 7);
-      await cubit.close();
-    });
+        expect(cubit.state.flow, AuthFlow.authenticated);
+        expect(fakeRepo.setHomeBranchCalls, 1);
+        expect(fakeRepo.lastHomeBranchId, 7);
+        await cubit.close();
+      },
+    );
 
-    test('submitSignUpHomeBranchAndFinish does nothing without selection',
-        () async {
-      fakeRepo.setHomeBranchResult = const ApiSuccess<bool>(true);
-      final cubit = buildCubit(
-        seed: AuthState.initial().copyWith(
-          flow: AuthFlow.signUp,
-          signUpStep: 4,
-          selectedSignUpBranchId: null,
-        ),
-      );
+    test(
+      'submitSignUpHomeBranchAndFinish does nothing without selection',
+      () async {
+        fakeRepo.setHomeBranchResult = const ApiSuccess<bool>(true);
+        final cubit = buildCubit(
+          seed: AuthState.initial().copyWith(
+            flow: AuthFlow.signUp,
+            signUpStep: 4,
+            selectedSignUpBranchId: null,
+          ),
+        );
 
-      await cubit.submitSignUpHomeBranchAndFinish();
+        await cubit.submitSignUpHomeBranchAndFinish();
 
-      expect(fakeRepo.setHomeBranchCalls, 0);
-      await cubit.close();
-    });
+        expect(fakeRepo.setHomeBranchCalls, 0);
+        await cubit.close();
+      },
+    );
 
     test('previousSignUpStep from branch step clears branch state', () async {
       final cubit = buildCubit(
@@ -426,7 +445,9 @@ void main() {
         NetworkException(
           type: NetworkFailureType.validation,
           message: 'Bad',
-          fieldErrors: {'email': ['invalid']},
+          fieldErrors: {
+            'email': ['invalid'],
+          },
         ),
       );
       final cubit = buildCubit(
@@ -440,61 +461,70 @@ void main() {
       await cubit.close();
     });
 
-    test('requestPhoneLoginOtp success opens phone OTP step in sign-in flow', () async {
-      fakeRepo.phoneOtpResult = const ApiSuccess<bool>(true);
-      final cubit = buildCubit(
-        seed: AuthState.initial().copyWith(flow: AuthFlow.signIn),
-      );
+    test(
+      'requestPhoneLoginOtp success opens phone OTP step in sign-in flow',
+      () async {
+        fakeRepo.phoneOtpResult = const ApiSuccess<bool>(true);
+        final cubit = buildCubit(
+          seed: AuthState.initial().copyWith(flow: AuthFlow.signIn),
+        );
 
-      await cubit.requestPhoneLoginOtp(phone: '+966500000000');
+        await cubit.requestPhoneLoginOtp(phone: '+966500000000');
 
-      expect(cubit.state.signInPendingPhone, '+966500000000');
-      expect(cubit.state.showPhoneOtpSuccess, isFalse);
-      expect(fakeRepo.phoneOtpCalls, 1);
-      await cubit.close();
-    });
+        expect(cubit.state.signInPendingPhone, '+966500000000');
+        expect(cubit.state.showPhoneOtpSuccess, isFalse);
+        expect(fakeRepo.phoneOtpCalls, 1);
+        await cubit.close();
+      },
+    );
 
-    test('verifySignInPhoneOtp success authenticates and saves token', () async {
-      fakeRepo.verifyPhoneOtpResult = ApiSuccess<LoginEmailResult>(
-        LoginEmailResult(
-          user: AuthUser(email: 'p@u.com', phone: '+966500000000'),
-          token: 'phone-login-jwt',
-        ),
-      );
-      final cubit = buildCubit(
-        seed: AuthState.initial().copyWith(
-          flow: AuthFlow.signIn,
-          signInPendingPhone: '+966500000000',
-        ),
-      );
+    test(
+      'verifySignInPhoneOtp success authenticates and saves token',
+      () async {
+        fakeRepo.verifyPhoneOtpResult = ApiSuccess<LoginEmailResult>(
+          LoginEmailResult(
+            user: AuthUser(email: 'p@u.com', phone: '+966500000000'),
+            token: 'phone-login-jwt',
+          ),
+        );
+        final cubit = buildCubit(
+          seed: AuthState.initial().copyWith(
+            flow: AuthFlow.signIn,
+            signInPendingPhone: '+966500000000',
+          ),
+        );
 
-      await cubit.verifySignInPhoneOtp(code: '123456');
+        await cubit.verifySignInPhoneOtp(code: '123456');
 
-      expect(fakeRepo.verifyPhoneOtpCalls, 1);
-      expect(fakeRepo.lastVerifyPhoneOtpPhone, '+966500000000');
-      expect(fakeRepo.lastVerifyPhoneOtpCode, '123456');
-      expect(storage.readToken(), 'phone-login-jwt');
-      expect(cubit.state.flow, AuthFlow.authenticated);
-      expect(cubit.state.signInPendingPhone, isEmpty);
-      await cubit.close();
-    });
+        expect(fakeRepo.verifyPhoneOtpCalls, 1);
+        expect(fakeRepo.lastVerifyPhoneOtpPhone, '+966500000000');
+        expect(fakeRepo.lastVerifyPhoneOtpCode, '123456');
+        expect(storage.readToken(), 'phone-login-jwt');
+        expect(cubit.state.flow, AuthFlow.authenticated);
+        expect(cubit.state.signInPendingPhone, isEmpty);
+        await cubit.close();
+      },
+    );
 
-    test('resendSignInPhoneOtp calls sendPhoneOtp with sign-in pending phone', () async {
-      fakeRepo.sendPhoneOtpResult = const ApiSuccess<bool>(true);
-      final cubit = buildCubit(
-        seed: AuthState.initial().copyWith(
-          flow: AuthFlow.signIn,
-          signInPendingPhone: '+966500000000',
-        ),
-      );
+    test(
+      'resendSignInPhoneOtp calls sendPhoneOtp with sign-in pending phone',
+      () async {
+        fakeRepo.sendPhoneOtpResult = const ApiSuccess<bool>(true);
+        final cubit = buildCubit(
+          seed: AuthState.initial().copyWith(
+            flow: AuthFlow.signIn,
+            signInPendingPhone: '+966500000000',
+          ),
+        );
 
-      await cubit.resendSignInPhoneOtp();
+        await cubit.resendSignInPhoneOtp();
 
-      expect(cubit.state.phoneOtpSendUiStatus, PhoneOtpSendUiStatus.idle);
-      expect(fakeRepo.sendPhoneOtpCalls, 1);
-      expect(fakeRepo.lastSendPhoneOtpPhone, '+966500000000');
-      await cubit.close();
-    });
+        expect(cubit.state.phoneOtpSendUiStatus, PhoneOtpSendUiStatus.idle);
+        expect(fakeRepo.sendPhoneOtpCalls, 1);
+        expect(fakeRepo.lastSendPhoneOtpPhone, '+966500000000');
+        await cubit.close();
+      },
+    );
   });
 
   group('AuthCubit logout', () {
@@ -592,7 +622,9 @@ void main() {
         NetworkException(
           type: NetworkFailureType.validation,
           message: 'not found',
-          fieldErrors: {'email': ['invalid']},
+          fieldErrors: {
+            'email': ['invalid'],
+          },
         ),
       );
       final cubit = buildCubit(
@@ -607,32 +639,35 @@ void main() {
     });
 
     test(
-        'resendForgotPasswordEmail calls sendEmailVerification, not password forgot',
-        () async {
-      fakeRepo.sendEmailVerificationResult = const ApiSuccess<bool>(true);
-      final cubit = buildCubit(
-        seed: AuthState.initial().copyWith(
-          flow: AuthFlow.signIn,
-          forgotPasswordEmail: 'noor@example.com',
-        ),
-      );
+      'resendForgotPasswordEmail calls sendEmailVerification, not password forgot',
+      () async {
+        fakeRepo.sendEmailVerificationResult = const ApiSuccess<bool>(true);
+        final cubit = buildCubit(
+          seed: AuthState.initial().copyWith(
+            flow: AuthFlow.signIn,
+            forgotPasswordEmail: 'noor@example.com',
+          ),
+        );
 
-      await cubit.resendForgotPasswordEmail('noor@example.com');
+        await cubit.resendForgotPasswordEmail('noor@example.com');
 
-      expect(cubit.state.forgotPasswordUiStatus, ForgotPasswordUiStatus.idle);
-      expect(fakeRepo.passwordForgotCalls, 0);
-      expect(fakeRepo.sendEmailVerificationCalls, 1);
-      expect(fakeRepo.lastSendEmailVerificationEmail, 'noor@example.com');
-      expect(cubit.state.showForgotPasswordOtp, isFalse);
-      await cubit.close();
-    });
+        expect(cubit.state.forgotPasswordUiStatus, ForgotPasswordUiStatus.idle);
+        expect(fakeRepo.passwordForgotCalls, 0);
+        expect(fakeRepo.sendEmailVerificationCalls, 1);
+        expect(fakeRepo.lastSendEmailVerificationEmail, 'noor@example.com');
+        expect(cubit.state.showForgotPasswordOtp, isFalse);
+        await cubit.close();
+      },
+    );
 
     test('resendForgotPasswordEmail failure maps field errors', () async {
       fakeRepo.sendEmailVerificationResult = ApiFailure<bool>(
         NetworkException(
           type: NetworkFailureType.validation,
           message: 'rate limited',
-          fieldErrors: {'email': ['too many']},
+          fieldErrors: {
+            'email': ['too many'],
+          },
         ),
       );
       final cubit = buildCubit(
@@ -679,24 +714,27 @@ void main() {
   });
 
   group('AuthCubit post-login goal', () {
-    test('continuePostLoginExperience advances step and stores value', () async {
-      fakeRepo.loginResult = const ApiSuccess<LoginEmailResult>(
-        LoginEmailResult(
-          user: AuthUser(email: 'a@b.com'),
-          token: 'jwt-test',
-        ),
-      );
-      final cubit = buildCubit(
-        seed: AuthState.initial().copyWith(flow: AuthFlow.signIn),
-      );
+    test(
+      'continuePostLoginExperience advances step and stores value',
+      () async {
+        fakeRepo.loginResult = const ApiSuccess<LoginEmailResult>(
+          LoginEmailResult(
+            user: AuthUser(email: 'a@b.com'),
+            token: 'jwt-test',
+          ),
+        );
+        final cubit = buildCubit(
+          seed: AuthState.initial().copyWith(flow: AuthFlow.signIn),
+        );
 
-      await cubit.loginWithEmail(email: 'a@b.com', password: 'x');
-      cubit.continuePostLoginExperience('intermediate');
+        await cubit.loginWithEmail(email: 'a@b.com', password: 'x');
+        cubit.continuePostLoginExperience('intermediate');
 
-      expect(cubit.state.postLoginStep, 1);
-      expect(cubit.state.postLoginExperience, 'intermediate');
-      await cubit.close();
-    });
+        expect(cubit.state.postLoginStep, 1);
+        expect(cubit.state.postLoginExperience, 'intermediate');
+        await cubit.close();
+      },
+    );
 
     test('submitPostLoginGoal success goes to authenticated', () async {
       fakeRepo.submitUserGoalResult = const ApiSuccess<bool>(true);
@@ -708,10 +746,7 @@ void main() {
         ),
       );
 
-      await cubit.submitPostLoginGoal(
-        goal: 'Build Strength',
-        monthlyGoal: 12,
-      );
+      await cubit.submitPostLoginGoal(goal: 'Build Strength', monthlyGoal: 12);
 
       expect(cubit.state.flow, AuthFlow.authenticated);
       expect(fakeRepo.submitUserGoalCalls, 1);
@@ -721,25 +756,28 @@ void main() {
       await cubit.close();
     });
 
-    test('submitPostLoginGoal does nothing when experience was not set', () async {
-      fakeRepo.submitUserGoalResult = const ApiSuccess<bool>(true);
-      final cubit = buildCubit(
-        seed: AuthState.initial().copyWith(
-          flow: AuthFlow.postLoginSetup,
-          postLoginStep: 1,
-          postLoginExperience: '',
-        ),
-      );
+    test(
+      'submitPostLoginGoal does nothing when experience was not set',
+      () async {
+        fakeRepo.submitUserGoalResult = const ApiSuccess<bool>(true);
+        final cubit = buildCubit(
+          seed: AuthState.initial().copyWith(
+            flow: AuthFlow.postLoginSetup,
+            postLoginStep: 1,
+            postLoginExperience: '',
+          ),
+        );
 
-      await cubit.submitPostLoginGoal(
-        goal: 'Build Strength',
-        monthlyGoal: 12,
-      );
+        await cubit.submitPostLoginGoal(
+          goal: 'Build Strength',
+          monthlyGoal: 12,
+        );
 
-      expect(fakeRepo.submitUserGoalCalls, 0);
-      expect(cubit.state.flow, AuthFlow.postLoginSetup);
-      await cubit.close();
-    });
+        expect(fakeRepo.submitUserGoalCalls, 0);
+        expect(cubit.state.flow, AuthFlow.postLoginSetup);
+        await cubit.close();
+      },
+    );
 
     test('cancelPostLoginSetup clears token and returns to sign in', () async {
       fakeRepo.loginResult = const ApiSuccess<LoginEmailResult>(

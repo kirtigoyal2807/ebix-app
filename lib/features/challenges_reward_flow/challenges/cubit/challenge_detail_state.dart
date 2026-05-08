@@ -15,10 +15,10 @@ class ChallengeDetailState extends Equatable {
   final String errorMessage;
 
   factory ChallengeDetailState.initial() => const ChallengeDetailState(
-        status: ChallengeDetailLoadStatus.initial,
-        detail: null,
-        errorMessage: '',
-      );
+    status: ChallengeDetailLoadStatus.initial,
+    detail: null,
+    errorMessage: '',
+  );
 
   ChallengeDetailState copyWith({
     ChallengeDetailLoadStatus? status,

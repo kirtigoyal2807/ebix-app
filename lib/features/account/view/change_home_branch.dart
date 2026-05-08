@@ -11,11 +11,7 @@ import 'package:pilates_app/widgets/app_button.dart';
 import '../../auth/sign_up/widgets/branch_option.dart';
 
 class ChangeHomeBranch extends StatefulWidget {
-  const ChangeHomeBranch({
-    super.key,
-    this.title,
-    this.readOnly = false,
-  });
+  const ChangeHomeBranch({super.key, this.title, this.readOnly = false});
 
   final String? title;
   final bool readOnly;
@@ -34,6 +30,7 @@ class _ChangeHomeBranchState extends State<ChangeHomeBranch> {
   @override
   void initState() {
     super.initState();
+    _selectedBranchId = context.read<AuthCubit>().state.user?.homeBranch?.id;
     _fetchBranches();
   }
 
@@ -55,14 +52,17 @@ class _ChangeHomeBranchState extends State<ChangeHomeBranch> {
           _branches = data.branches;
           _isLoadingBranches = false;
           if (_branches.isNotEmpty) {
-            _selectedBranchId ??= _branches.first.id;
+            final selectedExists = _selectedBranchId != null &&
+                _branches.any((branch) => branch.id == _selectedBranchId);
+            if (!selectedExists) {
+              _selectedBranchId = _branches.first.id;
+            }
           }
         });
       case ApiFailure(:final exception):
         setState(() {
           _isLoadingBranches = false;
-          _loadErrorMessage =
-              (exception.message ?? '').trim().isNotEmpty
+          _loadErrorMessage = (exception.message ?? '').trim().isNotEmpty
               ? exception.message!.trim()
               : context.l10n.branchesCouldNotLoad;
         });
@@ -103,9 +103,7 @@ class _ChangeHomeBranchState extends State<ChangeHomeBranch> {
         final message = (exception.message ?? '').trim().isNotEmpty
             ? exception.message!.trim()
             : context.l10n.somethingWentWrong;
-        messenger.showSnackBar(
-          SnackBar(content: Text(message)),
-        );
+        messenger.showSnackBar(SnackBar(content: Text(message)));
     }
   }
 
@@ -121,29 +119,29 @@ class _ChangeHomeBranchState extends State<ChangeHomeBranch> {
         onBack: () => Navigator.of(context).pop(),
         isMoreMenu: false,
       ),
-      body: Padding(
-        padding: EdgeInsets.symmetric(
-          vertical: AppSpacing.md,
-          horizontal: AppSpacing.lg,
-        ),
-        child: Column(
-          children: [
-            Expanded(
-              child: _buildBranchesContent(context),
-            ),
-            if (!widget.readOnly)
-              AppButton(
+      body: Column(
+        children: [
+          Expanded(child: _buildBranchesContent(context)),
+          if (!widget.readOnly)
+            Padding(
+              padding: const EdgeInsets.only(
+                bottom: AppSpacing.md,
+                left: AppSpacing.lg,
+                right: AppSpacing.lg,
+              ),
+              child: AppButton(
                 label: context.l10n.updateHomeBranch,
                 variant: AppButtonVariant.primary,
                 isLoading: _isUpdatingHomeBranch,
-                onPressed: (_selectedBranchId == null ||
+                onPressed:
+                    (_selectedBranchId == null ||
                         _isLoadingBranches ||
                         _isUpdatingHomeBranch)
                     ? null
                     : _updateHomeBranch,
               ),
-          ],
-        ),
+            ),
+        ],
       ),
     );
   }
@@ -155,50 +153,61 @@ class _ChangeHomeBranchState extends State<ChangeHomeBranch> {
 
     if (_loadErrorMessage.isNotEmpty) {
       return Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(_loadErrorMessage),
-            const SizedBox(height: AppSpacing.md),
-            AppButton(
-              label: context.l10n.retry,
-              variant: AppButtonVariant.secondary,
-              onPressed: _fetchBranches,
-            ),
-          ],
+        child: Padding(
+          padding: const EdgeInsets.only(
+            bottom: AppSpacing.md,
+            left: AppSpacing.lg,
+            right: AppSpacing.lg,
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(_loadErrorMessage),
+              const SizedBox(height: AppSpacing.md),
+              AppButton(
+                label: context.l10n.retry,
+                variant: AppButtonVariant.secondary,
+                onPressed: _fetchBranches,
+              ),
+            ],
+          ),
         ),
       );
     }
 
     if (_branches.isEmpty) {
-      return Center(
-        child: Text(context.l10n.noBranchesAvailable),
-      );
+      return Center(child: Text(context.l10n.noBranchesAvailable));
     }
 
     return SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: _branches
-            .map(
-              (branch) => Padding(
-                padding: const EdgeInsets.only(bottom: AppSpacing.base),
-                child: BranchOption(
-                  title: branch.title,
-                  city: branch.city,
-                  distance: branch.distance,
-                  type: branch.typeLabel,
-                  imageUrl: branch.imageUrl,
-                  isOnBoarding: false,
-                  selected: _selectedBranchId == branch.id,
-                  onTap: widget.readOnly
-                      ? () {}
-                      : () => setState(() => _selectedBranchId = branch.id),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+          vertical: AppSpacing.md,
+          horizontal: AppSpacing.lg,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: _branches
+              .map(
+                (branch) => Padding(
+                  padding: const EdgeInsets.only(bottom: AppSpacing.base),
+                  child: BranchOption(
+                    title: branch.title,
+                    city: branch.city,
+                    distance: branch.distance,
+                    type: branch.typeLabel,
+                    imageUrl: branch.imageUrl,
+                    isOnBoarding: false,
+                    selected: _selectedBranchId == branch.id,
+                    onTap: widget.readOnly
+                        ? () {}
+                        : () => setState(() => _selectedBranchId = branch.id),
+                  ),
                 ),
-              ),
-            )
-            .toList(),
+              )
+              .toList(),
+        ),
       ),
     );
   }

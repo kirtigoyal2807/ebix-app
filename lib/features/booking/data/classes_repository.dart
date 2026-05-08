@@ -57,19 +57,15 @@ class ClassesRepository extends BaseRepository {
           return ApiFailure(
             NetworkException.fromApiEnvelope(
               statusCode: code,
-              message:
-                  envelope.message.isEmpty
-                      ? 'Request failed'
-                      : envelope.message,
+              message: envelope.message.isEmpty
+                  ? 'Request failed'
+                  : envelope.message,
               fieldErrors: envelope.fieldErrors,
               responseData: raw,
             ),
           );
         }
-        return ApiSuccess(
-          _parseClassList(envelope.data),
-          statusCode: code,
-        );
+        return ApiSuccess(_parseClassList(envelope.data), statusCode: code);
       }
       return ApiSuccess(_parseClassList(raw), statusCode: code);
     } on DioException catch (e, st) {
@@ -80,7 +76,9 @@ class ClassesRepository extends BaseRepository {
   }
 
   static List<GymClassResource> _parseClassList(dynamic payload) {
-    final list = payload is List ? payload : (payload is Map ? payload['data'] ?? [] : []);
+    final list = payload is List
+        ? payload
+        : (payload is Map ? payload['data'] ?? [] : []);
     final out = <GymClassResource>[];
     if (list is List) {
       for (final e in list) {
@@ -238,10 +236,10 @@ class PurchaseSessionResult {
 
     return PurchaseSessionResult(
       enrollment: enrollment,
-      paymentReference: '${json['paymentReference'] ?? json['payment_reference'] ?? ''}',
+      paymentReference:
+          '${json['paymentReference'] ?? json['payment_reference'] ?? ''}',
       paymentUrl:
-          json['paymentUrl']?.toString() ??
-          json['payment_url']?.toString(),
+          json['paymentUrl']?.toString() ?? json['payment_url']?.toString(),
       token: json['token']?.toString(),
       provider: '${json['provider'] ?? ''}',
       amount: _doubleOrZero(json['amount']),

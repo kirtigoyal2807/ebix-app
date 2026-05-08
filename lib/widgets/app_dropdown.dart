@@ -34,10 +34,7 @@ class AppDropDown<T> extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         /// LABEL
-        AppText(
-          label,
-          style: AppTextStyles.textFieldHeading,
-        ),
+        AppText(label, style: AppTextStyles.textFieldHeading),
 
         const SizedBox(height: AppSpacing.sm),
 
@@ -55,9 +52,9 @@ class AppDropDown<T> extends StatelessWidget {
             style: AppTextStyles.textField(context),
             hint: Text(
               hint,
-              style: AppTextStyles.textField(context).copyWith(
-                color: AppColors.lightGrey,
-              ),
+              style: AppTextStyles.textField(
+                context,
+              ).copyWith(color: AppColors.lightGrey),
             ),
             icon: Padding(
               padding: const EdgeInsets.only(right: 12),
@@ -68,10 +65,11 @@ class AppDropDown<T> extends StatelessWidget {
               ),
             ),
             decoration: InputDecoration(
-
               isDense: true,
               // hintText: hint,
-              hintStyle: AppTextStyles.textField(context).copyWith(color: AppColors.lightGrey),
+              hintStyle: AppTextStyles.textField(
+                context,
+              ).copyWith(color: AppColors.lightGrey),
               contentPadding: const EdgeInsets.symmetric(
                 horizontal: 14,
                 vertical: 14,
@@ -89,9 +87,7 @@ class AppDropDown<T> extends StatelessWidget {
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(AppRadius.md),
                 borderSide: BorderSide(
-                  color: hasError
-                      ? Colors.red
-                      : theme.colorScheme.primary,
+                  color: hasError ? Colors.red : theme.colorScheme.primary,
                   width: 1.5,
                 ),
               ),
@@ -109,7 +105,9 @@ class AppDropDown<T> extends StatelessWidget {
                 ),
               ),
             ),
-            dropdownColor: isDark ? AppColors.surfaceDark : AppColors.surfaceLight,
+            dropdownColor: isDark
+                ? AppColors.surfaceDark
+                : AppColors.surfaceLight,
             borderRadius: BorderRadius.circular(AppRadius.md),
           ),
         ),

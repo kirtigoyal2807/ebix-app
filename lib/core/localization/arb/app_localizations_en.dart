@@ -164,13 +164,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get emailSupport => 'Email Support';
 
   @override
-  String get emailSupportDesc => 'support@thepilatesstudio.com';
+  String get emailSupportDesc => 'info@thepilates.sa';
 
   @override
   String get phoneSupport => 'Phone Support';
 
   @override
-  String get phoneSupportDesc => '91 98765 43210 • Mon-Sat 9 AM - 7 PM';
+  String get phoneSupportDesc => '+966 55 337 8395 • Mon-Sat 9 AM - 7 PM';
 
   @override
   String get splashAppName => 'The Pilates';
@@ -217,7 +217,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get experience => 'Experience';
 
   @override
-  String get selectedBranch => 'Selected Branch';
+  String get selectedBranch => 'Select Branch';
 
   @override
   String get selectLanguage => 'Select Language';
@@ -319,7 +319,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get readyToFlow => 'Ready to flow?';
 
   @override
-  String get bookNow => 'Book Now';
+  String get bookNow => 'Book\nNow';
 
   @override
   String get exploreBranches => 'Explore Branches';
@@ -483,7 +483,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get tomorrow => 'Tomorrow';
 
   @override
-  String get thisWeek => 'This Week';
+  String get thisWeek => 'This\nWeek';
 
   @override
   String get nextWeek => 'Next Week';
@@ -1646,7 +1646,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get giftProcessedMessage =>
-      'Your gift subscription has been processed';
+      'Your gift subscription has been\nprocessed';
 
   @override
   String get deliverySummary => 'Delivery Summary';
@@ -2787,6 +2787,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get recentReferrals => 'Recent Referrals';
 
   @override
+  String get noRecentReferrals => 'No recent referrals';
+
+  @override
   String get referralCodeCopied => 'Referral code copied to clipboard';
 
   @override
@@ -2913,10 +2916,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get reviews => 'Reviews';
 
   @override
-  String get classesTaught => 'Classes Taught';
+  String get classesTaught => 'Classes\nTaught';
 
   @override
-  String get returnRate => 'Return Rate';
+  String get returnRate => 'Return\nRate';
 
   @override
   String get about => 'About';
@@ -2963,10 +2966,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get sportsRehabilitationTraining => 'Sports Rehabilitation Training';
-
-  @override
-  String get anatomyBiomechanicsCertificate =>
-      'Anatomy & Biomechanics Certificate';
 
   @override
   String get loginOtpSent => 'Verification code sent. Check your phone.';
@@ -3064,4 +3063,53 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get notNow => 'Not Now';
+
+  @override
+  String get takePicture => 'Take Picture';
+
+  @override
+  String get accessFromGallery => 'Access from gallery';
+
+  @override
+  String get removeProfilePicture => 'Remove Profile Picture';
+
+  @override
+  String get anatomyBiomechanicsCertificate =>
+      'Anatomy & Biomechanics Certificate';
+
+  @override
+  String get branches => 'Branches';
+
+  @override
+  String get voucherSuccess => 'Voucher code applied successfully';
+
+  @override
+  String get voucherFailed => 'Voucher code invalid';
+
+  @override
+  String get rewardRedemption => 'Reward redeemed\nsuccessfully';
+
+  @override
+  String get date_of_birth => 'Date of Birth';
+
+  @override
+  String get take_picture => 'Take Picture';
+
+  @override
+  String get access_gallery => 'Access from Gallery';
+
+  @override
+  String get remove_profile_picture => 'Remove Profile Picture';
+
+  @override
+  String get rewardsEarned => 'Rewards Earned';
+
+  @override
+  String get pointsAndAchievements => 'Points and achievements';
+
+  @override
+  String get selectDOB => 'Select Date of birth';
+
+  @override
+  String get reformerTower => 'Reformer & Tower Equipment Specialist';
 }

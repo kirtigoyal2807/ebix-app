@@ -22,10 +22,13 @@ class ProgressOverview {
   final int currentStreak;
   final int longestStreak;
   final double attendanceRate;
+
   /// Month-to-date morning session count from overview API.
   final int mtdMorningSessions;
+
   /// Distinct flow instructors engaged with this month.
   final int flowInstructors;
+
   /// Inner peace score as a percentage (0–100 scale from API).
   final double innerPeacePercent;
   final String? favoriteTrainer;

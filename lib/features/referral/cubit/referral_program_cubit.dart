@@ -138,13 +138,16 @@ class ReferralProgramCubit extends Cubit<ReferralProgramState> {
       case ApiFailure(:final exception):
         final fields = _mapFieldErrors(exception);
         final phoneErr =
-            fields['inviteephone'] ?? fields['invitee_phone'] ?? fields['phone'];
+            fields['inviteephone'] ??
+            fields['invitee_phone'] ??
+            fields['phone'];
         emit(
           state.copyWith(
             inviteSubmitting: false,
             invitePhoneApiError: phoneErr,
-            inviteErrorSnackMessage:
-                phoneErr == null ? exception.message : null,
+            inviteErrorSnackMessage: phoneErr == null
+                ? exception.message
+                : null,
           ),
         );
     }

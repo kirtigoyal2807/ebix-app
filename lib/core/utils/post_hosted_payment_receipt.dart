@@ -76,10 +76,11 @@ Future<void> pushReceiptAfterHostedPayment({
 
   final MembershipReceiptSummary receipt;
   if (summaryPayload != null) {
-    receipt = MembershipReceiptSummary.fromPaymentSuccessSummary(summaryPayload);
+    receipt = MembershipReceiptSummary.fromPaymentSuccessSummary(
+      summaryPayload,
+    );
   } else {
-    CheckoutStartResult? session =
-        await repo.refreshCheckoutAfterHostedPayment(
+    CheckoutStartResult? session = await repo.refreshCheckoutAfterHostedPayment(
       checkoutSessionId,
       maxAttempts: maxAttempts,
       delayBetweenAttempts: delayBetweenAttempts,

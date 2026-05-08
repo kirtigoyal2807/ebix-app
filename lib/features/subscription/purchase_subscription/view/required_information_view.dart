@@ -50,8 +50,9 @@ class _RequiredInformationViewState extends State<RequiredInformationView> {
   void initState() {
     super.initState();
     final s = context.read<SubscriptionCubit>().state;
-    _emergencyNameController =
-        TextEditingController(text: s.emergencyContactName);
+    _emergencyNameController = TextEditingController(
+      text: s.emergencyContactName,
+    );
     _emergencyPhoneController = TextEditingController(
       text: s.emergencyContactPhone.trim().isEmpty
           ? ''
@@ -90,9 +91,11 @@ class _RequiredInformationViewState extends State<RequiredInformationView> {
     final idNum = s.idNumber.trim();
 
     final nameOk = name.isNotEmpty && ContactValidators.isValidPersonName(name);
-    final phoneOk =
-        PersonalInformationValidators.isTenDigitMobile(s.emergencyContactPhone);
-    final relOk = s.emergencyContactRelationship != null &&
+    final phoneOk = PersonalInformationValidators.isTenDigitMobile(
+      s.emergencyContactPhone,
+    );
+    final relOk =
+        s.emergencyContactRelationship != null &&
         s.emergencyContactRelationship!.trim().isNotEmpty;
     final typeOk = s.idType != null && s.idType!.trim().isNotEmpty;
     final idLen = idNum.length;
@@ -107,19 +110,16 @@ class _RequiredInformationViewState extends State<RequiredInformationView> {
       _phoneError = s.emergencyContactPhone.trim().isEmpty
           ? l10n.pleaseEnterPhone
           : (!phoneOk ? l10n.phoneTenDigitsRequired : null);
-      _relationshipError =
-          relOk ? null : l10n.pleaseCompletePersonalInformation;
+      _relationshipError = relOk
+          ? null
+          : l10n.pleaseCompletePersonalInformation;
       _idTypeError = typeOk ? null : l10n.pleaseCompletePersonalInformation;
       _idNumberError = idNum.isEmpty
           ? l10n.pleaseCompletePersonalInformation
           : (!idOk ? l10n.pleaseCompletePersonalInformation : null);
     });
 
-    if (!nameOk ||
-        !phoneOk ||
-        !relOk ||
-        !typeOk ||
-        !idOk) {
+    if (!nameOk || !phoneOk || !relOk || !typeOk || !idOk) {
       return;
     }
 
@@ -230,230 +230,234 @@ class _RequiredInformationViewState extends State<RequiredInformationView> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                    Container(
-                      padding: const EdgeInsets.all(AppSpacing.md),
-                      decoration: BoxDecoration(
-                        color: isDark
-                            ? AppColors.warningColor.withValues(alpha: 0.11)
-                            : AppColors.upgradeLightBackgroundColor,
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Icon(
-                            Icons.info_outline_rounded,
+                        Container(
+                          padding: const EdgeInsets.all(AppSpacing.md),
+                          decoration: BoxDecoration(
                             color: isDark
-                                ? AppColors.warningColor
-                                : AppColors.lightRedColor,
-                            size: 22,
+                                ? AppColors.warningColor.withValues(alpha: 0.11)
+                                : AppColors.upgradeLightBackgroundColor,
+                            borderRadius: BorderRadius.circular(16),
                           ),
-                          const SizedBox(width: AppSpacing.sm),
-                          Expanded(
-                            child: RichText(
-                              text: TextSpan(
-                                children: [
-                                  TextSpan(
-                                    text:
-                                        '${l10n.requiredForLegalComplianceShort}: ',
-                                    style: AppTextStyles.bodyText(context)
-                                        .copyWith(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w600,
-                                      color: isDark
-                                          ? AppColors.darkGreyText
-                                          : AppColors.greyText,
-                                    ),
-                                  ),
-                                  TextSpan(
-                                    text: l10n.requiredForLegalCompliance,
-                                    style: AppTextStyles.bodyText(context)
-                                        .copyWith(
-                                      fontSize: 12,
-                                      color: isDark
-                                          ? AppColors.darkGreyText
-                                          : AppColors.greyText,
-                                    ),
-                                  ),
-                                ],
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Icon(
+                                Icons.info_outline_rounded,
+                                color: isDark
+                                    ? AppColors.warningColor
+                                    : AppColors.lightRedColor,
+                                size: 22,
                               ),
-                            ),
+                              const SizedBox(width: AppSpacing.sm),
+                              Expanded(
+                                child: RichText(
+                                  text: TextSpan(
+                                    children: [
+                                      TextSpan(
+                                        text:
+                                            '${l10n.requiredForLegalComplianceShort}: ',
+                                        style: AppTextStyles.bodyText(context)
+                                            .copyWith(
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.w600,
+                                              color: isDark
+                                                  ? AppColors.darkGreyText
+                                                  : AppColors.greyText,
+                                            ),
+                                      ),
+                                      TextSpan(
+                                        text: l10n.requiredForLegalCompliance,
+                                        style: AppTextStyles.bodyText(context)
+                                            .copyWith(
+                                              fontSize: 12,
+                                              color: isDark
+                                                  ? AppColors.darkGreyText
+                                                  : AppColors.greyText,
+                                            ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
-                    ),
+                        ),
 
-                    const SizedBox(height: AppSpacing.xl),
+                        const SizedBox(height: AppSpacing.xl),
 
-                    AppText(
-                      l10n.emergencyContact,
-                      style: (style) => AppTextStyles.heading1(context),
-                    ),
-                    const SizedBox(height: 4),
-                    AppText(
-                      l10n.emergencyContactSubtitle,
-                      style: (context) => AppTextStyles.bodyText(context),
-                    ),
-                    const SizedBox(height: AppSpacing.lg),
+                        AppText(
+                          l10n.emergencyContact,
+                          style: (style) => AppTextStyles.heading1(context),
+                        ),
+                        const SizedBox(height: 4),
+                        AppText(
+                          l10n.emergencyContactSubtitle,
+                          style: (context) => AppTextStyles.bodyText(context),
+                        ),
+                        const SizedBox(height: AppSpacing.lg),
 
-                    AppTextField(
-                      label: l10n.contactName,
-                      hint: l10n.fullName,
-                      controller: _emergencyNameController,
-                      errorText: _nameError,
-                      keyboardType: TextInputType.name,
-                      onChanged: (_) {
-                        cubit.updateEmergencyContactName(
-                          _emergencyNameController.text,
-                        );
-                        setState(() => _nameError = null);
-                      },
-                    ),
-                    const SizedBox(height: AppSpacing.md),
-
-                    BlocBuilder<SubscriptionCubit, SubscriptionState>(
-                      buildWhen: (p, c) =>
-                          p.emergencyContactRelationship !=
-                          c.emergencyContactRelationship,
-                      builder: (context, state) {
-                        return AppDropDown<String>(
-                          label: l10n.relationship,
-                          hint: l10n.selectRelationship,
-                          value: state.emergencyContactRelationship,
-                          errorText: _relationshipError,
-                          items: [
-                            'Parent',
-                            'Spouse',
-                            'Sibling',
-                            'Friend',
-                            'Other',
-                          ].map((e) {
-                            String label = e;
-                            switch (e) {
-                              case 'Parent':
-                                label = l10n.relationshipParent;
-                                break;
-                              case 'Spouse':
-                                label = l10n.relationshipSpouse;
-                                break;
-                              case 'Sibling':
-                                label = l10n.relationshipSibling;
-                                break;
-                              case 'Friend':
-                                label = l10n.relationshipFriend;
-                                break;
-                              case 'Other':
-                                label = l10n.relationshipOther;
-                                break;
-                            }
-                            return DropdownMenuItem(
-                              value: e,
-                              child: Text(
-                                label,
-                                style: AppTextStyles.textField(context),
-                              ),
+                        AppTextField(
+                          label: l10n.contactName,
+                          hint: l10n.fullName,
+                          controller: _emergencyNameController,
+                          errorText: _nameError,
+                          keyboardType: TextInputType.name,
+                          onChanged: (_) {
+                            cubit.updateEmergencyContactName(
+                              _emergencyNameController.text,
                             );
-                          }).toList(),
-                          onChanged: (val) {
-                            if (val != null) {
-                              cubit.updateEmergencyContactRelationship(val);
-                              setState(() => _relationshipError = null);
-                            }
+                            setState(() => _nameError = null);
                           },
-                        );
-                      },
-                    ),
-                    const SizedBox(height: AppSpacing.md),
+                        ),
+                        const SizedBox(height: AppSpacing.md),
 
-                    PhoneNumberField(
-                      label: l10n.phoneNumber,
-                      countryCode: _emergencyPhoneCountry?.dialCode ?? '+966',
-                      flagAsset: '',
-                      controller: _emergencyPhoneController,
-                      maxPhoneDigits: 10,
-                      initialCountryIso: _emergencyPhoneCountry?.code ?? 'SA',
-                      errorText: _phoneError,
-                      onCountryChanged: (country) {
-                        setState(() {
-                          _emergencyPhoneCountry = country;
-                          _phoneError = null;
-                        });
-                      },
-                      onChanged: (v) {
-                        cubit.updateEmergencyContactPhone(v);
-                        setState(() => _phoneError = null);
-                      },
-                    ),
-
-                    const SizedBox(height: AppSpacing.xl),
-
-                    AppText(
-                      l10n.identityVerification,
-                      style: (style) => AppTextStyles.heading1(context),
-                    ),
-                    const SizedBox(height: 4),
-                    AppText(
-                      l10n.requiredForLegalComplianceShort,
-                      style: (context) => AppTextStyles.bodyText(context),
-                    ),
-                    const SizedBox(height: AppSpacing.lg),
-
-                    BlocBuilder<SubscriptionCubit, SubscriptionState>(
-                      buildWhen: (p, c) => p.idType != c.idType,
-                      builder: (context, state) {
-                        return AppDropDown<String>(
-                          label: l10n.idType,
-                          hint: l10n.selectIdType,
-                          value: state.idType,
-                          errorText: _idTypeError,
-                          items: [
-                            'National ID',
-                            'Passport',
-                            'Driver License',
-                          ].map((e) {
-                            String label = e;
-                            switch (e) {
-                              case 'National ID':
-                                label = l10n.idTypeNationalId;
-                                break;
-                              case 'Passport':
-                                label = l10n.idTypePassport;
-                                break;
-                              case 'Driver License':
-                                label = l10n.idTypeDriverLicense;
-                                break;
-                            }
-                            return DropdownMenuItem(
-                              value: e,
-                              child: Text(
-                                label,
-                                style: AppTextStyles.textField(context),
-                              ),
+                        BlocBuilder<SubscriptionCubit, SubscriptionState>(
+                          buildWhen: (p, c) =>
+                              p.emergencyContactRelationship !=
+                              c.emergencyContactRelationship,
+                          builder: (context, state) {
+                            return AppDropDown<String>(
+                              label: l10n.relationship,
+                              hint: l10n.selectRelationship,
+                              value: state.emergencyContactRelationship,
+                              errorText: _relationshipError,
+                              items:
+                                  [
+                                    'Parent',
+                                    'Spouse',
+                                    'Sibling',
+                                    'Friend',
+                                    'Other',
+                                  ].map((e) {
+                                    String label = e;
+                                    switch (e) {
+                                      case 'Parent':
+                                        label = l10n.relationshipParent;
+                                        break;
+                                      case 'Spouse':
+                                        label = l10n.relationshipSpouse;
+                                        break;
+                                      case 'Sibling':
+                                        label = l10n.relationshipSibling;
+                                        break;
+                                      case 'Friend':
+                                        label = l10n.relationshipFriend;
+                                        break;
+                                      case 'Other':
+                                        label = l10n.relationshipOther;
+                                        break;
+                                    }
+                                    return DropdownMenuItem(
+                                      value: e,
+                                      child: Text(
+                                        label,
+                                        style: AppTextStyles.textField(context),
+                                      ),
+                                    );
+                                  }).toList(),
+                              onChanged: (val) {
+                                if (val != null) {
+                                  cubit.updateEmergencyContactRelationship(val);
+                                  setState(() => _relationshipError = null);
+                                }
+                              },
                             );
-                          }).toList(),
-                          onChanged: (val) {
-                            if (val != null) {
-                              cubit.updateIdType(val);
-                              setState(() => _idTypeError = null);
-                            }
                           },
-                        );
-                      },
-                    ),
-                    const SizedBox(height: AppSpacing.md),
+                        ),
+                        const SizedBox(height: AppSpacing.md),
 
-                    AppTextField(
-                      label: l10n.idNumber,
-                      hint: l10n.idNumber,
-                      controller: _idNumberController,
-                      maxLength: 100,
-                      errorText: _idNumberError,
-                      onChanged: (_) {
-                        cubit.updateIdNumber(_idNumberController.text);
-                        setState(() => _idNumberError = null);
-                      },
-                    ),
-                    const SizedBox(height: AppSpacing.xxl),
+                        PhoneNumberField(
+                          label: l10n.phoneNumber,
+                          countryCode:
+                              _emergencyPhoneCountry?.dialCode ?? '+966',
+                          flagAsset: '',
+                          controller: _emergencyPhoneController,
+                          maxPhoneDigits: 10,
+                          initialCountryIso:
+                              _emergencyPhoneCountry?.code ?? 'SA',
+                          errorText: _phoneError,
+                          onCountryChanged: (country) {
+                            setState(() {
+                              _emergencyPhoneCountry = country;
+                              _phoneError = null;
+                            });
+                          },
+                          onChanged: (v) {
+                            cubit.updateEmergencyContactPhone(v);
+                            setState(() => _phoneError = null);
+                          },
+                        ),
+
+                        const SizedBox(height: AppSpacing.xl),
+
+                        AppText(
+                          l10n.identityVerification,
+                          style: (style) => AppTextStyles.heading1(context),
+                        ),
+                        const SizedBox(height: 4),
+                        AppText(
+                          l10n.requiredForLegalComplianceShort,
+                          style: (context) => AppTextStyles.bodyText(context),
+                        ),
+                        const SizedBox(height: AppSpacing.lg),
+
+                        BlocBuilder<SubscriptionCubit, SubscriptionState>(
+                          buildWhen: (p, c) => p.idType != c.idType,
+                          builder: (context, state) {
+                            return AppDropDown<String>(
+                              label: l10n.idType,
+                              hint: l10n.selectIdType,
+                              value: state.idType,
+                              errorText: _idTypeError,
+                              items:
+                                  [
+                                    'National ID',
+                                    'Passport',
+                                    'Driver License',
+                                  ].map((e) {
+                                    String label = e;
+                                    switch (e) {
+                                      case 'National ID':
+                                        label = l10n.idTypeNationalId;
+                                        break;
+                                      case 'Passport':
+                                        label = l10n.idTypePassport;
+                                        break;
+                                      case 'Driver License':
+                                        label = l10n.idTypeDriverLicense;
+                                        break;
+                                    }
+                                    return DropdownMenuItem(
+                                      value: e,
+                                      child: Text(
+                                        label,
+                                        style: AppTextStyles.textField(context),
+                                      ),
+                                    );
+                                  }).toList(),
+                              onChanged: (val) {
+                                if (val != null) {
+                                  cubit.updateIdType(val);
+                                  setState(() => _idTypeError = null);
+                                }
+                              },
+                            );
+                          },
+                        ),
+                        const SizedBox(height: AppSpacing.md),
+
+                        AppTextField(
+                          label: l10n.idNumber,
+                          hint: l10n.idNumber,
+                          controller: _idNumberController,
+                          maxLength: 100,
+                          errorText: _idNumberError,
+                          onChanged: (_) {
+                            cubit.updateIdNumber(_idNumberController.text);
+                            setState(() => _idNumberError = null);
+                          },
+                        ),
+                        const SizedBox(height: AppSpacing.xxl),
                       ],
                     ),
                   ),
@@ -470,8 +474,9 @@ class _RequiredInformationViewState extends State<RequiredInformationView> {
                   onPressed: _isSubmitting
                       ? null
                       : () => unawaited(_validateAndSubmit(l10n)),
-                  buttonColor:
-                      isDark ? AppColors.primary : AppColors.primaryBrown,
+                  buttonColor: isDark
+                      ? AppColors.primary
+                      : AppColors.primaryBrown,
                   expanded: true,
                 ),
               ),

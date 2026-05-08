@@ -5,10 +5,13 @@ import 'package:pilates_app/config/theme/app_colors.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/core/localization/localization_extension.dart';
+import 'package:pilates_app/features/explore/view/redeem_card_view.dart';
+import 'package:pilates_app/features/explore/widget/receive_gift_sheet.dart';
 import 'package:pilates_app/widgets/app_text.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../account/account_view.dart';
 import '../auth/cubit/auth_cubit.dart';
+import '../auth/cubit/auth_flow.dart';
 import '../auth/cubit/auth_state.dart';
 import '../auth/data/models/auth_user.dart';
 import '../explore/explore_view.dart';
@@ -58,9 +61,7 @@ class HomeView extends StatelessWidget {
         ),
       )..loadHome(),
       child: _HomeBookingFlowTabListener(
-        child: const _HomeTabIntentListener(
-          child: _HomeShell(),
-        ),
+        child: const _HomeTabIntentListener(child: _HomeShell()),
       ),
     );
   }
@@ -104,28 +105,30 @@ class _HomeShell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<HomeCubit, HomeState>(
-      builder: (context, state) {
-        final isDark = Theme.of(context).brightness == Brightness.dark;
-        return Scaffold(
-          backgroundColor: isDark
-              ? AppColors.homeBackground
-              : AppColors.whiteColor,
-          body: IndexedStack(
-            index: state.currentIndex,
-            children: [
-              const HomeContentView(),
-              BookingView(initialTab: state.selectedBookingTab),
-              const ExploreView(),
-              const AccountView(),
-            ],
-          ),
-          bottomNavigationBar: _buildBottomNavBar(
-            context,
-            state.currentIndex,
-          ),
-        );
-      },
+    return _PendingGiftPopupTrigger(
+      child: BlocBuilder<HomeCubit, HomeState>(
+        builder: (context, state) {
+          final isDark = Theme.of(context).brightness == Brightness.dark;
+          return Scaffold(
+            backgroundColor: isDark
+                ? AppColors.homeBackground
+                : AppColors.whiteColor,
+            body: IndexedStack(
+              index: state.currentIndex,
+              children: [
+                const HomeContentView(),
+                BookingView(initialTab: state.selectedBookingTab),
+                const ExploreView(),
+                const AccountView(),
+              ],
+            ),
+            bottomNavigationBar: _buildBottomNavBar(
+              context,
+              state.currentIndex,
+            ),
+          );
+        },
+      ),
     );
   }
 
@@ -135,7 +138,7 @@ class _HomeShell extends StatelessWidget {
     final activeColor = isDark
         ? AppColors.languageIconDark
         : AppColors.languageIcon;
-    final inactiveColor = isDark ? Colors.grey : Colors.grey.shade400;
+    final inactiveColor = isDark ? AppColors.lightGrey : AppColors.lightGrey;
 
     return Container(
       padding: EdgeInsets.only(bottom: 12),
@@ -154,7 +157,9 @@ class _HomeShell extends StatelessWidget {
           final homeCubit = context.read<HomeCubit>();
           final previousIndex = homeCubit.state.currentIndex;
           homeCubit.setTab(index);
-          if (index == 3 && previousIndex != 3) {
+          // Refresh profile when switching to home tab (0) or account tab (3)
+          if ((index == 0 && previousIndex != 0) ||
+              (index == 3 && previousIndex != 3)) {
             context.read<AuthCubit>().refreshProfileWhenSelectingAccountTab();
           }
         },
@@ -234,6 +239,77 @@ class _HomeShell extends StatelessWidget {
   }
 }
 
+/// Loads [`/auth/me`] on home entry and opens `RedeemCardView` directly
+/// when `pendingGift` is available. No local tracking; shows every time.
+class _PendingGiftPopupTrigger extends StatefulWidget {
+  const _PendingGiftPopupTrigger({required this.child});
+
+  final Widget child;
+
+  @override
+  State<_PendingGiftPopupTrigger> createState() =>
+      _PendingGiftPopupTriggerState();
+}
+
+class _PendingGiftPopupTriggerState extends State<_PendingGiftPopupTrigger> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (!mounted) return;
+      await context.read<AuthCubit>().loadProfile();
+      if (!mounted) return;
+      _maybeShow(context.read<AuthCubit>().state);
+    });
+  }
+
+  void _maybeShow(AuthState state) {
+    if (!mounted) return;
+    if (state.flow != AuthFlow.authenticated) return;
+    final homeIndex = context.read<HomeCubit>().state.currentIndex;
+    if (homeIndex != 0) return;
+    final gift = state.user?.pendingGift;
+    if (gift == null) return;
+    if (gift.canBeRedeemed != true) return;
+    final id = gift.id;
+    if (id == null || id.isEmpty) return;
+
+    showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      barrierColor: AppColors.bottomSheetShadow,
+      builder: (_) => ReceiveGiftSheet(
+        pendingGift: gift,
+        onViewGift: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (_) => RedeemCardView(
+                pendingGift: gift,
+                onRedeemed: () {
+                  context
+                      .read<AuthCubit>()
+                      .refreshProfileWhenSelectingAccountTab();
+                },
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocListener<AuthCubit, AuthState>(
+      listenWhen: (previous, current) =>
+          previous.user?.pendingGift?.id != current.user?.pendingGift?.id,
+      listener: (_, state) => _maybeShow(state),
+      child: widget.child,
+    );
+  }
+}
+
 /// Listens for [openClassesBookingTabAfterPopToRoot] after user leaves booking
 /// success / waitlist success and pops the flow to root.
 class _HomeBookingFlowTabListener extends StatefulWidget {
@@ -246,7 +322,8 @@ class _HomeBookingFlowTabListener extends StatefulWidget {
       _HomeBookingFlowTabListenerState();
 }
 
-class _HomeBookingFlowTabListenerState extends State<_HomeBookingFlowTabListener> {
+class _HomeBookingFlowTabListenerState
+    extends State<_HomeBookingFlowTabListener> {
   @override
   void initState() {
     super.initState();
@@ -335,7 +412,8 @@ class HomeContentView extends StatelessWidget {
         // object — even if the user hasn't attended any classes yet this month.
         // Only fall back to the empty/onboarding card when there is no
         // progress object at all (i.e. the user has never had a membership).
-        final progressStatus = (progress != null && progress.monthlyTargetClasses > 0)
+        final progressStatus =
+            (progress != null && progress.monthlyTargetClasses > 0)
             ? HomeUserStatus.existing
             : HomeUserStatus.empty;
 
@@ -399,10 +477,13 @@ class HomeContentView extends StatelessWidget {
                             MembershipCard(
                               status: HomeUserStatus.existing,
                               planName:
-                                  membership?.planName ?? user?.membershipPlanName,
-                              totalSessions: membership?.totalSessions ??
+                                  membership?.planName ??
+                                  user?.membershipPlanName,
+                              totalSessions:
+                                  membership?.totalSessions ??
                                   user?.membershipTotalSessions,
-                              sessionsRemaining: membership?.sessionsRemaining ??
+                              sessionsRemaining:
+                                  membership?.sessionsRemaining ??
                                   user?.membershipSessionsRemaining,
                             ),
                           ],

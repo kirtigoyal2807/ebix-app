@@ -24,7 +24,9 @@ class SessionHistoryPageResult {
         if (e is Map<String, dynamic>) {
           list.add(ProgressSessionHistoryItem.fromJson(e));
         } else if (e is Map) {
-          list.add(ProgressSessionHistoryItem.fromJson(Map<String, dynamic>.from(e)));
+          list.add(
+            ProgressSessionHistoryItem.fromJson(Map<String, dynamic>.from(e)),
+          );
         }
       }
     }

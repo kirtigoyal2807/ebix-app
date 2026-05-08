@@ -30,8 +30,7 @@ class GoalFormMapping {
 
   static int nearestMonthlyStep(int monthlyGoal) {
     return monthlySteps.reduce(
-      (a, b) =>
-          (monthlyGoal - a).abs() <= (monthlyGoal - b).abs() ? a : b,
+      (a, b) => (monthlyGoal - a).abs() <= (monthlyGoal - b).abs() ? a : b,
     );
   }
 

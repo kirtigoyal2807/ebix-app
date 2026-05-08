@@ -49,9 +49,9 @@
   "liveChat": "دردشة مباشرة",
   "liveChatDesc": "تحدث مع فريقنا • متاح من 9 صباحًا إلى 9 مساءً",
   "emailSupport": "الدعم عبر البريد الإلكتروني",
-  "emailSupportDesc": "support@thepilatesstudio.com",
+  "emailSupportDesc": "info@thepilates.sa",
   "phoneSupport": "الدعم الهاتفي",
-  "phoneSupportDesc": "91 98765 43210 • من الاثنين إلى السبت 9 صباحًا - 7 مساءً",
+  "phoneSupportDesc": "+966 55 337 8395 • من الاثنين إلى السبت 9 صباحًا - 7 مساءً",
   "splashAppName": "ذا بيلاتس",
   "splashStudio": "ستوديو",
   "splashTagline": "رحلة البيلاتس الخاصة بك تبدأ هنا",
@@ -1166,6 +1166,7 @@
   "youBothGetRewardsDesc": "تحصل على 500 نقطة، ويحصل هو على خصم 20٪ لأول شهر",
 
   "recentReferrals": "الإحالات الأخيرة",
+  "noRecentReferrals": "لا توجد إحالات حديثة",
 
   "referralCodeCopied": "تم نسخ رمز الإحالة",
   "referralProgramLoadError": "تعذّر تحميل برنامج الإحالة. يُرجى المحاولة مرة أخرى.",
@@ -1295,7 +1296,23 @@
   "locationPermissionTitle": "الوصول إلى الموقع",
   "locationPermissionMessage": "إذن الموقع معطّل. يُرجى تفعيله من إعدادات التطبيق حتى نتمكن من اقتراح أقرب فرع إليك.",
   "openSettings": "فتح الإعدادات",
-  "notNow": "ليس الآن"
+  "notNow": "ليس الآن",
+  "takePicture": "التقاط صورة",
+  "accessFromGallery": "الوصول من المعرض",
+  "removeProfilePicture": "إزالة صورة الملف الشخصي",
+
+  "branches": "الفروع",
+  "voucherSuccess": "تم تطبيق رمز القسيمة بنجاح",
+  "voucherFailed": "رمز القسيمة غير صالح",
+  "rewardRedemption": "تم استرداد المكافأة بنجاح",
+  "date_of_birth": "تاريخ الميلاد",
+  "take_picture": "التقاط صورة",
+  "access_gallery": "اختيار من المعرض",
+  "remove_profile_picture": "إزالة صورة الملف الشخصي",
+  "rewardsEarned": "المكافآت المكتسبة",
+  "pointsAndAchievements": "النقاط والإنجازات",
+  "selectDOB": "اختر تاريخ الميلاد",
+  "reformerTower": "أخصائي أجهزة الريفورمر والتاور"
 }
 
 

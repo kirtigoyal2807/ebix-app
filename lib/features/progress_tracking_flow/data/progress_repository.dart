@@ -28,11 +28,7 @@ class ProgressRepository extends BaseRepository {
     final safePerPage = perPage.clamp(1, 100);
     return get<SessionHistoryPageResult>(
       'progress/session-history',
-      queryParameters: {
-        'filter': filter,
-        'page': page,
-        'perPage': safePerPage,
-      },
+      queryParameters: {'filter': filter, 'page': page, 'perPage': safePerPage},
       fromJson: (json) =>
           SessionHistoryPageResult.fromJson(json as Map<String, dynamic>),
     );
@@ -72,10 +68,6 @@ class ProgressRepository extends BaseRepository {
     if (goal != null) {
       body['goal'] = goal;
     }
-    return put<bool>(
-      'progress/goal',
-      data: body,
-      fromJson: (_) => true,
-    );
+    return put<bool>('progress/goal', data: body, fromJson: (_) => true);
   }
 }

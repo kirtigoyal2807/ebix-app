@@ -19,12 +19,12 @@ class TabBookingsState extends Equatable {
   final PaginationMeta? pagination;
 
   factory TabBookingsState.initial() => const TabBookingsState(
-        isLoading: false,
-        hasFetched: false,
-        errorMessage: null,
-        items: [],
-        pagination: null,
-      );
+    isLoading: false,
+    hasFetched: false,
+    errorMessage: null,
+    items: [],
+    pagination: null,
+  );
 
   TabBookingsState copyWith({
     bool? isLoading,
@@ -44,7 +44,13 @@ class TabBookingsState extends Equatable {
   }
 
   @override
-  List<Object?> get props => [isLoading, hasFetched, errorMessage, items, pagination];
+  List<Object?> get props => [
+    isLoading,
+    hasFetched,
+    errorMessage,
+    items,
+    pagination,
+  ];
 }
 
 class MyBookingsState extends Equatable {
@@ -63,11 +69,11 @@ class MyBookingsState extends Equatable {
   final String? cancelBusyEnrollmentId;
 
   factory MyBookingsState.initial() => MyBookingsState(
-        tabs: List.generate(
-          MyBookingsStatusGroup.values.length,
-          (_) => TabBookingsState.initial(),
-        ),
-      );
+    tabs: List.generate(
+      MyBookingsStatusGroup.values.length,
+      (_) => TabBookingsState.initial(),
+    ),
+  );
 
   TabBookingsState tab(MyBookingsStatusGroup g) => tabs[g.tabIndex];
 
@@ -104,5 +110,9 @@ class MyBookingsState extends Equatable {
   }
 
   @override
-  List<Object?> get props => [tabs, checkInBusyEnrollmentId, cancelBusyEnrollmentId];
+  List<Object?> get props => [
+    tabs,
+    checkInBusyEnrollmentId,
+    cancelBusyEnrollmentId,
+  ];
 }

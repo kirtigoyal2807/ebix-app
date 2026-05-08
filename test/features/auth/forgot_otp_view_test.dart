@@ -17,7 +17,9 @@ import 'fake_auth_repository.dart';
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  testWidgets('ForgotOtpView resend calls sendEmailVerification', (tester) async {
+  testWidgets('ForgotOtpView resend calls sendEmailVerification', (
+    tester,
+  ) async {
     SharedPreferences.setMockInitialValues({});
     final prefs = await SharedPreferences.getInstance();
     final storage = TokenStorage(prefs);
@@ -61,7 +63,9 @@ void main() {
     await cubit.close();
   });
 
-  testWidgets('ForgotOtpView verify accepts debug-style code 000000', (tester) async {
+  testWidgets('ForgotOtpView verify accepts debug-style code 000000', (
+    tester,
+  ) async {
     SharedPreferences.setMockInitialValues({});
     final prefs = await SharedPreferences.getInstance();
     final storage = TokenStorage(prefs);
@@ -115,67 +119,68 @@ void main() {
   });
 
   testWidgets(
-      'ForgotOtpView resend after verify+pop stays on OTP (no extra create-password route)',
-      (tester) async {
-    SharedPreferences.setMockInitialValues({});
-    final prefs = await SharedPreferences.getInstance();
-    final storage = TokenStorage(prefs);
-    final fake = FakeAuthRepository();
+    'ForgotOtpView resend after verify+pop stays on OTP (no extra create-password route)',
+    (tester) async {
+      SharedPreferences.setMockInitialValues({});
+      final prefs = await SharedPreferences.getInstance();
+      final storage = TokenStorage(prefs);
+      final fake = FakeAuthRepository();
 
-    final cubit = AuthCubit.forTesting(
-      authRepository: fake,
-      tokenStorage: storage,
-      localeBridge: AuthLocaleBridge(),
-      seed: AuthState.initial().copyWith(
-        flow: AuthFlow.signIn,
-        forgotPasswordEmail: 'noor@example.com',
-      ),
-    );
-
-    await tester.pumpWidget(
-      BlocProvider<AuthCubit>.value(
-        value: cubit,
-        child: MaterialApp(
-          localizationsDelegates: const [
-            AppLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-          ],
-          supportedLocales: AppLocalizations.supportedLocales,
-          locale: const Locale('en'),
-          home: const ForgotOtpView(email: 'noor@example.com'),
+      final cubit = AuthCubit.forTesting(
+        authRepository: fake,
+        tokenStorage: storage,
+        localeBridge: AuthLocaleBridge(),
+        seed: AuthState.initial().copyWith(
+          flow: AuthFlow.signIn,
+          forgotPasswordEmail: 'noor@example.com',
         ),
-      ),
-    );
+      );
 
-    await tester.pumpAndSettle();
+      await tester.pumpWidget(
+        BlocProvider<AuthCubit>.value(
+          value: cubit,
+          child: MaterialApp(
+            localizationsDelegates: const [
+              AppLocalizations.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+            ],
+            supportedLocales: AppLocalizations.supportedLocales,
+            locale: const Locale('en'),
+            home: const ForgotOtpView(email: 'noor@example.com'),
+          ),
+        ),
+      );
 
-    const code = '000000';
-    final fields = find.byType(TextField);
-    for (var i = 0; i < 6; i++) {
-      await tester.enterText(fields.at(i), code.substring(i, i + 1));
-      await tester.pump();
-    }
-    await tester.pumpAndSettle();
+      await tester.pumpAndSettle();
 
-    await tester.tap(find.byKey(const ValueKey('forgot_verify_code')));
-    await tester.pumpAndSettle();
+      const code = '000000';
+      final fields = find.byType(TextField);
+      for (var i = 0; i < 6; i++) {
+        await tester.enterText(fields.at(i), code.substring(i, i + 1));
+        await tester.pump();
+      }
+      await tester.pumpAndSettle();
 
-    expect(find.byType(CreateNewPasswordView), findsOneWidget);
+      await tester.tap(find.byKey(const ValueKey('forgot_verify_code')));
+      await tester.pumpAndSettle();
 
-    final navigator = tester.state<NavigatorState>(find.byType(Navigator));
-    navigator.pop();
-    await tester.pumpAndSettle();
+      expect(find.byType(CreateNewPasswordView), findsOneWidget);
 
-    expect(find.byType(ForgotOtpView), findsOneWidget);
+      final navigator = tester.state<NavigatorState>(find.byType(Navigator));
+      navigator.pop();
+      await tester.pumpAndSettle();
 
-    await tester.tap(find.byKey(const ValueKey('forgot_resend_code')));
-    await tester.pumpAndSettle();
+      expect(find.byType(ForgotOtpView), findsOneWidget);
 
-    expect(find.byType(CreateNewPasswordView), findsNothing);
-    expect(find.byType(ForgotOtpView), findsOneWidget);
-    expect(fake.sendEmailVerificationCalls, 1);
+      await tester.tap(find.byKey(const ValueKey('forgot_resend_code')));
+      await tester.pumpAndSettle();
 
-    await cubit.close();
-  });
+      expect(find.byType(CreateNewPasswordView), findsNothing);
+      expect(find.byType(ForgotOtpView), findsOneWidget);
+      expect(fake.sendEmailVerificationCalls, 1);
+
+      await cubit.close();
+    },
+  );
 }

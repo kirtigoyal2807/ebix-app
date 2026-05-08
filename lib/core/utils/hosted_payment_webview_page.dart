@@ -44,10 +44,7 @@ class HostedPaymentWebViewResult {
 /// **H5 → Flutter:** host or inject a page that calls:
 /// `PilatesPayment.postMessage(JSON.stringify({ "tran_ref": "…", … }))`
 class HostedPaymentWebViewPage extends StatefulWidget {
-  const HostedPaymentWebViewPage({
-    super.key,
-    required this.initialUrl,
-  });
+  const HostedPaymentWebViewPage({super.key, required this.initialUrl});
 
   final String initialUrl;
 
@@ -150,7 +147,8 @@ class _HostedPaymentWebViewPageState extends State<HostedPaymentWebViewPage> {
     final uri = Uri.tryParse(url);
     if (uri != null) {
       final q = uri.queryParameters;
-      final okQuery = q['success'] == 'true' ||
+      final okQuery =
+          q['success'] == 'true' ||
           q['payment_status'] == 'success' ||
           q['status'] == 'success';
       if (okQuery) {
@@ -256,7 +254,8 @@ return '';
       final m = Map<String, dynamic>.from(decoded as Map);
       final success = m['success'];
       final message = m['message']?.toString().toLowerCase() ?? '';
-      final ok = success == true ||
+      final ok =
+          success == true ||
           success == 1 ||
           success == 'true' ||
           success == '1' ||
@@ -264,10 +263,7 @@ return '';
           (message.contains('paytabs') && message.contains('success')) ||
           message.contains('callback processed successfully');
       if (ok && mounted) {
-        final payload = <String, dynamic>{
-          'source': 'return_page_json',
-          ...m,
-        };
+        final payload = <String, dynamic>{'source': 'return_page_json', ...m};
         _popResult(
           HostedPaymentWebViewResult(
             outcome: HostedPaymentWebViewOutcome.success,
@@ -316,10 +312,10 @@ return '';
           leading: IconButton(
             icon: const Icon(Icons.close),
             onPressed: () => _popResult(
-                  const HostedPaymentWebViewResult(
-                    outcome: HostedPaymentWebViewOutcome.cancelled,
-                  ),
-                ),
+              const HostedPaymentWebViewResult(
+                outcome: HostedPaymentWebViewOutcome.cancelled,
+              ),
+            ),
           ),
           title: const Text('Payment'),
         ),
@@ -332,9 +328,7 @@ return '';
               Positioned.fill(
                 child: ColoredBox(
                   color: Theme.of(context).scaffoldBackgroundColor,
-                  child: const Center(
-                    child: CircularProgressIndicator(),
-                  ),
+                  child: const Center(child: CircularProgressIndicator()),
                 ),
               ),
           ],
