@@ -181,7 +181,7 @@ class _GiftSubscriptionViewState extends State<GiftSubscriptionView> {
               ? cleanedDialCode
               : '+${cleanedDialCode.replaceAll('+', '')}');
 
-    await cubit.submitGift( 
+    await cubit.submitGift(
       checkoutSessionId: trimmedId,
       recipientName: name,
       recipientEmail: email,
