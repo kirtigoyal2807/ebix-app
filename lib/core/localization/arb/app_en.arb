@@ -1106,16 +1106,6 @@
   "collected": "Collected",
   "select_branch": "Select Branch",
 
-  "rewards_all_locations_title": "All locations",
-  "rewards_at_branch_subtitle": "{count} rewards available",
-  "@rewards_at_branch_subtitle": {
-    "placeholders": {
-      "count": {
-        "type": "int"
-      }
-    }
-  },
-
   "featurePriorityBookingDesc": "Book classes 24hrs in advance",
 
   "featureMerchDiscount": "Merch Discount",

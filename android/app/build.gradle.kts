@@ -10,16 +10,6 @@ plugins {
     id("dev.flutter.flutter-gradle-plugin")
 }
 
-/** True when android/key.properties exists and storeFile points to an existing file (paths relative to android/app/). */
-val releaseSigningReady: Boolean = run {
-    val keyPropsFile = rootProject.file("key.properties")
-    if (!keyPropsFile.exists()) return@run false
-    val props = Properties()
-    keyPropsFile.inputStream().use { props.load(it) }
-    val storePath = props.getProperty("storeFile") ?: return@run false
-    file(storePath).isFile
-}
-
 android {
     namespace = "sa.thepilates.app"
     compileSdk = flutter.compileSdkVersion
@@ -57,7 +47,7 @@ android {
     signingConfigs {
         create("release") {
             val keystorePropertiesFile = rootProject.file("key.properties")
-            if (keystorePropertiesFile.exists() && releaseSigningReady) {
+            if (keystorePropertiesFile.exists()) {
                 val keystoreProperties = Properties()
                 keystoreProperties.load(keystorePropertiesFile.inputStream())
                 keyAlias = keystoreProperties.getProperty("keyAlias")
@@ -77,8 +67,8 @@ android {
 
     buildTypes {
         release {
-            // Use release signing only when key.properties and the keystore file exist; else debug (local/testing only).
-            signingConfig = if (releaseSigningReady) {
+            // Use release signing if key.properties exists, else debug (ok for local dev, not for Play)
+            signingConfig = if (rootProject.file("key.properties").exists()) {
                 signingConfigs.getByName("release")
             } else {
                 signingConfigs.getByName("debug")
@@ -111,14 +101,6 @@ afterEvaluate {
         tasks.findByName("bundleRelease")?.doFirst {
             throw GradleException(
                 "Release App Bundle needs signing: create ${keyProps.invariantSeparatorsPath} and a keystore. " +
-                    "https://docs.flutter.dev/deployment/android#sign-the-app"
-            )
-        }
-    } else if (!releaseSigningReady) {
-        tasks.findByName("bundleRelease")?.doFirst {
-            throw GradleException(
-                "Release App Bundle needs signing: ${keyProps.invariantSeparatorsPath} exists but the keystore " +
-                    "file in storeFile is missing (paths are relative to android/app/). Add upload-keystore.jks or fix storeFile. " +
                     "https://docs.flutter.dev/deployment/android#sign-the-app"
             )
         }

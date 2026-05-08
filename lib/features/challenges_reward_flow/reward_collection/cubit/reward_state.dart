@@ -36,13 +36,7 @@ class RewardState extends Equatable {
   factory RewardState.initial() {
     return RewardState(
       rewardFilterList: RewardFilter.values,
-      branchList: [
-        const BranchModel(
-          id: 0,
-          title: '',
-          rewardsCount: 0,
-        ),
-      ],
+      branchList: [BranchModel(id: 0, title: 'All locations', subTitle: '')],
       rewardsLoadStatus: RewardListLoadStatus.initial,
       rewards: const [],
       rewardsError: '',

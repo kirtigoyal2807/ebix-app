@@ -23,10 +23,6 @@ dynamic _encodeHealthAnswerValue(Object? v) {
 ///   [ProductHealthQuestion.defaultAnswerNoteForBooleanYes] if the user left no note.
 /// - **`consentAccepted`** — must be `true` (maps from [SubscriptionState.isTermsAccepted] after the terms step).
 ///
-/// Emergency contact + ID are sent separately via [CheckoutRepository.submitEmergencyContact]
-/// from [RequiredInformationView] (`POST /checkout/{id}/emergency-contact`).
-///
-
 /// When a product questionnaire is loaded, [questionnaireId] is included and `answers`
 /// is filled from [SubscriptionState.healthQuestionnaireAnswers].
 Map<String, dynamic> subscriptionHealthIntakeRequestBody(
@@ -95,7 +91,13 @@ Map<String, dynamic> subscriptionHealthIntakeRequestBody(
       'signature': state.declarationSignature,
       'date': state.declarationDate,
     },
-
+    'requiredInformation': <String, dynamic>{
+      'emergencyContactName': state.emergencyContactName,
+      'emergencyContactRelationship': state.emergencyContactRelationship,
+      'emergencyContactPhone': state.emergencyContactPhone,
+      'idType': state.idType,
+      'idNumber': state.idNumber,
+    },
     'answers': answers,
     'consentAccepted': state.isTermsAccepted,
   };

@@ -51,7 +51,6 @@ class _GiftSubscriptionViewState extends State<GiftSubscriptionView> {
   final _email = TextEditingController();
   final _phone = TextEditingController();
   final _message = TextEditingController();
-  String _selectedRecipientDialCode = '+966';
 
   @override
   void dispose() {
@@ -171,21 +170,11 @@ class _GiftSubscriptionViewState extends State<GiftSubscriptionView> {
       }
     }
 
-    final cleanedDialCode = _selectedRecipientDialCode.replaceAll(
-      RegExp(r'\s+'),
-      '',
-    );
-    final normalizedDialCode = cleanedDialCode.isEmpty
-        ? ''
-        : (cleanedDialCode.startsWith('+')
-              ? cleanedDialCode
-              : '+${cleanedDialCode.replaceAll('+', '')}');
-
     await cubit.submitGift(
       checkoutSessionId: trimmedId,
       recipientName: name,
       recipientEmail: email,
-      recipientPhone: '$normalizedDialCode$phoneDigits',
+      recipientPhone: phoneDigits,
       message: _message.text.trim(),
       deliveryDate: deliveryDate,
     );
@@ -290,9 +279,6 @@ class _GiftSubscriptionViewState extends State<GiftSubscriptionView> {
                             emailController: _email,
                             phoneController: _phone,
                             messageController: _message,
-                            onCountryCodeChanged: (dialCode) {
-                              _selectedRecipientDialCode = dialCode;
-                            },
                           ),
                         ],
                       ),

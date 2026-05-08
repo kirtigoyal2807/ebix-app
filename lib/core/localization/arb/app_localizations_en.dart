@@ -2709,14 +2709,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get select_branch => 'Select Branch';
 
   @override
-  String get rewards_all_locations_title => 'All locations';
-
-  @override
-  String rewards_at_branch_subtitle(int count) {
-    return '$count rewards available';
-  }
-
-  @override
   String get featurePriorityBookingDesc => 'Book classes 24hrs in advance';
 
   @override
