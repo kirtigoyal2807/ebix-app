@@ -20,12 +20,14 @@ class ReceiptDetails extends StatelessWidget {
     required this.emailController,
     required this.phoneController,
     required this.messageController,
+    required this.onCountryCodeChanged,
   });
 
   final TextEditingController nameController;
   final TextEditingController emailController;
   final TextEditingController phoneController;
   final TextEditingController messageController;
+  final ValueChanged<String> onCountryCodeChanged;
 
   static String _formatScheduledDate(BuildContext context, String iso) {
     final parsed = DateTime.tryParse(iso);
@@ -112,7 +114,9 @@ class ReceiptDetails extends StatelessWidget {
           flagAsset: '',
           controller: phoneController,
           maxPhoneDigits: 10,
-          onCountryChanged: (_) {},
+          onCountryChanged: (countryCode) {
+            onCountryCodeChanged(countryCode.dialCode ?? '+966');
+          },
         ),
         SizedBox(height: AppSpacing.md),
 
