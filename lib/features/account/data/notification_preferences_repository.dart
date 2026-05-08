@@ -8,7 +8,6 @@ class NotificationPreferencesRepository extends BaseRepository {
   NotificationPreferencesRepository(super.dio);
 
   /// GET /notifications/preferences
-  /// Returns the customer's per-channel notification opt-in/opt-out settings.
   Future<ApiResult<NotificationPreferences>> getPreferences() {
     return get<NotificationPreferences>(
       '/notifications/preferences',
@@ -18,15 +17,21 @@ class NotificationPreferencesRepository extends BaseRepository {
   }
 
   /// PUT /notifications/preferences
-  /// Updates the customer's notification preferences (partial updates supported).
-  Future<ApiResult<NotificationPreferences>> updatePreferences(
-    Map<String, dynamic> data,
-  ) {
-    return put<NotificationPreferences>(
+  /// Partial updates: include only keys you send inside [preferences].
+  /// Root [push] and [email] are required by the backend alongside [preferences].
+  Future<ApiResult<void>> updatePreferences({
+    required bool push,
+    required bool email,
+    required Map<String, dynamic> preferences,
+  }) {
+    return put<void>(
       '/notifications/preferences',
-      data: data,
-      fromJson: (json) =>
-          NotificationPreferences.fromJson(json as Map<String, dynamic>),
+      data: <String, dynamic>{
+        'push': push,
+        'email': email,
+        'preferences': preferences,
+      },
+      fromJson: (_) {},
     );
   }
 }
