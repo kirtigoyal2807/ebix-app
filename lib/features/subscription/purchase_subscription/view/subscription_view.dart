@@ -668,7 +668,12 @@ class _PlanSelectionStepState extends State<_PlanSelectionStep> {
 
         // Fixed Bottom Button
         Padding(
-          padding: const EdgeInsets.all(24),
+          padding: const EdgeInsets.only(
+            left: 24,
+            right: 24,
+            bottom: 12,
+            top: 8,
+          ),
           child: AppButton(
             label: l10n.continueTxt,
             onPressed: () {

@@ -88,7 +88,9 @@ class NotificationPreferences {
       }
     }
 
-    final classNotifications = _asStringDynamicMap(source['classNotifications']);
+    final classNotifications = _asStringDynamicMap(
+      source['classNotifications'],
+    );
     _setBoolChannel(
       channelsMap,
       'before_class_starts',
@@ -117,7 +119,11 @@ class NotificationPreferences {
     final marketingNotifications = _asStringDynamicMap(
       source['marketingNotifications'],
     );
-    _setBoolChannel(channelsMap, 'promotions', marketingNotifications?['promotions']);
+    _setBoolChannel(
+      channelsMap,
+      'promotions',
+      marketingNotifications?['promotions'],
+    );
     _setBoolChannel(
       channelsMap,
       'app_updates',
@@ -151,10 +157,7 @@ class NotificationPreferences {
           _asBool(source['push']) ??
           _asBool(channelToggles?['push']) ??
           false,
-      sms:
-          _asBool(source['sms']) ??
-          _asBool(channelToggles?['sms']) ??
-          false,
+      sms: _asBool(source['sms']) ?? _asBool(channelToggles?['sms']) ?? false,
       email:
           _asBool(source['email']) ??
           _asBool(channelToggles?['email']) ??

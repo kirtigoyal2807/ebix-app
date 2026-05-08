@@ -169,8 +169,8 @@ class _ReferralProgramScaffoldState extends State<_ReferralProgramScaffold> {
                             previous.referralHistoryErrorMessage !=
                                 current.referralHistoryErrorMessage,
                         builder: (context, state) {
-                          final isDark = Theme.of(context).brightness ==
-                              Brightness.dark;
+                          final isDark =
+                              Theme.of(context).brightness == Brightness.dark;
                           if (state.referralHistoryStatus ==
                               ReferralHistoryStatus.loading) {
                             return Padding(
@@ -214,11 +214,11 @@ class _ReferralProgramScaffoldState extends State<_ReferralProgramScaffold> {
                                   textAlign: TextAlign.center,
                                   style: (context) =>
                                       AppTextStyles.bodyText(context).copyWith(
-                                    color: isDark
-                                        ? AppColors.placeHolderText
-                                        : AppColors.greyText,
-                                    height: 1.55,
-                                  ),
+                                        color: isDark
+                                            ? AppColors.placeHolderText
+                                            : AppColors.greyText,
+                                        height: 1.55,
+                                      ),
                                 ),
                               ),
                             );

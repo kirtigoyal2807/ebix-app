@@ -17,19 +17,16 @@ void main() {
     );
   });
 
-  test(
-    'resolveApiMediaUrl maps customers avatars path to storage route',
-    () {
-      expect(
-        resolveApiMediaUrl('customers/avatars/photo.jpg'),
-        'https://dev.thepilates.sa/storage/customers/avatars/photo.jpg',
-      );
-      expect(
-        resolveApiMediaUrl('/customers/avatars/photo.jpg'),
-        'https://dev.thepilates.sa/storage/customers/avatars/photo.jpg',
-      );
-    },
-  );
+  test('resolveApiMediaUrl maps customers avatars path to storage route', () {
+    expect(
+      resolveApiMediaUrl('customers/avatars/photo.jpg'),
+      'https://dev.thepilates.sa/storage/customers/avatars/photo.jpg',
+    );
+    expect(
+      resolveApiMediaUrl('/customers/avatars/photo.jpg'),
+      'https://dev.thepilates.sa/storage/customers/avatars/photo.jpg',
+    );
+  });
 
   test('TrainerResource.fromJson resolves relative avatar_url', () {
     final t = TrainerResource.fromJson({

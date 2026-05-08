@@ -361,8 +361,8 @@ class BookClassConfirmView extends StatelessWidget {
                 },
                 child: state.agreePolicy == true
                     ? Container(
-                        width: 16,
-                        height: 16,
+                        width: 20,
+                        height: 20,
                         decoration: BoxDecoration(
                           color: (isDark
                               ? AppColors.languageIconDark
@@ -380,8 +380,8 @@ class BookClassConfirmView extends StatelessWidget {
                         ),
                       )
                     : SizedBox(
-                        height: 16,
-                        width: 16,
+                        height: 20,
+                        width: 20,
                         child: Checkbox(
                           value: state.agreePolicy,
                           onChanged: (value) {

@@ -43,19 +43,24 @@ class PushNotificationCubit extends Cubit<PushNotificationState> {
         'before_class_starts',
         'class_reminder',
       ]),
-      dayBeforeRemainder: _channelPush(channelPushValues, [
-        'day_before_reminder',
-        'class_day_before_reminder',
-        'class_reminder_day_before',
-      ], fallback: _channelPush(channelPushValues, ['class_reminder'])),
+      dayBeforeRemainder: _channelPush(
+        channelPushValues,
+        [
+          'day_before_reminder',
+          'class_day_before_reminder',
+          'class_reminder_day_before',
+        ],
+        fallback: _channelPush(channelPushValues, ['class_reminder']),
+      ),
       paymentConfirmation: _channelPush(channelPushValues, [
         'payment_confirmation',
         'booking_confirmed',
       ]),
-      renewalRemainder: _channelPush(channelPushValues, [
-        'renewal_reminder',
-        'subscription_renewal',
-      ], fallback: _channelPush(channelPushValues, ['booking_confirmed'])),
+      renewalRemainder: _channelPush(
+        channelPushValues,
+        ['renewal_reminder', 'subscription_renewal'],
+        fallback: _channelPush(channelPushValues, ['booking_confirmed']),
+      ),
       promotionOffer: _channelPush(channelPushValues, [
         'promotions',
         'promotions_offers',
@@ -65,10 +70,11 @@ class PushNotificationCubit extends Cubit<PushNotificationState> {
         'app_updates',
         'app_update',
       ], fallback: data.push),
-      newChallenges: _channelPush(channelPushValues, [
-        'new_challenges',
-        'challenges',
-      ], fallback: _channelPush(channelPushValues, ['points_earned'])),
+      newChallenges: _channelPush(
+        channelPushValues,
+        ['new_challenges', 'challenges'],
+        fallback: _channelPush(channelPushValues, ['points_earned']),
+      ),
       rewardEarn: _channelPush(channelPushValues, [
         'rewards_earned',
         'points_earned',

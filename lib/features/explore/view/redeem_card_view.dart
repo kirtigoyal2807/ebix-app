@@ -313,14 +313,14 @@ class _MessageCard extends StatelessWidget {
             maxLines: 6,
           ),
           const SizedBox(height: AppSpacing.sm),
-          if(senderLabel.isNotEmpty)
-          AppText(
-            senderLabel,
-            style: (context) => AppTextStyles.captionText(context).copyWith(
-              color: isDark ? AppColors.darkGreyText : AppColors.lightGrey,
-              height: 1.5,
+          if (senderLabel.isNotEmpty)
+            AppText(
+              senderLabel,
+              style: (context) => AppTextStyles.captionText(context).copyWith(
+                color: isDark ? AppColors.darkGreyText : AppColors.lightGrey,
+                height: 1.5,
+              ),
             ),
-          ),
         ],
       ),
     );

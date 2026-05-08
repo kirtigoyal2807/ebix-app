@@ -119,7 +119,7 @@ class BookingClassCard extends StatelessWidget {
             color: isDark ? AppColors.surfaceDark : Colors.white,
 
             border: Border.all(
-              color: isDark ? AppColors.greyText : AppColors.buttonBorder,
+              color: isDark ? AppColors.greyText : Colors.transparent,
             ),
             boxShadow: [
               AppShadows.lightShadow,

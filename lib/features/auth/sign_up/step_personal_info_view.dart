@@ -155,33 +155,36 @@ class _SignUpPersonalInfoViewState extends State<SignUpPersonalInfoView> {
               vertical: AppSpacing.md,
             ),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                const SignUpProgress(currentStep: 0, totalSteps: 5),
+
+                const SizedBox(height: AppSpacing.sm),
+                RichText(
+                  text: TextSpan(
+                    children: [
+                      TextSpan(
+                        text: '${context.l10n.step} 1',
+                        style: AppTextStyles.caption(context).copyWith(
+                          color: isDark
+                              ? AppColors.languageTextDark
+                              : AppColors.languageIcon,
+                        ),
+                      ),
+                      TextSpan(
+                        text: ' ${context.l10n.offf} 5',
+                        style: AppTextStyles.caption(context),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: AppSpacing.sm),
                 Expanded(
                   child: SingleChildScrollView(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const SignUpProgress(currentStep: 0, totalSteps: 5),
-                        const SizedBox(height: AppSpacing.sm),
-                        RichText(
-                          text: TextSpan(
-                            children: [
-                              TextSpan(
-                                text: '${context.l10n.step} 1',
-                                style: AppTextStyles.caption(context).copyWith(
-                                  color: isDark
-                                      ? AppColors.languageTextDark
-                                      : AppColors.languageIcon,
-                                ),
-                              ),
-                              TextSpan(
-                                text: ' ${context.l10n.offf} 5',
-                                style: AppTextStyles.caption(context),
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(height: AppSpacing.xl),
+                        const SizedBox(height: AppSpacing.lg),
                         SignUpHeader(
                           title: context.l10n.letsGo,
                           subtitle: context.l10n.tellYourName,
@@ -285,7 +288,7 @@ class _SignUpPersonalInfoViewState extends State<SignUpPersonalInfoView> {
                                           "dd/MM/yyyy",
                                         ).parse(state.dateOfBirth),
                                   firstDate: DateTime(1900),
-                                  lastDate: DateTime(2100),
+                                  lastDate: DateTime.now(),
                                 );
 
                                 if (picked != null) {
@@ -318,9 +321,15 @@ class _SignUpPersonalInfoViewState extends State<SignUpPersonalInfoView> {
                             _clientPasswordError = null;
                           }),
                         ),
-                        SizedBox(height: 6,),
+                        SizedBox(height: 6),
 
-                        Text("Minimum 8 characters",style: AppTextStyles.body(context,fontWeight: FontWeight.w400).copyWith(height: 1.55,color: AppColors.lightGrey),),
+                        Text(
+                          "Minimum 8 characters",
+                          style: AppTextStyles.body(
+                            context,
+                            fontWeight: FontWeight.w400,
+                          ).copyWith(height: 1.55, color: AppColors.lightGrey),
+                        ),
                         const SizedBox(height: AppSpacing.md),
                         PhoneNumberField(
                           key: const ValueKey('signup_phone'),

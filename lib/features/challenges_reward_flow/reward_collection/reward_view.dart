@@ -19,13 +19,14 @@ class RewardView extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return BlocProvider(
-      create: (context) => RewardCubit(
-        context.read<LoyaltyRepository>(),
-        context.read<AuthRepository>(),
-      )
-        ..loadBranches()
-        ..loadRewards()
-        ..loadPointsHistory(),
+      create: (context) =>
+          RewardCubit(
+              context.read<LoyaltyRepository>(),
+              context.read<AuthRepository>(),
+            )
+            ..loadBranches()
+            ..loadRewards()
+            ..loadPointsHistory(),
       child: DefaultTabController(
         length: 2,
         child: Scaffold(

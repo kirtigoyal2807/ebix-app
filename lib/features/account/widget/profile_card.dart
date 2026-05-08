@@ -65,10 +65,7 @@ class ProfileCard extends StatelessWidget {
                           width: 64,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            border: Border.all(
-                              color: Colors.white,
-                              width: 1,
-                            ),
+                            border: Border.all(color: Colors.white, width: 1),
                             image: DecorationImage(
                               image: avatarProvider,
                               fit: BoxFit.cover,
