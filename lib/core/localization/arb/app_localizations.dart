@@ -995,7 +995,7 @@ abstract class AppLocalizations {
   /// No description provided for @thisWeek.
   ///
   /// In en, this message translates to:
-  /// **'This\nWeek'**
+  /// **'This Week'**
   String get thisWeek;
 
   /// No description provided for @nextWeek.
@@ -5869,6 +5869,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Select Date of birth'**
   String get selectDOB;
+
+  /// No description provided for @dobMinimumAgeError.
+  ///
+  /// In en, this message translates to:
+  /// **'You must be at least 16 years old.'**
+  String get dobMinimumAgeError;
 
   /// No description provided for @reformerTower.
   ///

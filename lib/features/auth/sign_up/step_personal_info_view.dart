@@ -16,6 +16,7 @@ import 'package:pilates_app/widgets/app_text_field.dart';
 import 'package:pilates_app/widgets/phone_number_field.dart';
 
 import '../../../core/localization/localization_extension.dart';
+import '../../../core/utils/date_of_birth_constraints.dart';
 import '../../../core/utils/input_validators.dart';
 import 'widgets/sign_up_header.dart';
 import 'widgets/sign_up_progress.dart';
@@ -113,9 +114,20 @@ class _SignUpPersonalInfoViewState extends State<SignUpPersonalInfoView> {
     final authState = context.read<AuthCubit>().state;
     DateTime? dob;
     try {
-      dob = DateFormat('dd/MM/yyyy').parse(authState.dateOfBirth.trim());
+      final trimmed = authState.dateOfBirth.trim();
+      if (trimmed.isNotEmpty) {
+        dob = DateFormat('dd/MM/yyyy').parse(trimmed);
+      }
     } catch (_) {
       dob = null;
+    }
+
+    if (dob != null &&
+        !DateOfBirthConstraints.satisfiesMinimumAge(dob, DateTime.now())) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(context.l10n.dobMinimumAgeError)),
+      );
+      return;
     }
 
     context.read<AuthCubit>().register(
@@ -289,15 +301,33 @@ class _SignUpPersonalInfoViewState extends State<SignUpPersonalInfoView> {
                                     : null,
                               ),
                               onTap: () async {
+                                final today = DateTime.now();
+                                final lastDob =
+                                    DateOfBirthConstraints.latestSelectableBirthDate(
+                                  today,
+                                );
+                                final firstDate = DateTime(1900);
+                                DateTime parsedInitial = lastDob;
+                                try {
+                                  if (state.dateOfBirth.isNotEmpty) {
+                                    parsedInitial = DateFormat(
+                                      'dd/MM/yyyy',
+                                    ).parse(state.dateOfBirth);
+                                  }
+                                } catch (_) {
+                                  parsedInitial = lastDob;
+                                }
+                                final initial =
+                                    DateOfBirthConstraints.clampToSelectableRange(
+                                  parsedInitial,
+                                  firstDate,
+                                  lastDob,
+                                );
                                 final DateTime? picked = await showDatePicker(
                                   context: context,
-                                  initialDate: state.dateOfBirth.isEmpty
-                                      ? DateTime.now()
-                                      : DateFormat(
-                                          "dd/MM/yyyy",
-                                        ).parse(state.dateOfBirth),
-                                  firstDate: DateTime(1900),
-                                  lastDate: DateTime.now(),
+                                  initialDate: initial,
+                                  firstDate: firstDate,
+                                  lastDate: lastDob,
                                 );
 
                                 if (picked != null) {
