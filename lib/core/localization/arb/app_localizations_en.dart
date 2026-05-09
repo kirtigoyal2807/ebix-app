@@ -1903,6 +1903,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get editDetails => 'Edit Details';
 
   @override
+  String get updateProfile => 'Update Profile';
+
+  @override
   String get pushNotifications => 'Push Notifications';
 
   @override

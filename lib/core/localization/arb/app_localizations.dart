@@ -3632,6 +3632,12 @@ abstract class AppLocalizations {
   /// **'Edit Details'**
   String get editDetails;
 
+  /// No description provided for @updateProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Update Profile'**
+  String get updateProfile;
+
   /// No description provided for @pushNotifications.
   ///
   /// In en, this message translates to:

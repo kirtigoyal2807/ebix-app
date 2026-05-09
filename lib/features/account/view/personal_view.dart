@@ -62,6 +62,8 @@ class _PersonalViewBody extends StatefulWidget {
 }
 
 class _PersonalViewBodyState extends State<_PersonalViewBody> {
+  bool _isEditing = false;
+
   late final TextEditingController _firstNameController;
   late final TextEditingController _lastNameController;
   late final TextEditingController _emailController;
@@ -258,7 +260,9 @@ class _PersonalViewBodyState extends State<_PersonalViewBody> {
                         p.removeAvatar != c.removeAvatar,
                     builder: (context, picState) {
                       return GestureDetector(
-                        onTap: () => _showProfilePictureOptions(context),
+                        onTap: _isEditing
+                            ? () => _showProfilePictureOptions(context)
+                            : null,
                         child: Column(
                           children: [
                             Align(
@@ -286,12 +290,14 @@ class _PersonalViewBodyState extends State<_PersonalViewBody> {
                     hint: context.l10n.firstName,
                     label: context.l10n.firstName,
                     controller: _firstNameController,
+                    readOnly: !_isEditing,
                   ),
                   SizedBox(height: AppSpacing.md),
                   AppTextField(
                     hint: context.l10n.lastName,
                     label: context.l10n.lastName,
                     controller: _lastNameController,
+                    readOnly: !_isEditing,
                   ),
                   SizedBox(height: AppSpacing.md),
                   AppTextField(
@@ -299,13 +305,17 @@ class _PersonalViewBodyState extends State<_PersonalViewBody> {
                     label: l10n.emailAddress,
                     keyboardType: TextInputType.emailAddress,
                     controller: _emailController,
+                    readOnly: !_isEditing,
                   ),
                   SizedBox(height: AppSpacing.md),
-                  PhoneNumberField(
-                    label: context.l10n.phoneNumber,
-                    countryCode: '+1',
-                    flagAsset: 'assets/flags/us.svg',
-                    controller: _phoneController,
+                  IgnorePointer(
+                    ignoring: !_isEditing,
+                    child: PhoneNumberField(
+                      label: context.l10n.phoneNumber,
+                      countryCode: '+1',
+                      flagAsset: 'assets/flags/us.svg',
+                      controller: _phoneController,
+                    ),
                   ),
                   SizedBox(height: AppSpacing.md),
                   BlocBuilder<PersonalInfoCubit, PersonalInfoState>(
@@ -338,11 +348,15 @@ class _PersonalViewBodyState extends State<_PersonalViewBody> {
                             ),
                           ),
                         ],
-                        onChanged: (val) {
-                          if (val != null) {
-                            context.read<PersonalInfoCubit>().updateGender(val);
-                          }
-                        },
+                        onChanged: _isEditing
+                            ? (val) {
+                                if (val != null) {
+                                  context
+                                      .read<PersonalInfoCubit>()
+                                      .updateGender(val);
+                                }
+                              }
+                            : null,
                       );
                     },
                   ),
@@ -351,13 +365,16 @@ class _PersonalViewBodyState extends State<_PersonalViewBody> {
                     buildWhen: (p, c) => p.dateOfBirth != c.dateOfBirth,
                     builder: (context, state) {
                       _dobController.text = _formatDate(state.dateOfBirth);
-                      return GestureDetector(
-                        onTap: () => _pickDateOfBirth(context),
-                        child: AbsorbPointer(
-                          child: AppTextField(
-                            hint: 'Select date of birth',
-                            label: 'Date of Birth',
-                            controller: _dobController,
+                      return IgnorePointer(
+                        ignoring: !_isEditing,
+                        child: GestureDetector(
+                          onTap: () => _pickDateOfBirth(context),
+                          child: AbsorbPointer(
+                            child: AppTextField(
+                              hint: 'Select date of birth',
+                              label: 'Date of Birth',
+                              controller: _dobController,
+                            ),
                           ),
                         ),
                       );
@@ -378,9 +395,19 @@ class _PersonalViewBodyState extends State<_PersonalViewBody> {
                       ],
                     ),
                     child: AppButton(
-                      label: l10n.editDetails,
+                      label: _isEditing
+                          ? l10n.updateProfile
+                          : l10n.editDetails,
                       isLoading: isLoading,
-                      onPressed: isLoading ? null : () => _submit(context),
+                      onPressed: isLoading
+                          ? null
+                          : () {
+                              if (_isEditing) {
+                                _submit(context);
+                              } else {
+                                setState(() => _isEditing = true);
+                              }
+                            },
                       variant: AppButtonVariant.primary,
                     ),
                   ),

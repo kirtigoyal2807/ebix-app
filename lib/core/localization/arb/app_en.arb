@@ -792,6 +792,7 @@
   "driverLicense": "Driver License",
   "idNumber": "ID Number",
   "editDetails": "Edit Details",
+  "updateProfile": "Update Profile",
   "pushNotifications": "Push Notifications",
   "allNotifications": "All Notifications",
   "classNotifications": "Class Notifications",

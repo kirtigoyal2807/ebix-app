@@ -1886,6 +1886,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get editDetails => 'تعديل البيانات';
 
   @override
+  String get updateProfile => 'تحديث الملف الشخصي';
+
+  @override
   String get pushNotifications => 'الإشعارات';
 
   @override
