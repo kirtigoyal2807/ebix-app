@@ -145,8 +145,9 @@ class TopTrainersSection extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                     builder: (context) => TrainerDetailsView(
-                      trainer: _toTrainerResource(trainer),
-                    ),
+                            trainer: _toTrainerResource(trainer),
+                            scrollToUpcomingClassesOnOpen: true,
+                          ),
                   ),
                 );
               },

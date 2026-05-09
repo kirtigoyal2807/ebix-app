@@ -65,23 +65,37 @@ void _openBrowseAllClasses(BuildContext context) {
 /// Trainer profile: pass [trainer] from §12.1 list for API-backed details (`GET /trainers/{id}`).
 /// Omit [trainer] to keep the legacy marketing/demo layout (home shortcuts).
 class TrainerDetailsView extends StatelessWidget {
-  const TrainerDetailsView({super.key, this.trainer});
+  const TrainerDetailsView({
+    super.key,
+    this.trainer,
+    this.scrollToUpcomingClassesOnOpen = false,
+  });
 
   final TrainerResource? trainer;
+
+  /// When true (e.g. opened from home top trainers), scrolls to upcoming classes after open.
+  final bool scrollToUpcomingClassesOnOpen;
 
   @override
   Widget build(BuildContext context) {
     if (trainer != null) {
-      return _TrainerDetailsApiRoute(summary: trainer!);
+      return _TrainerDetailsApiRoute(
+        summary: trainer!,
+        scrollToUpcomingClassesOnOpen: scrollToUpcomingClassesOnOpen,
+      );
     }
     return const _TrainerDetailsDemoView();
   }
 }
 
 class _TrainerDetailsApiRoute extends StatefulWidget {
-  const _TrainerDetailsApiRoute({required this.summary});
+  const _TrainerDetailsApiRoute({
+    required this.summary,
+    this.scrollToUpcomingClassesOnOpen = false,
+  });
 
   final TrainerResource summary;
+  final bool scrollToUpcomingClassesOnOpen;
 
   @override
   State<_TrainerDetailsApiRoute> createState() =>
@@ -95,6 +109,10 @@ class _TrainerDetailsApiRouteState extends State<_TrainerDetailsApiRoute> {
   /// Bumps to remount [ClassReviewsSection] so pull-to-refresh reloads `GET /reviews`.
   var _reviewsRefreshEpoch = 0;
 
+  final GlobalKey _upcomingClassesSectionKey = GlobalKey();
+
+  var _postBundleScrollRegistered = false;
+
   void _reloadBundle() {
     final trainers = context.read<TrainersRepository>();
     final classesRepo = context.read<ClassesRepository>();
@@ -105,12 +123,54 @@ class _TrainerDetailsApiRouteState extends State<_TrainerDetailsApiRoute> {
     }();
   }
 
+  void _ensureUpcomingClassesVisible({required bool animate}) {
+    final ctx = _upcomingClassesSectionKey.currentContext;
+    if (ctx == null) return;
+    Scrollable.ensureVisible(
+      ctx,
+      duration: animate ? const Duration(milliseconds: 380) : Duration.zero,
+      curve: animate ? Curves.easeInOutCubic : Curves.linear,
+      alignment: 0.12,
+    );
+  }
+
+  /// Runs after [getTrainer] + [listClasses] finish so the list height is
+  /// correct; a second pass corrects position after other async sections resize.
+  Future<void> _scrollToUpcomingAfterApisSettle() async {
+    if (!mounted || !widget.scrollToUpcomingClassesOnOpen) return;
+
+    await WidgetsBinding.instance.endOfFrame;
+    if (!mounted) return;
+    await WidgetsBinding.instance.endOfFrame;
+    if (!mounted) return;
+
+    for (var i = 0; i < 20; i++) {
+      if (_upcomingClassesSectionKey.currentContext != null) break;
+      await WidgetsBinding.instance.endOfFrame;
+      if (!mounted) return;
+    }
+
+    _ensureUpcomingClassesVisible(animate: true);
+    if (!mounted) return;
+
+    await Future<void>.delayed(const Duration(milliseconds: 450));
+    if (!mounted || !widget.scrollToUpcomingClassesOnOpen) return;
+    _ensureUpcomingClassesVisible(animate: false);
+  }
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     if (_futureInitialized) return;
     _futureInitialized = true;
     _reloadBundle();
+    if (widget.scrollToUpcomingClassesOnOpen && !_postBundleScrollRegistered) {
+      _postBundleScrollRegistered = true;
+      _bundleFuture.whenComplete(() {
+        if (!mounted || !widget.scrollToUpcomingClassesOnOpen) return;
+        _scrollToUpcomingAfterApisSettle();
+      });
+    }
   }
 
   @override
@@ -309,44 +369,48 @@ class _TrainerDetailsApiRouteState extends State<_TrainerDetailsApiRoute> {
                           summaryRatingBreakdown: effective.ratingBreakdown,
                         ),
                         SizedBox(height: AppSpacing.lg),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: AppSpacing.lg,
-                          ),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: AppText(
-                                  context.l10n.upcomingClasses,
-                                  maxLines: 2,
-                                  style: (c) =>
-                                      AppTextStyles.heading1(c).copyWith(
-                                        color: isDark
-                                            ? AppColors.lightText
-                                            : AppColors.darkText,
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.w400,
-                                      ),
+                        KeyedSubtree(
+                          key: _upcomingClassesSectionKey,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: AppSpacing.lg,
+                            ),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: AppText(
+                                    context.l10n.upcomingClasses,
+                                    maxLines: 2,
+                                    style: (c) =>
+                                        AppTextStyles.heading1(c).copyWith(
+                                          color: isDark
+                                              ? AppColors.lightText
+                                              : AppColors.darkText,
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w400,
+                                        ),
+                                  ),
                                 ),
-                              ),
-                              InkWell(
-                                onTap: () => _openBrowseAllClasses(context),
-                                child: AppText(
-                                  context.l10n.seeAll,
-                                  maxLines: 1,
-                                  style: (c) =>
-                                      AppTextStyles.captionText(
-                                        c,
-                                        fontWeight: FontWeight.w500,
-                                      ).copyWith(
-                                        color: isDark
-                                            ? AppColors.languageTextDark
-                                            : AppColors.languageIcon,
-                                        fontSize: 14,
-                                      ),
+                                InkWell(
+                                  onTap: () =>
+                                      _openBrowseAllClasses(context),
+                                  child: AppText(
+                                    context.l10n.seeAll,
+                                    maxLines: 1,
+                                    style: (c) =>
+                                        AppTextStyles.captionText(
+                                          c,
+                                          fontWeight: FontWeight.w500,
+                                        ).copyWith(
+                                          color: isDark
+                                              ? AppColors.languageTextDark
+                                              : AppColors.languageIcon,
+                                          fontSize: 14,
+                                        ),
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
                         SizedBox(height: AppSpacing.base),
