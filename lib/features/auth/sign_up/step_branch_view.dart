@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:pilates_app/config/theme/app_colors.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
@@ -50,18 +49,20 @@ class _SignUpBranchViewState extends State<SignUpBranchView> {
       });
     }
 
-    // Request location permission. Whether granted or denied, we still load
-    // branches — the permission status is used by the backend to optionally
-    // sort results by proximity.
-    final status = await Permission.locationWhenInUse.request();
+    // Use Geolocator for iOS/Android permission prompts. `permission_handler`
+    // relies on CocoaPods preprocessor flags; if misconfigured, iOS may never
+    // show the system dialog. Geolocator talks to CLLocationManager directly.
+    LocationPermission permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+    }
     if (!mounted) return;
 
     double? lat;
     double? lng;
 
-    // If permanently denied (user tapped "Don't ask again" or disabled in
-    // system settings), show a dialog prompting them to open app settings.
-    if (status.isPermanentlyDenied) {
+    // User chose "Don't allow" permanently, or iOS equivalent — open Settings.
+    if (permission == LocationPermission.deniedForever) {
       await _showLocationSettingsDialog();
       if (!mounted) return;
       await context.read<AuthCubit>().loadSignUpBranches();
@@ -70,9 +71,8 @@ class _SignUpBranchViewState extends State<SignUpBranchView> {
       return;
     }
 
-    // Permission granted — fetch coordinates, store them in state so the
-    // branch list can compute distances, and pass them to the API.
-    if (status.isGranted) {
+    if (permission == LocationPermission.whileInUse ||
+        permission == LocationPermission.always) {
       try {
         final position = await Geolocator.getCurrentPosition(
           locationSettings: const LocationSettings(
@@ -114,7 +114,7 @@ class _SignUpBranchViewState extends State<SignUpBranchView> {
           TextButton(
             onPressed: () {
               Navigator.of(ctx).pop();
-              openAppSettings();
+              Geolocator.openAppSettings();
             },
             child: Text(context.l10n.openSettings),
           ),
@@ -244,9 +244,7 @@ class _SignUpBranchViewState extends State<SignUpBranchView> {
                                 AppButton(
                                   key: const ValueKey('sign_up_branches_retry'),
                                   label: context.l10n.retry,
-                                  onPressed: () => context
-                                      .read<AuthCubit>()
-                                      .loadSignUpBranches(),
+                                  onPressed: _requestLocationAndLoadBranches,
                                 ),
                               ],
                             )

@@ -3015,10 +3015,25 @@ class AppLocalizationsEn extends AppLocalizations {
   String get passwordTooShort => 'Password must be at least 8 characters';
 
   @override
+  String get passwordMinimumLengthHint => 'Minimum 8 characters';
+
+  @override
   String get pleaseEnterFirstName => 'Please enter your first name';
 
   @override
   String get pleaseEnterLastName => 'Please enter your last name';
+
+  @override
+  String get signupFirstNameHint => 'Ayesha';
+
+  @override
+  String get signupLastNameHint => 'Tajib';
+
+  @override
+  String get pleaseSelectGender => 'Please select your gender';
+
+  @override
+  String get pleaseSelectDateOfBirth => 'Please select your date of birth';
 
   @override
   String get forgotPasswordCodeSent => 'A 6-digit code was sent to your email.';

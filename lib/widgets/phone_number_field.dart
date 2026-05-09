@@ -24,6 +24,13 @@ class PhoneNumberField extends StatefulWidget {
   /// ISO 3166-1 alpha-2 for [CountryCodePicker.initialSelection] (e.g. `SA`).
   final String initialCountryIso;
 
+  /// When null, an internal node is created and disposed by this widget.
+  final FocusNode? focusNode;
+
+  final TextInputAction textInputAction;
+
+  final ValueChanged<String>? onFieldSubmitted;
+
   const PhoneNumberField({
     super.key,
     required this.label,
@@ -35,6 +42,9 @@ class PhoneNumberField extends StatefulWidget {
     this.onChanged,
     this.maxPhoneDigits,
     this.initialCountryIso = 'SA',
+    this.focusNode,
+    this.textInputAction = TextInputAction.next,
+    this.onFieldSubmitted,
   });
 
   @override
@@ -42,13 +52,15 @@ class PhoneNumberField extends StatefulWidget {
 }
 
 class _PhoneNumberFieldState extends State<PhoneNumberField> {
-  late FocusNode _focusNode;
+  late final FocusNode _focusNode;
+  late final bool _ownsFocusNode;
   bool _isFocused = false;
 
   @override
   void initState() {
     super.initState();
-    _focusNode = FocusNode();
+    _ownsFocusNode = widget.focusNode == null;
+    _focusNode = widget.focusNode ?? FocusNode();
     _focusNode.addListener(() {
       setState(() {
         _isFocused = _focusNode.hasFocus;
@@ -58,7 +70,9 @@ class _PhoneNumberFieldState extends State<PhoneNumberField> {
 
   @override
   void dispose() {
-    _focusNode.dispose();
+    if (_ownsFocusNode) {
+      _focusNode.dispose();
+    }
     super.dispose();
   }
 
@@ -131,6 +145,8 @@ class _PhoneNumberFieldState extends State<PhoneNumberField> {
                     keyboardType: TextInputType.phone,
                     textDirection: TextDirection.ltr,
                     textAlign: TextAlign.left,
+                    textInputAction: widget.textInputAction,
+                    onSubmitted: widget.onFieldSubmitted,
                     inputFormatters: widget.maxPhoneDigits != null
                         ? <TextInputFormatter>[
                             FilteringTextInputFormatter.digitsOnly,

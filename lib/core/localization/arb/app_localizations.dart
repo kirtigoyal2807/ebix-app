@@ -5672,6 +5672,12 @@ abstract class AppLocalizations {
   /// **'Password must be at least 8 characters'**
   String get passwordTooShort;
 
+  /// No description provided for @passwordMinimumLengthHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Minimum 8 characters'**
+  String get passwordMinimumLengthHint;
+
   /// No description provided for @pleaseEnterFirstName.
   ///
   /// In en, this message translates to:
@@ -5683,6 +5689,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Please enter your last name'**
   String get pleaseEnterLastName;
+
+  /// No description provided for @signupFirstNameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Ayesha'**
+  String get signupFirstNameHint;
+
+  /// No description provided for @signupLastNameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Tajib'**
+  String get signupLastNameHint;
+
+  /// No description provided for @pleaseSelectGender.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select your gender'**
+  String get pleaseSelectGender;
+
+  /// No description provided for @pleaseSelectDateOfBirth.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select your date of birth'**
+  String get pleaseSelectDateOfBirth;
 
   /// No description provided for @forgotPasswordCodeSent.
   ///

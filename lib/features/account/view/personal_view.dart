@@ -126,6 +126,15 @@ class _PersonalViewBodyState extends State<_PersonalViewBody> {
     return DateFormat('dd/MM/yyyy').format(value);
   }
 
+  /// Only [female] exists in the menu (product rule). API may still return
+  /// `male` / `other`; passing those as [DropdownButtonFormField.value] asserts.
+  /// Returns a value that matches an item, or null (hint) while [PersonalInfoCubit]
+  /// keeps the real API gender until the user selects Female.
+  String? _genderDropdownValue(String? storedGender) {
+    final g = storedGender?.trim().toLowerCase();
+    return g == 'female' ? 'female' : null;
+  }
+
   Future<void> _pickDateOfBirth(BuildContext context) async {
     final personalInfoCubit = context.read<PersonalInfoCubit>();
     final state = personalInfoCubit.state;
@@ -342,26 +351,12 @@ class _PersonalViewBodyState extends State<_PersonalViewBody> {
                       return AppDropDown<String>(
                         label: context.l10n.gender,
                         hint: context.l10n.selectGender,
-                        value: state.gender,
+                        value: _genderDropdownValue(state.gender),
                         items: [
-                          DropdownMenuItem(
-                            value: 'male',
-                            child: Text(
-                              context.l10n.male,
-                              style: AppTextStyles.textField(context),
-                            ),
-                          ),
                           DropdownMenuItem(
                             value: 'female',
                             child: Text(
                               context.l10n.female,
-                              style: AppTextStyles.textField(context),
-                            ),
-                          ),
-                          DropdownMenuItem(
-                            value: 'other',
-                            child: Text(
-                              context.l10n.other,
                               style: AppTextStyles.textField(context),
                             ),
                           ),
