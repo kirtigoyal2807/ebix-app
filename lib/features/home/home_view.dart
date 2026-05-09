@@ -346,9 +346,21 @@ class _HomeBookingFlowTabListenerState
   Widget build(BuildContext context) => widget.child;
 }
 
-/// Visible when [`GET /home`] has `membership` or [`GET /me`] exposes plan/session hints.
-bool _showsMembershipFallback(AuthUser? user) =>
-    user?.showsMembershipWithoutHomePayload ?? false;
+/// True when home or profile exposes a plan name or session fields (see [MembershipSnapshot.hasAnyMembershipHint]).
+bool _userHasMembershipPlan(HomeMembership? membership, AuthUser? user) {
+  final mPlan = membership?.planName?.trim() ?? '';
+  if (mPlan.isNotEmpty) return true;
+  if (membership?.totalSessions != null || membership?.sessionsRemaining != null) {
+    return true;
+  }
+  final uPlan = user?.membershipPlanName?.trim() ?? '';
+  if (uPlan.isNotEmpty) return true;
+  if (user?.membershipTotalSessions != null ||
+      user?.membershipSessionsRemaining != null) {
+    return true;
+  }
+  return false;
+}
 
 class HomeContentView extends StatelessWidget {
   const HomeContentView({super.key});
@@ -457,12 +469,7 @@ class HomeContentView extends StatelessWidget {
                     BlocBuilder<AuthCubit, AuthState>(
                       builder: (context, authState) {
                         final user = authState.user;
-                        final hasMembershipHomeOrProfile =
-                            membership != null ||
-                            _showsMembershipFallback(user);
-                        if (!hasMembershipHomeOrProfile) {
-                          return const SizedBox.shrink();
-                        }
+                        final hasPlan = _userHasMembershipPlan(membership, user);
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -475,7 +482,9 @@ class HomeContentView extends StatelessWidget {
                             ),
                             const SizedBox(height: AppSpacing.md),
                             MembershipCard(
-                              status: HomeUserStatus.existing,
+                              status: hasPlan
+                                  ? HomeUserStatus.existing
+                                  : HomeUserStatus.empty,
                               planName:
                                   membership?.planName ??
                                   user?.membershipPlanName,
