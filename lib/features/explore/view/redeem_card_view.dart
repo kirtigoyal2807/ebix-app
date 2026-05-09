@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:lottie/lottie.dart';
 import 'package:pilates_app/config/theme/app_colors.dart';
 import 'package:pilates_app/config/theme/app_radius.dart';
@@ -77,6 +76,19 @@ class RedeemCardView extends StatelessWidget {
           elevation: 0,
         ),
         body: body,
+        bottomNavigationBar: SafeArea(
+          top: false,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: AppSpacing.lg,
+              vertical: AppSpacing.md,
+            ),
+            child: _RedeemButton(
+              pendingGift: pendingGift,
+              onRedeemed: onRedeemed,
+            ),
+          ),
+        ),
       ),
     );
 
@@ -138,8 +150,6 @@ class _RedeemCardBody extends StatelessWidget {
             ),
             const SizedBox(height: AppSpacing.lg),
             _MessageCard(pendingGift: pendingGift),
-            const SizedBox(height: AppSpacing.lg),
-            _RedeemButton(pendingGift: pendingGift, onRedeemed: onRedeemed),
           ],
         ),
       ),
@@ -214,16 +224,19 @@ class _MessageCard extends StatelessWidget {
               fontWeight: FontWeight.w500,
             ).copyWith(height: 1.2),
           ),
-          const SizedBox(height: AppSpacing.md),
-          _checkedRow(context: context, feature: context.l10n.featureClasses),
-          const SizedBox(height: AppSpacing.sm),
-          _checkedRow(context: context, feature: context.l10n.featureStudios),
-          const SizedBox(height: AppSpacing.sm),
-          _checkedRow(context: context, feature: context.l10n.featureEquipment),
-          const SizedBox(height: AppSpacing.sm),
-          _checkedRow(context: context, feature: context.l10n.featurePriority),
-          const SizedBox(height: AppSpacing.sm),
-          _checkedRow(context: context, feature: context.l10n.featurePriority),
+          const SizedBox(height: AppSpacing.base),
+          if (pendingGift?.plan?.description?.trim().isNotEmpty ?? false)
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 4.0),
+              child: AppText(
+                pendingGift!.plan!.description!.trim(),
+                style: (context) => AppTextStyles.captionText(context).copyWith(
+                  color: isDark ? AppColors.lightText : AppColors.lightGrey,
+                  height: 1.5,
+                ),
+                maxLines: 6,
+              ),
+            ),
           const SizedBox(height: AppSpacing.xl),
           Divider(
             color: isDark ? AppColors.greyText : AppColors.buttonBorder,
@@ -313,41 +326,16 @@ class _MessageCard extends StatelessWidget {
             maxLines: 6,
           ),
           const SizedBox(height: AppSpacing.sm),
-          if(senderLabel.isNotEmpty)
-          AppText(
-            senderLabel,
-            style: (context) => AppTextStyles.captionText(context).copyWith(
-              color: isDark ? AppColors.darkGreyText : AppColors.lightGrey,
-              height: 1.5,
+          if (senderLabel.isNotEmpty)
+            AppText(
+              senderLabel,
+              style: (context) => AppTextStyles.captionText(context).copyWith(
+                color: isDark ? AppColors.darkGreyText : AppColors.lightGrey,
+                height: 1.5,
+              ),
             ),
-          ),
         ],
       ),
-    );
-  }
-
-  Widget _checkedRow({required BuildContext context, required String feature}) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Icon(
-          Icons.check,
-          size: 12,
-          color: isDark ? AppColors.languageIconDark : AppColors.languageIcon,
-        ),
-        const SizedBox(width: 4),
-        Expanded(
-          child: AppText(
-            feature,
-            style: (style) => AppTextStyles.bodyTextSmall(context).copyWith(
-              color: isDark ? AppColors.lightText : AppColors.lightGrey,
-              fontSize: 12,
-              height: 1.2,
-            ),
-          ),
-        ),
-      ],
     );
   }
 
