@@ -1077,6 +1077,7 @@ class AuthCubit extends Cubit<AuthState> {
   void changeLanguage(Locale locale) {
     _localeBridge.languageCode = locale.languageCode;
     emit(state.copyWith(locale: locale));
+    unawaited(_tokenStorage.saveAppLocaleLanguageCode(locale.languageCode));
   }
 
   void changeTheme(ThemeMode mode) {

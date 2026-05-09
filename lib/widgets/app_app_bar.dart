@@ -54,10 +54,8 @@ class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
           actions ??
           [
             (isMoreMenu ?? true)
-                ? IconButton(
-                    icon: const Icon(Icons.more_horiz),
-                    onPressed: () {},
-                  )
+                ?
+            SizedBox()
                 : SizedBox(),
           ],
       bottom: bottomPreferredSize,
