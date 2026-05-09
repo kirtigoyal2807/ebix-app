@@ -35,7 +35,6 @@ class _SignUpExperienceViewState extends State<SignUpExperienceView> {
 
     return AppScaffold(
       appBar: AppAppBar(
-        onBack: () => context.read<AuthCubit>().previousSignUpStep(),
         title: context.l10n.experience,
         isMoreMenu: false,
       ),
