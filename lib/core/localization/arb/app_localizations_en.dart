@@ -483,7 +483,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get tomorrow => 'Tomorrow';
 
   @override
-  String get thisWeek => 'This\nWeek';
+  String get thisWeek => 'This Week';
 
   @override
   String get nextWeek => 'Next Week';

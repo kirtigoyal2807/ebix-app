@@ -995,7 +995,7 @@ abstract class AppLocalizations {
   /// No description provided for @thisWeek.
   ///
   /// In en, this message translates to:
-  /// **'This\nWeek'**
+  /// **'This Week'**
   String get thisWeek;
 
   /// No description provided for @nextWeek.
