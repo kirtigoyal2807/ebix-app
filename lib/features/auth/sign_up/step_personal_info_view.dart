@@ -32,6 +32,7 @@ class _SignUpPersonalInfoViewState extends State<SignUpPersonalInfoView> {
   final _lastNameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _confirmPasswordController = TextEditingController();
   final _phoneController = TextEditingController();
 
   CountryCode? _phoneCountry;
@@ -39,7 +40,7 @@ class _SignUpPersonalInfoViewState extends State<SignUpPersonalInfoView> {
   String? _clientFirstNameError;
   String? _clientLastNameError;
   String? _clientEmailError;
-  String? _clientPasswordError;
+  String? _clientConfirmError;
   String? _clientPhoneError;
 
   @override
@@ -48,6 +49,7 @@ class _SignUpPersonalInfoViewState extends State<SignUpPersonalInfoView> {
     _lastNameController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
+    _confirmPasswordController.dispose();
     _phoneController.dispose();
     super.dispose();
   }
@@ -78,6 +80,7 @@ class _SignUpPersonalInfoViewState extends State<SignUpPersonalInfoView> {
     final last = _lastNameController.text.trim();
     final email = _emailController.text.trim();
     final password = _passwordController.text;
+    final confirm = _confirmPasswordController.text;
     final phone = _composePhoneE164();
 
     setState(() {
@@ -88,7 +91,12 @@ class _SignUpPersonalInfoViewState extends State<SignUpPersonalInfoView> {
           : (InputValidators.isValidEmail(email)
                 ? null
                 : l10n.pleaseEnterValidEmail);
-      _clientPasswordError = password.length < 8 ? l10n.passwordTooShort : null;
+      _clientConfirmError = null;
+      if (password.length < 8) {
+        _clientConfirmError = l10n.passwordTooShort;
+      } else if (password != confirm) {
+        _clientConfirmError = l10n.passwordMismatch;
+      }
       _clientPhoneError = phone.length < 8 ? l10n.pleaseEnterPhone : null;
     });
 
@@ -97,6 +105,7 @@ class _SignUpPersonalInfoViewState extends State<SignUpPersonalInfoView> {
         email.isEmpty ||
         !InputValidators.isValidEmail(email) ||
         password.length < 8 ||
+        password != confirm ||
         phone.length < 8) {
       return;
     }
@@ -316,15 +325,32 @@ class _SignUpPersonalInfoViewState extends State<SignUpPersonalInfoView> {
                           obscure: true,
                           keyboardType: TextInputType.visiblePassword,
                           maxLines: 1,
-                          errorText: _clientPasswordError ?? fe['password'],
+                          errorText: fe['password'],
                           onChanged: (_) => setState(() {
-                            _clientPasswordError = null;
+                            _clientConfirmError = null;
+                          }),
+                        ),
+                        const SizedBox(height: AppSpacing.md),
+                        AppTextField(
+                          key: const ValueKey('signup_confirm_password'),
+                          controller: _confirmPasswordController,
+                          label: context.l10n.confirmPassword,
+                          hint: '**********',
+                          obscure: true,
+                          keyboardType: TextInputType.visiblePassword,
+                          maxLines: 1,
+                          errorText:
+                              _clientConfirmError ??
+                              fe['password_confirmation'] ??
+                              fe['confirm_password'],
+                          onChanged: (_) => setState(() {
+                            _clientConfirmError = null;
                           }),
                         ),
                         SizedBox(height: 6),
 
                         Text(
-                          "Minimum 8 characters",
+                          context.l10n.passwordMinimumLengthHint,
                           style: AppTextStyles.body(
                             context,
                             fontWeight: FontWeight.w400,

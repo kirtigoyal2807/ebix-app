@@ -1281,6 +1281,7 @@
   "pleaseEnterPhone": "يُرجى إدخال رقم الهاتف",
   "registerOtpSent": "تم إرسال رمز التحقق. تحقق من بريدك الإلكتروني أو هاتفك.",
   "passwordTooShort": "يجب أن تتكون كلمة المرور من 8 أحرف على الأقل",
+  "passwordMinimumLengthHint": "8 أحرف كحد أدنى",
   "pleaseEnterFirstName": "يُرجى إدخال اسمك الأول",
   "pleaseEnterLastName": "يُرجى إدخال اسم العائلة",
   "forgotPasswordCodeSent": "تم إرسال رمز مكوّن من 6 أرقام إلى بريدك الإلكتروني.",

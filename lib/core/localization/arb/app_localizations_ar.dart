@@ -2993,6 +2993,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get passwordTooShort => 'يجب أن تتكون كلمة المرور من 8 أحرف على الأقل';
 
   @override
+  String get passwordMinimumLengthHint => '8 أحرف كحد أدنى';
+
+  @override
   String get pleaseEnterFirstName => 'يُرجى إدخال اسمك الأول';
 
   @override

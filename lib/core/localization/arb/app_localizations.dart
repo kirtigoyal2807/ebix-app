@@ -5672,6 +5672,12 @@ abstract class AppLocalizations {
   /// **'Password must be at least 8 characters'**
   String get passwordTooShort;
 
+  /// No description provided for @passwordMinimumLengthHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Minimum 8 characters'**
+  String get passwordMinimumLengthHint;
+
   /// No description provided for @pleaseEnterFirstName.
   ///
   /// In en, this message translates to:
