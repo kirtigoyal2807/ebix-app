@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/core/localization/localization_extension.dart';
+import 'package:pilates_app/core/utils/date_of_birth_constraints.dart';
 import 'package:pilates_app/core/utils/api_media_url.dart';
 import 'package:pilates_app/features/auth/cubit/auth_cubit.dart';
 import 'package:pilates_app/features/auth/data/models/auth_user.dart';
@@ -128,16 +129,24 @@ class _PersonalViewBodyState extends State<_PersonalViewBody> {
   Future<void> _pickDateOfBirth(BuildContext context) async {
     final personalInfoCubit = context.read<PersonalInfoCubit>();
     final state = personalInfoCubit.state;
-    final now = DateTime.now();
-    final initialDate =
+    final today = DateTime.now();
+    final firstDate = DateTime(1900);
+    final lastDob =
+        DateOfBirthConstraints.latestSelectableBirthDate(today);
+    final baseInitial =
         state.dateOfBirth ??
         widget.initialUser?.dateOfBirth ??
-        DateTime(now.year - 18, now.month, now.day);
+        lastDob;
+    final initialDate = DateOfBirthConstraints.clampToSelectableRange(
+      baseInitial,
+      firstDate,
+      lastDob,
+    );
     final picked = await showDatePicker(
       context: context,
-      initialDate: initialDate.isAfter(now) ? now : initialDate,
-      firstDate: DateTime(1900),
-      lastDate: now,
+      initialDate: initialDate,
+      firstDate: firstDate,
+      lastDate: lastDob,
     );
     if (!mounted || picked == null) return;
     personalInfoCubit.updateDateOfBirth(picked);
@@ -207,6 +216,15 @@ class _PersonalViewBodyState extends State<_PersonalViewBody> {
   }
 
   void _submit(BuildContext context) {
+    final cubitState = context.read<PersonalInfoCubit>().state;
+    final dob = cubitState.dateOfBirth;
+    if (dob != null &&
+        !DateOfBirthConstraints.satisfiesMinimumAge(dob, DateTime.now())) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(context.l10n.dobMinimumAgeError)),
+      );
+      return;
+    }
     final phone = _phoneController.text.trim();
     context.read<PersonalInfoCubit>().saveProfile(
       firstName: _firstNameController.text.trim(),

@@ -5864,6 +5864,12 @@ abstract class AppLocalizations {
   /// **'Select Date of birth'**
   String get selectDOB;
 
+  /// No description provided for @dobMinimumAgeError.
+  ///
+  /// In en, this message translates to:
+  /// **'You must be at least 16 years old.'**
+  String get dobMinimumAgeError;
+
   /// No description provided for @reformerTower.
   ///
   /// In en, this message translates to:

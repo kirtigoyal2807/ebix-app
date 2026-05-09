@@ -3114,5 +3114,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get selectDOB => 'Select Date of birth';
 
   @override
+  String get dobMinimumAgeError => 'You must be at least 16 years old.';
+
+  @override
   String get reformerTower => 'Reformer & Tower Equipment Specialist';
 }

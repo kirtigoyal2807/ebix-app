@@ -1313,6 +1313,7 @@
   "rewardsEarned": "المكافآت المكتسبة",
   "pointsAndAchievements": "النقاط والإنجازات",
   "selectDOB": "اختر تاريخ الميلاد",
+  "dobMinimumAgeError": "يجب أن يكون عمرك 16 عامًا على الأقل.",
   "reformerTower": "أخصائي أجهزة الريفورمر والتاور"
 }
 
