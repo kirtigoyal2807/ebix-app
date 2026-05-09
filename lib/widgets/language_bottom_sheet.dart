@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:pilates_app/config/theme/app_radius.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
@@ -79,7 +78,8 @@ class _LanguageBottomSheetState extends State<LanguageBottomSheet> {
 
                       const SizedBox(height: AppSpacing.xl + 2),
 
-                      // Language options
+                      // Language options — shared horizontal inset so flag + label align
+                      // for selected and non-selected rows.
                       Padding(
                         padding: const EdgeInsets.symmetric(
                           horizontal: AppSpacing.lg,
@@ -90,33 +90,28 @@ class _LanguageBottomSheetState extends State<LanguageBottomSheet> {
                               flag: '🇺🇸',
                               title: 'English (US)',
                               locale: const Locale('en'),
-                              selected: _selectedLocale.languageCode == 'en',
+                              selected:
+                                  _selectedLocale.languageCode == 'en',
                               onTap: () {
                                 setState(() {
                                   _selectedLocale = const Locale('en');
                                 });
                               },
                             ),
+                            const SizedBox(height: AppSpacing.md),
+                            _LanguageOption(
+                              flag: '🇸🇦',
+                              title: 'العربية',
+                              locale: const Locale('ar'),
+                              selected:
+                                  _selectedLocale.languageCode == 'ar',
+                              onTap: () {
+                                setState(() {
+                                  _selectedLocale = const Locale('ar');
+                                });
+                              },
+                            ),
                           ],
-                        ),
-                      ),
-
-                      const SizedBox(height: AppSpacing.md),
-
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: AppSpacing.lg,
-                        ),
-                        child: _LanguageOption(
-                          flag: '🇸🇦',
-                          title: 'العربية',
-                          locale: const Locale('ar'),
-                          selected: _selectedLocale.languageCode == 'ar',
-                          onTap: () {
-                            setState(() {
-                              _selectedLocale = const Locale('ar');
-                            });
-                          },
                         ),
                       ),
                     ],
@@ -152,6 +147,12 @@ class _LanguageBottomSheetState extends State<LanguageBottomSheet> {
 }
 
 class _LanguageOption extends StatelessWidget {
+  /// Inner padding must match for [selected] and unselected so flag + title stay aligned.
+  static const EdgeInsets _contentPadding = EdgeInsets.symmetric(
+    horizontal: AppSpacing.md + 1,
+    vertical: AppSpacing.md + 1,
+  );
+
   final String flag;
   final String title;
   final Locale locale;
@@ -168,14 +169,13 @@ class _LanguageOption extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return InkWell(
       onTap: onTap,
       borderRadius: BorderRadius.circular(AppRadius.lg),
       child: Container(
-        padding: EdgeInsets.all(selected ? AppSpacing.md + 1 : AppSpacing.base),
+        padding: _contentPadding,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(AppRadius.md),
           border: Border.all(

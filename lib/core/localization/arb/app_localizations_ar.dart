@@ -3002,6 +3002,18 @@ class AppLocalizationsAr extends AppLocalizations {
   String get pleaseEnterLastName => 'يُرجى إدخال اسم العائلة';
 
   @override
+  String get signupFirstNameHint => 'عائشة';
+
+  @override
+  String get signupLastNameHint => 'طاجب';
+
+  @override
+  String get pleaseSelectGender => 'يُرجى اختيار الجنس';
+
+  @override
+  String get pleaseSelectDateOfBirth => 'يُرجى اختيار تاريخ الميلاد';
+
+  @override
   String get forgotPasswordCodeSent =>
       'تم إرسال رمز مكوّن من 6 أرقام إلى بريدك الإلكتروني.';
 

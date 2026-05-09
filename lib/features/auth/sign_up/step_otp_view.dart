@@ -27,6 +27,15 @@ class _SignUpOtpViewState extends State<SignUpOtpView>
     with ResendCodeCooldownMixin {
   String _otp = '';
 
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      startResendCodeCooldown();
+    });
+  }
+
   Future<void> _submit(BuildContext context) async {
     final cubit = context.read<AuthCubit>();
     final phone = cubit.state.signUpPendingPhone.trim();
@@ -102,6 +111,9 @@ class _SignUpOtpViewState extends State<SignUpOtpView>
           final fe = state.signUpPhoneOtpFieldErrors;
           final codeErr = fe['code'];
           final phoneErr = fe['phone'];
+          final theme = Theme.of(context);
+          final resendDisabled =
+              blockInteraction || loading || isResendCodeOnCooldown;
 
           return AppScaffold(
             appBar: AppAppBar(
@@ -186,10 +198,7 @@ class _SignUpOtpViewState extends State<SignUpOtpView>
 
                               Center(
                                 child: GestureDetector(
-                                  onTap:
-                                      blockInteraction ||
-                                          loading ||
-                                          isResendCodeOnCooldown
+                                  onTap: resendDisabled
                                       ? null
                                       : () => _resend(context),
                                   child: RichText(
@@ -200,18 +209,25 @@ class _SignUpOtpViewState extends State<SignUpOtpView>
                                               "${context.l10n.didntReceiveCode} ",
                                           style: AppTextStyles.caption(context)
                                               .copyWith(
-                                                color: isDark
-                                                    ? AppColors.darkGreyText
-                                                    : AppColors.greyText,
+                                                color: resendDisabled
+                                                    ? theme.disabledColor
+                                                    : (isDark
+                                                        ? AppColors.darkGreyText
+                                                        : AppColors.greyText),
                                                 fontWeight: FontWeight.w400,
                                                 height: 1.4,
                                               ),
                                         ),
                                         TextSpan(
                                           text: context.l10n.resendCode,
-                                          style: AppTextStyles.boldBody(
-                                            context,
-                                          ),
+                                          style: resendDisabled
+                                              ? AppTextStyles.boldBody(context)
+                                                  .copyWith(
+                                                    color: theme.disabledColor,
+                                                  )
+                                              : AppTextStyles.boldBody(
+                                                  context,
+                                                ),
                                         ),
                                       ],
                                     ),
