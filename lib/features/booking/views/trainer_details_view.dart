@@ -998,7 +998,7 @@ class _TrainerDetailsDemoView extends StatelessWidget {
           ),
           SizedBox(height: AppSpacing.xs),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: AppSpacing.base),
+            padding: const EdgeInsets.symmetric(horizontal: AppSpacing.sm),
             child: AppText(
               label,
               maxLines: 4,

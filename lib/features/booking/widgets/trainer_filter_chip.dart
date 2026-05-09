@@ -36,6 +36,7 @@ class TrainerFilterChip extends StatelessWidget {
                   );
                 },
                 child: Container(
+                  alignment: Alignment.center,
                   padding: const EdgeInsets.symmetric(
                     horizontal: AppSpacing.base,
                     vertical: AppSpacing.xs,

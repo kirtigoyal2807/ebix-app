@@ -133,9 +133,10 @@ class _SafetyViewState extends State<SafetyView> {
     final size = MediaQuery.sizeOf(context);
 
     return Padding(
-      padding: const EdgeInsets.symmetric(
-        vertical: AppSpacing.lg,
-        horizontal: AppSpacing.lg,
+      padding: const EdgeInsets.only(
+        bottom: AppSpacing.lg,
+        left: AppSpacing.lg,
+        right: AppSpacing.lg,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -154,6 +155,7 @@ class _SafetyViewState extends State<SafetyView> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    SizedBox(height: AppSpacing.sm),
                     AppText(
                       l10n.safetyConsent,
                       style: (style) => AppTextStyles.heading1(context),

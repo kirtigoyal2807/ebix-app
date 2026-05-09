@@ -77,7 +77,7 @@ class MyBookingClassCard extends StatelessWidget {
             color: isDark ? AppColors.homeBackground : Colors.white,
 
             border: Border.all(
-              color: isDark ? AppColors.greyText : AppColors.buttonBorder,
+              color: isDark ? AppColors.greyText : Colors.transparent,
             ),
             boxShadow: [
               AppShadows.lightShadow,

@@ -8,7 +8,7 @@ import 'reward_state.dart';
 
 class RewardCubit extends Cubit<RewardState> {
   RewardCubit(this._loyaltyRepository, this._authRepository)
-      : super(RewardState.initial());
+    : super(RewardState.initial());
 
   final LoyaltyRepository _loyaltyRepository;
   final AuthRepository _authRepository;
@@ -25,11 +25,7 @@ class RewardCubit extends Cubit<RewardState> {
         emit(
           state.copyWith(
             branchList: [
-              BranchModel(
-                id: 0,
-                title: '',
-                rewardsCount: totalRewards,
-              ),
+              BranchModel(id: 0, title: '', rewardsCount: totalRewards),
               ...branches.map(BranchModel.fromBranch),
             ],
           ),

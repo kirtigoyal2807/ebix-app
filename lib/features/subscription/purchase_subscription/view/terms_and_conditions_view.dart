@@ -87,9 +87,10 @@ class _TermsAndConditionsViewState extends State<TermsAndConditionsView> {
     final size = MediaQuery.sizeOf(context);
 
     return Padding(
-      padding: const EdgeInsets.symmetric(
-        vertical: AppSpacing.lg,
-        horizontal: AppSpacing.lg,
+      padding: const EdgeInsets.only(
+        bottom: AppSpacing.lg,
+        left: AppSpacing.lg,
+        right: AppSpacing.lg,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -104,6 +105,7 @@ class _TermsAndConditionsViewState extends State<TermsAndConditionsView> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  SizedBox(height: AppSpacing.md),
                   AppText(
                     l10n.termsAndConditions,
                     style: (style) => AppTextStyles.heading1(context),
@@ -231,8 +233,8 @@ class _TermsAndConditionsViewState extends State<TermsAndConditionsView> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       SizedBox(
-                        height: 24,
-                        width: 24,
+                        height: 20,
+                        width: 20,
                         child: Checkbox(
                           value: state.isTermsAccepted,
                           onChanged: _legalTextScrolledToEnd
@@ -244,7 +246,7 @@ class _TermsAndConditionsViewState extends State<TermsAndConditionsView> {
                           activeColor: AppColors.primaryBrown,
                           checkColor: isDark
                               ? AppColors.lightText
-                              : AppColors.darkText,
+                              : AppColors.whiteColor,
                           side: BorderSide(
                             color: isDark
                                 ? AppColors.greyText

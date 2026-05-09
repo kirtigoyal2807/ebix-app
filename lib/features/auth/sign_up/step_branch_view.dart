@@ -179,7 +179,29 @@ class _SignUpBranchViewState extends State<SignUpBranchView> {
               vertical: AppSpacing.md,
             ),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                const SignUpProgress(currentStep: 4, totalSteps: 5),
+                const SizedBox(height: AppSpacing.sm),
+                RichText(
+                  text: TextSpan(
+                    children: [
+                      TextSpan(
+                        text: '${context.l10n.step} 5',
+                        style: AppTextStyles.caption(context).copyWith(
+                          color: isDark
+                              ? AppColors.languageTextDark
+                              : AppColors.languageIcon,
+                        ),
+                      ),
+                      TextSpan(
+                        text: ' ${context.l10n.offf} 5',
+                        style: AppTextStyles.caption(context),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: AppSpacing.sm),
                 Expanded(
                   child: RefreshIndicator(
                     onRefresh: _requestLocationAndLoadBranches,
@@ -188,28 +210,7 @@ class _SignUpBranchViewState extends State<SignUpBranchView> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const SignUpProgress(currentStep: 4, totalSteps: 5),
-                          const SizedBox(height: AppSpacing.sm),
-                          RichText(
-                            text: TextSpan(
-                              children: [
-                                TextSpan(
-                                  text: '${context.l10n.step} 5',
-                                  style: AppTextStyles.caption(context)
-                                      .copyWith(
-                                        color: isDark
-                                            ? AppColors.languageTextDark
-                                            : AppColors.languageIcon,
-                                      ),
-                                ),
-                                TextSpan(
-                                  text: ' ${context.l10n.offf} 5',
-                                  style: AppTextStyles.caption(context),
-                                ),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(height: AppSpacing.xl),
+                          const SizedBox(height: AppSpacing.lg),
                           SignUpHeader(
                             title: context.l10n.branchTitle,
                             subtitle: context.l10n.branchSubtitle,

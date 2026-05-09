@@ -256,7 +256,7 @@ class _HealthInformationViewState extends State<HealthInformationView> {
                 totalSteps: 6,
                 isDark: isDark,
               ),
-              const SizedBox(height: AppSpacing.xl),
+
               Expanded(
                 child: GestureDetector(
                   behavior: HitTestBehavior.translucent,
@@ -267,6 +267,7 @@ class _HealthInformationViewState extends State<HealthInformationView> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        const SizedBox(height: AppSpacing.xl),
                         AppText(
                           l10n.personalInformation,
                           style: (style) => AppTextStyles.heading1(context),

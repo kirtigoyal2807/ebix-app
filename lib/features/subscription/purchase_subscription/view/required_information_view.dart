@@ -203,7 +203,6 @@ class _RequiredInformationViewState extends State<RequiredInformationView> {
     return combined.substring(0, 30);
   }
 
-
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;

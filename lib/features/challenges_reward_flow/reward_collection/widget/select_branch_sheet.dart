@@ -79,7 +79,9 @@ class SelectBranchSheet extends StatelessWidget {
                         selected: state.selectedBranch == index,
                         onTap: () {
                           Navigator.of(context).pop();
-                          context.read<RewardCubit>().selectBranchAtIndex(index);
+                          context.read<RewardCubit>().selectBranchAtIndex(
+                            index,
+                          );
                         },
                       );
                     },
@@ -154,10 +156,9 @@ class _BranchOption extends StatelessWidget {
                     context.l10n.rewards_at_branch_subtitle(rewardsCount),
                     maxLines: 1,
                     style: (context) {
-                      final base = AppTextStyles.bodyText(context).copyWith(
-                        fontSize: 12,
-                        height: 1.35,
-                      );
+                      final base = AppTextStyles.bodyText(
+                        context,
+                      ).copyWith(fontSize: 12, height: 1.35);
                       return base.copyWith(
                         color: isDark
                             ? AppColors.goldStarColor.withValues(alpha: 0.95)

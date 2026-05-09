@@ -340,7 +340,7 @@ class MembershipCard extends StatelessWidget {
             ),
           ),
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 6.5),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(200),
               gradient: const LinearGradient(

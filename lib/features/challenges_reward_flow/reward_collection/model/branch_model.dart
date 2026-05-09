@@ -16,9 +16,10 @@ class BranchModel extends Equatable {
   final int rewardsCount;
 
   factory BranchModel.fromBranch(Branch branch) {
-    final parts = [branch.title.trim(), branch.city.trim()]
-        .where((s) => s.isNotEmpty)
-        .toList();
+    final parts = [
+      branch.title.trim(),
+      branch.city.trim(),
+    ].where((s) => s.isNotEmpty).toList();
     final displayTitle = parts.join(', ');
     return BranchModel(
       id: branch.id,

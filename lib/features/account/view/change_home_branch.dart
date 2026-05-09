@@ -52,7 +52,8 @@ class _ChangeHomeBranchState extends State<ChangeHomeBranch> {
           _branches = data.branches;
           _isLoadingBranches = false;
           if (_branches.isNotEmpty) {
-            final selectedExists = _selectedBranchId != null &&
+            final selectedExists =
+                _selectedBranchId != null &&
                 _branches.any((branch) => branch.id == _selectedBranchId);
             if (!selectedExists) {
               _selectedBranchId = _branches.first.id;
