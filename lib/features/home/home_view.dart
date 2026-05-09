@@ -527,33 +527,49 @@ class HomeContentView extends StatelessWidget {
                       const SizedBox(height: AppSpacing.md),
                       FeaturedClassCard(featuredClass: featuredClass),
                     ],
-                    if (classTypes.isNotEmpty) ...[
-                      const SizedBox(height: AppSpacing.lg),
-                      _sectionTitleWithSeeAll(
-                        context,
-                        context.l10n.classTypes,
-                        isDark,
-                        size,
-                        onTap: () => context.read<HomeCubit>().setTab(1),
-                      ),
-                      const SizedBox(height: AppSpacing.md),
-                      ClassTypesSection(classTypes: classTypes),
-                    ],
-                    if (topTrainers.isNotEmpty) ...[
-                      const SizedBox(height: AppSpacing.lg),
-                      _sectionTitleWithSeeAll(
-                        context,
-                        context.l10n.topTrainers,
-                        isDark,
-                        size,
-                        onTap: () => context.read<HomeCubit>().setTab(
-                          1,
-                          bookingTab: BookingTab.trainers,
-                        ),
-                      ),
-                      const SizedBox(height: AppSpacing.md),
-                      TopTrainersSection(trainers: topTrainers),
-                    ],
+                    BlocBuilder<AuthCubit, AuthState>(
+                      builder: (context, authState) {
+                        final hasPlan = _userHasMembershipPlan(
+                          membership,
+                          authState.user,
+                        );
+                        if (!hasPlan) {
+                          return const SizedBox.shrink();
+                        }
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            if (classTypes.isNotEmpty) ...[
+                              const SizedBox(height: AppSpacing.lg),
+                              _sectionTitleWithSeeAll(
+                                context,
+                                context.l10n.classTypes,
+                                isDark,
+                                size,
+                                onTap: () => context.read<HomeCubit>().setTab(1),
+                              ),
+                              const SizedBox(height: AppSpacing.md),
+                              ClassTypesSection(classTypes: classTypes),
+                            ],
+                            if (topTrainers.isNotEmpty) ...[
+                              const SizedBox(height: AppSpacing.lg),
+                              _sectionTitleWithSeeAll(
+                                context,
+                                context.l10n.topTrainers,
+                                isDark,
+                                size,
+                                onTap: () => context.read<HomeCubit>().setTab(
+                                  1,
+                                  bookingTab: BookingTab.trainers,
+                                ),
+                              ),
+                              const SizedBox(height: AppSpacing.md),
+                              TopTrainersSection(trainers: topTrainers),
+                            ],
+                          ],
+                        );
+                      },
+                    ),
                     const SizedBox(height: AppSpacing.lg),
                     const SizedBox(height: AppSpacing.xl),
                   ],
