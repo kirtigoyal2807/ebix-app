@@ -64,7 +64,7 @@ class ClassInfoGrid extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(width: AppSpacing.md),
+            SizedBox(width: AppSpacing.md),
             Expanded(
               child: _InfoCard(
                 label: context.l10n.duration,
@@ -73,13 +73,13 @@ class ClassInfoGrid extends StatelessWidget {
             ),
           ],
         ),
-        const SizedBox(height: AppSpacing.md),
+        SizedBox(height: AppSpacing.md),
         Row(
           children: [
             Expanded(
               child: _InfoCard(label: context.l10n.dateTime, value: dateLabel),
             ),
-            const SizedBox(width: AppSpacing.md),
+            SizedBox(width: AppSpacing.md),
             Expanded(
               child: _InfoCard(
                 label: context.l10n.availability,
@@ -122,7 +122,7 @@ class _InfoCard extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Container(
-      padding: const EdgeInsets.all(AppSpacing.md),
+      padding: EdgeInsets.all(AppSpacing.md),
       decoration: BoxDecoration(
         color: isDark ? AppColors.homeBackground : AppColors.whiteColor,
         borderRadius: BorderRadius.circular(AppRadius.md),
@@ -140,7 +140,7 @@ class _InfoCard extends StatelessWidget {
               ctx,
             ).copyWith(color: AppColors.lightGrey, fontSize: 12),
           ),
-          const SizedBox(height: AppSpacing.xs),
+          SizedBox(height: AppSpacing.xs),
           Row(
             children: [
               if (showAvatar) ...[

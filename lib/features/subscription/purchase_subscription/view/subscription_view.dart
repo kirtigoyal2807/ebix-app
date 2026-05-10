@@ -461,15 +461,13 @@ class _PlanSelectionStepState extends State<_PlanSelectionStep> {
       children: [
         Expanded(
           child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(vertical: AppSpacing.lg),
+            padding: EdgeInsets.symmetric(vertical: AppSpacing.lg),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // Header
                 Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: AppSpacing.lg,
-                  ),
+                  padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
                   child: AppText(
                     l10n.chooseYourPlan,
                     style: (context) => AppTextStyles.gelasioMedium(
@@ -477,26 +475,22 @@ class _PlanSelectionStepState extends State<_PlanSelectionStep> {
                     ).copyWith(fontSize: 24),
                   ),
                 ),
-                const SizedBox(height: 4),
+                SizedBox(height: 4),
                 Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: AppSpacing.lg,
-                  ),
+                  padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
                   child: AppText(
                     l10n.selectPlanSubtitle,
                     style: (context) => AppTextStyles.bodyText(context),
                   ),
                 ),
-                const SizedBox(height: AppSpacing.md),
+                SizedBox(height: AppSpacing.md),
 
                 // Gift Toggle
                 BlocBuilder<SubscriptionCubit, SubscriptionState>(
                   buildWhen: (p, c) => p.isGift != c.isGift,
                   builder: (context, state) {
                     return Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: AppSpacing.lg,
-                      ),
+                      padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
                       child: GiftToggleCard(
                         isGift: state.isGift,
                         onToggle: (val) => cubit.toggleGift(val),
@@ -504,12 +498,10 @@ class _PlanSelectionStepState extends State<_PlanSelectionStep> {
                     );
                   },
                 ),
-                const SizedBox(height: AppSpacing.md),
+                SizedBox(height: AppSpacing.md),
 
                 Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: AppSpacing.lg,
-                  ),
+                  padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -519,9 +511,9 @@ class _PlanSelectionStepState extends State<_PlanSelectionStep> {
                           context,
                         ).copyWith(fontWeight: FontWeight.w600),
                       ),
-                      const SizedBox(height: AppSpacing.sm),
+                      SizedBox(height: AppSpacing.sm),
                       if (_branchesLoading)
-                        const Padding(
+                        Padding(
                           padding: EdgeInsets.symmetric(
                             vertical: AppSpacing.md,
                           ),
@@ -571,7 +563,7 @@ class _PlanSelectionStepState extends State<_PlanSelectionStep> {
                           },
                         ),
                       if (_branchValidationMessage != null) ...[
-                        const SizedBox(height: AppSpacing.sm),
+                        SizedBox(height: AppSpacing.sm),
                         InlineValidationBanner(
                           message: _branchValidationMessage!,
                         ),
@@ -579,13 +571,11 @@ class _PlanSelectionStepState extends State<_PlanSelectionStep> {
                     ],
                   ),
                 ),
-                const SizedBox(height: AppSpacing.md),
+                SizedBox(height: AppSpacing.md),
 
                 if (_productsLoadFailed && _catalogProducts.isEmpty)
                   Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: AppSpacing.lg,
-                    ),
+                    padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -604,7 +594,7 @@ class _PlanSelectionStepState extends State<_PlanSelectionStep> {
 
                 // Plans List (`GET /products` when available, else static fallback)
                 if (showPlansLoading)
-                  const Padding(
+                  Padding(
                     padding: EdgeInsets.symmetric(
                       horizontal: AppSpacing.lg,
                       vertical: AppSpacing.lg,
@@ -622,7 +612,7 @@ class _PlanSelectionStepState extends State<_PlanSelectionStep> {
                     // Rebuild when branch changes catalog in parent [setState], not only when plan id changes.
                     builder: (context, state) {
                       return Padding(
-                        padding: const EdgeInsets.symmetric(
+                        padding: EdgeInsets.symmetric(
                           horizontal: AppSpacing.lg,
                         ),
                         child: Column(
@@ -632,7 +622,7 @@ class _PlanSelectionStepState extends State<_PlanSelectionStep> {
                               InlineValidationBanner(
                                 message: _planValidationMessage!,
                               ),
-                              const SizedBox(height: AppSpacing.sm),
+                              SizedBox(height: AppSpacing.sm),
                             ],
                             ...plans.map((plan) {
                               return PlanCard(

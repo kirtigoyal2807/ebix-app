@@ -72,17 +72,17 @@ class _JoinWaitlistBody extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _buildClassDetailsCard(context, isDark),
-            const SizedBox(height: AppSpacing.sm),
+            SizedBox(height: AppSpacing.sm),
             Divider(
               color: isDark ? AppColors.greyText : AppColors.buttonBorder,
             ),
-            const SizedBox(height: AppSpacing.lg),
+            SizedBox(height: AppSpacing.lg),
             _buildClassCard(context, isDark),
-            const SizedBox(height: AppSpacing.lg),
+            SizedBox(height: AppSpacing.lg),
             _buildWaitListCard(context, isDark),
-            const SizedBox(height: AppSpacing.lg),
+            SizedBox(height: AppSpacing.lg),
             _buildSmartTip(context, isDark),
-            const SizedBox(height: AppSpacing.lg),
+            SizedBox(height: AppSpacing.lg),
             _buildErrorText(context),
             _buildFooterLinks(context, isDark),
             SizedBox(height: MediaQuery.of(context).viewPadding.bottom),
@@ -94,11 +94,11 @@ class _JoinWaitlistBody extends StatelessWidget {
 
   Widget _buildClassDetailsCard(BuildContext context, bool isDark) {
     return Container(
-      margin: const EdgeInsets.symmetric(
+      margin: EdgeInsets.symmetric(
         vertical: AppSpacing.md,
         horizontal: AppSpacing.lg,
       ),
-      padding: const EdgeInsets.all(20),
+      padding: EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: isDark ? AppColors.homeBackground : AppColors.whiteColor,
         borderRadius: BorderRadius.circular(AppRadius.md),
@@ -121,7 +121,7 @@ class _JoinWaitlistBody extends StatelessWidget {
             width: 94,
             decoration: BoxDecoration(borderRadius: BorderRadius.circular(8)),
             child: ClipRRect(
-              borderRadius: const BorderRadius.vertical(
+              borderRadius: BorderRadius.vertical(
                 top: Radius.circular(AppRadius.md),
                 bottom: Radius.circular(AppRadius.md),
               ),
@@ -131,7 +131,7 @@ class _JoinWaitlistBody extends StatelessWidget {
                       height: 72,
                       width: 94,
                       fit: BoxFit.fill,
-                      errorBuilder: (_, __, ___) => Image.asset(
+                      errorBuilder: (_, _, _) => Image.asset(
                         'assets/images/demo images/yoga.png',
                         height: 72,
                         width: 94,
@@ -146,7 +146,7 @@ class _JoinWaitlistBody extends StatelessWidget {
                     ),
             ),
           ),
-          const SizedBox(width: AppSpacing.lmd),
+          SizedBox(width: AppSpacing.lmd),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -156,19 +156,19 @@ class _JoinWaitlistBody extends StatelessWidget {
                   style: (ctx) =>
                       AppTextStyles.gelasioMedium(ctx).copyWith(height: 1.2),
                 ),
-                const SizedBox(height: AppSpacing.md),
+                SizedBox(height: AppSpacing.md),
                 _buildDetailRow(
                   Icons.location_on_outlined,
                   slot.branchName,
                   isDark,
                 ),
-                const SizedBox(height: AppSpacing.sm),
+                SizedBox(height: AppSpacing.sm),
                 _buildDetailRow(
                   Icons.watch_later_outlined,
                   _formatTime(slot.startAt),
                   isDark,
                 ),
-                const SizedBox(height: AppSpacing.sm),
+                SizedBox(height: AppSpacing.sm),
                 _buildDetailRow(Icons.person_outline, slot.trainerName, isDark),
               ],
             ),
@@ -203,11 +203,8 @@ class _JoinWaitlistBody extends StatelessWidget {
     final l10n = AppLocalizations.of(context);
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.symmetric(
-        horizontal: AppSpacing.lmd,
-        vertical: 40,
-      ),
-      margin: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+      padding: EdgeInsets.symmetric(horizontal: AppSpacing.lmd, vertical: 40),
+      margin: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
       decoration: BoxDecoration(
         color: isDark ? AppColors.homeBackground : AppColors.seekBarLight,
         borderRadius: BorderRadius.circular(AppRadius.md),
@@ -218,12 +215,12 @@ class _JoinWaitlistBody extends StatelessWidget {
       child: Column(
         children: [
           SvgPicture.asset('assets/images/svg/ic_calender.svg'),
-          const SizedBox(height: AppSpacing.md),
+          SizedBox(height: AppSpacing.md),
           AppText(
             l10n.classIsFull,
             style: (ctx) => AppTextStyles.gelasioMedium(ctx),
           ),
-          const SizedBox(height: AppSpacing.xs),
+          SizedBox(height: AppSpacing.xs),
           AppText(
             l10n.classIsFullDescription,
             style: (ctx) => AppTextStyles.textField(ctx).copyWith(
@@ -241,9 +238,9 @@ class _JoinWaitlistBody extends StatelessWidget {
     final waitlistCount = slot.waitlistCount ?? 0;
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+      padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
+        padding: EdgeInsets.symmetric(vertical: 20, horizontal: 16),
         decoration: BoxDecoration(
           color: isDark ? AppColors.homeBackground : AppColors.whiteColor,
           borderRadius: BorderRadius.circular(AppRadius.md),
@@ -265,7 +262,7 @@ class _JoinWaitlistBody extends StatelessWidget {
                           fontWeight: FontWeight.w500,
                         ),
                   ),
-                  const SizedBox(height: AppSpacing.sm),
+                  SizedBox(height: AppSpacing.sm),
                   AppText(
                     '$waitlistCount ${l10n.people}',
                     style: (ctx) => AppTextStyles.experienceButton(
@@ -289,9 +286,9 @@ class _JoinWaitlistBody extends StatelessWidget {
   Widget _buildSmartTip(BuildContext context, bool isDark) {
     final l10n = AppLocalizations.of(context);
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+      padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
       child: Container(
-        padding: const EdgeInsets.all(20),
+        padding: EdgeInsets.all(20),
         decoration: BoxDecoration(
           color: isDark
               ? AppColors.primaryDarkButton
@@ -302,7 +299,7 @@ class _JoinWaitlistBody extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SvgPicture.asset('assets/images/svg/ic_tip.svg'),
-            const SizedBox(width: AppSpacing.sm),
+            SizedBox(width: AppSpacing.sm),
             Expanded(
               child: RichText(
                 text: TextSpan(
@@ -336,7 +333,7 @@ class _JoinWaitlistBody extends StatelessWidget {
         final msg = state.errorMessage;
         if (msg == null || msg.isEmpty) return const SizedBox.shrink();
         return Padding(
-          padding: const EdgeInsets.fromLTRB(
+          padding: EdgeInsets.fromLTRB(
             AppSpacing.lg,
             0,
             AppSpacing.lg,
@@ -390,7 +387,7 @@ class _JoinWaitlistBody extends StatelessWidget {
               );
             },
           ),
-          const SizedBox(height: AppSpacing.sm),
+          SizedBox(height: AppSpacing.sm),
           Container(
             decoration: BoxDecoration(
               color: isDark ? AppColors.homeBackground : Colors.white,

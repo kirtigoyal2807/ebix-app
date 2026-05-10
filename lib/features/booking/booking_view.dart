@@ -141,7 +141,7 @@ class _BookingBodyState extends State<BookingBody> {
           child: Column(
             children: [
               const BookingTabs(),
-              const SizedBox(height: AppSpacing.md),
+              SizedBox(height: AppSpacing.md),
               Expanded(
                 child: BlocBuilder<BookingCubit, BookingState>(
                   builder: (context, bookingState) {
@@ -179,11 +179,11 @@ class _ClassesTab extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         const BookingSearchBar(),
-        const SizedBox(height: AppSpacing.md),
+        SizedBox(height: AppSpacing.md),
         const BookingFilterChips(),
-        const SizedBox(height: AppSpacing.lg),
+        SizedBox(height: AppSpacing.lg),
         const BookingSubscriptionCard(),
-        const SizedBox(height: AppSpacing.lg),
+        SizedBox(height: AppSpacing.lg),
         Divider(
           color: isDark ? AppColors.greyText : AppColors.buttonBorder,
           height: 1,
@@ -217,9 +217,7 @@ class _ClassesTab extends StatelessWidget {
                 child: Stack(
                   children: [
                     ListView(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: AppSpacing.lg,
-                      ),
+                      padding: EdgeInsets.symmetric(vertical: AppSpacing.lg),
                       children: _buildClassCards(
                         context,
                         classesState,
@@ -255,7 +253,7 @@ class _ClassesTab extends StatelessWidget {
     if (filtered.isEmpty && classesState.isLoaded) {
       return [
         Padding(
-          padding: const EdgeInsets.all(AppSpacing.xl),
+          padding: EdgeInsets.all(AppSpacing.xl),
           child: Center(
             child: AppText(
               context.l10n.noClassesFound,
@@ -272,7 +270,7 @@ class _ClassesTab extends StatelessWidget {
       final slot = filtered[i];
       widgets.add(BookingClassCard.fromSlot(slot));
       if (i < filtered.length - 1) {
-        widgets.add(const SizedBox(height: AppSpacing.md));
+        widgets.add(SizedBox(height: AppSpacing.md));
       }
     }
     return widgets;
@@ -394,7 +392,7 @@ class _ErrorView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(AppSpacing.xl),
+      padding: EdgeInsets.all(AppSpacing.xl),
       child: Column(
         children: [
           AppText(
@@ -402,7 +400,7 @@ class _ErrorView extends StatelessWidget {
             style: (ctx) => AppTextStyles.bodyText(ctx),
             textAlign: TextAlign.center,
           ),
-          const SizedBox(height: AppSpacing.md),
+          SizedBox(height: AppSpacing.md),
           TextButton(
             onPressed: onRetry,
             child: AppText(

@@ -48,7 +48,7 @@ class PushNotificationView extends StatelessWidget {
                       state.errorMessage ?? l10n.somethingWentWrong,
                       style: (context) => AppTextStyles.bodyText(context),
                     ),
-                    const SizedBox(height: AppSpacing.md),
+                    SizedBox(height: AppSpacing.md),
                     ElevatedButton(
                       onPressed: () => context
                           .read<PushNotificationCubit>()

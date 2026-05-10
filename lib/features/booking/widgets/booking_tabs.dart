@@ -70,8 +70,8 @@ class _TabItem extends StatelessWidget {
       child: GestureDetector(
         onTap: onTap,
         child: Container(
-          // padding: const EdgeInsets.symmetric(vertical: AppSpacing.md),
-          margin: const EdgeInsets.symmetric(horizontal: 24),
+          // padding: EdgeInsets.symmetric(vertical: AppSpacing.md),
+          margin: EdgeInsets.symmetric(horizontal: 24),
           padding: EdgeInsets.only(bottom: AppSpacing.base),
           decoration: BoxDecoration(
             border: Border(

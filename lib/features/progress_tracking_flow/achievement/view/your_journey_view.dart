@@ -51,7 +51,7 @@ class YourJourneyView extends StatelessWidget {
           if (data == null) {
             return Center(
               child: Padding(
-                padding: const EdgeInsets.all(AppSpacing.lg),
+                padding: EdgeInsets.all(AppSpacing.lg),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -324,7 +324,7 @@ class _Leading extends StatelessWidget {
           height: 40,
           width: 40,
           fit: BoxFit.cover,
-          errorBuilder: (_, __, ___) => _svg(isDark),
+          errorBuilder: (_, _, _) => _svg(isDark),
         ),
       );
     }

@@ -27,7 +27,7 @@ class ConfirmationSheet extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     // final theme = Theme.of(context);
     return Container(
-      padding: const EdgeInsets.fromLTRB(24, 24, 24, 24),
+      padding: EdgeInsets.fromLTRB(24, 24, 24, 24),
       decoration: BoxDecoration(
         color: isDark ? AppColors.homeBackground : Colors.white,
         borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
@@ -50,7 +50,7 @@ class ConfirmationSheet extends StatelessWidget {
             variant: AppButtonVariant.primary,
           ),
 
-          const SizedBox(height: AppSpacing.sm),
+          SizedBox(height: AppSpacing.sm),
 
           // Cancel
           Center(

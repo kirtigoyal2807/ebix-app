@@ -94,7 +94,7 @@ class _MonthlyTargetSliderState extends State<MonthlyTargetSlider> {
             ],
           ),
 
-          const SizedBox(height: AppSpacing.lg),
+          SizedBox(height: AppSpacing.lg),
 
           /// Slider Theme
           SliderTheme(
@@ -128,7 +128,7 @@ class _MonthlyTargetSliderState extends State<MonthlyTargetSlider> {
             ),
           ),
 
-          const SizedBox(height: AppSpacing.md),
+          SizedBox(height: AppSpacing.md),
 
           /// Bottom numbers row
           Row(

@@ -22,7 +22,7 @@ class TrainerFilterChip extends StatelessWidget {
           height: 32,
           child: ListView.separated(
             itemCount: state.trainerTypeList.length,
-            padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+            padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
             scrollDirection: Axis.horizontal,
             separatorBuilder: (context, index) => const SizedBox(width: 10),
             itemBuilder: (context, index) {
@@ -37,7 +37,7 @@ class TrainerFilterChip extends StatelessWidget {
                 },
                 child: Container(
                   alignment: Alignment.center,
-                  padding: const EdgeInsets.symmetric(
+                  padding: EdgeInsets.symmetric(
                     horizontal: AppSpacing.base,
                     vertical: AppSpacing.xs,
                   ),

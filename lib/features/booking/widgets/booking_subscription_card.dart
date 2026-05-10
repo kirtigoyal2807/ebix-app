@@ -40,8 +40,8 @@ class BookingSubscriptionCard extends StatelessWidget {
     final planLabel = '${context.l10n.yourPlan}: $resolvedPlanName';
 
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
-      padding: const EdgeInsets.symmetric(
+      margin: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+      padding: EdgeInsets.symmetric(
         horizontal: AppSpacing.base,
         vertical: AppSpacing.sm + 2,
       ),
@@ -61,7 +61,7 @@ class BookingSubscriptionCard extends StatelessWidget {
             width: size.width * 0.05,
             height: size.height * 0.05,
           ),
-          const SizedBox(width: AppSpacing.md),
+          SizedBox(width: AppSpacing.md),
           Expanded(
             child: AppText(
               planLabel,

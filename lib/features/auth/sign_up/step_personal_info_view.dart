@@ -111,10 +111,12 @@ class _SignUpPersonalInfoViewState extends State<SignUpPersonalInfoView> {
           : (InputValidators.isValidEmail(email)
                 ? null
                 : l10n.pleaseEnterValidEmail);
-      _clientGenderError =
-          _genderValue == null ? l10n.pleaseSelectGender : null;
-      _clientDobError =
-          dobSelection.isEmpty ? l10n.pleaseSelectDateOfBirth : null;
+      _clientGenderError = _genderValue == null
+          ? l10n.pleaseSelectGender
+          : null;
+      _clientDobError = dobSelection.isEmpty
+          ? l10n.pleaseSelectDateOfBirth
+          : null;
       _clientConfirmError = null;
       if (password.length < 8) {
         _clientConfirmError = l10n.passwordTooShort;
@@ -147,9 +149,9 @@ class _SignUpPersonalInfoViewState extends State<SignUpPersonalInfoView> {
 
     if (dob != null &&
         !DateOfBirthConstraints.satisfiesMinimumAge(dob, DateTime.now())) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(context.l10n.dobMinimumAgeError)),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(context.l10n.dobMinimumAgeError)));
       return;
     }
 
@@ -194,7 +196,7 @@ class _SignUpPersonalInfoViewState extends State<SignUpPersonalInfoView> {
             fe['confirm_password'];
         final showPasswordMinimumLengthHint =
             !hasVisibleFieldError(fe['password']) &&
-                !hasVisibleFieldError(confirmDisplayedError);
+            !hasVisibleFieldError(confirmDisplayedError);
 
         return AppScaffold(
           appBar: AppAppBar(
@@ -203,7 +205,7 @@ class _SignUpPersonalInfoViewState extends State<SignUpPersonalInfoView> {
             isMoreMenu: false,
           ),
           body: Padding(
-            padding: const EdgeInsets.symmetric(
+            padding: EdgeInsets.symmetric(
               horizontal: AppSpacing.lg,
               vertical: AppSpacing.md,
             ),
@@ -212,7 +214,7 @@ class _SignUpPersonalInfoViewState extends State<SignUpPersonalInfoView> {
               children: [
                 const SignUpProgress(currentStep: 0, totalSteps: 5),
 
-                const SizedBox(height: AppSpacing.sm),
+                SizedBox(height: AppSpacing.sm),
                 RichText(
                   text: TextSpan(
                     children: [
@@ -231,20 +233,20 @@ class _SignUpPersonalInfoViewState extends State<SignUpPersonalInfoView> {
                     ],
                   ),
                 ),
-                const SizedBox(height: AppSpacing.sm),
+                SizedBox(height: AppSpacing.sm),
                 Expanded(
                   child: SingleChildScrollView(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const SizedBox(height: AppSpacing.lg),
+                        SizedBox(height: AppSpacing.lg),
                         SignUpHeader(
                           title: context.l10n.letsGo,
                           subtitle: context.l10n.tellYourName,
                           step: 0,
                           totalSteps: 4,
                         ),
-                        const SizedBox(height: AppSpacing.lg),
+                        SizedBox(height: AppSpacing.lg),
                         AppTextField(
                           key: const ValueKey('signup_firstName'),
                           controller: _firstNameController,
@@ -253,8 +255,9 @@ class _SignUpPersonalInfoViewState extends State<SignUpPersonalInfoView> {
                           hint: context.l10n.signupFirstNameHint,
                           keyboardType: TextInputType.name,
                           textInputAction: TextInputAction.next,
-                          onFieldSubmitted: (_) =>
-                              FocusScope.of(context).requestFocus(_lastNameFocus),
+                          onFieldSubmitted: (_) => FocusScope.of(
+                            context,
+                          ).requestFocus(_lastNameFocus),
                           errorText:
                               _clientFirstNameError ??
                               fe['firstname'] ??
@@ -263,7 +266,7 @@ class _SignUpPersonalInfoViewState extends State<SignUpPersonalInfoView> {
                             _clientFirstNameError = null;
                           }),
                         ),
-                        const SizedBox(height: AppSpacing.md),
+                        SizedBox(height: AppSpacing.md),
                         AppTextField(
                           key: const ValueKey('signup_lastName'),
                           controller: _lastNameController,
@@ -282,7 +285,7 @@ class _SignUpPersonalInfoViewState extends State<SignUpPersonalInfoView> {
                             _clientLastNameError = null;
                           }),
                         ),
-                        const SizedBox(height: AppSpacing.md),
+                        SizedBox(height: AppSpacing.md),
                         AppTextField(
                           key: const ValueKey('signup_email'),
                           controller: _emailController,
@@ -298,7 +301,7 @@ class _SignUpPersonalInfoViewState extends State<SignUpPersonalInfoView> {
                             _clientEmailError = null;
                           }),
                         ),
-                        const SizedBox(height: AppSpacing.md),
+                        SizedBox(height: AppSpacing.md),
                         AppDropDown<String>(
                           label: context.l10n.gender,
                           hint: context.l10n.selectGender,
@@ -337,7 +340,7 @@ class _SignUpPersonalInfoViewState extends State<SignUpPersonalInfoView> {
                                   });
                                 },
                         ),
-                        const SizedBox(height: AppSpacing.md),
+                        SizedBox(height: AppSpacing.md),
                         BlocBuilder<AuthCubit, AuthState>(
                           builder: (context, state) {
                             return AppTextField(
@@ -351,8 +354,8 @@ class _SignUpPersonalInfoViewState extends State<SignUpPersonalInfoView> {
                                 final today = DateTime.now();
                                 final lastDob =
                                     DateOfBirthConstraints.latestSelectableBirthDate(
-                                  today,
-                                );
+                                      today,
+                                    );
                                 final firstDate = DateTime(1900);
                                 DateTime parsedInitial = lastDob;
                                 try {
@@ -366,10 +369,10 @@ class _SignUpPersonalInfoViewState extends State<SignUpPersonalInfoView> {
                                 }
                                 final initial =
                                     DateOfBirthConstraints.clampToSelectableRange(
-                                  parsedInitial,
-                                  firstDate,
-                                  lastDob,
-                                );
+                                      parsedInitial,
+                                      firstDate,
+                                      lastDob,
+                                    );
                                 final DateTime? picked = await showDatePicker(
                                   context: context,
                                   initialDate: initial,
@@ -394,7 +397,8 @@ class _SignUpPersonalInfoViewState extends State<SignUpPersonalInfoView> {
                               hint: context.l10n.selectDOB,
                               keyboardType: TextInputType.emailAddress,
                               textInputAction: TextInputAction.next,
-                              errorText: _clientDobError ??
+                              errorText:
+                                  _clientDobError ??
                                   fe['dob'] ??
                                   fe['date_of_birth'],
                               onFieldSubmitted: (_) => FocusScope.of(
@@ -403,7 +407,7 @@ class _SignUpPersonalInfoViewState extends State<SignUpPersonalInfoView> {
                             );
                           },
                         ),
-                        const SizedBox(height: AppSpacing.md),
+                        SizedBox(height: AppSpacing.md),
                         AppTextField(
                           key: const ValueKey('signup_password'),
                           controller: _passwordController,
@@ -422,7 +426,7 @@ class _SignUpPersonalInfoViewState extends State<SignUpPersonalInfoView> {
                             _clientConfirmError = null;
                           }),
                         ),
-                        const SizedBox(height: AppSpacing.md),
+                        SizedBox(height: AppSpacing.md),
                         AppTextField(
                           key: const ValueKey('signup_confirm_password'),
                           controller: _confirmPasswordController,
@@ -447,16 +451,17 @@ class _SignUpPersonalInfoViewState extends State<SignUpPersonalInfoView> {
                           SizedBox(height: 6),
                           Text(
                             context.l10n.passwordMinimumLengthHint,
-                            style: AppTextStyles.body(
-                              context,
-                              fontWeight: FontWeight.w400,
-                            ).copyWith(
-                              height: 1.55,
-                              color: AppColors.lightGrey,
-                            ),
+                            style:
+                                AppTextStyles.body(
+                                  context,
+                                  fontWeight: FontWeight.w400,
+                                ).copyWith(
+                                  height: 1.55,
+                                  color: AppColors.lightGrey,
+                                ),
                           ),
                         ],
-                        const SizedBox(height: AppSpacing.md),
+                        SizedBox(height: AppSpacing.md),
                         PhoneNumberField(
                           key: const ValueKey('signup_phone'),
                           label: context.l10n.phoneNumber,
@@ -475,7 +480,7 @@ class _SignUpPersonalInfoViewState extends State<SignUpPersonalInfoView> {
                             });
                           },
                         ),
-                        const SizedBox(height: AppSpacing.lg),
+                        SizedBox(height: AppSpacing.lg),
                       ],
                     ),
                   ),

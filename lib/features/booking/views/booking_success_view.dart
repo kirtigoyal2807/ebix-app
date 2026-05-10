@@ -210,7 +210,7 @@ class _BookingSuccessScreenState extends State<BookingSuccessScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const SizedBox(height: AppSpacing.xl),
+              SizedBox(height: AppSpacing.xl),
 
               Lottie.asset(
                 "assets/json/tick.json",
@@ -219,7 +219,7 @@ class _BookingSuccessScreenState extends State<BookingSuccessScreen> {
                 repeat: false,
               ),
 
-              const SizedBox(height: AppSpacing.md),
+              SizedBox(height: AppSpacing.md),
 
               AppText(
                 widget.successPage == SuccessPage.booking
@@ -234,7 +234,7 @@ class _BookingSuccessScreenState extends State<BookingSuccessScreen> {
                     ),
               ),
 
-              const SizedBox(height: AppSpacing.sm),
+              SizedBox(height: AppSpacing.sm),
 
               AppText(
                 widget.successPage == SuccessPage.booking
@@ -244,24 +244,24 @@ class _BookingSuccessScreenState extends State<BookingSuccessScreen> {
                 textAlign: TextAlign.center,
               ),
 
-              const SizedBox(height: AppSpacing.lg),
+              SizedBox(height: AppSpacing.lg),
 
               widget.successPage == SuccessPage.booking
                   ? _buildCheckInSection(context, isDark)
                   : _buildPositionCard(context, isDark),
 
-              const SizedBox(height: AppSpacing.lg),
+              SizedBox(height: AppSpacing.lg),
 
               _buildClassDetailsSection(context, isDark),
 
-              const SizedBox(height: AppSpacing.lg),
+              SizedBox(height: AppSpacing.lg),
 
               _buildActionButtons(context, isDark),
 
-              const SizedBox(height: AppSpacing.lg),
+              SizedBox(height: AppSpacing.lg),
 
               Padding(
-                padding: const EdgeInsetsDirectional.symmetric(
+                padding: EdgeInsetsDirectional.symmetric(
                   horizontal: AppSpacing.lg,
                 ),
                 child: AppText(
@@ -272,7 +272,7 @@ class _BookingSuccessScreenState extends State<BookingSuccessScreen> {
                 ),
               ),
 
-              const SizedBox(height: AppSpacing.lg),
+              SizedBox(height: AppSpacing.lg),
               _buildFooterLinks(context, isDark),
             ],
           ),
@@ -344,8 +344,8 @@ class _BookingSuccessScreenState extends State<BookingSuccessScreen> {
     }
 
     return Container(
-      margin: const EdgeInsetsDirectional.symmetric(horizontal: AppSpacing.lg),
-      padding: const EdgeInsets.all(AppSpacing.lg),
+      margin: EdgeInsetsDirectional.symmetric(horizontal: AppSpacing.lg),
+      padding: EdgeInsets.all(AppSpacing.lg),
       decoration: BoxDecoration(
         color: isDark ? AppColors.primaryDarkContainer : AppColors.seekBarLight,
         borderRadius: BorderRadius.circular(AppRadius.base),
@@ -354,14 +354,14 @@ class _BookingSuccessScreenState extends State<BookingSuccessScreen> {
       child: Column(
         children: [
           SvgPicture.asset("assets/images/svg/ic_clock.svg"),
-          const SizedBox(height: AppSpacing.md),
+          SizedBox(height: AppSpacing.md),
 
           AppText(
             _checkedInUi ? l10n.checkedIn : l10n.checkIn,
             style: (context) => AppTextStyles.experienceButton(context),
           ),
 
-          const SizedBox(height: AppSpacing.xi),
+          SizedBox(height: AppSpacing.xi),
 
           AppText(
             description,
@@ -369,7 +369,7 @@ class _BookingSuccessScreenState extends State<BookingSuccessScreen> {
             textAlign: TextAlign.center,
           ),
 
-          const SizedBox(height: AppSpacing.md),
+          SizedBox(height: AppSpacing.md),
 
           AppButton(
             label: buttonLabel,
@@ -414,13 +414,13 @@ class _BookingSuccessScreenState extends State<BookingSuccessScreen> {
                   },
           ),
 
-          const SizedBox(height: AppSpacing.md),
+          SizedBox(height: AppSpacing.md),
 
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              const SizedBox(width: 10),
+              SizedBox(width: 10),
               Icon(
                 Icons.warning_amber_rounded,
                 size: 16,
@@ -428,7 +428,7 @@ class _BookingSuccessScreenState extends State<BookingSuccessScreen> {
                     ? AppColors.languageIconDark
                     : AppColors.languageIcon,
               ),
-              const SizedBox(width: AppSpacing.xs),
+              SizedBox(width: AppSpacing.xs),
               Expanded(
                 child: AppText(
                   l10n.checkInLongDescription,
@@ -451,13 +451,11 @@ class _BookingSuccessScreenState extends State<BookingSuccessScreen> {
     return Column(
       children: [
         Divider(color: isDark ? AppColors.greyText : AppColors.buttonBorder),
-        const SizedBox(height: AppSpacing.lg),
+        SizedBox(height: AppSpacing.lg),
         Container(
           width: double.infinity,
-          margin: const EdgeInsetsDirectional.symmetric(
-            horizontal: AppSpacing.lg,
-          ),
-          padding: const EdgeInsets.symmetric(
+          margin: EdgeInsetsDirectional.symmetric(horizontal: AppSpacing.lg),
+          padding: EdgeInsets.symmetric(
             horizontal: AppSpacing.lg,
             vertical: AppSpacing.md,
           ),
@@ -484,13 +482,13 @@ class _BookingSuccessScreenState extends State<BookingSuccessScreen> {
                           : AppColors.lightGrey,
                     ),
               ),
-              const SizedBox(height: AppSpacing.md),
+              SizedBox(height: AppSpacing.md),
               AppText(
                 position != null ? '#$position' : '--',
                 style: (ctx) =>
                     AppTextStyles.appBarText(ctx).copyWith(fontSize: 32),
               ),
-              const SizedBox(height: AppSpacing.sm),
+              SizedBox(height: AppSpacing.sm),
               AppText(
                 l10n.inLine,
                 style: (ctx) => AppTextStyles.captionText(ctx).copyWith(
@@ -501,7 +499,7 @@ class _BookingSuccessScreenState extends State<BookingSuccessScreen> {
           ),
         ),
 
-        const SizedBox(height: AppSpacing.lg),
+        SizedBox(height: AppSpacing.lg),
         Divider(color: isDark ? AppColors.greyText : AppColors.buttonBorder),
       ],
     );
@@ -543,8 +541,8 @@ class _BookingSuccessScreenState extends State<BookingSuccessScreen> {
     }
 
     return Container(
-      margin: const EdgeInsetsDirectional.symmetric(horizontal: AppSpacing.lg),
-      padding: const EdgeInsets.all(20),
+      margin: EdgeInsetsDirectional.symmetric(horizontal: AppSpacing.lg),
+      padding: EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: isDark ? AppColors.homeBackground : AppColors.whiteColor,
         borderRadius: BorderRadius.circular(AppRadius.md),
@@ -560,7 +558,7 @@ class _BookingSuccessScreenState extends State<BookingSuccessScreen> {
             style: (ctx) => AppTextStyles.gelasioMedium(ctx),
           ),
 
-          const SizedBox(height: AppSpacing.lmd),
+          SizedBox(height: AppSpacing.lmd),
 
           _buildClassDetailRow(
             label: l10n.classTxt,
@@ -568,7 +566,7 @@ class _BookingSuccessScreenState extends State<BookingSuccessScreen> {
             isDark: isDark,
           ),
 
-          const SizedBox(height: AppSpacing.sm),
+          SizedBox(height: AppSpacing.sm),
 
           _buildClassDetailRow(
             label: l10n.instructor,
@@ -576,7 +574,7 @@ class _BookingSuccessScreenState extends State<BookingSuccessScreen> {
             isDark: isDark,
           ),
 
-          const SizedBox(height: AppSpacing.sm),
+          SizedBox(height: AppSpacing.sm),
 
           _buildClassDetailRow(
             label: l10n.date,
@@ -584,7 +582,7 @@ class _BookingSuccessScreenState extends State<BookingSuccessScreen> {
             isDark: isDark,
           ),
 
-          const SizedBox(height: AppSpacing.sm),
+          SizedBox(height: AppSpacing.sm),
 
           _buildClassDetailRow(
             label: l10n.time,
@@ -592,7 +590,7 @@ class _BookingSuccessScreenState extends State<BookingSuccessScreen> {
             isDark: isDark,
           ),
 
-          const SizedBox(height: AppSpacing.sm),
+          SizedBox(height: AppSpacing.sm),
 
           _buildClassDetailRow(
             label: l10n.location,
@@ -637,7 +635,7 @@ class _BookingSuccessScreenState extends State<BookingSuccessScreen> {
                   style: (context) => AppTextStyles.textFieldHeading(context),
                 ),
               ),
-              const SizedBox(width: AppSpacing.md),
+              SizedBox(width: AppSpacing.md),
               Expanded(
                 child: AppText(
                   value,
@@ -655,7 +653,7 @@ class _BookingSuccessScreenState extends State<BookingSuccessScreen> {
     final l10n = AppLocalizations.of(context);
 
     return Padding(
-      padding: const EdgeInsetsDirectional.symmetric(horizontal: AppSpacing.lg),
+      padding: EdgeInsetsDirectional.symmetric(horizontal: AppSpacing.lg),
       child: Row(
         children: [
           Expanded(
@@ -679,7 +677,7 @@ class _BookingSuccessScreenState extends State<BookingSuccessScreen> {
               ),
             ),
           ),
-          const SizedBox(width: AppSpacing.xi),
+          SizedBox(width: AppSpacing.xi),
           Expanded(
             child: Container(
               decoration: BoxDecoration(
@@ -723,7 +721,7 @@ class _BookingSuccessScreenState extends State<BookingSuccessScreen> {
             },
             variant: AppButtonVariant.primary,
           ),
-          const SizedBox(height: AppSpacing.sm),
+          SizedBox(height: AppSpacing.sm),
           Container(
             decoration: BoxDecoration(
               color: isDark ? AppColors.homeBackground : Colors.white,

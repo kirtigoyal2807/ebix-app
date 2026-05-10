@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pilates_app/config/theme/app_radius.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
 
@@ -139,8 +140,8 @@ class _OtpFieldState extends State<OtpField> {
           margin: EdgeInsets.only(
             right: index == widget.length - 1 ? 0 : AppSpacing.sm,
           ),
-          width: 48,
-          height: 48,
+          width: 46.w,
+          height: 46.h,
           child: Focus(
             onKeyEvent: (node, event) => _handleKey(node, event, index),
             child: TextField(
@@ -148,9 +149,7 @@ class _OtpFieldState extends State<OtpField> {
               focusNode: focusNode,
               keyboardType: TextInputType.number,
               textAlign: TextAlign.center,
-              inputFormatters: [
-                FilteringTextInputFormatter.digitsOnly,
-              ],
+              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
               style: theme.textTheme.titleMedium,
               decoration: InputDecoration(
                 contentPadding: EdgeInsets.zero,

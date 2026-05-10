@@ -143,7 +143,7 @@ class SessionHistoryView extends StatelessWidget {
                     child: ListView.separated(
                       physics: const AlwaysScrollableScrollPhysics(),
                       itemCount: state.sessions.length,
-                      separatorBuilder: (_, __) =>
+                      separatorBuilder: (_, _) =>
                           SizedBox(height: AppSpacing.sm),
                       itemBuilder: (context, index) {
                         return SessionHistoryCard(item: state.sessions[index]);

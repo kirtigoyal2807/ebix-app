@@ -17,7 +17,7 @@ class ProfilePictureBottomSheet extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Material(
-      borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+      borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       child: SafeArea(
         top: false,
         child: Column(
@@ -25,7 +25,7 @@ class ProfilePictureBottomSheet extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: AppSpacing.lg),
+              padding: EdgeInsets.symmetric(vertical: AppSpacing.lg),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -55,7 +55,7 @@ class ProfilePictureBottomSheet extends StatelessWidget {
                       ],
                     ),
                   ),
-                  const SizedBox(height: AppSpacing.base),
+                  SizedBox(height: AppSpacing.base),
                   _ProfilePictureOption(
                     title: context.l10n.takePicture,
                     onTap: () =>
@@ -71,7 +71,7 @@ class ProfilePictureBottomSheet extends StatelessWidget {
                     onTap: () =>
                         Navigator.of(context).pop(ProfilePictureAction.remove),
                   ),
-                  const SizedBox(height: AppSpacing.md),
+                  SizedBox(height: AppSpacing.md),
                 ],
               ),
             ),
@@ -107,11 +107,11 @@ class _ProfilePictureOptionState extends State<_ProfilePictureOption> {
       },
       child: Container(
         width: double.infinity,
-        padding: const EdgeInsets.symmetric(
+        padding: EdgeInsets.symmetric(
           horizontal: AppSpacing.base,
           vertical: AppSpacing.md,
         ),
-        margin: const EdgeInsets.symmetric(horizontal: AppSpacing.base),
+        margin: EdgeInsets.symmetric(horizontal: AppSpacing.base),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(AppRadius.md),
           border: Border.all(

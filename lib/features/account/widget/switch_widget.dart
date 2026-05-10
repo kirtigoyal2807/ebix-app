@@ -11,7 +11,7 @@ class SwitchWidget extends StatelessWidget {
   final bool switchValue;
   final void Function(bool)? onChanged;
 
-  SwitchWidget({
+  const SwitchWidget({
     super.key,
     required this.switchValue,
     required this.onChanged,

@@ -53,7 +53,7 @@ class _SpringChallengeCardState extends State<SpringChallengeCard> {
             },
           ),
         ),
-        const SizedBox(height: AppSpacing.md),
+        SizedBox(height: AppSpacing.md),
         _buildPageIndicator(),
       ],
     );
@@ -64,7 +64,7 @@ class _SpringChallengeCardState extends State<SpringChallengeCard> {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: AppSpacing.xs),
+      margin: EdgeInsets.symmetric(horizontal: AppSpacing.xs),
       clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(AppRadius.md),
@@ -85,7 +85,7 @@ class _SpringChallengeCardState extends State<SpringChallengeCard> {
             child: Image.network(
               banner.imageUrl ?? '',
               fit: BoxFit.cover,
-              errorBuilder: (_, __, ___) {
+              errorBuilder: (_, _, _) {
                 return Container(color: AppColors.splashBackgroundDark);
               },
               loadingBuilder: (context, child, progress) {
@@ -134,7 +134,7 @@ class _SpringChallengeCardState extends State<SpringChallengeCard> {
                         ),
                   ),
                 ),
-                const SizedBox(height: AppSpacing.sm),
+                SizedBox(height: AppSpacing.sm),
                 AppText(
                   banner.subtitle ?? context.l10n.springResetDesc,
                   maxLines: 1,
@@ -157,7 +157,7 @@ class _SpringChallengeCardState extends State<SpringChallengeCard> {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(AppRadius.pillRadius),
                     ),
-                    padding: const EdgeInsets.symmetric(
+                    padding: EdgeInsets.symmetric(
                       horizontal: AppSpacing.md,
                       vertical: AppSpacing.sm,
                     ),

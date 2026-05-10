@@ -24,7 +24,7 @@ class SelectBranchSheet extends StatelessWidget {
 
         return Material(
           color: isDark ? AppColors.homeBackground : Colors.white,
-          borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+          borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
           child: SafeArea(
             top: false,
             child: Column(
@@ -55,11 +55,11 @@ class SelectBranchSheet extends StatelessWidget {
                     ],
                   ),
                 ),
-                const SizedBox(height: AppSpacing.xs),
+                SizedBox(height: AppSpacing.xs),
                 ConstrainedBox(
                   constraints: BoxConstraints(maxHeight: maxListHeight),
                   child: ListView.separated(
-                    padding: const EdgeInsets.fromLTRB(
+                    padding: EdgeInsets.fromLTRB(
                       AppSpacing.lg,
                       0,
                       AppSpacing.lg,
@@ -68,8 +68,7 @@ class SelectBranchSheet extends StatelessWidget {
                     shrinkWrap: true,
                     physics: const ClampingScrollPhysics(),
                     itemCount: state.branchList.length,
-                    separatorBuilder: (_, __) =>
-                        const SizedBox(height: AppSpacing.sm),
+                    separatorBuilder: (_, _) => SizedBox(height: AppSpacing.sm),
                     itemBuilder: (context, index) {
                       return _BranchOption(
                         title: state.branchList[index].id == 0

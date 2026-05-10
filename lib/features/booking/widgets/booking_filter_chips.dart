@@ -62,7 +62,7 @@ class BookingFilterChips extends StatelessWidget {
 
             return SingleChildScrollView(
               scrollDirection: Axis.horizontal,
-              padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+              padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
               child: Row(
                 children: [
                   _FilterChip(
@@ -73,7 +73,7 @@ class BookingFilterChips extends StatelessWidget {
                     onTap: () => _showFilter(
                       context,
                       title: context.l10n.date,
-                      options: const [
+                      options: [
                         'Today',
                         'Tomorrow',
                         'This Week',
@@ -87,7 +87,7 @@ class BookingFilterChips extends StatelessWidget {
                     ),
                     onClear: () => cubit.setDate('Today'),
                   ),
-                  const SizedBox(width: AppSpacing.sm),
+                  SizedBox(width: AppSpacing.sm),
                   _FilterChip(
                     label: state.selectedCategory == 'All Categories'
                         ? context.l10n.allCategories
@@ -103,7 +103,7 @@ class BookingFilterChips extends StatelessWidget {
                     ),
                     onClear: () => cubit.setCategory('All Categories'),
                   ),
-                  const SizedBox(width: AppSpacing.sm),
+                  SizedBox(width: AppSpacing.sm),
                   _FilterChip(
                     label: state.selectedGender == 'All Gender'
                         ? context.l10n.allGender
@@ -119,7 +119,7 @@ class BookingFilterChips extends StatelessWidget {
                     ),
                     onClear: () => cubit.setGender('All Gender'),
                   ),
-                  const SizedBox(width: AppSpacing.sm),
+                  SizedBox(width: AppSpacing.sm),
                   _FilterChip(
                     label: state.selectedBranch == 'All Branches'
                         ? context.l10n.allBranches
@@ -317,7 +317,7 @@ class _FilterChip extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.symmetric(
+        padding: EdgeInsets.symmetric(
           horizontal: AppSpacing.md,
           vertical: AppSpacing.sm,
         ),
@@ -351,7 +351,7 @@ class _FilterChip extends StatelessWidget {
                         : (isDark ? AppColors.lightText : AppColors.darkText),
                   ),
             ),
-            const SizedBox(width: AppSpacing.xs),
+            SizedBox(width: AppSpacing.xs),
             if (isSelected)
               GestureDetector(
                 onTap: onClear,

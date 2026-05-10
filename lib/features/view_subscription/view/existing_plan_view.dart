@@ -145,7 +145,7 @@ class ExistingPlanView extends StatelessWidget {
     final result = await repo.cancelFreeze(sub.id, freeze.id);
     if (!context.mounted) return;
     result.when(
-      success: (_, __) {
+      success: (_, _) {
         cubit.load();
       },
       failure: (e) {
@@ -172,7 +172,7 @@ class ExistingPlanView extends StatelessWidget {
             state.subscriptions.isEmpty) {
           return Center(
             child: Padding(
-              padding: const EdgeInsets.all(AppSpacing.lg),
+              padding: EdgeInsets.all(AppSpacing.lg),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -200,7 +200,7 @@ class ExistingPlanView extends StatelessWidget {
         if (state.subscriptions.isEmpty) {
           return Center(
             child: Padding(
-              padding: const EdgeInsets.all(AppSpacing.lg),
+              padding: EdgeInsets.all(AppSpacing.lg),
               child: AppText(
                 context.l10n.noSubscriptionsYet,
                 textAlign: TextAlign.center,
@@ -224,7 +224,7 @@ class ExistingPlanView extends StatelessWidget {
               AppSpacing.xl + safe.bottom,
             ),
             itemCount: sorted.length,
-            separatorBuilder: (_, __) => SizedBox(height: AppSpacing.md),
+            separatorBuilder: (_, _) => SizedBox(height: AppSpacing.md),
             itemBuilder: (context, index) {
               final s = sorted[index];
               final timeline = _timeline(s);
@@ -424,7 +424,7 @@ class _SubscriptionHistoryCard extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Padding(
-                          padding: const EdgeInsets.only(top: 1),
+                          padding: EdgeInsets.only(top: 1),
                           child: Icon(
                             Icons.swap_horiz_rounded,
                             size: 14,
@@ -565,7 +565,7 @@ class _SubscriptionHistoryCard extends StatelessWidget {
             ...subscription.freezes.map((f) {
               final cancelable = canCancelFreeze(f);
               return Padding(
-                padding: const EdgeInsets.only(bottom: AppSpacing.sm),
+                padding: EdgeInsets.only(bottom: AppSpacing.sm),
                 child: LayoutBuilder(
                   builder: (context, constraints) {
                     final narrow = constraints.maxWidth < 340;

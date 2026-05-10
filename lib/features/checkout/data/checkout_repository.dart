@@ -9,7 +9,6 @@ import 'package:pilates_app/features/checkout/data/models/catalog_product.dart';
 import 'package:pilates_app/features/checkout/data/models/checkout_payment_intent_result.dart';
 import 'package:pilates_app/features/checkout/data/models/checkout_start_result.dart';
 import 'package:pilates_app/features/checkout/data/models/payment_success_summary.dart';
-import 'package:pilates_app/features/checkout/data/models/product_health_question.dart';
 import 'package:pilates_app/features/checkout/data/models/product_health_questionnaire.dart';
 
 /// Checkout session APIs.

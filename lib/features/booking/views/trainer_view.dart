@@ -41,14 +41,14 @@ class TrainerView extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             BookingSearchBar(hintText: context.l10n.searchTrainers),
-            const SizedBox(height: AppSpacing.md),
+            SizedBox(height: AppSpacing.md),
             const TrainerFilterChip(),
-            const SizedBox(height: AppSpacing.md),
+            SizedBox(height: AppSpacing.md),
             Divider(
               color: isDark ? AppColors.greyText : AppColors.buttonBorder,
               height: 1,
             ),
-            const SizedBox(height: AppSpacing.lg),
+            SizedBox(height: AppSpacing.lg),
             Expanded(
               child: BlocBuilder<TrainersCubit, TrainersState>(
                 builder: (context, state) {
@@ -63,7 +63,7 @@ class TrainerView extends StatelessWidget {
                       state.items.isEmpty) {
                     return Center(
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(
+                        padding: EdgeInsets.symmetric(
                           horizontal: AppSpacing.lg,
                         ),
                         child: AppText(
@@ -81,9 +81,7 @@ class TrainerView extends StatelessWidget {
                   return RefreshIndicator(
                     onRefresh: () => _reload(context),
                     child: ListView(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: AppSpacing.lg,
-                      ),
+                      padding: EdgeInsets.symmetric(vertical: AppSpacing.lg),
                       physics: const AlwaysScrollableScrollPhysics(),
                       children: [
                         if (state.items.isEmpty)
@@ -94,7 +92,7 @@ class TrainerView extends StatelessWidget {
                         else
                           for (final trainer in state.items) ...[
                             TrainerCard(trainer: trainer),
-                            const SizedBox(height: AppSpacing.md),
+                            SizedBox(height: AppSpacing.md),
                           ],
                       ],
                     ),
@@ -118,20 +116,20 @@ class _NoTrainersEmpty extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(
+      padding: EdgeInsets.symmetric(
         horizontal: AppSpacing.lg,
         vertical: AppSpacing.xl,
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const SizedBox(height: 32),
+          SizedBox(height: 32),
           Icon(
             Icons.people_outline,
             size: 56,
             color: isDark ? AppColors.darkGreyText : AppColors.lightGrey,
           ),
-          const SizedBox(height: AppSpacing.lg),
+          SizedBox(height: AppSpacing.lg),
           AppText(
             context.l10n.noTrainersTitle,
             textAlign: TextAlign.center,
@@ -141,7 +139,7 @@ class _NoTrainersEmpty extends StatelessWidget {
               c,
             ).copyWith(fontSize: 20, fontWeight: FontWeight.w500),
           ),
-          const SizedBox(height: AppSpacing.sm),
+          SizedBox(height: AppSpacing.sm),
           AppText(
             hasFilters
                 ? context.l10n.noTrainersFilteredDescription

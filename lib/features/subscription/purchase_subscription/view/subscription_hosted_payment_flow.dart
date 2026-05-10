@@ -39,7 +39,7 @@ Future<void> runSubscriptionHostedPaymentFlow(
   bool deferReceiptUntilAfterRequiredInformation = false,
 }) async {
   final messenger = ScaffoldMessenger.of(context);
-  final l10n = AppLocalizations.of(context)!;
+  final l10n = AppLocalizations.of(context);
   final cubit = context.read<SubscriptionCubit>();
   final id = cubit.state.checkoutSessionId.trim();
   if (id.isEmpty) {

@@ -117,10 +117,10 @@ class _PlanDetailsModalState extends State<PlanDetailsModal> {
         descriptionPlain != null && descriptionPlain.trim().isNotEmpty;
 
     return Container(
-      padding: const EdgeInsets.all(24),
+      padding: EdgeInsets.all(24),
       decoration: BoxDecoration(
         color: isDark ? AppColors.surfaceDark : Colors.white,
-        borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
       child: SingleChildScrollView(
         child: Column(
@@ -132,10 +132,7 @@ class _PlanDetailsModalState extends State<PlanDetailsModal> {
               children: [
                 if (_displayPlan['badge'] != null)
                   Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 8,
-                      vertical: 4,
-                    ),
+                    padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                     decoration: BoxDecoration(
                       color: _displayPlan['isPopular'] == true
                           ? AppColors.goldStarColor
@@ -156,7 +153,7 @@ class _PlanDetailsModalState extends State<PlanDetailsModal> {
                     ),
                   )
                 else
-                  const SizedBox(),
+                  SizedBox(),
                 SizedBox(
                   height: 28,
                   width: 32,
@@ -181,7 +178,7 @@ class _PlanDetailsModalState extends State<PlanDetailsModal> {
               ),
             ),
             if (_detailLoading) ...[
-              const SizedBox(height: AppSpacing.sm),
+              SizedBox(height: AppSpacing.sm),
               const Center(
                 child: SizedBox(
                   width: 24,
@@ -190,7 +187,7 @@ class _PlanDetailsModalState extends State<PlanDetailsModal> {
                 ),
               ),
             ],
-            const SizedBox(height: AppSpacing.sm),
+            SizedBox(height: AppSpacing.sm),
             Row(
               children: [
                 Expanded(
@@ -209,7 +206,7 @@ class _PlanDetailsModalState extends State<PlanDetailsModal> {
               ],
             ),
             if (hasDescription) ...[
-              const SizedBox(height: AppSpacing.md),
+              SizedBox(height: AppSpacing.md),
               AppText(
                 descriptionPlain.trim(),
                 style: (context) =>
@@ -219,7 +216,7 @@ class _PlanDetailsModalState extends State<PlanDetailsModal> {
                     ),
               ),
             ],
-            const SizedBox(height: AppSpacing.lg),
+            SizedBox(height: AppSpacing.lg),
             if (_displayPlan['features'] != null)
               Container(
                 padding: const EdgeInsets.symmetric(

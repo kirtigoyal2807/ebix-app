@@ -25,7 +25,7 @@ class FeaturedClassCard extends StatelessWidget {
     final imageHeight = size.height * 0.18;
 
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+      margin: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
       decoration: BoxDecoration(
         color: isDark ? AppColors.surfaceDark : Colors.white,
         borderRadius: BorderRadius.circular(AppRadius.md),
@@ -56,7 +56,7 @@ class FeaturedClassCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           ClipRRect(
-            borderRadius: const BorderRadius.vertical(
+            borderRadius: BorderRadius.vertical(
               top: Radius.circular(AppRadius.md),
             ),
             child: SizedBox(
@@ -77,7 +77,7 @@ class FeaturedClassCard extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(
+            padding: EdgeInsets.only(
               right: AppSpacing.md,
               left: AppSpacing.md,
               top: AppSpacing.base,
@@ -85,7 +85,7 @@ class FeaturedClassCard extends StatelessWidget {
             child: PlanStatusBadge(inPlan: featuredClass.inPlan == true),
           ),
           Padding(
-            padding: const EdgeInsets.only(
+            padding: EdgeInsets.only(
               right: AppSpacing.md,
               left: AppSpacing.md,
               bottom: AppSpacing.md,
@@ -129,7 +129,7 @@ class FeaturedClassCard extends StatelessWidget {
                   ),
                 ),
 
-                const SizedBox(height: AppSpacing.xs),
+                SizedBox(height: AppSpacing.xs),
                 AppText(
                   _buildSubtitle(context),
                   style: (context) =>
@@ -144,7 +144,7 @@ class FeaturedClassCard extends StatelessWidget {
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
-                const SizedBox(height: AppSpacing.md),
+                SizedBox(height: AppSpacing.md),
                 ElevatedButton(
                   onPressed: () {
                     final classId = featuredClass.classId?.trim() ?? '';

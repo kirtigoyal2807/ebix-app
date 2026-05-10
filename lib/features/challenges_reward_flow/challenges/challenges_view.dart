@@ -49,7 +49,7 @@ class _ChallengesViewBody extends StatelessWidget {
           if (state.status == ChallengesLoadStatus.failure) {
             return Center(
               child: Padding(
-                padding: const EdgeInsets.all(AppSpacing.lg),
+                padding: EdgeInsets.all(AppSpacing.lg),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -94,7 +94,7 @@ class _ChallengesViewBody extends StatelessWidget {
                   SizedBox(height: AppSpacing.md),
                   if (active.isEmpty)
                     Padding(
-                      padding: const EdgeInsets.only(bottom: AppSpacing.md),
+                      padding: EdgeInsets.only(bottom: AppSpacing.md),
                       child: AppText(
                         context.l10n.challengesSubtitle,
                         style: (context) =>

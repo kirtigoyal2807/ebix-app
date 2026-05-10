@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:lottie/lottie.dart';
 import 'package:pilates_app/config/theme/app_colors.dart';
 import 'package:pilates_app/config/theme/app_radius.dart';
@@ -11,7 +10,6 @@ import 'package:pilates_app/widgets/app_text.dart';
 import '../../../../config/theme/app_text_styles.dart';
 import '../../../../core/localization/arb/app_localizations.dart';
 import '../../../../widgets/dotted_underline.dart';
-import '../../purchase_subscription/view/widgets/plan_details_modal.dart';
 
 class GiftSuccessfullyView extends StatelessWidget {
   const GiftSuccessfullyView({
@@ -98,7 +96,7 @@ class GiftSuccessfullyView extends StatelessWidget {
                   color: isDark ? AppColors.greyText : AppColors.buttonBorder,
                 ),
               ),
-              padding: const EdgeInsets.only(
+              padding: EdgeInsets.only(
                 top: AppSpacing.md,
                 left: AppSpacing.md,
                 right: AppSpacing.md,
@@ -114,11 +112,11 @@ class GiftSuccessfullyView extends StatelessWidget {
                     ).copyWith(fontWeight: FontWeight.w600),
                   ),
 
-                  const SizedBox(height: 46),
+                  SizedBox(height: 46),
 
                   _buildRow(l10n.recipientName, _displayName(), isDark),
 
-                  const SizedBox(height: AppSpacing.sm),
+                  SizedBox(height: AppSpacing.sm),
                   SizedBox(
                     width: double.infinity,
                     child: CustomPaint(
@@ -132,9 +130,9 @@ class GiftSuccessfullyView extends StatelessWidget {
                     ),
                   ),
 
-                  const SizedBox(height: AppSpacing.sm),
+                  SizedBox(height: AppSpacing.sm),
                   _buildRow(l10n.email, _displayEmail(), isDark),
-                  const SizedBox(height: AppSpacing.sm),
+                  SizedBox(height: AppSpacing.sm),
                   SizedBox(
                     width: double.infinity,
                     child: CustomPaint(
@@ -147,13 +145,13 @@ class GiftSuccessfullyView extends StatelessWidget {
                       ),
                     ),
                   ),
-                  const SizedBox(height: AppSpacing.sm),
+                  SizedBox(height: AppSpacing.sm),
                   _buildRow(
                     l10n.deliveryMethod,
                     _deliveryDisplay(l10n),
                     isDark,
                   ),
-                  const SizedBox(height: AppSpacing.sm),
+                  SizedBox(height: AppSpacing.sm),
                   SizedBox(
                     width: double.infinity,
                     child: CustomPaint(
@@ -166,7 +164,7 @@ class GiftSuccessfullyView extends StatelessWidget {
                       ),
                     ),
                   ),
-                  const SizedBox(height: AppSpacing.sm),
+                  SizedBox(height: AppSpacing.sm),
                   _buildRow(l10n.giftStatus, l10n.delivered, isDark),
                 ],
               ),
@@ -276,12 +274,7 @@ class GiftSuccessfullyView extends StatelessWidget {
     );
   }
 
-  static Widget _buildRow(
-    String title,
-    String value,
-    bool isDark, {
-    bool isBold = false,
-  }) {
+  static Widget _buildRow(String title, String value, bool isDark) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [

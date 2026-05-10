@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:lottie/lottie.dart';
 import 'package:pilates_app/config/theme/app_colors.dart';
-import 'package:pilates_app/config/theme/app_radius.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/core/localization/localization_extension.dart';
 import 'package:pilates_app/features/explore/widget/receive_gift_sheet.dart';
 import 'package:pilates_app/widgets/app_button.dart';
 import 'package:pilates_app/widgets/app_text.dart';
-import 'package:pilates_app/widgets/app_text_field.dart';
 
 class GiftRedeemSuccessSheet extends StatelessWidget {
   const GiftRedeemSuccessSheet({super.key, this.onContinue});
@@ -25,11 +22,11 @@ class GiftRedeemSuccessSheet extends StatelessWidget {
 
     return Material(
       color: isDark ? AppColors.homeBackground : AppColors.whiteColor,
-      borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+      borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       child: SafeArea(
         top: false,
         child: Padding(
-          padding: const EdgeInsets.symmetric(
+          padding: EdgeInsets.symmetric(
             horizontal: AppSpacing.lg,
             vertical: AppSpacing.lg,
           ),
@@ -56,7 +53,7 @@ class GiftRedeemSuccessSheet extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: AppSpacing.xl),
+              SizedBox(height: AppSpacing.xl),
               Lottie.asset(
                 "assets/json/tick.json",
                 alignment: Alignment.center,
@@ -65,9 +62,9 @@ class GiftRedeemSuccessSheet extends StatelessWidget {
                 height: 150,
               ),
 
-              const SizedBox(height: AppSpacing.md),
+              SizedBox(height: AppSpacing.md),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+                padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
                 child: AppText(
                   context.l10n.giftRedeemedSuccess,
                   style: (context) =>
@@ -79,7 +76,7 @@ class GiftRedeemSuccessSheet extends StatelessWidget {
                   textAlign: TextAlign.center,
                 ),
               ),
-              const SizedBox(height: AppSpacing.xl),
+              SizedBox(height: AppSpacing.xl),
               AppButton(
                 label: context.l10n.continueTxt,
                 onPressed: () {

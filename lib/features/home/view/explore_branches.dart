@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 
 import '../../../config/theme/app_colors.dart';
@@ -14,7 +12,7 @@ class ExploreBranches extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final l10n = AppLocalizations.of(context)!;
+    final l10n = AppLocalizations.of(context);
     return Scaffold(
       backgroundColor: isDark ? AppColors.homeBackground : AppColors.whiteColor,
       appBar: AppAppBar(
@@ -27,7 +25,7 @@ class ExploreBranches extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.symmetric(
+          padding: EdgeInsets.symmetric(
             horizontal: AppSpacing.lg,
             vertical: AppSpacing.md,
           ),
@@ -42,7 +40,7 @@ class ExploreBranches extends StatelessWidget {
                 onTap: () {},
               ),
 
-              const SizedBox(height: AppSpacing.md),
+              SizedBox(height: AppSpacing.md),
 
               BranchOption(
                 title: 'Prince Abdul Majeed Street',
@@ -52,7 +50,7 @@ class ExploreBranches extends StatelessWidget {
                 selected: false,
                 onTap: () {},
               ),
-              const SizedBox(height: AppSpacing.md),
+              SizedBox(height: AppSpacing.md),
               BranchOption(
                 title: 'Balad, Al Al Munawarah',
                 city: 'Al Madinah Al Munawarah',

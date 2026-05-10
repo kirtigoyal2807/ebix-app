@@ -73,8 +73,7 @@ class SubscriptionNotificationPreferences {
   ) {
     if (json == null) return const SubscriptionNotificationPreferences();
     return SubscriptionNotificationPreferences(
-      paymentConfirmations:
-          _asBool(json['paymentConfirmations']) ?? false,
+      paymentConfirmations: _asBool(json['paymentConfirmations']) ?? false,
       renewalReminders: _asBool(json['renewalReminders']) ?? false,
       expiryReminders: _asBool(json['expiryReminders']) ?? false,
     );
@@ -114,9 +113,7 @@ class ReferralNotificationPreferences {
   final bool referralSuccess;
   final bool inviteUpdates;
 
-  factory ReferralNotificationPreferences.fromJson(
-    Map<String, dynamic>? json,
-  ) {
+  factory ReferralNotificationPreferences.fromJson(Map<String, dynamic>? json) {
     if (json == null) return const ReferralNotificationPreferences();
     return ReferralNotificationPreferences(
       referralSuccess: _asBool(json['referralSuccess']) ?? false,
@@ -182,18 +179,14 @@ class NotificationPreferences {
     final prefs = _asMap(json['preferences']) ?? json;
 
     final channelsJson = _asMap(prefs['channels']);
-    final globalChannels = NotificationGlobalChannels.fromJson(
-      channelsJson,
-    );
+    final globalChannels = NotificationGlobalChannels.fromJson(channelsJson);
 
-    final rootPush =
-        json.containsKey('push')
-            ? (_asBool(json['push']) ?? false)
-            : globalChannels.push;
-    final rootEmail =
-        json.containsKey('email')
-            ? (_asBool(json['email']) ?? false)
-            : globalChannels.email;
+    final rootPush = json.containsKey('push')
+        ? (_asBool(json['push']) ?? false)
+        : globalChannels.push;
+    final rootEmail = json.containsKey('email')
+        ? (_asBool(json['email']) ?? false)
+        : globalChannels.email;
 
     return NotificationPreferences(
       rootPush: rootPush,

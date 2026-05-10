@@ -18,15 +18,15 @@ class ReviewScreenView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final l10n = AppLocalizations.of(context)!;
+    final l10n = AppLocalizations.of(context);
     return Padding(
-      padding: const EdgeInsets.only(bottom: AppSpacing.base),
+      padding: EdgeInsets.only(bottom: AppSpacing.base),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(child: ReviewScreenDetailsView()),
           Padding(
-            padding: const EdgeInsets.only(
+            padding: EdgeInsets.only(
               left: AppSpacing.lg,
               right: AppSpacing.lg,
               bottom: AppSpacing.sm,

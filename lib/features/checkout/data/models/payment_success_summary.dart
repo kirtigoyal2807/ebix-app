@@ -30,14 +30,14 @@ class PaymentSuccessSummary {
     Map<String, dynamic>? subMap;
     final rawSub = json['subscription'];
     if (rawSub is Map) {
-      subMap = Map<String, dynamic>.from(rawSub as Map<dynamic, dynamic>);
+      subMap = Map<String, dynamic>.from(rawSub);
     }
 
     PaymentSuccessReceiptPackage? pkg;
     final rawPkg = json['package'];
     if (rawPkg is Map) {
       pkg = PaymentSuccessReceiptPackage.fromJson(
-        Map<String, dynamic>.from(rawPkg as Map<dynamic, dynamic>),
+        Map<String, dynamic>.from(rawPkg),
       );
     }
 
@@ -45,7 +45,7 @@ class PaymentSuccessSummary {
     final rawPricing = json['pricing'];
     if (rawPricing is Map) {
       pricing = PaymentSuccessReceiptPricing.fromJson(
-        Map<String, dynamic>.from(rawPricing as Map<dynamic, dynamic>),
+        Map<String, dynamic>.from(rawPricing),
       );
     }
 
@@ -53,7 +53,7 @@ class PaymentSuccessSummary {
     final rawPay = json['payment'];
     if (rawPay is Map) {
       payment = PaymentSuccessReceiptPayment.fromJson(
-        Map<String, dynamic>.from(rawPay as Map<dynamic, dynamic>),
+        Map<String, dynamic>.from(rawPay),
       );
     }
 

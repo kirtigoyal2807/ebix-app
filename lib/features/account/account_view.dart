@@ -64,7 +64,7 @@ class AccountView extends StatelessWidget {
                 absorbing: loading,
                 child: SingleChildScrollView(
                   child: Padding(
-                    padding: const EdgeInsets.only(
+                    padding: EdgeInsets.only(
                       left: AppSpacing.lg,
                       right: AppSpacing.lg,
                       bottom: AppSpacing.md,

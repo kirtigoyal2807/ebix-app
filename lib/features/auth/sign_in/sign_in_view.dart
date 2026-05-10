@@ -126,7 +126,7 @@ class _SignInViewState extends State<SignInView> {
             title: context.l10n.signIn,
           ),
           body: Padding(
-            padding: const EdgeInsets.symmetric(
+            padding: EdgeInsets.symmetric(
               horizontal: 0,
               vertical: AppSpacing.md,
             ),
@@ -137,9 +137,9 @@ class _SignInViewState extends State<SignInView> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const SizedBox(height: 2),
+                        SizedBox(height: 2),
                         Padding(
-                          padding: const EdgeInsets.symmetric(
+                          padding: EdgeInsets.symmetric(
                             horizontal: AppSpacing.lg,
                           ),
                           child: SignUpHeader(
@@ -149,9 +149,9 @@ class _SignInViewState extends State<SignInView> {
                             totalSteps: 5,
                           ),
                         ),
-                        const SizedBox(height: AppSpacing.lg),
+                        SizedBox(height: AppSpacing.lg),
                         Padding(
-                          padding: const EdgeInsets.symmetric(
+                          padding: EdgeInsets.symmetric(
                             horizontal: AppSpacing.lg,
                           ),
                           child: Row(
@@ -177,7 +177,7 @@ class _SignInViewState extends State<SignInView> {
                                               : AppColors.lightGrey,
                                         ),
                                       ),
-                                      const SizedBox(height: 8),
+                                      SizedBox(height: 8),
                                       Container(
                                         height: 2,
                                         color: _selectedTab == 0
@@ -212,7 +212,7 @@ class _SignInViewState extends State<SignInView> {
                                               : AppColors.lightGrey,
                                         ),
                                       ),
-                                      const SizedBox(height: 8),
+                                      SizedBox(height: 8),
                                       Container(
                                         height: 2,
                                         color: _selectedTab == 1
@@ -235,10 +235,10 @@ class _SignInViewState extends State<SignInView> {
                               ? AppColors.greyText
                               : AppColors.buttonBorder,
                         ),
-                        const SizedBox(height: AppSpacing.xl),
+                        SizedBox(height: AppSpacing.xl),
                         if (_selectedTab == 0) ...[
                           Padding(
-                            padding: const EdgeInsets.symmetric(
+                            padding: EdgeInsets.symmetric(
                               horizontal: AppSpacing.lg,
                             ),
                             child: AppTextField(
@@ -252,9 +252,9 @@ class _SignInViewState extends State<SignInView> {
                               }),
                             ),
                           ),
-                          const SizedBox(height: AppSpacing.md),
+                          SizedBox(height: AppSpacing.md),
                           Padding(
-                            padding: const EdgeInsets.symmetric(
+                            padding: EdgeInsets.symmetric(
                               horizontal: AppSpacing.lg,
                             ),
                             child: AppTextField(
@@ -270,9 +270,9 @@ class _SignInViewState extends State<SignInView> {
                               }),
                             ),
                           ),
-                          const SizedBox(height: AppSpacing.sm),
+                          SizedBox(height: AppSpacing.sm),
                           Padding(
-                            padding: const EdgeInsets.symmetric(
+                            padding: EdgeInsets.symmetric(
                               horizontal: AppSpacing.lg,
                             ),
                             child: Align(
@@ -297,7 +297,7 @@ class _SignInViewState extends State<SignInView> {
                           ),
                         ] else ...[
                           Padding(
-                            padding: const EdgeInsets.symmetric(
+                            padding: EdgeInsets.symmetric(
                               horizontal: AppSpacing.lg,
                             ),
                             child: PhoneNumberField(
@@ -315,15 +315,13 @@ class _SignInViewState extends State<SignInView> {
                             ),
                           ),
                         ],
-                        const SizedBox(height: AppSpacing.lg),
+                        SizedBox(height: AppSpacing.lg),
                       ],
                     ),
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: AppSpacing.lg,
-                  ),
+                  padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
                   child: AppButton(
                     key: const ValueKey('sign_in_submit'),
                     label: _selectedTab == 0

@@ -25,7 +25,7 @@ class SubscriptionStepHeader extends StatelessWidget {
       children: [
         SubscriptionProgress(currentStep: currentStep, totalSteps: totalSteps),
 
-        const SizedBox(height: AppSpacing.sm),
+        SizedBox(height: AppSpacing.sm),
 
         RichText(
           text: TextSpan(
@@ -46,7 +46,7 @@ class SubscriptionStepHeader extends StatelessWidget {
           ),
         ),
 
-        const SizedBox(height: AppSpacing.sm),
+        SizedBox(height: AppSpacing.sm),
       ],
     );
   }

@@ -5,7 +5,7 @@ import '../cubit/subscription_cubit.dart';
 /// JSON-serializable `answer` value for one questionnaire row.
 dynamic _encodeHealthAnswerValue(Object? v) {
   if (v is Map) {
-    final m = Map<String, dynamic>.from(v as Map<dynamic, dynamic>);
+    final m = Map<String, dynamic>.from(v);
     final sel = m['selected'];
     if (sel is List) {
       return sel.map((e) => e.toString()).toList();

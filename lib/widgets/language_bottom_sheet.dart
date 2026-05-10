@@ -35,7 +35,7 @@ class _LanguageBottomSheetState extends State<LanguageBottomSheet> {
       builder: (context, state) {
         return Material(
           // color: Colors.white,
-          borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+          borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
           child: SafeArea(
             top: false,
             child: Column(
@@ -43,7 +43,7 @@ class _LanguageBottomSheetState extends State<LanguageBottomSheet> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                  padding: const EdgeInsets.symmetric(vertical: AppSpacing.lg),
+                  padding: EdgeInsets.symmetric(vertical: AppSpacing.lg),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -76,12 +76,12 @@ class _LanguageBottomSheetState extends State<LanguageBottomSheet> {
                         ),
                       ),
 
-                      const SizedBox(height: AppSpacing.xl + 2),
+                      SizedBox(height: AppSpacing.xl + 2),
 
                       // Language options — shared horizontal inset so flag + label align
                       // for selected and non-selected rows.
                       Padding(
-                        padding: const EdgeInsets.symmetric(
+                        padding: EdgeInsets.symmetric(
                           horizontal: AppSpacing.lg,
                         ),
                         child: Column(
@@ -90,21 +90,19 @@ class _LanguageBottomSheetState extends State<LanguageBottomSheet> {
                               flag: '🇺🇸',
                               title: 'English (US)',
                               locale: const Locale('en'),
-                              selected:
-                                  _selectedLocale.languageCode == 'en',
+                              selected: _selectedLocale.languageCode == 'en',
                               onTap: () {
                                 setState(() {
                                   _selectedLocale = const Locale('en');
                                 });
                               },
                             ),
-                            const SizedBox(height: AppSpacing.md),
+                            SizedBox(height: AppSpacing.md),
                             _LanguageOption(
                               flag: '🇸🇦',
                               title: 'العربية',
                               locale: const Locale('ar'),
-                              selected:
-                                  _selectedLocale.languageCode == 'ar',
+                              selected: _selectedLocale.languageCode == 'ar',
                               onTap: () {
                                 setState(() {
                                   _selectedLocale = const Locale('ar');
@@ -148,7 +146,7 @@ class _LanguageBottomSheetState extends State<LanguageBottomSheet> {
 
 class _LanguageOption extends StatelessWidget {
   /// Inner padding must match for [selected] and unselected so flag + title stay aligned.
-  static const EdgeInsets _contentPadding = EdgeInsets.symmetric(
+  static final EdgeInsets _contentPadding = EdgeInsets.symmetric(
     horizontal: AppSpacing.md + 1,
     vertical: AppSpacing.md + 1,
   );
@@ -192,8 +190,8 @@ class _LanguageOption extends StatelessWidget {
         ),
         child: Row(
           children: [
-            Text(flag, style: const TextStyle(fontSize: 24)),
-            const SizedBox(width: AppSpacing.md),
+            Text(flag, style: TextStyle(fontSize: 24)),
+            SizedBox(width: AppSpacing.md),
             Expanded(
               child: AppText(title, style: AppTextStyles.experienceButton),
             ),

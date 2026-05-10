@@ -96,33 +96,25 @@ class _ClassDetailBody extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: AppSpacing.lg,
-                      ),
+                      padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
                       child: ClassDetailHeader(slot: slot),
                     ),
-                    const SizedBox(height: AppSpacing.lg),
+                    SizedBox(height: AppSpacing.lg),
                     Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: AppSpacing.lg,
-                      ),
+                      padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
                       child: ClassInfoGrid(slot: slot),
                     ),
-                    const SizedBox(height: AppSpacing.md),
+                    SizedBox(height: AppSpacing.md),
                     Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: AppSpacing.lg,
-                      ),
+                      padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
                       child: ClassLocationCard(slot: slot),
                     ),
-                    const SizedBox(height: AppSpacing.lg),
+                    SizedBox(height: AppSpacing.lg),
                     Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: AppSpacing.lg,
-                      ),
+                      padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
                       child: ClassAboutSection(slot: slot),
                     ),
-                    const SizedBox(height: AppSpacing.lg),
+                    SizedBox(height: AppSpacing.lg),
                     ClassReviewsSection(
                       embeddedRecentReviews: slot.recentReviews,
                       reviewableType: slot.recentReviews == null
@@ -186,9 +178,7 @@ class _ClassDetailBody extends StatelessWidget {
                 right: 0,
                 bottom: size.height * 0.04,
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: AppSpacing.lg,
-                  ),
+                  padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
                   child: ElevatedButton(
                     onPressed: !canBookOrWaitlist
                         ? null
@@ -252,7 +242,7 @@ class _ErrorBody extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Padding(
-        padding: const EdgeInsets.all(AppSpacing.xl),
+        padding: EdgeInsets.all(AppSpacing.xl),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -261,7 +251,7 @@ class _ErrorBody extends StatelessWidget {
               style: (ctx) => AppTextStyles.bodyText(ctx),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: AppSpacing.md),
+            SizedBox(height: AppSpacing.md),
             TextButton(
               onPressed: onRetry,
               child: AppText(

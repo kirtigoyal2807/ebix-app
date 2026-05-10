@@ -37,7 +37,7 @@ class SessionHistoryButton extends StatelessWidget {
                   );
                 },
                 child: Container(
-                  padding: const EdgeInsets.symmetric(
+                  padding: EdgeInsets.symmetric(
                     horizontal: AppSpacing.base,
                     vertical: AppSpacing.xs,
                   ),

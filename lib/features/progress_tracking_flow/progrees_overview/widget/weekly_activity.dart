@@ -2,7 +2,6 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/core/localization/localization_extension.dart';
@@ -20,7 +19,7 @@ class WeeklyActivity extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+      padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
@@ -129,12 +128,12 @@ class WeeklyGraph extends StatelessWidget {
                   ],
                 ),
               ),
-              const SizedBox(height: AppSpacing.md),
+              SizedBox(height: AppSpacing.md),
               Divider(
                 color: isDark ? AppColors.greyText : AppColors.buttonBorder,
                 height: 1,
               ),
-              const SizedBox(height: AppSpacing.md),
+              SizedBox(height: AppSpacing.md),
               Text.rich(
                 TextSpan(
                   children: [
@@ -212,7 +211,7 @@ class _WeekBarSlot extends StatelessWidget {
                   ),
                 ),
               ),
-              const SizedBox(height: AppSpacing.sm),
+              SizedBox(height: AppSpacing.sm),
               Expanded(
                 child: LayoutBuilder(
                   builder: (context, inner) {
@@ -244,7 +243,7 @@ class _WeekBarSlot extends StatelessWidget {
                   },
                 ),
               ),
-              const SizedBox(height: AppSpacing.sm),
+              SizedBox(height: AppSpacing.sm),
               SizedBox(
                 height: _dayBandH,
                 width: constraints.maxWidth,

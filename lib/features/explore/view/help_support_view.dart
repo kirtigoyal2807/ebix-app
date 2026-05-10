@@ -36,7 +36,7 @@ class HelpSupportView extends StatelessWidget {
                   "https://wa.me/${AppConstant.supportNumber.trim()}",
                 );
 
-                debugPrint("whatsapp url::${url}");
+                debugPrint("whatsapp url::$url");
                 if (await canLaunchUrl(url)) {
                   await launchUrl(url, mode: LaunchMode.externalApplication);
                 } else {

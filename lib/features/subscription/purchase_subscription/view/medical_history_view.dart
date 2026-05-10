@@ -4,13 +4,11 @@ import 'package:pilates_app/config/theme/app_colors.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/core/localization/arb/app_localizations.dart';
-import 'package:pilates_app/core/localization/localization_extension.dart';
 import 'package:pilates_app/features/subscription/purchase_subscription/cubit/subscription_cubit.dart';
 import 'package:pilates_app/features/checkout/data/checkout_repository.dart';
 import 'package:pilates_app/features/checkout/data/models/product_health_questionnaire.dart';
 import 'package:pilates_app/features/subscription/purchase_subscription/view/widgets/api_health_questionnaire_blocks.dart';
 import 'package:pilates_app/features/subscription/purchase_subscription/view/widgets/subscription_header.dart';
-import 'package:pilates_app/features/subscription/purchase_subscription/view/widgets/subscription_progress.dart';
 import 'package:pilates_app/widgets/app_button.dart';
 import 'package:pilates_app/widgets/app_text.dart';
 import 'package:pilates_app/widgets/inline_validation_banner.dart';
@@ -90,7 +88,7 @@ class _MedicalHistoryViewState extends State<MedicalHistoryView> {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
+    final l10n = AppLocalizations.of(context);
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return BlocListener<SubscriptionCubit, SubscriptionState>(
@@ -101,370 +99,374 @@ class _MedicalHistoryViewState extends State<MedicalHistoryView> {
           p.painBonesMuscles != c.painBonesMuscles ||
           p.respiratoryProblems != c.respiratoryProblems ||
           p.medications != c.medications,
-      listener: (_, __) {
+      listener: (_, _) {
         if (mounted) setState(() => _validationMessage = null);
       },
       child: Padding(
-      padding: const EdgeInsets.symmetric(
-        vertical: AppSpacing.lg,
-        horizontal: AppSpacing.lg,
-      ),
-      child: Column(
-        children: [
-          Expanded(
-            child: BlocBuilder<SubscriptionCubit, SubscriptionState>(
+        padding: EdgeInsets.symmetric(
+          vertical: AppSpacing.lg,
+          horizontal: AppSpacing.lg,
+        ),
+        child: Column(
+          children: [
+            Expanded(
+              child: BlocBuilder<SubscriptionCubit, SubscriptionState>(
+                buildWhen: (p, c) =>
+                    p.healthQuestionnaireQuestions !=
+                        c.healthQuestionnaireQuestions ||
+                    p.selectedProductRequiresHealthIntake !=
+                        c.selectedProductRequiresHealthIntake,
+                builder: (context, state) {
+                  final cubit = context.read<SubscriptionCubit>();
+                  final medicalQs = medicalQuestionsFromApi(
+                    state.healthQuestionnaireQuestions,
+                  );
+                  final hasApiMedical = medicalQs.isNotEmpty;
+                  final intake = state.selectedProductRequiresHealthIntake;
+
+                  /// Legacy checkboxes only when this product does not use API health intake.
+                  final showStaticLegacy = !intake && !_questionnaireLoading;
+
+                  return SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SubscriptionStepHeader(
+                          currentStep: 1,
+                          totalSteps: 6,
+                          isDark: isDark,
+                        ),
+                        SizedBox(height: AppSpacing.xl),
+                        AppText(
+                          l10n.medicalHistory,
+                          style: (style) => AppTextStyles.heading1(context),
+                        ),
+                        SizedBox(height: AppSpacing.lg),
+                        if (_questionnaireLoading)
+                          Padding(
+                            padding: EdgeInsets.symmetric(
+                              vertical: AppSpacing.md,
+                            ),
+                            child: Center(
+                              child: SizedBox(
+                                width: 28,
+                                height: 28,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                ),
+                              ),
+                            ),
+                          ),
+                        if (!_questionnaireLoading &&
+                            _questionnaireLoadFailed &&
+                            !hasApiMedical &&
+                            cubit.state.selectedProductRequiresHealthIntake)
+                          Padding(
+                            padding: EdgeInsets.only(bottom: AppSpacing.md),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Expanded(
+                                  child: AppText(
+                                    l10n.loginErrorGeneric,
+                                    style: (ctx) =>
+                                        AppTextStyles.captionText(ctx),
+                                  ),
+                                ),
+                                TextButton(
+                                  onPressed: _loadQuestionnaire,
+                                  child: Text(l10n.retry),
+                                ),
+                              ],
+                            ),
+                          ),
+                        if (!_questionnaireLoading && hasApiMedical)
+                          const ApiDynamicMedicalQuestionsBlock(),
+                        if (!_questionnaireLoading && hasApiMedical)
+                          SizedBox(height: AppSpacing.lg),
+                        if (showStaticLegacy) ...[
+                          _buildSectionHeader(context, l10n.chronicConditions),
+                          SizedBox(height: AppSpacing.md),
+                          BlocBuilder<SubscriptionCubit, SubscriptionState>(
+                            buildWhen: (p, c) =>
+                                p.chronicConditions != c.chronicConditions,
+                            builder: (context, state) {
+                              final c = context.read<SubscriptionCubit>();
+                              return Column(
+                                children: [
+                                  _buildCheckbox(
+                                    context,
+                                    l10n.highBloodPressure,
+                                    'high_blood_pressure',
+                                    state.chronicConditions,
+                                    c.updateChronicCondition,
+                                  ),
+                                  _buildCheckbox(
+                                    context,
+                                    l10n.diabetes,
+                                    'diabetes',
+                                    state.chronicConditions,
+                                    c.updateChronicCondition,
+                                  ),
+                                  _buildCheckbox(
+                                    context,
+                                    l10n.heartDisease,
+                                    'heart_disease',
+                                    state.chronicConditions,
+                                    c.updateChronicCondition,
+                                  ),
+                                  _buildCheckbox(
+                                    context,
+                                    l10n.heartCondition,
+                                    'heart_condition',
+                                    state.chronicConditions,
+                                    c.updateChronicCondition,
+                                  ),
+                                  _buildCheckbox(
+                                    context,
+                                    l10n.noneOfTheAbove,
+                                    'none',
+                                    state.chronicConditions,
+                                    c.updateChronicCondition,
+                                  ),
+                                ],
+                              );
+                            },
+                          ),
+                          SizedBox(height: AppSpacing.lg),
+                          _buildSectionHeader(context, l10n.surgeriesInjuries),
+                          SizedBox(height: AppSpacing.md),
+                          BlocBuilder<SubscriptionCubit, SubscriptionState>(
+                            buildWhen: (p, c) =>
+                                p.surgeriesInjuries != c.surgeriesInjuries,
+                            builder: (context, state) {
+                              final c = context.read<SubscriptionCubit>();
+                              return Column(
+                                children: [
+                                  _buildCheckbox(
+                                    context,
+                                    l10n.highBloodPressure,
+                                    'high_blood_pressure',
+                                    state.surgeriesInjuries,
+                                    c.updateSurgeryInjury,
+                                  ),
+                                  _buildCheckbox(
+                                    context,
+                                    l10n.diabetes,
+                                    'diabetes',
+                                    state.surgeriesInjuries,
+                                    c.updateSurgeryInjury,
+                                  ),
+                                  _buildCheckbox(
+                                    context,
+                                    l10n.heartDisease,
+                                    'heart_disease',
+                                    state.surgeriesInjuries,
+                                    c.updateSurgeryInjury,
+                                  ),
+                                  _buildCheckbox(
+                                    context,
+                                    l10n.heartCondition,
+                                    'heart_condition',
+                                    state.surgeriesInjuries,
+                                    c.updateSurgeryInjury,
+                                  ),
+                                  _buildCheckbox(
+                                    context,
+                                    l10n.noneOfTheAbove,
+                                    'none',
+                                    state.surgeriesInjuries,
+                                    c.updateSurgeryInjury,
+                                  ),
+                                ],
+                              );
+                            },
+                          ),
+                          SizedBox(height: AppSpacing.lg),
+                          _buildSectionHeader(context, l10n.painBonesMuscles),
+                          SizedBox(height: AppSpacing.md),
+                          BlocBuilder<SubscriptionCubit, SubscriptionState>(
+                            buildWhen: (p, c) =>
+                                p.painBonesMuscles != c.painBonesMuscles,
+                            builder: (context, state) {
+                              final c = context.read<SubscriptionCubit>();
+                              return Column(
+                                children: [
+                                  _buildCheckbox(
+                                    context,
+                                    l10n.highBloodPressure,
+                                    'high_blood_pressure',
+                                    state.painBonesMuscles,
+                                    c.updatePainBoneMuscle,
+                                  ),
+                                  _buildCheckbox(
+                                    context,
+                                    l10n.diabetes,
+                                    'diabetes',
+                                    state.painBonesMuscles,
+                                    c.updatePainBoneMuscle,
+                                  ),
+                                ],
+                              );
+                            },
+                          ),
+                          SizedBox(height: AppSpacing.lg),
+                          _buildSectionHeader(
+                            context,
+                            l10n.respiratoryProblems,
+                          ),
+                          SizedBox(height: AppSpacing.md),
+                          BlocBuilder<SubscriptionCubit, SubscriptionState>(
+                            buildWhen: (p, c) =>
+                                p.respiratoryProblems != c.respiratoryProblems,
+                            builder: (context, state) {
+                              final c = context.read<SubscriptionCubit>();
+                              return Column(
+                                children: [
+                                  _buildCheckbox(
+                                    context,
+                                    l10n.hearProblems,
+                                    'hear_problems',
+                                    state.respiratoryProblems,
+                                    c.updateRespiratoryProblem,
+                                  ),
+                                  _buildCheckbox(
+                                    context,
+                                    l10n.lungProblems,
+                                    'lung_problems',
+                                    state.respiratoryProblems,
+                                    c.updateRespiratoryProblem,
+                                  ),
+                                  _buildCheckbox(
+                                    context,
+                                    l10n.respiratoryProblem,
+                                    'respiratory_problems',
+                                    state.respiratoryProblems,
+                                    c.updateRespiratoryProblem,
+                                  ),
+                                  _buildCheckbox(
+                                    context,
+                                    l10n.noneOfTheAbove,
+                                    'none',
+                                    state.respiratoryProblems,
+                                    c.updateRespiratoryProblem,
+                                  ),
+                                ],
+                              );
+                            },
+                          ),
+                          SizedBox(height: AppSpacing.lg),
+                          _buildSectionHeader(context, l10n.medications),
+                          SizedBox(height: AppSpacing.md),
+                          BlocBuilder<SubscriptionCubit, SubscriptionState>(
+                            buildWhen: (p, c) => p.medications != c.medications,
+                            builder: (context, state) {
+                              final c = context.read<SubscriptionCubit>();
+                              return Column(
+                                children: [
+                                  _buildCheckbox(
+                                    context,
+                                    l10n.highBloodPressure,
+                                    'high_blood_pressure',
+                                    state.medications,
+                                    c.updateMedication,
+                                  ),
+                                  _buildCheckbox(
+                                    context,
+                                    l10n.diabetes,
+                                    'diabetes',
+                                    state.medications,
+                                    c.updateMedication,
+                                  ),
+                                  _buildCheckbox(
+                                    context,
+                                    l10n.heartDisease,
+                                    'heart_disease',
+                                    state.medications,
+                                    c.updateMedication,
+                                  ),
+                                  _buildCheckbox(
+                                    context,
+                                    l10n.heartCondition,
+                                    'heart_condition',
+                                    state.medications,
+                                    c.updateMedication,
+                                  ),
+                                  _buildCheckbox(
+                                    context,
+                                    l10n.noneOfTheAbove,
+                                    'none',
+                                    state.medications,
+                                    c.updateMedication,
+                                  ),
+                                ],
+                              );
+                            },
+                          ),
+                          SizedBox(height: AppSpacing.md),
+                        ],
+                      ],
+                    ),
+                  );
+                },
+              ),
+            ),
+            BlocBuilder<SubscriptionCubit, SubscriptionState>(
               buildWhen: (p, c) =>
                   p.healthQuestionnaireQuestions !=
                       c.healthQuestionnaireQuestions ||
                   p.selectedProductRequiresHealthIntake !=
                       c.selectedProductRequiresHealthIntake,
               builder: (context, state) {
-                final cubit = context.read<SubscriptionCubit>();
-                final medicalQs = medicalQuestionsFromApi(
-                  state.healthQuestionnaireQuestions,
-                );
-                final hasApiMedical = medicalQs.isNotEmpty;
                 final intake = state.selectedProductRequiresHealthIntake;
-
-                /// Legacy checkboxes only when this product does not use API health intake.
-                final showStaticLegacy = !intake && !_questionnaireLoading;
-
-                return SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SubscriptionStepHeader(
-                        currentStep: 1,
-                        totalSteps: 6,
-                        isDark: isDark,
-                      ),
-                      const SizedBox(height: AppSpacing.xl),
-                      AppText(
-                        l10n.medicalHistory,
-                        style: (style) => AppTextStyles.heading1(context),
-                      ),
-                      const SizedBox(height: AppSpacing.lg),
-                      if (_questionnaireLoading)
-                        const Padding(
-                          padding: EdgeInsets.symmetric(
-                            vertical: AppSpacing.md,
-                          ),
-                          child: Center(
-                            child: SizedBox(
-                              width: 28,
-                              height: 28,
-                              child: CircularProgressIndicator(strokeWidth: 2),
-                            ),
-                          ),
-                        ),
-                      if (!_questionnaireLoading &&
-                          _questionnaireLoadFailed &&
-                          !hasApiMedical &&
-                          cubit.state.selectedProductRequiresHealthIntake)
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: AppSpacing.md),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Expanded(
-                                child: AppText(
-                                  l10n.loginErrorGeneric,
-                                  style: (ctx) =>
-                                      AppTextStyles.captionText(ctx),
-                                ),
-                              ),
-                              TextButton(
-                                onPressed: _loadQuestionnaire,
-                                child: Text(l10n.retry),
-                              ),
-                            ],
-                          ),
-                        ),
-                      if (!_questionnaireLoading && hasApiMedical)
-                        const ApiDynamicMedicalQuestionsBlock(),
-                      if (!_questionnaireLoading && hasApiMedical)
-                        const SizedBox(height: AppSpacing.lg),
-                      if (showStaticLegacy) ...[
-                        _buildSectionHeader(context, l10n.chronicConditions),
-                        const SizedBox(height: AppSpacing.md),
-                        BlocBuilder<SubscriptionCubit, SubscriptionState>(
-                          buildWhen: (p, c) =>
-                              p.chronicConditions != c.chronicConditions,
-                          builder: (context, state) {
-                            final c = context.read<SubscriptionCubit>();
-                            return Column(
-                              children: [
-                                _buildCheckbox(
-                                  context,
-                                  l10n.highBloodPressure,
-                                  'high_blood_pressure',
-                                  state.chronicConditions,
-                                  c.updateChronicCondition,
-                                ),
-                                _buildCheckbox(
-                                  context,
-                                  l10n.diabetes,
-                                  'diabetes',
-                                  state.chronicConditions,
-                                  c.updateChronicCondition,
-                                ),
-                                _buildCheckbox(
-                                  context,
-                                  l10n.heartDisease,
-                                  'heart_disease',
-                                  state.chronicConditions,
-                                  c.updateChronicCondition,
-                                ),
-                                _buildCheckbox(
-                                  context,
-                                  l10n.heartCondition,
-                                  'heart_condition',
-                                  state.chronicConditions,
-                                  c.updateChronicCondition,
-                                ),
-                                _buildCheckbox(
-                                  context,
-                                  l10n.noneOfTheAbove,
-                                  'none',
-                                  state.chronicConditions,
-                                  c.updateChronicCondition,
-                                ),
-                              ],
-                            );
-                          },
-                        ),
-                        const SizedBox(height: AppSpacing.lg),
-                        _buildSectionHeader(context, l10n.surgeriesInjuries),
-                        const SizedBox(height: AppSpacing.md),
-                        BlocBuilder<SubscriptionCubit, SubscriptionState>(
-                          buildWhen: (p, c) =>
-                              p.surgeriesInjuries != c.surgeriesInjuries,
-                          builder: (context, state) {
-                            final c = context.read<SubscriptionCubit>();
-                            return Column(
-                              children: [
-                                _buildCheckbox(
-                                  context,
-                                  l10n.highBloodPressure,
-                                  'high_blood_pressure',
-                                  state.surgeriesInjuries,
-                                  c.updateSurgeryInjury,
-                                ),
-                                _buildCheckbox(
-                                  context,
-                                  l10n.diabetes,
-                                  'diabetes',
-                                  state.surgeriesInjuries,
-                                  c.updateSurgeryInjury,
-                                ),
-                                _buildCheckbox(
-                                  context,
-                                  l10n.heartDisease,
-                                  'heart_disease',
-                                  state.surgeriesInjuries,
-                                  c.updateSurgeryInjury,
-                                ),
-                                _buildCheckbox(
-                                  context,
-                                  l10n.heartCondition,
-                                  'heart_condition',
-                                  state.surgeriesInjuries,
-                                  c.updateSurgeryInjury,
-                                ),
-                                _buildCheckbox(
-                                  context,
-                                  l10n.noneOfTheAbove,
-                                  'none',
-                                  state.surgeriesInjuries,
-                                  c.updateSurgeryInjury,
-                                ),
-                              ],
-                            );
-                          },
-                        ),
-                        const SizedBox(height: AppSpacing.lg),
-                        _buildSectionHeader(context, l10n.painBonesMuscles),
-                        const SizedBox(height: AppSpacing.md),
-                        BlocBuilder<SubscriptionCubit, SubscriptionState>(
-                          buildWhen: (p, c) =>
-                              p.painBonesMuscles != c.painBonesMuscles,
-                          builder: (context, state) {
-                            final c = context.read<SubscriptionCubit>();
-                            return Column(
-                              children: [
-                                _buildCheckbox(
-                                  context,
-                                  l10n.highBloodPressure,
-                                  'high_blood_pressure',
-                                  state.painBonesMuscles,
-                                  c.updatePainBoneMuscle,
-                                ),
-                                _buildCheckbox(
-                                  context,
-                                  l10n.diabetes,
-                                  'diabetes',
-                                  state.painBonesMuscles,
-                                  c.updatePainBoneMuscle,
-                                ),
-                              ],
-                            );
-                          },
-                        ),
-                        const SizedBox(height: AppSpacing.lg),
-                        _buildSectionHeader(context, l10n.respiratoryProblems),
-                        const SizedBox(height: AppSpacing.md),
-                        BlocBuilder<SubscriptionCubit, SubscriptionState>(
-                          buildWhen: (p, c) =>
-                              p.respiratoryProblems != c.respiratoryProblems,
-                          builder: (context, state) {
-                            final c = context.read<SubscriptionCubit>();
-                            return Column(
-                              children: [
-                                _buildCheckbox(
-                                  context,
-                                  l10n.hearProblems,
-                                  'hear_problems',
-                                  state.respiratoryProblems,
-                                  c.updateRespiratoryProblem,
-                                ),
-                                _buildCheckbox(
-                                  context,
-                                  l10n.lungProblems,
-                                  'lung_problems',
-                                  state.respiratoryProblems,
-                                  c.updateRespiratoryProblem,
-                                ),
-                                _buildCheckbox(
-                                  context,
-                                  l10n.respiratoryProblem,
-                                  'respiratory_problems',
-                                  state.respiratoryProblems,
-                                  c.updateRespiratoryProblem,
-                                ),
-                                _buildCheckbox(
-                                  context,
-                                  l10n.noneOfTheAbove,
-                                  'none',
-                                  state.respiratoryProblems,
-                                  c.updateRespiratoryProblem,
-                                ),
-                              ],
-                            );
-                          },
-                        ),
-                        const SizedBox(height: AppSpacing.lg),
-                        _buildSectionHeader(context, l10n.medications),
-                        const SizedBox(height: AppSpacing.md),
-                        BlocBuilder<SubscriptionCubit, SubscriptionState>(
-                          buildWhen: (p, c) => p.medications != c.medications,
-                          builder: (context, state) {
-                            final c = context.read<SubscriptionCubit>();
-                            return Column(
-                              children: [
-                                _buildCheckbox(
-                                  context,
-                                  l10n.highBloodPressure,
-                                  'high_blood_pressure',
-                                  state.medications,
-                                  c.updateMedication,
-                                ),
-                                _buildCheckbox(
-                                  context,
-                                  l10n.diabetes,
-                                  'diabetes',
-                                  state.medications,
-                                  c.updateMedication,
-                                ),
-                                _buildCheckbox(
-                                  context,
-                                  l10n.heartDisease,
-                                  'heart_disease',
-                                  state.medications,
-                                  c.updateMedication,
-                                ),
-                                _buildCheckbox(
-                                  context,
-                                  l10n.heartCondition,
-                                  'heart_condition',
-                                  state.medications,
-                                  c.updateMedication,
-                                ),
-                                _buildCheckbox(
-                                  context,
-                                  l10n.noneOfTheAbove,
-                                  'none',
-                                  state.medications,
-                                  c.updateMedication,
-                                ),
-                              ],
-                            );
-                          },
-                        ),
-                        const SizedBox(height: AppSpacing.md),
-                      ],
-                    ],
-                  ),
+                final hasApiMedical = medicalQuestionsFromApi(
+                  state.healthQuestionnaireQuestions,
+                ).isNotEmpty;
+                final disableContinue =
+                    intake &&
+                    !_questionnaireLoading &&
+                    _questionnaireLoadFailed &&
+                    !hasApiMedical;
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    if (_validationMessage != null)
+                      InlineValidationBanner(message: _validationMessage!),
+                    AppButton(
+                      label: l10n.continueTxt,
+                      onPressed: disableContinue
+                          ? null
+                          : () {
+                              final cubit = context.read<SubscriptionCubit>();
+                              final medicalQs = medicalQuestionsFromApi(
+                                cubit.state.healthQuestionnaireQuestions,
+                              );
+                              if (medicalQs.isNotEmpty &&
+                                  !cubit.validateQuestionnaireGroup(
+                                    medicalQs,
+                                  )) {
+                                setState(() {
+                                  _validationMessage =
+                                      l10n.giftRecipientValidationError;
+                                });
+                                return;
+                              }
+                              setState(() => _validationMessage = null);
+                              cubit.nextStep();
+                            },
+                      buttonColor: isDark
+                          ? AppColors.primary
+                          : AppColors.primaryBrown,
+                      expanded: true,
+                    ),
+                  ],
                 );
               },
             ),
-          ),
-          BlocBuilder<SubscriptionCubit, SubscriptionState>(
-            buildWhen: (p, c) =>
-                p.healthQuestionnaireQuestions !=
-                    c.healthQuestionnaireQuestions ||
-                p.selectedProductRequiresHealthIntake !=
-                    c.selectedProductRequiresHealthIntake,
-            builder: (context, state) {
-              final intake = state.selectedProductRequiresHealthIntake;
-              final hasApiMedical = medicalQuestionsFromApi(
-                state.healthQuestionnaireQuestions,
-              ).isNotEmpty;
-              final disableContinue =
-                  intake &&
-                  !_questionnaireLoading &&
-                  _questionnaireLoadFailed &&
-                  !hasApiMedical;
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  if (_validationMessage != null)
-                    InlineValidationBanner(message: _validationMessage!),
-                  AppButton(
-                    label: l10n.continueTxt,
-                    onPressed: disableContinue
-                        ? null
-                        : () {
-                            final cubit =
-                                context.read<SubscriptionCubit>();
-                            final medicalQs = medicalQuestionsFromApi(
-                              cubit.state.healthQuestionnaireQuestions,
-                            );
-                            if (medicalQs.isNotEmpty &&
-                                !cubit.validateQuestionnaireGroup(
-                                  medicalQs,
-                                )) {
-                              setState(() {
-                                _validationMessage =
-                                    l10n.giftRecipientValidationError;
-                              });
-                              return;
-                            }
-                            setState(() => _validationMessage = null);
-                            cubit.nextStep();
-                          },
-                    buttonColor: isDark
-                        ? AppColors.primary
-                        : AppColors.primaryBrown,
-                    expanded: true,
-                  ),
-                ],
-              );
-            },
-          ),
-        ],
+          ],
+        ),
       ),
-    ),
     );
   }
 

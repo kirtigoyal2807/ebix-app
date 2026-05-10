@@ -66,7 +66,7 @@ class RewardOverviewView extends StatelessWidget {
                 switch (state.rewardsLoadStatus) {
                   case RewardListLoadStatus.initial:
                   case RewardListLoadStatus.loading:
-                    return const Padding(
+                    return Padding(
                       padding: EdgeInsets.symmetric(vertical: AppSpacing.xl),
                       child: Center(child: CircularProgressIndicator()),
                     );

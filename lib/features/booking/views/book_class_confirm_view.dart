@@ -70,21 +70,21 @@ class BookClassConfirmView extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _buildClassDetailsCard(isDark: isDark),
-            const SizedBox(height: AppSpacing.sm),
+            SizedBox(height: AppSpacing.sm),
             Divider(
               color: isDark ? AppColors.greyText : AppColors.buttonBorder,
               height: 1,
             ),
-            const SizedBox(height: AppSpacing.lg),
+            SizedBox(height: AppSpacing.lg),
 
             _buildPaymentSummary(context: context, isDark: isDark, l10n: l10n),
-            const SizedBox(height: AppSpacing.lg),
+            SizedBox(height: AppSpacing.lg),
 
             _buildPolicyAgreement(l10n: l10n, isDark: isDark),
-            const Spacer(),
+            Spacer(),
 
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+              padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
               child: BlocBuilder<ConfirmBookingCubit, ConfirmBookingState>(
                 builder: (context, state) {
                   return AppButton(
@@ -139,11 +139,11 @@ class BookClassConfirmView extends StatelessWidget {
 
   Widget _buildClassDetailsCard({required bool isDark}) {
     return Container(
-      margin: const EdgeInsets.symmetric(
+      margin: EdgeInsets.symmetric(
         vertical: AppSpacing.md,
         horizontal: AppSpacing.lg,
       ),
-      padding: const EdgeInsets.all(20),
+      padding: EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: isDark ? AppColors.primaryDarkButton : Colors.white,
         borderRadius: BorderRadius.circular(12),
@@ -195,19 +195,19 @@ class BookClassConfirmView extends StatelessWidget {
                   slot.name,
                   style: (context) => AppTextStyles.gelasioMedium(context),
                 ),
-                const SizedBox(height: AppSpacing.lmd),
+                SizedBox(height: AppSpacing.lmd),
                 _buildDetailRow(
                   icon: Icons.location_on_outlined,
                   text: slot.branchName,
                   isDark: isDark,
                 ),
-                const SizedBox(height: AppSpacing.sm),
+                SizedBox(height: AppSpacing.sm),
                 _buildDetailRow(
                   icon: Icons.watch_later_outlined,
                   text: _timeLabel,
                   isDark: isDark,
                 ),
-                const SizedBox(height: AppSpacing.sm),
+                SizedBox(height: AppSpacing.sm),
                 _buildDetailRow(
                   icon: Icons.person_outline,
                   text: slot.trainerName,
@@ -231,7 +231,7 @@ class BookClassConfirmView extends StatelessWidget {
                       height: 72,
                       width: 94,
                       fit: BoxFit.fill,
-                      errorBuilder: (_, __, ___) => Image.asset(
+                      errorBuilder: (_, _, _) => Image.asset(
                         'assets/images/demo images/yoga.png',
                         height: 72,
                         width: 94,
@@ -280,7 +280,7 @@ class BookClassConfirmView extends StatelessWidget {
         : l10n.bookingPriceUnavailable;
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+      padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -288,9 +288,9 @@ class BookClassConfirmView extends StatelessWidget {
             l10n.paymentSummery,
             style: (context) => AppTextStyles.gelasioRegular(context),
           ),
-          const SizedBox(height: AppSpacing.md),
+          SizedBox(height: AppSpacing.md),
           Container(
-            padding: const EdgeInsets.all(20),
+            padding: EdgeInsets.all(20),
             decoration: BoxDecoration(
               color: isDark
                   ? AppColors.primaryDarkButton
@@ -300,12 +300,12 @@ class BookClassConfirmView extends StatelessWidget {
             child: Column(
               children: [
                 _buildPaymentRow(title: l10n.classFee, value: priceLabel),
-                const SizedBox(height: AppSpacing.md),
+                SizedBox(height: AppSpacing.md),
                 Divider(
                   color: isDark ? AppColors.greyText : AppColors.darkGreyBorder,
                   height: 1,
                 ),
-                const SizedBox(height: AppSpacing.md),
+                SizedBox(height: AppSpacing.md),
                 _buildPaymentRow(title: l10n.total, value: priceLabel),
               ],
             ),
@@ -342,7 +342,7 @@ class BookClassConfirmView extends StatelessWidget {
     return BlocBuilder<ConfirmBookingCubit, ConfirmBookingState>(
       builder: (context, state) {
         return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+          padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
@@ -398,7 +398,7 @@ class BookClassConfirmView extends StatelessWidget {
                       ),
               ),
 
-              const SizedBox(width: AppSpacing.base),
+              SizedBox(width: AppSpacing.base),
               Expanded(
                 child: AppText(
                   l10n.cancelPolicyDescription,

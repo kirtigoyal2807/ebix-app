@@ -114,7 +114,7 @@ class InvoiceHistoryCard extends StatelessWidget {
                         onTap: onView,
                         borderRadius: BorderRadius.circular(4),
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(
+                          padding: EdgeInsets.symmetric(
                             vertical: 6,
                             horizontal: 6,
                           ),

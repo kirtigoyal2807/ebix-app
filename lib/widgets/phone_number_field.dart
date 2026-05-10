@@ -90,7 +90,7 @@ class _PhoneNumberFieldState extends State<PhoneNumberField> {
         /// LABEL
         AppText(widget.label, style: AppTextStyles.textFieldHeading),
 
-        const SizedBox(height: AppSpacing.sm),
+        SizedBox(height: AppSpacing.sm),
 
         /// FIELD — phone UX must stay left-to-right in RTL locales.
         Directionality(
@@ -120,7 +120,7 @@ class _PhoneNumberFieldState extends State<PhoneNumberField> {
                   showCountryOnly: false,
                   showOnlyCountryWhenClosed: false,
                   alignLeft: false,
-                  padding: const EdgeInsets.symmetric(horizontal: 2),
+                  padding: EdgeInsets.symmetric(horizontal: 2),
                   boxDecoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(AppRadius.md),
                   ),
@@ -129,7 +129,7 @@ class _PhoneNumberFieldState extends State<PhoneNumberField> {
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(AppRadius.md),
                     ),
-                    contentPadding: const EdgeInsets.symmetric(
+                    contentPadding: EdgeInsets.symmetric(
                       horizontal: AppSpacing.md,
                       vertical: AppSpacing.md,
                     ),

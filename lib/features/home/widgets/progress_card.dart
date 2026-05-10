@@ -43,7 +43,7 @@ class ProgressCard extends StatelessWidget {
     final size = MediaQuery.sizeOf(context);
 
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+      margin: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
       padding: EdgeInsets.all(size.width * 0.07),
       decoration: BoxDecoration(
         color: isDark ? AppColors.homeBackground : AppColors.whiteColor,
@@ -65,7 +65,7 @@ class ProgressCard extends StatelessWidget {
               fit: BoxFit.cover,
             ),
           ),
-          const SizedBox(height: AppSpacing.base),
+          SizedBox(height: AppSpacing.base),
           AppText(
             context.l10n.startYourPilatesJourney,
             style: (context) => AppTextStyles.body(context).copyWith(
@@ -77,7 +77,7 @@ class ProgressCard extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
           ),
 
-          const SizedBox(height: AppSpacing.xs),
+          SizedBox(height: AppSpacing.xs),
           AppText(
             context.l10n.bookFirstClassDesc,
             style: (context) => AppTextStyles.bodyTextSmall(
@@ -87,7 +87,7 @@ class ProgressCard extends StatelessWidget {
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
           ),
-          const SizedBox(height: AppSpacing.md),
+          SizedBox(height: AppSpacing.md),
           ElevatedButton(
             onPressed: () {
               context.read<HomeCubit>().setTab(1);
@@ -129,7 +129,7 @@ class ProgressCard extends StatelessWidget {
         );
       },
       child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+        margin: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
         padding: EdgeInsets.all(size.width * 0.05),
         decoration: BoxDecoration(
           color: isDark ? AppColors.homeBackground : Colors.white,
@@ -154,7 +154,7 @@ class ProgressCard extends StatelessWidget {
                   width: 56,
                   fit: BoxFit.contain,
                 ),
-                const SizedBox(width: AppSpacing.base),
+                SizedBox(width: AppSpacing.base),
                 Expanded(
                   child: AppText(
                     context.l10n.monthlyProgress,
@@ -180,7 +180,7 @@ class ProgressCard extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: AppSpacing.md),
+            SizedBox(height: AppSpacing.md),
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -208,7 +208,7 @@ class ProgressCard extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: AppSpacing.md),
+            SizedBox(height: AppSpacing.md),
             ClipRRect(
               borderRadius: BorderRadius.circular(AppRadius.pillRadius),
               child: LinearProgressIndicator(
@@ -222,7 +222,7 @@ class ProgressCard extends StatelessWidget {
                 minHeight: 8,
               ),
             ),
-            const SizedBox(height: AppSpacing.sm),
+            SizedBox(height: AppSpacing.sm),
             AppText(
               context.l10n.ofClassesThisMonth(classesDone, safeGoal),
               style: (context) =>

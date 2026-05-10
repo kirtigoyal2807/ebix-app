@@ -263,13 +263,13 @@ class _ReviewScreenDetailsViewState extends State<ReviewScreenDetailsView> {
     if (disc > 0) {
       final amt = MembershipReceiptSummary.formatMoney(disc, currency, locale);
       return Padding(
-        padding: const EdgeInsets.only(top: AppSpacing.sm),
+        padding: EdgeInsets.only(top: AppSpacing.sm),
         child: AppText(l10n.voucherAppliedSavings(amt), style: successStyle),
       );
     }
 
     return Padding(
-      padding: const EdgeInsets.only(top: AppSpacing.sm),
+      padding: EdgeInsets.only(top: AppSpacing.sm),
       child: AppText(l10n.voucherAppliedSuccess, style: successStyle),
     );
   }
@@ -389,7 +389,7 @@ class _ReviewScreenDetailsViewState extends State<ReviewScreenDetailsView> {
           ),
           SizedBox(height: AppSpacing.base),
           if (_checkoutLoading)
-            const Padding(
+            Padding(
               padding: EdgeInsets.symmetric(vertical: AppSpacing.lg),
               child: Center(
                 child: SizedBox(
@@ -449,7 +449,7 @@ class _ReviewScreenDetailsViewState extends State<ReviewScreenDetailsView> {
                 value: subtotalText,
                 isDark: isDark,
               ),
-              const SizedBox(height: AppSpacing.sm),
+              SizedBox(height: AppSpacing.sm),
               _buildClassDetailRow(
                 label: '${l10n.checkoutVoucherDiscount}:',
                 value: '- $discountText',
@@ -462,14 +462,14 @@ class _ReviewScreenDetailsViewState extends State<ReviewScreenDetailsView> {
               value: _cartDateDisplay(l10n, locale, session),
               isDark: isDark,
             ),
-            const SizedBox(height: AppSpacing.sm),
+            SizedBox(height: AppSpacing.sm),
             if (sessionCount != null && sessionCount > 0) ...[
               _buildClassDetailRow(
                 label: '${l10n.classesPerMonth}:',
                 value: '$sessionCount',
                 isDark: isDark,
               ),
-              const SizedBox(height: AppSpacing.sm),
+              SizedBox(height: AppSpacing.sm),
             ],
             if (validityDays > 0) ...[
               _buildClassDetailRow(
@@ -477,14 +477,14 @@ class _ReviewScreenDetailsViewState extends State<ReviewScreenDetailsView> {
                 value: '$validityDays',
                 isDark: isDark,
               ),
-              const SizedBox(height: AppSpacing.sm),
+              SizedBox(height: AppSpacing.sm),
             ],
             _buildClassDetailRow(
               label: '${l10n.validAt}:',
               value: validAt,
               isDark: isDark,
             ),
-            const SizedBox(height: AppSpacing.sm),
+            SizedBox(height: AppSpacing.sm),
             _buildClassDetailRow(
               label: '${l10n.nextBillingDateText}:',
               value: (nextBilling != null && nextBilling.trim().isNotEmpty)
@@ -522,14 +522,14 @@ class _ReviewScreenDetailsViewState extends State<ReviewScreenDetailsView> {
               l10n.reviewYourSelection,
               style: (style) => AppTextStyles.heading1(context),
             ),
-            const SizedBox(height: 4),
+            SizedBox(height: 4),
             AppText(
               l10n.confirmPlanDetails,
               style: (context) => AppTextStyles.bodyText(context),
             ),
-            const SizedBox(height: AppSpacing.md),
+            SizedBox(height: AppSpacing.md),
             _buildPlanSummaryCard(context: context, isDark: isDark, l10n: l10n),
-            const SizedBox(height: AppSpacing.lg),
+            SizedBox(height: AppSpacing.lg),
             Container(
               padding: EdgeInsets.all(AppSpacing.lmd),
               decoration: BoxDecoration(
@@ -555,7 +555,7 @@ class _ReviewScreenDetailsViewState extends State<ReviewScreenDetailsView> {
                     hint: l10n.enterVoucherCode,
                     controller: _couponCode,
                     showClearButton: true,
-                    scrollPadding: const EdgeInsets.only(bottom: 220),
+                    scrollPadding: EdgeInsets.only(bottom: 220),
                     errorText: _voucherSectionError,
                     onChanged: (_) => setState(() {}),
                   ),
@@ -569,13 +569,13 @@ class _ReviewScreenDetailsViewState extends State<ReviewScreenDetailsView> {
                 ],
               ),
             ),
-            const SizedBox(height: AppSpacing.lg),
+            SizedBox(height: AppSpacing.lg),
             AppText(
               '${l10n.acceptedPaymentMethods}:',
               style: (context) =>
                   AppTextStyles.bodyTextSmall(context).copyWith(height: 1.2),
             ),
-            const SizedBox(height: AppSpacing.md),
+            SizedBox(height: AppSpacing.md),
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
@@ -611,7 +611,7 @@ class _ReviewScreenDetailsViewState extends State<ReviewScreenDetailsView> {
                 ),
               ],
             ),
-            const SizedBox(height: AppSpacing.xl),
+            SizedBox(height: AppSpacing.xl),
           ],
         ),
       ),
@@ -657,7 +657,7 @@ class _ReviewScreenDetailsViewState extends State<ReviewScreenDetailsView> {
                   style: (context) => AppTextStyles.textFieldHeading(context),
                 ),
               ),
-              const SizedBox(width: AppSpacing.md),
+              SizedBox(width: AppSpacing.md),
               Expanded(
                 child: AppText(
                   value,

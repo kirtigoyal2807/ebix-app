@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pilates_app/config/theme/app_colors.dart';
 import 'package:pilates_app/config/theme/app_radius.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/core/localization/localization_extension.dart';
-import 'package:pilates_app/features/explore/widget/receive_gift_sheet.dart';
 import 'package:pilates_app/widgets/app_button.dart';
 import 'package:pilates_app/widgets/app_text.dart';
-import 'package:pilates_app/widgets/app_text_field.dart';
 
 class RewardRedeemSuccessSheet extends StatelessWidget {
   const RewardRedeemSuccessSheet({super.key});
@@ -19,11 +16,11 @@ class RewardRedeemSuccessSheet extends StatelessWidget {
     final isRTL = Directionality.of(context) == TextDirection.rtl;
     return Material(
       color: isDark ? AppColors.homeBackground : AppColors.whiteColor,
-      borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+      borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       child: SafeArea(
         top: false,
         child: Padding(
-          padding: const EdgeInsets.symmetric(
+          padding: EdgeInsets.symmetric(
             horizontal: AppSpacing.lg,
             vertical: AppSpacing.lg,
           ),
@@ -50,7 +47,7 @@ class RewardRedeemSuccessSheet extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: AppSpacing.xl),
+              SizedBox(height: AppSpacing.xl),
               Container(
                 height: 100,
                 width: 100,
@@ -63,7 +60,7 @@ class RewardRedeemSuccessSheet extends StatelessWidget {
                 ),
                 child: const Icon(Icons.done, color: Colors.white, size: 80),
               ),
-              const SizedBox(height: AppSpacing.md),
+              SizedBox(height: AppSpacing.md),
               AppText(
                 context.l10n.rewardRedemption,
                 style: (context) =>
@@ -74,7 +71,7 @@ class RewardRedeemSuccessSheet extends StatelessWidget {
                     ),
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: AppSpacing.xl),
+              SizedBox(height: AppSpacing.xl),
               AppButton(
                 label: context.l10n.continueTxt,
                 onPressed: () {

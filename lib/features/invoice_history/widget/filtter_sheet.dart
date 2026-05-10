@@ -20,7 +20,7 @@ class FilterSelectionBottomSheet extends StatelessWidget {
 
     return Material(
       color: isDark ? AppColors.homeBackground : AppColors.whiteColor,
-      borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+      borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       child: SafeArea(
         top: false,
         child: Column(
@@ -28,7 +28,7 @@ class FilterSelectionBottomSheet extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: const EdgeInsets.only(
+              padding: EdgeInsets.only(
                 left: AppSpacing.lg,
                 top: AppSpacing.lg,
                 bottom: AppSpacing.lg,
@@ -54,9 +54,9 @@ class FilterSelectionBottomSheet extends StatelessWidget {
                 ],
               ),
             ),
-            const SizedBox(height: AppSpacing.xi),
+            SizedBox(height: AppSpacing.xi),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+              padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
               child: AppText(
                 context.l10n.sortBy,
                 style: (context) => AppTextStyles.experienceButton(
@@ -64,15 +64,13 @@ class FilterSelectionBottomSheet extends StatelessWidget {
                 ).copyWith(color: AppColors.lightGrey, height: 1.55),
               ),
             ),
-            const SizedBox(height: AppSpacing.lg),
+            SizedBox(height: AppSpacing.lg),
             BlocBuilder<InvoiceHistoryCubit, InvoiceHistoryState>(
               builder: (context, state) {
                 return ListView.builder(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: AppSpacing.lg,
-                  ),
+                  padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
                   itemCount: SortBy.values.length,
                   itemBuilder: (context, index) {
                     final option = SortBy.values[index];
@@ -88,9 +86,9 @@ class FilterSelectionBottomSheet extends StatelessWidget {
                 );
               },
             ),
-            const SizedBox(height: 14),
+            SizedBox(height: 14),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+              padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
               child: AppText(
                 context.l10n.dateRange,
                 style: (context) => AppTextStyles.experienceButton(
@@ -98,15 +96,13 @@ class FilterSelectionBottomSheet extends StatelessWidget {
                 ).copyWith(color: AppColors.lightGrey, height: 1.55),
               ),
             ),
-            const SizedBox(height: AppSpacing.lg),
+            SizedBox(height: AppSpacing.lg),
             BlocBuilder<InvoiceHistoryCubit, InvoiceHistoryState>(
               builder: (context, state) {
                 return ListView.builder(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: AppSpacing.lg,
-                  ),
+                  padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
                   itemCount: DateRange.values.length,
                   itemBuilder: (context, index) {
                     final option = DateRange.values[index];
@@ -124,7 +120,7 @@ class FilterSelectionBottomSheet extends StatelessWidget {
                 );
               },
             ),
-            const SizedBox(height: AppSpacing.lg),
+            SizedBox(height: AppSpacing.lg),
           ],
         ),
       ),
@@ -157,8 +153,8 @@ class _OptionTile extends StatelessWidget {
         focusColor: Colors.transparent,
         borderRadius: BorderRadius.circular(AppRadius.lg),
         child: Container(
-          padding: const EdgeInsets.only(bottom: 10),
-          margin: const EdgeInsets.only(bottom: AppSpacing.xs),
+          padding: EdgeInsets.only(bottom: 10),
+          margin: EdgeInsets.only(bottom: AppSpacing.xs),
           child: Row(
             children: [
               Expanded(
