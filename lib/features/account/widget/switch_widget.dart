@@ -51,6 +51,7 @@ class SwitchWidget extends StatelessWidget {
         ),
 
         Transform.scale(
+          alignment: Alignment.centerRight,
           scale: 0.8, // 👈 reduce overall size (try 0.7–0.9)
           child: CupertinoSwitch(
             value: switchValue,

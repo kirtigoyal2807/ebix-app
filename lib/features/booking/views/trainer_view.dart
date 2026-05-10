@@ -48,7 +48,7 @@ class TrainerView extends StatelessWidget {
               color: isDark ? AppColors.greyText : AppColors.buttonBorder,
               height: 1,
             ),
-            SizedBox(height: AppSpacing.lg),
+            // SizedBox(height: AppSpacing.lg),
             Expanded(
               child: BlocBuilder<TrainersCubit, TrainersState>(
                 builder: (context, state) {

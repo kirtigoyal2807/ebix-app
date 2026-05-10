@@ -498,7 +498,7 @@ class _PlanSelectionStepState extends State<_PlanSelectionStep> {
                     );
                   },
                 ),
-                SizedBox(height: AppSpacing.md),
+                SizedBox(height: AppSpacing.lg),
 
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
@@ -571,7 +571,7 @@ class _PlanSelectionStepState extends State<_PlanSelectionStep> {
                     ],
                   ),
                 ),
-                SizedBox(height: AppSpacing.md),
+                SizedBox(height: AppSpacing.lg),
 
                 if (_productsLoadFailed && _catalogProducts.isEmpty)
                   Padding(
@@ -694,7 +694,7 @@ class _PlanSelectionStepState extends State<_PlanSelectionStep> {
             left: 24,
             right: 24,
             bottom: 12,
-            top: 8,
+            top: 0,
           ),
           child: AppButton(
             label: l10n.continueTxt,

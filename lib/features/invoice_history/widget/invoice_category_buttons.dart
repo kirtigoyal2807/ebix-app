@@ -47,7 +47,7 @@ class InvoiceCategoryButtons extends StatelessWidget {
                     color: isSelected
                         ? AppColors.primary
                         : isDark
-                        ? Colors.transparent
+                        ? AppColors.primaryDarkButton
                         : AppColors.greyContainerBg,
                     borderRadius: BorderRadius.circular(AppRadius.base),
                   ),

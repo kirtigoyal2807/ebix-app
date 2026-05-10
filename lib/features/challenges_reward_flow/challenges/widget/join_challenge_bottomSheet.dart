@@ -95,6 +95,7 @@ class JoinChallengeBottomSheet extends StatelessWidget {
                           ),
                           SizedBox(height: AppSpacing.md),
                           Container(
+                            width: MediaQuery.of(context).size.width,
                             padding: EdgeInsets.all(AppSpacing.lmd),
                             decoration: BoxDecoration(
                               color: isDarkMode

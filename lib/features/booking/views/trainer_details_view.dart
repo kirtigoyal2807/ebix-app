@@ -278,20 +278,23 @@ class _TrainerDetailsApiRouteState extends State<_TrainerDetailsApiRoute> {
                           padding: EdgeInsets.symmetric(
                             horizontal: AppSpacing.lg,
                           ),
-                          child: Wrap(
-                            spacing: AppSpacing.sm,
-                            runSpacing: AppSpacing.sm,
-                            children: [
-                              if (effective.yearsExperience != null)
-                                TagChip(
-                                  label: context.l10n.yearsExperience(
-                                    effective.yearsExperience!,
+                          child: Center(
+                            child: Wrap(
+                              spacing: AppSpacing.sm,
+                              runSpacing: AppSpacing.sm,
+
+                              children: [
+                                if (effective.yearsExperience != null)
+                                  TagChip(
+                                    label: context.l10n.yearsExperience(
+                                      effective.yearsExperience!,
+                                    ),
+                                    fontSize: 14,
                                   ),
-                                  fontSize: 14,
-                                ),
-                              for (final s in effective.specialties)
-                                TagChip(label: s, fontSize: 14),
-                            ],
+                                for (final s in effective.specialties)
+                                  TagChip(label: s, fontSize: 14),
+                              ],
+                            ),
                           ),
                         ),
                         _TrainerStatsRow(trainer: effective, isDark: isDark),

@@ -46,7 +46,7 @@ class RewardOverviewView extends StatelessWidget {
             _currentBranch(context: context, cubitContext: context),
             SizedBox(height: AppSpacing.md),
             FilterTabButton(),
-            SizedBox(height: AppSpacing.lmd),
+            SizedBox(height: AppSpacing.lg),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
               child: AppText(

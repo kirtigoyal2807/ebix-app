@@ -179,7 +179,7 @@ class _SignUpBranchViewState extends State<SignUpBranchView> {
             isMoreMenu: false,
           ),
           body: Padding(
-            padding: EdgeInsets.symmetric(vertical: AppSpacing.md),
+            padding: EdgeInsets.only(top: AppSpacing.md),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -211,126 +211,203 @@ class _SignUpBranchViewState extends State<SignUpBranchView> {
                 ),
                 SizedBox(height: AppSpacing.sm),
                 Expanded(
-                  child: RefreshIndicator(
-                    onRefresh: _requestLocationAndLoadBranches,
-                    child: SingleChildScrollView(
-                      physics: const AlwaysScrollableScrollPhysics(),
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: AppSpacing.lg,
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SizedBox(height: AppSpacing.lg),
-                            SignUpHeader(
-                              title: context.l10n.branchTitle,
-                              subtitle: context.l10n.branchSubtitle,
-                              step: 3,
-                              totalSteps: 4,
+                  child: Stack(
+                    children: [
+                      RefreshIndicator(
+                        onRefresh: _requestLocationAndLoadBranches,
+                        child: SingleChildScrollView(
+                          physics: const AlwaysScrollableScrollPhysics(),
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: AppSpacing.lg,
                             ),
-                            SizedBox(height: AppSpacing.lg),
-                            if (loading)
-                              Padding(
-                                padding: EdgeInsets.symmetric(
-                                  vertical: AppSpacing.xxl,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                SizedBox(height: AppSpacing.lg),
+                                SignUpHeader(
+                                  title: context.l10n.branchTitle,
+                                  subtitle: context.l10n.branchSubtitle,
+                                  step: 3,
+                                  totalSteps: 4,
                                 ),
-                                child: Center(
-                                  child: CircularProgressIndicator(),
-                                ),
-                              )
-                            else if (failure)
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.stretch,
-                                children: [
-                                  AppText(
-                                    state.signUpBranchesErrorMessage.isEmpty
-                                        ? context.l10n.branchesCouldNotLoad
-                                        : state.signUpBranchesErrorMessage,
-                                    style: (context) =>
-                                        AppTextStyles.body(context).copyWith(
-                                          color: isDark
-                                              ? AppColors.redDark
-                                              : AppColors.redLight,
-                                        ),
-                                  ),
-                                  SizedBox(height: AppSpacing.md),
-                                  AppButton(
-                                    key: const ValueKey(
-                                      'sign_up_branches_retry',
+                                SizedBox(height: AppSpacing.lg),
+                                if (loading)
+                                  Padding(
+                                    padding: EdgeInsets.symmetric(
+                                      vertical: AppSpacing.xxl,
                                     ),
-                                    label: context.l10n.retry,
-                                    onPressed: _requestLocationAndLoadBranches,
-                                  ),
-                                ],
-                              )
-                            else if (branches.isEmpty)
-                              Padding(
-                                padding: EdgeInsets.symmetric(
-                                  vertical: AppSpacing.xxl,
-                                ),
-                                child: Center(
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
+                                    child: Center(
+                                      child: CircularProgressIndicator(),
+                                    ),
+                                  )
+                                else if (failure)
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.stretch,
                                     children: [
-                                      SizedBox(height: AppSpacing.md),
                                       AppText(
-                                        context.l10n.noBranchesAvailable,
+                                        state.signUpBranchesErrorMessage.isEmpty
+                                            ? context.l10n.branchesCouldNotLoad
+                                            : state.signUpBranchesErrorMessage,
                                         style: (context) =>
                                             AppTextStyles.body(
                                               context,
                                             ).copyWith(
-                                              color: Theme.of(
-                                                context,
-                                              ).hintColor,
+                                              color: isDark
+                                                  ? AppColors.redDark
+                                                  : AppColors.redLight,
                                             ),
-                                        textAlign: TextAlign.center,
+                                      ),
+                                      SizedBox(height: AppSpacing.md),
+                                      AppButton(
+                                        key: const ValueKey(
+                                          'sign_up_branches_retry',
+                                        ),
+                                        label: context.l10n.retry,
+                                        onPressed:
+                                            _requestLocationAndLoadBranches,
                                       ),
                                     ],
+                                  )
+                                else if (branches.isEmpty)
+                                  Padding(
+                                    padding: EdgeInsets.symmetric(
+                                      vertical: AppSpacing.xxl,
+                                    ),
+                                    child: Center(
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          SizedBox(height: AppSpacing.md),
+                                          AppText(
+                                            context.l10n.noBranchesAvailable,
+                                            style: (context) =>
+                                                AppTextStyles.body(
+                                                  context,
+                                                ).copyWith(
+                                                  color: Theme.of(
+                                                    context,
+                                                  ).hintColor,
+                                                ),
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  )
+                                else
+                                  ..._branchTiles(
+                                    context,
+                                    branches,
+                                    state.selectedSignUpBranchId,
+                                    fe,
                                   ),
+                                SizedBox(height: AppSpacing.lg),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        bottom: 0,
+                        left: 0,
+                        right: 0,
+                        child: Container(
+                          height: AppSpacing.md + 52,
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              begin:
+                                  Alignment.bottomCenter, // start from bottom
+                              end: Alignment.topCenter, // fade to top
+                              colors: isDark
+                                  ? [
+                                      AppColors.darkShadow,
+                                      AppColors.darkShadow.withValues(alpha: 0),
+                                    ]
+                                  : [
+                                      Colors.white,
+                                      Colors.white.withValues(alpha: 0),
+                                    ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        left: 0,
+                        right: 0,
+                        bottom: AppSpacing.md,
+                        child: Column(
+                          children: [
+                            if (_branchPickErrorMessage != null)
+                              Padding(
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: AppSpacing.lg,
                                 ),
-                              )
-                            else
-                              ..._branchTiles(
-                                context,
-                                branches,
-                                state.selectedSignUpBranchId,
-                                fe,
+                                child: InlineValidationBanner(
+                                  message: _branchPickErrorMessage!,
+                                ),
                               ),
-                            SizedBox(height: AppSpacing.lg),
+                            if (_branchSubmitErrorMessage != null &&
+                                (_branchPickErrorMessage == null))
+                              Padding(
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: AppSpacing.lg,
+                                ),
+                                child: InlineValidationBanner(
+                                  message: _branchSubmitErrorMessage!,
+                                ),
+                              ),
+                            Padding(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: AppSpacing.lg,
+                              ),
+                              child: AppButton(
+                                key: const ValueKey('sign_up_branch_finish'),
+                                label: context.l10n.finishSignUp,
+                                isLoading: saving,
+                                onPressed:
+                                    (loading ||
+                                        saving ||
+                                        failure ||
+                                        branches.isEmpty)
+                                    ? null
+                                    : () => _onFinish(context),
+                              ),
+                            ),
                           ],
                         ),
                       ),
-                    ),
+                    ],
                   ),
                 ),
-                if (_branchPickErrorMessage != null)
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
-                    child: InlineValidationBanner(
-                      message: _branchPickErrorMessage!,
-                    ),
-                  ),
-                if (_branchSubmitErrorMessage != null &&
-                    (_branchPickErrorMessage == null))
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
-                    child: InlineValidationBanner(
-                      message: _branchSubmitErrorMessage!,
-                    ),
-                  ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
-                  child: AppButton(
-                    key: const ValueKey('sign_up_branch_finish'),
-                    label: context.l10n.finishSignUp,
-                    isLoading: saving,
-                    onPressed:
-                        (loading || saving || failure || branches.isEmpty)
-                        ? null
-                        : () => _onFinish(context),
-                  ),
-                ),
+                // if (_branchPickErrorMessage != null)
+                //   Padding(
+                //     padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+                //     child: InlineValidationBanner(
+                //       message: _branchPickErrorMessage!,
+                //     ),
+                //   ),
+                // if (_branchSubmitErrorMessage != null &&
+                //     (_branchPickErrorMessage == null))
+                //   Padding(
+                //     padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+                //     child: InlineValidationBanner(
+                //       message: _branchSubmitErrorMessage!,
+                //     ),
+                //   ),
+                // Padding(
+                //   padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+                //   child: AppButton(
+                //     key: const ValueKey('sign_up_branch_finish'),
+                //     label: context.l10n.finishSignUp,
+                //     isLoading: saving,
+                //     onPressed:
+                //         (loading || saving || failure || branches.isEmpty)
+                //         ? null
+                //         : () => _onFinish(context),
+                //   ),
+                // ),
               ],
             ),
           ),

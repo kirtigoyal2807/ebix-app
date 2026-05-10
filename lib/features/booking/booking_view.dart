@@ -181,9 +181,9 @@ class _ClassesTab extends StatelessWidget {
         const BookingSearchBar(),
         SizedBox(height: AppSpacing.md),
         const BookingFilterChips(),
-        SizedBox(height: AppSpacing.lg),
+        // SizedBox(height: AppSpacing.md),
         const BookingSubscriptionCard(),
-        SizedBox(height: AppSpacing.lg),
+        SizedBox(height: AppSpacing.md),
         Divider(
           color: isDark ? AppColors.greyText : AppColors.buttonBorder,
           height: 1,
