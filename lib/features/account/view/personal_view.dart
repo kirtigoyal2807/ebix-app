@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/core/localization/localization_extension.dart';
+import 'package:pilates_app/core/utils/date_of_birth_constraints.dart';
 import 'package:pilates_app/core/utils/api_media_url.dart';
 import 'package:pilates_app/features/auth/cubit/auth_cubit.dart';
 import 'package:pilates_app/features/auth/data/models/auth_user.dart';
@@ -62,6 +63,8 @@ class _PersonalViewBody extends StatefulWidget {
 }
 
 class _PersonalViewBodyState extends State<_PersonalViewBody> {
+  bool _isEditing = false;
+
   late final TextEditingController _firstNameController;
   late final TextEditingController _lastNameController;
   late final TextEditingController _emailController;
@@ -123,19 +126,36 @@ class _PersonalViewBodyState extends State<_PersonalViewBody> {
     return DateFormat('dd/MM/yyyy').format(value);
   }
 
+  /// Only [female] exists in the menu (product rule). API may still return
+  /// `male` / `other`; passing those as [DropdownButtonFormField.value] asserts.
+  /// Returns a value that matches an item, or null (hint) while [PersonalInfoCubit]
+  /// keeps the real API gender until the user selects Female.
+  String? _genderDropdownValue(String? storedGender) {
+    final g = storedGender?.trim().toLowerCase();
+    return g == 'female' ? 'female' : null;
+  }
+
   Future<void> _pickDateOfBirth(BuildContext context) async {
     final personalInfoCubit = context.read<PersonalInfoCubit>();
     final state = personalInfoCubit.state;
-    final now = DateTime.now();
-    final initialDate =
+    final today = DateTime.now();
+    final firstDate = DateTime(1900);
+    final lastDob =
+        DateOfBirthConstraints.latestSelectableBirthDate(today);
+    final baseInitial =
         state.dateOfBirth ??
         widget.initialUser?.dateOfBirth ??
-        DateTime(now.year - 18, now.month, now.day);
+        lastDob;
+    final initialDate = DateOfBirthConstraints.clampToSelectableRange(
+      baseInitial,
+      firstDate,
+      lastDob,
+    );
     final picked = await showDatePicker(
       context: context,
-      initialDate: initialDate.isAfter(now) ? now : initialDate,
-      firstDate: DateTime(1900),
-      lastDate: now,
+      initialDate: initialDate,
+      firstDate: firstDate,
+      lastDate: lastDob,
     );
     if (!mounted || picked == null) return;
     personalInfoCubit.updateDateOfBirth(picked);
@@ -205,6 +225,15 @@ class _PersonalViewBodyState extends State<_PersonalViewBody> {
   }
 
   void _submit(BuildContext context) {
+    final cubitState = context.read<PersonalInfoCubit>().state;
+    final dob = cubitState.dateOfBirth;
+    if (dob != null &&
+        !DateOfBirthConstraints.satisfiesMinimumAge(dob, DateTime.now())) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(context.l10n.dobMinimumAgeError)),
+      );
+      return;
+    }
     final phone = _phoneController.text.trim();
     context.read<PersonalInfoCubit>().saveProfile(
       firstName: _firstNameController.text.trim(),
@@ -258,7 +287,9 @@ class _PersonalViewBodyState extends State<_PersonalViewBody> {
                         p.removeAvatar != c.removeAvatar,
                     builder: (context, picState) {
                       return GestureDetector(
-                        onTap: () => _showProfilePictureOptions(context),
+                        onTap: _isEditing
+                            ? () => _showProfilePictureOptions(context)
+                            : null,
                         child: Column(
                           children: [
                             Align(
@@ -286,12 +317,14 @@ class _PersonalViewBodyState extends State<_PersonalViewBody> {
                     hint: context.l10n.firstName,
                     label: context.l10n.firstName,
                     controller: _firstNameController,
+                    readOnly: !_isEditing,
                   ),
                   SizedBox(height: AppSpacing.md),
                   AppTextField(
                     hint: context.l10n.lastName,
                     label: context.l10n.lastName,
                     controller: _lastNameController,
+                    readOnly: !_isEditing,
                   ),
                   SizedBox(height: AppSpacing.md),
                   AppTextField(
@@ -299,13 +332,17 @@ class _PersonalViewBodyState extends State<_PersonalViewBody> {
                     label: l10n.emailAddress,
                     keyboardType: TextInputType.emailAddress,
                     controller: _emailController,
+                    readOnly: !_isEditing,
                   ),
                   SizedBox(height: AppSpacing.md),
-                  PhoneNumberField(
-                    label: context.l10n.phoneNumber,
-                    countryCode: '+1',
-                    flagAsset: 'assets/flags/us.svg',
-                    controller: _phoneController,
+                  IgnorePointer(
+                    ignoring: !_isEditing,
+                    child: PhoneNumberField(
+                      label: context.l10n.phoneNumber,
+                      countryCode: '+1',
+                      flagAsset: 'assets/flags/us.svg',
+                      controller: _phoneController,
+                    ),
                   ),
                   SizedBox(height: AppSpacing.md),
                   BlocBuilder<PersonalInfoCubit, PersonalInfoState>(
@@ -314,15 +351,8 @@ class _PersonalViewBodyState extends State<_PersonalViewBody> {
                       return AppDropDown<String>(
                         label: context.l10n.gender,
                         hint: context.l10n.selectGender,
-                        value: state.gender,
+                        value: _genderDropdownValue(state.gender),
                         items: [
-                          DropdownMenuItem(
-                            value: 'male',
-                            child: Text(
-                              context.l10n.male,
-                              style: AppTextStyles.textField(context),
-                            ),
-                          ),
                           DropdownMenuItem(
                             value: 'female',
                             child: Text(
@@ -330,19 +360,16 @@ class _PersonalViewBodyState extends State<_PersonalViewBody> {
                               style: AppTextStyles.textField(context),
                             ),
                           ),
-                          DropdownMenuItem(
-                            value: 'other',
-                            child: Text(
-                              context.l10n.other,
-                              style: AppTextStyles.textField(context),
-                            ),
-                          ),
                         ],
-                        onChanged: (val) {
-                          if (val != null) {
-                            context.read<PersonalInfoCubit>().updateGender(val);
-                          }
-                        },
+                        onChanged: _isEditing
+                            ? (val) {
+                                if (val != null) {
+                                  context
+                                      .read<PersonalInfoCubit>()
+                                      .updateGender(val);
+                                }
+                              }
+                            : null,
                       );
                     },
                   ),
@@ -351,13 +378,16 @@ class _PersonalViewBodyState extends State<_PersonalViewBody> {
                     buildWhen: (p, c) => p.dateOfBirth != c.dateOfBirth,
                     builder: (context, state) {
                       _dobController.text = _formatDate(state.dateOfBirth);
-                      return GestureDetector(
-                        onTap: () => _pickDateOfBirth(context),
-                        child: AbsorbPointer(
-                          child: AppTextField(
-                            hint: 'Select date of birth',
-                            label: 'Date of Birth',
-                            controller: _dobController,
+                      return IgnorePointer(
+                        ignoring: !_isEditing,
+                        child: GestureDetector(
+                          onTap: () => _pickDateOfBirth(context),
+                          child: AbsorbPointer(
+                            child: AppTextField(
+                              hint: 'Select date of birth',
+                              label: 'Date of Birth',
+                              controller: _dobController,
+                            ),
                           ),
                         ),
                       );
@@ -378,9 +408,19 @@ class _PersonalViewBodyState extends State<_PersonalViewBody> {
                       ],
                     ),
                     child: AppButton(
-                      label: l10n.editDetails,
+                      label: _isEditing
+                          ? l10n.updateProfile
+                          : l10n.editDetails,
                       isLoading: isLoading,
-                      onPressed: isLoading ? null : () => _submit(context),
+                      onPressed: isLoading
+                          ? null
+                          : () {
+                              if (_isEditing) {
+                                _submit(context);
+                              } else {
+                                setState(() => _isEditing = true);
+                              }
+                            },
                       variant: AppButtonVariant.primary,
                     ),
                   ),

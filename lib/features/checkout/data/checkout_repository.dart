@@ -451,13 +451,10 @@ class CheckoutRepository extends BaseRepository {
         if (payload is! Map) {
           throw StateError('Expected checkout session object');
         }
-        return CheckoutStartResult.fromJson(
-          Map<String, dynamic>.from(payload),
-        );
+        return CheckoutStartResult.fromJson(Map<String, dynamic>.from(payload));
       },
     );
   }
-
 
   /// `GET /health-intake/questionnaires/product/{productId}` — questionnaire(s)
   /// for checkout health intake (`data.questionnaires[].questions[]`).

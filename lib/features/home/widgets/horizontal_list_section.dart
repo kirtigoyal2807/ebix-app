@@ -139,80 +139,81 @@ class TopTrainersSection extends StatelessWidget {
           return SizedBox(
             width: itemWidth,
             height: itemHeight,
-            child: Container(
-              padding: EdgeInsets.all(pad),
-              decoration: BoxDecoration(
-                color: isDark
-                    ? AppColors.trainerBlackBackgroundColor
-                    : AppColors.seekBarLight,
-                borderRadius: BorderRadius.circular(AppRadius.md),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Expanded(
-                    child: Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          CircleAvatar(
-                            radius: itemWidth * 0.20,
-                            backgroundColor: isDark
-                                ? AppColors.homeBackground
-                                : AppColors.whiteColor,
-                            backgroundImage:
-                                (trainer.imageUrl ?? '').trim().isEmpty
-                                ? null
-                                : NetworkImage(trainer.imageUrl!),
-                            child: (trainer.imageUrl ?? '').trim().isEmpty
-                                ? const Icon(Icons.person)
-                                : null,
+            child: GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => TrainerDetailsView(
+                            trainer: _toTrainerResource(trainer),
+                            scrollToUpcomingClassesOnOpen: true,
                           ),
-                          const SizedBox(height: AppSpacing.sm),
-                          AppText(
-                            trainer.displayName ?? '',
-                            style: (context) =>
-                                AppTextStyles.heading1(context).copyWith(
-                                  fontSize: 16,
-                                  height: 1.15,
-                                  color: isDark
-                                      ? AppColors.lightText
-                                      : AppColors.darkText,
-                                ),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          const SizedBox(height: 2),
-                          AppText(
-                            subtitle,
-                            style: (context) =>
-                                AppTextStyles.captionText(context).copyWith(
-                                  fontSize: 12,
-                                  height: 1.2,
-                                  color: isDark
-                                      ? AppColors.languageIconDark
-                                      : AppColors.lightGrey,
-                                ),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ],
+                  ),
+                );
+              },
+              child: Container(
+                padding: EdgeInsets.all(pad),
+                decoration: BoxDecoration(
+                  color: isDark
+                      ? AppColors.trainerBlackBackgroundColor
+                      : AppColors.seekBarLight,
+                  borderRadius: BorderRadius.circular(AppRadius.md),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      child: Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            CircleAvatar(
+                              radius: itemWidth * 0.20,
+                              backgroundColor: isDark
+                                  ? AppColors.homeBackground
+                                  : AppColors.whiteColor,
+                              backgroundImage:
+                                  (trainer.imageUrl ?? '').trim().isEmpty
+                                  ? null
+                                  : NetworkImage(trainer.imageUrl!),
+                              child: (trainer.imageUrl ?? '').trim().isEmpty
+                                  ? const Icon(Icons.person)
+                                  : null,
+                            ),
+                            const SizedBox(height: AppSpacing.sm),
+                            AppText(
+                              trainer.displayName ?? '',
+                              style: (context) =>
+                                  AppTextStyles.heading1(context).copyWith(
+                                    fontSize: 16,
+                                    height: 1.15,
+                                    color: isDark
+                                        ? AppColors.lightText
+                                        : AppColors.darkText,
+                                  ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            const SizedBox(height: 2),
+                            AppText(
+                              subtitle,
+                              style: (context) =>
+                                  AppTextStyles.captionText(context).copyWith(
+                                    fontSize: 12,
+                                    height: 1.2,
+                                    color: isDark
+                                        ? AppColors.languageIconDark
+                                        : AppColors.lightGrey,
+                                  ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => TrainerDetailsView(
-                            trainer: _toTrainerResource(trainer),
-                          ),
-                        ),
-                      );
-                    },
-                    child: Padding(
+                    Padding(
                       padding: const EdgeInsets.only(top: AppSpacing.xi),
                       child: AppText(
                         context.l10n.viewClasses,
@@ -230,8 +231,8 @@ class TopTrainersSection extends StatelessWidget {
                         textAlign: TextAlign.center,
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           );

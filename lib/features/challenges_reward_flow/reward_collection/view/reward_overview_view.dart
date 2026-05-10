@@ -253,8 +253,8 @@ class RewardOverviewView extends StatelessWidget {
                       final title = branch == null
                           ? ''
                           : branch.id == 0
-                              ? context.l10n.rewards_all_locations_title
-                              : branch.title;
+                          ? context.l10n.rewards_all_locations_title
+                          : branch.title;
                       return AppText(
                         title,
                         maxLines: 2,

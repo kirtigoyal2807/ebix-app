@@ -263,7 +263,7 @@ class PushNotificationView extends StatelessWidget {
                             ),
                           ],
                         ),
-                         SizedBox(height: AppSpacing.xxl),
+                        SizedBox(height: AppSpacing.xxl),
                       ],
                     ),
                   ),

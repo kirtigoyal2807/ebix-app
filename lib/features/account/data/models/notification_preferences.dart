@@ -1,187 +1,247 @@
-/// Channel-level notification preferences (e.g., class_reminder, booking_confirmed).
-class ChannelPreference {
-  const ChannelPreference({this.push, this.sms, this.email});
+bool? _asBool(dynamic value) {
+  if (value is bool) return value;
+  return null;
+}
 
-  final bool? push;
-  final bool? sms;
-  final bool? email;
+/// Global delivery toggles under [NotificationPreferences.channels].
+class NotificationGlobalChannels {
+  const NotificationGlobalChannels({
+    this.inApp = false,
+    this.push = false,
+    this.email = false,
+    this.sms = false,
+  });
 
-  factory ChannelPreference.fromJson(Map<String, dynamic> json) {
-    return ChannelPreference(
-      push: json['push'] as bool?,
-      sms: json['sms'] as bool?,
-      email: json['email'] as bool?,
-    );
-  }
+  final bool inApp;
+  final bool push;
+  final bool email;
+  final bool sms;
 
-  Map<String, dynamic> toJson() {
-    final map = <String, dynamic>{};
-    if (push != null) map['push'] = push;
-    if (sms != null) map['sms'] = sms;
-    if (email != null) map['email'] = email;
-    return map;
-  }
-
-  ChannelPreference copyWith({bool? push, bool? sms, bool? email}) {
-    return ChannelPreference(
-      push: push ?? this.push,
-      sms: sms ?? this.sms,
-      email: email ?? this.email,
+  factory NotificationGlobalChannels.fromJson(Map<String, dynamic>? json) {
+    if (json == null) {
+      return const NotificationGlobalChannels();
+    }
+    return NotificationGlobalChannels(
+      inApp: _asBool(json['inApp']) ?? false,
+      push: _asBool(json['push']) ?? false,
+      email: _asBool(json['email']) ?? false,
+      sms: _asBool(json['sms']) ?? false,
     );
   }
 }
 
-/// `data` object from `GET /notifications/preferences`.
-class NotificationPreferences {
-  const NotificationPreferences({
-    this.push = false,
-    this.sms = false,
-    this.email = false,
-    this.channels = const {},
+class ClassNotificationPreferences {
+  const ClassNotificationPreferences({
+    this.beforeClassStart = false,
+    this.dayBeforeReminder = false,
+    this.bookingConfirmed = false,
+    this.bookingCancelled = false,
+    this.waitlistPromoted = false,
   });
 
-  final bool push;
-  final bool sms;
-  final bool email;
-  final Map<String, ChannelPreference> channels;
+  final bool beforeClassStart;
+  final bool dayBeforeReminder;
+  final bool bookingConfirmed;
+  final bool bookingCancelled;
+  final bool waitlistPromoted;
 
-  static Map<String, dynamic>? _asStringDynamicMap(dynamic value) {
-    if (value is Map<String, dynamic>) {
-      return value;
-    }
-    if (value is Map) {
-      return Map<String, dynamic>.from(value);
-    }
-    return null;
+  factory ClassNotificationPreferences.fromJson(Map<String, dynamic>? json) {
+    if (json == null) return const ClassNotificationPreferences();
+    return ClassNotificationPreferences(
+      beforeClassStart: _asBool(json['beforeClassStart']) ?? false,
+      dayBeforeReminder: _asBool(json['dayBeforeReminder']) ?? false,
+      bookingConfirmed: _asBool(json['bookingConfirmed']) ?? false,
+      bookingCancelled: _asBool(json['bookingCancelled']) ?? false,
+      waitlistPromoted: _asBool(json['waitlistPromoted']) ?? false,
+    );
   }
+}
 
-  static bool? _asBool(dynamic value) {
-    if (value is bool) return value;
-    return null;
-  }
+class SubscriptionNotificationPreferences {
+  const SubscriptionNotificationPreferences({
+    this.paymentConfirmations = false,
+    this.renewalReminders = false,
+    this.expiryReminders = false,
+  });
 
-  static void _setBoolChannel(
-    Map<String, ChannelPreference> target,
-    String key,
-    dynamic value,
+  final bool paymentConfirmations;
+  final bool renewalReminders;
+  final bool expiryReminders;
+
+  factory SubscriptionNotificationPreferences.fromJson(
+    Map<String, dynamic>? json,
   ) {
-    final parsed = _asBool(value);
-    if (parsed == null) return;
-    target[key] = ChannelPreference(push: parsed);
+    if (json == null) return const SubscriptionNotificationPreferences();
+    return SubscriptionNotificationPreferences(
+      paymentConfirmations:
+          _asBool(json['paymentConfirmations']) ?? false,
+      renewalReminders: _asBool(json['renewalReminders']) ?? false,
+      expiryReminders: _asBool(json['expiryReminders']) ?? false,
+    );
+  }
+}
+
+class LoyaltyNotificationPreferences {
+  const LoyaltyNotificationPreferences({
+    this.pointsEarned = false,
+    this.rewardRedeemed = false,
+    this.challengeUpdates = false,
+    this.badgeEarned = false,
+  });
+
+  final bool pointsEarned;
+  final bool rewardRedeemed;
+  final bool challengeUpdates;
+  final bool badgeEarned;
+
+  factory LoyaltyNotificationPreferences.fromJson(Map<String, dynamic>? json) {
+    if (json == null) return const LoyaltyNotificationPreferences();
+    return LoyaltyNotificationPreferences(
+      pointsEarned: _asBool(json['pointsEarned']) ?? false,
+      rewardRedeemed: _asBool(json['rewardRedeemed']) ?? false,
+      challengeUpdates: _asBool(json['challengeUpdates']) ?? false,
+      badgeEarned: _asBool(json['badgeEarned']) ?? false,
+    );
+  }
+}
+
+class ReferralNotificationPreferences {
+  const ReferralNotificationPreferences({
+    this.referralSuccess = false,
+    this.inviteUpdates = false,
+  });
+
+  final bool referralSuccess;
+  final bool inviteUpdates;
+
+  factory ReferralNotificationPreferences.fromJson(
+    Map<String, dynamic>? json,
+  ) {
+    if (json == null) return const ReferralNotificationPreferences();
+    return ReferralNotificationPreferences(
+      referralSuccess: _asBool(json['referralSuccess']) ?? false,
+      inviteUpdates: _asBool(json['inviteUpdates']) ?? false,
+    );
+  }
+}
+
+class MarketingNotificationPreferences {
+  const MarketingNotificationPreferences({
+    this.promotions = false,
+    this.productUpdates = false,
+  });
+
+  final bool promotions;
+  final bool productUpdates;
+
+  factory MarketingNotificationPreferences.fromJson(
+    Map<String, dynamic>? json,
+  ) {
+    if (json == null) return const MarketingNotificationPreferences();
+    return MarketingNotificationPreferences(
+      promotions: _asBool(json['promotions']) ?? false,
+      productUpdates: _asBool(json['productUpdates']) ?? false,
+    );
+  }
+}
+
+/// Parsed notification preferences for GET `/notifications/preferences` envelope [data].
+class NotificationPreferences {
+  const NotificationPreferences({
+    this.rootPush = false,
+    this.rootEmail = false,
+    this.allNotifications = false,
+    this.channels = const NotificationGlobalChannels(),
+    this.classNotifications = const ClassNotificationPreferences(),
+    this.subscriptionNotifications =
+        const SubscriptionNotificationPreferences(),
+    this.loyaltyNotifications = const LoyaltyNotificationPreferences(),
+    this.referralNotifications = const ReferralNotificationPreferences(),
+    this.marketingNotifications = const MarketingNotificationPreferences(),
+  });
+
+  /// Top-level request fields (PUT), when present on GET.
+  final bool rootPush;
+  final bool rootEmail;
+
+  final bool allNotifications;
+  final NotificationGlobalChannels channels;
+  final ClassNotificationPreferences classNotifications;
+  final SubscriptionNotificationPreferences subscriptionNotifications;
+  final LoyaltyNotificationPreferences loyaltyNotifications;
+  final ReferralNotificationPreferences referralNotifications;
+  final MarketingNotificationPreferences marketingNotifications;
+
+  static Map<String, dynamic>? _asMap(dynamic value) {
+    if (value is Map<String, dynamic>) return value;
+    if (value is Map) return Map<String, dynamic>.from(value);
+    return null;
   }
 
   factory NotificationPreferences.fromJson(Map<String, dynamic> json) {
-    final source = _asStringDynamicMap(json['preferences']) ?? json;
-    final channelsMap = <String, ChannelPreference>{};
-    final rawChannels = source['channels'];
-    if (rawChannels is Map<String, dynamic>) {
-      for (final entry in rawChannels.entries) {
-        if (entry.value is Map<String, dynamic>) {
-          channelsMap[entry.key] = ChannelPreference.fromJson(
-            entry.value as Map<String, dynamic>,
-          );
-        } else if (entry.value is Map) {
-          channelsMap[entry.key] = ChannelPreference.fromJson(
-            Map<String, dynamic>.from(entry.value as Map),
-          );
-        }
-      }
-    }
+    final prefs = _asMap(json['preferences']) ?? json;
 
-    final classNotifications = _asStringDynamicMap(source['classNotifications']);
-    _setBoolChannel(
-      channelsMap,
-      'before_class_starts',
-      classNotifications?['beforeClassStart'],
-    );
-    _setBoolChannel(
-      channelsMap,
-      'day_before_reminder',
-      classNotifications?['dayBeforeReminder'],
+    final channelsJson = _asMap(prefs['channels']);
+    final globalChannels = NotificationGlobalChannels.fromJson(
+      channelsJson,
     );
 
-    final subscriptionNotifications = _asStringDynamicMap(
-      source['subscriptionNotifications'],
-    );
-    _setBoolChannel(
-      channelsMap,
-      'payment_confirmation',
-      subscriptionNotifications?['paymentConfirmations'],
-    );
-    _setBoolChannel(
-      channelsMap,
-      'renewal_reminder',
-      subscriptionNotifications?['renewalReminders'],
-    );
-
-    final marketingNotifications = _asStringDynamicMap(
-      source['marketingNotifications'],
-    );
-    _setBoolChannel(channelsMap, 'promotions', marketingNotifications?['promotions']);
-    _setBoolChannel(
-      channelsMap,
-      'app_updates',
-      marketingNotifications?['productUpdates'],
-    );
-
-    final loyaltyNotifications = _asStringDynamicMap(
-      source['loyaltyNotifications'],
-    );
-    _setBoolChannel(
-      channelsMap,
-      'new_challenges',
-      loyaltyNotifications?['challengeUpdates'],
-    );
-    _setBoolChannel(
-      channelsMap,
-      'rewards_earned',
-      loyaltyNotifications?['pointsEarned'],
-    );
-    _setBoolChannel(
-      channelsMap,
-      'points_earned',
-      loyaltyNotifications?['pointsEarned'],
-    );
-
-    final channelToggles = _asStringDynamicMap(source['channels']);
+    final rootPush =
+        json.containsKey('push')
+            ? (_asBool(json['push']) ?? false)
+            : globalChannels.push;
+    final rootEmail =
+        json.containsKey('email')
+            ? (_asBool(json['email']) ?? false)
+            : globalChannels.email;
 
     return NotificationPreferences(
-      push:
-          _asBool(source['allNotifications']) ??
-          _asBool(source['push']) ??
-          _asBool(channelToggles?['push']) ??
-          false,
-      sms:
-          _asBool(source['sms']) ??
-          _asBool(channelToggles?['sms']) ??
-          false,
-      email:
-          _asBool(source['email']) ??
-          _asBool(channelToggles?['email']) ??
-          false,
-      channels: channelsMap,
+      rootPush: rootPush,
+      rootEmail: rootEmail,
+      allNotifications: _asBool(prefs['allNotifications']) ?? false,
+      channels: globalChannels,
+      classNotifications: ClassNotificationPreferences.fromJson(
+        _asMap(prefs['classNotifications']),
+      ),
+      subscriptionNotifications: SubscriptionNotificationPreferences.fromJson(
+        _asMap(prefs['subscriptionNotifications']),
+      ),
+      loyaltyNotifications: LoyaltyNotificationPreferences.fromJson(
+        _asMap(prefs['loyaltyNotifications']),
+      ),
+      referralNotifications: ReferralNotificationPreferences.fromJson(
+        _asMap(prefs['referralNotifications']),
+      ),
+      marketingNotifications: MarketingNotificationPreferences.fromJson(
+        _asMap(prefs['marketingNotifications']),
+      ),
     );
-  }
-
-  Map<String, dynamic> toJson() {
-    final map = <String, dynamic>{'push': push, 'sms': sms, 'email': email};
-    if (channels.isNotEmpty) {
-      map['channels'] = channels.map((k, v) => MapEntry(k, v.toJson()));
-    }
-    return map;
   }
 
   NotificationPreferences copyWith({
-    bool? push,
-    bool? sms,
-    bool? email,
-    Map<String, ChannelPreference>? channels,
+    bool? rootPush,
+    bool? rootEmail,
+    bool? allNotifications,
+    NotificationGlobalChannels? channels,
+    ClassNotificationPreferences? classNotifications,
+    SubscriptionNotificationPreferences? subscriptionNotifications,
+    LoyaltyNotificationPreferences? loyaltyNotifications,
+    ReferralNotificationPreferences? referralNotifications,
+    MarketingNotificationPreferences? marketingNotifications,
   }) {
     return NotificationPreferences(
-      push: push ?? this.push,
-      sms: sms ?? this.sms,
-      email: email ?? this.email,
+      rootPush: rootPush ?? this.rootPush,
+      rootEmail: rootEmail ?? this.rootEmail,
+      allNotifications: allNotifications ?? this.allNotifications,
       channels: channels ?? this.channels,
+      classNotifications: classNotifications ?? this.classNotifications,
+      subscriptionNotifications:
+          subscriptionNotifications ?? this.subscriptionNotifications,
+      loyaltyNotifications: loyaltyNotifications ?? this.loyaltyNotifications,
+      referralNotifications:
+          referralNotifications ?? this.referralNotifications,
+      marketingNotifications:
+          marketingNotifications ?? this.marketingNotifications,
     );
   }
 }

@@ -14,6 +14,7 @@ class TokenStorage {
   static const _kAccessToken = 'auth_access_token';
   static const _kUserData = 'auth_user_data';
   static const _kMembershipPlanName = 'membership_plan_name';
+  static const _kAppLocaleLanguageCode = 'app_locale_language_code';
 
   String? readToken() => _prefs.getString(_kAccessToken);
 
@@ -54,4 +55,11 @@ class TokenStorage {
   }
 
   Future<void> clearMembershipPlanName() => _prefs.remove(_kMembershipPlanName);
+
+  /// Persisted MaterialApp locale: `en` | `ar`. Null if the user has not chosen yet.
+  String? readAppLocaleLanguageCode() =>
+      _prefs.getString(_kAppLocaleLanguageCode);
+
+  Future<void> saveAppLocaleLanguageCode(String languageCode) =>
+      _prefs.setString(_kAppLocaleLanguageCode, languageCode);
 }

@@ -483,7 +483,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get tomorrow => 'Tomorrow';
 
   @override
-  String get thisWeek => 'This\nWeek';
+  String get thisWeek => 'This Week';
 
   @override
   String get nextWeek => 'Next Week';
@@ -1903,6 +1903,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get editDetails => 'Edit Details';
 
   @override
+  String get updateProfile => 'Update Profile';
+
+  @override
   String get pushNotifications => 'Push Notifications';
 
   @override
@@ -3012,10 +3015,25 @@ class AppLocalizationsEn extends AppLocalizations {
   String get passwordTooShort => 'Password must be at least 8 characters';
 
   @override
+  String get passwordMinimumLengthHint => 'Minimum 8 characters';
+
+  @override
   String get pleaseEnterFirstName => 'Please enter your first name';
 
   @override
   String get pleaseEnterLastName => 'Please enter your last name';
+
+  @override
+  String get signupFirstNameHint => 'Ayesha';
+
+  @override
+  String get signupLastNameHint => 'Tajib';
+
+  @override
+  String get pleaseSelectGender => 'Please select your gender';
+
+  @override
+  String get pleaseSelectDateOfBirth => 'Please select your date of birth';
 
   @override
   String get forgotPasswordCodeSent => 'A 6-digit code was sent to your email.';
@@ -3109,6 +3127,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get selectDOB => 'Select Date of birth';
+
+  @override
+  String get dobMinimumAgeError => 'You must be at least 16 years old.';
 
   @override
   String get reformerTower => 'Reformer & Tower Equipment Specialist';

@@ -1886,6 +1886,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get editDetails => 'تعديل البيانات';
 
   @override
+  String get updateProfile => 'تحديث الملف الشخصي';
+
+  @override
   String get pushNotifications => 'الإشعارات';
 
   @override
@@ -2990,10 +2993,25 @@ class AppLocalizationsAr extends AppLocalizations {
   String get passwordTooShort => 'يجب أن تتكون كلمة المرور من 8 أحرف على الأقل';
 
   @override
+  String get passwordMinimumLengthHint => '8 أحرف كحد أدنى';
+
+  @override
   String get pleaseEnterFirstName => 'يُرجى إدخال اسمك الأول';
 
   @override
   String get pleaseEnterLastName => 'يُرجى إدخال اسم العائلة';
+
+  @override
+  String get signupFirstNameHint => 'عائشة';
+
+  @override
+  String get signupLastNameHint => 'طاجب';
+
+  @override
+  String get pleaseSelectGender => 'يُرجى اختيار الجنس';
+
+  @override
+  String get pleaseSelectDateOfBirth => 'يُرجى اختيار تاريخ الميلاد';
 
   @override
   String get forgotPasswordCodeSent =>
@@ -3088,6 +3106,9 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get selectDOB => 'اختر تاريخ الميلاد';
+
+  @override
+  String get dobMinimumAgeError => 'يجب أن يكون عمرك 16 عامًا على الأقل.';
 
   @override
   String get reformerTower => 'أخصائي أجهزة الريفورمر والتاور';

@@ -35,6 +35,12 @@ class AppTextField extends StatefulWidget {
   final EdgeInsets scrollPadding;
 
   final List<TextInputFormatter>? inputFormatters;
+  /// When null, an internal node is created and disposed by this widget.
+  final FocusNode? focusNode;
+
+  final TextInputAction? textInputAction;
+
+  final void Function(String)? onFieldSubmitted;
 
   const AppTextField({
     super.key,
@@ -56,6 +62,9 @@ class AppTextField extends StatefulWidget {
     this.onTap,
     this.style,
     this.inputFormatters,
+    this.focusNode,
+    this.textInputAction,
+    this.onFieldSubmitted,
   });
 
   @override
@@ -65,6 +74,7 @@ class AppTextField extends StatefulWidget {
 class _AppTextFieldState extends State<AppTextField> {
   late bool _obscure;
   late final FocusNode _focusNode;
+  late final bool _ownsFocusNode;
   late final TextEditingController _ownedController;
   late final TextEditingController _controller;
 
@@ -72,14 +82,17 @@ class _AppTextFieldState extends State<AppTextField> {
   void initState() {
     super.initState();
     _obscure = widget.obscure;
-    _focusNode = FocusNode();
+    _ownsFocusNode = widget.focusNode == null;
+    _focusNode = widget.focusNode ?? FocusNode();
     _ownedController = TextEditingController(text: widget.initialValue ?? '');
     _controller = widget.controller ?? _ownedController;
   }
 
   @override
   void dispose() {
-    _focusNode.dispose();
+    if (_ownsFocusNode) {
+      _focusNode.dispose();
+    }
     if (widget.controller == null) {
       _ownedController.dispose();
     }
@@ -130,6 +143,8 @@ class _AppTextFieldState extends State<AppTextField> {
                   }) => null,
 
               onChanged: widget.onChanged,
+              onFieldSubmitted: widget.onFieldSubmitted,
+              textInputAction: widget.textInputAction,
               // initialValue: widget.initialValue,
               obscureText: _obscure,
               keyboardType: widget.keyboardType,

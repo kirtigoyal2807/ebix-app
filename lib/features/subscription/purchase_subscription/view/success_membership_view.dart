@@ -157,14 +157,18 @@ class SuccessMembershipView extends StatelessWidget {
                   decoration: BoxDecoration(
                     color: isDark ? AppColors.homeBackground : Colors.white,
                     borderRadius: BorderRadius.circular(AppRadius.xl),
-                    boxShadow: [
-                      BoxShadow(
-                        color: AppColors.shadowColor.withValues(alpha: 0.06),
-                        offset: const Offset(0, 1),
-                        blurRadius: 2,
-                        spreadRadius: 0,
-                      ),
-                    ],
+                    boxShadow: isDark
+                        ? null
+                        : [
+                            BoxShadow(
+                              color: AppColors.shadowColor.withValues(
+                                alpha: 0.06,
+                              ),
+                              offset: const Offset(0, 1),
+                              blurRadius: 2,
+                              spreadRadius: 0,
+                            ),
+                          ],
                   ),
                   child: AppButton(
                     label: context.l10n.downloadInvoice,

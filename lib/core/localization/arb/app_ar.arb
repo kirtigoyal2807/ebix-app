@@ -785,6 +785,7 @@
   "driverLicense": "رخصة القيادة",
   "idNumber": "رقم الهوية",
   "editDetails": "تعديل البيانات",
+  "updateProfile": "تحديث الملف الشخصي",
   "pushNotifications": "الإشعارات",
 
   "allNotifications": "جميع الإشعارات",
@@ -1280,8 +1281,13 @@
   "pleaseEnterPhone": "يُرجى إدخال رقم الهاتف",
   "registerOtpSent": "تم إرسال رمز التحقق. تحقق من بريدك الإلكتروني أو هاتفك.",
   "passwordTooShort": "يجب أن تتكون كلمة المرور من 8 أحرف على الأقل",
+  "passwordMinimumLengthHint": "8 أحرف كحد أدنى",
   "pleaseEnterFirstName": "يُرجى إدخال اسمك الأول",
   "pleaseEnterLastName": "يُرجى إدخال اسم العائلة",
+  "signupFirstNameHint": "عائشة",
+  "signupLastNameHint": "طاجب",
+  "pleaseSelectGender": "يُرجى اختيار الجنس",
+  "pleaseSelectDateOfBirth": "يُرجى اختيار تاريخ الميلاد",
   "forgotPasswordCodeSent": "تم إرسال رمز مكوّن من 6 أرقام إلى بريدك الإلكتروني.",
   "passwordMismatch": "كلمتا المرور غير متطابقتين",
   "passwordResetSuccess": "تم تحديث كلمة المرور. سجّل الدخول بكلمة المرور الجديدة.",
@@ -1312,6 +1318,7 @@
   "rewardsEarned": "المكافآت المكتسبة",
   "pointsAndAchievements": "النقاط والإنجازات",
   "selectDOB": "اختر تاريخ الميلاد",
+  "dobMinimumAgeError": "يجب أن يكون عمرك 16 عامًا على الأقل.",
   "reformerTower": "أخصائي أجهزة الريفورمر والتاور"
 }
 

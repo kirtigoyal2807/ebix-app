@@ -198,7 +198,7 @@
   "allGender": "All Gender",
   "allDates": "All Dates",
   "tomorrow": "Tomorrow",
-  "thisWeek": "This\nWeek",
+  "thisWeek": "This Week",
   "nextWeek": "Next Week",
   "thisWeekend": "This Weekend",
   "allBranches": "All Branches",
@@ -792,6 +792,7 @@
   "driverLicense": "Driver License",
   "idNumber": "ID Number",
   "editDetails": "Edit Details",
+  "updateProfile": "Update Profile",
   "pushNotifications": "Push Notifications",
   "allNotifications": "All Notifications",
   "classNotifications": "Class Notifications",
@@ -1276,8 +1277,13 @@
   "pleaseEnterPhone": "Please enter your phone number",
   "registerOtpSent": "Verification code sent. Check your email or phone.",
   "passwordTooShort": "Password must be at least 8 characters",
+  "passwordMinimumLengthHint": "Minimum 8 characters",
   "pleaseEnterFirstName": "Please enter your first name",
   "pleaseEnterLastName": "Please enter your last name",
+  "signupFirstNameHint": "Ayesha",
+  "signupLastNameHint": "Tajib",
+  "pleaseSelectGender": "Please select your gender",
+  "pleaseSelectDateOfBirth": "Please select your date of birth",
   "forgotPasswordCodeSent": "A 6-digit code was sent to your email.",
   "passwordMismatch": "Passwords do not match",
   "passwordResetSuccess": "Your password was updated. Sign in with your new password.",
@@ -1309,6 +1315,7 @@
   "rewardsEarned": "Rewards Earned",
   "pointsAndAchievements": "Points and achievements",
   "selectDOB": "Select Date of birth",
+  "dobMinimumAgeError": "You must be at least 16 years old.",
   "reformerTower": "Reformer & Tower Equipment Specialist"
 }
 

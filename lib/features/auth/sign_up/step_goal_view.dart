@@ -63,7 +63,39 @@ class _SignUpGoalViewState extends State<SignUpGoalView> {
           body: Padding(
             padding: const EdgeInsets.symmetric(vertical: AppSpacing.md),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: AppSpacing.lg,
+                  ),
+                  child: const SignUpProgress(currentStep: 3, totalSteps: 5),
+                ),
+                const SizedBox(height: AppSpacing.sm),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: AppSpacing.lg,
+                  ),
+                  child: RichText(
+                    text: TextSpan(
+                      children: [
+                        TextSpan(
+                          text: '${context.l10n.step} 4',
+                          style: AppTextStyles.caption(context).copyWith(
+                            color: isDark
+                                ? AppColors.languageTextDark
+                                : AppColors.languageIcon,
+                          ),
+                        ),
+                        TextSpan(
+                          text: ' ${context.l10n.offf} 5',
+                          style: AppTextStyles.caption(context),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                const SizedBox(height: AppSpacing.sm),
                 Expanded(
                   child: SingleChildScrollView(
                     padding: const EdgeInsets.symmetric(
@@ -72,27 +104,7 @@ class _SignUpGoalViewState extends State<SignUpGoalView> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const SignUpProgress(currentStep: 3, totalSteps: 5),
-                        const SizedBox(height: AppSpacing.sm),
-                        RichText(
-                          text: TextSpan(
-                            children: [
-                              TextSpan(
-                                text: '${context.l10n.step} 4',
-                                style: AppTextStyles.caption(context).copyWith(
-                                  color: isDark
-                                      ? AppColors.languageTextDark
-                                      : AppColors.languageIcon,
-                                ),
-                              ),
-                              TextSpan(
-                                text: ' ${context.l10n.offf} 5',
-                                style: AppTextStyles.caption(context),
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(height: AppSpacing.xl),
+                        const SizedBox(height: AppSpacing.lg),
                         AppText(
                           context.l10n.pilatesPrimaryFocusTitle,
                           style: AppTextStyles.heading1,

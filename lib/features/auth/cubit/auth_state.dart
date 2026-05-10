@@ -1,6 +1,5 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:pilates_app/core/storage/token_storage.dart';
 import 'package:pilates_app/features/auth/data/models/auth_user.dart';
 import 'package:pilates_app/features/auth/data/models/branch.dart';
@@ -439,7 +438,10 @@ class AuthState extends Equatable {
 /// Cold-start [AuthState] from persisted JWT — must stay in sync with [main] / [AuthCubit] seeding.
 AuthState initialAuthStateFromTokenStorage(TokenStorage tokenStorage) {
   final hasSavedSession = (tokenStorage.readToken() ?? '').trim().isNotEmpty;
+  final storedLang = tokenStorage.readAppLocaleLanguageCode();
+  final locale = storedLang == 'ar' ? const Locale('ar') : const Locale('en');
   return AuthState.initial().copyWith(
     flow: hasSavedSession ? AuthFlow.authenticated : AuthFlow.splash,
+    locale: locale,
   );
 }

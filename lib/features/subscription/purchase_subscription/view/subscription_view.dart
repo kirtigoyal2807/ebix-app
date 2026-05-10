@@ -700,24 +700,19 @@ class _PlanSelectionStepState extends State<_PlanSelectionStep> {
 
         // Fixed Bottom Button
         Padding(
-          padding: const EdgeInsets.all(24),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              if (_checkoutMessage != null)
-                InlineValidationBanner(message: _checkoutMessage!),
-              AppButton(
-                label: l10n.continueTxt,
-                onPressed: () {
-                  unawaited(_startCheckoutAndNavigate());
-                },
-                buttonColor: isDark
-                    ? AppColors.primary
-                    : AppColors.primaryBrown,
-                expanded: true,
-              ),
-            ],
+          padding: const EdgeInsets.only(
+            left: 24,
+            right: 24,
+            bottom: 12,
+            top: 8,
+          ),
+          child: AppButton(
+            label: l10n.continueTxt,
+            onPressed: () {
+              unawaited(_startCheckoutAndNavigate());
+            },
+            buttonColor: isDark ? AppColors.primary : AppColors.primaryBrown,
+            expanded: true,
           ),
         ),
       ],

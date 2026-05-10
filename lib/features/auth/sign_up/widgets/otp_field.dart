@@ -23,6 +23,7 @@ class _OtpFieldState extends State<OtpField> {
   late List<TextEditingController> _controllers;
   late List<FocusNode> _focusNodes;
   bool _suppressBackwardFocus = false;
+  bool _applyingProgrammatic = false;
 
   @override
   void initState() {
@@ -52,14 +53,48 @@ class _OtpFieldState extends State<OtpField> {
   }
 
   void _onChanged(String value, int index) {
-    if (!_suppressBackwardFocus && value.isEmpty && index > 0) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (!mounted) return;
-        _focusNodes[index - 1].requestFocus();
-      });
+    if (_applyingProgrammatic) return;
+
+    final digitsOnly = value.replaceAll(RegExp(r'\D'), '');
+
+    if (digitsOnly.isEmpty) {
+      if (!_suppressBackwardFocus && value.isEmpty && index > 0) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (!mounted) return;
+          _focusNodes[index - 1].requestFocus();
+        });
+      }
+      _emitOtp();
+      return;
     }
 
-    if (value.isNotEmpty && index < widget.length - 1) {
+    if (digitsOnly.length > 1) {
+      final maxSlots = widget.length - index;
+      final slice = digitsOnly.length <= maxSlots
+          ? digitsOnly
+          : digitsOnly.substring(0, maxSlots);
+      _applyingProgrammatic = true;
+      try {
+        for (var i = 0; i < slice.length; i++) {
+          _controllers[index + i].text = slice[i];
+        }
+      } finally {
+        _applyingProgrammatic = false;
+      }
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!mounted) return;
+        final lastIdx = index + slice.length - 1;
+        if (lastIdx < widget.length - 1) {
+          _focusNodes[lastIdx + 1].requestFocus();
+        } else {
+          _focusNodes[lastIdx].requestFocus();
+        }
+      });
+      _emitOtp();
+      return;
+    }
+
+    if (index < widget.length - 1) {
       _focusNodes[index + 1].requestFocus();
     }
 
@@ -113,10 +148,11 @@ class _OtpFieldState extends State<OtpField> {
               focusNode: focusNode,
               keyboardType: TextInputType.number,
               textAlign: TextAlign.center,
-              maxLength: 1,
+              inputFormatters: [
+                FilteringTextInputFormatter.digitsOnly,
+              ],
               style: theme.textTheme.titleMedium,
               decoration: InputDecoration(
-                counterText: '',
                 contentPadding: EdgeInsets.zero,
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(AppRadius.md),

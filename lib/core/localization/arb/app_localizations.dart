@@ -995,7 +995,7 @@ abstract class AppLocalizations {
   /// No description provided for @thisWeek.
   ///
   /// In en, this message translates to:
-  /// **'This\nWeek'**
+  /// **'This Week'**
   String get thisWeek;
 
   /// No description provided for @nextWeek.
@@ -3632,6 +3632,12 @@ abstract class AppLocalizations {
   /// **'Edit Details'**
   String get editDetails;
 
+  /// No description provided for @updateProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Update Profile'**
+  String get updateProfile;
+
   /// No description provided for @pushNotifications.
   ///
   /// In en, this message translates to:
@@ -5666,6 +5672,12 @@ abstract class AppLocalizations {
   /// **'Password must be at least 8 characters'**
   String get passwordTooShort;
 
+  /// No description provided for @passwordMinimumLengthHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Minimum 8 characters'**
+  String get passwordMinimumLengthHint;
+
   /// No description provided for @pleaseEnterFirstName.
   ///
   /// In en, this message translates to:
@@ -5677,6 +5689,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Please enter your last name'**
   String get pleaseEnterLastName;
+
+  /// No description provided for @signupFirstNameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Ayesha'**
+  String get signupFirstNameHint;
+
+  /// No description provided for @signupLastNameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Tajib'**
+  String get signupLastNameHint;
+
+  /// No description provided for @pleaseSelectGender.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select your gender'**
+  String get pleaseSelectGender;
+
+  /// No description provided for @pleaseSelectDateOfBirth.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select your date of birth'**
+  String get pleaseSelectDateOfBirth;
 
   /// No description provided for @forgotPasswordCodeSent.
   ///
@@ -5857,6 +5893,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Select Date of birth'**
   String get selectDOB;
+
+  /// No description provided for @dobMinimumAgeError.
+  ///
+  /// In en, this message translates to:
+  /// **'You must be at least 16 years old.'**
+  String get dobMinimumAgeError;
 
   /// No description provided for @reformerTower.
   ///

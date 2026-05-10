@@ -346,9 +346,21 @@ class _HomeBookingFlowTabListenerState
   Widget build(BuildContext context) => widget.child;
 }
 
-/// Visible when [`GET /home`] has `membership` or [`GET /me`] exposes plan/session hints.
-bool _showsMembershipFallback(AuthUser? user) =>
-    user?.showsMembershipWithoutHomePayload ?? false;
+/// True when home or profile exposes a plan name or session fields (see [MembershipSnapshot.hasAnyMembershipHint]).
+bool _userHasMembershipPlan(HomeMembership? membership, AuthUser? user) {
+  final mPlan = membership?.planName?.trim() ?? '';
+  if (mPlan.isNotEmpty) return true;
+  if (membership?.totalSessions != null || membership?.sessionsRemaining != null) {
+    return true;
+  }
+  final uPlan = user?.membershipPlanName?.trim() ?? '';
+  if (uPlan.isNotEmpty) return true;
+  if (user?.membershipTotalSessions != null ||
+      user?.membershipSessionsRemaining != null) {
+    return true;
+  }
+  return false;
+}
 
 class HomeContentView extends StatelessWidget {
   const HomeContentView({super.key});
@@ -457,12 +469,7 @@ class HomeContentView extends StatelessWidget {
                     BlocBuilder<AuthCubit, AuthState>(
                       builder: (context, authState) {
                         final user = authState.user;
-                        final hasMembershipHomeOrProfile =
-                            membership != null ||
-                            _showsMembershipFallback(user);
-                        if (!hasMembershipHomeOrProfile) {
-                          return const SizedBox.shrink();
-                        }
+                        final hasPlan = _userHasMembershipPlan(membership, user);
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -475,7 +482,9 @@ class HomeContentView extends StatelessWidget {
                             ),
                             const SizedBox(height: AppSpacing.md),
                             MembershipCard(
-                              status: HomeUserStatus.existing,
+                              status: hasPlan
+                                  ? HomeUserStatus.existing
+                                  : HomeUserStatus.empty,
                               planName:
                                   membership?.planName ??
                                   user?.membershipPlanName,
@@ -518,33 +527,49 @@ class HomeContentView extends StatelessWidget {
                       const SizedBox(height: AppSpacing.md),
                       FeaturedClassCard(featuredClass: featuredClass),
                     ],
-                    if (classTypes.isNotEmpty) ...[
-                      const SizedBox(height: AppSpacing.lg),
-                      _sectionTitleWithSeeAll(
-                        context,
-                        context.l10n.classTypes,
-                        isDark,
-                        size,
-                        onTap: () => context.read<HomeCubit>().setTab(1),
-                      ),
-                      const SizedBox(height: AppSpacing.md),
-                      ClassTypesSection(classTypes: classTypes),
-                    ],
-                    if (topTrainers.isNotEmpty) ...[
-                      const SizedBox(height: AppSpacing.lg),
-                      _sectionTitleWithSeeAll(
-                        context,
-                        context.l10n.topTrainers,
-                        isDark,
-                        size,
-                        onTap: () => context.read<HomeCubit>().setTab(
-                          1,
-                          bookingTab: BookingTab.trainers,
-                        ),
-                      ),
-                      const SizedBox(height: AppSpacing.md),
-                      TopTrainersSection(trainers: topTrainers),
-                    ],
+                    BlocBuilder<AuthCubit, AuthState>(
+                      builder: (context, authState) {
+                        final hasPlan = _userHasMembershipPlan(
+                          membership,
+                          authState.user,
+                        );
+                        if (!hasPlan) {
+                          return const SizedBox.shrink();
+                        }
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            if (classTypes.isNotEmpty) ...[
+                              const SizedBox(height: AppSpacing.lg),
+                              _sectionTitleWithSeeAll(
+                                context,
+                                context.l10n.classTypes,
+                                isDark,
+                                size,
+                                onTap: () => context.read<HomeCubit>().setTab(1),
+                              ),
+                              const SizedBox(height: AppSpacing.md),
+                              ClassTypesSection(classTypes: classTypes),
+                            ],
+                            if (topTrainers.isNotEmpty) ...[
+                              const SizedBox(height: AppSpacing.lg),
+                              _sectionTitleWithSeeAll(
+                                context,
+                                context.l10n.topTrainers,
+                                isDark,
+                                size,
+                                onTap: () => context.read<HomeCubit>().setTab(
+                                  1,
+                                  bookingTab: BookingTab.trainers,
+                                ),
+                              ),
+                              const SizedBox(height: AppSpacing.md),
+                              TopTrainersSection(trainers: topTrainers),
+                            ],
+                          ],
+                        );
+                      },
+                    ),
                     const SizedBox(height: AppSpacing.lg),
                     const SizedBox(height: AppSpacing.xl),
                   ],

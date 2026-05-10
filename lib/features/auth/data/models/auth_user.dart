@@ -465,6 +465,7 @@ class PendingGift {
     this.isRedeemed,
     this.isExpired,
     this.canBeRedeemed,
+    this.plan,
     this.createdAt,
   });
 
@@ -481,6 +482,7 @@ class PendingGift {
   final bool? isRedeemed;
   final bool? isExpired;
   final bool? canBeRedeemed;
+  final PendingGiftPlan? plan;
   final String? createdAt;
 
   factory PendingGift.fromJson(Map<String, dynamic> json) {
@@ -500,6 +502,12 @@ class PendingGift {
       recipient = PendingGiftRecipient.fromJson(recipientRaw);
     }
 
+    PendingGiftPlan? plan;
+    final planRaw = json['plan'];
+    if (planRaw is Map<String, dynamic>) {
+      plan = PendingGiftPlan.fromJson(planRaw);
+    }
+
     return PendingGift(
       id: json['id']?.toString(),
       status: statusValue,
@@ -514,6 +522,7 @@ class PendingGift {
       isRedeemed: json['isRedeemed'] as bool?,
       isExpired: json['isExpired'] as bool?,
       canBeRedeemed: json['canBeRedeemed'] as bool?,
+      plan: plan,
       createdAt: json['createdAt'] as String?,
     );
   }
@@ -533,7 +542,31 @@ class PendingGift {
     'isRedeemed': isRedeemed,
     'isExpired': isExpired,
     'canBeRedeemed': canBeRedeemed,
+    'plan': plan?.toJson(),
     'createdAt': createdAt,
+  };
+}
+
+/// Gift plan metadata on a [PendingGift].
+class PendingGiftPlan {
+  const PendingGiftPlan({this.id, this.name, this.description});
+
+  final String? id;
+  final String? name;
+  final String? description;
+
+  factory PendingGiftPlan.fromJson(Map<String, dynamic> json) {
+    return PendingGiftPlan(
+      id: json['id']?.toString(),
+      name: json['name'] as String?,
+      description: json['description'] as String?,
+    );
+  }
+
+  Map<String, dynamic> toJson() => {
+    'id': id,
+    'name': name,
+    'description': description,
   };
 }
 
