@@ -5660,6 +5660,12 @@ abstract class AppLocalizations {
   /// **'Please enter your phone number'**
   String get pleaseEnterPhone;
 
+  /// No description provided for @invalidPhoneForCountry.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid phone number for this country.'**
+  String get invalidPhoneForCountry;
+
   /// No description provided for @registerOtpSent.
   ///
   /// In en, this message translates to:

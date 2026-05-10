@@ -1275,6 +1275,7 @@
   "enterValidWeightKg": "Please enter weight between 20 and 400 kg",
   "pleaseEnterPassword": "Please enter your password",
   "pleaseEnterPhone": "Please enter your phone number",
+  "invalidPhoneForCountry": "Enter a valid phone number for this country.",
   "registerOtpSent": "Verification code sent. Check your email or phone.",
   "passwordTooShort": "Password must be at least 8 characters",
   "passwordMinimumLengthHint": "Minimum 8 characters",

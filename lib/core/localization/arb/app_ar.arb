@@ -1279,6 +1279,7 @@
   "enterValidWeightKg": "يُرجى إدخال الوزن بين 20 و 400 كجم",
   "pleaseEnterPassword": "يُرجى إدخال كلمة المرور",
   "pleaseEnterPhone": "يُرجى إدخال رقم الهاتف",
+  "invalidPhoneForCountry": "يُرجى إدخال رقم هاتف صالح لهذا البلد.",
   "registerOtpSent": "تم إرسال رمز التحقق. تحقق من بريدك الإلكتروني أو هاتفك.",
   "passwordTooShort": "يجب أن تتكون كلمة المرور من 8 أحرف على الأقل",
   "passwordMinimumLengthHint": "8 أحرف كحد أدنى",

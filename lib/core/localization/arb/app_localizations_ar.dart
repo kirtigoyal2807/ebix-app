@@ -2986,6 +2986,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get pleaseEnterPhone => 'يُرجى إدخال رقم الهاتف';
 
   @override
+  String get invalidPhoneForCountry => 'يُرجى إدخال رقم هاتف صالح لهذا البلد.';
+
+  @override
   String get registerOtpSent =>
       'تم إرسال رمز التحقق. تحقق من بريدك الإلكتروني أو هاتفك.';
 

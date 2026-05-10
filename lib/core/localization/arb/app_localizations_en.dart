@@ -3008,6 +3008,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get pleaseEnterPhone => 'Please enter your phone number';
 
   @override
+  String get invalidPhoneForCountry =>
+      'Enter a valid phone number for this country.';
+
+  @override
   String get registerOtpSent =>
       'Verification code sent. Check your email or phone.';
 

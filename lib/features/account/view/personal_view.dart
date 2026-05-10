@@ -1,8 +1,10 @@
 import 'dart:io';
 
+import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:phone_numbers_parser/phone_numbers_parser.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/core/localization/localization_extension.dart';
@@ -70,18 +72,24 @@ class _PersonalViewBodyState extends State<_PersonalViewBody> {
   late final TextEditingController _emailController;
   late final TextEditingController _phoneController;
   late final TextEditingController _dobController;
+  late String _phoneCountryIso;
+  CountryCode? _phoneCountry;
 
   @override
   void initState() {
     super.initState();
     final names = _namesFromUser(widget.initialUser);
+    final profilePhone = _parseProfilePhone(widget.initialUser?.phone);
+    _phoneCountryIso = profilePhone.iso3166;
+    _phoneCountry = CountryCode.tryFromCountryCode(_phoneCountryIso) ??
+        CountryCode.tryFromCountryCode('AE');
     _firstNameController = TextEditingController(text: names.$1);
     _lastNameController = TextEditingController(text: names.$2);
     _emailController = TextEditingController(
       text: widget.initialUser?.email?.trim() ?? '',
     );
     _phoneController = TextEditingController(
-      text: _nationalPhoneDigits(widget.initialUser?.phone),
+      text: profilePhone.nationalDigits,
     );
     _dobController = TextEditingController(
       text: _formatDate(widget.initialUser?.dateOfBirth),
@@ -113,12 +121,39 @@ class _PersonalViewBodyState extends State<_PersonalViewBody> {
     return (fn, ln);
   }
 
-  /// Strips a leading Saudi country code for display in the national number field.
-  String _nationalPhoneDigits(String? phone) {
-    final p = phone?.trim() ?? '';
-    if (p.startsWith('+966')) return p.substring(4).trim();
-    if (p.startsWith('966')) return p.substring(3).trim();
-    return p;
+  /// Parses API [phone] (E.164, e.g. `+917014675174`) into national digits and ISO country.
+  ({String nationalDigits, String iso3166}) _parseProfilePhone(String? phone) {
+    final raw = phone?.trim() ?? '';
+    if (raw.isEmpty) {
+      return (nationalDigits: '', iso3166: 'AE');
+    }
+    try {
+      final withPlus = raw.startsWith('+') ? raw : '+$raw';
+      final parsed = PhoneNumber.parse(withPlus);
+      return (
+        nationalDigits: parsed.nsn,
+        iso3166: parsed.isoCode.name,
+      );
+    } catch (_) {
+      if (raw.startsWith('+966')) {
+        return (nationalDigits: raw.substring(4).trim(), iso3166: 'SA');
+      }
+      if (raw.startsWith('966')) {
+        return (nationalDigits: raw.substring(3).trim(), iso3166: 'SA');
+      }
+      final digits = raw.replaceAll(RegExp(r'\D'), '');
+      return (nationalDigits: digits, iso3166: 'AE');
+    }
+  }
+
+  String _composePhoneE164() {
+    final digits = _phoneController.text.replaceAll(RegExp(r'\D'), '');
+    if (digits.isEmpty) return '';
+    final dial = _phoneCountry?.dialCode ??
+        CountryCode.tryFromCountryCode(_phoneCountryIso)?.dialCode ??
+        '+971';
+    final cleanDial = dial.startsWith('+') ? dial : '+$dial';
+    return '$cleanDial$digits';
   }
 
   String _formatDate(DateTime? value) {
@@ -234,11 +269,11 @@ class _PersonalViewBodyState extends State<_PersonalViewBody> {
       );
       return;
     }
-    final phone = _phoneController.text.trim();
+    final phone = _composePhoneE164();
     context.read<PersonalInfoCubit>().saveProfile(
       firstName: _firstNameController.text.trim(),
       lastName: _lastNameController.text.trim(),
-      phone: phone.isNotEmpty ? '+966$phone' : '',
+      phone: phone,
     );
   }
 
@@ -338,10 +373,20 @@ class _PersonalViewBodyState extends State<_PersonalViewBody> {
                   IgnorePointer(
                     ignoring: !_isEditing,
                     child: PhoneNumberField(
+                      key: ValueKey<String?>(
+                        'personal_phone_${widget.initialUser?.phone ?? ''}',
+                      ),
                       label: context.l10n.phoneNumber,
                       countryCode: '+1',
                       flagAsset: 'assets/flags/us.svg',
                       controller: _phoneController,
+                      initialCountryIso: _phoneCountryIso,
+                      onCountryChanged: (country) {
+                        setState(() {
+                          _phoneCountry = country;
+                          _phoneCountryIso = country.code ?? _phoneCountryIso;
+                        });
+                      },
                     ),
                   ),
                   SizedBox(height: AppSpacing.md),
