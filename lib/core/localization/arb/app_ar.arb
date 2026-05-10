@@ -472,7 +472,7 @@
   "mySubscription": "اشتراكاتي",
   "active": "نشط",
   "premiumPlan": "الخطة المميزة",
-  "pricePerMonth": "89$ / شهرياً",
+  "pricePerMonth": "السعر / شهرياً",
   "pauseHistory": "سجل الإيقاف",
   "changePlan": "تغيير الخطة",
   "pauseSubscription": "إيقاف الاشتراك",
@@ -1314,5 +1314,4 @@
   "selectDOB": "اختر تاريخ الميلاد",
   "reformerTower": "أخصائي أجهزة الريفورمر والتاور"
 }
-
 

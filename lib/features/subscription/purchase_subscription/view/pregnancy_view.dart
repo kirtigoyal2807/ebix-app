@@ -11,9 +11,17 @@ import 'package:pilates_app/features/subscription/purchase_subscription/view/wid
 import 'package:pilates_app/features/subscription/purchase_subscription/view/widgets/subscription_progress.dart';
 import 'package:pilates_app/widgets/app_button.dart';
 import 'package:pilates_app/widgets/app_text.dart';
+import 'package:pilates_app/widgets/inline_validation_banner.dart';
 
-class PregnancyView extends StatelessWidget {
+class PregnancyView extends StatefulWidget {
   const PregnancyView({super.key});
+
+  @override
+  State<PregnancyView> createState() => _PregnancyViewState();
+}
+
+class _PregnancyViewState extends State<PregnancyView> {
+  String? _validationMessage;
 
   @override
   Widget build(BuildContext context) {
@@ -21,103 +29,117 @@ class PregnancyView extends StatelessWidget {
     final cubit = context.read<SubscriptionCubit>();
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(
-        vertical: AppSpacing.lg,
-        horizontal: AppSpacing.lg,
-      ),
-      child: Column(
-        children: [
-          Expanded(
-            child: SingleChildScrollView(
-              child: BlocBuilder<SubscriptionCubit, SubscriptionState>(
-                buildWhen: (p, c) =>
-                    p.healthQuestionnaireQuestions !=
-                        c.healthQuestionnaireQuestions ||
-                    p.selectedProductRequiresHealthIntake !=
-                        c.selectedProductRequiresHealthIntake,
-                builder: (context, state) {
-                  final intake = state.selectedProductRequiresHealthIntake;
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SubscriptionStepHeader(
-                        currentStep: 3,
-                        totalSteps: 6,
-                        isDark: isDark,
-                      ),
-                      const SizedBox(height: AppSpacing.xl),
-                      AppText(
-                        l10n.pregnancy,
-                        style: (style) => AppTextStyles.heading1(context),
-                      ),
-                      const SizedBox(height: AppSpacing.lg),
-                      if (intake) ...[
-                        const ApiBooleanQuestionsBlock(
-                          questionIds: [HealthQuestionnaireIds.pregnancy],
+    return BlocListener<SubscriptionCubit, SubscriptionState>(
+      listenWhen: (p, c) =>
+          p.isPregnant != c.isPregnant ||
+          p.healthQuestionnaireAnswers != c.healthQuestionnaireAnswers,
+      listener: (_, __) {
+        if (mounted) setState(() => _validationMessage = null);
+      },
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+          vertical: AppSpacing.lg,
+          horizontal: AppSpacing.lg,
+        ),
+        child: Column(
+          children: [
+            Expanded(
+              child: SingleChildScrollView(
+                child: BlocBuilder<SubscriptionCubit, SubscriptionState>(
+                  buildWhen: (p, c) =>
+                      p.healthQuestionnaireQuestions !=
+                          c.healthQuestionnaireQuestions ||
+                      p.selectedProductRequiresHealthIntake !=
+                          c.selectedProductRequiresHealthIntake,
+                  builder: (context, state) {
+                    final intake = state.selectedProductRequiresHealthIntake;
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SubscriptionStepHeader(
+                          currentStep: 3,
+                          totalSteps: 6,
+                          isDark: isDark,
                         ),
-                      ] else ...[
-                        _buildSectionHeader(context, l10n.areYouPregnant),
-                        const SizedBox(height: AppSpacing.md),
-                        BlocBuilder<SubscriptionCubit, SubscriptionState>(
-                          buildWhen: (p, c) => p.isPregnant != c.isPregnant,
-                          builder: (context, state) {
-                            return Column(
-                              children: [
-                                _buildRadioOption(
-                                  context,
-                                  l10n.yes,
-                                  true,
-                                  state.isPregnant,
-                                  cubit.updateIsPregnant,
-                                ),
-                                _buildRadioOption(
-                                  context,
-                                  l10n.no,
-                                  false,
-                                  state.isPregnant,
-                                  cubit.updateIsPregnant,
-                                ),
-                              ],
-                            );
-                          },
+                        const SizedBox(height: AppSpacing.xl),
+                        AppText(
+                          l10n.pregnancy,
+                          style: (style) => AppTextStyles.heading1(context),
                         ),
+                        const SizedBox(height: AppSpacing.lg),
+                        if (intake) ...[
+                          const ApiBooleanQuestionsBlock(
+                            questionIds: [HealthQuestionnaireIds.pregnancy],
+                          ),
+                        ] else ...[
+                          _buildSectionHeader(context, l10n.areYouPregnant),
+                          const SizedBox(height: AppSpacing.md),
+                          BlocBuilder<SubscriptionCubit, SubscriptionState>(
+                            buildWhen: (p, c) => p.isPregnant != c.isPregnant,
+                            builder: (context, state) {
+                              return Column(
+                                children: [
+                                  _buildRadioOption(
+                                    context,
+                                    l10n.yes,
+                                    true,
+                                    state.isPregnant,
+                                    cubit.updateIsPregnant,
+                                  ),
+                                  _buildRadioOption(
+                                    context,
+                                    l10n.no,
+                                    false,
+                                    state.isPregnant,
+                                    cubit.updateIsPregnant,
+                                  ),
+                                ],
+                              );
+                            },
+                          ),
+                        ],
                       ],
-                    ],
-                  );
-                },
+                    );
+                  },
+                ),
               ),
             ),
-          ),
-          AppButton(
-            label: l10n.continueTxt,
-            onPressed: () {
-              final intake = cubit.state.selectedProductRequiresHealthIntake;
-              if (intake) {
-                final qs = pickQuestionsByIds(
-                  cubit.state.healthQuestionnaireQuestions,
-                  const [HealthQuestionnaireIds.pregnancy],
-                );
-                if (qs.isNotEmpty && !cubit.validateQuestionnaireGroup(qs)) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text(l10n.giftRecipientValidationError)),
+            if (_validationMessage != null)
+              InlineValidationBanner(message: _validationMessage!),
+            AppButton(
+              label: l10n.continueTxt,
+              onPressed: () {
+                final intake = cubit.state.selectedProductRequiresHealthIntake;
+                if (intake) {
+                  final qs = pickQuestionsByIds(
+                    cubit.state.healthQuestionnaireQuestions,
+                    const [HealthQuestionnaireIds.pregnancy],
                   );
-                  return;
+                  if (qs.isNotEmpty &&
+                      !cubit.validateQuestionnaireGroup(qs)) {
+                    setState(
+                      () => _validationMessage =
+                          context.l10n.giftRecipientValidationError,
+                    );
+                    return;
+                  }
+                } else {
+                  if (cubit.state.isPregnant == null) {
+                    setState(
+                      () => _validationMessage =
+                          context.l10n.giftRecipientValidationError,
+                    );
+                    return;
+                  }
                 }
-              } else {
-                if (cubit.state.isPregnant == null) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text(l10n.giftRecipientValidationError)),
-                  );
-                  return;
-                }
-              }
-              cubit.nextStep();
-            },
-            buttonColor: isDark ? AppColors.primary : AppColors.primaryBrown,
-            expanded: true,
-          ),
-        ],
+                setState(() => _validationMessage = null);
+                cubit.nextStep();
+              },
+              buttonColor: isDark ? AppColors.primary : AppColors.primaryBrown,
+              expanded: true,
+            ),
+          ],
+        ),
       ),
     );
   }

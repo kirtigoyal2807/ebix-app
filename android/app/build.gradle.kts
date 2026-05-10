@@ -67,7 +67,6 @@ android {
             }
         }
     }
-
     // Prefer default (uncompressed) JNI for minSdk 23+. If llvm-strip/NDK is flaky on your machine, set true and flutter clean.
     packaging {
         jniLibs {

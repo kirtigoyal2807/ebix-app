@@ -52,9 +52,26 @@ class _GiftSubscriptionViewState extends State<GiftSubscriptionView> {
   final _phone = TextEditingController();
   final _message = TextEditingController();
   String _selectedRecipientDialCode = '+966';
+  bool _showValidationErrors = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _name.addListener(_onFormChanged);
+    _email.addListener(_onFormChanged);
+    _phone.addListener(_onFormChanged);
+  }
+
+  void _onFormChanged() {
+    if (!mounted) return;
+    setState(() {});
+  }
 
   @override
   void dispose() {
+    _name.removeListener(_onFormChanged);
+    _email.removeListener(_onFormChanged);
+    _phone.removeListener(_onFormChanged);
     _name.dispose();
     _email.dispose();
     _phone.dispose();
@@ -105,6 +122,65 @@ class _GiftSubscriptionViewState extends State<GiftSubscriptionView> {
     return (w != null && w.isNotEmpty) ? w : null;
   }
 
+  String? _nameErrorText(AppLocalizations l10n) {
+    final name = _name.text.trim();
+    if (name.isEmpty) {
+      return _showValidationErrors ? l10n.giftValidationRecipientName : null;
+    }
+    return ContactValidators.isValidPersonName(name)
+        ? null
+        : l10n.giftValidationRecipientName;
+  }
+
+  String? _emailErrorText(AppLocalizations l10n) {
+    final email = _email.text.trim();
+    if (email.isEmpty) {
+      return _showValidationErrors ? l10n.giftValidationRecipientEmail : null;
+    }
+    return ContactValidators.isValidEmail(email)
+        ? null
+        : l10n.pleaseEnterValidEmail;
+  }
+
+  String? _phoneErrorText(AppLocalizations l10n) {
+    final phoneRaw = _phone.text;
+    final phoneDigits = phoneRaw.replaceAll(RegExp(r'\D'), '');
+    if (phoneDigits.isEmpty) {
+      return _showValidationErrors ? l10n.giftValidationRecipientPhone : null;
+    }
+    return PersonalInformationValidators.isTenDigitMobile(phoneRaw)
+        ? null
+        : l10n.phoneTenDigitsRequired;
+  }
+
+  String? _deliveryDateErrorText(
+    AppLocalizations l10n,
+    GiftSubscriptionState state,
+  ) {
+    if (state.selectedDeliveryOption != DeliveryOption.scheduledDelivery) {
+      return null;
+    }
+    final deliveryDate = state.scheduledDeliveryDateIso?.trim();
+    if (deliveryDate != null && deliveryDate.isNotEmpty) {
+      return null;
+    }
+    return _showValidationErrors ? l10n.giftValidationScheduleDate : null;
+  }
+
+  bool _isFormValid(GiftSubscriptionState state) {
+    final hasName = _name.text.trim().isNotEmpty;
+    final hasEmail = _email.text.trim().isNotEmpty;
+    final hasPhone = _phone.text.replaceAll(RegExp(r'\D'), '').isNotEmpty;
+    final needsScheduleDate =
+        state.selectedDeliveryOption == DeliveryOption.scheduledDelivery;
+    final hasScheduleDate =
+        (state.scheduledDeliveryDateIso?.trim().isNotEmpty ?? false);
+    return hasName &&
+        hasEmail &&
+        hasPhone &&
+        (!needsScheduleDate || hasScheduleDate);
+  }
+
   Future<void> _onContinue(BuildContext context) async {
     _unfocusKeyboard();
     final messenger = ScaffoldMessenger.of(context);
@@ -120,56 +196,21 @@ class _GiftSubscriptionViewState extends State<GiftSubscriptionView> {
 
     final cubit = context.read<GiftSubscriptionCubit>();
 
+    final currentState = cubit.state;
+    setState(() {
+      _showValidationErrors = true;
+    });
+    if (!_isFormValid(currentState)) {
+      return;
+    }
     final name = _name.text.trim();
     final email = _email.text.trim();
     final phoneRaw = _phone.text;
-
-    if (!ContactValidators.isValidPersonName(name)) {
-      messenger.showSnackBar(
-        SnackBar(content: Text(l10n.giftValidationRecipientName)),
-      );
-      return;
-    }
-
-    if (email.isEmpty) {
-      messenger.showSnackBar(
-        SnackBar(content: Text(l10n.giftValidationRecipientEmail)),
-      );
-      return;
-    }
-
-    if (!ContactValidators.isValidEmail(email)) {
-      messenger.showSnackBar(
-        SnackBar(content: Text(l10n.pleaseEnterValidEmail)),
-      );
-      return;
-    }
-
     final phoneDigits = phoneRaw.replaceAll(RegExp(r'\D'), '');
-    if (phoneDigits.isEmpty) {
-      messenger.showSnackBar(
-        SnackBar(content: Text(l10n.giftValidationRecipientPhone)),
-      );
-      return;
-    }
-    if (!PersonalInformationValidators.isTenDigitMobile(phoneRaw)) {
-      messenger.showSnackBar(
-        SnackBar(content: Text(l10n.phoneTenDigitsRequired)),
-      );
-      return;
-    }
-
-    String? deliveryDate;
-    if (cubit.state.selectedDeliveryOption ==
-        DeliveryOption.scheduledDelivery) {
-      deliveryDate = cubit.state.scheduledDeliveryDateIso?.trim();
-      if (deliveryDate == null || deliveryDate.isEmpty) {
-        messenger.showSnackBar(
-          SnackBar(content: Text(l10n.giftValidationScheduleDate)),
-        );
-        return;
-      }
-    }
+    final deliveryDate =
+        currentState.selectedDeliveryOption == DeliveryOption.scheduledDelivery
+        ? currentState.scheduledDeliveryDateIso?.trim()
+        : null;
 
     final cleanedDialCode = _selectedRecipientDialCode.replaceAll(
       RegExp(r'\s+'),
@@ -251,74 +292,97 @@ class _GiftSubscriptionViewState extends State<GiftSubscriptionView> {
         context.read<CheckoutRepository>(),
         checkoutId: _constructorCheckoutId,
       ),
-      child: Scaffold(
-        appBar: AppAppBar(
-          title: l10n.giftSubscription,
-          isMoreMenu: false,
-          onBack: () {
-            Navigator.of(context).pop();
-          },
-        ),
-        body: Padding(
-          padding: EdgeInsets.only(
-            left: AppSpacing.lg,
-            right: AppSpacing.lg,
-            bottom: AppSpacing.xl,
-          ),
-          child: Column(
-            children: [
-              Expanded(
-                child: GestureDetector(
-                  behavior: HitTestBehavior.translucent,
-                  onTap: _unfocusKeyboard,
-                  child: SingleChildScrollView(
-                    keyboardDismissBehavior:
-                        ScrollViewKeyboardDismissBehavior.onDrag,
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(vertical: AppSpacing.md),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          PilatesGiftCard(
-                            nameController: _name,
-                            messageController: _message,
-                          ),
+      child: Builder(
+        builder: (blocContext) {
+          return Scaffold(
+            appBar: AppAppBar(
+              title: l10n.giftSubscription,
+              isMoreMenu: false,
+              onBack: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            body: Padding(
+              padding: EdgeInsets.only(
+                left: AppSpacing.lg,
+                right: AppSpacing.lg,
+                bottom: AppSpacing.xl,
+              ),
+              child: Column(
+                children: [
+                  Expanded(
+                    child: GestureDetector(
+                      behavior: HitTestBehavior.translucent,
+                      onTap: _unfocusKeyboard,
+                      child: SingleChildScrollView(
+                        keyboardDismissBehavior:
+                            ScrollViewKeyboardDismissBehavior.onDrag,
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(vertical: AppSpacing.md),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              PilatesGiftCard(
+                                nameController: _name,
+                                messageController: _message,
+                              ),
 
-                          SizedBox(height: AppSpacing.lg),
-                          ReceiptDetails(
-                            nameController: _name,
-                            emailController: _email,
-                            phoneController: _phone,
-                            messageController: _message,
-                            onCountryCodeChanged: (dialCode) {
-                              _selectedRecipientDialCode = dialCode;
-                            },
+                              SizedBox(height: AppSpacing.lg),
+                              ReceiptDetails(
+                                nameController: _name,
+                                emailController: _email,
+                                phoneController: _phone,
+                                messageController: _message,
+                                recipientNameErrorText: _nameErrorText(l10n),
+                                recipientEmailErrorText: _emailErrorText(l10n),
+                                recipientPhoneErrorText: _phoneErrorText(l10n),
+                                deliveryDateErrorText: _deliveryDateErrorText(
+                                  l10n,
+                                  blocContext
+                                      .read<GiftSubscriptionCubit>()
+                                      .state,
+                                ),
+                                onRecipientNameChanged: (_) =>
+                                    _onFormChanged(),
+                                onRecipientEmailChanged: (_) =>
+                                    _onFormChanged(),
+                                onRecipientPhoneChanged: (_) =>
+                                    _onFormChanged(),
+                                onDeliverySelectionChanged: _onFormChanged,
+                                onCountryCodeChanged: (dialCode) {
+                                  _selectedRecipientDialCode = dialCode;
+                                },
+                              ),
+                            ],
                           ),
-                        ],
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ),
 
-              BlocBuilder<GiftSubscriptionCubit, GiftSubscriptionState>(
-                builder: (context, state) {
-                  final loading =
-                      state.submitStatus == GiftSubmitStatus.loading;
-                  return AppButton(
-                    label: l10n.continueToPayment,
-                    isLoading: loading,
-                    onPressed: loading ? null : () => _onContinue(context),
-                    buttonColor: isDark
-                        ? AppColors.primary
-                        : AppColors.primaryBrown,
-                    expanded: true,
-                  );
-                },
+                  BlocBuilder<GiftSubscriptionCubit, GiftSubscriptionState>(
+                    builder: (context, state) {
+                      final loading =
+                          state.submitStatus == GiftSubmitStatus.loading;
+                      final isFormValid = _isFormValid(state);
+                      return AppButton(
+                        label: l10n.continueToPayment,
+                        isLoading: loading,
+                        onPressed: (loading || !isFormValid)
+                            ? null
+                            : () => _onContinue(blocContext),
+                        buttonColor: isDark
+                            ? AppColors.primary
+                            : AppColors.primaryBrown,
+                        expanded: true,
+                      );
+                    },
+                  ),
+                ],
               ),
-            ],
-          ),
-        ),
+            ),
+          );
+        },
       ),
     );
   }

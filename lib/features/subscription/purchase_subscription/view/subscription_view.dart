@@ -29,6 +29,7 @@ import 'package:pilates_app/features/subscription/purchase_subscription/view/wid
 import 'package:pilates_app/widgets/app_app_bar.dart';
 import 'package:pilates_app/widgets/app_button.dart';
 import 'package:pilates_app/widgets/app_text.dart';
+import 'package:pilates_app/widgets/inline_validation_banner.dart';
 
 import '../../subscription_as_gift/gift_subscription_view.dart';
 
@@ -61,7 +62,7 @@ class _SubscriptionViewContent extends StatelessWidget {
     return BlocBuilder<SubscriptionCubit, SubscriptionState>(
       // Listen to currentStep usage
       builder: (context, state) {
-        final l10n = AppLocalizations.of(context)!;
+        final l10n = AppLocalizations.of(context);
         String appBarTitle;
         if (state.currentStep == 0) {
           appBarTitle = l10n.subscriptionTitle;
@@ -137,6 +138,10 @@ class _PlanSelectionStepState extends State<_PlanSelectionStep> {
   bool _productsLoading = true;
   bool _productsLoadFailed = false;
 
+  String? _planValidationMessage;
+  String? _branchValidationMessage;
+  String? _checkoutMessage;
+
   @override
   void initState() {
     super.initState();
@@ -211,7 +216,7 @@ class _PlanSelectionStepState extends State<_PlanSelectionStep> {
     });
 
     if (!mounted) return;
-    final l10n = AppLocalizations.of(context)!;
+    final l10n = AppLocalizations.of(context);
     _syncSelectedPlan(_resolvedPlans(l10n));
     await _prefetchQuestionnaireAfterCatalog();
   }
@@ -239,7 +244,7 @@ class _PlanSelectionStepState extends State<_PlanSelectionStep> {
       _productsLoading = false;
     });
     if (!mounted) return;
-    final l10n = AppLocalizations.of(context)!;
+    final l10n = AppLocalizations.of(context);
     _syncSelectedPlan(_resolvedPlans(l10n));
     await _prefetchQuestionnaireAfterCatalog();
   }
@@ -257,24 +262,29 @@ class _PlanSelectionStepState extends State<_PlanSelectionStep> {
   /// personal info ([SubscriptionCubit.nextStep]).
   Future<void> _startCheckoutAndNavigate() async {
     if (!mounted) return;
-    final messenger = ScaffoldMessenger.of(context);
-    final l10n = AppLocalizations.of(context)!;
+    final l10n = AppLocalizations.of(context);
     final cubit = context.read<SubscriptionCubit>();
     var state = cubit.state;
 
+    setState(() {
+      _planValidationMessage = null;
+      _branchValidationMessage = null;
+      _checkoutMessage = null;
+    });
+
     if (state.selectedPlanId.trim().isEmpty) {
-      messenger.showSnackBar(SnackBar(content: Text(l10n.pleaseSelectPlan)));
+      setState(() => _planValidationMessage = l10n.pleaseSelectPlan);
       return;
     }
     if (state.selectedBranchId == null || state.selectedBranchId! <= 0) {
-      messenger.showSnackBar(SnackBar(content: Text(l10n.pleaseSelectBranch)));
+      setState(() => _branchValidationMessage = l10n.pleaseSelectBranch);
       return;
     }
 
     final productId = subscriptionProductApiId(state.selectedPlanId);
     final branchId = state.selectedBranchId!;
     if (productId <= 0) {
-      messenger.showSnackBar(SnackBar(content: Text(l10n.loginErrorGeneric)));
+      setState(() => _checkoutMessage = l10n.loginErrorGeneric);
       return;
     }
 
@@ -325,15 +335,11 @@ class _PlanSelectionStepState extends State<_PlanSelectionStep> {
       }
     } else {
       final e = result.exceptionOrNull!;
-      messenger.showSnackBar(
-        SnackBar(
-          content: Text(
-            (e.message != null && e.message!.trim().isNotEmpty)
-                ? e.message!
-                : l10n.loginErrorGeneric,
-          ),
-        ),
-      );
+      setState(() {
+        _checkoutMessage = (e.message != null && e.message!.trim().isNotEmpty)
+            ? e.message!
+            : l10n.loginErrorGeneric;
+      });
     }
   }
 
@@ -371,6 +377,7 @@ class _PlanSelectionStepState extends State<_PlanSelectionStep> {
         'id': '1',
         'title': l10n.premiumPlanTitle,
         'price': '89',
+        'currency': 'SAR',
         'badge': l10n.mostPopular,
         'isPopular': true,
         'requiresHealthIntake': true,
@@ -386,6 +393,7 @@ class _PlanSelectionStepState extends State<_PlanSelectionStep> {
         'id': '2',
         'title': l10n.basicPlanTitle,
         'price': '49',
+        'currency': 'SAR',
         'badge': null,
         'isPopular': false,
         'requiresHealthIntake': true,
@@ -400,6 +408,7 @@ class _PlanSelectionStepState extends State<_PlanSelectionStep> {
         'id': '3',
         'title': l10n.unlimitedPlanTitle,
         'price': '149',
+        'currency': 'SAR',
         'badge': null,
         'isPopular': false,
         'requiresHealthIntake': true,
@@ -431,8 +440,7 @@ class _PlanSelectionStepState extends State<_PlanSelectionStep> {
     if (!plans.any((p) => p['id'] == selected)) {
       effectivePlan = plans.first;
     } else {
-      effectivePlan =
-          plans.firstWhere((p) => p['id'] == selected) as Map<String, dynamic>;
+      effectivePlan = plans.firstWhere((p) => p['id'] == selected);
     }
     final req = effectivePlan['requiresHealthIntake'] as bool? ?? false;
     cubit.selectPlan(effectivePlan['id'] as String, requiresHealthIntake: req);
@@ -441,7 +449,7 @@ class _PlanSelectionStepState extends State<_PlanSelectionStep> {
   @override
   Widget build(BuildContext context) {
     final cubit = context.read<SubscriptionCubit>();
-    final l10n = AppLocalizations.of(context)!;
+    final l10n = AppLocalizations.of(context);
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     final plans = _resolvedPlans(l10n);
@@ -556,11 +564,18 @@ class _PlanSelectionStepState extends State<_PlanSelectionStep> {
                               selectedBranchId: state.selectedBranchId,
                               onSelect: (branchId) {
                                 cubit.selectBranch(branchId);
+                                setState(() => _branchValidationMessage = null);
                                 _reloadCatalogForBranch(branchId);
                               },
                             );
                           },
                         ),
+                      if (_branchValidationMessage != null) ...[
+                        const SizedBox(height: AppSpacing.sm),
+                        InlineValidationBanner(
+                          message: _branchValidationMessage!,
+                        ),
+                      ],
                     ],
                   ),
                 ),
@@ -611,52 +626,69 @@ class _PlanSelectionStepState extends State<_PlanSelectionStep> {
                           horizontal: AppSpacing.lg,
                         ),
                         child: Column(
-                          children: plans.map((plan) {
-                            return PlanCard(
-                              id: plan['id'] as String,
-                              title: plan['title'] as String,
-                              price: plan['price'] as String,
-                              isSelected: state.selectedPlanId == plan['id'],
-                              isPopular: plan['isPopular'] as bool? ?? false,
-                              badgeText: plan['badge'] as String?,
-                              priceSuffix: () {
-                                final s = (plan['priceSubtitle'] as String?)
-                                    ?.trim();
-                                if (s != null && s.isNotEmpty) return s;
-                                return ' / Month';
-                              }(),
-                              onTap: () {
-                                cubit.selectPlan(
-                                  plan['id'] as String,
-                                  requiresHealthIntake:
-                                      plan['requiresHealthIntake'] as bool? ??
-                                      false,
-                                );
-                                if (cubit
-                                        .state
-                                        .selectedProductRequiresHealthIntake &&
-                                    cubit
-                                        .state
-                                        .healthQuestionnaireQuestions
-                                        .isEmpty) {
-                                  _prefetchQuestionnaireAfterCatalog();
-                                }
-                                showModalBottomSheet(
-                                  context: context,
-                                  isScrollControlled: true,
-                                  backgroundColor: Colors.transparent,
-                                  barrierColor: AppColors.bottomSheetShadow,
-                                  builder: (context) => PlanDetailsModal(
-                                    plan: plan,
-                                    onSubscribe: () {
-                                      Navigator.pop(context);
-                                      unawaited(_startCheckoutAndNavigate());
-                                    },
-                                  ),
-                                );
-                              },
-                            );
-                          }).toList(),
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            if (_planValidationMessage != null) ...[
+                              InlineValidationBanner(
+                                message: _planValidationMessage!,
+                              ),
+                              const SizedBox(height: AppSpacing.sm),
+                            ],
+                            ...plans.map((plan) {
+                              return PlanCard(
+                                id: plan['id'] as String,
+                                title: plan['title'] as String,
+                                price: plan['price'] as String,
+                                currencyCode:
+                                    (plan['currency'] as String?)
+                                            ?.trim()
+                                            .isNotEmpty ==
+                                        true
+                                    ? (plan['currency'] as String).trim()
+                                    : 'SAR',
+                                isSelected: state.selectedPlanId == plan['id'],
+                                isPopular: plan['isPopular'] as bool? ?? false,
+                                badgeText: plan['badge'] as String?,
+                                priceSuffix: () {
+                                  final s = (plan['priceSubtitle'] as String?)
+                                      ?.trim();
+                                  if (s != null && s.isNotEmpty) return s;
+                                  return ' / Month';
+                                }(),
+                                onTap: () {
+                                  setState(() => _planValidationMessage = null);
+                                  cubit.selectPlan(
+                                    plan['id'] as String,
+                                    requiresHealthIntake:
+                                        plan['requiresHealthIntake'] as bool? ??
+                                        false,
+                                  );
+                                  if (cubit
+                                          .state
+                                          .selectedProductRequiresHealthIntake &&
+                                      cubit
+                                          .state
+                                          .healthQuestionnaireQuestions
+                                          .isEmpty) {
+                                    _prefetchQuestionnaireAfterCatalog();
+                                  }
+                                  showModalBottomSheet(
+                                    context: context,
+                                    isScrollControlled: true,
+                                    backgroundColor: Colors.transparent,
+                                    barrierColor: AppColors.bottomSheetShadow,
+                                    builder: (context) => PlanDetailsModal(
+                                      plan: plan,
+                                      onSubscribe: () {
+                                        Navigator.pop(context);
+                                        unawaited(_startCheckoutAndNavigate());
+                                      },
+                                    ),
+                                  );
+                                },
+                              );
+                            }),
+                          ],
                         ),
                       );
                     },
@@ -669,13 +701,23 @@ class _PlanSelectionStepState extends State<_PlanSelectionStep> {
         // Fixed Bottom Button
         Padding(
           padding: const EdgeInsets.all(24),
-          child: AppButton(
-            label: l10n.continueTxt,
-            onPressed: () {
-              unawaited(_startCheckoutAndNavigate());
-            },
-            buttonColor: isDark ? AppColors.primary : AppColors.primaryBrown,
-            expanded: true,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              if (_checkoutMessage != null)
+                InlineValidationBanner(message: _checkoutMessage!),
+              AppButton(
+                label: l10n.continueTxt,
+                onPressed: () {
+                  unawaited(_startCheckoutAndNavigate());
+                },
+                buttonColor: isDark
+                    ? AppColors.primary
+                    : AppColors.primaryBrown,
+                expanded: true,
+              ),
+            ],
           ),
         ),
       ],

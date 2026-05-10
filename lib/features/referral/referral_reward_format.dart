@@ -1,4 +1,5 @@
 import 'package:pilates_app/core/localization/arb/app_localizations.dart';
+import 'package:pilates_app/core/utils/currency_display.dart';
 
 import 'data/models/referral_program_details.dart';
 
@@ -20,7 +21,9 @@ String referralRewardDisplay(AppLocalizations l10n, ReferralReward reward) {
       if (value == null) {
         return '';
       }
-      return l10n.referralRewardDiscountAmount(_formatNum(value));
+      return l10n.referralRewardDiscountAmount(
+        formatCurrencyAmount(amount: value, code: 'SAR'),
+      );
     case 'free_session':
       return l10n.referralRewardFreeSession;
     default:

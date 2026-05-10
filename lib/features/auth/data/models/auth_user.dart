@@ -23,6 +23,8 @@ class AuthUser {
     this.name,
     this.email,
     this.phone,
+    this.heightCm,
+    this.weightKg,
     this.gender,
     this.avatar,
     this.dateOfBirth,
@@ -54,6 +56,8 @@ class AuthUser {
   final String? name;
   final String? email;
   final String? phone;
+  final String? heightCm;
+  final String? weightKg;
   final String? gender;
   final String? avatar;
 
@@ -117,6 +121,14 @@ class AuthUser {
       name: json['name'] as String? ?? json['full_name'] as String?,
       email: json['email'] as String?,
       phone: json['phone'] as String?,
+      heightCm:
+          _trimOrNull(
+            json['height_cm'] ?? json['heightCm'] ?? json['height'],
+          ),
+      weightKg:
+          _trimOrNull(
+            json['weight_kg'] ?? json['weightKg'] ?? json['weight'],
+          ),
       gender: _trimOrNull(json['gender']),
       avatar: json['avatar'] as String?,
       dateOfBirth: _parseDateOfBirth(
@@ -164,6 +176,8 @@ class AuthUser {
     'name': name,
     'email': email,
     'phone': phone,
+    'heightCm': heightCm,
+    'weightKg': weightKg,
     'gender': gender,
     'avatar': avatar,
     if (dateOfBirth != null)

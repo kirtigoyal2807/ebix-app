@@ -337,6 +337,8 @@ class _FilterChip extends StatelessWidget {
           children: [
             AppText(
               label,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
               style: (context) =>
                   AppTextStyles.bodyTextSmall(
                     context,

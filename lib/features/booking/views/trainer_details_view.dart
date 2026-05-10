@@ -12,6 +12,7 @@ import 'package:pilates_app/features/booking/data/models/gym_class_resource.dart
 import 'package:pilates_app/features/booking/data/models/trainer_certification.dart';
 import 'package:pilates_app/features/booking/data/models/trainer_resource.dart';
 import 'package:pilates_app/features/booking/data/trainers_repository.dart';
+import 'package:pilates_app/features/home/cubit/home_cubit.dart';
 import 'package:pilates_app/widgets/app_app_bar.dart';
 import 'package:pilates_app/widgets/app_text.dart';
 
@@ -56,6 +57,9 @@ List<ClassSlotViewModel> _trainerUpcomingSlots(
 void _openBrowseAllClasses(BuildContext context) {
   try {
     context.read<BookingCubit>().setTab(BookingTab.classes);
+  } catch (_) {}
+  try {
+    context.read<HomeCubit>().setTab(1, bookingTab: BookingTab.classes);
   } catch (_) {}
   if (Navigator.of(context).canPop()) {
     Navigator.of(context).pop();
@@ -747,6 +751,38 @@ class _TrainerDetailsDemoView extends StatelessWidget {
         title: context.l10n.trainerDetails,
         isMoreMenu: false,
         onBack: () => Navigator.of(context).pop(),
+      ),
+      bottomNavigationBar: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(
+            AppSpacing.lg,
+            AppSpacing.sm,
+            AppSpacing.lg,
+            AppSpacing.md,
+          ),
+          child: SizedBox(
+            width: double.infinity,
+            child: FilledButton(
+              style: FilledButton.styleFrom(
+                backgroundColor: AppColors.primary,
+                foregroundColor: AppColors.whiteColor,
+                padding: const EdgeInsets.symmetric(vertical: 14),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(AppRadius.md),
+                ),
+              ),
+              onPressed: () => _openBrowseAllClasses(context),
+              child: AppText(
+                context.l10n.browseAllClasses,
+                textAlign: TextAlign.center,
+                maxLines: 2,
+                style: (c) => AppTextStyles.boldBody(
+                  c,
+                ).copyWith(color: AppColors.whiteColor, fontSize: 16),
+              ),
+            ),
+          ),
+        ),
       ),
       body: SingleChildScrollView(
         child: Padding(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:pilates_app/config/theme/app_colors.dart';
 import 'package:pilates_app/config/theme/app_radius.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
@@ -33,6 +34,8 @@ class AppTextField extends StatefulWidget {
   /// Passed to the underlying [TextField.scrollPadding] (e.g. room above keyboard).
   final EdgeInsets scrollPadding;
 
+  final List<TextInputFormatter>? inputFormatters;
+
   const AppTextField({
     super.key,
     this.label,
@@ -52,6 +55,7 @@ class AppTextField extends StatefulWidget {
     this.readOnly = false,
     this.onTap,
     this.style,
+    this.inputFormatters,
   });
 
   @override
@@ -134,6 +138,7 @@ class _AppTextFieldState extends State<AppTextField> {
                   : null,
               style: widget.style ?? AppTextStyles.textField(context),
               maxLines: widget.maxLines,
+              inputFormatters: widget.inputFormatters,
               decoration: InputDecoration(
                 hintText: widget.hint,
                 hintStyle: AppTextStyles.textField(

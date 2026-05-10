@@ -13,6 +13,7 @@ import '../../../config/theme/app_colors.dart';
 import '../../../config/theme/app_radius.dart';
 import '../../../config/theme/app_text_styles.dart';
 import '../../../core/localization/arb/app_localizations.dart';
+import '../../../core/utils/currency_display.dart';
 import '../../../widgets/app_button.dart';
 import '../cubit/confirm_booking_cubit.dart';
 import '../cubit/confirm_booking_state.dart';
@@ -315,16 +316,7 @@ class BookClassConfirmView extends StatelessWidget {
   }
 
   static String _formatClassPrice(BuildContext context, double amount) {
-    final locale = Localizations.localeOf(context).toLanguageTag();
-    try {
-      return NumberFormat.currency(
-        locale: locale,
-        name: 'SAR',
-        decimalDigits: 2,
-      ).format(amount);
-    } catch (_) {
-      return '${amount.toStringAsFixed(2)} SAR';
-    }
+    return formatCurrencyAmount(amount: amount, code: 'SAR');
   }
 
   Widget _buildPaymentRow({required String title, required String value}) {

@@ -1,5 +1,6 @@
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pilates_app/config/theme/app_colors.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
@@ -55,27 +56,70 @@ class _HealthInformationViewState extends State<HealthInformationView> {
     return user.name?.trim() ?? '';
   }
 
+  static String _profileAge(AuthUser? user) {
+    final apiAge = user?.ageYears;
+    return apiAge != null ? apiAge.toString() : '';
+  }
+
+  static String _profileEmail(AuthUser? user) => user?.email?.trim() ?? '';
+
+  static String _profilePhoneNational(AuthUser? user) =>
+      PersonalInformationValidators.profilePhoneToNationalDigits(user?.phone);
+
+  static bool _shouldLockAge(AuthUser? user) {
+    final age = _profileAge(user);
+    return age.isNotEmpty && PersonalInformationValidators.isValidAge(age);
+  }
+
+  static bool _shouldLockPhone(AuthUser? user) {
+    final phone = _profilePhoneNational(user);
+    return phone.isNotEmpty &&
+        PersonalInformationValidators.isTenDigitMobile(phone);
+  }
+
+  static bool _shouldLockEmail(AuthUser? user) {
+    final email = _profileEmail(user);
+    return email.isNotEmpty && ContactValidators.isValidEmail(email);
+  }
+
   static String _mergedName(SubscriptionState sub, AuthUser? user) {
     if (sub.name.trim().isNotEmpty) return sub.name;
     return _displayNameFromUser(user);
   }
 
   static String _mergedAge(SubscriptionState sub, AuthUser? user) {
+    final apiAge = _profileAge(user);
+    if (apiAge.isNotEmpty) return apiAge;
     if (sub.age.trim().isNotEmpty) return sub.age;
-    final y = user?.ageYears;
-    return y == null ? '' : y.toString();
+    return '';
+  }
+
+  static String _mergedHeight(SubscriptionState sub, AuthUser? user) {
+    final apiHeight = user?.heightCm?.trim() ?? '';
+    if (apiHeight.isNotEmpty) return apiHeight;
+    if (sub.height.trim().isNotEmpty) return sub.height;
+    return '';
+  }
+
+  static String _mergedWeight(SubscriptionState sub, AuthUser? user) {
+    final apiWeight = user?.weightKg?.trim() ?? '';
+    if (apiWeight.isNotEmpty) return apiWeight;
+    if (sub.weight.trim().isNotEmpty) return sub.weight;
+    return '';
   }
 
   static String _mergedEmail(SubscriptionState sub, AuthUser? user) {
+    final apiEmail = _profileEmail(user);
+    if (apiEmail.isNotEmpty) return apiEmail;
     if (sub.email.trim().isNotEmpty) return sub.email;
-    return user?.email?.trim() ?? '';
+    return '';
   }
 
   static String _mergedPhoneNational(SubscriptionState sub, AuthUser? user) {
+    final apiPhone = _profilePhoneNational(user);
+    if (apiPhone.trim().isNotEmpty) return apiPhone;
     if (sub.phoneNumber.trim().isNotEmpty) return sub.phoneNumber;
-    return PersonalInformationValidators.profilePhoneToNationalDigits(
-      user?.phone,
-    );
+    return '';
   }
 
   void _syncCubitFromControllers() {
@@ -100,8 +144,8 @@ class _HealthInformationViewState extends State<HealthInformationView> {
 
     _nameController = TextEditingController(text: _mergedName(sub, user));
     _ageController = TextEditingController(text: _mergedAge(sub, user));
-    _heightController = TextEditingController(text: sub.height);
-    _weightController = TextEditingController(text: sub.weight);
+    _heightController = TextEditingController(text: _mergedHeight(sub, user));
+    _weightController = TextEditingController(text: _mergedWeight(sub, user));
     _phoneController = TextEditingController(
       text: _mergedPhoneNational(sub, user),
     );
@@ -112,6 +156,32 @@ class _HealthInformationViewState extends State<HealthInformationView> {
       _syncCubitFromControllers();
       _ensureQuestionnaire();
     });
+  }
+
+  void _applyApiLockedValuesIfNeeded(AuthUser? user) {
+    final apiAge = _profileAge(user);
+    final apiPhone = _profilePhoneNational(user);
+    final apiEmail = _profileEmail(user);
+    var changed = false;
+
+    if (_shouldLockAge(user) && _ageController.text != apiAge) {
+      _ageController.text = apiAge;
+      changed = true;
+    }
+    // Height and weight remain user-editable when other profile fields are locked;
+    // do not overwrite them here or input would reset on every rebuild.
+    if (_shouldLockPhone(user) && _phoneController.text != apiPhone) {
+      _phoneController.text = apiPhone;
+      changed = true;
+    }
+    if (_shouldLockEmail(user) && _emailController.text != apiEmail) {
+      _emailController.text = apiEmail;
+      changed = true;
+    }
+
+    if (changed) {
+      _syncCubitFromControllers();
+    }
   }
 
   Future<void> _ensureQuestionnaire() async {
@@ -143,10 +213,14 @@ class _HealthInformationViewState extends State<HealthInformationView> {
   bool _validatePersonalInformationFields(
     BuildContext context,
     SubscriptionCubit cubit,
+    AuthUser? user,
   ) {
-    final l10n = AppLocalizations.of(context)!;
+    final l10n = AppLocalizations.of(context);
     _syncCubitFromControllers();
     final s = cubit.state;
+    final ageLocked = _shouldLockAge(user);
+    final phoneLocked = _shouldLockPhone(user);
+    final emailLocked = _shouldLockEmail(user);
 
     final name = s.name.trim();
     final age = s.age.trim();
@@ -161,11 +235,13 @@ class _HealthInformationViewState extends State<HealthInformationView> {
           : (!PersonalInformationValidators.isValidName(s.name)
                 ? l10n.enterValidName
                 : null);
-      _ageError = age.isEmpty
-          ? l10n.pleaseCompletePersonalInformation
-          : (!PersonalInformationValidators.isValidAge(s.age)
-                ? l10n.enterValidAge
-                : null);
+      _ageError = ageLocked
+          ? null
+          : (age.isEmpty
+                ? l10n.pleaseCompletePersonalInformation
+                : (!PersonalInformationValidators.isValidAge(s.age)
+                      ? l10n.enterValidAge
+                      : null));
       _heightError = height.isEmpty
           ? l10n.pleaseCompletePersonalInformation
           : (!PersonalInformationValidators.isValidHeightCm(s.height)
@@ -176,16 +252,22 @@ class _HealthInformationViewState extends State<HealthInformationView> {
           : (!PersonalInformationValidators.isValidWeightKg(s.weight)
                 ? l10n.enterValidWeightKg
                 : null);
-      _phoneError = phone.isEmpty
-          ? l10n.pleaseEnterPhone
-          : (!PersonalInformationValidators.isTenDigitMobile(s.phoneNumber)
-                ? l10n.phoneTenDigitsRequired
-                : null);
-      _emailError = email.isEmpty
-          ? l10n.pleaseCompletePersonalInformation
-          : (!ContactValidators.isValidEmail(s.email)
-                ? l10n.pleaseEnterValidEmail
-                : null);
+      _phoneError = phoneLocked
+          ? null
+          : (phone.isEmpty
+                ? l10n.pleaseEnterPhone
+                : (!PersonalInformationValidators.isTenDigitMobile(
+                        s.phoneNumber,
+                      )
+                      ? l10n.phoneTenDigitsRequired
+                      : null));
+      _emailError = emailLocked
+          ? null
+          : (email.isEmpty
+                ? l10n.pleaseCompletePersonalInformation
+                : (!ContactValidators.isValidEmail(s.email)
+                      ? l10n.pleaseEnterValidEmail
+                      : null));
     });
 
     return _nameError == null &&
@@ -198,11 +280,10 @@ class _HealthInformationViewState extends State<HealthInformationView> {
 
   void _onContinuePersonalInformation(BuildContext context) {
     _unfocusKeyboard();
-    final messenger = ScaffoldMessenger.of(context);
-    final l10n = AppLocalizations.of(context)!;
     final cubit = context.read<SubscriptionCubit>();
+    final user = context.read<AuthCubit>().state.user;
 
-    if (!_validatePersonalInformationFields(context, cubit)) {
+    if (!_validatePersonalInformationFields(context, cubit, user)) {
       return;
     }
 
@@ -212,9 +293,6 @@ class _HealthInformationViewState extends State<HealthInformationView> {
     );
     if (s.selectedProductRequiresHealthIntake && extras.isNotEmpty) {
       if (!cubit.validateApiPersonalInformationQuestions(extras)) {
-        messenger.showSnackBar(
-          SnackBar(content: Text(l10n.pleaseCompletePersonalInformation)),
-        );
         return;
       }
     }
@@ -222,19 +300,77 @@ class _HealthInformationViewState extends State<HealthInformationView> {
     cubit.nextStep();
   }
 
+  /// Live gate for the Continue button (mirrors [_validatePersonalInformationFields] + API extras).
+  bool _canProceedWithPersonalInformation(
+    SubscriptionState s,
+    List<ProductHealthQuestion> extraQs,
+    AuthUser? user,
+  ) {
+    final cubit = context.read<SubscriptionCubit>();
+    final ageLocked = _shouldLockAge(user);
+    final phoneLocked = _shouldLockPhone(user);
+    final emailLocked = _shouldLockEmail(user);
+    final name = s.name.trim();
+    if (name.isEmpty || !PersonalInformationValidators.isValidName(s.name)) {
+      return false;
+    }
+    if (s.height.trim().isEmpty ||
+        !PersonalInformationValidators.isValidHeightCm(s.height)) {
+      return false;
+    }
+    if (s.weight.trim().isEmpty ||
+        !PersonalInformationValidators.isValidWeightKg(s.weight)) {
+      return false;
+    }
+    if (!ageLocked) {
+      if (s.age.trim().isEmpty ||
+          !PersonalInformationValidators.isValidAge(s.age)) {
+        return false;
+      }
+    }
+    if (!phoneLocked) {
+      if (s.phoneNumber.trim().isEmpty ||
+          !PersonalInformationValidators.isTenDigitMobile(s.phoneNumber)) {
+        return false;
+      }
+    }
+    if (!emailLocked) {
+      final email = s.email.trim();
+      if (email.isEmpty || !ContactValidators.isValidEmail(s.email)) {
+        return false;
+      }
+    }
+    return cubit.validateApiPersonalInformationQuestions(extraQs);
+  }
+
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
+    final l10n = AppLocalizations.of(context);
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final authUser = context.select<AuthCubit, AuthUser?>(
+      (cubit) => cubit.state.user,
+    );
 
     return BlocBuilder<SubscriptionCubit, SubscriptionState>(
       buildWhen: (p, c) =>
           p.currentStep != c.currentStep ||
           p.healthQuestionnaireQuestions != c.healthQuestionnaireQuestions ||
           p.selectedProductRequiresHealthIntake !=
-              c.selectedProductRequiresHealthIntake,
+              c.selectedProductRequiresHealthIntake ||
+          p.name != c.name ||
+          p.age != c.age ||
+          p.height != c.height ||
+          p.weight != c.weight ||
+          p.phoneNumber != c.phoneNumber ||
+          p.email != c.email ||
+          p.personalInformationDynamicFields !=
+              c.personalInformationDynamicFields,
       builder: (context, state) {
         final cubit = context.read<SubscriptionCubit>();
+        final ageLocked = _shouldLockAge(authUser);
+        final phoneLocked = _shouldLockPhone(authUser);
+        final emailLocked = _shouldLockEmail(authUser);
+        _applyApiLockedValuesIfNeeded(authUser);
         final extraQs = extraPersonalInformationQuestionsFromApi(
           state.healthQuestionnaireQuestions,
         );
@@ -242,6 +378,11 @@ class _HealthInformationViewState extends State<HealthInformationView> {
             state.selectedProductRequiresHealthIntake &&
             state.healthQuestionnaireQuestions.isEmpty &&
             _questionnaireLoading;
+        final canProceed = _canProceedWithPersonalInformation(
+          state,
+          extraQs,
+          authUser,
+        );
 
         return Padding(
           padding: const EdgeInsets.symmetric(
@@ -301,6 +442,8 @@ class _HealthInformationViewState extends State<HealthInformationView> {
                           hint: l10n.age,
                           keyboardType: TextInputType.number,
                           controller: _ageController,
+                          readOnly: ageLocked,
+                          enabled: !ageLocked,
                           errorText: _ageError,
                           onChanged: (_) {
                             cubit.updateAge(_ageController.text);
@@ -311,8 +454,15 @@ class _HealthInformationViewState extends State<HealthInformationView> {
                         AppTextField(
                           label: l10n.heightCm,
                           hint: l10n.heightCm,
-                          keyboardType: TextInputType.number,
+                          keyboardType: const TextInputType.numberWithOptions(
+                            decimal: true,
+                          ),
                           controller: _heightController,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.allow(
+                              RegExp(r'[0-9.,]'),
+                            ),
+                          ],
                           errorText: _heightError,
                           onChanged: (_) {
                             cubit.updateHeight(_heightController.text);
@@ -323,8 +473,15 @@ class _HealthInformationViewState extends State<HealthInformationView> {
                         AppTextField(
                           label: l10n.weightKg,
                           hint: l10n.weightKg,
-                          keyboardType: TextInputType.number,
+                          keyboardType: const TextInputType.numberWithOptions(
+                            decimal: true,
+                          ),
                           controller: _weightController,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.allow(
+                              RegExp(r'[0-9.,]'),
+                            ),
+                          ],
                           errorText: _weightError,
                           onChanged: (_) {
                             cubit.updateWeight(_weightController.text);
@@ -339,6 +496,7 @@ class _HealthInformationViewState extends State<HealthInformationView> {
                           controller: _phoneController,
                           maxPhoneDigits: 10,
                           initialCountryIso: _phoneCountry?.code ?? 'SA',
+                          enabled: !phoneLocked,
                           errorText: _phoneError,
                           onCountryChanged: (country) {
                             setState(() {
@@ -357,6 +515,8 @@ class _HealthInformationViewState extends State<HealthInformationView> {
                           hint: l10n.emailTab,
                           keyboardType: TextInputType.emailAddress,
                           controller: _emailController,
+                          readOnly: emailLocked,
+                          enabled: !emailLocked,
                           errorText: _emailError,
                           onChanged: (_) {
                             cubit.updateEmail(_emailController.text);
@@ -375,7 +535,7 @@ class _HealthInformationViewState extends State<HealthInformationView> {
               ),
               AppButton(
                 label: l10n.continueTxt,
-                onPressed: waitingForQuestionnaire
+                onPressed: waitingForQuestionnaire || !canProceed
                     ? null
                     : () => _onContinuePersonalInformation(context),
                 buttonColor: isDark

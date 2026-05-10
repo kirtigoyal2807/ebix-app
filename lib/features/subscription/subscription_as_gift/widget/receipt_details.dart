@@ -21,6 +21,14 @@ class ReceiptDetails extends StatelessWidget {
     required this.phoneController,
     required this.messageController,
     required this.onCountryCodeChanged,
+    this.recipientNameErrorText,
+    this.recipientEmailErrorText,
+    this.recipientPhoneErrorText,
+    this.deliveryDateErrorText,
+    this.onRecipientNameChanged,
+    this.onRecipientEmailChanged,
+    this.onRecipientPhoneChanged,
+    this.onDeliverySelectionChanged,
   });
 
   final TextEditingController nameController;
@@ -28,6 +36,14 @@ class ReceiptDetails extends StatelessWidget {
   final TextEditingController phoneController;
   final TextEditingController messageController;
   final ValueChanged<String> onCountryCodeChanged;
+  final String? recipientNameErrorText;
+  final String? recipientEmailErrorText;
+  final String? recipientPhoneErrorText;
+  final String? deliveryDateErrorText;
+  final ValueChanged<String>? onRecipientNameChanged;
+  final ValueChanged<String>? onRecipientEmailChanged;
+  final ValueChanged<String>? onRecipientPhoneChanged;
+  final VoidCallback? onDeliverySelectionChanged;
 
   static String _formatScheduledDate(BuildContext context, String iso) {
     final parsed = DateTime.tryParse(iso);
@@ -37,7 +53,7 @@ class ReceiptDetails extends StatelessWidget {
     return DateFormat.yMMMd(locale).format(d);
   }
 
-  static Future<void> _onDeliveryTileTap(
+  Future<void> _onDeliveryTileTap(
     BuildContext context,
     DeliveryOption option,
   ) async {
@@ -46,6 +62,7 @@ class ReceiptDetails extends StatelessWidget {
 
     if (option == DeliveryOption.instantDelivery) {
       cubit.selectInstantDelivery();
+      onDeliverySelectionChanged?.call();
       return;
     }
 
@@ -77,6 +94,7 @@ class ReceiptDetails extends StatelessWidget {
     final iso =
         '${picked.year}-${picked.month.toString().padLeft(2, '0')}-${picked.day.toString().padLeft(2, '0')}';
     cubit.selectScheduledDeliveryWithDate(iso);
+    onDeliverySelectionChanged?.call();
   }
 
   @override
@@ -99,6 +117,8 @@ class ReceiptDetails extends StatelessWidget {
           label: l10n.recipientNameHint,
           hint: l10n.recipientNameHint,
           controller: nameController,
+          errorText: recipientNameErrorText,
+          onChanged: onRecipientNameChanged,
         ),
         SizedBox(height: AppSpacing.md),
         AppTextField(
@@ -106,6 +126,8 @@ class ReceiptDetails extends StatelessWidget {
           hint: l10n.recipientEmailHintGmail,
           keyboardType: TextInputType.emailAddress,
           controller: emailController,
+          errorText: recipientEmailErrorText,
+          onChanged: onRecipientEmailChanged,
         ),
         SizedBox(height: AppSpacing.md),
         PhoneNumberField(
@@ -114,6 +136,8 @@ class ReceiptDetails extends StatelessWidget {
           flagAsset: '',
           controller: phoneController,
           maxPhoneDigits: 10,
+          errorText: recipientPhoneErrorText,
+          onChanged: onRecipientPhoneChanged,
           onCountryChanged: (countryCode) {
             onCountryCodeChanged(countryCode.dialCode ?? '+966');
           },
@@ -164,6 +188,29 @@ class ReceiptDetails extends StatelessWidget {
                             c,
                           ).copyWith(fontWeight: FontWeight.w500, height: 1.35),
                           maxLines: 2,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+                if (deliveryDateErrorText != null) ...[
+                  SizedBox(height: AppSpacing.sm),
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.info_outline,
+                        size: 14,
+                        color: isDark ? AppColors.redDark : AppColors.redLight,
+                      ),
+                      SizedBox(width: AppSpacing.xs),
+                      Expanded(
+                        child: Text(
+                          deliveryDateErrorText!,
+                          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            color: isDark
+                                ? AppColors.redDark
+                                : AppColors.redLight,
+                          ),
                         ),
                       ),
                     ],

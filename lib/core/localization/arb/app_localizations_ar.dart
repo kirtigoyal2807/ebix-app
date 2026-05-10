@@ -1196,7 +1196,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get active => 'نشط';
 
   @override
-  String get pricePerMonth => '89\$ / شهرياً';
+  String get pricePerMonth => 'السعر / شهرياً';
 
   @override
   String get pauseHistory => 'سجل الإيقاف';

@@ -10,6 +10,7 @@ import 'package:pilates_app/features/invoice_history/data/subscriptions_reposito
 import 'package:pilates_app/features/view_subscription/cubit/subscriptions_cubit.dart';
 import 'package:pilates_app/features/view_subscription/cubit/subscriptions_state.dart';
 import 'package:pilates_app/features/view_subscription/view/pause_subscription_view.dart';
+import 'package:pilates_app/core/utils/currency_display.dart';
 import 'package:pilates_app/widgets/app_text.dart';
 
 import '../../../core/localization/localization_extension.dart';
@@ -62,7 +63,7 @@ class ExistingPlanView extends StatelessWidget {
 
   String _priceLine(CustomerSubscriptionResource s) {
     if (s.pricePaid <= 0) return '—';
-    return '${s.pricePaid.toStringAsFixed(2)} SAR';
+    return formatCurrencyAmount(amount: s.pricePaid, code: 'SAR');
   }
 
   String _sessionsLine(CustomerSubscriptionResource s) {

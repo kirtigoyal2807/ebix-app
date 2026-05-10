@@ -10,6 +10,7 @@ import 'package:pilates_app/features/subscription/purchase_subscription/view/sub
 import 'package:pilates_app/features/view_subscription/cubit/subscriptions_cubit.dart';
 import 'package:pilates_app/features/view_subscription/cubit/subscriptions_state.dart';
 import 'package:pilates_app/features/view_subscription/view/pause_subscription_view.dart';
+import 'package:pilates_app/core/utils/currency_display.dart';
 import 'package:pilates_app/widgets/app_text.dart';
 
 import '../../../core/localization/localization_extension.dart';
@@ -31,7 +32,15 @@ class CurrentPlanView extends StatelessWidget {
 
   String _priceLine(CustomerSubscriptionResource p) {
     if (p.pricePaid <= 0) return '—';
-    return '${p.pricePaid.toStringAsFixed(2)} SAR';
+    return formatCurrencyAmount(amount: p.pricePaid, code: 'SAR');
+  }
+
+  String _priceLineWithSuffix(CustomerSubscriptionResource p) {
+    final price = _priceLine(p);
+    if (price == '—') return price;
+    final entitlement = p.entitlementType.trim().toLowerCase();
+    final suffix = entitlement == 'subscription' ? ' / Month' : '';
+    return '$price$suffix';
   }
 
   String _sessionsLine(CustomerSubscriptionResource p) {
@@ -181,22 +190,8 @@ class CurrentPlanView extends StatelessWidget {
                                 height: 0,
                               ),
                         ),
-                        SizedBox(height: AppSpacing.md),
                         AppText(
-                          context.l10n.pricePerMonth,
-                          style: (context) =>
-                              AppTextStyles.bodyText(
-                                context,
-                                fontWeight: FontWeight.w500,
-                              ).copyWith(
-                                color: AppColors.seekBarLight,
-                                fontSize: 18,
-                                height: 0,
-                              ),
-                        ),
-                        SizedBox(height: AppSpacing.xs),
-                        AppText(
-                          _priceLine(primary),
+                          _priceLineWithSuffix(primary),
                           style: (context) =>
                               AppTextStyles.bodyText(context).copyWith(
                                 color: AppColors.seekBarLight,

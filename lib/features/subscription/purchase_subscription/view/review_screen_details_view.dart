@@ -142,7 +142,7 @@ class _ReviewScreenDetailsViewState extends State<ReviewScreenDetailsView> {
   }
 
   Future<void> _onApplyCoupon() async {
-    final l10n = AppLocalizations.of(context)!;
+    final l10n = AppLocalizations.of(context);
     final id = _effectiveCheckoutId();
     if (id == null || id.isEmpty) {
       setState(() {
@@ -253,7 +253,7 @@ class _ReviewScreenDetailsViewState extends State<ReviewScreenDetailsView> {
     final cur = pricing?.currency?.trim();
     final currency = (cur != null && cur.isNotEmpty) ? cur : 'SAR';
 
-    final successStyle = (BuildContext context) =>
+    TextStyle successStyle(BuildContext context) =>
         AppTextStyles.bodyText(context).copyWith(
           color: AppColors.successColor,
           fontWeight: FontWeight.w600,
@@ -317,6 +317,9 @@ class _ReviewScreenDetailsViewState extends State<ReviewScreenDetailsView> {
       locale,
     );
     final suffix = product?.billingPriceSuffix ?? '';
+    final headlinePriceLine = suffix.isNotEmpty
+        ? '$priceText$suffix'
+        : priceText;
     final planName = product?.name?.trim();
     final planTitle = (planName != null && planName.isNotEmpty)
         ? planName
@@ -421,45 +424,22 @@ class _ReviewScreenDetailsViewState extends State<ReviewScreenDetailsView> {
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                AppText(
-                  priceText,
-                  style: (context) =>
-                      AppTextStyles.bodyText(
-                        context,
-                        fontWeight: FontWeight.w500,
-                      ).copyWith(
-                        color: isDark
-                            ? AppColors.languageTextDark
-                            : AppColors.languageIcon,
-                        fontSize: 18,
-                        height: 1.1,
-                      ),
-                ),
-                SvgPicture.asset(
-                  'assets/images/svg/ic_Saudi_Riyal_Symbol.svg',
-                  height: 18,
-                  width: 18,
-                  color: isDark
-                      ? AppColors.languageTextDark
-                      : AppColors.languageIcon,
-                ),
-                if (suffix.isNotEmpty)
-                  Expanded(
-                    child: AppText(
-                      suffix,
-                      style: (context) =>
-                          AppTextStyles.bodyText(
-                            context,
-                            fontWeight: FontWeight.w500,
-                          ).copyWith(
-                            color: isDark
-                                ? AppColors.languageTextDark
-                                : AppColors.languageIcon,
-                            fontSize: 18,
-                            height: 1.1,
-                          ),
-                    ),
+                Expanded(
+                  child: AppText(
+                    headlinePriceLine,
+                    style: (context) =>
+                        AppTextStyles.bodyText(
+                          context,
+                          fontWeight: FontWeight.w500,
+                        ).copyWith(
+                          color: isDark
+                              ? AppColors.languageTextDark
+                              : AppColors.languageIcon,
+                          fontSize: 18,
+                          height: 1.1,
+                        ),
                   ),
+                ),
               ],
             ),
             if (showPriceBreakdown) ...[
@@ -522,7 +502,7 @@ class _ReviewScreenDetailsViewState extends State<ReviewScreenDetailsView> {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final l10n = AppLocalizations.of(context)!;
+    final l10n = AppLocalizations.of(context);
     final locale = Localizations.localeOf(context).languageCode;
     final bottomInset =
         widget.scrollKeyboardInset ?? MediaQuery.viewInsetsOf(context).bottom;

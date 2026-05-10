@@ -2339,7 +2339,7 @@ abstract class AppLocalizations {
   /// No description provided for @pricePerMonth.
   ///
   /// In en, this message translates to:
-  /// **'89\$ / Month'**
+  /// **'Price / Month'**
   String get pricePerMonth;
 
   /// No description provided for @pauseHistory.

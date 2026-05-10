@@ -86,7 +86,7 @@ class CatalogProduct {
             final s = e.trim();
             if (s.isNotEmpty) out.add(s);
           } else if (e is Map) {
-            final mm = Map<String, dynamic>.from(e as Map<dynamic, dynamic>);
+            final mm = Map<String, dynamic>.from(e);
             final text =
                 (mm['text'] ?? mm['label'] ?? mm['title'] ?? mm['name'])
                     ?.toString()
@@ -125,7 +125,7 @@ class CatalogProduct {
     );
   }
 
-  /// Shown next to the amount in [PlanDetailsModal] (after the SAR icon).
+  /// Shown after the formatted amount in plan selection / detail UI.
   String get priceSubtitle {
     final t = type.toLowerCase();
     final et = entitlementType.toLowerCase();
@@ -171,6 +171,7 @@ class CatalogProduct {
       'id': id.toString(),
       'title': name,
       'price': salePrice.toString(),
+      'currency': currency,
       'badge': isRecommended ? l10n.mostPopular : null,
       'isPopular': isRecommended,
       'features': bullets,

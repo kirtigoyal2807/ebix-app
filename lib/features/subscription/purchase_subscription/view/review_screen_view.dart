@@ -33,11 +33,20 @@ class ReviewScreenView extends StatelessWidget {
             ),
             child: BlocBuilder<SubscriptionCubit, SubscriptionState>(
               buildWhen: (previous, current) =>
-                  previous.isTermsAccepted != current.isTermsAccepted,
+                  previous.isTermsAccepted != current.isTermsAccepted ||
+                  previous.checkoutSessionId != current.checkoutSessionId ||
+                  previous.selectedPlanId != current.selectedPlanId ||
+                  previous.selectedBranchId != current.selectedBranchId ||
+                  previous.currentStep != current.currentStep,
               builder: (context, state) {
+                final hasAllPaymentInputs =
+                    state.checkoutSessionId.trim().isNotEmpty &&
+                    state.selectedPlanId.trim().isNotEmpty &&
+                    (state.selectedBranchId ?? 0) > 0 &&
+                    state.currentStep == 9;
                 return AppButton(
                   label: l10n.continueTxt,
-                  onPressed: state.isTermsAccepted
+                  onPressed: state.isTermsAccepted && hasAllPaymentInputs
                       ? () {
                           unawaited(
                             runSubscriptionHostedPaymentFlow(

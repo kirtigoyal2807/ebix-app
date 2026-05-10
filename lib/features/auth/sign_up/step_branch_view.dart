@@ -13,6 +13,7 @@ import 'package:pilates_app/widgets/app_app_bar.dart';
 import 'package:pilates_app/widgets/app_button.dart';
 import 'package:pilates_app/widgets/app_scaffold.dart';
 import 'package:pilates_app/widgets/app_text.dart';
+import 'package:pilates_app/widgets/inline_validation_banner.dart';
 
 import 'widgets/sign_up_header.dart';
 import 'widgets/sign_up_progress.dart';
@@ -29,6 +30,8 @@ class _SignUpBranchViewState extends State<SignUpBranchView> {
   double? _userLat;
   double? _userLng;
   bool _awaitingPermission = true;
+  String? _branchPickErrorMessage;
+  String? _branchSubmitErrorMessage;
 
   @override
   void initState() {
@@ -126,11 +129,15 @@ class _SignUpBranchViewState extends State<SignUpBranchView> {
   void _onFinish(BuildContext context) {
     final cubit = context.read<AuthCubit>();
     if (cubit.state.selectedSignUpBranchId == null) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text(context.l10n.pleaseSelectBranch)));
+      setState(() {
+        _branchPickErrorMessage = context.l10n.pleaseSelectBranch;
+      });
       return;
     }
+    setState(() {
+      _branchPickErrorMessage = null;
+      _branchSubmitErrorMessage = null;
+    });
     cubit.submitSignUpHomeBranchAndFinish();
   }
 
@@ -146,13 +153,11 @@ class _SignUpBranchViewState extends State<SignUpBranchView> {
             current.signUpHomeBranchErrorMessage.isNotEmpty &&
             current.signUpHomeBranchFieldErrors.isEmpty;
       },
-      listener: (context, state) {
+        listener: (context, state) {
         final text = state.signUpHomeBranchErrorMessage.trim().isEmpty
             ? context.l10n.loginErrorGeneric
-            : state.signUpHomeBranchErrorMessage;
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text(text)));
+            : state.signUpHomeBranchErrorMessage.trim();
+        setState(() => _branchSubmitErrorMessage = text);
       },
       builder: (context, state) {
         final branches = state.signUpBranches;
@@ -284,6 +289,11 @@ class _SignUpBranchViewState extends State<SignUpBranchView> {
                     ),
                   ),
                 ),
+                if (_branchPickErrorMessage != null)
+                  InlineValidationBanner(message: _branchPickErrorMessage!),
+                if (_branchSubmitErrorMessage != null &&
+                    (_branchPickErrorMessage == null))
+                  InlineValidationBanner(message: _branchSubmitErrorMessage!),
                 AppButton(
                   key: const ValueKey('sign_up_branch_finish'),
                   label: context.l10n.finishSignUp,
@@ -346,7 +356,10 @@ class _SignUpBranchViewState extends State<SignUpBranchView> {
             distance: distance,
             type: b.typeLabel,
             selected: selected,
-            onTap: () => cubit.selectSignUpBranch(b.id),
+            onTap: () {
+              cubit.selectSignUpBranch(b.id);
+              setState(() => _branchPickErrorMessage = null);
+            },
             imageUrl: b.imageUrl,
           ),
         ),

@@ -472,7 +472,7 @@
   "mySubscription": "My Subscription",
   "active": "Active",
   "premiumPlan": "Premium Plan",
-  "pricePerMonth": "89$ / Month",
+  "pricePerMonth": "Price / Month",
   "pauseHistory": "Pause History",
   "changePlan": "Change Plan",
   "pauseSubscription": "Pause Subscription",
@@ -1311,5 +1311,4 @@
   "selectDOB": "Select Date of birth",
   "reformerTower": "Reformer & Tower Equipment Specialist"
 }
-
 

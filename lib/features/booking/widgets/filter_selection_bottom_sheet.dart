@@ -24,7 +24,6 @@ class FilterSelectionBottomSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final isRTL = Directionality.of(context) == TextDirection.rtl;
 
     return Material(
       color: isDark ? AppColors.homeBackground : AppColors.whiteColor,
@@ -131,6 +130,8 @@ class _OptionTile extends StatelessWidget {
               Expanded(
                 child: AppText(
                   label,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                   style: (context) => AppTextStyles.body(context).copyWith(
                     color: isDark ? AppColors.lightText : AppColors.darkText,
                     fontSize: 16,

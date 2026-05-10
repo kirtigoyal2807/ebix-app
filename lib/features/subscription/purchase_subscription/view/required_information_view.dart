@@ -41,6 +41,8 @@ class _RequiredInformationViewState extends State<RequiredInformationView> {
   String? _idNumberError;
 
   bool _isSubmitting = false;
+  bool get _hasDeferredSuccessfulPayment =>
+      context.read<SubscriptionCubit>().hasDeferredPostPaymentReceipt;
 
   void _unfocusKeyboard() {
     FocusManager.instance.primaryFocus?.unfocus();
@@ -99,7 +101,7 @@ class _RequiredInformationViewState extends State<RequiredInformationView> {
         s.emergencyContactRelationship!.trim().isNotEmpty;
     final typeOk = s.idType != null && s.idType!.trim().isNotEmpty;
     final idLen = idNum.length;
-    final idOk = idLen >= 1 && idLen <= 100;
+    final idOk = idLen == 10;
 
     setState(() {
       _nameError = name.isEmpty
@@ -191,6 +193,19 @@ class _RequiredInformationViewState extends State<RequiredInformationView> {
     }
   }
 
+  bool _hasAllInformationFilled(SubscriptionState s) {
+    final phoneDigits = _emergencyPhoneController.text.replaceAll(
+      RegExp(r'\D'),
+      '',
+    );
+    final idNumber = _idNumberController.text.trim();
+    return _emergencyNameController.text.trim().isNotEmpty &&
+        phoneDigits.isNotEmpty &&
+        (s.emergencyContactRelationship?.trim().isNotEmpty ?? false) &&
+        (s.idType?.trim().isNotEmpty ?? false) &&
+        idNumber.isNotEmpty;
+  }
+
   /// Builds E.164-style emergency phone for the API (`dialCode` + national digits), max 30 chars.
   String _formatEmergencyPhoneForApi(
     CountryCode? country,
@@ -230,6 +245,44 @@ class _RequiredInformationViewState extends State<RequiredInformationView> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        if (_hasDeferredSuccessfulPayment) ...[
+                          Container(
+                            width: double.infinity,
+                            padding: const EdgeInsets.all(AppSpacing.md),
+                            decoration: BoxDecoration(
+                              color: AppColors.successColor.withValues(
+                                alpha: 0.12,
+                              ),
+                              borderRadius: BorderRadius.circular(12),
+                              border: Border.all(
+                                color: AppColors.successColor.withValues(
+                                  alpha: 0.35,
+                                ),
+                              ),
+                            ),
+                            child: Row(
+                              children: [
+                                const Icon(
+                                  Icons.check_circle_outline,
+                                  color: AppColors.successColor,
+                                  size: 20,
+                                ),
+                                const SizedBox(width: AppSpacing.sm),
+                                Expanded(
+                                  child: AppText(
+                                    'Payment successful',
+                                    style: (c) =>
+                                        AppTextStyles.bodyText(c).copyWith(
+                                          color: AppColors.successColor,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(height: AppSpacing.lg),
+                        ],
                         Container(
                           padding: const EdgeInsets.all(AppSpacing.md),
                           decoration: BoxDecoration(
@@ -450,7 +503,8 @@ class _RequiredInformationViewState extends State<RequiredInformationView> {
                           label: l10n.idNumber,
                           hint: l10n.idNumber,
                           controller: _idNumberController,
-                          maxLength: 100,
+                          maxLength: 10,
+                          showCharacterCounter: false,
                           errorText: _idNumberError,
                           onChanged: (_) {
                             cubit.updateIdNumber(_idNumberController.text);
@@ -469,15 +523,25 @@ class _RequiredInformationViewState extends State<RequiredInformationView> {
                   top: AppSpacing.sm,
                   bottom: keyboardBottom,
                 ),
-                child: AppButton(
-                  label: l10n.submit,
-                  onPressed: _isSubmitting
-                      ? null
-                      : () => unawaited(_validateAndSubmit(l10n)),
-                  buttonColor: isDark
-                      ? AppColors.primary
-                      : AppColors.primaryBrown,
-                  expanded: true,
+                child: BlocBuilder<SubscriptionCubit, SubscriptionState>(
+                  buildWhen: (p, c) =>
+                      p.emergencyContactRelationship !=
+                          c.emergencyContactRelationship ||
+                      p.idType != c.idType,
+                  builder: (context, state) {
+                    final canSubmit =
+                        !_isSubmitting && _hasAllInformationFilled(state);
+                    return AppButton(
+                      label: l10n.submit,
+                      onPressed: canSubmit
+                          ? () => unawaited(_validateAndSubmit(l10n))
+                          : null,
+                      buttonColor: isDark
+                          ? AppColors.primary
+                          : AppColors.primaryBrown,
+                      expanded: true,
+                    );
+                  },
                 ),
               ),
             ],

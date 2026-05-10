@@ -8,6 +8,7 @@ import 'package:pilates_app/features/invoice_history/cubit/invoice_history_state
 import 'package:pilates_app/features/invoice_history/data/models/invoice_resource.dart';
 import 'package:pilates_app/features/invoice_history/widget/empty_data_view.dart';
 import 'package:pilates_app/features/invoice_history/widget/invoice_history_card.dart';
+import 'package:pilates_app/core/utils/currency_display.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class InvoiceListPanel extends StatelessWidget {
@@ -55,60 +56,8 @@ class InvoiceListPanel extends StatelessWidget {
     }
   }
 
-  /// Whether to use Arabic-script currency marks (﷼, د.إ, …). For English and
-  /// other Latin UI languages we use Latin abbreviations so amounts do not look
-  /// like Urdu/Arabic when the app is in English.
-  static bool _useArabicScriptCurrency(String languageCode) {
-    final lc = languageCode.toLowerCase();
-    return lc.startsWith('ar') ||
-        lc.startsWith('ur') ||
-        lc.startsWith('fa') ||
-        lc.startsWith('ckb');
-  }
-
-  /// Short symbols / abbreviations — avoids [NumberFormat.simpleCurrency] showing
-  /// full currency names (e.g. "Saudi riyals") next to amounts.
-  static String _displayCurrencySymbol(String iso4217, String languageCode) {
-    final arabic = _useArabicScriptCurrency(languageCode);
-    switch (iso4217.toUpperCase()) {
-      case 'SAR':
-        // Latin UI: match API ISO code `currency: "SAR"`; Arabic UI: riyal sign.
-        return arabic ? '\uFDFC' : 'SAR';
-      case 'USD':
-        return r'$';
-      case 'EUR':
-        return '€';
-      case 'GBP':
-        return '£';
-      case 'AED':
-        return arabic ? 'د.إ' : 'AED';
-      case 'KWD':
-        return arabic ? 'د.ك' : 'KWD';
-      case 'BHD':
-        return arabic ? 'د.ب' : 'BHD';
-      case 'QAR':
-        return arabic ? 'ر.ق' : 'QAR';
-      case 'OMR':
-        return arabic ? 'ر.ع' : 'OMR';
-      case 'EGP':
-        return arabic ? 'ج.م' : 'EGP';
-      default:
-        return iso4217;
-    }
-  }
-
   static String _formatMoney(InvoiceResource inv, String languageCode) {
-    final code = inv.currency.trim().toUpperCase();
-    final symbol = _displayCurrencySymbol(code, languageCode);
-    try {
-      return NumberFormat.currency(
-        locale: languageCode,
-        symbol: symbol,
-        decimalDigits: 2,
-      ).format(inv.amount);
-    } catch (_) {
-      return '${inv.amount.toStringAsFixed(2)} $symbol';
-    }
+    return formatCurrencyAmount(amount: inv.amount, code: inv.currency);
   }
 
   static void _showUnavailable(BuildContext context) {

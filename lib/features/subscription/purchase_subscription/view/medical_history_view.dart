@@ -13,6 +13,7 @@ import 'package:pilates_app/features/subscription/purchase_subscription/view/wid
 import 'package:pilates_app/features/subscription/purchase_subscription/view/widgets/subscription_progress.dart';
 import 'package:pilates_app/widgets/app_button.dart';
 import 'package:pilates_app/widgets/app_text.dart';
+import 'package:pilates_app/widgets/inline_validation_banner.dart';
 
 class MedicalHistoryView extends StatefulWidget {
   const MedicalHistoryView({super.key});
@@ -24,6 +25,7 @@ class MedicalHistoryView extends StatefulWidget {
 class _MedicalHistoryViewState extends State<MedicalHistoryView> {
   bool _questionnaireLoading = true;
   bool _questionnaireLoadFailed = false;
+  String? _validationMessage;
 
   @override
   void initState() {
@@ -91,7 +93,18 @@ class _MedicalHistoryViewState extends State<MedicalHistoryView> {
     final l10n = AppLocalizations.of(context)!;
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    return Padding(
+    return BlocListener<SubscriptionCubit, SubscriptionState>(
+      listenWhen: (p, c) =>
+          p.healthQuestionnaireAnswers != c.healthQuestionnaireAnswers ||
+          p.chronicConditions != c.chronicConditions ||
+          p.surgeriesInjuries != c.surgeriesInjuries ||
+          p.painBonesMuscles != c.painBonesMuscles ||
+          p.respiratoryProblems != c.respiratoryProblems ||
+          p.medications != c.medications,
+      listener: (_, __) {
+        if (mounted) setState(() => _validationMessage = null);
+      },
+      child: Padding(
       padding: const EdgeInsets.symmetric(
         vertical: AppSpacing.lg,
         horizontal: AppSpacing.lg,
@@ -411,35 +424,47 @@ class _MedicalHistoryViewState extends State<MedicalHistoryView> {
                   !_questionnaireLoading &&
                   _questionnaireLoadFailed &&
                   !hasApiMedical;
-              return AppButton(
-                label: l10n.continueTxt,
-                onPressed: disableContinue
-                    ? null
-                    : () {
-                        final cubit = context.read<SubscriptionCubit>();
-                        final medicalQs = medicalQuestionsFromApi(
-                          cubit.state.healthQuestionnaireQuestions,
-                        );
-                        if (medicalQs.isNotEmpty &&
-                            !cubit.validateQuestionnaireGroup(medicalQs)) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(l10n.giftRecipientValidationError),
-                            ),
-                          );
-                          return;
-                        }
-                        cubit.nextStep();
-                      },
-                buttonColor: isDark
-                    ? AppColors.primary
-                    : AppColors.primaryBrown,
-                expanded: true,
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  if (_validationMessage != null)
+                    InlineValidationBanner(message: _validationMessage!),
+                  AppButton(
+                    label: l10n.continueTxt,
+                    onPressed: disableContinue
+                        ? null
+                        : () {
+                            final cubit =
+                                context.read<SubscriptionCubit>();
+                            final medicalQs = medicalQuestionsFromApi(
+                              cubit.state.healthQuestionnaireQuestions,
+                            );
+                            if (medicalQs.isNotEmpty &&
+                                !cubit.validateQuestionnaireGroup(
+                                  medicalQs,
+                                )) {
+                              setState(() {
+                                _validationMessage =
+                                    l10n.giftRecipientValidationError;
+                              });
+                              return;
+                            }
+                            setState(() => _validationMessage = null);
+                            cubit.nextStep();
+                          },
+                    buttonColor: isDark
+                        ? AppColors.primary
+                        : AppColors.primaryBrown,
+                    expanded: true,
+                  ),
+                ],
               );
             },
           ),
         ],
       ),
+    ),
     );
   }
 

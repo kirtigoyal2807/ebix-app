@@ -1,4 +1,5 @@
 import 'package:intl/intl.dart';
+import 'package:pilates_app/core/utils/currency_display.dart';
 
 import 'checkout_payment_intent_result.dart';
 import 'checkout_start_result.dart';
@@ -253,14 +254,7 @@ class MembershipReceiptSummary {
   static String formatMoney(int? minor, String currency, [String? locale]) {
     if (minor == null) return '—';
     final major = minor / 100.0;
-    try {
-      return NumberFormat.simpleCurrency(
-        name: currency,
-        locale: locale ?? 'en',
-      ).format(major);
-    } catch (_) {
-      return '${major.toStringAsFixed(2)} $currency';
-    }
+    return formatCurrencyAmount(amount: major, code: currency);
   }
 
   /// Backward-compatible alias; amounts are minor units → formatted major.

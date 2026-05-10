@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:pilates_app/config/theme/app_colors.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/core/localization/arb/app_localizations.dart';
 import 'package:pilates_app/core/validation/contact_validators.dart';
 import 'package:pilates_app/core/validation/subscription_declaration_validators.dart';
+import 'package:pilates_app/features/auth/cubit/auth_cubit.dart';
 import 'package:pilates_app/features/subscription/purchase_subscription/cubit/subscription_cubit.dart';
 import 'package:pilates_app/features/subscription/purchase_subscription/view/widgets/subscription_calendar_date_field.dart';
 import 'package:pilates_app/widgets/app_button.dart';
@@ -32,17 +34,47 @@ class _SafetyViewState extends State<SafetyView> {
   String? _signatureError;
   String? _dateError;
 
+  String _resolvedProfileName() {
+    final subState = context.read<SubscriptionCubit>().state;
+    final user = context.read<AuthCubit>().state.user;
+    final fromUserParts = [
+      user?.firstName?.trim() ?? '',
+      user?.lastName?.trim() ?? '',
+    ].where((name) => name.isNotEmpty).join(' ').trim();
+    if (fromUserParts.isNotEmpty) return fromUserParts;
+    final fromUserName = user?.name?.trim() ?? '';
+    if (fromUserName.isNotEmpty) return fromUserName;
+    final fromPersonalInfo = subState.name.trim();
+    if (fromPersonalInfo.isNotEmpty) return fromPersonalInfo;
+    return '';
+  }
+
   @override
   void initState() {
     super.initState();
     final s = context.read<SubscriptionCubit>().state;
-    _nameController = TextEditingController(text: s.declarationName);
+    final profileName = _resolvedProfileName();
+    final safeName = profileName.isNotEmpty
+        ? profileName
+        : (s.declarationName.trim().isNotEmpty ? s.declarationName : '');
+    final today = DateFormat('dd-MM-yyyy').format(DateTime.now());
+    final safeDate = s.declarationDate.trim().isNotEmpty
+        ? s.declarationDate
+        : today;
+
+    _nameController = TextEditingController(text: safeName);
     _signatureController = TextEditingController(text: s.declarationSignature);
-    _dateController = TextEditingController(text: s.declarationDate);
+    _dateController = TextEditingController(text: safeDate);
     _legalScrollController = ScrollController();
     _legalScrollController.addListener(_onLegalScroll);
     WidgetsBinding.instance.addPostFrameCallback(
-      (_) => _maybeMarkShortLegalContentRead(),
+      (_) {
+        if (!mounted) return;
+        final cubit = context.read<SubscriptionCubit>();
+        cubit.updateDeclarationName(_nameController.text);
+        cubit.updateDeclarationDate(_dateController.text);
+        _maybeMarkShortLegalContentRead();
+      },
     );
   }
 
@@ -131,6 +163,19 @@ class _SafetyViewState extends State<SafetyView> {
     final cubit = context.read<SubscriptionCubit>();
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final size = MediaQuery.sizeOf(context);
+
+    if (_nameController.text.trim().isEmpty) {
+      final fallbackName = _resolvedProfileName();
+      if (fallbackName.isNotEmpty) {
+        _nameController.text = fallbackName;
+        cubit.updateDeclarationName(fallbackName);
+      }
+    }
+    if (_dateController.text.trim().isEmpty) {
+      final today = DateFormat('dd-MM-yyyy').format(DateTime.now());
+      _dateController.text = today;
+      cubit.updateDeclarationDate(today);
+    }
 
     return Padding(
       padding: const EdgeInsets.symmetric(
@@ -279,6 +324,8 @@ class _SafetyViewState extends State<SafetyView> {
                       label: l10n.name,
                       hint: l10n.name,
                       controller: _nameController,
+                      enabled: false,
+                      readOnly: true,
                       errorText: _nameError,
                       keyboardType: TextInputType.name,
                       onChanged: (_) {
@@ -306,6 +353,7 @@ class _SafetyViewState extends State<SafetyView> {
                       label: l10n.date,
                       hint: l10n.date,
                       controller: _dateController,
+                      enabled: false,
                       onDateSelected: (d) {
                         cubit.updateDeclarationDate(d);
                         setState(() => _dateError = null);

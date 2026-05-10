@@ -1205,7 +1205,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get active => 'Active';
 
   @override
-  String get pricePerMonth => '89\$ / Month';
+  String get pricePerMonth => 'Price / Month';
 
   @override
   String get pauseHistory => 'Pause History';

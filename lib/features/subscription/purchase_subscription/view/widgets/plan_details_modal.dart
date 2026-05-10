@@ -2,12 +2,12 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:html/parser.dart' as html_parser;
 import 'package:pilates_app/config/theme/app_colors.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/core/localization/arb/app_localizations.dart';
+import 'package:pilates_app/core/utils/currency_display.dart';
 import 'package:pilates_app/features/checkout/data/checkout_repository.dart';
 import 'package:pilates_app/features/subscription/purchase_subscription/cubit/subscription_cubit.dart';
 import 'package:pilates_app/widgets/app_button.dart';
@@ -71,7 +71,7 @@ class _PlanDetailsModalState extends State<PlanDetailsModal> {
         if (!mounted) {
           return;
         }
-        final l10n = AppLocalizations.of(context)!;
+        final l10n = AppLocalizations.of(context);
         final merged = Map<String, dynamic>.from(widget.plan);
         merged.addAll(product.toPlanMap(l10n));
         merged['id'] = widget.plan['id'];
@@ -101,6 +101,17 @@ class _PlanDetailsModalState extends State<PlanDetailsModal> {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final billingSuffix = _planPriceSubtitle(_displayPlan);
+    final currencyCode =
+        (_displayPlan['currency'] as String?)?.trim().isNotEmpty == true
+        ? (_displayPlan['currency'] as String).trim()
+        : 'SAR';
+    final formattedPrice = formatCurrencyAmountFromRaw(
+      amount: _displayPlan['price'],
+      code: currencyCode,
+    );
+    final priceLine = billingSuffix.isNotEmpty
+        ? '$formattedPrice$billingSuffix'
+        : formattedPrice;
     final descriptionPlain = _displayPlan['descriptionPlain'] as String?;
     final hasDescription =
         descriptionPlain != null && descriptionPlain.trim().isNotEmpty;
@@ -182,27 +193,9 @@ class _PlanDetailsModalState extends State<PlanDetailsModal> {
             const SizedBox(height: AppSpacing.sm),
             Row(
               children: [
-                AppText(
-                  '${_displayPlan['price']}',
-                  style: (context) => AppTextStyles.boldBody(context).copyWith(
-                    fontSize: 32,
-                    fontWeight: FontWeight.w500,
-                    color: isDark
-                        ? AppColors.languageTextDark
-                        : AppColors.languageIcon,
-                  ),
-                ),
-                SvgPicture.asset(
-                  'assets/images/svg/ic_Saudi_Riyal_Symbol.svg',
-                  height: 24,
-                  width: 24,
-                  color: isDark
-                      ? AppColors.languageTextDark
-                      : AppColors.languageIcon,
-                ),
-                if (billingSuffix.isNotEmpty)
-                  AppText(
-                    billingSuffix,
+                Expanded(
+                  child: AppText(
+                    priceLine,
                     style: (context) =>
                         AppTextStyles.boldBody(context).copyWith(
                           fontSize: 32,
@@ -212,6 +205,7 @@ class _PlanDetailsModalState extends State<PlanDetailsModal> {
                               : AppColors.languageIcon,
                         ),
                   ),
+                ),
               ],
             ),
             if (hasDescription) ...[
@@ -299,7 +293,7 @@ String _htmlToSingleLinePlainText(String? raw) {
   return text.replaceAll(RegExp(r'\s+'), ' ').trim();
 }
 
-/// Text after the SAR symbol in the plan sheet (e.g. ` / Month` for legacy rows).
+/// Text after the formatted price in the plan sheet (e.g. ` / Month`).
 String _planPriceSubtitle(Map<String, dynamic> plan) {
   if (plan.containsKey('priceSubtitle')) {
     return (plan['priceSubtitle'] as String?) ?? '';

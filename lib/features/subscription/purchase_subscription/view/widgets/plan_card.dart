@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pilates_app/config/theme/app_colors.dart';
 import 'package:pilates_app/config/theme/app_radius.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
+import 'package:pilates_app/core/utils/currency_display.dart';
 import 'package:pilates_app/widgets/app_text.dart';
 
 import '../../../../../widgets/app_shadow.dart';
@@ -11,6 +11,7 @@ class PlanCard extends StatelessWidget {
   final String id;
   final String title;
   final String price;
+  final String currencyCode;
   final bool isSelected;
   final bool isPopular;
   final String? badgeText; // e.g. "Most Popular" or "Starter"
@@ -23,6 +24,7 @@ class PlanCard extends StatelessWidget {
     required this.id,
     required this.title,
     required this.price,
+    this.currencyCode = 'SAR',
     required this.isSelected,
     this.badgeText,
     this.isPopular = false,
@@ -33,9 +35,13 @@ class PlanCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final borderColor = isSelected
-        ? AppColors.primaryBrown
-        : (isDark ? AppColors.borderDark : AppColors.lightGreyBorder);
+    final formattedPrice = formatCurrencyAmountFromRaw(
+      amount: price,
+      code: currencyCode,
+    );
+    final priceLine = priceSuffix.isNotEmpty
+        ? '$formattedPrice$priceSuffix'
+        : formattedPrice;
 
     return LayoutBuilder(
       // To ensure container doesn't overflow or break
@@ -121,23 +127,13 @@ class PlanCard extends StatelessWidget {
 
                 Row(
                   children: [
-                    AppText(
-                      price,
-                      style: (context) =>
-                          AppTextStyles.body(context).copyWith(fontSize: 18),
-                    ),
-                    SvgPicture.asset(
-                      "assets/images/svg/ic_Saudi_Riyal_Symbol.svg",
-                      color: isDark
-                          ? AppColors.languageTextDark
-                          : AppColors.languageIcon,
-                    ),
-                    if (priceSuffix.isNotEmpty)
-                      AppText(
-                        priceSuffix,
+                    Expanded(
+                      child: AppText(
+                        priceLine,
                         style: (context) =>
                             AppTextStyles.body(context).copyWith(fontSize: 18),
                       ),
+                    ),
                   ],
                 ),
               ],

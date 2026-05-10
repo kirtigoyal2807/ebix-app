@@ -15,12 +15,14 @@ class SubscriptionCalendarDateField extends StatelessWidget {
     required this.hint,
     required this.controller,
     required this.onDateSelected,
+    this.enabled = true,
   });
 
   final String label;
   final String hint;
   final TextEditingController controller;
   final ValueChanged<String> onDateSelected;
+  final bool enabled;
 
   static final DateFormat _displayFormat = DateFormat('dd-MM-yyyy');
 
@@ -78,7 +80,7 @@ class SubscriptionCalendarDateField extends StatelessWidget {
             return Material(
               color: Colors.transparent,
               child: InkWell(
-                onTap: () => _openPicker(context),
+                onTap: enabled ? () => _openPicker(context) : null,
                 borderRadius: BorderRadius.circular(AppRadius.md),
                 child: Container(
                   height: 48,

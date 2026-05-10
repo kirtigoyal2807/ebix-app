@@ -17,6 +17,7 @@ class PhoneNumberField extends StatefulWidget {
   final String? errorText;
   final Function(CountryCode)? onCountryChanged;
   final ValueChanged<String>? onChanged;
+  final bool enabled;
 
   /// When set, the phone text field only accepts this many digits (e.g. `10`).
   final int? maxPhoneDigits;
@@ -35,6 +36,7 @@ class PhoneNumberField extends StatefulWidget {
     this.onChanged,
     this.maxPhoneDigits,
     this.initialCountryIso = 'SA',
+    this.enabled = true,
   });
 
   @override
@@ -95,9 +97,11 @@ class _PhoneNumberFieldState extends State<PhoneNumberField> {
               children: [
                 CountryCodePicker(
                   headerText: context.l10n.selectCountry,
-                  onChanged: (CountryCode countryCode) {
-                    widget.onCountryChanged?.call(countryCode);
-                  },
+                  onChanged: widget.enabled
+                      ? (CountryCode countryCode) {
+                          widget.onCountryChanged?.call(countryCode);
+                        }
+                      : null,
                   initialSelection: widget.initialCountryIso,
                   showCountryOnly: false,
                   showOnlyCountryWhenClosed: false,
@@ -128,6 +132,7 @@ class _PhoneNumberFieldState extends State<PhoneNumberField> {
                   child: TextField(
                     controller: widget.controller,
                     focusNode: _focusNode,
+                    enabled: widget.enabled,
                     keyboardType: TextInputType.phone,
                     textDirection: TextDirection.ltr,
                     textAlign: TextAlign.left,

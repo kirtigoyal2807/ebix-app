@@ -17,13 +17,21 @@ abstract final class PersonalInformationValidators {
     return n != null && n >= 1 && n <= 120;
   }
 
+  static double? _parsePositiveDecimal(String raw) {
+    final t = raw.trim();
+    if (t.isEmpty) return null;
+    return double.tryParse(t.replaceAll(',', '.'));
+  }
+
+  /// Height in centimetres (50–300). Accepts integers or decimals (e.g. `175`, `175.5`).
   static bool isValidHeightCm(String raw) {
-    final n = int.tryParse(raw.trim());
+    final n = _parsePositiveDecimal(raw);
     return n != null && n >= 50 && n <= 300;
   }
 
+  /// Weight in kilograms (20–400). Accepts integers or decimals (e.g. `70`, `70.5`).
   static bool isValidWeightKg(String raw) {
-    final n = int.tryParse(raw.trim());
+    final n = _parsePositiveDecimal(raw);
     return n != null && n >= 20 && n <= 400;
   }
 
