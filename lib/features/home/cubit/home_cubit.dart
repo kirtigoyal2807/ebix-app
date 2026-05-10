@@ -62,4 +62,37 @@ class HomeCubit extends Cubit<HomeState> {
         );
     }
   }
+
+  /// Re-fetches home without switching to [HomeLoadStatus.loading] when
+  /// [HomeState.data] is already available (keeps current UI during pull-to-refresh).
+  Future<void> refreshHome() async {
+    if (state.data == null) {
+      await loadHome();
+      return;
+    }
+
+    emit(state.copyWith(errorMessage: ''));
+    final result = await _homeRepository.fetchHome();
+    switch (result) {
+      case ApiSuccess<HomeResponse>(:final data):
+        final planName = data.membership?.planName?.trim() ?? '';
+        if (planName.isNotEmpty) {
+          await _tokenStorage.saveMembershipPlanName(planName);
+        }
+        emit(
+          state.copyWith(
+            loadStatus: HomeLoadStatus.loaded,
+            errorMessage: '',
+            data: data,
+          ),
+        );
+      case ApiFailure<HomeResponse>(:final exception):
+        emit(
+          state.copyWith(
+            loadStatus: HomeLoadStatus.failure,
+            errorMessage: exception.message ?? '',
+          ),
+        );
+    }
+  }
 }
