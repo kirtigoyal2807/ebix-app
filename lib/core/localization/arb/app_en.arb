@@ -447,6 +447,8 @@
   "accountTitle": "Account",
   "logout": "Logout",
   "logoutConfirmationMessage": "Are you sure you want to log out of your account?",
+  "logoutSheetMessage": "Are you sure you want to log out?",
+  "logoutConfirmYesAction": "Yes, Logout",
   "appPreferences": "App Preferences",
   "language": "Language",
   "englishShort": "English (EN)",

@@ -447,6 +447,8 @@
   "accountTitle": "الحساب",
   "logout": "تسجيل الخروج",
   "logoutConfirmationMessage": "هل أنت متأكد أنك تريد تسجيل الخروج من حسابك؟",
+  "logoutSheetMessage": "هل أنت متأكد أنك تريد تسجيل الخروج؟",
+  "logoutConfirmYesAction": "نعم، تسجيل الخروج",
   "appPreferences": "تفضيلات التطبيق",
   "language": "اللغة",
   "englishShort": "الإنجليزية (EN)",

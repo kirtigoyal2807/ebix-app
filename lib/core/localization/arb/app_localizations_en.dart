@@ -1133,6 +1133,12 @@ class AppLocalizationsEn extends AppLocalizations {
       'Are you sure you want to log out of your account?';
 
   @override
+  String get logoutSheetMessage => 'Are you sure you want to log out?';
+
+  @override
+  String get logoutConfirmYesAction => 'Yes, Logout';
+
+  @override
   String get appPreferences => 'App Preferences';
 
   @override
