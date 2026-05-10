@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pilates_app/config/theme/app_colors.dart';
 import 'package:pilates_app/config/theme/app_radius.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
@@ -35,13 +36,7 @@ class PlanCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final formattedPrice = formatCurrencyAmountFromRaw(
-      amount: price,
-      code: currencyCode,
-    );
-    final priceLine = priceSuffix.isNotEmpty
-        ? '$formattedPrice$priceSuffix'
-        : formattedPrice;
+    final parsedPrice = tryParseCurrencyAmount(price);
 
     return LayoutBuilder(
       // To ensure container doesn't overflow or break
@@ -128,8 +123,10 @@ class PlanCard extends StatelessWidget {
                 Row(
                   children: [
                     Expanded(
-                      child: AppText(
-                        priceLine,
+                      child: _PlanPriceText(
+                        amount: parsedPrice,
+                        currencyCode: currencyCode,
+                        priceSuffix: priceSuffix,
                         style: (context) =>
                             AppTextStyles.body(context).copyWith(fontSize: 18),
                       ),
@@ -141,6 +138,69 @@ class PlanCard extends StatelessWidget {
           ),
         );
       },
+    );
+  }
+}
+
+class _PlanPriceText extends StatelessWidget {
+  const _PlanPriceText({
+    required this.amount,
+    required this.currencyCode,
+    required this.priceSuffix,
+    required this.style,
+  });
+
+  final num? amount;
+  final String currencyCode;
+  final String priceSuffix;
+  final TextStyle Function(BuildContext) style;
+
+  @override
+  Widget build(BuildContext context) {
+    final textStyle = style(context);
+    if (amount == null) {
+      return AppText('—', style: style);
+    }
+
+    if (!isSaudiRiyalCode(currencyCode)) {
+      final formattedPrice = formatCurrencyAmount(
+        amount: amount!,
+        code: currencyCode,
+      );
+      final priceLine = priceSuffix.isNotEmpty
+          ? '$formattedPrice$priceSuffix'
+          : formattedPrice;
+      return AppText(priceLine, style: style);
+    }
+
+    final fontSize = textStyle.fontSize ?? 18;
+    final iconHeight = fontSize * 0.95;
+    final iconWidth = iconHeight * 14 / 16;
+    final suffix = priceSuffix;
+
+    return Directionality(
+      textDirection: TextDirection.ltr,
+      child: Text.rich(
+        TextSpan(
+          style: textStyle,
+          children: [
+            WidgetSpan(
+              alignment: PlaceholderAlignment.middle,
+              child: Padding(
+                padding: const EdgeInsets.only(right: 6),
+                child: SvgPicture.asset(
+                  'assets/images/svg/ic_Saudi_Riyal_Symbol.svg',
+                  height: iconHeight,
+                  width: iconWidth,
+                ),
+              ),
+            ),
+            TextSpan(text: '${amount!.toStringAsFixed(2)}$suffix'),
+          ],
+        ),
+        maxLines: 2,
+        overflow: TextOverflow.ellipsis,
+      ),
     );
   }
 }

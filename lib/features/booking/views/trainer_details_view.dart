@@ -21,7 +21,6 @@ import '../../../config/theme/app_radius.dart';
 import '../widgets/booking_class_card.dart';
 import '../widgets/class_reviews_section.dart';
 import '../widgets/tag_chip.dart';
-import '../widgets/trainer_average_stars.dart';
 
 typedef _TrainerDetailBundle = ({
   ApiResult<TrainerResource> trainer,
@@ -396,8 +395,7 @@ class _TrainerDetailsApiRouteState extends State<_TrainerDetailsApiRoute> {
                                   ),
                                 ),
                                 InkWell(
-                                  onTap: () =>
-                                      _openBrowseAllClasses(context),
+                                  onTap: () => _openBrowseAllClasses(context),
                                   child: AppText(
                                     context.l10n.seeAll,
                                     maxLines: 1,
@@ -646,7 +644,6 @@ class _TrainerApiHeaderRating extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final count = trainer.reviewsCount;
-    final metaColor = isDark ? AppColors.darkGreyText : AppColors.lightGrey;
     final avgValue = trainer.averageRatingValue;
     final avgText = trainer.displayAverageRating;
 
@@ -655,8 +652,6 @@ class _TrainerApiHeaderRating extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            TrainerAverageStars(rating: avgValue, itemSize: 24),
-            const SizedBox(height: 8),
             Wrap(
               alignment: WrapAlignment.center,
               crossAxisAlignment: WrapCrossAlignment.center,
@@ -695,7 +690,6 @@ class _TrainerApiHeaderRating extends StatelessWidget {
         spacing: AppSpacing.sm,
         runSpacing: AppSpacing.xs,
         children: [
-          Icon(Icons.star_border_rounded, color: metaColor, size: 20),
           AppText(
             avgText,
             maxLines: 1,
@@ -724,7 +718,6 @@ class _TrainerApiHeaderRating extends StatelessWidget {
         spacing: AppSpacing.sm,
         runSpacing: AppSpacing.xs,
         children: [
-          Icon(Icons.star_border_rounded, color: metaColor, size: 20),
           AppText(
             '($count ${context.l10n.reviews})',
             maxLines: 2,
@@ -737,9 +730,7 @@ class _TrainerApiHeaderRating extends StatelessWidget {
       );
     }
 
-    return Center(
-      child: Icon(Icons.star_border_rounded, color: metaColor, size: 20),
-    );
+    return const SizedBox.shrink();
   }
 }
 
@@ -893,10 +884,6 @@ class _TrainerDetailsDemoView extends StatelessWidget {
                   spacing: 2,
                   runSpacing: AppSpacing.xs,
                   children: [
-                    Icon(Icons.star, color: AppColors.goldStarColor, size: 14),
-                    Icon(Icons.star, color: AppColors.goldStarColor, size: 14),
-                    Icon(Icons.star, color: AppColors.goldStarColor, size: 14),
-                    Icon(Icons.star, color: AppColors.goldStarColor, size: 14),
                     AppText(
                       '4',
                       maxLines: 1,

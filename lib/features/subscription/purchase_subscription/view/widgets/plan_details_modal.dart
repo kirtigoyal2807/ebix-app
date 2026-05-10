@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:html/parser.dart' as html_parser;
 import 'package:pilates_app/config/theme/app_colors.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
@@ -105,13 +106,7 @@ class _PlanDetailsModalState extends State<PlanDetailsModal> {
         (_displayPlan['currency'] as String?)?.trim().isNotEmpty == true
         ? (_displayPlan['currency'] as String).trim()
         : 'SAR';
-    final formattedPrice = formatCurrencyAmountFromRaw(
-      amount: _displayPlan['price'],
-      code: currencyCode,
-    );
-    final priceLine = billingSuffix.isNotEmpty
-        ? '$formattedPrice$billingSuffix'
-        : formattedPrice;
+    final parsedPrice = tryParseCurrencyAmount(_displayPlan['price']);
     final descriptionPlain = _displayPlan['descriptionPlain'] as String?;
     final hasDescription =
         descriptionPlain != null && descriptionPlain.trim().isNotEmpty;
@@ -194,8 +189,10 @@ class _PlanDetailsModalState extends State<PlanDetailsModal> {
             Row(
               children: [
                 Expanded(
-                  child: AppText(
-                    priceLine,
+                  child: _PlanDetailPriceText(
+                    amount: parsedPrice,
+                    currencyCode: currencyCode,
+                    priceSuffix: billingSuffix,
                     style: (context) =>
                         AppTextStyles.boldBody(context).copyWith(
                           fontSize: 32,
@@ -299,4 +296,66 @@ String _planPriceSubtitle(Map<String, dynamic> plan) {
     return (plan['priceSubtitle'] as String?) ?? '';
   }
   return ' / Month';
+}
+
+class _PlanDetailPriceText extends StatelessWidget {
+  const _PlanDetailPriceText({
+    required this.amount,
+    required this.currencyCode,
+    required this.priceSuffix,
+    required this.style,
+  });
+
+  final num? amount;
+  final String currencyCode;
+  final String priceSuffix;
+  final TextStyle Function(BuildContext) style;
+
+  @override
+  Widget build(BuildContext context) {
+    final textStyle = style(context);
+    if (amount == null) {
+      return AppText('—', style: style);
+    }
+
+    if (!isSaudiRiyalCode(currencyCode)) {
+      final formattedPrice = formatCurrencyAmount(
+        amount: amount!,
+        code: currencyCode,
+      );
+      final priceLine = priceSuffix.isNotEmpty
+          ? '$formattedPrice$priceSuffix'
+          : formattedPrice;
+      return AppText(priceLine, style: style);
+    }
+
+    final fontSize = textStyle.fontSize ?? 32;
+    final iconHeight = fontSize * 0.95;
+    final iconWidth = iconHeight * 14 / 16;
+
+    return Directionality(
+      textDirection: TextDirection.ltr,
+      child: Text.rich(
+        TextSpan(
+          style: textStyle,
+          children: [
+            WidgetSpan(
+              alignment: PlaceholderAlignment.middle,
+              child: Padding(
+                padding: const EdgeInsets.only(right: 8),
+                child: SvgPicture.asset(
+                  'assets/images/svg/ic_Saudi_Riyal_Symbol.svg',
+                  height: iconHeight,
+                  width: iconWidth,
+                ),
+              ),
+            ),
+            TextSpan(text: '${amount!.toStringAsFixed(2)}$priceSuffix'),
+          ],
+        ),
+        maxLines: 2,
+        overflow: TextOverflow.ellipsis,
+      ),
+    );
+  }
 }
