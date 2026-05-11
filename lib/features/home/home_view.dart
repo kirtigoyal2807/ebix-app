@@ -179,7 +179,7 @@ class _HomeShell extends StatelessWidget {
         items: [
           BottomNavigationBarItem(
             icon: Padding(
-              padding: const EdgeInsets.symmetric(
+              padding: EdgeInsets.symmetric(
                 horizontal: AppSpacing.xs,
                 vertical: 3,
               ),
@@ -389,7 +389,7 @@ class HomeContentView extends StatelessWidget {
                   style: AppTextStyles.body,
                   textAlign: TextAlign.center,
                 ),
-                const SizedBox(height: AppSpacing.md),
+                 SizedBox(height: AppSpacing.md),
                 ElevatedButton(
                   onPressed: () => context.read<HomeCubit>().loadHome(),
                   child: AppText(
@@ -455,25 +455,25 @@ class HomeContentView extends StatelessWidget {
                           return HomeHeader(userName: displayName);
                         },
                       ),
-                      const SizedBox(height: AppSpacing.lg),
+                       SizedBox(height: AppSpacing.lg),
                       if (banners.isNotEmpty) ...[
                         SpringChallengeCard(
                           banners: banners,
                           onBannerTap: (banner) =>
                               _handleBannerTap(context, banner),
                         ),
-                        const SizedBox(height: AppSpacing.lg),
+                         SizedBox(height: AppSpacing.lg),
                       ],
                       const QuickActions(),
                       if (receivedGifts.isNotEmpty) ...[
-                        const SizedBox(height: AppSpacing.lg),
+                         SizedBox(height: AppSpacing.lg),
                         _sectionTitle(
                           context,
                           context.l10n.giftReceivedTitle,
                           isDark,
                           size,
                         ),
-                        const SizedBox(height: AppSpacing.md),
+                        SizedBox(height: AppSpacing.md),
                         ReceivedGiftCard(gift: receivedGifts.first),
                       ],
                       BlocBuilder<AuthCubit, AuthState>(
@@ -486,14 +486,14 @@ class HomeContentView extends StatelessWidget {
                           return Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const SizedBox(height: AppSpacing.lg),
+                               SizedBox(height: AppSpacing.lg),
                               _sectionTitle(
                                 context,
                                 context.l10n.yourMembership,
                                 isDark,
                                 size,
                               ),
-                              const SizedBox(height: AppSpacing.md),
+                               SizedBox(height: AppSpacing.md),
                               MembershipCard(
                                 status: hasPlan
                                     ? HomeUserStatus.existing
@@ -513,14 +513,14 @@ class HomeContentView extends StatelessWidget {
                         },
                       ),
                       if (progress != null) ...[
-                        const SizedBox(height: AppSpacing.lg),
+                         SizedBox(height: AppSpacing.lg),
                         _sectionTitle(
                           context,
                           context.l10n.yourProgress,
                           isDark,
                           size,
                         ),
-                        const SizedBox(height: AppSpacing.md),
+                         SizedBox(height: AppSpacing.md),
                         ProgressCard(
                           status: progressStatus,
                           classesDone: attendedClasses,
@@ -530,14 +530,14 @@ class HomeContentView extends StatelessWidget {
                         ),
                       ],
                       if (featuredClass != null) ...[
-                        const SizedBox(height: AppSpacing.lg),
+                         SizedBox(height: AppSpacing.lg),
                         _sectionTitle(
                           context,
                           context.l10n.featuredClass,
                           isDark,
                           size,
                         ),
-                        const SizedBox(height: AppSpacing.md),
+                         SizedBox(height: AppSpacing.md),
                         FeaturedClassCard(featuredClass: featuredClass),
                       ],
                       BlocBuilder<AuthCubit, AuthState>(
@@ -553,7 +553,7 @@ class HomeContentView extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               if (classTypes.isNotEmpty) ...[
-                                const SizedBox(height: AppSpacing.lg),
+                                 SizedBox(height: AppSpacing.lg),
                                 _sectionTitleWithSeeAll(
                                   context,
                                   context.l10n.classTypes,
@@ -562,11 +562,11 @@ class HomeContentView extends StatelessWidget {
                                   onTap: () =>
                                       context.read<HomeCubit>().setTab(1),
                                 ),
-                                const SizedBox(height: AppSpacing.md),
+                                 SizedBox(height: AppSpacing.md),
                                 ClassTypesSection(classTypes: classTypes),
                               ],
                               if (topTrainers.isNotEmpty) ...[
-                                const SizedBox(height: AppSpacing.lg),
+                                 SizedBox(height: AppSpacing.lg),
                                 _sectionTitleWithSeeAll(
                                   context,
                                   context.l10n.topTrainers,
@@ -577,15 +577,15 @@ class HomeContentView extends StatelessWidget {
                                     bookingTab: BookingTab.trainers,
                                   ),
                                 ),
-                                const SizedBox(height: AppSpacing.md),
+                                 SizedBox(height: AppSpacing.md),
                                 TopTrainersSection(trainers: topTrainers),
                               ],
                             ],
                           );
                         },
                       ),
-                      const SizedBox(height: AppSpacing.lg),
-                      const SizedBox(height: AppSpacing.xl),
+                       SizedBox(height: AppSpacing.lg),
+                       SizedBox(height: AppSpacing.xl),
                     ],
                   ),
                 ),
@@ -604,7 +604,7 @@ class HomeContentView extends StatelessWidget {
     Size size,
   ) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+      padding:  EdgeInsets.symmetric(horizontal: AppSpacing.lg),
       child: AppText(
         title,
         style: (context) => AppTextStyles.heading1(context).copyWith(
@@ -624,7 +624,7 @@ class HomeContentView extends StatelessWidget {
     required VoidCallback onTap,
   }) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+      padding:  EdgeInsets.symmetric(horizontal: AppSpacing.lg),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,

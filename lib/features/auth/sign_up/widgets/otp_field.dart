@@ -101,7 +101,7 @@ class _OtpFieldState extends State<OtpField> {
       child: LayoutBuilder(
         builder: (context, constraints) {
           const maxCell = 48.0;
-          const gap = AppSpacing.sm;
+          final gap = AppSpacing.sm;
           final totalGaps = (widget.length - 1) * gap;
           final available = constraints.hasBoundedWidth
               ? constraints.maxWidth
