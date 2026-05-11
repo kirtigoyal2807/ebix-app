@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:country_code_picker/country_code_picker.dart';
@@ -13,6 +15,30 @@ import 'app_text.dart';
 /// ITU-style cap for national significant digits (`phone_numbers_parser` uses up to 17).
 const int _kMaxNationalSignificantDigits = 17;
 
+/// Same as [Constants.minLengthNsn] in `phone_numbers_parser` — avoid inline errors while the user has typed fewer digits.
+const int _kMinNationalSignificantDigitsForValidation = 3;
+
+/// Longest NSN length allowed for mobile or fixed-line subscriber numbers for [iso]
+/// (avoids toll-free / premium-only lengths so e.g. India caps at 10, not 13).
+int _maxSubscriberNationalDigits(IsoCode iso) {
+  var maxFound = 0;
+  for (var len = 1; len <= _kMaxNationalSignificantDigits; len++) {
+    final p = PhoneNumber(isoCode: iso, nsn: '5' * len);
+    if (p.isValidLength(type: PhoneNumberType.mobile) ||
+        p.isValidLength(type: PhoneNumberType.fixedLine)) {
+      if (len > maxFound) maxFound = len;
+    }
+  }
+  if (maxFound > 0) return maxFound;
+  for (var len = 1; len <= _kMaxNationalSignificantDigits; len++) {
+    final p = PhoneNumber(isoCode: iso, nsn: '5' * len);
+    if (p.isValidLength()) {
+      if (len > maxFound) maxFound = len;
+    }
+  }
+  return maxFound > 0 ? maxFound : _kMaxNationalSignificantDigits;
+}
+
 class PhoneNumberField extends StatefulWidget {
   final String label;
   final String countryCode;
@@ -23,7 +49,8 @@ class PhoneNumberField extends StatefulWidget {
   final ValueChanged<String>? onChanged;
   final bool enabled;
 
-  /// Legacy cap; ignored in favor of per-country validation and [_kMaxNationalSignificantDigits].
+  /// Optional stricter cap (e.g. 10). The effective limit is the minimum of this value,
+  /// per-country metadata (subscriber lengths), and [_kMaxNationalSignificantDigits].
   final int? maxPhoneDigits;
 
   /// ISO 3166-1 alpha-2 for [CountryCodePicker.initialSelection].
@@ -46,7 +73,7 @@ class PhoneNumberField extends StatefulWidget {
     this.onCountryChanged,
     this.onChanged,
     this.maxPhoneDigits,
-    this.initialCountryIso = 'AE',
+    this.initialCountryIso = 'SA',
     this.enabled = true,
     this.focusNode,
     this.textInputAction = TextInputAction.next,
@@ -154,18 +181,33 @@ class _PhoneNumberFieldState extends State<PhoneNumberField> {
     super.dispose();
   }
 
+  int _effectiveMaxNationalDigits() {
+    final iso = PhoneNumberField._tryIso(_selectedCountryCode?.code ?? '');
+    if (iso == null) return _kMaxNationalSignificantDigits;
+    var cap = math.min(
+      _maxSubscriberNationalDigits(iso),
+      _kMaxNationalSignificantDigits,
+    );
+    if (widget.maxPhoneDigits != null) {
+      cap = math.min(cap, widget.maxPhoneDigits!);
+    }
+    return cap;
+  }
+
   String? _countryValidationMessage(BuildContext context) {
     final iso = PhoneNumberField._tryIso(_selectedCountryCode?.code ?? '');
     if (iso == null) return null;
     final digits = (widget.controller?.text ?? '').replaceAll(RegExp(r'\D'), '');
     if (digits.isEmpty) return null;
+    if (digits.length < _kMinNationalSignificantDigitsForValidation) {
+      return null;
+    }
     try {
       final parsed = PhoneNumber.parse(digits, callerCountry: iso);
       if (parsed.isValid()) return null;
-      if (!parsed.isValidLength()) return null;
       return context.l10n.invalidPhoneForCountry;
     } catch (_) {
-      return null;
+      return context.l10n.invalidPhoneForCountry;
     }
   }
 
@@ -173,6 +215,7 @@ class _PhoneNumberFieldState extends State<PhoneNumberField> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
+    final maxDigits = _effectiveMaxNationalDigits();
     final countryMessage = _countryValidationMessage(context);
     final displayError = widget.errorText ?? countryMessage;
     final hasError = displayError != null;
@@ -202,7 +245,7 @@ class _PhoneNumberFieldState extends State<PhoneNumberField> {
               children: [
                 CountryCodePicker(
                   pickerStyle: PickerStyle.bottomSheet,
-                  favorite: const ['AE'],
+                  favorite: const ['SA'],
                   headerText: context.l10n.selectCountry,
                   onChanged: widget.enabled
                       ? (CountryCode countryCode) => _onCountryChanged(countryCode)
@@ -256,9 +299,7 @@ class _PhoneNumberFieldState extends State<PhoneNumberField> {
                     onSubmitted: widget.onFieldSubmitted,
                     inputFormatters: <TextInputFormatter>[
                       FilteringTextInputFormatter.digitsOnly,
-                      LengthLimitingTextInputFormatter(
-                        _kMaxNationalSignificantDigits,
-                      ),
+                      LengthLimitingTextInputFormatter(maxDigits),
                     ],
                     onChanged: widget.onChanged,
                     style: AppTextStyles.textField(context),
