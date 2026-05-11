@@ -1283,6 +1283,7 @@
   "passwordMinimumLengthHint": "Minimum 8 characters",
   "pleaseEnterFirstName": "Please enter your first name",
   "pleaseEnterLastName": "Please enter your last name",
+  "pleaseEnterFriendName": "Please enter your friend's name",
   "signupFirstNameHint": "Ayesha",
   "signupLastNameHint": "Tajib",
   "pleaseSelectGender": "Please select your gender",

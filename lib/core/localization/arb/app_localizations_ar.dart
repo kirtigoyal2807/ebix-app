@@ -3011,6 +3011,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get pleaseEnterLastName => 'يُرجى إدخال اسم العائلة';
 
   @override
+  String get pleaseEnterFriendName => 'يُرجى إدخال اسم صديقك';
+
+  @override
   String get signupFirstNameHint => 'عائشة';
 
   @override

@@ -1,6 +1,9 @@
 import 'package:bloc/bloc.dart';
+import 'package:country_code_picker/country_code_picker.dart';
+import 'package:pilates_app/core/localization/arb/app_localizations.dart';
 import 'package:pilates_app/core/network/api_result.dart';
 import 'package:pilates_app/core/network/network_exception.dart';
+import 'package:pilates_app/core/validation/phone_number_country_validation.dart';
 
 import '../data/referral_repository.dart';
 import 'referral_program_state.dart';
@@ -87,31 +90,69 @@ class ReferralProgramCubit extends Cubit<ReferralProgramState> {
 
   Future<void> sendInviteSms({
     required String inviteePhoneRaw,
+    required String? inviteeCountryIso,
     String? inviteeNameRaw,
+    required AppLocalizations l10n,
   }) async {
+    final name = inviteeNameRaw?.trim() ?? '';
     final phone = inviteePhoneRaw.trim();
-    if (phone.isEmpty) {
+    final countryIso = inviteeCountryIso ?? 'SA';
+
+    // Validate name
+    if (name.isEmpty) {
       emit(
         state.copyWith(
-          invitePhoneFieldIssue: InvitePhoneFieldIssue.empty,
-          invitePhoneApiError: null,
-        ),
-      );
-      return;
-    }
-    if (phone.length > 30) {
-      emit(
-        state.copyWith(
-          invitePhoneFieldIssue: InvitePhoneFieldIssue.tooLong,
+          inviteNameFieldIssue: InviteNameFieldIssue.empty,
+          inviteNameApiError: null,
+          invitePhoneFieldIssue: InvitePhoneFieldIssue.none,
           invitePhoneApiError: null,
         ),
       );
       return;
     }
 
+    // Validate phone using the same validation as signup
+    final phoneDigits = phone.replaceAll(RegExp(r'\D'), '');
+    if (phoneDigits.isEmpty) {
+      emit(
+        state.copyWith(
+          inviteNameFieldIssue: InviteNameFieldIssue.none,
+          inviteNameApiError: null,
+          invitePhoneFieldIssue: InvitePhoneFieldIssue.empty,
+          invitePhoneApiError: null,
+        ),
+      );
+      return;
+    }
+
+    if (!PhoneNumberCountryValidation.isValidNationalNumber(
+          iso3166Alpha2: countryIso,
+          nationalDigitsOnly: phoneDigits,
+        )) {
+      emit(
+        state.copyWith(
+          inviteNameFieldIssue: InviteNameFieldIssue.none,
+          inviteNameApiError: null,
+          invitePhoneFieldIssue: InvitePhoneFieldIssue.invalid,
+          invitePhoneApiError: null,
+        ),
+      );
+      return;
+    }
+
+    // Compose E.164 phone number
+    final nationalDigits = PhoneNumberCountryValidation.normalizedNationalDigitsForE164(
+      iso3166Alpha2: countryIso,
+      rawNationalField: phone,
+    );
+    final countryCode = CountryCode.tryFromCountryCode(countryIso)?.dialCode ?? '+966';
+    final phoneE164 = '$countryCode$nationalDigits';
+
     emit(
       state.copyWith(
         inviteSubmitting: true,
+        inviteNameFieldIssue: InviteNameFieldIssue.none,
+        inviteNameApiError: null,
         invitePhoneFieldIssue: InvitePhoneFieldIssue.none,
         invitePhoneApiError: null,
         inviteErrorSnackMessage: null,
@@ -119,9 +160,9 @@ class ReferralProgramCubit extends Cubit<ReferralProgramState> {
     );
 
     final result = await _repository.sendInvitation(
-      inviteePhone: phone,
+      inviteePhone: phoneE164,
       channel: _inviteChannelSms,
-      inviteeName: inviteeNameRaw,
+      inviteeName: name,
     );
 
     switch (result) {
@@ -130,6 +171,8 @@ class ReferralProgramCubit extends Cubit<ReferralProgramState> {
           state.copyWith(
             inviteSubmitting: false,
             inviteSuccessSnackPending: true,
+            inviteNameFieldIssue: InviteNameFieldIssue.none,
+            inviteNameApiError: null,
             invitePhoneFieldIssue: InvitePhoneFieldIssue.none,
             invitePhoneApiError: null,
             inviteErrorSnackMessage: null,
@@ -141,11 +184,16 @@ class ReferralProgramCubit extends Cubit<ReferralProgramState> {
             fields['inviteephone'] ??
             fields['invitee_phone'] ??
             fields['phone'];
+        final nameErr =
+            fields['inviteename'] ??
+            fields['invitee_name'] ??
+            fields['name'];
         emit(
           state.copyWith(
             inviteSubmitting: false,
+            inviteNameApiError: nameErr,
             invitePhoneApiError: phoneErr,
-            inviteErrorSnackMessage: phoneErr == null
+            inviteErrorSnackMessage: (phoneErr == null && nameErr == null)
                 ? exception.message
                 : null,
           ),
@@ -170,6 +218,19 @@ class ReferralProgramCubit extends Cubit<ReferralProgramState> {
       state.copyWith(
         invitePhoneFieldIssue: InvitePhoneFieldIssue.none,
         invitePhoneApiError: null,
+      ),
+    );
+  }
+
+  void clearInviteNameFieldFeedback() {
+    if (state.inviteNameFieldIssue == InviteNameFieldIssue.none &&
+        state.inviteNameApiError == null) {
+      return;
+    }
+    emit(
+      state.copyWith(
+        inviteNameFieldIssue: InviteNameFieldIssue.none,
+        inviteNameApiError: null,
       ),
     );
   }

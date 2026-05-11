@@ -5708,6 +5708,12 @@ abstract class AppLocalizations {
   /// **'Please enter your last name'**
   String get pleaseEnterLastName;
 
+  /// No description provided for @pleaseEnterFriendName.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your friend\'s name'**
+  String get pleaseEnterFriendName;
+
   /// No description provided for @signupFirstNameHint.
   ///
   /// In en, this message translates to:

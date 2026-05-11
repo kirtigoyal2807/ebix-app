@@ -1,3 +1,4 @@
+import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -6,6 +7,7 @@ import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/widgets/app_app_bar.dart';
 import 'package:pilates_app/widgets/app_text.dart';
 import 'package:pilates_app/widgets/app_text_field.dart';
+import 'package:pilates_app/widgets/phone_number_field.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../config/theme/app_radius.dart';
@@ -46,6 +48,7 @@ class _ReferralProgramScaffold extends StatefulWidget {
 class _ReferralProgramScaffoldState extends State<_ReferralProgramScaffold> {
   late final TextEditingController _inviteeNameController;
   late final TextEditingController _inviteePhoneController;
+  CountryCode? _phoneCountry;
 
   @override
   void initState() {
@@ -61,6 +64,22 @@ class _ReferralProgramScaffoldState extends State<_ReferralProgramScaffold> {
     super.dispose();
   }
 
+  String? _inviteNameErrorText(
+    AppLocalizations l10n,
+    ReferralProgramState state,
+  ) {
+    final api = state.inviteNameApiError?.trim();
+    if (api != null && api.isNotEmpty) {
+      return api;
+    }
+    switch (state.inviteNameFieldIssue) {
+      case InviteNameFieldIssue.empty:
+        return l10n.pleaseEnterFriendName;
+      case InviteNameFieldIssue.none:
+        return null;
+    }
+  }
+
   String? _invitePhoneErrorText(
     AppLocalizations l10n,
     ReferralProgramState state,
@@ -74,6 +93,8 @@ class _ReferralProgramScaffoldState extends State<_ReferralProgramScaffold> {
         return l10n.pleaseEnterPhone;
       case InvitePhoneFieldIssue.tooLong:
         return l10n.referralInvitePhoneTooLong;
+      case InvitePhoneFieldIssue.invalid:
+        return l10n.invalidPhoneForCountry;
       case InvitePhoneFieldIssue.none:
         return null;
     }
@@ -251,16 +272,6 @@ class _ReferralProgramScaffoldState extends State<_ReferralProgramScaffold> {
                 ),
               ),
             ),
-            if (state.inviteSubmitting)
-              Positioned.fill(
-                child: AbsorbPointer(
-                  child: Container(
-                    color: Colors.black.withValues(alpha: 0.35),
-                    alignment: Alignment.center,
-                    child: const CircularProgressIndicator(),
-                  ),
-                ),
-              ),
           ],
         );
       },
@@ -555,30 +566,37 @@ class _ReferralProgramScaffoldState extends State<_ReferralProgramScaffold> {
                 label: l10n.friendsName,
                 maxLength: 100,
                 showCharacterCounter: false,
+                errorText: _inviteNameErrorText(l10n, state),
+                onChanged: (_) => cubit.clearInviteNameFieldFeedback(),
               ),
               SizedBox(height: AppSpacing.md),
-              AppTextField(
-                controller: _inviteePhoneController,
-                hint: l10n.phoneHint,
+              PhoneNumberField(
                 label: l10n.phoneNumber,
-                keyboardType: TextInputType.phone,
-                maxLength: 30,
-                showCharacterCounter: false,
+                controller: _inviteePhoneController,
+                countryCode: '+966',
+                flagAsset: 'assets/flags/sa.svg',
                 errorText: _invitePhoneErrorText(l10n, state),
+                onCountryChanged: (country) {
+                  setState(() {
+                    _phoneCountry = country;
+                  });
+                  cubit.clearInvitePhoneFieldFeedback();
+                },
                 onChanged: (_) => cubit.clearInvitePhoneFieldFeedback(),
               ),
               SizedBox(height: AppSpacing.lg),
               AppButton(
                 label: l10n.sendInvitation,
-                onPressed: state.inviteSubmitting
-                    ? null
-                    : () {
-                        FocusScope.of(context).unfocus();
-                        cubit.sendInviteSms(
-                          inviteePhoneRaw: _inviteePhoneController.text,
-                          inviteeNameRaw: _inviteeNameController.text,
-                        );
-                      },
+                isLoading: state.inviteSubmitting,
+                onPressed: () {
+                  FocusScope.of(context).unfocus();
+                  cubit.sendInviteSms(
+                    inviteePhoneRaw: _inviteePhoneController.text,
+                    inviteeCountryIso: _phoneCountry?.code,
+                    inviteeNameRaw: _inviteeNameController.text,
+                    l10n: l10n,
+                  );
+                },
                 variant: AppButtonVariant.primary,
               ),
             ],
