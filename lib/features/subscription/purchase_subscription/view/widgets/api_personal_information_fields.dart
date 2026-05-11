@@ -47,7 +47,7 @@ class ApiPersonalInformationFieldsBlock extends StatelessWidget {
                 ),
                 question: q,
               ),
-              const SizedBox(height: AppSpacing.md),
+              SizedBox(height: AppSpacing.md),
             ],
           ],
         );

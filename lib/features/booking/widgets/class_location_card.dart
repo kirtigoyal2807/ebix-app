@@ -41,7 +41,7 @@ class ClassLocationCard extends StatelessWidget {
               ctx,
             ).copyWith(color: AppColors.lightGrey, fontSize: 12),
           ),
-          const SizedBox(height: AppSpacing.xs),
+          SizedBox(height: AppSpacing.xs),
           AppText(
             branchName,
             style: (ctx) => AppTextStyles.boldBody(ctx).copyWith(

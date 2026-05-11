@@ -70,7 +70,7 @@ class _MyBookingScaffoldState extends State<_MyBookingScaffold>
       backgroundColor: isDark ? AppColors.homeBackground : AppColors.whiteColor,
       appBar: AppAppBar(
         leading: Padding(
-          padding: const EdgeInsets.only(left: AppSpacing.lmd),
+          padding: EdgeInsets.only(left: AppSpacing.lmd),
           child: IconButton(
             icon: const Icon(Icons.arrow_back_ios_rounded, size: 20),
             onPressed: () => Navigator.of(context).pop(),
@@ -84,7 +84,7 @@ class _MyBookingScaffoldState extends State<_MyBookingScaffold>
           child: Column(
             children: [
               Padding(
-                padding: const EdgeInsets.only(
+                padding: EdgeInsets.only(
                   left: AppSpacing.lg,
                   right: AppSpacing.lg,
                   top: AppSpacing.md,

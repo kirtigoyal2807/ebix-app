@@ -38,7 +38,7 @@ class FilterButton extends StatelessWidget {
                 child: Container(
                   width: 74,
                   alignment: Alignment.center,
-                  padding: const EdgeInsets.symmetric(
+                  padding: EdgeInsets.symmetric(
                     horizontal: AppSpacing.base,
                     vertical: AppSpacing.xs,
                   ),

@@ -21,7 +21,7 @@ class YourMindPractice extends StatelessWidget {
         if (state.status == ProgressOverviewStatus.loading &&
             state.overview == null) {
           return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+            padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -56,7 +56,7 @@ class YourMindPractice extends StatelessWidget {
             : _formatInnerPeacePercent(overview.innerPeacePercent);
 
         return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+          padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,

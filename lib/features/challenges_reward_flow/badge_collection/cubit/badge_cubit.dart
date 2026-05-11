@@ -1,5 +1,4 @@
 import 'package:bloc/bloc.dart';
-import 'package:flutter/material.dart';
 
 import '../model/badge_model.dart';
 import 'badge_state.dart';

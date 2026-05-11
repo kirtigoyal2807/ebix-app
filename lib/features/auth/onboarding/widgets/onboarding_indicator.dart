@@ -20,7 +20,7 @@ class OnboardingIndicator extends StatelessWidget {
         final active = i == index;
         return AnimatedContainer(
           duration: const Duration(milliseconds: 300),
-          margin: const EdgeInsets.symmetric(horizontal: AppSpacing.xs),
+          margin: EdgeInsets.symmetric(horizontal: AppSpacing.xs),
           width: active ? 20 : 8,
           height: 8,
           decoration: BoxDecoration(

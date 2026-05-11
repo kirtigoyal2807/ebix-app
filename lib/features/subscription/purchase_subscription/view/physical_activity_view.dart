@@ -4,11 +4,9 @@ import 'package:pilates_app/config/theme/app_colors.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/core/localization/arb/app_localizations.dart';
-import 'package:pilates_app/core/localization/localization_extension.dart';
 import 'package:pilates_app/features/subscription/purchase_subscription/cubit/subscription_cubit.dart';
 import 'package:pilates_app/features/subscription/purchase_subscription/view/widgets/api_health_questionnaire_blocks.dart';
 import 'package:pilates_app/features/subscription/purchase_subscription/view/widgets/subscription_header.dart';
-import 'package:pilates_app/features/subscription/purchase_subscription/view/widgets/subscription_progress.dart';
 import 'package:pilates_app/widgets/app_button.dart';
 import 'package:pilates_app/widgets/app_text.dart';
 import 'package:pilates_app/widgets/inline_validation_banner.dart';
@@ -25,7 +23,7 @@ class _PhysicalActivityViewState extends State<PhysicalActivityView> {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
+    final l10n = AppLocalizations.of(context);
     final cubit = context.read<SubscriptionCubit>();
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return BlocListener<SubscriptionCubit, SubscriptionState>(
@@ -33,11 +31,11 @@ class _PhysicalActivityViewState extends State<PhysicalActivityView> {
           p.exerciseRegularly != c.exerciseRegularly ||
           p.activityFrequency != c.activityFrequency ||
           p.healthQuestionnaireAnswers != c.healthQuestionnaireAnswers,
-      listener: (_, __) {
+      listener: (_, _) {
         if (mounted) setState(() => _validationMessage = null);
       },
       child: Padding(
-        padding: const EdgeInsets.symmetric(
+        padding: EdgeInsets.symmetric(
           vertical: AppSpacing.lg,
           horizontal: AppSpacing.lg,
         ),
@@ -62,21 +60,21 @@ class _PhysicalActivityViewState extends State<PhysicalActivityView> {
                           totalSteps: 6,
                           isDark: isDark,
                         ),
-                        const SizedBox(height: AppSpacing.xl),
+                        SizedBox(height: AppSpacing.xl),
                         AppText(
                           l10n.physicalActivityLevel,
                           style: (style) => AppTextStyles.heading1(context),
                         ),
-                        const SizedBox(height: AppSpacing.lg),
+                        SizedBox(height: AppSpacing.lg),
                         if (intake) ...[
                           const ApiActivityLevelQuestionBlock(),
-                          const SizedBox(height: AppSpacing.lg),
+                          SizedBox(height: AppSpacing.lg),
                         ] else ...[
                           _buildSectionHeader(
                             context,
                             l10n.doYouExerciseRegularly,
                           ),
-                          const SizedBox(height: AppSpacing.md),
+                          SizedBox(height: AppSpacing.md),
                           BlocBuilder<SubscriptionCubit, SubscriptionState>(
                             buildWhen: (p, c) =>
                                 p.exerciseRegularly != c.exerciseRegularly,
@@ -186,14 +184,16 @@ class _PhysicalActivityViewState extends State<PhysicalActivityView> {
                       requireEveryQuestionInGroup: true,
                     )) {
                   setState(
-                    () =>
-                        _validationMessage = l10n.physicalActivityStepIncomplete,
+                    () => _validationMessage =
+                        l10n.physicalActivityStepIncomplete,
                   );
                   return;
                 }
                 final raw =
-                    cubit.state.healthQuestionnaireAnswers[
-                        HealthQuestionnaireIds.activityPilates];
+                    cubit
+                        .state
+                        .healthQuestionnaireAnswers[HealthQuestionnaireIds
+                        .activityPilates];
                 if (raw is String && raw.trim().isNotEmpty) {
                   cubit.updateExerciseRegularly(raw.trim());
                 } else if (raw is bool) {

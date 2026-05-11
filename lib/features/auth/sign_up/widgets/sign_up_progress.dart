@@ -19,8 +19,7 @@ class SignUpProgress extends StatefulWidget {
 
 class _SignUpProgressState extends State<SignUpProgress>
     with SingleTickerProviderStateMixin {
-  static const Duration _animationDuration =
-      Duration(milliseconds: 600);
+  static const Duration _animationDuration = Duration(milliseconds: 600);
 
   late final AnimationController _controller = AnimationController(
     duration: _animationDuration,
@@ -33,9 +32,10 @@ class _SignUpProgressState extends State<SignUpProgress>
       widget.totalSteps > 0 ? (widget.currentStep + 1) / widget.totalSteps : 0;
 
   Animation<double> _tweenBetween(double begin, double end) {
-    return Tween<double>(begin: begin, end: end).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.easeOutCubic),
-    );
+    return Tween<double>(
+      begin: begin,
+      end: end,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOutCubic));
   }
 
   @override

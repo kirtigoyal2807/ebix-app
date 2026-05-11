@@ -121,14 +121,12 @@ class AuthUser {
       name: json['name'] as String? ?? json['full_name'] as String?,
       email: json['email'] as String?,
       phone: json['phone'] as String?,
-      heightCm:
-          _trimOrNull(
-            json['height_cm'] ?? json['heightCm'] ?? json['height'],
-          ),
-      weightKg:
-          _trimOrNull(
-            json['weight_kg'] ?? json['weightKg'] ?? json['weight'],
-          ),
+      heightCm: _trimOrNull(
+        json['height_cm'] ?? json['heightCm'] ?? json['height'],
+      ),
+      weightKg: _trimOrNull(
+        json['weight_kg'] ?? json['weightKg'] ?? json['weight'],
+      ),
       gender: _trimOrNull(json['gender']),
       avatar: json['avatar'] as String?,
       dateOfBirth: _parseDateOfBirth(

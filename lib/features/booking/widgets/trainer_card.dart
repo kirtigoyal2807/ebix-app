@@ -41,7 +41,7 @@ class TrainerCard extends StatelessWidget {
         );
       },
       child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+        margin: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
         padding: EdgeInsets.symmetric(
           horizontal: AppSpacing.lmd,
           vertical: AppSpacing.md,
@@ -197,7 +197,7 @@ class TrainerCard extends StatelessWidget {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(padding: const EdgeInsets.only(top: 1), child: icon),
+        Padding(padding: EdgeInsets.only(top: 1), child: icon),
         SizedBox(width: AppSpacing.xs),
         Expanded(
           child: AppText(
@@ -304,7 +304,7 @@ class _TrainerAvatar extends StatelessWidget {
           height: 56,
           width: 56,
           fit: BoxFit.cover,
-          errorBuilder: (_, __, ___) => Image.asset(
+          errorBuilder: (_, _, _) => Image.asset(
             'assets/images/demo images/Trainer Avatar.png',
             height: 56,
             width: 56,

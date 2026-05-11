@@ -32,7 +32,7 @@ class RewardView extends StatelessWidget {
         child: Scaffold(
           appBar: AppAppBar(
             leading: Padding(
-              padding: const EdgeInsets.only(left: AppSpacing.lmd),
+              padding: EdgeInsets.only(left: AppSpacing.lmd),
               child: IconButton(
                 icon: const Icon(Icons.arrow_back_ios_rounded, size: 20),
                 onPressed: () => Navigator.of(context).pop(),
@@ -46,9 +46,7 @@ class RewardView extends StatelessWidget {
               child: Column(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: AppSpacing.lg,
-                    ),
+                    padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
                     child: rewardTabBar(context: context, isDark: isDark),
                   ),
                   Divider(

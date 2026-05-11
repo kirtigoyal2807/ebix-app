@@ -40,7 +40,7 @@ class RedeemCardView extends StatelessWidget {
     );
 
     final scaffold = Container(
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         color: AppColors.homeBackground,
         gradient: LinearGradient(
           begin: Alignment(-0.2, -1.0),
@@ -79,7 +79,7 @@ class RedeemCardView extends StatelessWidget {
         bottomNavigationBar: SafeArea(
           top: false,
           child: Padding(
-            padding: const EdgeInsets.symmetric(
+            padding: EdgeInsets.symmetric(
               horizontal: AppSpacing.lg,
               vertical: AppSpacing.md,
             ),
@@ -115,7 +115,7 @@ class _RedeemCardBody extends StatelessWidget {
 
     final content = SingleChildScrollView(
       child: Padding(
-        padding: const EdgeInsets.symmetric(
+        padding: EdgeInsets.symmetric(
           vertical: AppSpacing.md,
           horizontal: AppSpacing.lg,
         ),
@@ -129,7 +129,7 @@ class _RedeemCardBody extends StatelessWidget {
               width: 120,
               repeat: false,
             ),
-            const SizedBox(height: AppSpacing.md),
+            SizedBox(height: AppSpacing.md),
             AppText(
               context.l10n.receivedGiftTitle,
               style: (context) => AppTextStyles.gelasioMedium(context).copyWith(
@@ -137,7 +137,7 @@ class _RedeemCardBody extends StatelessWidget {
                 height: 1.55,
               ),
             ),
-            const SizedBox(height: AppSpacing.xs),
+            SizedBox(height: AppSpacing.xs),
             AppText(
               senderLine,
               style: (context) => AppTextStyles.bodyText(context).copyWith(
@@ -148,7 +148,7 @@ class _RedeemCardBody extends StatelessWidget {
               ),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: AppSpacing.lg),
+            SizedBox(height: AppSpacing.lg),
             _MessageCard(pendingGift: pendingGift),
           ],
         ),
@@ -194,7 +194,7 @@ class _MessageCard extends StatelessWidget {
     final hasCode = code != null && code.isNotEmpty;
 
     return Container(
-      padding: const EdgeInsets.all(AppSpacing.md),
+      padding: EdgeInsets.all(AppSpacing.md),
       decoration: BoxDecoration(
         color: isDark ? AppColors.trainerBlackBackgroundColor : Colors.white,
         borderRadius: BorderRadius.circular(AppRadius.base),
@@ -214,9 +214,9 @@ class _MessageCard extends StatelessWidget {
               fontWeight: FontWeight.w500,
             ).copyWith(height: 1.2),
           ),
-          const SizedBox(height: AppSpacing.md),
+          SizedBox(height: AppSpacing.md),
           _messageBlock(context: context),
-          const SizedBox(height: AppSpacing.xl),
+          SizedBox(height: AppSpacing.xl),
           AppText(
             context.l10n.yourGiftIncludes,
             style: (context) => AppTextStyles.bodyText(
@@ -224,10 +224,10 @@ class _MessageCard extends StatelessWidget {
               fontWeight: FontWeight.w500,
             ).copyWith(height: 1.2),
           ),
-          const SizedBox(height: AppSpacing.base),
+          SizedBox(height: AppSpacing.base),
           if (pendingGift?.plan?.description?.trim().isNotEmpty ?? false)
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 4.0),
+              padding: EdgeInsets.symmetric(horizontal: 4.0),
               child: AppText(
                 pendingGift!.plan!.description!.trim(),
                 style: (context) => AppTextStyles.captionText(context).copyWith(
@@ -237,12 +237,12 @@ class _MessageCard extends StatelessWidget {
                 maxLines: 6,
               ),
             ),
-          const SizedBox(height: AppSpacing.xl),
+          SizedBox(height: AppSpacing.xl),
           Divider(
             color: isDark ? AppColors.greyText : AppColors.buttonBorder,
             height: 1,
           ),
-          const SizedBox(height: AppSpacing.xl),
+          SizedBox(height: AppSpacing.xl),
 
           CustomPaint(
             painter: DashedUnderlinePainter(
@@ -255,7 +255,7 @@ class _MessageCard extends StatelessWidget {
             ),
             child: Container(
               width: MediaQuery.of(context).size.width,
-              padding: const EdgeInsets.symmetric(vertical: AppSpacing.md),
+              padding: EdgeInsets.symmetric(vertical: AppSpacing.md),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(AppRadius.md),
                 color: isDark
@@ -274,7 +274,7 @@ class _MessageCard extends StatelessWidget {
                           height: 1,
                         ),
                   ),
-                  const SizedBox(height: AppSpacing.md),
+                  SizedBox(height: AppSpacing.md),
                   AppText(
                     hasCode ? _formatCode(code) : "P I L A T E S   2 0 2 6",
                     style: (context) => AppTextStyles.bottomSheetTitle(
@@ -306,7 +306,7 @@ class _MessageCard extends StatelessWidget {
         : "";
 
     return Container(
-      padding: const EdgeInsets.all(AppSpacing.md),
+      padding: EdgeInsets.all(AppSpacing.md),
       decoration: BoxDecoration(
         color: isDark
             ? AppColors.subscriptionCardGradient1
@@ -325,7 +325,7 @@ class _MessageCard extends StatelessWidget {
             ),
             maxLines: 6,
           ),
-          const SizedBox(height: AppSpacing.sm),
+          SizedBox(height: AppSpacing.sm),
           if (senderLabel.isNotEmpty)
             AppText(
               senderLabel,

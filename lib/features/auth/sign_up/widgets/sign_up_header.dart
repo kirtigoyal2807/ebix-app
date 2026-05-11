@@ -23,7 +23,7 @@ class SignUpHeader extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         AppText(title, style: AppTextStyles.heading1),
-        const SizedBox(height: AppSpacing.sm + 2),
+        SizedBox(height: AppSpacing.sm + 2),
         AppText(subtitle, style: AppTextStyles.bodyText, maxLines: 3),
       ],
     );

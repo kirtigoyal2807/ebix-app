@@ -289,7 +289,7 @@ class _ReferralProgramScaffoldState extends State<_ReferralProgramScaffold> {
 
         late final Widget inner;
         if (loading) {
-          inner = const Padding(
+          inner = Padding(
             padding: EdgeInsets.symmetric(vertical: AppSpacing.xl),
             child: Center(child: CircularProgressIndicator()),
           );
@@ -424,7 +424,7 @@ class _ReferralProgramScaffoldState extends State<_ReferralProgramScaffold> {
                       },
                 variant: AppButtonVariant.primary,
               ),
-              const SizedBox(height: AppSpacing.sm),
+              SizedBox(height: AppSpacing.sm),
               Container(
                 decoration: BoxDecoration(
                   color: isDark ? AppColors.homeBackground : Colors.white,

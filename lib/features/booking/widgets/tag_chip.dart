@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../config/theme/app_colors.dart';
 import '../../../config/theme/app_radius.dart';
@@ -26,7 +27,7 @@ class TagChip extends StatelessWidget {
         maxWidth: MediaQuery.sizeOf(context).width * 0.65,
       ),
       child: Container(
-        padding: EdgeInsets.symmetric(vertical: 1, horizontal: AppSpacing.sm),
+        padding: EdgeInsets.symmetric(vertical: 2, horizontal: 10).r,
         decoration: BoxDecoration(
           color: isDark ? AppColors.darkLightBlue : AppColors.lightBlue,
           borderRadius: BorderRadius.circular(AppRadius.base),

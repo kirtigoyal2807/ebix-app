@@ -101,7 +101,7 @@ class _RedeemRewardViewState extends State<RedeemRewardView> {
                 onPressed: _submitting || !r.canRedeem ? null : _onConfirm,
                 variant: AppButtonVariant.primary,
               ),
-              const SizedBox(height: AppSpacing.sm),
+              SizedBox(height: AppSpacing.sm),
               Container(
                 decoration: BoxDecoration(
                   color: isDark ? AppColors.homeBackground : Colors.white,

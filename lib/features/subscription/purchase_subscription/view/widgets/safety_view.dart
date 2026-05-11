@@ -67,15 +67,13 @@ class _SafetyViewState extends State<SafetyView> {
     _dateController = TextEditingController(text: safeDate);
     _legalScrollController = ScrollController();
     _legalScrollController.addListener(_onLegalScroll);
-    WidgetsBinding.instance.addPostFrameCallback(
-      (_) {
-        if (!mounted) return;
-        final cubit = context.read<SubscriptionCubit>();
-        cubit.updateDeclarationName(_nameController.text);
-        cubit.updateDeclarationDate(_dateController.text);
-        _maybeMarkShortLegalContentRead();
-      },
-    );
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      final cubit = context.read<SubscriptionCubit>();
+      cubit.updateDeclarationName(_nameController.text);
+      cubit.updateDeclarationDate(_dateController.text);
+      _maybeMarkShortLegalContentRead();
+    });
   }
 
   @override
@@ -159,7 +157,7 @@ class _SafetyViewState extends State<SafetyView> {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
+    final l10n = AppLocalizations.of(context);
     final cubit = context.read<SubscriptionCubit>();
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final size = MediaQuery.sizeOf(context);
@@ -178,7 +176,7 @@ class _SafetyViewState extends State<SafetyView> {
     }
 
     return Padding(
-      padding: const EdgeInsets.only(
+      padding: EdgeInsets.only(
         bottom: AppSpacing.lg,
         left: AppSpacing.lg,
         right: AppSpacing.lg,
@@ -205,12 +203,12 @@ class _SafetyViewState extends State<SafetyView> {
                       l10n.safetyConsent,
                       style: (style) => AppTextStyles.heading1(context),
                     ),
-                    const SizedBox(height: 4),
+                    SizedBox(height: 4),
                     AppText(
                       l10n.pleaseReviewTerms,
                       style: (context) => AppTextStyles.bodyText(context),
                     ),
-                    const SizedBox(height: AppSpacing.lg),
+                    SizedBox(height: AppSpacing.lg),
 
                     SizedBox(
                       height: size.height * 0.4,
@@ -261,7 +259,7 @@ class _SafetyViewState extends State<SafetyView> {
                                 child: SingleChildScrollView(
                                   controller: _legalScrollController,
                                   child: Padding(
-                                    padding: const EdgeInsets.symmetric(
+                                    padding: EdgeInsets.symmetric(
                                       vertical: AppSpacing.md,
                                       horizontal: AppSpacing.md,
                                     ),
@@ -281,7 +279,7 @@ class _SafetyViewState extends State<SafetyView> {
                                               ),
                                           maxLines: 4,
                                         ),
-                                        const SizedBox(height: AppSpacing.md),
+                                        SizedBox(height: AppSpacing.md),
                                         Text(
                                           l10n.safetyText,
                                           style:
@@ -308,7 +306,7 @@ class _SafetyViewState extends State<SafetyView> {
                     ),
 
                     if (!_legalTextScrolledToEnd) ...[
-                      const SizedBox(height: AppSpacing.sm),
+                      SizedBox(height: AppSpacing.sm),
                       AppText(
                         l10n.scrollLegalContentToContinue,
                         style: (c) => AppTextStyles.captionText(c).copyWith(
@@ -320,7 +318,7 @@ class _SafetyViewState extends State<SafetyView> {
                         maxLines: 3,
                       ),
                     ],
-                    const SizedBox(height: AppSpacing.lg),
+                    SizedBox(height: AppSpacing.lg),
 
                     AppTextField(
                       label: l10n.name,
@@ -335,7 +333,7 @@ class _SafetyViewState extends State<SafetyView> {
                         setState(() => _nameError = null);
                       },
                     ),
-                    const SizedBox(height: AppSpacing.md),
+                    SizedBox(height: AppSpacing.md),
 
                     AppTextField(
                       label: l10n.signature,
@@ -349,7 +347,7 @@ class _SafetyViewState extends State<SafetyView> {
                         setState(() => _signatureError = null);
                       },
                     ),
-                    const SizedBox(height: AppSpacing.md),
+                    SizedBox(height: AppSpacing.md),
 
                     SubscriptionCalendarDateField(
                       label: l10n.date,
@@ -362,7 +360,7 @@ class _SafetyViewState extends State<SafetyView> {
                       },
                     ),
                     if (_dateError != null) ...[
-                      const SizedBox(height: 6),
+                      SizedBox(height: 6),
                       Text(
                         _dateError!,
                         style: AppTextStyles.bodyText(context).copyWith(
@@ -373,7 +371,7 @@ class _SafetyViewState extends State<SafetyView> {
                         ),
                       ),
                     ],
-                    const SizedBox(height: AppSpacing.lg),
+                    SizedBox(height: AppSpacing.lg),
                   ],
                 ),
               ),

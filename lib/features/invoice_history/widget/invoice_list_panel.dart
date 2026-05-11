@@ -145,7 +145,7 @@ class InvoiceListPanel extends StatelessWidget {
             state.invoices.isEmpty) {
           return Center(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+              padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
               child: Text(
                 state.errorMessage ?? context.l10n.branchesCouldNotLoad,
                 textAlign: TextAlign.center,
@@ -162,7 +162,7 @@ class InvoiceListPanel extends StatelessWidget {
           );
           return Center(
             child: SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+              padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
               child: EmptyDataView(
                 title: empty.title,
                 subTitle: empty.subtitle,
@@ -176,7 +176,7 @@ class InvoiceListPanel extends StatelessWidget {
           onRefresh: () => context.read<InvoiceHistoryCubit>().refresh(),
           child: ListView.builder(
             physics: const AlwaysScrollableScrollPhysics(),
-            padding: const EdgeInsets.symmetric(vertical: AppSpacing.md),
+            padding: EdgeInsets.symmetric(vertical: AppSpacing.md),
             itemCount: state.invoices.length,
             itemBuilder: (context, index) {
               final inv = state.invoices[index];

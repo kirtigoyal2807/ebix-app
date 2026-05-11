@@ -385,7 +385,7 @@ class _HealthInformationViewState extends State<HealthInformationView> {
         );
 
         return Padding(
-          padding: const EdgeInsets.symmetric(
+          padding: EdgeInsets.symmetric(
             vertical: AppSpacing.lg,
             horizontal: AppSpacing.lg,
           ),
@@ -408,14 +408,14 @@ class _HealthInformationViewState extends State<HealthInformationView> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const SizedBox(height: AppSpacing.xl),
+                        SizedBox(height: AppSpacing.xl),
                         AppText(
                           l10n.personalInformation,
                           style: (style) => AppTextStyles.heading1(context),
                         ),
-                        const SizedBox(height: AppSpacing.lg),
+                        SizedBox(height: AppSpacing.lg),
                         if (waitingForQuestionnaire)
-                          const Padding(
+                          Padding(
                             padding: EdgeInsets.only(bottom: AppSpacing.md),
                             child: Center(
                               child: SizedBox(
@@ -437,7 +437,7 @@ class _HealthInformationViewState extends State<HealthInformationView> {
                             setState(() => _nameError = null);
                           },
                         ),
-                        const SizedBox(height: AppSpacing.md),
+                        SizedBox(height: AppSpacing.md),
                         AppTextField(
                           label: l10n.age,
                           hint: l10n.age,
@@ -451,7 +451,7 @@ class _HealthInformationViewState extends State<HealthInformationView> {
                             setState(() => _ageError = null);
                           },
                         ),
-                        const SizedBox(height: AppSpacing.md),
+                        SizedBox(height: AppSpacing.md),
                         AppTextField(
                           label: l10n.heightCm,
                           hint: l10n.heightCm,
@@ -470,7 +470,7 @@ class _HealthInformationViewState extends State<HealthInformationView> {
                             setState(() => _heightError = null);
                           },
                         ),
-                        const SizedBox(height: AppSpacing.md),
+                        SizedBox(height: AppSpacing.md),
                         AppTextField(
                           label: l10n.weightKg,
                           hint: l10n.weightKg,
@@ -489,7 +489,7 @@ class _HealthInformationViewState extends State<HealthInformationView> {
                             setState(() => _weightError = null);
                           },
                         ),
-                        const SizedBox(height: AppSpacing.md),
+                        SizedBox(height: AppSpacing.md),
                         PhoneNumberField(
                           label: l10n.phoneNumber,
                           countryCode: _phoneCountry?.dialCode ?? '+966',
@@ -510,7 +510,7 @@ class _HealthInformationViewState extends State<HealthInformationView> {
                             setState(() => _phoneError = null);
                           },
                         ),
-                        const SizedBox(height: AppSpacing.md),
+                        SizedBox(height: AppSpacing.md),
                         AppTextField(
                           label: l10n.emailTab,
                           hint: l10n.emailTab,
@@ -525,10 +525,10 @@ class _HealthInformationViewState extends State<HealthInformationView> {
                           },
                         ),
                         if (extraQs.isNotEmpty) ...[
-                          const SizedBox(height: AppSpacing.lg),
+                          SizedBox(height: AppSpacing.lg),
                           ApiPersonalInformationFieldsBlock(questions: extraQs),
                         ],
-                        const SizedBox(height: AppSpacing.lg),
+                        SizedBox(height: AppSpacing.lg),
                       ],
                     ),
                   ),

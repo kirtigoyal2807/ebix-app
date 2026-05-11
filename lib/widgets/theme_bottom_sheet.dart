@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:pilates_app/config/theme/app_radius.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
@@ -36,7 +35,7 @@ class _ThemeBottomSheetState extends State<ThemeBottomSheet> {
       builder: (context, state) {
         return Material(
           // color: Colors.white,
-          borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+          borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
           child: SafeArea(
             top: false,
             child: Column(
@@ -44,7 +43,7 @@ class _ThemeBottomSheetState extends State<ThemeBottomSheet> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                  padding: const EdgeInsets.symmetric(vertical: AppSpacing.lg),
+                  padding: EdgeInsets.symmetric(vertical: AppSpacing.lg),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -77,11 +76,11 @@ class _ThemeBottomSheetState extends State<ThemeBottomSheet> {
                         ),
                       ),
 
-                      const SizedBox(height: AppSpacing.lg),
+                      SizedBox(height: AppSpacing.lg),
 
                       // Language options
                       Padding(
-                        padding: const EdgeInsets.symmetric(
+                        padding: EdgeInsets.symmetric(
                           horizontal: AppSpacing.lg,
                         ),
                         child: Column(
@@ -100,10 +99,10 @@ class _ThemeBottomSheetState extends State<ThemeBottomSheet> {
                         ),
                       ),
 
-                      const SizedBox(height: AppSpacing.sm),
+                      SizedBox(height: AppSpacing.sm),
 
                       Padding(
-                        padding: const EdgeInsets.symmetric(
+                        padding: EdgeInsets.symmetric(
                           horizontal: AppSpacing.lg,
                         ),
                         child: _ThemeOption(
@@ -117,10 +116,10 @@ class _ThemeBottomSheetState extends State<ThemeBottomSheet> {
                           },
                         ),
                       ),
-                      const SizedBox(height: AppSpacing.sm),
+                      SizedBox(height: AppSpacing.sm),
 
                       Padding(
-                        padding: const EdgeInsets.symmetric(
+                        padding: EdgeInsets.symmetric(
                           horizontal: AppSpacing.lg,
                         ),
                         child: _ThemeOption(

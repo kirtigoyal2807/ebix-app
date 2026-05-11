@@ -88,7 +88,7 @@ class BookingClassCard extends StatelessWidget {
     final size = MediaQuery.sizeOf(context);
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+      padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
       // child:
       // Material(
       // color: isDark ? AppColors.surfaceDark : Colors.white,
@@ -144,7 +144,7 @@ class BookingClassCard extends StatelessWidget {
             children: [
               // Image part with tags
               ClipRRect(
-                borderRadius: const BorderRadius.only(
+                borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(AppRadius.md),
                   topRight: Radius.circular(AppRadius.md),
                 ),
@@ -154,7 +154,7 @@ class BookingClassCard extends StatelessWidget {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(
+                padding: EdgeInsets.only(
                   right: AppSpacing.md,
                   left: AppSpacing.md,
                   top: AppSpacing.base,
@@ -168,13 +168,11 @@ class BookingClassCard extends StatelessWidget {
                           if (isInPlan)
                             Flexible(
                               child: Container(
-                                padding: const EdgeInsets.symmetric(
+                                padding: EdgeInsets.symmetric(
                                   horizontal: AppSpacing.sm,
                                   vertical: AppSpacing.xs,
                                 ),
-                                margin: const EdgeInsets.only(
-                                  right: AppSpacing.xs,
-                                ),
+                                margin: EdgeInsets.only(right: AppSpacing.xs),
                                 decoration: BoxDecoration(
                                   color: isDark
                                       ? AppColors.successColor.withValues(
@@ -200,7 +198,7 @@ class BookingClassCard extends StatelessWidget {
                                       size: 12,
                                       fontWeight: FontWeight.bold,
                                     ),
-                                    const SizedBox(width: AppSpacing.xs),
+                                    SizedBox(width: AppSpacing.xs),
                                     Flexible(
                                       child: AppText(
                                         context.l10n.inYourPlan,
@@ -224,7 +222,7 @@ class BookingClassCard extends StatelessWidget {
                           if (upgradeRequired)
                             Flexible(
                               child: Container(
-                                padding: const EdgeInsets.symmetric(
+                                padding: EdgeInsets.symmetric(
                                   horizontal: AppSpacing.sm,
                                   vertical: AppSpacing.xs,
                                 ),
@@ -253,7 +251,7 @@ class BookingClassCard extends StatelessWidget {
                                           : AppColors.lightRedColor,
                                       size: 14,
                                     ),
-                                    const SizedBox(width: 4),
+                                    SizedBox(width: 4),
                                     Flexible(
                                       child: AppText(
                                         context.l10n.upgradeRequired,
@@ -280,7 +278,7 @@ class BookingClassCard extends StatelessWidget {
                       ),
                     ),
                     if (avgRating != null) ...[
-                      const SizedBox(width: AppSpacing.xs),
+                      SizedBox(width: AppSpacing.xs),
                       _BookingClassCardRatingRow(
                         avgRating: avgRating!,
                         isDark: isDark,
@@ -292,7 +290,7 @@ class BookingClassCard extends StatelessWidget {
 
               // Info part
               Padding(
-                padding: const EdgeInsets.only(
+                padding: EdgeInsets.only(
                   right: AppSpacing.md,
                   left: AppSpacing.md,
                   bottom: AppSpacing.md,
@@ -301,7 +299,7 @@ class BookingClassCard extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // const SizedBox(height: AppSpacing.sm),
+                    // SizedBox(height: AppSpacing.sm),
                     // AppText(
                     //   '$title ${context.l10n.withKey} ${context.l10n.withTrainer(trainerName)}',
                     //   style: (context) =>
@@ -350,7 +348,7 @@ class BookingClassCard extends StatelessWidget {
                       ),
                     ),
 
-                    const SizedBox(height: AppSpacing.xs),
+                    SizedBox(height: AppSpacing.xs),
                     AppText(
                       upgradeRequired
                           ? '$studio • $time'
@@ -392,7 +390,7 @@ class BookingClassCard extends StatelessWidget {
         height: height,
         width: double.infinity,
         fit: BoxFit.cover,
-        errorBuilder: (_, __, ___) => Image.asset(
+        errorBuilder: (_, _, _) => Image.asset(
           _fallbackClassImageAsset,
           height: height,
           width: double.infinity,

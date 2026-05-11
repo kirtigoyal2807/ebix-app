@@ -49,7 +49,7 @@ class ChallengesBenefit extends StatelessWidget {
     );
   }
 
-  _buildRow({
+  Row _buildRow({
     required bool isDark,
     required String title,
     required String subtitle,

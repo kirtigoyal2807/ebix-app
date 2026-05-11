@@ -5,7 +5,6 @@ import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/core/utils/checkout_payment_launcher.dart';
 import 'package:pilates_app/core/utils/hosted_payment_webview_page.dart';
 import 'package:pilates_app/features/checkout/data/checkout_repository.dart';
-import 'package:pilates_app/features/checkout/data/models/checkout_payment_intent_result.dart';
 
 import 'package:pilates_app/widgets/app_app_bar.dart';
 
@@ -24,7 +23,7 @@ class PlanDetailsView extends StatelessWidget {
   final String? checkoutId;
 
   static Future<void> _pushGiftSentSuccessScreen(BuildContext context) async {
-    final l10n = AppLocalizations.of(context)!;
+    final l10n = AppLocalizations.of(context);
     GiftSubscriptionCubit? giftCubit;
     try {
       giftCubit = context.read<GiftSubscriptionCubit>();
@@ -58,7 +57,7 @@ class PlanDetailsView extends StatelessWidget {
 
   Future<void> _onContinueToPayment(BuildContext context) async {
     final messenger = ScaffoldMessenger.of(context);
-    final l10n = AppLocalizations.of(context)!;
+    final l10n = AppLocalizations.of(context);
     final id = checkoutId?.trim();
     if (id == null || id.isEmpty) {
       messenger.showSnackBar(
@@ -146,7 +145,7 @@ class PlanDetailsView extends StatelessWidget {
               child: ReviewScreenDetailsView(checkoutSessionId: checkoutId),
             ),
             Padding(
-              padding: const EdgeInsets.only(
+              padding: EdgeInsets.only(
                 left: AppSpacing.lg,
                 right: AppSpacing.lg,
                 bottom: AppSpacing.sm,

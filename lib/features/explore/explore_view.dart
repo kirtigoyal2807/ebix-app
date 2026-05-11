@@ -19,7 +19,7 @@ class ExploreView extends StatelessWidget {
       appBar: AppAppBar(title: context.l10n.explore, isMoreMenu: false),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.symmetric(
+          padding: EdgeInsets.symmetric(
             horizontal: AppSpacing.lg,
             vertical: AppSpacing.md,
           ),

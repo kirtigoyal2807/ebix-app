@@ -318,7 +318,9 @@ class _GiftSubscriptionViewState extends State<GiftSubscriptionView> {
                         keyboardDismissBehavior:
                             ScrollViewKeyboardDismissBehavior.onDrag,
                         child: Padding(
-                          padding: EdgeInsets.symmetric(vertical: AppSpacing.md),
+                          padding: EdgeInsets.symmetric(
+                            vertical: AppSpacing.md,
+                          ),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -342,8 +344,7 @@ class _GiftSubscriptionViewState extends State<GiftSubscriptionView> {
                                       .read<GiftSubscriptionCubit>()
                                       .state,
                                 ),
-                                onRecipientNameChanged: (_) =>
-                                    _onFormChanged(),
+                                onRecipientNameChanged: (_) => _onFormChanged(),
                                 onRecipientEmailChanged: (_) =>
                                     _onFormChanged(),
                                 onRecipientPhoneChanged: (_) =>

@@ -75,7 +75,7 @@ class BadgeCollectionView extends StatelessWidget {
     );
   }
 
-  _totalCard({
+  Container _totalCard({
     required String label,
     required String value,
     required bool isDark,

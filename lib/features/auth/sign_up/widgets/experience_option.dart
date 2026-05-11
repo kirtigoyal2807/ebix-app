@@ -43,7 +43,7 @@ class ExperienceOption extends StatelessWidget {
       onTap: onTap,
       borderRadius: BorderRadius.circular(AppRadius.md),
       child: Container(
-        padding: const EdgeInsets.symmetric(
+        padding: EdgeInsets.symmetric(
           horizontal: AppSpacing.md,
           vertical: AppSpacing.md + 2,
         ),
@@ -97,7 +97,7 @@ class ExperienceOption extends StatelessWidget {
               alignment: Alignment.center,
             ),
 
-            const SizedBox(width: AppSpacing.md),
+            SizedBox(width: AppSpacing.md),
 
             /// TEXT
             Expanded(
@@ -109,7 +109,7 @@ class ExperienceOption extends StatelessWidget {
                     style: (context) => AppTextStyles.experienceButton(context),
                   ),
 
-                  const SizedBox(height: AppSpacing.xs),
+                  SizedBox(height: AppSpacing.xs),
                   AppText(
                     description,
                     style: (context) => AppTextStyles.body(context).copyWith(
@@ -121,7 +121,7 @@ class ExperienceOption extends StatelessWidget {
                 ],
               ),
             ),
-            const SizedBox(width: AppSpacing.lg),
+            SizedBox(width: AppSpacing.lg),
 
             if (selected)
               Container(

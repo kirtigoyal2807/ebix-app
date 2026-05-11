@@ -27,7 +27,7 @@ class FilterSelectionBottomSheet extends StatelessWidget {
 
     return Material(
       color: isDark ? AppColors.homeBackground : AppColors.whiteColor,
-      borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+      borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       child: SafeArea(
         top: false,
         child: Column(
@@ -35,7 +35,7 @@ class FilterSelectionBottomSheet extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: const EdgeInsets.symmetric(
+              padding: EdgeInsets.symmetric(
                 horizontal: AppSpacing.lg,
                 vertical: AppSpacing.lg,
               ),
@@ -59,13 +59,11 @@ class FilterSelectionBottomSheet extends StatelessWidget {
                 ],
               ),
             ),
-            const SizedBox(height: AppSpacing.xs),
+            SizedBox(height: AppSpacing.xs),
             Flexible(
               child: ListView.builder(
                 shrinkWrap: true,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: AppSpacing.base,
-                ),
+                padding: EdgeInsets.symmetric(horizontal: AppSpacing.base),
                 itemCount: options.length,
                 itemBuilder: (context, index) {
                   final option = options[index];
@@ -81,7 +79,7 @@ class FilterSelectionBottomSheet extends StatelessWidget {
                 },
               ),
             ),
-            const SizedBox(height: AppSpacing.xl),
+            SizedBox(height: AppSpacing.xl),
           ],
         ),
       ),
@@ -110,13 +108,13 @@ class _OptionTile extends StatelessWidget {
         onTap: onTap,
         borderRadius: BorderRadius.circular(AppRadius.lg),
         child: Container(
-          padding: const EdgeInsets.only(
+          padding: EdgeInsets.only(
             left: AppSpacing.base,
             right: AppSpacing.lmd,
             top: AppSpacing.md,
             bottom: AppSpacing.md,
           ),
-          margin: const EdgeInsets.only(bottom: AppSpacing.xs),
+          margin: EdgeInsets.only(bottom: AppSpacing.xs),
           decoration: BoxDecoration(
             color: isSelected
                 ? (isDark

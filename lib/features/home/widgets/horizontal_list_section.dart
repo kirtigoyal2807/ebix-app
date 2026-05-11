@@ -30,11 +30,11 @@ class ClassTypesSection extends StatelessWidget {
         SizedBox(
           height: 140,
           child: ListView.separated(
-            padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+            padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
             scrollDirection: Axis.horizontal,
             itemCount: classTypes.length,
             separatorBuilder: (BuildContext context, int index) =>
-                const SizedBox(width: AppSpacing.md),
+                SizedBox(width: AppSpacing.md),
             itemBuilder: (BuildContext context, int index) {
               final classType = classTypes[index];
               return GestureDetector(
@@ -67,7 +67,7 @@ class ClassTypesSection extends StatelessWidget {
                               ),
                         ),
                       ),
-                      const SizedBox(height: AppSpacing.base),
+                      SizedBox(height: AppSpacing.base),
                       AppText(
                         classType.name ?? '',
                         style: (context) =>
@@ -126,11 +126,11 @@ class TopTrainersSection extends StatelessWidget {
     return SizedBox(
       height: itemHeight,
       child: ListView.separated(
-        padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+        padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
         scrollDirection: Axis.horizontal,
         itemCount: trainers.length,
         separatorBuilder: (BuildContext context, int index) =>
-            const SizedBox(width: AppSpacing.md),
+            SizedBox(width: AppSpacing.md),
         itemBuilder: (BuildContext context, int index) {
           final trainer = trainers[index];
           final subtitle = trainer.specialties.isEmpty
@@ -145,9 +145,9 @@ class TopTrainersSection extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                     builder: (context) => TrainerDetailsView(
-                            trainer: _toTrainerResource(trainer),
-                            scrollToUpcomingClassesOnOpen: true,
-                          ),
+                      trainer: _toTrainerResource(trainer),
+                      scrollToUpcomingClassesOnOpen: true,
+                    ),
                   ),
                 );
               },
@@ -181,7 +181,7 @@ class TopTrainersSection extends StatelessWidget {
                                   ? const Icon(Icons.person)
                                   : null,
                             ),
-                            const SizedBox(height: AppSpacing.sm),
+                            SizedBox(height: AppSpacing.sm),
                             AppText(
                               trainer.displayName ?? '',
                               style: (context) =>
@@ -195,7 +195,7 @@ class TopTrainersSection extends StatelessWidget {
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                             ),
-                            const SizedBox(height: 2),
+                            SizedBox(height: 2),
                             AppText(
                               subtitle,
                               style: (context) =>
@@ -214,7 +214,7 @@ class TopTrainersSection extends StatelessWidget {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(top: AppSpacing.xi),
+                      padding: EdgeInsets.only(top: AppSpacing.xi),
                       child: AppText(
                         context.l10n.viewClasses,
                         style: (context) =>

@@ -4,6 +4,7 @@
 /// JSON envelope: `{ "success", "message", "data": { ... }, "meta": [...] }`.
 /// [CheckoutStartResult] maps **`data`**. [responseMeta] holds top-level **`meta`**
 /// (distinct from `data.metadata` on the session object).
+library;
 
 int? _readInt(dynamic value) {
   if (value == null) return null;
@@ -51,7 +52,7 @@ String _readSessionId(Map<String, dynamic> json) {
 Map<String, dynamic>? _readMetadataMap(dynamic value) {
   if (value == null) return null;
   if (value is Map) {
-    return Map<String, dynamic>.from(value as Map<dynamic, dynamic>);
+    return Map<String, dynamic>.from(value);
   }
   return null;
 }
@@ -316,7 +317,7 @@ class CheckoutPaymentSummary {
     for (final key in const ['paymentMethod', 'payment_method', 'card']) {
       final nested = m[key];
       if (nested is Map) {
-        final nm = Map<String, dynamic>.from(nested as Map<dynamic, dynamic>);
+        final nm = Map<String, dynamic>.from(nested);
         final inner = _firstNonEmptyString(nm, const [
           'last4',
           'last_four',

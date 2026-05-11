@@ -80,14 +80,14 @@ class _TermsAndConditionsViewState extends State<TermsAndConditionsView> {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
+    final l10n = AppLocalizations.of(context);
     final cubit = context.read<SubscriptionCubit>();
     final state = context.watch<SubscriptionCubit>().state;
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final size = MediaQuery.sizeOf(context);
 
     return Padding(
-      padding: const EdgeInsets.only(
+      padding: EdgeInsets.only(
         bottom: AppSpacing.lg,
         left: AppSpacing.lg,
         right: AppSpacing.lg,
@@ -110,12 +110,12 @@ class _TermsAndConditionsViewState extends State<TermsAndConditionsView> {
                     l10n.termsAndConditions,
                     style: (style) => AppTextStyles.heading1(context),
                   ),
-                  const SizedBox(height: 4),
+                  SizedBox(height: 4),
                   AppText(
                     l10n.pleaseReviewTerms,
                     style: (context) => AppTextStyles.bodyText(context),
                   ),
-                  const SizedBox(height: AppSpacing.lg),
+                  SizedBox(height: AppSpacing.lg),
 
                   SizedBox(
                     height: size.height * 0.5,
@@ -166,7 +166,7 @@ class _TermsAndConditionsViewState extends State<TermsAndConditionsView> {
                               child: SingleChildScrollView(
                                 controller: _legalScrollController,
                                 child: Padding(
-                                  padding: const EdgeInsets.symmetric(
+                                  padding: EdgeInsets.symmetric(
                                     vertical: AppSpacing.md,
                                     horizontal: AppSpacing.md,
                                   ),
@@ -186,7 +186,7 @@ class _TermsAndConditionsViewState extends State<TermsAndConditionsView> {
                                             ),
                                         maxLines: 4,
                                       ),
-                                      const SizedBox(height: AppSpacing.md),
+                                      SizedBox(height: AppSpacing.md),
                                       Text(
                                         l10n.subscriptionTermsText,
                                         style:
@@ -213,7 +213,7 @@ class _TermsAndConditionsViewState extends State<TermsAndConditionsView> {
                   ),
 
                   if (!_legalTextScrolledToEnd) ...[
-                    const SizedBox(height: AppSpacing.sm),
+                    SizedBox(height: AppSpacing.sm),
                     AppText(
                       l10n.scrollLegalContentToContinue,
                       style: (c) => AppTextStyles.captionText(c).copyWith(
@@ -226,7 +226,7 @@ class _TermsAndConditionsViewState extends State<TermsAndConditionsView> {
                     ),
                   ],
 
-                  const SizedBox(height: AppSpacing.lg),
+                  SizedBox(height: AppSpacing.lg),
 
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -258,10 +258,10 @@ class _TermsAndConditionsViewState extends State<TermsAndConditionsView> {
                           ),
                         ),
                       ),
-                      const SizedBox(width: 8),
+                      SizedBox(width: 8),
                       Expanded(
                         child: Padding(
-                          padding: const EdgeInsets.only(top: 2),
+                          padding: EdgeInsets.only(top: 2),
                           child: AppText(
                             l10n.agreeToTermsAndConditions,
                             style: (style) =>
@@ -275,7 +275,7 @@ class _TermsAndConditionsViewState extends State<TermsAndConditionsView> {
                     ],
                   ),
                   if (_termsAcceptanceError != null) ...[
-                    const SizedBox(height: AppSpacing.sm),
+                    SizedBox(height: AppSpacing.sm),
                     Text(
                       _termsAcceptanceError!,
                       style: AppTextStyles.bodyText(context).copyWith(
@@ -284,7 +284,7 @@ class _TermsAndConditionsViewState extends State<TermsAndConditionsView> {
                       ),
                     ),
                   ],
-                  const SizedBox(height: AppSpacing.lg),
+                  SizedBox(height: AppSpacing.lg),
                 ],
               ),
             ),

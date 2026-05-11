@@ -125,7 +125,7 @@ class _ChangeHomeBranchState extends State<ChangeHomeBranch> {
           Expanded(child: _buildBranchesContent(context)),
           if (!widget.readOnly)
             Padding(
-              padding: const EdgeInsets.only(
+              padding: EdgeInsets.only(
                 bottom: AppSpacing.md,
                 left: AppSpacing.lg,
                 right: AppSpacing.lg,
@@ -155,7 +155,7 @@ class _ChangeHomeBranchState extends State<ChangeHomeBranch> {
     if (_loadErrorMessage.isNotEmpty) {
       return Center(
         child: Padding(
-          padding: const EdgeInsets.only(
+          padding: EdgeInsets.only(
             bottom: AppSpacing.md,
             left: AppSpacing.lg,
             right: AppSpacing.lg,
@@ -164,7 +164,7 @@ class _ChangeHomeBranchState extends State<ChangeHomeBranch> {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(_loadErrorMessage),
-              const SizedBox(height: AppSpacing.md),
+              SizedBox(height: AppSpacing.md),
               AppButton(
                 label: context.l10n.retry,
                 variant: AppButtonVariant.secondary,
@@ -182,7 +182,7 @@ class _ChangeHomeBranchState extends State<ChangeHomeBranch> {
 
     return SingleChildScrollView(
       child: Padding(
-        padding: const EdgeInsets.symmetric(
+        padding: EdgeInsets.symmetric(
           vertical: AppSpacing.md,
           horizontal: AppSpacing.lg,
         ),
@@ -192,7 +192,7 @@ class _ChangeHomeBranchState extends State<ChangeHomeBranch> {
           children: _branches
               .map(
                 (branch) => Padding(
-                  padding: const EdgeInsets.only(bottom: AppSpacing.base),
+                  padding: EdgeInsets.only(bottom: AppSpacing.base),
                   child: BranchOption(
                     title: branch.title,
                     city: branch.city,

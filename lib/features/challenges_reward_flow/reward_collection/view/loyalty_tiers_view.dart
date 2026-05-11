@@ -46,7 +46,7 @@ class _LoyaltyTiersScaffold extends StatelessWidget {
             case LoyaltyTiersLoadStatus.failure:
               return Center(
                 child: Padding(
-                  padding: const EdgeInsets.all(AppSpacing.lg),
+                  padding: EdgeInsets.all(AppSpacing.lg),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
@@ -73,7 +73,7 @@ class _LoyaltyTiersScaffold extends StatelessWidget {
               if (state.tiers.isEmpty) {
                 return Center(
                   child: Padding(
-                    padding: const EdgeInsets.all(AppSpacing.lg),
+                    padding: EdgeInsets.all(AppSpacing.lg),
                     child: AppText(
                       context.l10n.rewardsCatalogSubtitle,
                       textAlign: TextAlign.center,
@@ -84,12 +84,12 @@ class _LoyaltyTiersScaffold extends StatelessWidget {
               }
               final isDark = Theme.of(context).brightness == Brightness.dark;
               return ListView.separated(
-                padding: const EdgeInsets.symmetric(
+                padding: EdgeInsets.symmetric(
                   horizontal: AppSpacing.lg,
                   vertical: AppSpacing.md,
                 ),
                 itemCount: state.tiers.length,
-                separatorBuilder: (_, __) => SizedBox(height: AppSpacing.lg),
+                separatorBuilder: (_, _) => SizedBox(height: AppSpacing.lg),
                 itemBuilder: (context, i) {
                   return _TierSection(isDark: isDark, tier: state.tiers[i]);
                 },
@@ -170,7 +170,7 @@ class _TierSection extends StatelessWidget {
               if (tier.isCurrent) ...[
                 SizedBox(width: AppSpacing.sm),
                 Container(
-                  padding: const EdgeInsets.symmetric(
+                  padding: EdgeInsets.symmetric(
                     horizontal: AppSpacing.sm,
                     vertical: 4,
                   ),

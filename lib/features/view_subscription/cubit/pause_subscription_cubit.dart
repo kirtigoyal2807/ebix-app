@@ -48,9 +48,9 @@ class PauseSubscriptionCubit extends Cubit<PauseSubscriptionState> {
     if (_planExpires == null) {
       return DateTime(2100, 12, 31);
     }
-    return _planExpires!.isBefore(earliestPauseStart)
+    return _planExpires.isBefore(earliestPauseStart)
         ? earliestPauseStart
-        : _planExpires!;
+        : _planExpires;
   }
 
   /// Last calendar day a pause may **end** for a given start [start].
@@ -58,7 +58,7 @@ class PauseSubscriptionCubit extends Cubit<PauseSubscriptionState> {
     final s = _dateOnly(start);
     final byQuota = s.add(Duration(days: _maxFreezeDays - 1));
     if (_planExpires == null) return byQuota;
-    return byQuota.isBefore(_planExpires!) ? byQuota : _planExpires!;
+    return byQuota.isBefore(_planExpires) ? byQuota : _planExpires;
   }
 
   static int inclusivePauseDays(DateTime? start, DateTime? end) {
@@ -144,7 +144,7 @@ class PauseSubscriptionCubit extends Cubit<PauseSubscriptionState> {
       endDate: end,
     );
     return result.when(
-      success: (_, __) {
+      success: (_, _) {
         emit(state.copyWith(isSubmitting: false));
         return true;
       },

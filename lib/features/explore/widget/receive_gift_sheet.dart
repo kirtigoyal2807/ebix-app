@@ -23,11 +23,11 @@ class ReceiveGiftSheet extends StatelessWidget {
 
     return Material(
       color: isDark ? AppColors.homeBackground : AppColors.whiteColor,
-      borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+      borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       child: SafeArea(
         top: false,
         child: Padding(
-          padding: const EdgeInsets.symmetric(
+          padding: EdgeInsets.symmetric(
             horizontal: AppSpacing.lg,
             vertical: AppSpacing.lg,
           ),
@@ -64,7 +64,7 @@ class ReceiveGiftSheet extends StatelessWidget {
                 ),
               ),
 
-              const SizedBox(height: AppSpacing.lg),
+              SizedBox(height: AppSpacing.lg),
               AppText(
                 context.l10n.giftReceivedTitle,
                 style: (context) =>
@@ -75,7 +75,7 @@ class ReceiveGiftSheet extends StatelessWidget {
                     ),
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: AppSpacing.xl),
+              SizedBox(height: AppSpacing.xl),
               AppButton(
                 label: context.l10n.viewGift,
                 onPressed: () {

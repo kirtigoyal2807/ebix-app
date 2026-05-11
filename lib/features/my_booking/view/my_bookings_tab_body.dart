@@ -169,7 +169,7 @@ class MyBookingsTabBody extends StatelessWidget {
         if (tab.errorMessage != null && !tab.isLoading) {
           return Center(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+              padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min,
@@ -179,7 +179,7 @@ class MyBookingsTabBody extends StatelessWidget {
                     textAlign: TextAlign.center,
                     style: (context) => AppTextStyles.bodyText(context),
                   ),
-                  const SizedBox(height: AppSpacing.md),
+                  SizedBox(height: AppSpacing.md),
                   AppButton(
                     label: context.l10n.retry,
                     expanded: false,
@@ -202,9 +202,9 @@ class MyBookingsTabBody extends StatelessWidget {
             onRefresh: () => context.read<MyBookingsCubit>().refresh(group),
             child: ListView(
               physics: const AlwaysScrollableScrollPhysics(),
-              padding: const EdgeInsets.symmetric(vertical: AppSpacing.lg),
+              padding: EdgeInsets.symmetric(vertical: AppSpacing.lg),
               children: [
-                const SizedBox(height: 80),
+                SizedBox(height: 80),
                 Center(
                   child: isDark
                       ? SvgPicture.asset(
@@ -212,7 +212,7 @@ class MyBookingsTabBody extends StatelessWidget {
                         )
                       : SvgPicture.asset('assets/images/svg/ic_no_class.svg'),
                 ),
-                const SizedBox(height: AppSpacing.lmd),
+                SizedBox(height: AppSpacing.lmd),
                 AppText(
                   _emptyTitle(context, group),
                   textAlign: TextAlign.center,
@@ -220,11 +220,9 @@ class MyBookingsTabBody extends StatelessWidget {
                     context,
                   ).copyWith(height: 1.55),
                 ),
-                const SizedBox(height: AppSpacing.xs),
+                SizedBox(height: AppSpacing.xs),
                 Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: AppSpacing.lg,
-                  ),
+                  padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
                   child: AppText(
                     _emptyDescription(context, group),
                     textAlign: TextAlign.center,
@@ -242,10 +240,9 @@ class MyBookingsTabBody extends StatelessWidget {
           onRefresh: () => context.read<MyBookingsCubit>().refresh(group),
           child: ListView.separated(
             physics: const AlwaysScrollableScrollPhysics(),
-            padding: const EdgeInsets.symmetric(vertical: AppSpacing.lg),
+            padding: EdgeInsets.symmetric(vertical: AppSpacing.lg),
             itemCount: tab.items.length,
-            separatorBuilder: (context, _) =>
-                const SizedBox(height: AppSpacing.md),
+            separatorBuilder: (context, _) => SizedBox(height: AppSpacing.md),
             itemBuilder: (context, index) {
               final b = tab.items[index];
               final wl = b.waitlistPosition;

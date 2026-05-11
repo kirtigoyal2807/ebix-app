@@ -99,7 +99,7 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
             title: context.l10n.forgotPasswordTitle,
           ),
           body: Padding(
-            padding: const EdgeInsets.symmetric(
+            padding: EdgeInsets.symmetric(
               horizontal: AppSpacing.lg,
               vertical: AppSpacing.md,
             ),
@@ -110,14 +110,14 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const SizedBox(height: AppSpacing.lg),
+                        SizedBox(height: AppSpacing.lg),
                         SignUpHeader(
                           title: context.l10n.enterEmailHeader,
                           subtitle: context.l10n.enterEmailSubtitle,
                           step: 0,
                           totalSteps: 0,
                         ),
-                        const SizedBox(height: AppSpacing.xxl),
+                        SizedBox(height: AppSpacing.xxl),
                         AppTextField(
                           key: const ValueKey('forgot_email'),
                           controller: _emailController,

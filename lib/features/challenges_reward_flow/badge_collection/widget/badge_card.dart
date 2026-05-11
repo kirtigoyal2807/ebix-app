@@ -33,7 +33,7 @@ class BadgeCard extends StatelessWidget {
           physics: NeverScrollableScrollPhysics(),
           shrinkWrap: true,
           itemBuilder: (context, index) {
-            final item = state.badgeDataList![index];
+            final item = state.badgeDataList[index];
             return GestureDetector(
               onTap: () {
                 showModalBottomSheet(

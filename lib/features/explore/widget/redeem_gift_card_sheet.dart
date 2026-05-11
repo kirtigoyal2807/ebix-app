@@ -101,7 +101,7 @@ class _RedeemGiftCardSheetState extends State<RedeemGiftCardSheet> {
           canPop: !state.isSubmitting,
           child: Material(
             color: isDark ? AppColors.homeBackground : AppColors.whiteColor,
-            borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+            borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
             child: SafeArea(
               top: false,
               child: AnimatedPadding(
@@ -112,7 +112,7 @@ class _RedeemGiftCardSheetState extends State<RedeemGiftCardSheet> {
                 ),
                 child: SingleChildScrollView(
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(
+                    padding: EdgeInsets.symmetric(
                       horizontal: AppSpacing.lg,
                       vertical: AppSpacing.lg,
                     ),
@@ -145,7 +145,7 @@ class _RedeemGiftCardSheetState extends State<RedeemGiftCardSheet> {
                             ),
                           ],
                         ),
-                        const SizedBox(height: AppSpacing.xl),
+                        SizedBox(height: AppSpacing.xl),
                         Center(
                           child: ClipOval(
                             child: SizedBox(
@@ -160,7 +160,7 @@ class _RedeemGiftCardSheetState extends State<RedeemGiftCardSheet> {
                             ),
                           ),
                         ),
-                        const SizedBox(height: AppSpacing.lg),
+                        SizedBox(height: AppSpacing.lg),
                         AppTextField(
                           controller: _codeController,
                           hint: context.l10n.enterGiftCardCode,
@@ -170,7 +170,7 @@ class _RedeemGiftCardSheetState extends State<RedeemGiftCardSheet> {
                               .read<RedeemGiftCubit>()
                               .clearFieldFeedback(),
                         ),
-                        const SizedBox(height: AppSpacing.xl),
+                        SizedBox(height: AppSpacing.xl),
                         AppButton(
                           label: context.l10n.redeemGift,
                           isLoading: state.isSubmitting,

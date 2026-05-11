@@ -106,7 +106,7 @@ class ApiDynamicMedicalQuestionsBlock extends StatelessWidget {
                     ? state.healthQuestionnaireAnswers[q.numericQuestionId!]
                     : null,
               ),
-              const SizedBox(height: AppSpacing.lg),
+              SizedBox(height: AppSpacing.lg),
             ],
           ],
         );
@@ -187,7 +187,7 @@ class ApiCheckboxQuestionBlock extends StatelessWidget {
   Widget build(BuildContext context) {
     final cubit = context.read<SubscriptionCubit>();
     final id = question.numericQuestionId!;
-    final l10n = AppLocalizations.of(context)!;
+    final l10n = AppLocalizations.of(context);
     final rows = question.resolvedOptionRows;
 
     return Column(
@@ -200,7 +200,7 @@ class ApiCheckboxQuestionBlock extends StatelessWidget {
             color: isDark ? AppColors.lightText : AppColors.darkText,
           ),
         ),
-        const SizedBox(height: AppSpacing.md),
+        SizedBox(height: AppSpacing.md),
         for (final row in rows)
           _MedicalOptionRow(
             label: row.label,
@@ -216,7 +216,7 @@ class ApiCheckboxQuestionBlock extends StatelessWidget {
             },
           ),
         if (question.allowOther == true) ...[
-          const SizedBox(height: AppSpacing.sm),
+          SizedBox(height: AppSpacing.sm),
           AppTextField(
             label: '',
             hint: l10n.other,
@@ -257,7 +257,7 @@ class _MedicalRadioQuestion extends StatelessWidget {
             color: isDark ? AppColors.lightText : AppColors.darkText,
           ),
         ),
-        const SizedBox(height: AppSpacing.md),
+        SizedBox(height: AppSpacing.md),
         for (final row in rows)
           _MedicalOptionRow(
             label: row.label,
@@ -293,7 +293,7 @@ class _MedicalTextQuestion extends StatelessWidget {
             color: isDark ? AppColors.lightText : AppColors.darkText,
           ),
         ),
-        const SizedBox(height: AppSpacing.md),
+        SizedBox(height: AppSpacing.md),
         AppTextField(
           label: '',
           hint: question.displayLabel,
@@ -406,7 +406,7 @@ class ApiBooleanQuestionsBlock extends StatelessWidget {
                 },
                 isDark: isDark,
               ),
-              const SizedBox(height: AppSpacing.lg),
+              SizedBox(height: AppSpacing.lg),
             ],
           ],
         );
@@ -454,7 +454,7 @@ class _BooleanAnswerExplainFieldState
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
+    final l10n = AppLocalizations.of(context);
     final cubit = context.read<SubscriptionCubit>();
     return AppTextField(
       label: '',
@@ -502,7 +502,7 @@ class _BooleanYesNoRow extends StatelessWidget {
   Widget build(BuildContext context) {
     final label = question.displayLabel;
     final requiredMark = question.isRequired == true ? ' *' : '';
-    final l10n = AppLocalizations.of(context)!;
+    final l10n = AppLocalizations.of(context);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -514,7 +514,7 @@ class _BooleanYesNoRow extends StatelessWidget {
             color: isDark ? AppColors.lightText : AppColors.darkText,
           ),
         ),
-        const SizedBox(height: AppSpacing.md),
+        SizedBox(height: AppSpacing.md),
         _MedicalOptionRow(
           label: l10n.yes,
           isSelected: value == true,
@@ -530,7 +530,7 @@ class _BooleanYesNoRow extends StatelessWidget {
         if (value == true &&
             question.numericQuestionId != null &&
             question.allowOther == true) ...[
-          const SizedBox(height: AppSpacing.md),
+          SizedBox(height: AppSpacing.md),
           _BooleanAnswerExplainField(questionId: question.numericQuestionId!),
         ],
       ],
@@ -648,7 +648,7 @@ class _ApiGoalsFreeTextBlockState extends State<_ApiGoalsFreeTextBlock> {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final l10n = AppLocalizations.of(context)!;
+    final l10n = AppLocalizations.of(context);
     final cubit = context.read<SubscriptionCubit>();
     final q = widget.question;
 
@@ -663,7 +663,7 @@ class _ApiGoalsFreeTextBlockState extends State<_ApiGoalsFreeTextBlock> {
             color: isDark ? AppColors.lightText : AppColors.darkText,
           ),
         ),
-        const SizedBox(height: AppSpacing.md),
+        SizedBox(height: AppSpacing.md),
         AppTextField(
           controller: _controller,
           hint: l10n.enterYourGoals,

@@ -24,50 +24,47 @@ class BranchSelector extends StatelessWidget {
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       physics: const BouncingScrollPhysics(),
-      child: Padding(
-        padding: const EdgeInsets.only(left: AppSpacing.lg),
-        child: Row(
-          children: branches.map((branch) {
-            final isSelected = branch.id == selectedBranchId;
-            final isDark = Theme.of(context).brightness == Brightness.dark;
+      child: Row(
+        children: branches.map((branch) {
+          final isSelected = branch.id == selectedBranchId;
+          final isDark = Theme.of(context).brightness == Brightness.dark;
 
-            return Padding(
-              padding: const EdgeInsets.only(right: 8.0),
-              child: GestureDetector(
-                onTap: () => onSelect(branch.id),
-                child: AnimatedContainer(
-                  duration: const Duration(milliseconds: 200),
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 8,
-                  ),
-                  decoration: BoxDecoration(
-                    color: isSelected
-                        ? AppColors.primary
-                        : isDark
-                        ? AppColors.switchInactiveDark
-                        : AppColors.greyContainerBg,
-                    // Dark brown for selected
-                    borderRadius: BorderRadius.circular(20),
-                    border: Border.all(color: Colors.transparent),
-                  ),
-                  child: AppText(
-                    branch.title,
-                    style: (style) =>
-                        AppTextStyles.bodyTextSmall(context).copyWith(
-                          color: isSelected
-                              ? AppColors.whiteColor
-                              : (isDark
-                                    ? AppColors.lightText
-                                    : AppColors.darkText),
-                          fontWeight: FontWeight.w500,
-                        ),
-                  ),
+          return Padding(
+            padding: const EdgeInsets.only(right: 8.0),
+            child: GestureDetector(
+              onTap: () => onSelect(branch.id),
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 200),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 8,
+                ),
+                decoration: BoxDecoration(
+                  color: isSelected
+                      ? AppColors.primary
+                      : isDark
+                      ? AppColors.switchInactiveDark
+                      : AppColors.greyContainerBg,
+                  // Dark brown for selected
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(color: Colors.transparent),
+                ),
+                child: AppText(
+                  branch.title,
+                  style: (style) =>
+                      AppTextStyles.bodyTextSmall(context).copyWith(
+                        color: isSelected
+                            ? AppColors.whiteColor
+                            : (isDark
+                                  ? AppColors.lightText
+                                  : AppColors.darkText),
+                        fontWeight: FontWeight.w500,
+                      ),
                 ),
               ),
-            );
-          }).toList(),
-        ),
+            ),
+          );
+        }).toList(),
       ),
     );
   }
