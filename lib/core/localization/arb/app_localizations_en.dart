@@ -3034,6 +3034,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get pleaseEnterLastName => 'Please enter your last name';
 
   @override
+  String get pleaseEnterFriendName => 'Please enter your friend\'s name';
+
+  @override
   String get signupFirstNameHint => 'Ayesha';
 
   @override

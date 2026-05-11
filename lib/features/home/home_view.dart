@@ -241,6 +241,7 @@ class _HomeShell extends StatelessWidget {
 
 /// Loads [`/auth/me`] on home entry and opens `RedeemCardView` directly
 /// when `pendingGift` is available. No local tracking; shows every time.
+/// Also refreshes home and profile when language changes.
 class _PendingGiftPopupTrigger extends StatefulWidget {
   const _PendingGiftPopupTrigger({required this.child});
 
@@ -252,9 +253,12 @@ class _PendingGiftPopupTrigger extends StatefulWidget {
 }
 
 class _PendingGiftPopupTriggerState extends State<_PendingGiftPopupTrigger> {
+  String? _lastLocaleCode;
+
   @override
   void initState() {
     super.initState();
+    _lastLocaleCode = context.read<AuthCubit>().state.locale.languageCode;
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (!mounted) return;
       await context.read<AuthCubit>().loadProfile();
@@ -299,12 +303,34 @@ class _PendingGiftPopupTriggerState extends State<_PendingGiftPopupTrigger> {
     );
   }
 
+  void _onLocaleChanged() {
+    // Refresh home and profile when language changes (with loading indicator)
+    context.read<HomeCubit>().refreshHomeWithLoading();
+    context.read<AuthCubit>().loadProfile();
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocListener<AuthCubit, AuthState>(
-      listenWhen: (previous, current) =>
-          previous.user?.pendingGift?.id != current.user?.pendingGift?.id,
-      listener: (_, state) => _maybeShow(state),
+      listenWhen: (previous, current) {
+        // Listen for pending gift changes OR locale changes
+        if (previous.user?.pendingGift?.id != current.user?.pendingGift?.id) {
+          return true;
+        }
+        if (previous.locale.languageCode != current.locale.languageCode) {
+          return true;
+        }
+        return false;
+      },
+      listener: (_, state) {
+        final currentLocaleCode = state.locale.languageCode;
+        if (_lastLocaleCode != null &&
+            _lastLocaleCode != currentLocaleCode) {
+          _onLocaleChanged();
+        }
+        _lastLocaleCode = currentLocaleCode;
+        _maybeShow(state);
+      },
       child: widget.child,
     );
   }

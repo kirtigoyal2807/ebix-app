@@ -7,7 +7,9 @@ enum ReferralProgramStatus { initial, loading, success, failure }
 
 enum ReferralHistoryStatus { initial, loading, success, failure }
 
-enum InvitePhoneFieldIssue { none, empty, tooLong }
+enum InvitePhoneFieldIssue { none, empty, tooLong, invalid }
+
+enum InviteNameFieldIssue { none, empty }
 
 class ReferralProgramState extends Equatable {
   const ReferralProgramState({
@@ -20,6 +22,8 @@ class ReferralProgramState extends Equatable {
     this.inviteSubmitting = false,
     this.invitePhoneFieldIssue = InvitePhoneFieldIssue.none,
     this.invitePhoneApiError,
+    this.inviteNameFieldIssue = InviteNameFieldIssue.none,
+    this.inviteNameApiError,
     this.inviteSuccessSnackPending = false,
     this.inviteErrorSnackMessage,
   });
@@ -35,6 +39,8 @@ class ReferralProgramState extends Equatable {
   final bool inviteSubmitting;
   final InvitePhoneFieldIssue invitePhoneFieldIssue;
   final String? invitePhoneApiError;
+  final InviteNameFieldIssue inviteNameFieldIssue;
+  final String? inviteNameApiError;
   final bool inviteSuccessSnackPending;
   final String? inviteErrorSnackMessage;
 
@@ -50,6 +56,8 @@ class ReferralProgramState extends Equatable {
     bool? inviteSubmitting,
     InvitePhoneFieldIssue? invitePhoneFieldIssue,
     Object? invitePhoneApiError = _unset,
+    InviteNameFieldIssue? inviteNameFieldIssue,
+    Object? inviteNameApiError = _unset,
     bool? inviteSuccessSnackPending,
     Object? inviteErrorSnackMessage = _unset,
   }) {
@@ -72,6 +80,11 @@ class ReferralProgramState extends Equatable {
       invitePhoneApiError: identical(invitePhoneApiError, _unset)
           ? this.invitePhoneApiError
           : invitePhoneApiError as String?,
+      inviteNameFieldIssue:
+          inviteNameFieldIssue ?? this.inviteNameFieldIssue,
+      inviteNameApiError: identical(inviteNameApiError, _unset)
+          ? this.inviteNameApiError
+          : inviteNameApiError as String?,
       inviteSuccessSnackPending:
           inviteSuccessSnackPending ?? this.inviteSuccessSnackPending,
       inviteErrorSnackMessage: identical(inviteErrorSnackMessage, _unset)
@@ -91,6 +104,8 @@ class ReferralProgramState extends Equatable {
     inviteSubmitting,
     invitePhoneFieldIssue,
     invitePhoneApiError,
+    inviteNameFieldIssue,
+    inviteNameApiError,
     inviteSuccessSnackPending,
     inviteErrorSnackMessage,
   ];
