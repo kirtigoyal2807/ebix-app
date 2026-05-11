@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:country_code_picker/country_code_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'config/theme/app_theme.dart';
@@ -125,6 +126,7 @@ class PilatesApp extends StatelessWidget {
               supportedLocales: const [Locale('en'), Locale('ar')],
               localizationsDelegates: const [
                 AppLocalizations.delegate,
+                CountryLocalizations.delegate,
                 GlobalMaterialLocalizations.delegate,
                 GlobalWidgetsLocalizations.delegate,
                 GlobalCupertinoLocalizations.delegate,
