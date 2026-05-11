@@ -2192,6 +2192,18 @@ abstract class AppLocalizations {
   /// **'Are you sure you want to log out of your account?'**
   String get logoutConfirmationMessage;
 
+  /// No description provided for @logoutSheetMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to log out?'**
+  String get logoutSheetMessage;
+
+  /// No description provided for @logoutConfirmYesAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Yes, Logout'**
+  String get logoutConfirmYesAction;
+
   /// No description provided for @appPreferences.
   ///
   /// In en, this message translates to:
@@ -5659,6 +5671,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Please enter your phone number'**
   String get pleaseEnterPhone;
+
+  /// No description provided for @invalidPhoneForCountry.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid phone number for this country.'**
+  String get invalidPhoneForCountry;
 
   /// No description provided for @registerOtpSent.
   ///

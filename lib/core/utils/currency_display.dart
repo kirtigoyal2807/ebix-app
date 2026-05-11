@@ -1,9 +1,13 @@
 const String _ltrIsolateStart = '\u2066';
 const String _directionalIsolateEnd = '\u2069';
 
+bool isSaudiRiyalCode(String code) {
+  return code.trim().toUpperCase() == 'SAR';
+}
+
 String currencySymbolForCode(String code) {
-  if (code.trim().toUpperCase() == 'SAR') {
-    return '\u20C1';
+  if (isSaudiRiyalCode(code)) {
+    return 'SAR';
   }
   return code.trim().toUpperCase();
 }

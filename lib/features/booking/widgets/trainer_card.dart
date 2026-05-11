@@ -11,7 +11,6 @@ import 'package:pilates_app/widgets/app_text.dart';
 import '../../../config/theme/app_radius.dart';
 import '../../../widgets/app_shadow.dart';
 import '../data/models/trainer_resource.dart';
-import 'trainer_average_stars.dart';
 import '../cubit/booking_cubit.dart';
 import '../views/trainer_details_view.dart';
 
@@ -224,7 +223,6 @@ class _TrainerRatingRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final count = trainer.reviewsCount;
-    final metaColor = isDark ? AppColors.darkGreyText : AppColors.lightGrey;
     final avgValue = trainer.averageRatingValue;
     final avgText = trainer.displayAverageRating;
 
@@ -232,8 +230,6 @@ class _TrainerRatingRow extends StatelessWidget {
       return Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          TrainerAverageStars(rating: avgValue, itemSize: 13),
-          const SizedBox(width: 6),
           AppText(
             avgText.isNotEmpty ? avgText : avgValue.toStringAsFixed(1),
             maxLines: 1,
@@ -259,8 +255,6 @@ class _TrainerRatingRow extends StatelessWidget {
       return Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(Icons.star_border_rounded, color: metaColor, size: 18),
-          const SizedBox(width: 4),
           AppText(
             avgText,
             maxLines: 1,
@@ -283,22 +277,15 @@ class _TrainerRatingRow extends StatelessWidget {
     }
 
     if (count > 0) {
-      return Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(Icons.star_border_rounded, color: metaColor, size: 18),
-          const SizedBox(width: 4),
-          AppText(
-            '($count)',
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: (context) => AppTextStyles.captionText(context),
-          ),
-        ],
+      return AppText(
+        '($count)',
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+        style: (context) => AppTextStyles.captionText(context),
       );
     }
 
-    return Icon(Icons.star_border_rounded, color: metaColor, size: 18);
+    return const SizedBox.shrink();
   }
 }
 

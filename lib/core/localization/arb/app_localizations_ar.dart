@@ -1124,6 +1124,12 @@ class AppLocalizationsAr extends AppLocalizations {
       'هل أنت متأكد أنك تريد تسجيل الخروج من حسابك؟';
 
   @override
+  String get logoutSheetMessage => 'هل أنت متأكد أنك تريد تسجيل الخروج؟';
+
+  @override
+  String get logoutConfirmYesAction => 'نعم، تسجيل الخروج';
+
+  @override
   String get appPreferences => 'تفضيلات التطبيق';
 
   @override
@@ -2984,6 +2990,9 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get pleaseEnterPhone => 'يُرجى إدخال رقم الهاتف';
+
+  @override
+  String get invalidPhoneForCountry => 'يُرجى إدخال رقم هاتف صالح لهذا البلد.';
 
   @override
   String get registerOtpSent =>

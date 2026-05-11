@@ -179,7 +179,7 @@ class _HomeShell extends StatelessWidget {
         items: [
           BottomNavigationBarItem(
             icon: Padding(
-              padding: EdgeInsets.symmetric(
+              padding: const EdgeInsets.symmetric(
                 horizontal: AppSpacing.xs,
                 vertical: 3,
               ),
@@ -389,7 +389,7 @@ class HomeContentView extends StatelessWidget {
                   style: AppTextStyles.body,
                   textAlign: TextAlign.center,
                 ),
-                SizedBox(height: AppSpacing.md),
+                const SizedBox(height: AppSpacing.md),
                 ElevatedButton(
                   onPressed: () => context.read<HomeCubit>().loadHome(),
                   child: AppText(
@@ -433,151 +433,161 @@ class HomeContentView extends StatelessWidget {
         return Column(
           children: [
             Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    BlocBuilder<AuthCubit, AuthState>(
-                      builder: (context, authState) {
-                        final fromProfile = authState.user?.greetingName ?? '';
-                        final displayName = fromProfile.isNotEmpty
-                            ? fromProfile
-                            : '';
-                        return HomeHeader(userName: displayName);
-                      },
-                    ),
-                    SizedBox(height: AppSpacing.lg),
-                    if (banners.isNotEmpty) ...[
-                      SpringChallengeCard(
-                        banners: banners,
-                        onBannerTap: (banner) =>
-                            _handleBannerTap(context, banner),
+              child: RefreshIndicator(
+                onRefresh: () async {
+                  await Future.wait<void>([
+                    context.read<HomeCubit>().refreshHome(),
+                    context.read<AuthCubit>().loadProfile(),
+                  ]);
+                },
+                child: SingleChildScrollView(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      BlocBuilder<AuthCubit, AuthState>(
+                        builder: (context, authState) {
+                          final fromProfile =
+                              authState.user?.greetingName ?? '';
+                          final displayName = fromProfile.isNotEmpty
+                              ? fromProfile
+                              : '';
+                          return HomeHeader(userName: displayName);
+                        },
                       ),
-                      SizedBox(height: AppSpacing.lg),
-                    ],
-                    const QuickActions(),
-                    if (receivedGifts.isNotEmpty) ...[
-                      SizedBox(height: AppSpacing.lg),
-                      _sectionTitle(
-                        context,
-                        context.l10n.giftReceivedTitle,
-                        isDark,
-                        size,
-                      ),
-                      SizedBox(height: AppSpacing.md),
-                      ReceivedGiftCard(gift: receivedGifts.first),
-                    ],
-                    BlocBuilder<AuthCubit, AuthState>(
-                      builder: (context, authState) {
-                        final user = authState.user;
-                        final hasPlan = _userHasMembershipPlan(
-                          membership,
-                          user,
-                        );
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SizedBox(height: AppSpacing.lg),
-                            _sectionTitle(
-                              context,
-                              context.l10n.yourMembership,
-                              isDark,
-                              size,
-                            ),
-                            SizedBox(height: AppSpacing.md),
-                            MembershipCard(
-                              status: hasPlan
-                                  ? HomeUserStatus.existing
-                                  : HomeUserStatus.empty,
-                              planName:
-                                  membership?.planName ??
-                                  user?.membershipPlanName,
-                              totalSessions:
-                                  membership?.totalSessions ??
-                                  user?.membershipTotalSessions,
-                              sessionsRemaining:
-                                  membership?.sessionsRemaining ??
-                                  user?.membershipSessionsRemaining,
-                            ),
-                          ],
-                        );
-                      },
-                    ),
-                    if (progress != null) ...[
-                      SizedBox(height: AppSpacing.lg),
-                      _sectionTitle(
-                        context,
-                        context.l10n.yourProgress,
-                        isDark,
-                        size,
-                      ),
-                      SizedBox(height: AppSpacing.md),
-                      ProgressCard(
-                        status: progressStatus,
-                        classesDone: attendedClasses,
-                        totalHours: totalHours,
-                        goalClasses: goalClasses,
-                        goalPercent: progress.goalPercent,
-                      ),
-                    ],
-                    if (featuredClass != null) ...[
-                      SizedBox(height: AppSpacing.lg),
-                      _sectionTitle(
-                        context,
-                        context.l10n.featuredClass,
-                        isDark,
-                        size,
-                      ),
-                      SizedBox(height: AppSpacing.md),
-                      FeaturedClassCard(featuredClass: featuredClass),
-                    ],
-                    BlocBuilder<AuthCubit, AuthState>(
-                      builder: (context, authState) {
-                        final hasPlan = _userHasMembershipPlan(
-                          membership,
-                          authState.user,
-                        );
-                        if (!hasPlan) {
-                          return const SizedBox.shrink();
-                        }
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            if (classTypes.isNotEmpty) ...[
-                              SizedBox(height: AppSpacing.lg),
-                              _sectionTitleWithSeeAll(
+                      const SizedBox(height: AppSpacing.lg),
+                      if (banners.isNotEmpty) ...[
+                        SpringChallengeCard(
+                          banners: banners,
+                          onBannerTap: (banner) =>
+                              _handleBannerTap(context, banner),
+                        ),
+                        const SizedBox(height: AppSpacing.lg),
+                      ],
+                      const QuickActions(),
+                      if (receivedGifts.isNotEmpty) ...[
+                        const SizedBox(height: AppSpacing.lg),
+                        _sectionTitle(
+                          context,
+                          context.l10n.giftReceivedTitle,
+                          isDark,
+                          size,
+                        ),
+                        const SizedBox(height: AppSpacing.md),
+                        ReceivedGiftCard(gift: receivedGifts.first),
+                      ],
+                      BlocBuilder<AuthCubit, AuthState>(
+                        builder: (context, authState) {
+                          final user = authState.user;
+                          final hasPlan = _userHasMembershipPlan(
+                            membership,
+                            user,
+                          );
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const SizedBox(height: AppSpacing.lg),
+                              _sectionTitle(
                                 context,
-                                context.l10n.classTypes,
+                                context.l10n.yourMembership,
                                 isDark,
                                 size,
-                                onTap: () =>
-                                    context.read<HomeCubit>().setTab(1),
                               ),
-                              SizedBox(height: AppSpacing.md),
-                              ClassTypesSection(classTypes: classTypes),
+                              const SizedBox(height: AppSpacing.md),
+                              MembershipCard(
+                                status: hasPlan
+                                    ? HomeUserStatus.existing
+                                    : HomeUserStatus.empty,
+                                planName:
+                                    membership?.planName ??
+                                    user?.membershipPlanName,
+                                totalSessions:
+                                    membership?.totalSessions ??
+                                    user?.membershipTotalSessions,
+                                sessionsRemaining:
+                                    membership?.sessionsRemaining ??
+                                    user?.membershipSessionsRemaining,
+                              ),
                             ],
-                            if (topTrainers.isNotEmpty) ...[
-                              SizedBox(height: AppSpacing.lg),
-                              _sectionTitleWithSeeAll(
-                                context,
-                                context.l10n.topTrainers,
-                                isDark,
-                                size,
-                                onTap: () => context.read<HomeCubit>().setTab(
-                                  1,
-                                  bookingTab: BookingTab.trainers,
+                          );
+                        },
+                      ),
+                      if (progress != null) ...[
+                        const SizedBox(height: AppSpacing.lg),
+                        _sectionTitle(
+                          context,
+                          context.l10n.yourProgress,
+                          isDark,
+                          size,
+                        ),
+                        const SizedBox(height: AppSpacing.md),
+                        ProgressCard(
+                          status: progressStatus,
+                          classesDone: attendedClasses,
+                          totalHours: totalHours,
+                          goalClasses: goalClasses,
+                          goalPercent: progress.goalPercent,
+                        ),
+                      ],
+                      if (featuredClass != null) ...[
+                        const SizedBox(height: AppSpacing.lg),
+                        _sectionTitle(
+                          context,
+                          context.l10n.featuredClass,
+                          isDark,
+                          size,
+                        ),
+                        const SizedBox(height: AppSpacing.md),
+                        FeaturedClassCard(featuredClass: featuredClass),
+                      ],
+                      BlocBuilder<AuthCubit, AuthState>(
+                        builder: (context, authState) {
+                          final hasPlan = _userHasMembershipPlan(
+                            membership,
+                            authState.user,
+                          );
+                          if (!hasPlan) {
+                            return const SizedBox.shrink();
+                          }
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              if (classTypes.isNotEmpty) ...[
+                                const SizedBox(height: AppSpacing.lg),
+                                _sectionTitleWithSeeAll(
+                                  context,
+                                  context.l10n.classTypes,
+                                  isDark,
+                                  size,
+                                  onTap: () =>
+                                      context.read<HomeCubit>().setTab(1),
                                 ),
-                              ),
-                              SizedBox(height: AppSpacing.md),
-                              TopTrainersSection(trainers: topTrainers),
+                                const SizedBox(height: AppSpacing.md),
+                                ClassTypesSection(classTypes: classTypes),
+                              ],
+                              if (topTrainers.isNotEmpty) ...[
+                                const SizedBox(height: AppSpacing.lg),
+                                _sectionTitleWithSeeAll(
+                                  context,
+                                  context.l10n.topTrainers,
+                                  isDark,
+                                  size,
+                                  onTap: () => context.read<HomeCubit>().setTab(
+                                    1,
+                                    bookingTab: BookingTab.trainers,
+                                  ),
+                                ),
+                                const SizedBox(height: AppSpacing.md),
+                                TopTrainersSection(trainers: topTrainers),
+                              ],
                             ],
-                          ],
-                        );
-                      },
-                    ),
-                    SizedBox(height: AppSpacing.lg),
-                    SizedBox(height: AppSpacing.xl),
-                  ],
+                          );
+                        },
+                      ),
+                      const SizedBox(height: AppSpacing.lg),
+                      const SizedBox(height: AppSpacing.xl),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -594,7 +604,7 @@ class HomeContentView extends StatelessWidget {
     Size size,
   ) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
       child: AppText(
         title,
         style: (context) => AppTextStyles.heading1(context).copyWith(
@@ -614,7 +624,7 @@ class HomeContentView extends StatelessWidget {
     required VoidCallback onTap,
   }) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,

@@ -1133,6 +1133,12 @@ class AppLocalizationsEn extends AppLocalizations {
       'Are you sure you want to log out of your account?';
 
   @override
+  String get logoutSheetMessage => 'Are you sure you want to log out?';
+
+  @override
+  String get logoutConfirmYesAction => 'Yes, Logout';
+
+  @override
   String get appPreferences => 'App Preferences';
 
   @override
@@ -3006,6 +3012,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get pleaseEnterPhone => 'Please enter your phone number';
+
+  @override
+  String get invalidPhoneForCountry =>
+      'Enter a valid phone number for this country.';
 
   @override
   String get registerOtpSent =>
