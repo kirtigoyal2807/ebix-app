@@ -9,6 +9,7 @@ import 'package:pilates_app/config/theme/app_radius.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/core/localization/localization_extension.dart';
+import 'package:pilates_app/core/validation/phone_number_country_validation.dart';
 
 import 'app_text.dart';
 
@@ -85,16 +86,10 @@ class PhoneNumberField extends StatefulWidget {
     required String iso3166Alpha2,
     required String nationalDigitsOnly,
   }) {
-    final iso = _tryIso(iso3166Alpha2);
-    if (iso == null) return false;
-    final digits = nationalDigitsOnly.replaceAll(RegExp(r'\D'), '');
-    if (digits.isEmpty) return false;
-    try {
-      final parsed = PhoneNumber.parse(digits, callerCountry: iso);
-      return parsed.isValid();
-    } catch (_) {
-      return false;
-    }
+    return PhoneNumberCountryValidation.isValidNationalNumber(
+      iso3166Alpha2: iso3166Alpha2,
+      nationalDigitsOnly: nationalDigitsOnly,
+    );
   }
 
   static IsoCode? _tryIso(String iso3166Alpha2) {
@@ -188,6 +183,10 @@ class _PhoneNumberFieldState extends State<PhoneNumberField> {
       _maxSubscriberNationalDigits(iso),
       _kMaxNationalSignificantDigits,
     );
+    if (iso == IsoCode.SA) {
+      // Allow local KSA input with trunk zero: 05xxxxxxxx (10 digits).
+      cap = math.min(cap + 1, _kMaxNationalSignificantDigits);
+    }
     if (widget.maxPhoneDigits != null) {
       cap = math.min(cap, widget.maxPhoneDigits!);
     }
@@ -195,20 +194,20 @@ class _PhoneNumberFieldState extends State<PhoneNumberField> {
   }
 
   String? _countryValidationMessage(BuildContext context) {
-    final iso = PhoneNumberField._tryIso(_selectedCountryCode?.code ?? '');
-    if (iso == null) return null;
+    final isoCode = (_selectedCountryCode?.code ?? '').trim().toUpperCase();
+    if (PhoneNumberField._tryIso(isoCode) == null) return null;
     final digits = (widget.controller?.text ?? '').replaceAll(RegExp(r'\D'), '');
     if (digits.isEmpty) return null;
     if (digits.length < _kMinNationalSignificantDigitsForValidation) {
       return null;
     }
-    try {
-      final parsed = PhoneNumber.parse(digits, callerCountry: iso);
-      if (parsed.isValid()) return null;
-      return context.l10n.invalidPhoneForCountry;
-    } catch (_) {
-      return context.l10n.invalidPhoneForCountry;
+    if (PhoneNumberField.isNationalNumberValid(
+      iso3166Alpha2: isoCode,
+      nationalDigitsOnly: digits,
+    )) {
+      return null;
     }
+    return context.l10n.invalidPhoneForCountry;
   }
 
   @override

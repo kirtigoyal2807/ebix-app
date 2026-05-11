@@ -15,8 +15,9 @@ import 'package:pilates_app/widgets/app_text.dart';
 import 'package:pilates_app/widgets/app_text_field.dart';
 import 'package:pilates_app/widgets/phone_number_field.dart';
 
-import '../../../core/utils/input_validators.dart';
 import '../../../core/localization/localization_extension.dart';
+import '../../../core/utils/input_validators.dart';
+import '../../../core/validation/phone_number_country_validation.dart';
 import '../forgot_password/forgot_password_view.dart';
 
 class SignInView extends StatefulWidget {
@@ -47,7 +48,10 @@ class _SignInViewState extends State<SignInView> {
   }
 
   String _composePhoneE164() {
-    final digits = _phoneController.text.replaceAll(RegExp(r'\D'), '');
+    final digits = PhoneNumberCountryValidation.normalizedNationalDigitsForE164(
+      iso3166Alpha2: _phoneCountry?.code ?? 'SA',
+      rawNationalField: _phoneController.text,
+    );
     if (digits.isEmpty) return '';
     final dial = _phoneCountry?.dialCode ?? '+966';
     return '$dial$digits';
@@ -75,13 +79,18 @@ class _SignInViewState extends State<SignInView> {
   }
 
   void _submitPhone(BuildContext context) {
-    final phone = _composePhoneE164();
     final l10n = context.l10n;
+    final phoneErr = PhoneNumberCountryValidation.submitErrorMessage(
+      l10n: l10n,
+      rawNationalField: _phoneController.text,
+      countryIso3166Alpha2: _phoneCountry?.code,
+    );
     setState(() {
-      _clientPhoneError = phone.length < 8 ? l10n.pleaseEnterPhone : null;
+      _clientPhoneError = phoneErr;
     });
-    if (phone.length < 8) return;
+    if (phoneErr != null) return;
 
+    final phone = _composePhoneE164();
     context.read<AuthCubit>().requestPhoneLoginOtp(phone: phone);
   }
 

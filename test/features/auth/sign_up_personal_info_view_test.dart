@@ -47,6 +47,9 @@ void main() {
       ),
     );
 
+    cubit.changeDOB(DateTime(1990, 6, 15));
+    await tester.pump();
+
     await tester.enterText(
       find.byKey(const ValueKey('signup_firstName')),
       'Noor',
@@ -59,26 +62,55 @@ void main() {
       find.byKey(const ValueKey('signup_email')),
       'noor@example.com',
     );
+
+    final innerScrollable = find.descendant(
+      of: find.byType(SingleChildScrollView),
+      matching: find.byType(Scrollable),
+    );
+    await tester.drag(innerScrollable.first, const Offset(0, -200));
+    await tester.pumpAndSettle();
+
+    final genderDropdown = find.byType(DropdownButtonFormField<String>).first;
+    await tester.tap(genderDropdown);
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Female').last);
+    await tester.pumpAndSettle();
+
     await tester.enterText(
       find.byKey(const ValueKey('signup_password')),
       'Secret@123',
     );
     await tester.enterText(
+      find.byKey(const ValueKey('signup_confirm_password')),
+      'Secret@123',
+    );
+
+    await tester.enterText(
       find.descendant(
         of: find.byKey(const ValueKey('signup_phone')),
         matching: find.byType(TextField),
       ),
-      '500000001',
+      '501234567',
     );
 
-    await tester.tap(find.byKey(const ValueKey('signup_continue')));
+    await tester.drag(
+      find.descendant(
+        of: find.byType(SingleChildScrollView),
+        matching: find.byType(Scrollable),
+      ).first,
+      const Offset(0, -300),
+    );
+    await tester.pumpAndSettle();
+
+    final continueButton = find.byKey(const ValueKey('signup_continue'));
+    await tester.tap(continueButton);
     await tester.pumpAndSettle();
 
     expect(cubit.state.signUpStep, 1);
-    expect(cubit.state.signUpPendingPhone, '+966500000001');
+    expect(cubit.state.signUpPendingPhone, '+966501234567');
     expect(fake.registerCalls, 1);
     expect(fake.lastRegisterEmail, 'noor@example.com');
-    expect(fake.lastRegisterPhone, '+966500000001');
+    expect(fake.lastRegisterPhone, '+966501234567');
 
     await cubit.close();
   });

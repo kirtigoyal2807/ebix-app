@@ -18,6 +18,7 @@ import 'package:pilates_app/widgets/phone_number_field.dart';
 import '../../../core/localization/localization_extension.dart';
 import '../../../core/utils/date_of_birth_constraints.dart';
 import '../../../core/utils/input_validators.dart';
+import '../../../core/validation/phone_number_country_validation.dart';
 import 'widgets/sign_up_header.dart';
 import 'widgets/sign_up_progress.dart';
 
@@ -73,7 +74,10 @@ class _SignUpPersonalInfoViewState extends State<SignUpPersonalInfoView> {
   }
 
   String _composePhoneE164() {
-    final digits = _phoneController.text.replaceAll(RegExp(r'\D'), '');
+    final digits = PhoneNumberCountryValidation.normalizedNationalDigitsForE164(
+      iso3166Alpha2: _phoneCountry?.code ?? 'SA',
+      rawNationalField: _phoneController.text,
+    );
     if (digits.isEmpty) return '';
     final dial = _phoneCountry?.dialCode ?? '+966';
     return '$dial$digits';
@@ -101,7 +105,11 @@ class _SignUpPersonalInfoViewState extends State<SignUpPersonalInfoView> {
     final email = _emailController.text.trim();
     final password = _passwordController.text;
     final confirm = _confirmPasswordController.text;
-    final phone = _composePhoneE164();
+    final phoneSubmitError = PhoneNumberCountryValidation.submitErrorMessage(
+      l10n: l10n,
+      rawNationalField: _phoneController.text,
+      countryIso3166Alpha2: _phoneCountry?.code,
+    );
 
     setState(() {
       _clientFirstNameError = first.isEmpty ? l10n.pleaseEnterFirstName : null;
@@ -121,7 +129,7 @@ class _SignUpPersonalInfoViewState extends State<SignUpPersonalInfoView> {
       } else if (password != confirm) {
         _clientConfirmError = l10n.passwordMismatch;
       }
-      _clientPhoneError = phone.length < 8 ? l10n.pleaseEnterPhone : null;
+      _clientPhoneError = phoneSubmitError;
     });
 
     if (first.isEmpty ||
@@ -132,9 +140,11 @@ class _SignUpPersonalInfoViewState extends State<SignUpPersonalInfoView> {
         dobSelection.isEmpty ||
         password.length < 8 ||
         password != confirm ||
-        phone.length < 8) {
+        phoneSubmitError != null) {
       return;
     }
+
+    final phone = _composePhoneE164();
 
     DateTime? dob;
     try {

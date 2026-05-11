@@ -119,4 +119,54 @@ void main() {
 
     await cubit.close();
   });
+
+  testWidgets('Phone tab: 10-digit Saudi local format is accepted', (
+    tester,
+  ) async {
+    SharedPreferences.setMockInitialValues({});
+    final fake = FakeAuthRepository();
+    fake.phoneOtpResult = const ApiSuccess<bool>(true);
+
+    final cubit = AuthCubit.forTesting(
+      authRepository: fake,
+      tokenStorage: TokenStorage(await SharedPreferences.getInstance()),
+      localeBridge: AuthLocaleBridge(),
+      seed: AuthState.initial().copyWith(flow: AuthFlow.signIn),
+    );
+
+    await tester.pumpWidget(
+      MaterialApp(
+        localizationsDelegates: const [
+          AppLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+        ],
+        supportedLocales: AppLocalizations.supportedLocales,
+        locale: const Locale('en'),
+        home: BlocProvider<AuthCubit>.value(
+          value: cubit,
+          child: const SignInView(),
+        ),
+      ),
+    );
+
+    await tester.tap(find.byKey(const ValueKey('sign_in_tab_phone')));
+    await tester.pumpAndSettle();
+
+    await tester.enterText(
+      find.descendant(
+        of: find.byType(SignInView),
+        matching: find.byType(TextField),
+      ),
+      '0501234567',
+    );
+
+    await tester.tap(find.byKey(const ValueKey('sign_in_submit')));
+    await tester.pumpAndSettle();
+
+    expect(fake.phoneOtpCalls, 1);
+    expect(cubit.state.signInPendingPhone, '+966501234567');
+
+    await cubit.close();
+  });
 }
