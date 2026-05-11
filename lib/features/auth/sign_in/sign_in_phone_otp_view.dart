@@ -106,7 +106,7 @@ class _SignInPhoneOtpViewState extends State<SignInPhoneOtpView>
             body: Stack(
               children: [
                 Padding(
-                  padding: const EdgeInsets.symmetric(
+                  padding: EdgeInsets.symmetric(
                     horizontal: AppSpacing.lg,
                     vertical: AppSpacing.md,
                   ),
@@ -117,14 +117,14 @@ class _SignInPhoneOtpViewState extends State<SignInPhoneOtpView>
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const SizedBox(height: AppSpacing.lg),
+                              SizedBox(height: AppSpacing.lg),
                               SignUpHeader(
                                 title: context.l10n.verifyPhone,
                                 subtitle: '${context.l10n.enterCode} $phone',
                                 step: 0,
                                 totalSteps: 0,
                               ),
-                              const SizedBox(height: AppSpacing.xxl),
+                              SizedBox(height: AppSpacing.xxl),
                               Center(
                                 child: OtpField(
                                   key: const ValueKey(
@@ -139,7 +139,7 @@ class _SignInPhoneOtpViewState extends State<SignInPhoneOtpView>
                                 ),
                               ),
                               if (codeErr != null) ...[
-                                const SizedBox(height: AppSpacing.sm),
+                                SizedBox(height: AppSpacing.sm),
                                 Center(
                                   child: Text(
                                     codeErr,
@@ -153,7 +153,7 @@ class _SignInPhoneOtpViewState extends State<SignInPhoneOtpView>
                                   ),
                                 ),
                               ],
-                              const SizedBox(height: AppSpacing.lg),
+                              SizedBox(height: AppSpacing.lg),
                               Center(
                                 child: GestureDetector(
                                   onTap: resendDisabled
@@ -170,8 +170,9 @@ class _SignInPhoneOtpViewState extends State<SignInPhoneOtpView>
                                                 color: resendDisabled
                                                     ? theme.disabledColor
                                                     : (isDark
-                                                        ? AppColors.darkGreyText
-                                                        : AppColors.greyText),
+                                                          ? AppColors
+                                                                .darkGreyText
+                                                          : AppColors.greyText),
                                                 fontWeight: FontWeight.w400,
                                                 height: 1.4,
                                               ),
@@ -179,13 +180,12 @@ class _SignInPhoneOtpViewState extends State<SignInPhoneOtpView>
                                         TextSpan(
                                           text: context.l10n.resendCode,
                                           style: resendDisabled
-                                              ? AppTextStyles.boldBody(context)
-                                                  .copyWith(
-                                                    color: theme.disabledColor,
-                                                  )
-                                              : AppTextStyles.boldBody(
+                                              ? AppTextStyles.boldBody(
                                                   context,
-                                                ),
+                                                ).copyWith(
+                                                  color: theme.disabledColor,
+                                                )
+                                              : AppTextStyles.boldBody(context),
                                         ),
                                       ],
                                     ),

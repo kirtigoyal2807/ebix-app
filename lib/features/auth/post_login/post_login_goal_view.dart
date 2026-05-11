@@ -61,23 +61,21 @@ class _PostLoginGoalViewState extends State<PostLoginGoalView> {
             isMoreMenu: false,
           ),
           body: Padding(
-            padding: const EdgeInsets.symmetric(vertical: AppSpacing.md),
+            padding: EdgeInsets.symmetric(vertical: AppSpacing.md),
             child: Column(
               children: [
                 Expanded(
                   child: SingleChildScrollView(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: AppSpacing.lg,
-                    ),
+                    padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const SizedBox(height: AppSpacing.lg),
+                        SizedBox(height: AppSpacing.lg),
                         AppText(
                           context.l10n.pilatesPrimaryFocusTitle,
                           style: AppTextStyles.heading1,
                         ),
-                        const SizedBox(height: AppSpacing.lg),
+                        SizedBox(height: AppSpacing.lg),
                         ExperienceOption(
                           title: context.l10n.buildStrength,
                           description: context.l10n.buildStrengthDesc,
@@ -87,7 +85,7 @@ class _PostLoginGoalViewState extends State<PostLoginGoalView> {
                               : 'assets/images/svg/goal/ic_build_strength.svg',
                           onTap: () => setState(() => _selectedIndex = 0),
                         ),
-                        const SizedBox(height: AppSpacing.base),
+                        SizedBox(height: AppSpacing.base),
                         ExperienceOption(
                           title: context.l10n.findMindfulness,
                           description: context.l10n.findMindfulnessDesc,
@@ -97,7 +95,7 @@ class _PostLoginGoalViewState extends State<PostLoginGoalView> {
                               : 'assets/images/svg/goal/ic_find_minsfulness.svg',
                           onTap: () => setState(() => _selectedIndex = 1),
                         ),
-                        const SizedBox(height: AppSpacing.base),
+                        SizedBox(height: AppSpacing.base),
                         ExperienceOption(
                           title: context.l10n.improveFlexibility,
                           description: context.l10n.improveFlexibilityDesc,
@@ -107,7 +105,7 @@ class _PostLoginGoalViewState extends State<PostLoginGoalView> {
                               : 'assets/images/svg/goal/ic_improve_flexibility.svg',
                           onTap: () => setState(() => _selectedIndex = 2),
                         ),
-                        const SizedBox(height: AppSpacing.base),
+                        SizedBox(height: AppSpacing.base),
                         ExperienceOption(
                           title: context.l10n.generalFitness,
                           description: context.l10n.generalFitnessDesc,
@@ -118,7 +116,7 @@ class _PostLoginGoalViewState extends State<PostLoginGoalView> {
                           onTap: () => setState(() => _selectedIndex = 3),
                         ),
                         if (fe['goal'] != null) ...[
-                          const SizedBox(height: AppSpacing.sm),
+                          SizedBox(height: AppSpacing.sm),
                           Center(
                             child: AppText(
                               fe['goal']!,
@@ -132,13 +130,13 @@ class _PostLoginGoalViewState extends State<PostLoginGoalView> {
                             ),
                           ),
                         ],
-                        const SizedBox(height: AppSpacing.lg),
+                        SizedBox(height: AppSpacing.lg),
                         AppText(
                           context.l10n.monthlyTarget,
                           style: (context) =>
                               AppTextStyles.gelasioRegular(context).copyWith(),
                         ),
-                        const SizedBox(height: AppSpacing.md),
+                        SizedBox(height: AppSpacing.md),
                         MonthlyTargetSlider(
                           initialMonthlyClasses: _monthlyClasses,
                           onMonthlyClassesChanged: (v) {
@@ -146,7 +144,7 @@ class _PostLoginGoalViewState extends State<PostLoginGoalView> {
                           },
                         ),
                         if (fe['monthlygoal'] != null) ...[
-                          const SizedBox(height: AppSpacing.sm),
+                          SizedBox(height: AppSpacing.sm),
                           AppText(
                             fe['monthlygoal']!,
                             style: (context) =>
@@ -157,7 +155,7 @@ class _PostLoginGoalViewState extends State<PostLoginGoalView> {
                                 ),
                           ),
                         ],
-                        const SizedBox(height: AppSpacing.lg),
+                        SizedBox(height: AppSpacing.lg),
                         AppText(
                           context.l10n.dontWorry,
                           style: (context) =>
@@ -168,15 +166,13 @@ class _PostLoginGoalViewState extends State<PostLoginGoalView> {
                                     : const Color(0xff79716B),
                               ),
                         ),
-                        const SizedBox(height: AppSpacing.lg),
+                        SizedBox(height: AppSpacing.lg),
                       ],
                     ),
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: AppSpacing.lg,
-                  ),
+                  padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
                   child: AppButton(
                     key: const ValueKey('post_login_goal_submit'),
                     label: context.l10n.continueTxt,

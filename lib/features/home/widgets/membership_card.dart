@@ -58,8 +58,8 @@ class MembershipCard extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       clipBehavior: Clip.antiAlias,
-      margin: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
-      // padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg,vertical: AppSpacing.md),
+      margin: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+      // padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg,vertical: AppSpacing.md),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(AppRadius.md),
         color: AppColors.splashBackgroundDark,
@@ -84,7 +84,7 @@ class MembershipCard extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(
+            padding: EdgeInsets.symmetric(
               horizontal: AppSpacing.md,
               vertical: AppSpacing.md,
             ),
@@ -103,7 +103,7 @@ class MembershipCard extends StatelessWidget {
                         // height: size.height * 0.05,
                       ),
                     ),
-                    const SizedBox(width: AppSpacing.base),
+                    SizedBox(width: AppSpacing.base),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -133,7 +133,7 @@ class MembershipCard extends StatelessWidget {
                               ),
                             ],
                           ),
-                          const SizedBox(height: AppSpacing.md),
+                          SizedBox(height: AppSpacing.md),
                           ElevatedButton(
                             onPressed: () {
                               Navigator.push(
@@ -154,7 +154,7 @@ class MembershipCard extends StatelessWidget {
                                   AppRadius.pillRadius,
                                 ),
                               ),
-                              padding: const EdgeInsets.symmetric(
+                              padding: EdgeInsets.symmetric(
                                 horizontal: AppSpacing.md,
                                 vertical: AppSpacing.sm,
                               ),
@@ -193,8 +193,8 @@ class MembershipCard extends StatelessWidget {
     final size = MediaQuery.sizeOf(context);
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
-      padding: const EdgeInsets.symmetric(
+      margin: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+      padding: EdgeInsets.symmetric(
         horizontal: AppSpacing.md,
         vertical: AppSpacing.md,
       ),
@@ -218,7 +218,7 @@ class MembershipCard extends StatelessWidget {
               // height: size.height * 0.05,
             ),
           ),
-          const SizedBox(width: AppSpacing.sm),
+          SizedBox(width: AppSpacing.sm),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -257,7 +257,7 @@ class MembershipCard extends StatelessWidget {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(AppRadius.pillRadius),
               ),
-              padding: const EdgeInsets.symmetric(
+              padding: EdgeInsets.symmetric(
                 horizontal: AppSpacing.md,
                 vertical: AppSpacing.sm,
               ),
@@ -280,8 +280,8 @@ class MembershipCard extends StatelessWidget {
     final size = MediaQuery.sizeOf(context);
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
-      padding: const EdgeInsets.symmetric(
+      margin: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+      padding: EdgeInsets.symmetric(
         horizontal: AppSpacing.md,
         vertical: AppSpacing.md,
       ),
@@ -316,7 +316,7 @@ class MembershipCard extends StatelessWidget {
               // height: size.height * 0.04,
             ),
           ),
-          const SizedBox(width: AppSpacing.sm),
+          SizedBox(width: AppSpacing.sm),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

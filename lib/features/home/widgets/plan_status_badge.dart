@@ -16,11 +16,11 @@ class PlanStatusBadge extends StatelessWidget {
 
     if (inPlan) {
       return Container(
-        padding: const EdgeInsets.symmetric(
+        padding: EdgeInsets.symmetric(
           horizontal: AppSpacing.sm,
           vertical: AppSpacing.xs,
         ),
-        margin: const EdgeInsets.only(right: AppSpacing.xs),
+        margin: EdgeInsets.only(right: AppSpacing.xs),
         decoration: BoxDecoration(
           color: isDark
               ? AppColors.successColor.withValues(alpha: 0.36)
@@ -35,7 +35,7 @@ class PlanStatusBadge extends StatelessWidget {
               color: isDark ? AppColors.lightGreyColor : AppColors.GreyColor,
               size: 12,
             ),
-            const SizedBox(width: AppSpacing.xs),
+            SizedBox(width: AppSpacing.xs),
             Flexible(
               child: AppText(
                 context.l10n.inYourPlan,
@@ -55,11 +55,11 @@ class PlanStatusBadge extends StatelessWidget {
     }
 
     return Container(
-      padding: const EdgeInsets.symmetric(
+      padding: EdgeInsets.symmetric(
         horizontal: AppSpacing.sm,
         vertical: AppSpacing.xs,
       ),
-      margin: const EdgeInsets.only(right: AppSpacing.xs),
+      margin: EdgeInsets.only(right: AppSpacing.xs),
       decoration: BoxDecoration(
         color: isDark
             ? AppColors.upgradeDarkBackgroundColor.withValues(alpha: 0.11)

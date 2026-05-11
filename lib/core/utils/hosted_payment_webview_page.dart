@@ -120,7 +120,7 @@ class _HostedPaymentWebViewPageState extends State<HostedPaymentWebViewPage> {
     try {
       final decoded = jsonDecode(raw);
       if (decoded is Map) {
-        map.addAll(Map<String, dynamic>.from(decoded as Map));
+        map.addAll(Map<String, dynamic>.from(decoded));
       } else {
         map['message'] = raw;
       }
@@ -251,7 +251,7 @@ return '';
     try {
       final decoded = jsonDecode(jsonSlice);
       if (decoded is! Map) return false;
-      final m = Map<String, dynamic>.from(decoded as Map);
+      final m = Map<String, dynamic>.from(decoded);
       final success = m['success'];
       final message = m['message']?.toString().toLowerCase() ?? '';
       final ok =

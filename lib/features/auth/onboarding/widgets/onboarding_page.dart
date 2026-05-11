@@ -15,7 +15,7 @@ class OnboardingPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+      padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -28,13 +28,13 @@ class OnboardingPage extends StatelessWidget {
               fit: BoxFit.cover,
             ),
           ),
-          const SizedBox(height: AppSpacing.md),
+          SizedBox(height: AppSpacing.md),
           AppText(
             context.l10n.branchDowntown,
             style: AppTextStyles.headline,
             textAlign: TextAlign.center,
           ),
-          const SizedBox(height: AppSpacing.sm),
+          SizedBox(height: AppSpacing.sm),
           AppText(
             context.l10n.branchUptown,
             style: AppTextStyles.body,

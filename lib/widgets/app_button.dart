@@ -100,7 +100,7 @@ class AppButton extends StatelessWidget {
               tapTargetSize: MaterialTapTargetSize.shrinkWrap,
             ),
             child: isLoading
-                ? const SizedBox(
+                ? SizedBox(
                     height: 22,
                     width: 22,
                     child: CircularProgressIndicator(strokeWidth: 2),

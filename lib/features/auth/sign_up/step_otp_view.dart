@@ -124,7 +124,7 @@ class _SignUpOtpViewState extends State<SignUpOtpView>
             body: Stack(
               children: [
                 Padding(
-                  padding: const EdgeInsets.symmetric(
+                  padding: EdgeInsets.symmetric(
                     horizontal: AppSpacing.lg,
                     vertical: AppSpacing.md,
                   ),
@@ -139,7 +139,7 @@ class _SignUpOtpViewState extends State<SignUpOtpView>
                                 currentStep: 1,
                                 totalSteps: 5,
                               ),
-                              const SizedBox(height: AppSpacing.sm),
+                              SizedBox(height: AppSpacing.sm),
                               RichText(
                                 text: TextSpan(
                                   children: [
@@ -159,7 +159,7 @@ class _SignUpOtpViewState extends State<SignUpOtpView>
                                   ],
                                 ),
                               ),
-                              const SizedBox(height: AppSpacing.xl),
+                              SizedBox(height: AppSpacing.xl),
 
                               SignUpHeader(
                                 title: context.l10n.verifyPhone,
@@ -168,7 +168,7 @@ class _SignUpOtpViewState extends State<SignUpOtpView>
                                 totalSteps: 4,
                               ),
 
-                              const SizedBox(height: AppSpacing.lg),
+                              SizedBox(height: AppSpacing.lg),
 
                               OtpField(
                                 length: 6,
@@ -182,7 +182,7 @@ class _SignUpOtpViewState extends State<SignUpOtpView>
                               ),
 
                               if (codeErr != null || phoneErr != null) ...[
-                                const SizedBox(height: AppSpacing.sm),
+                                SizedBox(height: AppSpacing.sm),
                                 AppText(
                                   codeErr ?? phoneErr ?? '',
                                   style: (c) =>
@@ -194,7 +194,7 @@ class _SignUpOtpViewState extends State<SignUpOtpView>
                                 ),
                               ],
 
-                              const SizedBox(height: AppSpacing.lg),
+                              SizedBox(height: AppSpacing.lg),
 
                               Center(
                                 child: GestureDetector(
@@ -212,8 +212,9 @@ class _SignUpOtpViewState extends State<SignUpOtpView>
                                                 color: resendDisabled
                                                     ? theme.disabledColor
                                                     : (isDark
-                                                        ? AppColors.darkGreyText
-                                                        : AppColors.greyText),
+                                                          ? AppColors
+                                                                .darkGreyText
+                                                          : AppColors.greyText),
                                                 fontWeight: FontWeight.w400,
                                                 height: 1.4,
                                               ),
@@ -221,20 +222,19 @@ class _SignUpOtpViewState extends State<SignUpOtpView>
                                         TextSpan(
                                           text: context.l10n.resendCode,
                                           style: resendDisabled
-                                              ? AppTextStyles.boldBody(context)
-                                                  .copyWith(
-                                                    color: theme.disabledColor,
-                                                  )
-                                              : AppTextStyles.boldBody(
+                                              ? AppTextStyles.boldBody(
                                                   context,
-                                                ),
+                                                ).copyWith(
+                                                  color: theme.disabledColor,
+                                                )
+                                              : AppTextStyles.boldBody(context),
                                         ),
                                       ],
                                     ),
                                   ),
                                 ),
                               ),
-                              const SizedBox(height: AppSpacing.lg),
+                              SizedBox(height: AppSpacing.lg),
                             ],
                           ),
                         ),

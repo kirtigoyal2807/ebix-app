@@ -64,7 +64,7 @@ class OnboardingView extends StatelessWidget {
           children: [
             // Top header with language selector and help button
             Padding(
-              padding: const EdgeInsets.symmetric(
+              padding: EdgeInsets.symmetric(
                 horizontal: AppSpacing.horizontalPadding,
                 vertical: AppSpacing.md,
               ),
@@ -95,7 +95,7 @@ class OnboardingView extends StatelessWidget {
 
                   return SingleChildScrollView(
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(
+                      padding: EdgeInsets.symmetric(
                         horizontal: AppSpacing.horizontalPadding,
                       ),
                       child: Column(
@@ -108,7 +108,7 @@ class OnboardingView extends StatelessWidget {
 
                           // Pilates mat illustration
                           Padding(
-                            padding: const EdgeInsets.symmetric(
+                            padding: EdgeInsets.symmetric(
                               horizontal: AppSpacing.base,
                             ),
                             child: SvgPicture.asset(
@@ -129,7 +129,7 @@ class OnboardingView extends StatelessWidget {
 
                           // Main title
                           Padding(
-                            padding: const EdgeInsets.symmetric(
+                            padding: EdgeInsets.symmetric(
                               horizontal: AppSpacing.sm,
                             ),
                             child: AppText(
@@ -139,7 +139,7 @@ class OnboardingView extends StatelessWidget {
                             ),
                           ),
 
-                          const SizedBox(height: AppSpacing.base),
+                          SizedBox(height: AppSpacing.base),
 
                           // Description
                           Padding(
@@ -156,7 +156,7 @@ class OnboardingView extends StatelessWidget {
                             ),
                           ),
 
-                          const SizedBox(height: AppSpacing.base),
+                          SizedBox(height: AppSpacing.base),
 
                           // "No experience needed" with checkmark
                           Row(
@@ -170,7 +170,7 @@ class OnboardingView extends StatelessWidget {
                                 fit: BoxFit.contain,
                               ),
 
-                              const SizedBox(width: AppSpacing.xs + 2),
+                              SizedBox(width: AppSpacing.xs + 2),
                               Flexible(
                                 child: AppText(
                                   context.l10n.noExperienceNeeded,
@@ -198,7 +198,7 @@ class OnboardingView extends StatelessWidget {
 
             // Bottom buttons
             Padding(
-              padding: const EdgeInsets.symmetric(
+              padding: EdgeInsets.symmetric(
                 horizontal: AppSpacing.horizontalPadding,
               ),
               child: Column(
@@ -209,7 +209,7 @@ class OnboardingView extends StatelessWidget {
                     variant: AppButtonVariant.primary,
                   ),
 
-                  const SizedBox(height: AppSpacing.sm),
+                  SizedBox(height: AppSpacing.sm),
 
                   AppButton(
                     label: context.l10n.alreadyHaveAccount,
@@ -217,7 +217,7 @@ class OnboardingView extends StatelessWidget {
                     variant: AppButtonVariant.secondary,
                   ),
 
-                  const SizedBox(height: AppSpacing.lg),
+                  SizedBox(height: AppSpacing.lg),
                 ],
               ),
             ),
@@ -236,7 +236,7 @@ class OnboardingView extends StatelessWidget {
           onTap: () => _showLanguageSelector(context),
           borderRadius: BorderRadius.circular(AppRadius.pillRadius),
           child: Container(
-            padding: const EdgeInsets.symmetric(
+            padding: EdgeInsets.symmetric(
               horizontal: AppSpacing.base,
               vertical: AppSpacing.sm,
             ),
@@ -258,9 +258,9 @@ class OnboardingView extends StatelessWidget {
                       ? AppColors.languageIconDark
                       : AppColors.languageIcon,
                 ),
-                const SizedBox(width: AppSpacing.xs + 2),
+                SizedBox(width: AppSpacing.xs + 2),
                 AppText(languageCode, style: AppTextStyles.body),
-                const SizedBox(width: AppSpacing.xs),
+                SizedBox(width: AppSpacing.xs),
                 Icon(
                   Icons.keyboard_arrow_down,
                   size: 18,
@@ -279,7 +279,7 @@ class OnboardingView extends StatelessWidget {
       onTap: () => _showHelp(context),
       borderRadius: BorderRadius.circular(AppRadius.pillRadius),
       child: Container(
-        padding: const EdgeInsets.symmetric(
+        padding: EdgeInsets.symmetric(
           horizontal: AppSpacing.base,
           vertical: AppSpacing.sm,
         ),
@@ -295,7 +295,7 @@ class OnboardingView extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             AppText(context.l10n.help, style: AppTextStyles.body),
-            const SizedBox(width: AppSpacing.xs),
+            SizedBox(width: AppSpacing.xs),
             Container(
               width: 20,
               height: 20,

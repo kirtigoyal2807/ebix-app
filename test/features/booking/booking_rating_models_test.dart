@@ -122,7 +122,7 @@ void main() {
   });
 
   group('ClassSlotViewModel.pickUpcomingEvent', () {
-    GymClassResource _twoFutureEvents() {
+    GymClassResource twoFutureEvents() {
       return GymClassResource(
         id: '1',
         name: 'C',
@@ -167,7 +167,7 @@ void main() {
     });
 
     test('earliest event at or after referenceTime', () {
-      final g = _twoFutureEvents();
+      final g = twoFutureEvents();
       final ref = DateTime.utc(2026, 6, 2, 12);
       expect(
         ClassSlotViewModel.pickUpcomingEvent(g, referenceTime: ref)?.id,
@@ -176,7 +176,7 @@ void main() {
     });
 
     test('event exactly at referenceTime is eligible', () {
-      final g = _twoFutureEvents();
+      final g = twoFutureEvents();
       final ref = DateTime.utc(2026, 6, 1, 10);
       expect(
         ClassSlotViewModel.pickUpcomingEvent(g, referenceTime: ref)?.id,
@@ -185,7 +185,7 @@ void main() {
     });
 
     test('returns null when all events are strictly before referenceTime', () {
-      final g = _twoFutureEvents();
+      final g = twoFutureEvents();
       final ref = DateTime.utc(2026, 7, 1);
       expect(
         ClassSlotViewModel.pickUpcomingEvent(g, referenceTime: ref),

@@ -339,7 +339,7 @@ class SubscriptionCubit extends Cubit<SubscriptionState> {
     }
     if (cur is Map) {
       m[questionId] = <String, dynamic>{
-        ...Map<String, dynamic>.from(cur as Map),
+        ...Map<String, dynamic>.from(cur),
         'selected': list,
       };
     } else {
@@ -357,7 +357,7 @@ class SubscriptionCubit extends Cubit<SubscriptionState> {
       list = cur.map((e) => e.toString()).toList();
       m[questionId] = <String, dynamic>{'selected': list, 'other': text};
     } else if (cur is Map) {
-      final mm = Map<String, dynamic>.from(cur as Map);
+      final mm = Map<String, dynamic>.from(cur);
       mm['other'] = text;
       m[questionId] = mm;
     } else {

@@ -77,7 +77,7 @@ class MembershipReceiptSummary {
     final pay = raw['payment'];
     if (pay is Map) {
       return CheckoutPaymentSummary.invoicePdfUrlFromMap(
-        Map<String, dynamic>.from(pay as Map<dynamic, dynamic>),
+        Map<String, dynamic>.from(pay),
       );
     }
     return null;
@@ -90,9 +90,7 @@ class MembershipReceiptSummary {
     if (raw == null) return null;
     final p = raw['payment'];
     if (p is Map) {
-      return CheckoutPaymentSummary.maybeFrom(
-        Map<String, dynamic>.from(p as Map<dynamic, dynamic>),
-      );
+      return CheckoutPaymentSummary.maybeFrom(Map<String, dynamic>.from(p));
     }
     return null;
   }
@@ -104,9 +102,7 @@ class MembershipReceiptSummary {
     if (raw == null) return null;
     final p = raw['pricing'];
     if (p is Map) {
-      return CheckoutPricing.maybeFrom(
-        Map<String, dynamic>.from(p as Map<dynamic, dynamic>),
-      );
+      return CheckoutPricing.maybeFrom(Map<String, dynamic>.from(p));
     }
     return null;
   }
@@ -197,7 +193,7 @@ class MembershipReceiptSummary {
     if (gw != null && gw.isNotEmpty) {
       final nested = gw['payment'];
       if (nested is Map) {
-        gw = Map<String, dynamic>.from(nested as Map<dynamic, dynamic>);
+        gw = Map<String, dynamic>.from(nested);
       }
     }
     final gatewayPay = (gw == null || gw.isEmpty)

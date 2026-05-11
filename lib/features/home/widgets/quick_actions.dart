@@ -111,7 +111,7 @@ class QuickActions extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          // const SizedBox(height: AppSpacing.md),
+          // SizedBox(height: AppSpacing.md),
           SizedBox(
             height: 56,
             child: SvgPicture.asset(
@@ -121,11 +121,11 @@ class QuickActions extends StatelessWidget {
               fit: BoxFit.contain,
             ),
           ),
-          const SizedBox(height: AppSpacing.sm),
+          SizedBox(height: AppSpacing.sm),
           Expanded(
             child: Center(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12),
+                padding: EdgeInsets.symmetric(horizontal: 12),
                 child: AppText(
                   title,
                   style: (context) => AppTextStyles.body(context).copyWith(
@@ -140,7 +140,7 @@ class QuickActions extends StatelessWidget {
               ),
             ),
           ),
-          // const SizedBox(height: AppSpacing.sm),
+          // SizedBox(height: AppSpacing.sm),
         ],
       ),
     );

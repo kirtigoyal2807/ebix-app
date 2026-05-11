@@ -58,7 +58,7 @@ class BranchOption extends StatelessWidget {
       focusColor: Colors.transparent,
       borderRadius: BorderRadius.circular(AppRadius.md),
       child: Container(
-        // padding: const EdgeInsets.all(AppSpacing.lg),
+        // padding: EdgeInsets.all(AppSpacing.lg),
         decoration: BoxDecoration(
           color: isDark ? AppColors.homeBackground : Colors.white,
           borderRadius: BorderRadius.circular(AppRadius.md),
@@ -139,7 +139,7 @@ class BranchOption extends StatelessWidget {
 
             /// TOP ROW: TITLE + CHIP
             Padding(
-              padding: const EdgeInsets.symmetric(
+              padding: EdgeInsets.symmetric(
                 vertical: AppSpacing.base,
                 horizontal: AppSpacing.md,
               ),
@@ -157,7 +157,7 @@ class BranchOption extends StatelessWidget {
                               title,
                               style: AppTextStyles.textFieldHeading,
                             ),
-                            const SizedBox(height: AppSpacing.xs),
+                            SizedBox(height: AppSpacing.xs),
 
                             /// CITY
                             AppText(
@@ -201,11 +201,11 @@ class BranchOption extends StatelessWidget {
                           // child: const Icon(Icons.check, color: Colors.white, size: 14),
                         )
                       else
-                        const SizedBox(width: 20),
+                        SizedBox(width: 20),
                     ],
                   ),
 
-                  const SizedBox(height: AppSpacing.md),
+                  SizedBox(height: AppSpacing.md),
 
                   /// DISTANCE
                   Row(

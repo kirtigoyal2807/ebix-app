@@ -93,7 +93,7 @@ class _EmbeddedRecentReviewsBody extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+          padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
           child: Row(
             children: [
               Expanded(
@@ -110,7 +110,7 @@ class _EmbeddedRecentReviewsBody extends StatelessWidget {
             ],
           ),
         ),
-        const SizedBox(height: AppSpacing.base),
+        SizedBox(height: AppSpacing.base),
         _DynamicReviewsContent(
           reviews: reviews,
           isDark: isDark,
@@ -118,7 +118,7 @@ class _EmbeddedRecentReviewsBody extends StatelessWidget {
           summaryReviewsCount: summaryReviewsCount,
           summaryRatingBreakdown: summaryRatingBreakdown,
         ),
-        const SizedBox(height: AppSpacing.md),
+        SizedBox(height: AppSpacing.md),
       ],
     );
   }
@@ -179,7 +179,7 @@ class _DynamicReviewsSectionState extends State<_DynamicReviewsSection> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+          padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
           child: Row(
             children: [
               Expanded(
@@ -196,7 +196,7 @@ class _DynamicReviewsSectionState extends State<_DynamicReviewsSection> {
             ],
           ),
         ),
-        const SizedBox(height: AppSpacing.base),
+        SizedBox(height: AppSpacing.base),
         FutureBuilder<ApiResult<ReviewsListResult>>(
           future: _future,
           builder: (context, snapshot) {
@@ -221,7 +221,7 @@ class _DynamicReviewsSectionState extends State<_DynamicReviewsSection> {
               },
               failure: (e) {
                 return Padding(
-                  padding: const EdgeInsets.symmetric(
+                  padding: EdgeInsets.symmetric(
                     horizontal: AppSpacing.lg,
                     vertical: 8,
                   ),
@@ -248,7 +248,7 @@ class _DynamicReviewsSectionState extends State<_DynamicReviewsSection> {
             );
           },
         ),
-        const SizedBox(height: AppSpacing.md),
+        SizedBox(height: AppSpacing.md),
       ],
     );
   }
@@ -302,10 +302,7 @@ class _DynamicReviewsContent extends StatelessWidget {
 
     if (reviews.isEmpty && displayCount == 0) {
       return Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: AppSpacing.lg,
-          vertical: 8,
-        ),
+        padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg, vertical: 8),
         child: AppText(
           context.l10n.noReviewsYet,
           style: (c) =>
@@ -345,10 +342,10 @@ class _DynamicReviewsContent extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+          padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
           child: Container(
             width: double.infinity,
-            padding: const EdgeInsets.symmetric(
+            padding: EdgeInsets.symmetric(
               horizontal: AppSpacing.lg,
               vertical: AppSpacing.sm,
             ),
@@ -371,7 +368,7 @@ class _DynamicReviewsContent extends StatelessWidget {
                         context,
                       ).copyWith(fontSize: 32, fontWeight: FontWeight.w600),
                     ),
-                    const SizedBox(width: 12),
+                    SizedBox(width: 12),
                     Expanded(
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
@@ -384,7 +381,7 @@ class _DynamicReviewsContent extends StatelessWidget {
                             )
                           else
                             const _StarRating(rating: 0, size: 14),
-                          const SizedBox(height: 4),
+                          SizedBox(height: 4),
                           AppText(
                             context.l10n.basedOnReviews(displayCount),
                             maxLines: 2,
@@ -401,7 +398,7 @@ class _DynamicReviewsContent extends StatelessWidget {
                     ),
                   ],
                 ),
-                const SizedBox(height: AppSpacing.xs),
+                SizedBox(height: AppSpacing.xs),
                 Column(
                   children: List.generate(5, (i) {
                     final stars = 5 - i;
@@ -424,14 +421,14 @@ class _DynamicReviewsContent extends StatelessWidget {
           ),
         ),
         if (reviews.isNotEmpty) ...[
-          const SizedBox(height: AppSpacing.sm),
+          SizedBox(height: AppSpacing.sm),
           SizedBox(
             height: 168,
             child: ListView.separated(
               scrollDirection: Axis.horizontal,
               itemCount: reviews.length,
               separatorBuilder: (context, index) =>
-                  const SizedBox(width: AppSpacing.md),
+                  SizedBox(width: AppSpacing.md),
               itemBuilder: (context, index) => Align(
                 alignment: Alignment.topCenter,
                 child: Padding(
@@ -465,7 +462,7 @@ class _ApiReviewCard extends StatelessWidget {
     final body = review.body?.trim();
     return Container(
       width: MediaQuery.sizeOf(context).width * 0.75,
-      padding: const EdgeInsets.all(AppSpacing.md),
+      padding: EdgeInsets.all(AppSpacing.md),
       decoration: BoxDecoration(
         color: isDark ? AppColors.homeBackground : AppColors.whiteColor,
         borderRadius: BorderRadius.circular(AppRadius.md),
@@ -514,7 +511,7 @@ class _ApiReviewCard extends StatelessWidget {
                     color: AppColors.goldStarColor,
                     size: 14,
                   ),
-                  const SizedBox(width: 4),
+                  SizedBox(width: 4),
                   AppText(
                     _DynamicReviewsContent._formatSingleReviewRating(
                       review.rating,
@@ -533,7 +530,7 @@ class _ApiReviewCard extends StatelessWidget {
             ],
           ),
           if (body != null && body.isNotEmpty) ...[
-            const SizedBox(height: AppSpacing.sm),
+            SizedBox(height: AppSpacing.sm),
             AppText(
               body,
               style: (context) =>
@@ -570,7 +567,7 @@ class _StaticClassReviewsBody extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+          padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
           child: Row(
             children: [
               Expanded(
@@ -605,14 +602,14 @@ class _StaticClassReviewsBody extends StatelessWidget {
             ],
           ),
         ),
-        const SizedBox(height: AppSpacing.base),
+        SizedBox(height: AppSpacing.base),
 
         // Reviews Summary
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+          padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
           child: Container(
             width: double.infinity,
-            padding: const EdgeInsets.symmetric(
+            padding: EdgeInsets.symmetric(
               horizontal: AppSpacing.lg,
               vertical: AppSpacing.sm,
             ),
@@ -635,14 +632,14 @@ class _StaticClassReviewsBody extends StatelessWidget {
                         context,
                       ).copyWith(fontSize: 32, fontWeight: FontWeight.w600),
                     ),
-                    const SizedBox(width: 12),
+                    SizedBox(width: 12),
                     Expanded(
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const _StarRating(rating: 5, size: 14),
-                          const SizedBox(height: 4),
+                          SizedBox(height: 4),
                           AppText(
                             context.l10n.basedOnReviews(27),
                             maxLines: 2,
@@ -659,7 +656,7 @@ class _StaticClassReviewsBody extends StatelessWidget {
                     ),
                   ],
                 ),
-                const SizedBox(height: AppSpacing.xs),
+                SizedBox(height: AppSpacing.xs),
                 const Column(
                   children: [
                     _RatingBar(stars: 5, progress: 0.6, count: 16),
@@ -673,7 +670,7 @@ class _StaticClassReviewsBody extends StatelessWidget {
             ),
           ),
         ),
-        const SizedBox(height: AppSpacing.sm),
+        SizedBox(height: AppSpacing.sm),
 
         // Review Cards - Horizontal
         const SizedBox(height: 168, child: _StaticReviewCardsList()),
@@ -690,8 +687,7 @@ class _StaticReviewCardsList extends StatelessWidget {
     return ListView.separated(
       scrollDirection: Axis.horizontal,
       itemCount: 3,
-      separatorBuilder: (context, index) =>
-          const SizedBox(width: AppSpacing.md),
+      separatorBuilder: (context, index) => SizedBox(width: AppSpacing.md),
       itemBuilder: (context, index) => Align(
         alignment: Alignment.topCenter,
         child: Padding(
@@ -721,18 +717,18 @@ class _RatingBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return Padding(
-      padding: const EdgeInsets.only(bottom: 1.0),
+      padding: EdgeInsets.only(bottom: 1.0),
       child: Row(
         children: [
           const Icon(Icons.star, color: AppColors.goldStarColor, size: 14),
-          const SizedBox(width: 4),
+          SizedBox(width: 4),
           AppText(
             stars.toString(),
             style: (context) => AppTextStyles.helpAndSupportItemLabel(
               context,
             ).copyWith(fontWeight: FontWeight.w600),
           ),
-          const SizedBox(width: AppSpacing.sm),
+          SizedBox(width: AppSpacing.sm),
           Expanded(
             child: ClipRRect(
               borderRadius: BorderRadius.circular(2),
@@ -746,7 +742,7 @@ class _RatingBar extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(width: AppSpacing.sm),
+          SizedBox(width: AppSpacing.sm),
           AppText(
             count.toString(),
             style: (context) => AppTextStyles.captionText(
@@ -789,7 +785,7 @@ class _DemoReviewCard extends StatelessWidget {
 
     return Container(
       width: MediaQuery.sizeOf(context).width * 0.75,
-      padding: const EdgeInsets.all(AppSpacing.md),
+      padding: EdgeInsets.all(AppSpacing.md),
       decoration: BoxDecoration(
         color: isDark ? AppColors.homeBackground : AppColors.whiteColor,
         borderRadius: BorderRadius.circular(AppRadius.md),
@@ -839,7 +835,7 @@ class _DemoReviewCard extends StatelessWidget {
                     color: AppColors.goldStarColor,
                     size: 14,
                   ),
-                  const SizedBox(width: 4),
+                  SizedBox(width: 4),
                   AppText(
                     '4.5',
                     maxLines: 1,
@@ -855,7 +851,7 @@ class _DemoReviewCard extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: AppSpacing.sm),
+          SizedBox(height: AppSpacing.sm),
           AppText(
             context.l10n.reviewerComment1,
             style: (context) =>

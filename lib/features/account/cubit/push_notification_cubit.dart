@@ -21,8 +21,7 @@ class PushNotificationCubit extends Cubit<PushNotificationState> {
       allNotification: data.allNotifications,
       beforeClassStart: data.classNotifications.beforeClassStart,
       dayBeforeRemainder: data.classNotifications.dayBeforeReminder,
-      paymentConfirmation:
-          data.subscriptionNotifications.paymentConfirmations,
+      paymentConfirmation: data.subscriptionNotifications.paymentConfirmations,
       renewalRemainder: data.subscriptionNotifications.renewalReminders,
       promotionOffer: data.marketingNotifications.promotions,
       appUpdate: data.marketingNotifications.productUpdates,

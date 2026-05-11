@@ -9,7 +9,6 @@ import 'package:pilates_app/core/validation/subscription_declaration_validators.
 import 'package:pilates_app/features/subscription/purchase_subscription/cubit/subscription_cubit.dart';
 import 'package:pilates_app/features/subscription/purchase_subscription/view/widgets/subscription_calendar_date_field.dart';
 import 'package:pilates_app/features/subscription/purchase_subscription/view/widgets/subscription_header.dart';
-import 'package:pilates_app/features/subscription/purchase_subscription/view/widgets/subscription_progress.dart';
 import 'package:pilates_app/widgets/app_button.dart';
 import 'package:pilates_app/widgets/app_text.dart';
 import 'package:pilates_app/widgets/app_text_field.dart';
@@ -93,12 +92,12 @@ class _DeclarationViewState extends State<DeclarationView> {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
+    final l10n = AppLocalizations.of(context);
     final cubit = context.read<SubscriptionCubit>();
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Padding(
-      padding: const EdgeInsets.symmetric(
+      padding: EdgeInsets.symmetric(
         vertical: AppSpacing.lg,
         horizontal: AppSpacing.lg,
       ),
@@ -119,16 +118,16 @@ class _DeclarationViewState extends State<DeclarationView> {
                       totalSteps: 6,
                       isDark: isDark,
                     ),
-                    const SizedBox(height: AppSpacing.xl),
+                    SizedBox(height: AppSpacing.xl),
                     AppText(
                       l10n.declaration,
                       style: (style) => AppTextStyles.gelasioMedium(
                         context,
                       ).copyWith(fontSize: 24, height: 1.2),
                     ),
-                    const SizedBox(height: AppSpacing.lg),
+                    SizedBox(height: AppSpacing.lg),
                     _buildSectionHeader(context, l10n.declarationText),
-                    const SizedBox(height: AppSpacing.md),
+                    SizedBox(height: AppSpacing.md),
                     AppTextField(
                       label: l10n.name,
                       hint: l10n.name,
@@ -140,7 +139,7 @@ class _DeclarationViewState extends State<DeclarationView> {
                         setState(() => _nameError = null);
                       },
                     ),
-                    const SizedBox(height: AppSpacing.md),
+                    SizedBox(height: AppSpacing.md),
                     AppTextField(
                       label: l10n.signature,
                       hint: l10n.signature,
@@ -153,7 +152,7 @@ class _DeclarationViewState extends State<DeclarationView> {
                         setState(() => _signatureError = null);
                       },
                     ),
-                    const SizedBox(height: AppSpacing.md),
+                    SizedBox(height: AppSpacing.md),
                     SubscriptionCalendarDateField(
                       label: l10n.date,
                       hint: l10n.date,
@@ -164,7 +163,7 @@ class _DeclarationViewState extends State<DeclarationView> {
                       },
                     ),
                     if (_dateError != null) ...[
-                      const SizedBox(height: 6),
+                      SizedBox(height: 6),
                       Text(
                         _dateError!,
                         style: AppTextStyles.bodyText(context).copyWith(
@@ -175,7 +174,7 @@ class _DeclarationViewState extends State<DeclarationView> {
                         ),
                       ),
                     ],
-                    const SizedBox(height: AppSpacing.lg),
+                    SizedBox(height: AppSpacing.lg),
                   ],
                 ),
               ),

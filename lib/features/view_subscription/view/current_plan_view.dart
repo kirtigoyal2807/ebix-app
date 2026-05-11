@@ -75,7 +75,7 @@ class CurrentPlanView extends StatelessWidget {
             state.subscriptions.isEmpty) {
           return Center(
             child: Padding(
-              padding: const EdgeInsets.all(AppSpacing.lg),
+              padding: EdgeInsets.all(AppSpacing.lg),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -104,7 +104,7 @@ class CurrentPlanView extends StatelessWidget {
         if (primary == null) {
           return Center(
             child: Padding(
-              padding: const EdgeInsets.all(AppSpacing.lg),
+              padding: EdgeInsets.all(AppSpacing.lg),
               child: AppText(
                 context.l10n.noSubscriptionsYet,
                 textAlign: TextAlign.center,
@@ -119,7 +119,7 @@ class CurrentPlanView extends StatelessWidget {
           child: SingleChildScrollView(
             physics: const AlwaysScrollableScrollPhysics(),
             child: Padding(
-              padding: const EdgeInsets.all(AppSpacing.lg),
+              padding: EdgeInsets.all(AppSpacing.lg),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -249,8 +249,8 @@ class CurrentPlanView extends StatelessWidget {
                         iconColor: isDark
                             ? AppColors.lightGrey
                             : AppColors.darkText,
-                        tilePadding: const EdgeInsets.symmetric(horizontal: 16),
-                        childrenPadding: const EdgeInsets.symmetric(
+                        tilePadding: EdgeInsets.symmetric(horizontal: 16),
+                        childrenPadding: EdgeInsets.symmetric(
                           horizontal: 16,
                           vertical: 8,
                         ),
@@ -389,7 +389,7 @@ class CurrentPlanView extends StatelessWidget {
                     },
                     variant: AppButtonVariant.primary,
                   ),
-                  const SizedBox(height: AppSpacing.sm),
+                  SizedBox(height: AppSpacing.sm),
                   Container(
                     decoration: BoxDecoration(
                       color: isDark ? AppColors.homeBackground : Colors.white,
@@ -427,7 +427,7 @@ class CurrentPlanView extends StatelessWidget {
                       variant: AppButtonVariant.secondary,
                     ),
                   ),
-                  const SizedBox(height: AppSpacing.sm),
+                  SizedBox(height: AppSpacing.sm),
                   Center(
                     child: GestureDetector(
                       onTap: () => Navigator.pop(context),
@@ -484,7 +484,7 @@ class CurrentPlanView extends StatelessWidget {
 
   Widget _buildCheckRow({required String label, required bool isDark}) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: AppSpacing.sm),
+      padding: EdgeInsets.only(bottom: AppSpacing.sm),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

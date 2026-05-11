@@ -35,6 +35,7 @@ class AppTextField extends StatefulWidget {
   final EdgeInsets scrollPadding;
 
   final List<TextInputFormatter>? inputFormatters;
+
   /// When null, an internal node is created and disposed by this widget.
   final FocusNode? focusNode;
 
@@ -121,7 +122,7 @@ class _AppTextFieldState extends State<AppTextField> {
         /// LABEL
         if (widget.label != null)
           AppText(widget.label ?? "", style: AppTextStyles.textFieldHeading),
-        if (widget.label != null) const SizedBox(height: AppSpacing.sm),
+        if (widget.label != null) SizedBox(height: AppSpacing.sm),
 
         /// TEXT FIELD
         Stack(

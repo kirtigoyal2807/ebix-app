@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:country_code_picker/country_code_picker.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'config/theme/app_theme.dart';
@@ -109,43 +109,50 @@ class PilatesApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RepositoryProvider<AuthRepository>.value(
-      value: authRepository,
-      child: BlocProvider(
-        create: (_) => AuthCubit(
-          authRepository: authRepository,
-          tokenStorage: tokenStorage,
-          localeBridge: localeBridge,
-          seed: authInitialState,
-        ),
-        child: BlocBuilder<AuthCubit, AuthState>(
-          builder: (context, state) {
-            return MaterialApp(
-              debugShowCheckedModeBanner: false,
-              locale: state.locale,
-              supportedLocales: const [Locale('en'), Locale('ar')],
-              localizationsDelegates: const [
-                AppLocalizations.delegate,
-                CountryLocalizations.delegate,
-                GlobalMaterialLocalizations.delegate,
-                GlobalWidgetsLocalizations.delegate,
-                GlobalCupertinoLocalizations.delegate,
-              ],
-              theme: AppTheme.light(),
-              darkTheme: AppTheme.dark(),
-              themeMode: state.themeMode,
-              builder: (context, child) {
-                return GestureDetector(
-                  behavior: HitTestBehavior.translucent,
-                  onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-                  child: child ?? const SizedBox.shrink(),
+    return ScreenUtilInit(
+      designSize: const Size(375, 812), // your Figma size
+      minTextAdapt: true,
+      splitScreenMode: true,
+      builder: (_, child) {
+        return RepositoryProvider<AuthRepository>.value(
+          value: authRepository,
+          child: BlocProvider(
+            create: (_) => AuthCubit(
+              authRepository: authRepository,
+              tokenStorage: tokenStorage,
+              localeBridge: localeBridge,
+              seed: authInitialState,
+            ),
+            child: BlocBuilder<AuthCubit, AuthState>(
+              builder: (context, state) {
+                return MaterialApp(
+                  debugShowCheckedModeBanner: false,
+                  locale: state.locale,
+                  supportedLocales: [Locale('en'), Locale('ar')],
+                  localizationsDelegates: [
+                    AppLocalizations.delegate,
+                    GlobalMaterialLocalizations.delegate,
+                    GlobalWidgetsLocalizations.delegate,
+                    GlobalCupertinoLocalizations.delegate,
+                  ],
+                  theme: AppTheme.light(),
+                  darkTheme: AppTheme.dark(),
+                  themeMode: state.themeMode,
+                  builder: (context, child) {
+                    return GestureDetector(
+                      behavior: HitTestBehavior.translucent,
+                      onTap: () =>
+                          FocusManager.instance.primaryFocus?.unfocus(),
+                      child: child ?? SizedBox.shrink(),
+                    );
+                  },
+                  home: const AuthRootView(),
                 );
               },
-              home: const AuthRootView(),
-            );
-          },
-        ),
-      ),
+            ),
+          ),
+        );
+      },
     );
   }
 }

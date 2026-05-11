@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:pilates_app/features/progress_tracking_flow/data/models/progress_session_history_item.dart';
 
 class SessionHistoryState extends Equatable {
-  SessionHistoryState({
+  const SessionHistoryState({
     required this.sessionHistoryList,
     this.selectedSessionHistory = SessionHistory.allTime,
     this.isLoading = false,

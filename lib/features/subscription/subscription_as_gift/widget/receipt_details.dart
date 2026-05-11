@@ -99,7 +99,7 @@ class ReceiptDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
+    final l10n = AppLocalizations.of(context);
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -206,11 +206,12 @@ class ReceiptDetails extends StatelessWidget {
                       Expanded(
                         child: Text(
                           deliveryDateErrorText!,
-                          style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: isDark
-                                ? AppColors.redDark
-                                : AppColors.redLight,
-                          ),
+                          style: Theme.of(context).textTheme.bodySmall
+                              ?.copyWith(
+                                color: isDark
+                                    ? AppColors.redDark
+                                    : AppColors.redLight,
+                              ),
                         ),
                       ),
                     ],

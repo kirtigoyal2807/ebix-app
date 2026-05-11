@@ -88,7 +88,7 @@ class _CreateNewPasswordViewState extends State<CreateNewPasswordView> {
             title: context.l10n.forgotPasswordTitle,
           ),
           body: Padding(
-            padding: const EdgeInsets.symmetric(
+            padding: EdgeInsets.symmetric(
               horizontal: AppSpacing.lg,
               vertical: AppSpacing.md,
             ),
@@ -99,14 +99,14 @@ class _CreateNewPasswordViewState extends State<CreateNewPasswordView> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const SizedBox(height: AppSpacing.lg),
+                        SizedBox(height: AppSpacing.lg),
                         SignUpHeader(
                           title: context.l10n.createNewPasswordTitle,
                           subtitle: context.l10n.createNewPasswordSubtitle,
                           step: 0,
                           totalSteps: 0,
                         ),
-                        const SizedBox(height: AppSpacing.xxl),
+                        SizedBox(height: AppSpacing.xxl),
                         AppTextField(
                           key: const ValueKey('forgot_new_password'),
                           controller: _passwordController,
@@ -118,7 +118,7 @@ class _CreateNewPasswordViewState extends State<CreateNewPasswordView> {
                           errorText: fe['password'],
                           onChanged: (_) => setState(() {}),
                         ),
-                        const SizedBox(height: AppSpacing.lg),
+                        SizedBox(height: AppSpacing.lg),
                         AppTextField(
                           key: const ValueKey('forgot_confirm_password'),
                           controller: _confirmController,

@@ -8,7 +8,6 @@ import 'package:pilates_app/core/localization/localization_extension.dart';
 import 'package:pilates_app/features/subscription/purchase_subscription/cubit/subscription_cubit.dart';
 import 'package:pilates_app/features/subscription/purchase_subscription/view/widgets/api_health_questionnaire_blocks.dart';
 import 'package:pilates_app/features/subscription/purchase_subscription/view/widgets/subscription_header.dart';
-import 'package:pilates_app/features/subscription/purchase_subscription/view/widgets/subscription_progress.dart';
 import 'package:pilates_app/widgets/app_button.dart';
 import 'package:pilates_app/widgets/app_text.dart';
 import 'package:pilates_app/widgets/app_text_field.dart';
@@ -26,7 +25,7 @@ class _GoalsViewState extends State<GoalsView> {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
+    final l10n = AppLocalizations.of(context);
     final cubit = context.read<SubscriptionCubit>();
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
@@ -34,11 +33,11 @@ class _GoalsViewState extends State<GoalsView> {
       listenWhen: (p, c) =>
           p.goals != c.goals ||
           p.healthQuestionnaireAnswers != c.healthQuestionnaireAnswers,
-      listener: (_, __) {
+      listener: (_, _) {
         if (mounted) setState(() => _validationMessage = null);
       },
       child: Padding(
-        padding: const EdgeInsets.symmetric(
+        padding: EdgeInsets.symmetric(
           vertical: AppSpacing.lg,
           horizontal: AppSpacing.lg,
         ),
@@ -67,21 +66,24 @@ class _GoalsViewState extends State<GoalsView> {
                             totalSteps: 6,
                             isDark: isDark,
                           ),
-                          const SizedBox(height: AppSpacing.xl),
+                          SizedBox(height: AppSpacing.xl),
                           AppText(
                             l10n.goals,
                             style: (style) => AppTextStyles.gelasioMedium(
                               context,
                             ).copyWith(fontSize: 24, height: 1.2),
                           ),
-                          const SizedBox(height: AppSpacing.lg),
+                          SizedBox(height: AppSpacing.lg),
                           if (intake)
                             const ApiGoalsQuestionBlock()
                           else
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                _buildSectionHeader(context, l10n.whatIsYourGoal),
+                                _buildSectionHeader(
+                                  context,
+                                  l10n.whatIsYourGoal,
+                                ),
                                 Stack(
                                   children: [
                                     AppTextField(

@@ -8,7 +8,6 @@ import 'package:pilates_app/core/localization/localization_extension.dart';
 import 'package:pilates_app/features/subscription/purchase_subscription/cubit/subscription_cubit.dart';
 import 'package:pilates_app/features/subscription/purchase_subscription/view/widgets/api_health_questionnaire_blocks.dart';
 import 'package:pilates_app/features/subscription/purchase_subscription/view/widgets/subscription_header.dart';
-import 'package:pilates_app/features/subscription/purchase_subscription/view/widgets/subscription_progress.dart';
 import 'package:pilates_app/widgets/app_button.dart';
 import 'package:pilates_app/widgets/app_text.dart';
 import 'package:pilates_app/widgets/inline_validation_banner.dart';
@@ -25,7 +24,7 @@ class _PregnancyViewState extends State<PregnancyView> {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
+    final l10n = AppLocalizations.of(context);
     final cubit = context.read<SubscriptionCubit>();
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
@@ -33,11 +32,11 @@ class _PregnancyViewState extends State<PregnancyView> {
       listenWhen: (p, c) =>
           p.isPregnant != c.isPregnant ||
           p.healthQuestionnaireAnswers != c.healthQuestionnaireAnswers,
-      listener: (_, __) {
+      listener: (_, _) {
         if (mounted) setState(() => _validationMessage = null);
       },
       child: Padding(
-        padding: const EdgeInsets.symmetric(
+        padding: EdgeInsets.symmetric(
           vertical: AppSpacing.lg,
           horizontal: AppSpacing.lg,
         ),
@@ -61,19 +60,19 @@ class _PregnancyViewState extends State<PregnancyView> {
                           totalSteps: 6,
                           isDark: isDark,
                         ),
-                        const SizedBox(height: AppSpacing.xl),
+                        SizedBox(height: AppSpacing.xl),
                         AppText(
                           l10n.pregnancy,
                           style: (style) => AppTextStyles.heading1(context),
                         ),
-                        const SizedBox(height: AppSpacing.lg),
+                        SizedBox(height: AppSpacing.lg),
                         if (intake) ...[
                           const ApiBooleanQuestionsBlock(
                             questionIds: [HealthQuestionnaireIds.pregnancy],
                           ),
                         ] else ...[
                           _buildSectionHeader(context, l10n.areYouPregnant),
-                          const SizedBox(height: AppSpacing.md),
+                          SizedBox(height: AppSpacing.md),
                           BlocBuilder<SubscriptionCubit, SubscriptionState>(
                             buildWhen: (p, c) => p.isPregnant != c.isPregnant,
                             builder: (context, state) {
@@ -115,8 +114,7 @@ class _PregnancyViewState extends State<PregnancyView> {
                     cubit.state.healthQuestionnaireQuestions,
                     const [HealthQuestionnaireIds.pregnancy],
                   );
-                  if (qs.isNotEmpty &&
-                      !cubit.validateQuestionnaireGroup(qs)) {
+                  if (qs.isNotEmpty && !cubit.validateQuestionnaireGroup(qs)) {
                     setState(
                       () => _validationMessage =
                           context.l10n.giftRecipientValidationError,

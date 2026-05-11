@@ -94,7 +94,7 @@ class RewardHistoryView extends StatelessWidget {
             return ListView.separated(
               padding: EdgeInsetsGeometry.all(AppSpacing.lg),
               itemCount: list.length + 1,
-              separatorBuilder: (_, __) => SizedBox(height: AppSpacing.md),
+              separatorBuilder: (_, _) => SizedBox(height: AppSpacing.md),
               itemBuilder: (context, i) {
                 if (i == 0) {
                   return AppText(

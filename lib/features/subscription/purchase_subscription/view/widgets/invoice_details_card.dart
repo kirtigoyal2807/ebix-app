@@ -7,7 +7,6 @@ import 'package:pilates_app/features/checkout/data/models/membership_receipt_sum
 import '../../../../../config/theme/app_text_styles.dart';
 import '../../../../../core/localization/localization_extension.dart';
 import '../../../../../widgets/app_text.dart';
-import 'package:pilates_app/config/theme/app_radius.dart';
 
 class InvoiceDetailsCard extends StatelessWidget {
   const InvoiceDetailsCard({super.key, this.receipt});
@@ -42,7 +41,7 @@ class InvoiceDetailsCard extends StatelessWidget {
                     ),
                   ],
           ),
-          padding: const EdgeInsets.only(
+          padding: EdgeInsets.only(
             top: 22,
             left: AppSpacing.md,
             right: AppSpacing.md,
@@ -70,7 +69,7 @@ class InvoiceDetailsCard extends StatelessWidget {
                 ],
               ),
 
-              const SizedBox(height: AppSpacing.md),
+              SizedBox(height: AppSpacing.md),
 
               if (r == null) ...[
                 AppText(
@@ -108,7 +107,7 @@ class InvoiceDetailsCard extends StatelessWidget {
                             : AppColors.lightGrey,
                       ),
                 ),
-                const SizedBox(height: 64),
+                SizedBox(height: 64),
                 _buildRow(
                   context,
                   r.planName?.trim().isNotEmpty == true
@@ -122,7 +121,7 @@ class InvoiceDetailsCard extends StatelessWidget {
                   isDark,
                 ),
                 if (r.setupFeeMinor != null && r.setupFeeMinor != 0) ...[
-                  const SizedBox(height: AppSpacing.xs),
+                  SizedBox(height: AppSpacing.xs),
                   _buildRow(
                     context,
                     context.l10n.setupFee,
@@ -135,7 +134,7 @@ class InvoiceDetailsCard extends StatelessWidget {
                   ),
                 ],
                 if (r.taxMinor != null && r.taxMinor != 0) ...[
-                  const SizedBox(height: AppSpacing.xs),
+                  SizedBox(height: AppSpacing.xs),
                   _buildRow(
                     context,
                     context.l10n.tax,
@@ -144,7 +143,7 @@ class InvoiceDetailsCard extends StatelessWidget {
                   ),
                 ],
                 if (r.discountMinor != null && r.discountMinor != 0) ...[
-                  const SizedBox(height: AppSpacing.xs),
+                  SizedBox(height: AppSpacing.xs),
                   _buildRow(
                     context,
                     context.l10n.discount,
@@ -152,12 +151,12 @@ class InvoiceDetailsCard extends StatelessWidget {
                     isDark,
                   ),
                 ],
-                const SizedBox(height: AppSpacing.md),
+                SizedBox(height: AppSpacing.md),
                 Divider(
                   color: isDark ? AppColors.greyText : AppColors.buttonBorder,
                   height: 1,
                 ),
-                const SizedBox(height: AppSpacing.md),
+                SizedBox(height: AppSpacing.md),
                 _buildRow(
                   context,
                   context.l10n.totalPaid,
@@ -165,12 +164,12 @@ class InvoiceDetailsCard extends StatelessWidget {
                   isDark,
                   isBold: true,
                 ),
-                const SizedBox(height: AppSpacing.md),
+                SizedBox(height: AppSpacing.md),
                 Divider(
                   color: isDark ? AppColors.greyText : AppColors.buttonBorder,
                   height: 1,
                 ),
-                const SizedBox(height: AppSpacing.md),
+                SizedBox(height: AppSpacing.md),
                 _buildRow(
                   context,
                   context.l10n.paymentMethod,
@@ -179,7 +178,7 @@ class InvoiceDetailsCard extends StatelessWidget {
                 ),
                 if (r.nextBillingAtIso != null &&
                     r.nextBillingAtIso!.trim().isNotEmpty) ...[
-                  const SizedBox(height: AppSpacing.xs),
+                  SizedBox(height: AppSpacing.xs),
                   _buildRow(
                     context,
                     context.l10n.nextBillingDateText,

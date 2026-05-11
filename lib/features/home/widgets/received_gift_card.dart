@@ -17,8 +17,8 @@ class ReceivedGiftCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
-      padding: const EdgeInsets.all(AppSpacing.md),
+      margin: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+      padding: EdgeInsets.all(AppSpacing.md),
       decoration: BoxDecoration(
         color: isDark ? AppColors.homeBackground : AppColors.whiteColor,
         borderRadius: BorderRadius.circular(AppRadius.md),
@@ -38,7 +38,7 @@ class ReceivedGiftCard extends StatelessWidget {
                   : 'assets/images/svg/ic_gift_card.svg',
             ),
           ),
-          const SizedBox(width: AppSpacing.md),
+          SizedBox(width: AppSpacing.md),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -50,7 +50,7 @@ class ReceivedGiftCard extends StatelessWidget {
                   style: (context) =>
                       AppTextStyles.heading1(context).copyWith(fontSize: 16),
                 ),
-                const SizedBox(height: AppSpacing.xs),
+                SizedBox(height: AppSpacing.xs),
                 AppText(
                   gift.subtitle?.trim().isNotEmpty == true
                       ? gift.subtitle!.trim()
@@ -58,7 +58,7 @@ class ReceivedGiftCard extends StatelessWidget {
                   style: AppTextStyles.captionText,
                 ),
                 if ((gift.senderName ?? '').trim().isNotEmpty) ...[
-                  const SizedBox(height: AppSpacing.xs),
+                  SizedBox(height: AppSpacing.xs),
                   AppText(
                     '— ${gift.senderName!.trim()}',
                     style: AppTextStyles.captionText,

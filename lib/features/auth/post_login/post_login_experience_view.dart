@@ -44,7 +44,7 @@ class _PostLoginExperienceViewState extends State<PostLoginExperienceView> {
         isMoreMenu: false,
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(
+        padding: EdgeInsets.symmetric(
           horizontal: AppSpacing.lg,
           vertical: AppSpacing.md,
         ),
@@ -55,13 +55,13 @@ class _PostLoginExperienceViewState extends State<PostLoginExperienceView> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const SizedBox(height: AppSpacing.lg),
+                    SizedBox(height: AppSpacing.lg),
                     AppText(
                       context.l10n.experienceTitle,
                       style: AppTextStyles.heading1,
                       maxLines: 3,
                     ),
-                    const SizedBox(height: AppSpacing.lg),
+                    SizedBox(height: AppSpacing.lg),
                     ExperienceOption(
                       title: context.l10n.experienceBeginner,
                       description: context.l10n.experienceBeginnerDesc,
@@ -71,7 +71,7 @@ class _PostLoginExperienceViewState extends State<PostLoginExperienceView> {
                           : 'assets/images/svg/ic_beginner.svg',
                       onTap: () => setState(() => _selectedIndex = 0),
                     ),
-                    const SizedBox(height: AppSpacing.md),
+                    SizedBox(height: AppSpacing.md),
                     ExperienceOption(
                       title: context.l10n.experienceIntermediate,
                       description: context.l10n.experienceIntermediateDesc,
@@ -81,7 +81,7 @@ class _PostLoginExperienceViewState extends State<PostLoginExperienceView> {
                           : 'assets/images/svg/ic_intermediate.svg',
                       onTap: () => setState(() => _selectedIndex = 1),
                     ),
-                    const SizedBox(height: AppSpacing.md),
+                    SizedBox(height: AppSpacing.md),
                     ExperienceOption(
                       title: context.l10n.experienceAdvanced,
                       description: context.l10n.experienceAdvancedDesc,
@@ -91,7 +91,7 @@ class _PostLoginExperienceViewState extends State<PostLoginExperienceView> {
                           : 'assets/images/svg/ic_advance.svg',
                       onTap: () => setState(() => _selectedIndex = 2),
                     ),
-                    const SizedBox(height: AppSpacing.lg),
+                    SizedBox(height: AppSpacing.lg),
                     AppText(
                       context.l10n.dontWorry,
                       style: (context) => AppTextStyles.body(context).copyWith(

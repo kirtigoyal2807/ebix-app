@@ -25,7 +25,7 @@ class ClassDetailHeader extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const SizedBox(height: AppSpacing.md),
+        SizedBox(height: AppSpacing.md),
         // Hero image — use network image if available, fallback to asset
         ClipRRect(
           borderRadius: BorderRadius.circular(AppRadius.lg + 4),
@@ -35,7 +35,7 @@ class ClassDetailHeader extends StatelessWidget {
                   height: size.height * 0.28,
                   width: double.infinity,
                   fit: BoxFit.cover,
-                  errorBuilder: (_, __, ___) => Image.asset(
+                  errorBuilder: (_, _, _) => Image.asset(
                     'assets/images/demo images/Class Image.png',
                     height: size.height * 0.28,
                     width: double.infinity,
@@ -49,7 +49,7 @@ class ClassDetailHeader extends StatelessWidget {
                   fit: BoxFit.cover,
                 ),
         ),
-        const SizedBox(height: AppSpacing.lg),
+        SizedBox(height: AppSpacing.lg),
 
         // Title and rating
         Row(
@@ -69,7 +69,7 @@ class ClassDetailHeader extends StatelessWidget {
                     ),
                   ),
                   if (desc != null && desc.isNotEmpty) ...[
-                    const SizedBox(height: AppSpacing.xs),
+                    SizedBox(height: AppSpacing.xs),
                     Html(
                       data: desc,
                       shrinkWrap: true,

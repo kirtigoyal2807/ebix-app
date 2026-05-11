@@ -36,7 +36,7 @@ class ClassAboutSection extends StatelessWidget {
             fontWeight: FontWeight.w400,
           ),
         ),
-        const SizedBox(height: AppSpacing.sm),
+        SizedBox(height: AppSpacing.sm),
         Html(
           data: html,
           shrinkWrap: true,

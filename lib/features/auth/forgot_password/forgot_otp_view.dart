@@ -119,7 +119,7 @@ class _ForgotOtpViewState extends State<ForgotOtpView>
             title: context.l10n.forgotPasswordTitle,
           ),
           body: Padding(
-            padding: const EdgeInsets.symmetric(
+            padding: EdgeInsets.symmetric(
               horizontal: AppSpacing.lg,
               vertical: AppSpacing.md,
             ),
@@ -130,14 +130,14 @@ class _ForgotOtpViewState extends State<ForgotOtpView>
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const SizedBox(height: AppSpacing.lg),
+                        SizedBox(height: AppSpacing.lg),
                         SignUpHeader(
                           title: context.l10n.otpVerificationTitle,
                           subtitle: context.l10n.otpVerificationSubtitle,
                           step: 0,
                           totalSteps: 0,
                         ),
-                        const SizedBox(height: AppSpacing.xxl),
+                        SizedBox(height: AppSpacing.xxl),
                         Center(
                           child: OtpField(
                             key: const ValueKey('forgot_otp_field'),
@@ -148,7 +148,7 @@ class _ForgotOtpViewState extends State<ForgotOtpView>
                           ),
                         ),
                         if (codeErr != null) ...[
-                          const SizedBox(height: AppSpacing.sm),
+                          SizedBox(height: AppSpacing.sm),
                           Center(
                             child: Text(
                               codeErr,
@@ -161,7 +161,7 @@ class _ForgotOtpViewState extends State<ForgotOtpView>
                             ),
                           ),
                         ],
-                        const SizedBox(height: AppSpacing.lg),
+                        SizedBox(height: AppSpacing.lg),
                         Center(
                           child: GestureDetector(
                             key: const ValueKey('forgot_resend_code'),
@@ -178,8 +178,8 @@ class _ForgotOtpViewState extends State<ForgotOtpView>
                                           color: resendDisabled
                                               ? theme.disabledColor
                                               : (isDark
-                                                  ? AppColors.darkGreyText
-                                                  : AppColors.greyText),
+                                                    ? AppColors.darkGreyText
+                                                    : AppColors.greyText),
                                           fontWeight: FontWeight.w400,
                                           height: 1.4,
                                         ),
@@ -187,10 +187,9 @@ class _ForgotOtpViewState extends State<ForgotOtpView>
                                   TextSpan(
                                     text: context.l10n.resendCode,
                                     style: resendDisabled
-                                        ? AppTextStyles.boldBody(context)
-                                            .copyWith(
-                                              color: theme.disabledColor,
-                                            )
+                                        ? AppTextStyles.boldBody(
+                                            context,
+                                          ).copyWith(color: theme.disabledColor)
                                         : AppTextStyles.boldBody(context),
                                   ),
                                 ],

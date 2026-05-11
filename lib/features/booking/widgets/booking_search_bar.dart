@@ -55,7 +55,7 @@ class _BookingSearchBarState extends State<BookingSearchBar> {
         }
       },
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+        padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
         child: TextField(
           controller: _controller,
           onChanged: (query) =>

@@ -57,7 +57,7 @@ class PauseSubscriptionView extends StatelessWidget {
         title: context.l10n.pauseSubscription,
         isMoreMenu: false,
         leading: Padding(
-          padding: const EdgeInsets.only(left: 12.0),
+          padding: EdgeInsets.only(left: 12.0),
           child: IconButton(
             icon: const Icon(Icons.arrow_back_ios_rounded, size: 20),
             onPressed: Navigator.of(context).pop,
@@ -66,7 +66,7 @@ class PauseSubscriptionView extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.symmetric(
+          padding: EdgeInsets.symmetric(
             vertical: AppSpacing.md,
             horizontal: AppSpacing.lg,
           ),
@@ -401,7 +401,7 @@ class PauseSubscriptionView extends StatelessWidget {
                       },
                       variant: AppButtonVariant.primary,
                     ),
-                    const SizedBox(height: AppSpacing.sm),
+                    SizedBox(height: AppSpacing.sm),
                     Center(
                       child: GestureDetector(
                         onTap: () => Navigator.pop(context),
@@ -418,7 +418,7 @@ class PauseSubscriptionView extends StatelessWidget {
                         ),
                       ),
                     ),
-                    const SizedBox(height: AppSpacing.xl),
+                    SizedBox(height: AppSpacing.xl),
                   ],
                 );
               },
@@ -544,7 +544,7 @@ class PauseSubscriptionView extends StatelessWidget {
 
   Widget _buildRow({required String label, required bool isDark}) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: AppSpacing.sm),
+      padding: EdgeInsets.only(bottom: AppSpacing.sm),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

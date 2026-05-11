@@ -48,7 +48,7 @@ class PushNotificationView extends StatelessWidget {
                       state.errorMessage ?? l10n.somethingWentWrong,
                       style: (context) => AppTextStyles.bodyText(context),
                     ),
-                    const SizedBox(height: AppSpacing.md),
+                    SizedBox(height: AppSpacing.md),
                     ElevatedButton(
                       onPressed: () => context
                           .read<PushNotificationCubit>()
@@ -85,7 +85,7 @@ class PushNotificationView extends StatelessWidget {
                                 .changeAllNotification(p1);
                           },
                         ),
-                        SizedBox(height: AppSpacing.md),
+                        SizedBox(height: AppSpacing.xl),
                         titleText(text: l10n.classNotifications),
                         SizedBox(height: AppSpacing.sm),
                         SwitchWidget(
@@ -100,14 +100,14 @@ class PushNotificationView extends StatelessWidget {
                                 .changeBeforeClassStart(p1);
                           },
                         ),
-                        SizedBox(height: AppSpacing.sm),
+                        SizedBox(height: AppSpacing.md),
                         Divider(
                           height: 1,
                           color: isDark
                               ? AppColors.greyText
                               : AppColors.divider,
                         ),
-                        SizedBox(height: AppSpacing.md),
+                        SizedBox(height: AppSpacing.sm),
                         SwitchWidget(
                           title: l10n.dayBeforeReminder,
                           subTitle: l10n.dayBeforeReminderSubtitle,
@@ -120,7 +120,7 @@ class PushNotificationView extends StatelessWidget {
                         ),
                         SizedBox(height: AppSpacing.xl),
                         titleText(text: l10n.subscriptionBilling),
-                        SizedBox(height: AppSpacing.md),
+                        SizedBox(height: AppSpacing.sm),
                         SwitchWidget(
                           title: l10n.paymentConfirmations,
                           subTitle: l10n.paymentConfirmationsSubtitle,
@@ -131,7 +131,7 @@ class PushNotificationView extends StatelessWidget {
                                 .changePaymentConfirmation(p1);
                           },
                         ),
-                        SizedBox(height: AppSpacing.sm),
+                        SizedBox(height: AppSpacing.md),
                         Divider(
                           height: 1,
                           color: isDark
@@ -236,6 +236,7 @@ class PushNotificationView extends StatelessWidget {
                             ),
 
                             Transform.scale(
+                              alignment: Alignment.centerRight,
                               scale:
                                   0.8, // 👈 reduce overall size (try 0.7–0.9)
                               child: CupertinoSwitch(

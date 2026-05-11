@@ -220,7 +220,7 @@ class _RequiredInformationViewState extends State<RequiredInformationView> {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
+    final l10n = AppLocalizations.of(context);
     final cubit = context.read<SubscriptionCubit>();
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final keyboardBottom = MediaQuery.viewInsetsOf(context).bottom;
@@ -228,7 +228,7 @@ class _RequiredInformationViewState extends State<RequiredInformationView> {
     return Stack(
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(
+          padding: EdgeInsets.symmetric(
             vertical: AppSpacing.lg,
             horizontal: AppSpacing.lg,
           ),
@@ -247,7 +247,7 @@ class _RequiredInformationViewState extends State<RequiredInformationView> {
                         if (_hasDeferredSuccessfulPayment) ...[
                           Container(
                             width: double.infinity,
-                            padding: const EdgeInsets.all(AppSpacing.md),
+                            padding: EdgeInsets.all(AppSpacing.md),
                             decoration: BoxDecoration(
                               color: AppColors.successColor.withValues(
                                 alpha: 0.12,
@@ -266,7 +266,7 @@ class _RequiredInformationViewState extends State<RequiredInformationView> {
                                   color: AppColors.successColor,
                                   size: 20,
                                 ),
-                                const SizedBox(width: AppSpacing.sm),
+                                SizedBox(width: AppSpacing.sm),
                                 Expanded(
                                   child: AppText(
                                     'Payment successful',
@@ -280,10 +280,10 @@ class _RequiredInformationViewState extends State<RequiredInformationView> {
                               ],
                             ),
                           ),
-                          const SizedBox(height: AppSpacing.lg),
+                          SizedBox(height: AppSpacing.lg),
                         ],
                         Container(
-                          padding: const EdgeInsets.all(AppSpacing.md),
+                          padding: EdgeInsets.all(AppSpacing.md),
                           decoration: BoxDecoration(
                             color: isDark
                                 ? AppColors.warningColor.withValues(alpha: 0.11)
@@ -300,7 +300,7 @@ class _RequiredInformationViewState extends State<RequiredInformationView> {
                                     : AppColors.lightRedColor,
                                 size: 22,
                               ),
-                              const SizedBox(width: AppSpacing.sm),
+                              SizedBox(width: AppSpacing.sm),
                               Expanded(
                                 child: RichText(
                                   text: TextSpan(
@@ -335,18 +335,18 @@ class _RequiredInformationViewState extends State<RequiredInformationView> {
                           ),
                         ),
 
-                        const SizedBox(height: AppSpacing.xl),
+                        SizedBox(height: AppSpacing.xl),
 
                         AppText(
                           l10n.emergencyContact,
                           style: (style) => AppTextStyles.heading1(context),
                         ),
-                        const SizedBox(height: 4),
+                        SizedBox(height: 4),
                         AppText(
                           l10n.emergencyContactSubtitle,
                           style: (context) => AppTextStyles.bodyText(context),
                         ),
-                        const SizedBox(height: AppSpacing.lg),
+                        SizedBox(height: AppSpacing.lg),
 
                         AppTextField(
                           label: l10n.contactName,
@@ -361,7 +361,7 @@ class _RequiredInformationViewState extends State<RequiredInformationView> {
                             setState(() => _nameError = null);
                           },
                         ),
-                        const SizedBox(height: AppSpacing.md),
+                        SizedBox(height: AppSpacing.md),
 
                         BlocBuilder<SubscriptionCubit, SubscriptionState>(
                           buildWhen: (p, c) =>
@@ -416,7 +416,7 @@ class _RequiredInformationViewState extends State<RequiredInformationView> {
                             );
                           },
                         ),
-                        const SizedBox(height: AppSpacing.md),
+                        SizedBox(height: AppSpacing.md),
 
                         PhoneNumberField(
                           label: l10n.phoneNumber,
@@ -440,18 +440,18 @@ class _RequiredInformationViewState extends State<RequiredInformationView> {
                           },
                         ),
 
-                        const SizedBox(height: AppSpacing.xl),
+                        SizedBox(height: AppSpacing.xl),
 
                         AppText(
                           l10n.identityVerification,
                           style: (style) => AppTextStyles.heading1(context),
                         ),
-                        const SizedBox(height: 4),
+                        SizedBox(height: 4),
                         AppText(
                           l10n.requiredForLegalComplianceShort,
                           style: (context) => AppTextStyles.bodyText(context),
                         ),
-                        const SizedBox(height: AppSpacing.lg),
+                        SizedBox(height: AppSpacing.lg),
 
                         BlocBuilder<SubscriptionCubit, SubscriptionState>(
                           buildWhen: (p, c) => p.idType != c.idType,
@@ -496,7 +496,7 @@ class _RequiredInformationViewState extends State<RequiredInformationView> {
                             );
                           },
                         ),
-                        const SizedBox(height: AppSpacing.md),
+                        SizedBox(height: AppSpacing.md),
 
                         AppTextField(
                           label: l10n.idNumber,
@@ -510,7 +510,7 @@ class _RequiredInformationViewState extends State<RequiredInformationView> {
                             setState(() => _idNumberError = null);
                           },
                         ),
-                        const SizedBox(height: AppSpacing.xxl),
+                        SizedBox(height: AppSpacing.xxl),
                       ],
                     ),
                   ),

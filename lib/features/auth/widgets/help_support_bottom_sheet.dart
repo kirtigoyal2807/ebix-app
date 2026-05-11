@@ -17,7 +17,7 @@ class HelpSupportBottomSheet extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return Material(
       color: isDark ? AppColors.homeBackground : Colors.white,
-      borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+      borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
       child: SafeArea(
         top: false,
         child: Column(
@@ -25,7 +25,7 @@ class HelpSupportBottomSheet extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: AppSpacing.lg),
+              padding: EdgeInsets.symmetric(vertical: AppSpacing.lg),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -56,12 +56,10 @@ class HelpSupportBottomSheet extends StatelessWidget {
                     ),
                   ),
 
-                  const SizedBox(height: AppSpacing.xl),
+                  SizedBox(height: AppSpacing.xl),
 
                   Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: AppSpacing.lg,
-                    ),
+                    padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
                     child: Column(
                       children: [
                         _HelpOption(
@@ -74,7 +72,7 @@ class HelpSupportBottomSheet extends StatelessWidget {
                             () => SupportLauncher.openWhatsApp(),
                           ),
                         ),
-                        const SizedBox(height: AppSpacing.md),
+                        SizedBox(height: AppSpacing.md),
 
                         _HelpOption(
                           svgImage: "assets/images/svg/explore/Ic_email.svg",
@@ -87,7 +85,7 @@ class HelpSupportBottomSheet extends StatelessWidget {
                           ),
                         ),
 
-                        const SizedBox(height: AppSpacing.md),
+                        SizedBox(height: AppSpacing.md),
 
                         _HelpOption(
                           svgImage: "assets/images/svg/explore/ic_phone.svg",
@@ -100,7 +98,7 @@ class HelpSupportBottomSheet extends StatelessWidget {
                           ),
                         ),
 
-                        const SizedBox(height: AppSpacing.lg),
+                        SizedBox(height: AppSpacing.lg),
                       ],
                     ),
                   ),
@@ -160,7 +158,7 @@ class _HelpOption extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.only(top: 2),
+            padding: EdgeInsets.only(top: 2),
             child: svgImage != null
                 ? SvgPicture.asset(
                     svgImage ?? "",
@@ -175,13 +173,13 @@ class _HelpOption extends StatelessWidget {
                         : AppColors.languageIcon, // Brownish color from theme
                   ),
           ),
-          const SizedBox(width: AppSpacing.lg),
+          SizedBox(width: AppSpacing.lg),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 AppText(title, style: AppTextStyles.helpAndSupportItemLabel),
-                const SizedBox(height: AppSpacing.xs),
+                SizedBox(height: AppSpacing.xs),
                 AppText(
                   subtitle,
                   style: AppTextStyles.helpAndSupportItemSubLabel,

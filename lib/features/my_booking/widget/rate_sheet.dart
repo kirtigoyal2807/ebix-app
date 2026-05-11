@@ -23,7 +23,7 @@ class RateSheet extends StatelessWidget {
       ),
       child: SingleChildScrollView(
         child: Container(
-          padding: const EdgeInsets.fromLTRB(24, 24, 24, 24),
+          padding: EdgeInsets.fromLTRB(24, 24, 24, 24),
           decoration: BoxDecoration(
             color: isDark ? AppColors.homeBackground : Colors.white,
             borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
@@ -41,7 +41,7 @@ class RateSheet extends StatelessWidget {
                 ).copyWith(fontSize: 16, height: 1.55),
               ),
 
-              const SizedBox(height: AppSpacing.xs),
+              SizedBox(height: AppSpacing.xs),
 
               AppText(
                 context.l10n.rateYourClassDesc("Gentle Stretch & Release"),
@@ -51,7 +51,7 @@ class RateSheet extends StatelessWidget {
                 maxLines: 3,
               ),
 
-              const SizedBox(height: AppSpacing.xs),
+              SizedBox(height: AppSpacing.xs),
               RatingBar.builder(
                 initialRating: 3,
                 unratedColor: isDark
@@ -65,13 +65,13 @@ class RateSheet extends StatelessWidget {
                     const Icon(Icons.star, color: AppColors.goldStarColor),
                 onRatingUpdate: (rating) {},
               ),
-              const SizedBox(height: AppSpacing.md),
+              SizedBox(height: AppSpacing.md),
 
               Divider(
                 height: 1,
                 color: isDark ? AppColors.greyText : AppColors.buttonBorder,
               ),
-              const SizedBox(height: AppSpacing.md),
+              SizedBox(height: AppSpacing.md),
               AppText(
                 context.l10n.rateYourTrainer,
                 textAlign: TextAlign.center,
@@ -80,7 +80,7 @@ class RateSheet extends StatelessWidget {
                 ).copyWith(fontSize: 16, height: 1.55),
               ),
 
-              const SizedBox(height: AppSpacing.xs),
+              SizedBox(height: AppSpacing.xs),
 
               AppText(
                 context.l10n.rateYourTrainerDesc("Sarah Mitchell"),
@@ -90,7 +90,7 @@ class RateSheet extends StatelessWidget {
                 maxLines: 3,
               ),
 
-              const SizedBox(height: AppSpacing.xs),
+              SizedBox(height: AppSpacing.xs),
               RatingBar.builder(
                 initialRating: 3,
                 unratedColor: isDark
@@ -104,13 +104,13 @@ class RateSheet extends StatelessWidget {
                     const Icon(Icons.star, color: AppColors.goldStarColor),
                 onRatingUpdate: (rating) {},
               ),
-              const SizedBox(height: AppSpacing.md),
+              SizedBox(height: AppSpacing.md),
 
               Divider(
                 height: 1,
                 color: isDark ? AppColors.greyText : AppColors.buttonBorder,
               ),
-              const SizedBox(height: AppSpacing.md),
+              SizedBox(height: AppSpacing.md),
               AppText(
                 context.l10n.writeDetailedReview,
                 textAlign: TextAlign.center,
@@ -118,7 +118,7 @@ class RateSheet extends StatelessWidget {
                   context,
                 ).copyWith(fontSize: 16, height: 1.55),
               ),
-              const SizedBox(height: AppSpacing.xs),
+              SizedBox(height: AppSpacing.xs),
               TextFormField(
                 maxLines: 4,
                 style: AppTextStyles.textField(context),
@@ -127,7 +127,7 @@ class RateSheet extends StatelessWidget {
                   hintStyle: AppTextStyles.textField(
                     context,
                   ).copyWith(color: AppColors.lightGrey),
-                  contentPadding: const EdgeInsets.symmetric(
+                  contentPadding: EdgeInsets.symmetric(
                     horizontal: 14,
                     vertical: 14,
                   ),
@@ -146,14 +146,14 @@ class RateSheet extends StatelessWidget {
                   ),
                 ),
               ),
-              const SizedBox(height: AppSpacing.lg),
+              SizedBox(height: AppSpacing.lg),
               AppButton(
                 label: context.l10n.submitReview,
                 onPressed: () {},
                 variant: AppButtonVariant.primary,
               ),
 
-              const SizedBox(height: AppSpacing.sm),
+              SizedBox(height: AppSpacing.sm),
 
               // Cancel
               Center(

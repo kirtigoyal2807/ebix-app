@@ -52,7 +52,7 @@ class ProfileCard extends StatelessWidget {
             children: [
               /// CONTENT
               Padding(
-                padding: const EdgeInsets.all(AppSpacing.lmd),
+                padding: EdgeInsets.all(AppSpacing.lmd),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -75,7 +75,7 @@ class ProfileCard extends StatelessWidget {
 
                         /// BASIC BADGE
                         Container(
-                          padding: const EdgeInsets.symmetric(
+                          padding: EdgeInsets.symmetric(
                             vertical: AppSpacing.sm,
                             horizontal: AppSpacing.base,
                           ),
@@ -95,14 +95,14 @@ class ProfileCard extends StatelessWidget {
                         ),
                       ],
                     ),
-                    const SizedBox(height: AppSpacing.xl),
+                    SizedBox(height: AppSpacing.xl),
                     AppText(
                       displayName,
                       style: (context) => AppTextStyles.gelasioMedium(
                         context,
                       ).copyWith(color: Colors.white, height: 1),
                     ),
-                    const SizedBox(height: AppSpacing.sm),
+                    SizedBox(height: AppSpacing.sm),
                     AppText(
                       displayEmail,
                       style: (context) => AppTextStyles.bodyText(

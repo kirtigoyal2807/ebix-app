@@ -36,13 +36,13 @@ class AppDropDown<T> extends StatelessWidget {
         /// LABEL
         AppText(label, style: AppTextStyles.textFieldHeading),
 
-        const SizedBox(height: AppSpacing.sm),
+        SizedBox(height: AppSpacing.sm),
 
         /// DROPDOWN
         ButtonTheme(
           alignedDropdown: true,
           child: DropdownButtonFormField<T>(
-            value: value,
+            initialValue: value,
 
             isDense: true,
             items: items,

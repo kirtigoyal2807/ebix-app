@@ -224,7 +224,7 @@ class _PhoneNumberFieldState extends State<PhoneNumberField> {
       children: [
         AppText(widget.label, style: AppTextStyles.textFieldHeading),
 
-        const SizedBox(height: AppSpacing.sm),
+        SizedBox(height: AppSpacing.sm),
 
         Directionality(
           textDirection: TextDirection.ltr,
@@ -253,7 +253,7 @@ class _PhoneNumberFieldState extends State<PhoneNumberField> {
                   showCountryOnly: false,
                   showOnlyCountryWhenClosed: false,
                   alignLeft: false,
-                  padding: const EdgeInsets.symmetric(horizontal: 2),
+                  padding: EdgeInsets.symmetric(horizontal: 2),
                   boxDecoration: BoxDecoration(
                     color: theme.colorScheme.surface,
                     borderRadius: const BorderRadius.vertical(
@@ -272,7 +272,7 @@ class _PhoneNumberFieldState extends State<PhoneNumberField> {
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(AppRadius.md),
                     ),
-                    contentPadding: const EdgeInsets.symmetric(
+                    contentPadding: EdgeInsets.symmetric(
                       horizontal: AppSpacing.md,
                       vertical: AppSpacing.md,
                     ),

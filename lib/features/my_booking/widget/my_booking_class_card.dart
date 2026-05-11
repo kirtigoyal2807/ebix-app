@@ -64,7 +64,7 @@ class MyBookingClassCard extends StatelessWidget {
     final size = MediaQuery.sizeOf(context);
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+      padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
       // child: Material(
       // color: isDark ? AppColors.homeBackground : Colors.white,
       // borderRadius: BorderRadius.circular(AppRadius.lg),
@@ -102,7 +102,7 @@ class MyBookingClassCard extends StatelessWidget {
             children: [
               // Image part with tags
               ClipRRect(
-                borderRadius: const BorderRadius.vertical(
+                borderRadius: BorderRadius.vertical(
                   top: Radius.circular(AppRadius.lg),
                 ),
                 child: _coverImage(
@@ -112,7 +112,7 @@ class MyBookingClassCard extends StatelessWidget {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(
+                padding: EdgeInsets.only(
                   right: AppSpacing.md,
                   left: AppSpacing.md,
                   top: AppSpacing.base,
@@ -127,13 +127,11 @@ class MyBookingClassCard extends StatelessWidget {
                               bookingStatus == BookingStatus.completed)
                             Flexible(
                               child: Container(
-                                padding: const EdgeInsets.symmetric(
+                                padding: EdgeInsets.symmetric(
                                   horizontal: AppSpacing.sm,
                                   vertical: AppSpacing.xs,
                                 ),
-                                margin: const EdgeInsets.only(
-                                  right: AppSpacing.xs,
-                                ),
+                                margin: EdgeInsets.only(right: AppSpacing.xs),
                                 decoration: BoxDecoration(
                                   color: isDark
                                       ? AppColors.successColor.withValues(
@@ -159,7 +157,7 @@ class MyBookingClassCard extends StatelessWidget {
                                       size: 12,
                                       fontWeight: FontWeight.bold,
                                     ),
-                                    const SizedBox(width: AppSpacing.xs),
+                                    SizedBox(width: AppSpacing.xs),
                                     Flexible(
                                       child: AppText(
                                         bookingStatus == BookingStatus.confirmed
@@ -186,7 +184,7 @@ class MyBookingClassCard extends StatelessWidget {
                           if (bookingStatus == BookingStatus.waitListed)
                             Flexible(
                               child: Container(
-                                padding: const EdgeInsets.symmetric(
+                                padding: EdgeInsets.symmetric(
                                   horizontal: AppSpacing.sm,
                                   vertical: AppSpacing.xs,
                                 ),
@@ -212,7 +210,7 @@ class MyBookingClassCard extends StatelessWidget {
                                       color: AppColors.goldStarColor,
                                       size: 14,
                                     ),
-                                    const SizedBox(width: 4),
+                                    SizedBox(width: 4),
                                     Flexible(
                                       child: AppText(
                                         context.l10n.waitlisted,
@@ -239,7 +237,7 @@ class MyBookingClassCard extends StatelessWidget {
                           if (bookingStatus == BookingStatus.cancelled)
                             Flexible(
                               child: Container(
-                                padding: const EdgeInsets.symmetric(
+                                padding: EdgeInsets.symmetric(
                                   horizontal: AppSpacing.sm,
                                   vertical: AppSpacing.xs,
                                 ),
@@ -267,7 +265,7 @@ class MyBookingClassCard extends StatelessWidget {
                                           : AppColors.redLight,
                                       size: 12,
                                     ),
-                                    const SizedBox(width: 4),
+                                    SizedBox(width: 4),
                                     Flexible(
                                       child: AppText(
                                         context.l10n.cancelled,
@@ -292,7 +290,7 @@ class MyBookingClassCard extends StatelessWidget {
                         ],
                       ),
                     ),
-                    const SizedBox(width: AppSpacing.xs),
+                    SizedBox(width: AppSpacing.xs),
                     if (bookingStatus == BookingStatus.confirmed ||
                         bookingStatus == BookingStatus.waitListed)
                       Row(
@@ -303,7 +301,7 @@ class MyBookingClassCard extends StatelessWidget {
                             color: Color(0xFFEAB308),
                             size: 16,
                           ),
-                          const SizedBox(width: 4),
+                          SizedBox(width: 4),
                           AppText(
                             rating.toString(),
                             style: (context) =>
@@ -321,7 +319,7 @@ class MyBookingClassCard extends StatelessWidget {
 
               // Info part
               Padding(
-                padding: const EdgeInsets.only(
+                padding: EdgeInsets.only(
                   right: AppSpacing.md,
                   left: AppSpacing.md,
                   bottom: AppSpacing.md,
@@ -371,7 +369,7 @@ class MyBookingClassCard extends StatelessWidget {
                       ),
                     ),
 
-                    const SizedBox(height: AppSpacing.sm),
+                    SizedBox(height: AppSpacing.sm),
                     infoContent(context: context, isDark: isDark),
                   ],
                 ),
@@ -402,7 +400,7 @@ class MyBookingClassCard extends StatelessWidget {
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
-            const SizedBox(height: AppSpacing.sm),
+            SizedBox(height: AppSpacing.sm),
             AppText(
               time,
               style: (context) => AppTextStyles.captionText(context).copyWith(
@@ -412,7 +410,7 @@ class MyBookingClassCard extends StatelessWidget {
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
-            const SizedBox(height: AppSpacing.md),
+            SizedBox(height: AppSpacing.md),
             if (onConfirmCancelEnrollment != null)
               Row(
                 children: [
@@ -490,7 +488,7 @@ class MyBookingClassCard extends StatelessWidget {
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
-            const SizedBox(height: AppSpacing.sm),
+            SizedBox(height: AppSpacing.sm),
             AppText(
               '${context.l10n.spotsLeft(spot ?? 0)} • ${context.l10n.positionOnWaitlist(position ?? 0)}',
               // '$spot spots left • Position #$position on waitlist',
@@ -502,7 +500,7 @@ class MyBookingClassCard extends StatelessWidget {
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
-            const SizedBox(height: AppSpacing.md),
+            SizedBox(height: AppSpacing.md),
             AppButton(
               label: context.l10n.leaveWaitlist,
               onPressed: isCancelBusy || onConfirmCancelEnrollment == null
@@ -543,7 +541,7 @@ class MyBookingClassCard extends StatelessWidget {
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
-            const SizedBox(height: AppSpacing.sm),
+            SizedBox(height: AppSpacing.sm),
             AppText(
               time,
               style: (context) => AppTextStyles.captionText(context).copyWith(
@@ -554,7 +552,7 @@ class MyBookingClassCard extends StatelessWidget {
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
-            const SizedBox(height: AppSpacing.md),
+            SizedBox(height: AppSpacing.md),
             if (isRate == false)
               Container(
                 decoration: BoxDecoration(
@@ -600,7 +598,7 @@ class MyBookingClassCard extends StatelessWidget {
                           color: AppColors.goldStarColor,
                           size: 16,
                         ),
-                        const SizedBox(width: 4),
+                        SizedBox(width: 4),
                         AppText(
                           '4.5',
                           style: (context) =>
@@ -637,12 +635,12 @@ class MyBookingClassCard extends StatelessWidget {
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
-            const SizedBox(height: AppSpacing.sm),
+            SizedBox(height: AppSpacing.sm),
             Divider(
               height: 0.5,
               color: isDark ? AppColors.greyText : AppColors.buttonBorder,
             ),
-            const SizedBox(height: AppSpacing.sm),
+            SizedBox(height: AppSpacing.sm),
             AppText(
               cancelledDetailLine ?? '—',
               style: (context) => AppTextStyles.captionText(context).copyWith(
@@ -671,7 +669,7 @@ Widget _coverImage(
       height: height,
       width: double.infinity,
       fit: BoxFit.cover,
-      errorBuilder: (_, __, ___) =>
+      errorBuilder: (_, _, _) =>
           Image.asset(fallback, height: height, fit: BoxFit.fill),
     );
   }

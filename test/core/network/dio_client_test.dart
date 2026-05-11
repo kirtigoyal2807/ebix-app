@@ -34,16 +34,16 @@ void main() {
     test('validateStatus accepts HTTP 2xx only', () {
       final client = DioClient(baseUrl: 'https://x/');
       final vs = client.dio.options.validateStatus;
-      expect(vs?.call(199), isFalse);
-      expect(vs?.call(200), isTrue);
-      expect(vs?.call(201), isTrue);
-      expect(vs?.call(204), isTrue);
-      expect(vs?.call(299), isTrue);
-      expect(vs?.call(404), isFalse);
-      expect(vs?.call(422), isFalse);
-      expect(vs?.call(500), isFalse);
-      expect(vs?.call(600), isFalse);
-      expect(vs?.call(null), isFalse);
+      expect(vs.call(199), isFalse);
+      expect(vs.call(200), isTrue);
+      expect(vs.call(201), isTrue);
+      expect(vs.call(204), isTrue);
+      expect(vs.call(299), isTrue);
+      expect(vs.call(404), isFalse);
+      expect(vs.call(422), isFalse);
+      expect(vs.call(500), isFalse);
+      expect(vs.call(600), isFalse);
+      expect(vs.call(null), isFalse);
     });
 
     test(

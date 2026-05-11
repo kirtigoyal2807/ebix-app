@@ -175,12 +175,9 @@ class _PersonalViewBodyState extends State<_PersonalViewBody> {
     final state = personalInfoCubit.state;
     final today = DateTime.now();
     final firstDate = DateTime(1900);
-    final lastDob =
-        DateOfBirthConstraints.latestSelectableBirthDate(today);
+    final lastDob = DateOfBirthConstraints.latestSelectableBirthDate(today);
     final baseInitial =
-        state.dateOfBirth ??
-        widget.initialUser?.dateOfBirth ??
-        lastDob;
+        state.dateOfBirth ?? widget.initialUser?.dateOfBirth ?? lastDob;
     final initialDate = DateOfBirthConstraints.clampToSelectableRange(
       baseInitial,
       firstDate,
@@ -264,9 +261,9 @@ class _PersonalViewBodyState extends State<_PersonalViewBody> {
     final dob = cubitState.dateOfBirth;
     if (dob != null &&
         !DateOfBirthConstraints.satisfiesMinimumAge(dob, DateTime.now())) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(context.l10n.dobMinimumAgeError)),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(context.l10n.dobMinimumAgeError)));
       return;
     }
     final phone = _composePhoneE164();
@@ -453,9 +450,7 @@ class _PersonalViewBodyState extends State<_PersonalViewBody> {
                       ],
                     ),
                     child: AppButton(
-                      label: _isEditing
-                          ? l10n.updateProfile
-                          : l10n.editDetails,
+                      label: _isEditing ? l10n.updateProfile : l10n.editDetails,
                       isLoading: isLoading,
                       onPressed: isLoading
                           ? null

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:lottie/lottie.dart';
 import 'package:pilates_app/config/theme/app_colors.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
@@ -32,7 +31,7 @@ class SplashView extends StatelessWidget {
                     // Lottie.asset("assets/json/splash_screen.json")
                     // Logo with border
                     // Container(
-                    //   padding: const EdgeInsets.symmetric(
+                    //   padding: EdgeInsets.symmetric(
                     //     horizontal: AppSpacing.lg,
                     //     vertical: AppSpacing.md,
                     //   ),
@@ -52,7 +51,7 @@ class SplashView extends StatelessWidget {
                     //         style: AppTextStyles.splashLogoTitle,
                     //         textAlign: TextAlign.center,
                     //       ),
-                    //       const SizedBox(height: AppSpacing.xs),
+                    //       SizedBox(height: AppSpacing.xs),
                     //       AppText(
                     //         context.l10n.splashStudio,
                     //         style: AppTextStyles.splashStudio,
@@ -61,7 +60,7 @@ class SplashView extends StatelessWidget {
                     //     ],
                     //   ),
                     // ),
-                    const SizedBox(height: AppSpacing.lg),
+                    SizedBox(height: AppSpacing.lg),
                     // Tagline
                     // AppText(
                     //   context.l10n.splashTagline,
@@ -74,7 +73,7 @@ class SplashView extends StatelessWidget {
             ),
             // Version at bottom
             Padding(
-              padding: const EdgeInsets.only(bottom: AppSpacing.lg),
+              padding: EdgeInsets.only(bottom: AppSpacing.lg),
               child: AppText(
                 context.l10n.splashVersion,
                 style: AppTextStyles.splashVersion,

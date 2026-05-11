@@ -76,7 +76,7 @@ class AppColors {
   static const blackColor = Color(0xFF000000);
   static const lightBlackColor = Color(0xFF292624);
   static const featuredTagBackgroundColor = Color(0xFFE6F6EB);
-  static const featuredTagBackgroundDarkColor = Color(0xFF5BB98B5C);
+  static const featuredTagBackgroundDarkColor = Color(0xff5bb98b5c);
   static const lightGreyColor = Color(0xFF8ECEAA);
   static const GreyColor = Color(0xFF30A46C);
   static const trainerBlackBackgroundColor = Color(0xFF281A12);
@@ -100,7 +100,7 @@ class AppColors {
   static const redText = Color(0xFFDC3E42);
   static const switchInactiveDark = Color(0xFF140D09);
 
-  static const goldBackground = Color(0xFFFDC7003B);
+  static const goldBackground = Color(0xfffdc7003b);
 
   static const lightExpireCard = Color(0xFF641723);
 

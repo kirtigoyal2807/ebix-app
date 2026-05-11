@@ -112,10 +112,10 @@ class _PlanDetailsModalState extends State<PlanDetailsModal> {
         descriptionPlain != null && descriptionPlain.trim().isNotEmpty;
 
     return Container(
-      padding: const EdgeInsets.all(24),
+      padding: EdgeInsets.all(24),
       decoration: BoxDecoration(
         color: isDark ? AppColors.surfaceDark : Colors.white,
-        borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
       child: SingleChildScrollView(
         child: Column(
@@ -123,35 +123,54 @@ class _PlanDetailsModalState extends State<PlanDetailsModal> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
+              crossAxisAlignment: .center,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                if (_displayPlan['badge'] != null)
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 8,
-                      vertical: 4,
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    if (_displayPlan['badge'] != null)
+                      Container(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 4,
+                        ),
+                        decoration: BoxDecoration(
+                          color: _displayPlan['isPopular'] == true
+                              ? AppColors.goldStarColor
+                              : (isDark
+                                    ? const Color(0x3BFDC700)
+                                    : AppColors.goldStarColor),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: AppText(
+                          _displayPlan['badge'],
+                          style: (context) =>
+                              AppTextStyles.body(context).copyWith(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w500,
+                                color: (isDark
+                                    ? AppColors.blackColor
+                                    : AppColors.darkText),
+                              ),
+                        ),
+                      )
+                    else
+                      SizedBox(),
+                    AppText(
+                      _displayPlan['title'],
+                      style: (context) =>
+                          AppTextStyles.headline(context).copyWith(
+                            fontWeight: FontWeight.w500,
+                            color: isDark
+                                ? AppColors.lightText
+                                : AppColors.darkText,
+                          ),
                     ),
-                    decoration: BoxDecoration(
-                      color: _displayPlan['isPopular'] == true
-                          ? AppColors.goldStarColor
-                          : (isDark
-                                ? const Color(0x3BFDC700)
-                                : AppColors.goldStarColor),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: AppText(
-                      _displayPlan['badge'],
-                      style: (context) => AppTextStyles.body(context).copyWith(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500,
-                        color: (isDark
-                            ? AppColors.blackColor
-                            : AppColors.darkText),
-                      ),
-                    ),
-                  )
-                else
-                  const SizedBox(),
+                  ],
+                ),
+
                 SizedBox(
                   height: 28,
                   width: 32,
@@ -168,15 +187,9 @@ class _PlanDetailsModalState extends State<PlanDetailsModal> {
                 ),
               ],
             ),
-            AppText(
-              _displayPlan['title'],
-              style: (context) => AppTextStyles.headline(context).copyWith(
-                fontWeight: FontWeight.w500,
-                color: isDark ? AppColors.lightText : AppColors.darkText,
-              ),
-            ),
+
             if (_detailLoading) ...[
-              const SizedBox(height: AppSpacing.sm),
+              SizedBox(height: AppSpacing.sm),
               const Center(
                 child: SizedBox(
                   width: 24,
@@ -185,7 +198,7 @@ class _PlanDetailsModalState extends State<PlanDetailsModal> {
                 ),
               ),
             ],
-            const SizedBox(height: AppSpacing.sm),
+            SizedBox(height: AppSpacing.sm),
             Row(
               children: [
                 Expanded(
@@ -206,7 +219,7 @@ class _PlanDetailsModalState extends State<PlanDetailsModal> {
               ],
             ),
             if (hasDescription) ...[
-              const SizedBox(height: AppSpacing.md),
+              SizedBox(height: AppSpacing.md),
               AppText(
                 descriptionPlain.trim(),
                 style: (context) =>
@@ -216,7 +229,7 @@ class _PlanDetailsModalState extends State<PlanDetailsModal> {
                     ),
               ),
             ],
-            const SizedBox(height: AppSpacing.lg),
+            SizedBox(height: AppSpacing.lg),
             if (_displayPlan['features'] != null)
               Container(
                 padding: const EdgeInsets.symmetric(

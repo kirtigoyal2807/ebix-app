@@ -56,7 +56,7 @@ class WelcomeToPilateView extends StatelessWidget {
                     color: isDark ? AppColors.greyText : AppColors.buttonBorder,
                   ),
                 ),
-                padding: const EdgeInsets.only(
+                padding: EdgeInsets.only(
                   top: AppSpacing.md,
                   left: AppSpacing.md,
                   right: AppSpacing.md,
@@ -84,7 +84,7 @@ class WelcomeToPilateView extends StatelessWidget {
                       ],
                     ),
 
-                    const SizedBox(height: AppSpacing.md),
+                    SizedBox(height: AppSpacing.md),
 
                     AppText(
                       l10n.invoiceNumber('#2026-0123-456'),
@@ -106,38 +106,38 @@ class WelcomeToPilateView extends StatelessWidget {
                           ),
                     ),
 
-                    const SizedBox(height: 64),
+                    SizedBox(height: 64),
 
                     _buildRow(l10n.premiumPlanMonthly, "\$89.00", isDark),
-                    const SizedBox(height: AppSpacing.xs),
+                    SizedBox(height: AppSpacing.xs),
                     _buildRow(l10n.setupFee, "\$0.00", isDark),
-                    const SizedBox(height: AppSpacing.xs),
+                    SizedBox(height: AppSpacing.xs),
                     _buildRow(l10n.discount, "-\$10.00", isDark),
-                    const SizedBox(height: AppSpacing.xs),
+                    SizedBox(height: AppSpacing.xs),
                     _buildRow(l10n.tax, "\$6.32", isDark),
 
-                    const SizedBox(height: AppSpacing.md),
+                    SizedBox(height: AppSpacing.md),
                     Divider(
                       color: isDark
                           ? AppColors.greyText
                           : AppColors.buttonBorder,
                       height: 1,
                     ),
-                    const SizedBox(height: AppSpacing.md),
+                    SizedBox(height: AppSpacing.md),
 
                     _buildRow(l10n.totalPaid, "\$85.32", isDark, isBold: true),
 
-                    const SizedBox(height: AppSpacing.md),
+                    SizedBox(height: AppSpacing.md),
                     Divider(
                       color: isDark
                           ? AppColors.greyText
                           : AppColors.buttonBorder,
                       height: 1,
                     ),
-                    const SizedBox(height: AppSpacing.md),
+                    SizedBox(height: AppSpacing.md),
 
                     _buildRow(l10n.paymentMethod, "•••• 3456", isDark),
-                    const SizedBox(height: AppSpacing.xs),
+                    SizedBox(height: AppSpacing.xs),
                     _buildRow(l10n.nextBillingDateText, "Feb 23, 2026", isDark),
                   ],
                 ),

@@ -12,11 +12,7 @@ abstract final class DateOfBirthConstraints {
       referenceDay.month,
       referenceDay.day,
     );
-    return DateTime(
-      ref.year - minimumAgeYears,
-      ref.month,
-      ref.day,
-    );
+    return DateTime(ref.year - minimumAgeYears, ref.month, ref.day);
   }
 
   static DateTime clampToSelectableRange(

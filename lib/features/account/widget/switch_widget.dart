@@ -11,7 +11,7 @@ class SwitchWidget extends StatelessWidget {
   final bool switchValue;
   final void Function(bool)? onChanged;
 
-  SwitchWidget({
+  const SwitchWidget({
     super.key,
     required this.switchValue,
     required this.onChanged,
@@ -51,6 +51,7 @@ class SwitchWidget extends StatelessWidget {
         ),
 
         Transform.scale(
+          alignment: Alignment.centerRight,
           scale: 0.8, // 👈 reduce overall size (try 0.7–0.9)
           child: CupertinoSwitch(
             value: switchValue,

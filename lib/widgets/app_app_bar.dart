@@ -50,14 +50,7 @@ class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
       ),
       centerTitle: true,
       elevation: 0,
-      actions:
-          actions ??
-          [
-            (isMoreMenu ?? true)
-                ?
-            SizedBox()
-                : SizedBox(),
-          ],
+      actions: actions ?? [(isMoreMenu ?? true) ? SizedBox() : SizedBox()],
       bottom: bottomPreferredSize,
 
       // backgroundColor: Colors.white,

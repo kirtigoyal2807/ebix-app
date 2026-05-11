@@ -43,7 +43,7 @@ class AchievementView extends StatelessWidget {
             state.data == null) {
           return Center(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+              padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -97,7 +97,7 @@ class AchievementView extends StatelessWidget {
               SizedBox(height: AppSpacing.lg),
               if (preview.isEmpty)
                 Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 24),
+                  padding: EdgeInsets.symmetric(vertical: 24),
                   child: AppText(
                     context.l10n.noClassesYet,
                     style: (context) => AppTextStyles.bodyText(context),
@@ -248,7 +248,7 @@ class _BadgeLeading extends StatelessWidget {
           height: 40,
           width: 40,
           fit: BoxFit.cover,
-          errorBuilder: (_, __, ___) => _fallbackSvg(isDark),
+          errorBuilder: (_, _, _) => _fallbackSvg(isDark),
         ),
       );
     }

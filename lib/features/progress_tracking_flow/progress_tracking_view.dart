@@ -45,7 +45,7 @@ class ProgressTrackingView extends StatelessWidget {
               : AppColors.whiteColor,
           appBar: AppAppBar(
             leading: Padding(
-              padding: const EdgeInsets.only(left: AppSpacing.lmd),
+              padding: EdgeInsets.only(left: AppSpacing.lmd),
               child: IconButton(
                 icon: const Icon(Icons.arrow_back_ios_rounded, size: 20),
                 onPressed: () => Navigator.of(context).pop(),
@@ -60,7 +60,7 @@ class ProgressTrackingView extends StatelessWidget {
               child: Column(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(
+                    padding: EdgeInsets.only(
                       left: AppSpacing.lg,
                       right: AppSpacing.lg,
                       top: AppSpacing.md,

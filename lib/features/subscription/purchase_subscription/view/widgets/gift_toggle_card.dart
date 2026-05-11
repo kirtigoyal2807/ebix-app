@@ -43,12 +43,12 @@ class GiftToggleCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 AppText(
-                  AppLocalizations.of(context)?.buyAsGift ?? 'Buy as Gift',
+                  AppLocalizations.of(context).buyAsGift ?? 'Buy as Gift',
                   style: AppTextStyles.textFieldHeading,
                 ),
                 const SizedBox(height: 4),
                 AppText(
-                  AppLocalizations.of(context)?.perfectForFriends ??
+                  AppLocalizations.of(context).perfectForFriends ??
                       'Perfect for friends & family',
                   style: (context) => AppTextStyles.bodyTextSmall(
                     context,
@@ -62,10 +62,10 @@ class GiftToggleCard extends StatelessWidget {
             child: CupertinoSwitch(
               value: isGift,
               onChanged: onToggle,
-              activeColor: isDark
+              activeTrackColor: isDark
                   ? AppColors.switchInactiveDark
                   : AppColors.primary,
-              trackColor: isDark
+              inactiveTrackColor: isDark
                   ? AppColors.switchInactiveDark
                   : AppColors.buttonBorder,
               thumbColor: isDark ? AppColors.primary : AppColors.whiteColor,

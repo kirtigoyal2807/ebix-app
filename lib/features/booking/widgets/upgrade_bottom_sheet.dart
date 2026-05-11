@@ -16,7 +16,7 @@ class BranchNotInPlanSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
-      padding: const EdgeInsets.fromLTRB(24, 45, 24, 21),
+      padding: EdgeInsets.fromLTRB(24, 45, 24, 21),
       decoration: BoxDecoration(
         color: isDark ? AppColors.homeBackground : Colors.white,
         borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
@@ -28,14 +28,14 @@ class BranchNotInPlanSheet extends StatelessWidget {
               ? SvgPicture.asset("assets/images/svg/ic_warning_dark.svg")
               : SvgPicture.asset("assets/images/svg/ic_warning.svg"),
 
-          const SizedBox(height: AppSpacing.lmd),
+          SizedBox(height: AppSpacing.lmd),
           AppText(
             context.l10n.branchNotInPlanTitle,
             textAlign: TextAlign.center,
             style: (context) => AppTextStyles.gelasioMedium(context),
           ),
 
-          const SizedBox(height: AppSpacing.xs),
+          SizedBox(height: AppSpacing.xs),
 
           AppText(
             context.l10n.branchNotInPlanDescription,
@@ -45,7 +45,7 @@ class BranchNotInPlanSheet extends StatelessWidget {
             maxLines: 3,
           ),
 
-          const SizedBox(height: AppSpacing.lg),
+          SizedBox(height: AppSpacing.lg),
 
           // Plan card
           Container(
@@ -71,14 +71,14 @@ class BranchNotInPlanSheet extends StatelessWidget {
             ),
           ),
 
-          const SizedBox(height: AppSpacing.lg),
+          SizedBox(height: AppSpacing.lg),
 
           AppButton(
             label: context.l10n.upgradeToElite,
             onPressed: () {},
             variant: AppButtonVariant.primary,
           ),
-          const SizedBox(height: AppSpacing.sm),
+          SizedBox(height: AppSpacing.sm),
           Container(
             decoration: BoxDecoration(
               color: isDark ? AppColors.homeBackground : Colors.white,
@@ -99,7 +99,7 @@ class BranchNotInPlanSheet extends StatelessWidget {
             ),
           ),
 
-          const SizedBox(height: AppSpacing.sm),
+          SizedBox(height: AppSpacing.sm),
 
           // Cancel
           GestureDetector(

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pilates_app/config/theme/app_colors.dart';
 import 'package:pilates_app/config/theme/app_radius.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
@@ -77,7 +76,7 @@ class HomeHeader extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Padding(
-                            padding: const EdgeInsets.only(top: AppSpacing.sm),
+                            padding: EdgeInsets.only(top: AppSpacing.sm),
                             child: AppText(
                               context.l10n.hiUser(userName),
                               style: (context) =>
@@ -91,7 +90,7 @@ class HomeHeader extends StatelessWidget {
                                   ),
                             ),
                           ),
-                          const SizedBox(height: AppSpacing.xs),
+                          SizedBox(height: AppSpacing.xs),
                           AppText(
                             context.l10n.readyToFlow,
                             style: (context) =>
@@ -127,7 +126,7 @@ class HomeHeader extends StatelessWidget {
           onTap: () => _showLanguageSelector(context),
           borderRadius: BorderRadius.circular(AppRadius.pillRadius),
           child: Container(
-            padding: const EdgeInsets.symmetric(
+            padding: EdgeInsets.symmetric(
               horizontal: AppSpacing.base,
               vertical: AppSpacing.sm,
             ),
@@ -149,9 +148,9 @@ class HomeHeader extends StatelessWidget {
                       ? AppColors.languageIconDark
                       : AppColors.languageIcon,
                 ),
-                const SizedBox(width: AppSpacing.xs + 2),
+                SizedBox(width: AppSpacing.xs + 2),
                 AppText(languageCode, style: AppTextStyles.body),
-                const SizedBox(width: AppSpacing.xs),
+                SizedBox(width: AppSpacing.xs),
                 Icon(
                   Icons.keyboard_arrow_down,
                   size: 18,

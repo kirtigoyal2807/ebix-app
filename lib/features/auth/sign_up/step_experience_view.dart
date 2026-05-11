@@ -34,104 +34,151 @@ class _SignUpExperienceViewState extends State<SignUpExperienceView> {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return AppScaffold(
-      appBar: AppAppBar(
-        title: context.l10n.experience,
-        isMoreMenu: false,
-      ),
+      appBar: AppAppBar(title: context.l10n.experience, isMoreMenu: false),
       body: Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: AppSpacing.lg,
+        padding: EdgeInsets.symmetric(
+          // horizontal: AppSpacing.lg,
           vertical: AppSpacing.md,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SignUpProgress(currentStep: 2, totalSteps: 5),
-            const SizedBox(height: AppSpacing.sm),
-            RichText(
-              text: TextSpan(
-                children: [
-                  TextSpan(
-                    text: '${context.l10n.step} 3',
-                    style: AppTextStyles.caption(context).copyWith(
-                      color: isDark
-                          ? AppColors.languageTextDark
-                          : AppColors.languageIcon,
-                    ),
-                  ),
-                  TextSpan(
-                    text: ' ${context.l10n.offf} 5',
-                    style: AppTextStyles.caption(context),
-                  ),
-                ],
-              ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+              child: const SignUpProgress(currentStep: 2, totalSteps: 5),
             ),
-            const SizedBox(height: AppSpacing.sm),
-            Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+            SizedBox(height: AppSpacing.sm),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+              child: RichText(
+                text: TextSpan(
                   children: [
-                    const SizedBox(height: AppSpacing.lg),
-                    AppText(
-                      context.l10n.experienceTitle,
-                      style: AppTextStyles.heading1,
-                      maxLines: 3,
-                    ),
-                    const SizedBox(height: AppSpacing.lg),
-                    ExperienceOption(
-                      title: context.l10n.experienceBeginner,
-                      description: context.l10n.experienceBeginnerDesc,
-                      selected: _selectedIndex == 0,
-                      iconPath: isDark
-                          ? 'assets/images/svg/ic_beginner_dark.svg'
-                          : 'assets/images/svg/ic_beginner.svg',
-                      onTap: () => setState(() => _selectedIndex = 0),
-                    ),
-                    const SizedBox(height: AppSpacing.md),
-                    ExperienceOption(
-                      title: context.l10n.experienceIntermediate,
-                      description: context.l10n.experienceIntermediateDesc,
-                      selected: _selectedIndex == 1,
-                      iconPath: isDark
-                          ? 'assets/images/svg/ic_intermediate_dark.svg'
-                          : 'assets/images/svg/ic_intermediate.svg',
-                      onTap: () => setState(() => _selectedIndex = 1),
-                    ),
-                    const SizedBox(height: AppSpacing.md),
-                    ExperienceOption(
-                      title: context.l10n.experienceAdvanced,
-                      description: context.l10n.experienceAdvancedDesc,
-                      selected: _selectedIndex == 2,
-                      iconPath: isDark
-                          ? 'assets/images/svg/ic_advance_dark.svg'
-                          : 'assets/images/svg/ic_advance.svg',
-                      onTap: () => setState(() => _selectedIndex = 2),
-                    ),
-                    const SizedBox(height: AppSpacing.lg),
-                    AppText(
-                      context.l10n.dontWorry,
-                      style: (context) => AppTextStyles.body(context).copyWith(
-                        fontWeight: FontWeight.w400,
+                    TextSpan(
+                      text: '${context.l10n.step} 3',
+                      style: AppTextStyles.caption(context).copyWith(
                         color: isDark
-                            ? AppColors.darkGreyText
-                            : const Color(0xff79716B),
+                            ? AppColors.languageTextDark
+                            : AppColors.languageIcon,
                       ),
+                    ),
+                    TextSpan(
+                      text: ' ${context.l10n.offf} 5',
+                      style: AppTextStyles.caption(context),
                     ),
                   ],
                 ),
               ),
             ),
-            AppButton(
-              key: const ValueKey('sign_up_experience_continue'),
-              label: context.l10n.continueTxt,
-              onPressed: _selectedIndex == null
-                  ? null
-                  : () {
-                      context.read<AuthCubit>().continueSignUpExperience(
-                        _api[_selectedIndex!],
-                      );
-                    },
+            SizedBox(height: AppSpacing.sm),
+            Expanded(
+              child: Stack(
+                children: [
+                  SingleChildScrollView(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(height: AppSpacing.lg),
+                          AppText(
+                            context.l10n.experienceTitle,
+                            style: AppTextStyles.heading1,
+                            maxLines: 3,
+                          ),
+                          SizedBox(height: AppSpacing.lg),
+                          ExperienceOption(
+                            title: context.l10n.experienceBeginner,
+                            description: context.l10n.experienceBeginnerDesc,
+                            selected: _selectedIndex == 0,
+                            iconPath: isDark
+                                ? 'assets/images/svg/ic_beginner_dark.svg'
+                                : 'assets/images/svg/ic_beginner.svg',
+                            onTap: () => setState(() => _selectedIndex = 0),
+                          ),
+                          SizedBox(height: AppSpacing.md),
+                          ExperienceOption(
+                            title: context.l10n.experienceIntermediate,
+                            description:
+                                context.l10n.experienceIntermediateDesc,
+                            selected: _selectedIndex == 1,
+                            iconPath: isDark
+                                ? 'assets/images/svg/ic_intermediate_dark.svg'
+                                : 'assets/images/svg/ic_intermediate.svg',
+                            onTap: () => setState(() => _selectedIndex = 1),
+                          ),
+                          SizedBox(height: AppSpacing.md),
+                          ExperienceOption(
+                            title: context.l10n.experienceAdvanced,
+                            description: context.l10n.experienceAdvancedDesc,
+                            selected: _selectedIndex == 2,
+                            iconPath: isDark
+                                ? 'assets/images/svg/ic_advance_dark.svg'
+                                : 'assets/images/svg/ic_advance.svg',
+                            onTap: () => setState(() => _selectedIndex = 2),
+                          ),
+                          SizedBox(height: AppSpacing.lg),
+                          AppText(
+                            context.l10n.dontWorry,
+                            style: (context) =>
+                                AppTextStyles.body(context).copyWith(
+                                  fontWeight: FontWeight.w400,
+                                  color: isDark
+                                      ? AppColors.darkGreyText
+                                      : const Color(0xff79716B),
+                                ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    child: Container(
+                      height: MediaQuery.sizeOf(context).height * 0.04 + 48,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.bottomCenter, // start from bottom
+                          end: Alignment.topCenter, // fade to top
+                          colors: isDark
+                              ? [
+                                  AppColors.darkShadow,
+                                  AppColors.darkShadow.withValues(alpha: 0),
+                                ]
+                              : [
+                                  Colors.white,
+                                  Colors.white.withValues(alpha: 0),
+                                ],
+                        ),
+                      ),
+                    ),
+                  ),
+
+                  // Sticky action button
+                  Positioned(
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+                      child: AppButton(
+                        key: const ValueKey('sign_up_experience_continue'),
+                        label: context.l10n.continueTxt,
+                        onPressed: _selectedIndex == null
+                            ? null
+                            : () {
+                                context
+                                    .read<AuthCubit>()
+                                    .continueSignUpExperience(
+                                      _api[_selectedIndex!],
+                                    );
+                              },
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ],
         ),

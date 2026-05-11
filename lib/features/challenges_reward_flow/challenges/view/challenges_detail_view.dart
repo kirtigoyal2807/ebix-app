@@ -55,7 +55,7 @@ class _ChallengesDetailScaffold extends StatelessWidget {
           if (state.status == ChallengeDetailLoadStatus.failure) {
             return Center(
               child: Padding(
-                padding: const EdgeInsets.all(AppSpacing.lg),
+                padding: EdgeInsets.all(AppSpacing.lg),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [

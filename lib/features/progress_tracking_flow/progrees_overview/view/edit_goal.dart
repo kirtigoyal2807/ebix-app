@@ -101,7 +101,7 @@ class _EditGoalState extends State<EditGoal> {
               state.goal == null) {
             return Center(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+                padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -144,7 +144,7 @@ class _EditGoalState extends State<EditGoal> {
                 Material(
                   color: AppColors.featuredTagBackgroundColor,
                   child: Padding(
-                    padding: const EdgeInsets.all(AppSpacing.md),
+                    padding: EdgeInsets.all(AppSpacing.md),
                     child: AppText(
                       state.errorMessage!,
                       style: (c) => AppTextStyles.captionText(c),
@@ -225,7 +225,7 @@ class _EditGoalState extends State<EditGoal> {
                       ),
                       SizedBox(height: AppSpacing.lg),
                       Padding(
-                        padding: const EdgeInsets.symmetric(
+                        padding: EdgeInsets.symmetric(
                           horizontal: AppSpacing.lg,
                         ),
                         child: Column(
@@ -235,7 +235,7 @@ class _EditGoalState extends State<EditGoal> {
                               context.l10n.edit_goal_choose_focus,
                               style: AppTextStyles.heading1,
                             ),
-                            const SizedBox(height: AppSpacing.md),
+                            SizedBox(height: AppSpacing.md),
                             ExperienceOption(
                               title: context.l10n.buildStrength,
                               description: context.l10n.buildStrengthDesc,
@@ -245,7 +245,7 @@ class _EditGoalState extends State<EditGoal> {
                                   : 'assets/images/svg/goal/ic_build_strength.svg',
                               onTap: () => setState(() => _selectedIndex = 0),
                             ),
-                            const SizedBox(height: AppSpacing.base),
+                            SizedBox(height: AppSpacing.base),
                             ExperienceOption(
                               title: context.l10n.findMindfulness,
                               description: context.l10n.findMindfulnessDesc,
@@ -255,7 +255,7 @@ class _EditGoalState extends State<EditGoal> {
                                   : 'assets/images/svg/goal/ic_find_minsfulness.svg',
                               onTap: () => setState(() => _selectedIndex = 1),
                             ),
-                            const SizedBox(height: AppSpacing.base),
+                            SizedBox(height: AppSpacing.base),
                             ExperienceOption(
                               title: context.l10n.improveFlexibility,
                               description: context.l10n.improveFlexibilityDesc,
@@ -265,7 +265,7 @@ class _EditGoalState extends State<EditGoal> {
                                   : 'assets/images/svg/goal/ic_improve_flexibility.svg',
                               onTap: () => setState(() => _selectedIndex = 2),
                             ),
-                            const SizedBox(height: AppSpacing.base),
+                            SizedBox(height: AppSpacing.base),
                             ExperienceOption(
                               title: context.l10n.generalFitness,
                               description: context.l10n.generalFitnessDesc,
@@ -275,13 +275,13 @@ class _EditGoalState extends State<EditGoal> {
                                   : 'assets/images/svg/goal/ic_general_fitness.svg',
                               onTap: () => setState(() => _selectedIndex = 3),
                             ),
-                            const SizedBox(height: AppSpacing.lg),
+                            SizedBox(height: AppSpacing.lg),
                             AppText(
                               context.l10n.monthlyTarget,
                               style: (c) =>
                                   AppTextStyles.gelasioRegular(c).copyWith(),
                             ),
-                            const SizedBox(height: AppSpacing.md),
+                            SizedBox(height: AppSpacing.md),
                             MonthlyTargetSlider(
                               key: ValueKey<int>(_monthly),
                               initialMonthlyClasses: _monthly,
@@ -289,9 +289,9 @@ class _EditGoalState extends State<EditGoal> {
                                 setState(() => _monthly = v);
                               },
                             ),
-                            const SizedBox(height: AppSpacing.lg),
+                            SizedBox(height: AppSpacing.lg),
                             _buildSmartTip(context, isDark),
-                            const SizedBox(height: AppSpacing.lg),
+                            SizedBox(height: AppSpacing.lg),
                           ],
                         ),
                       ),
@@ -324,7 +324,7 @@ class _EditGoalState extends State<EditGoal> {
 
   Widget _buildSmartTip(BuildContext context, bool isDark) {
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: isDark ? AppColors.primaryDarkButton : AppColors.greyContainerBg,
         borderRadius: BorderRadius.circular(AppRadius.base),
@@ -333,7 +333,7 @@ class _EditGoalState extends State<EditGoal> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SvgPicture.asset('assets/images/svg/ic_tip.svg'),
-          const SizedBox(width: AppSpacing.sm),
+          SizedBox(width: AppSpacing.sm),
           Expanded(
             child: RichText(
               text: TextSpan(
