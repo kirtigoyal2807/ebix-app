@@ -183,10 +183,9 @@ class _PhoneNumberFieldState extends State<PhoneNumberField> {
       _maxSubscriberNationalDigits(iso),
       _kMaxNationalSignificantDigits,
     );
-    if (iso == IsoCode.SA) {
-      // Allow local KSA input with trunk zero: 05xxxxxxxx (10 digits).
-      cap = math.min(cap + 1, _kMaxNationalSignificantDigits);
-    }
+    // Allow optional single leading zero (trunk prefix) for all countries.
+    // Example: 09876543210 (11 digits) -> normalized to 9876543210 (10 digits).
+    cap = math.min(cap + 1, _kMaxNationalSignificantDigits);
     if (widget.maxPhoneDigits != null) {
       cap = math.min(cap, widget.maxPhoneDigits!);
     }

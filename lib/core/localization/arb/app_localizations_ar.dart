@@ -102,6 +102,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get resendCode => 'إعادة إرسال الرمز';
 
   @override
+  String get resendCodeIn => 'خلال';
+
+  @override
   String get verify => 'تأكيد';
 
   @override

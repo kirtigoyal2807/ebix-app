@@ -30,6 +30,7 @@
   "otpHint": "أدخل الرمز المكون من 6 أرقام المرسل إلى بريدك الإلكتروني",
   "didntReceiveCode": "لم تتلقى الرمز؟",
   "resendCode": "إعادة إرسال الرمز",
+  "resendCodeIn": "خلال",
   "verify": "تأكيد",
   "experienceTitle": "سنوصي لك بحصص ومدربين يناسبون مستواك",
   "experienceSubtitle": "ساعدنا على تخصيص رحلتك",

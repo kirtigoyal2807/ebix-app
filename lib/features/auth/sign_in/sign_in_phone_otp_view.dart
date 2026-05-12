@@ -9,6 +9,7 @@ import 'package:pilates_app/features/auth/cubit/auth_cubit.dart';
 import 'package:pilates_app/features/auth/cubit/auth_state.dart';
 import 'package:pilates_app/features/auth/sign_up/widgets/otp_field.dart';
 import 'package:pilates_app/features/auth/sign_up/widgets/sign_up_header.dart';
+import 'package:pilates_app/features/auth/widgets/otp_resend_action.dart';
 import 'package:pilates_app/widgets/app_app_bar.dart';
 import 'package:pilates_app/widgets/app_button.dart';
 import 'package:pilates_app/widgets/app_scaffold.dart';
@@ -27,16 +28,17 @@ class _SignInPhoneOtpViewState extends State<SignInPhoneOtpView>
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (!mounted) return;
-      startResendCodeCooldown();
-    });
+    startResendCodeCooldown(notify: false);
   }
 
   Future<void> _resend(BuildContext context) async {
     if (isResendCodeOnCooldown) return;
-    startResendCodeCooldown();
-    await context.read<AuthCubit>().resendSignInPhoneOtp();
+    try {
+      final attempted = await context.read<AuthCubit>().resendSignInPhoneOtp();
+      if (mounted && attempted) startResendCodeCooldown();
+    } catch (_) {
+      if (mounted) startResendCodeCooldown();
+    }
   }
 
   Future<void> _verify(BuildContext context) async {
@@ -93,7 +95,6 @@ class _SignInPhoneOtpViewState extends State<SignInPhoneOtpView>
               state.phoneOtpSendUiStatus == PhoneOtpSendUiStatus.loading;
           final codeErr = state.loginFieldErrors['code'];
           final phone = state.signInPendingPhone;
-          final theme = Theme.of(context);
           final resendDisabled =
               blockInteraction || loading || isResendCodeOnCooldown;
 
@@ -155,41 +156,11 @@ class _SignInPhoneOtpViewState extends State<SignInPhoneOtpView>
                               ],
                               SizedBox(height: AppSpacing.lg),
                               Center(
-                                child: GestureDetector(
-                                  onTap: resendDisabled
-                                      ? null
-                                      : () => _resend(context),
-                                  child: RichText(
-                                    text: TextSpan(
-                                      children: [
-                                        TextSpan(
-                                          text:
-                                              '${context.l10n.didntReceiveCode} ',
-                                          style: AppTextStyles.caption(context)
-                                              .copyWith(
-                                                color: resendDisabled
-                                                    ? theme.disabledColor
-                                                    : (isDark
-                                                          ? AppColors
-                                                                .darkGreyText
-                                                          : AppColors.greyText),
-                                                fontWeight: FontWeight.w400,
-                                                height: 1.4,
-                                              ),
-                                        ),
-                                        TextSpan(
-                                          text: context.l10n.resendCode,
-                                          style: resendDisabled
-                                              ? AppTextStyles.boldBody(
-                                                  context,
-                                                ).copyWith(
-                                                  color: theme.disabledColor,
-                                                )
-                                              : AppTextStyles.boldBody(context),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
+                                child: OtpResendAction(
+                                  isOnCooldown: isResendCodeOnCooldown,
+                                  cooldownRemaining: resendCodeCooldownRemaining,
+                                  resendGestureDisabled: resendDisabled,
+                                  onResend: () => _resend(context),
                                 ),
                               ),
                             ],

@@ -12,6 +12,7 @@ import '../../../core/localization/localization_extension.dart';
 import '../../../core/mixins/resend_code_cooldown_mixin.dart';
 import '../cubit/auth_cubit.dart';
 import '../cubit/auth_state.dart';
+import '../widgets/otp_resend_action.dart';
 import 'widgets/sign_up_header.dart';
 import 'widgets/sign_up_progress.dart';
 import 'widgets/otp_field.dart';
@@ -30,10 +31,13 @@ class _SignUpOtpViewState extends State<SignUpOtpView>
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (!mounted) return;
-      startResendCodeCooldown();
-    });
+    // OTP cooldown is started by the BlocListener below on the
+    // `signUpStep` 0 -> 1 transition (i.e. when register succeeds and the
+    // OTP is actually sent). Starting here would tick during step 0 because
+    // [SignUpOtpView] is kept mounted by the parent IndexedStack.
+    if (context.read<AuthCubit>().state.signUpStep == 1) {
+      startResendCodeCooldown(notify: false);
+    }
   }
 
   Future<void> _submit(BuildContext context) async {
@@ -56,33 +60,50 @@ class _SignUpOtpViewState extends State<SignUpOtpView>
 
   Future<void> _resend(BuildContext context) async {
     if (isResendCodeOnCooldown) return;
-    startResendCodeCooldown();
-    await context.read<AuthCubit>().resendSignUpPhoneOtp();
+    try {
+      final attempted = await context.read<AuthCubit>().resendSignUpPhoneOtp();
+      if (mounted && attempted) startResendCodeCooldown();
+    } catch (_) {
+      if (mounted) startResendCodeCooldown();
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    return BlocListener<AuthCubit, AuthState>(
-      listenWhen: (previous, current) {
-        return previous.phoneOtpSendUiStatus == PhoneOtpSendUiStatus.loading &&
-            current.phoneOtpSendUiStatus == PhoneOtpSendUiStatus.idle;
-      },
-      listener: (context, state) {
-        if (state.phoneOtpSendErrorMessage.isNotEmpty) {
-          final text = state.phoneOtpSendErrorMessage.trim().isEmpty
-              ? context.l10n.loginErrorGeneric
-              : state.phoneOtpSendErrorMessage;
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(SnackBar(content: Text(text)));
-        } else {
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(SnackBar(content: Text(context.l10n.registerOtpSent)));
-        }
-      },
+    return MultiBlocListener(
+      listeners: [
+        // Start the 30s resend cooldown the moment the OTP screen becomes
+        // active (signUpStep flips to 1 after `register` succeeds). Avoids
+        // ticking while user is still on step 0 (personal info).
+        BlocListener<AuthCubit, AuthState>(
+          listenWhen: (previous, current) =>
+              previous.signUpStep != 1 && current.signUpStep == 1,
+          listener: (context, _) => startResendCodeCooldown(),
+        ),
+        BlocListener<AuthCubit, AuthState>(
+          listenWhen: (previous, current) {
+            return previous.phoneOtpSendUiStatus ==
+                    PhoneOtpSendUiStatus.loading &&
+                current.phoneOtpSendUiStatus == PhoneOtpSendUiStatus.idle;
+          },
+          listener: (context, state) {
+            if (state.phoneOtpSendErrorMessage.isNotEmpty) {
+              final text = state.phoneOtpSendErrorMessage.trim().isEmpty
+                  ? context.l10n.loginErrorGeneric
+                  : state.phoneOtpSendErrorMessage;
+              ScaffoldMessenger.of(
+                context,
+              ).showSnackBar(SnackBar(content: Text(text)));
+            } else {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text(context.l10n.registerOtpSent)),
+              );
+            }
+          },
+        ),
+      ],
       child: BlocConsumer<AuthCubit, AuthState>(
         listenWhen: (previous, current) {
           return previous.signUpPhoneOtpUiStatus ==
@@ -111,7 +132,6 @@ class _SignUpOtpViewState extends State<SignUpOtpView>
           final fe = state.signUpPhoneOtpFieldErrors;
           final codeErr = fe['code'];
           final phoneErr = fe['phone'];
-          final theme = Theme.of(context);
           final resendDisabled =
               blockInteraction || loading || isResendCodeOnCooldown;
 
@@ -197,41 +217,11 @@ class _SignUpOtpViewState extends State<SignUpOtpView>
                               SizedBox(height: AppSpacing.lg),
 
                               Center(
-                                child: GestureDetector(
-                                  onTap: resendDisabled
-                                      ? null
-                                      : () => _resend(context),
-                                  child: RichText(
-                                    text: TextSpan(
-                                      children: [
-                                        TextSpan(
-                                          text:
-                                              "${context.l10n.didntReceiveCode} ",
-                                          style: AppTextStyles.caption(context)
-                                              .copyWith(
-                                                color: resendDisabled
-                                                    ? theme.disabledColor
-                                                    : (isDark
-                                                          ? AppColors
-                                                                .darkGreyText
-                                                          : AppColors.greyText),
-                                                fontWeight: FontWeight.w400,
-                                                height: 1.4,
-                                              ),
-                                        ),
-                                        TextSpan(
-                                          text: context.l10n.resendCode,
-                                          style: resendDisabled
-                                              ? AppTextStyles.boldBody(
-                                                  context,
-                                                ).copyWith(
-                                                  color: theme.disabledColor,
-                                                )
-                                              : AppTextStyles.boldBody(context),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
+                                child: OtpResendAction(
+                                  isOnCooldown: isResendCodeOnCooldown,
+                                  cooldownRemaining: resendCodeCooldownRemaining,
+                                  resendGestureDisabled: resendDisabled,
+                                  onResend: () => _resend(context),
                                 ),
                               ),
                               SizedBox(height: AppSpacing.lg),

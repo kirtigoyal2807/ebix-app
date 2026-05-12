@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:pilates_app/config/theme/app_colors.dart';
 import 'package:pilates_app/config/theme/app_radius.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/core/localization/localization_extension.dart';
+import 'package:pilates_app/features/auth/cubit/auth_cubit.dart';
 import 'package:pilates_app/features/booking/data/models/class_slot_view_model.dart';
 import 'package:pilates_app/features/booking/data/models/trainer_resource.dart';
 import 'package:pilates_app/widgets/app_text.dart';
@@ -16,8 +18,23 @@ class ClassInfoGrid extends StatelessWidget {
 
   final ClassSlotViewModel slot;
 
+  /// Determines if the user has an active membership.
+  /// Checks AuthCubit and token storage (HomeCubit is not available in this context).
+  bool _resolveHasMembership(BuildContext context) {
+    final authPlanName =
+        context.select((AuthCubit cubit) => cubit.state.user?.membershipPlanName) ??
+        '';
+    final storedPlanName =
+        context.read<AuthCubit>().tokenStorage.readMembershipPlanName() ?? '';
+    final resolvedPlanName = authPlanName.trim().isNotEmpty
+        ? authPlanName.trim()
+        : storedPlanName.trim();
+    return resolvedPlanName.isNotEmpty;
+  }
+
   @override
   Widget build(BuildContext context) {
+    final hasMembership = _resolveHasMembership(context);
     final hasSlot = slot.hasBookableSlot;
     final dateLabel = hasSlot
         ? _formatDateTime(slot.startAt)
@@ -76,16 +93,21 @@ class ClassInfoGrid extends StatelessWidget {
         SizedBox(height: AppSpacing.md),
         Row(
           children: [
+            // Date & Time card: full width when no membership, otherwise half width
             Expanded(
+              flex: hasMembership ? 1 : 2,
               child: _InfoCard(label: context.l10n.dateTime, value: dateLabel),
             ),
-            SizedBox(width: AppSpacing.md),
-            Expanded(
-              child: _InfoCard(
-                label: context.l10n.availability,
-                value: availability,
+            // Only show availability card when user has membership
+            if (hasMembership) ...[
+              SizedBox(width: AppSpacing.md),
+              Expanded(
+                child: _InfoCard(
+                  label: context.l10n.availability,
+                  value: availability,
+                ),
               ),
-            ),
+            ],
           ],
         ),
       ],
