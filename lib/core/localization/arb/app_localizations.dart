@@ -5774,6 +5774,12 @@ abstract class AppLocalizations {
   /// **'Please enter your last name'**
   String get pleaseEnterLastName;
 
+  /// No description provided for @pleaseEnterFriendName.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your friend\'s name'**
+  String get pleaseEnterFriendName;
+
   /// No description provided for @signupFirstNameHint.
   ///
   /// In en, this message translates to:
@@ -5989,6 +5995,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Reformer & Tower Equipment Specialist'**
   String get reformerTower;
+
+  /// No description provided for @firstNameTooShort.
+  ///
+  /// In en, this message translates to:
+  /// **'First name must be at least 2 characters'**
+  String get firstNameTooShort;
+
+  /// No description provided for @firstNameTooLong.
+  ///
+  /// In en, this message translates to:
+  /// **'First name must be at most 120 characters'**
+  String get firstNameTooLong;
+
+  /// No description provided for @lastNameTooShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Last name must be at least 2 characters'**
+  String get lastNameTooShort;
+
+  /// No description provided for @lastNameTooLong.
+  ///
+  /// In en, this message translates to:
+  /// **'Last name must be at most 120 characters'**
+  String get lastNameTooLong;
+
+  /// No description provided for @enterValidEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a valid email address'**
+  String get enterValidEmail;
+
+  /// No description provided for @profileUpdateFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to update profile.'**
+  String get profileUpdateFailed;
 }
 
 class _AppLocalizationsDelegate

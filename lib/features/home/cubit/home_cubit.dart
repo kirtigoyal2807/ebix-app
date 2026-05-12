@@ -95,4 +95,32 @@ class HomeCubit extends Cubit<HomeState> {
         );
     }
   }
+
+  /// Re-fetches home with loading state shown (used for locale changes).
+  Future<void> refreshHomeWithLoading() async {
+    emit(state.copyWith(loadStatus: HomeLoadStatus.loading, errorMessage: ''));
+
+    final result = await _homeRepository.fetchHome();
+    switch (result) {
+      case ApiSuccess<HomeResponse>(:final data):
+        final planName = data.membership?.planName?.trim() ?? '';
+        if (planName.isNotEmpty) {
+          await _tokenStorage.saveMembershipPlanName(planName);
+        }
+        emit(
+          state.copyWith(
+            loadStatus: HomeLoadStatus.loaded,
+            errorMessage: '',
+            data: data,
+          ),
+        );
+      case ApiFailure<HomeResponse>(:final exception):
+        emit(
+          state.copyWith(
+            loadStatus: HomeLoadStatus.failure,
+            errorMessage: exception.message ?? '',
+          ),
+        );
+    }
+  }
 }

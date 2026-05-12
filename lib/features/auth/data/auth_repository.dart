@@ -261,14 +261,24 @@ class AuthRepository extends BaseRepository {
   /// Send only the fields the user changed. Returns the updated [AuthUser].
   /// When [avatarPath] is provided, uses `multipart/form-data`; otherwise JSON.
   Future<ApiResult<AuthUser>> updateProfile({
-    String? name,
+    String? firstName,
+    String? lastName,
+    String? email,
     String? phone,
     String? gender,
     DateTime? dob,
     String? avatarPath,
   }) async {
     final fields = <String, dynamic>{};
-    if (name != null && name.isNotEmpty) fields['name'] = name;
+    if (firstName != null && firstName.isNotEmpty) {
+      fields['firstName'] = firstName.trim();
+    }
+    if (lastName != null && lastName.isNotEmpty) {
+      fields['lastName'] = lastName.trim();
+    }
+    if (email != null && email.isNotEmpty) {
+      fields['email'] = email.trim();
+    }
     if (phone != null && phone.isNotEmpty) fields['phone'] = phone;
     if (gender != null && gender.isNotEmpty) fields['gender'] = gender;
     if (dob != null) {

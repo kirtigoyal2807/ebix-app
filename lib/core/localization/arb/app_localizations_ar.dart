@@ -3051,6 +3051,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get pleaseEnterLastName => 'يُرجى إدخال اسم العائلة';
 
   @override
+  String get pleaseEnterFriendName => 'يُرجى إدخال اسم صديقك';
+
+  @override
   String get signupFirstNameHint => 'عائشة';
 
   @override
@@ -3161,4 +3164,22 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get reformerTower => 'أخصائي أجهزة الريفورمر والتاور';
+
+  @override
+  String get firstNameTooShort => 'يجب أن يكون الاسم الأول حرفين على الأقل';
+
+  @override
+  String get firstNameTooLong => 'يجب ألا يزيد الاسم الأول عن 120 حرفًا';
+
+  @override
+  String get lastNameTooShort => 'يجب أن يكون اسم العائلة حرفين على الأقل';
+
+  @override
+  String get lastNameTooLong => 'يجب ألا يزيد اسم العائلة عن 120 حرفًا';
+
+  @override
+  String get enterValidEmail => 'يُرجى إدخال عنوان بريد إلكتروني صالح';
+
+  @override
+  String get profileUpdateFailed => 'فشل تحديث الملف الشخصي.';
 }

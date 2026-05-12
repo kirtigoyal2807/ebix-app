@@ -3075,6 +3075,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get pleaseEnterLastName => 'Please enter your last name';
 
   @override
+  String get pleaseEnterFriendName => 'Please enter your friend\'s name';
+
+  @override
   String get signupFirstNameHint => 'Ayesha';
 
   @override
@@ -3184,4 +3187,22 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get reformerTower => 'Reformer & Tower Equipment Specialist';
+
+  @override
+  String get firstNameTooShort => 'First name must be at least 2 characters';
+
+  @override
+  String get firstNameTooLong => 'First name must be at most 120 characters';
+
+  @override
+  String get lastNameTooShort => 'Last name must be at least 2 characters';
+
+  @override
+  String get lastNameTooLong => 'Last name must be at most 120 characters';
+
+  @override
+  String get enterValidEmail => 'Please enter a valid email address';
+
+  @override
+  String get profileUpdateFailed => 'Failed to update profile.';
 }

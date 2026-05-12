@@ -270,7 +270,9 @@ class _PersonalViewBodyState extends State<_PersonalViewBody> {
     context.read<PersonalInfoCubit>().saveProfile(
       firstName: _firstNameController.text.trim(),
       lastName: _lastNameController.text.trim(),
+      email: _emailController.text.trim(),
       phone: phone,
+      l10n: context.l10n,
     );
   }
 

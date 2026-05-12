@@ -21,11 +21,12 @@ void main() {
                 'success': true,
                 'message': 'Profile updated successfully',
                 'data': {
-                  'name': 'Noor Mohammed Ali',
+                  'firstName': 'Noor',
+                  'lastName': 'Mohammed Ali',
+                  'email': 'noor@example.com',
                   'phone': '+966500000001',
                   'gender': 'female',
                   'dob': '1995-01-20',
-                  'marketingOptIn': false,
                 },
               },
             ),
@@ -34,23 +35,25 @@ void main() {
       );
 
       final result = await AuthRepository(dio).updateProfile(
-        name: 'Noor Mohammed Ali',
+        firstName: 'Noor',
+        lastName: 'Mohammed Ali',
+        email: 'noor@example.com',
         phone: '+966500000001',
         dob: DateTime(1995, 1, 20),
         gender: 'female',
-        marketingOptIn: false,
       );
 
       expect(result.isSuccess, isTrue);
       expect(seen?.method, 'PUT');
-      expect(seen?.path, '/customers/profile');
+      expect(seen?.path, 'customers/profile');
       expect(seen?.data, isA<Map<String, dynamic>>());
       final body = Map<String, dynamic>.from(seen!.data as Map);
-      expect(body['name'], 'Noor Mohammed Ali');
+      expect(body['firstName'], 'Noor');
+      expect(body['lastName'], 'Mohammed Ali');
+      expect(body['email'], 'noor@example.com');
       expect(body['phone'], '+966500000001');
       expect(body['dob'], '1995-01-20');
       expect(body['gender'], 'female');
-      expect(body['marketingOptIn'], false);
       expect(result.dataOrNull, isA<AuthUser>());
     });
 
@@ -67,7 +70,8 @@ void main() {
                 'success': true,
                 'message': 'Profile updated successfully',
                 'data': {
-                  'name': 'Noor',
+                  'firstName': 'Noor',
+                  'lastName': 'Ali',
                   'avatar': 'https://cdn.example.com/noor.jpg',
                 },
               },
@@ -76,17 +80,22 @@ void main() {
         },
       );
 
-      final result = await AuthRepository(
-        dio,
-      ).updateProfile(name: 'Noor', avatarPath: 'test/fixtures/avatar.jpg');
+      final result = await AuthRepository(dio).updateProfile(
+        firstName: 'Noor',
+        lastName: 'Ali',
+        avatarPath: 'test/fixtures/avatar.jpg',
+      );
 
       expect(result.isSuccess, isTrue);
-      expect(seen?.method, 'PUT');
-      expect(seen?.path, '/customers/profile');
+      // Multipart uses POST with _method: PUT spoofing for PHP/Laravel compatibility
+      expect(seen?.method, 'POST');
+      expect(seen?.path, 'customers/profile');
       expect(seen?.data, isA<FormData>());
       final formData = seen!.data as FormData;
       final fields = Map<String, String>.fromEntries(formData.fields);
-      expect(fields['name'], 'Noor');
+      expect(fields['firstName'], 'Noor');
+      expect(fields['lastName'], 'Ali');
+      expect(fields['_method'], 'PUT');
       final hasAvatarPart = formData.files.any(
         (entry) => entry.key == 'avatar',
       );
