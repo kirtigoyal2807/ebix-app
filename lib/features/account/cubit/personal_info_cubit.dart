@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:pilates_app/core/localization/arb/app_localizations.dart';
 import 'package:pilates_app/core/network/api_result.dart';
 import 'package:pilates_app/features/account/cubit/personal_info_state.dart';
 import 'package:pilates_app/features/auth/data/auth_repository.dart';
@@ -60,22 +61,61 @@ class PersonalInfoCubit extends Cubit<PersonalInfoState> {
   Future<AuthUser?> saveProfile({
     required String firstName,
     required String lastName,
+    required String email,
     required String phone,
+    required AppLocalizations l10n,
   }) async {
     emit(
       state.copyWith(
         saveStatus: PersonalInfoSaveStatus.loading,
         errorMessage: '',
+        fieldErrors: {},
       ),
     );
 
-    final fullName = [
-      firstName.trim(),
-      lastName.trim(),
-    ].where((s) => s.isNotEmpty).join(' ');
+    // Client-side validation
+    final trimmedFirst = firstName.trim();
+    final trimmedLast = lastName.trim();
+    final trimmedEmail = email.trim();
+
+    final fieldErrors = <String, String>{};
+
+    if (trimmedFirst.isEmpty || trimmedFirst.length < 2) {
+      fieldErrors['firstName'] = l10n.firstNameTooShort;
+    } else if (trimmedFirst.length > 120) {
+      fieldErrors['firstName'] = l10n.firstNameTooLong;
+    }
+
+    if (trimmedLast.isEmpty || trimmedLast.length < 2) {
+      fieldErrors['lastName'] = l10n.lastNameTooShort;
+    } else if (trimmedLast.length > 120) {
+      fieldErrors['lastName'] = l10n.lastNameTooLong;
+    }
+
+    if (trimmedEmail.isNotEmpty) {
+      final emailRegex = RegExp(
+        r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$",
+      );
+      if (!emailRegex.hasMatch(trimmedEmail)) {
+        fieldErrors['email'] = l10n.enterValidEmail;
+      }
+    }
+
+    if (fieldErrors.isNotEmpty) {
+      emit(
+        state.copyWith(
+          saveStatus: PersonalInfoSaveStatus.failure,
+          fieldErrors: fieldErrors,
+          errorMessage: fieldErrors.values.first,
+        ),
+      );
+      return null;
+    }
 
     final result = await _authRepository.updateProfile(
-      name: fullName.isNotEmpty ? fullName : null,
+      firstName: trimmedFirst.isNotEmpty ? trimmedFirst : null,
+      lastName: trimmedLast.isNotEmpty ? trimmedLast : null,
+      email: trimmedEmail.isNotEmpty ? trimmedEmail : null,
       phone: phone.isNotEmpty ? phone : null,
       gender: state.gender,
       dob: state.dateOfBirth,
@@ -95,7 +135,7 @@ class PersonalInfoCubit extends Cubit<PersonalInfoState> {
         emit(
           state.copyWith(
             saveStatus: PersonalInfoSaveStatus.failure,
-            errorMessage: exception.message ?? 'Failed to update profile.',
+            errorMessage: exception.message ?? l10n.profileUpdateFailed,
           ),
         );
         return null;

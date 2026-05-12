@@ -1320,6 +1320,12 @@
   "pointsAndAchievements": "Points and achievements",
   "selectDOB": "Select Date of birth",
   "dobMinimumAgeError": "You must be at least 16 years old.",
-  "reformerTower": "Reformer & Tower Equipment Specialist"
+  "reformerTower": "Reformer & Tower Equipment Specialist",
+  "firstNameTooShort": "First name must be at least 2 characters",
+  "firstNameTooLong": "First name must be at most 120 characters",
+  "lastNameTooShort": "Last name must be at least 2 characters",
+  "lastNameTooLong": "Last name must be at most 120 characters",
+  "enterValidEmail": "Please enter a valid email address",
+  "profileUpdateFailed": "Failed to update profile."
 }
 

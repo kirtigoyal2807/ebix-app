@@ -7,6 +7,7 @@ class PersonalInfoState extends Equatable {
   final DateTime? dateOfBirth;
   final PersonalInfoSaveStatus saveStatus;
   final String errorMessage;
+  final Map<String, String> fieldErrors;
   final String? selectedAvatarPath;
   final bool removeAvatar;
 
@@ -15,6 +16,7 @@ class PersonalInfoState extends Equatable {
     this.dateOfBirth,
     this.saveStatus = PersonalInfoSaveStatus.idle,
     this.errorMessage = '',
+    this.fieldErrors = const {},
     this.selectedAvatarPath,
     this.removeAvatar = false,
   });
@@ -24,6 +26,7 @@ class PersonalInfoState extends Equatable {
     DateTime? dateOfBirth,
     PersonalInfoSaveStatus? saveStatus,
     String? errorMessage,
+    Map<String, String>? fieldErrors,
     String? selectedAvatarPath,
     bool? removeAvatar,
     bool clearSelectedAvatar = false,
@@ -33,6 +36,7 @@ class PersonalInfoState extends Equatable {
       dateOfBirth: dateOfBirth ?? this.dateOfBirth,
       saveStatus: saveStatus ?? this.saveStatus,
       errorMessage: errorMessage ?? this.errorMessage,
+      fieldErrors: fieldErrors ?? this.fieldErrors,
       selectedAvatarPath: clearSelectedAvatar
           ? null
           : (selectedAvatarPath ?? this.selectedAvatarPath),
@@ -46,6 +50,7 @@ class PersonalInfoState extends Equatable {
     dateOfBirth,
     saveStatus,
     errorMessage,
+    fieldErrors,
     selectedAvatarPath,
     removeAvatar,
   ];

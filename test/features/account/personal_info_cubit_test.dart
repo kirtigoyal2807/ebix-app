@@ -1,50 +1,120 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:pilates_app/core/localization/arb/app_localizations.dart';
 import 'package:pilates_app/core/network/api_result.dart';
 import 'package:pilates_app/features/account/cubit/personal_info_cubit.dart';
 import 'package:pilates_app/features/account/cubit/personal_info_state.dart';
 import 'package:pilates_app/features/auth/data/auth_repository.dart';
 import 'package:pilates_app/features/auth/data/models/auth_user.dart';
 
+class _FakeL10n implements AppLocalizations {
+  @override
+  String get firstNameTooShort => 'First name must be at least 2 characters';
+
+  @override
+  String get firstNameTooLong => 'First name must be at most 120 characters';
+
+  @override
+  String get lastNameTooShort => 'Last name must be at least 2 characters';
+
+  @override
+  String get lastNameTooLong => 'Last name must be at most 120 characters';
+
+  @override
+  String get enterValidEmail => 'Please enter a valid email address';
+
+  @override
+  String get profileUpdateFailed => 'Failed to update profile.';
+
+  @override
+  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
+}
+
 void main() {
   group('PersonalInfoCubit', () {
-    test(
-      'loadProfile prefills personal fields from profile response',
-      () async {
-        final repository = _TestAuthRepository();
-        final cubit = PersonalInfoCubit(authRepository: repository);
+    final l10n = _FakeL10n();
 
-        await cubit.loadProfile();
-
-        expect(cubit.state.loadStatus, PersonalInfoLoadStatus.loaded);
-        expect(cubit.state.firstName, 'Noor');
-        expect(cubit.state.lastName, 'Ali');
-        expect(cubit.state.email, 'noor@example.com');
-        expect(cubit.state.phone, '+966500000001');
-        expect(cubit.state.gender, 'female');
-        expect(cubit.state.marketingOptIn, isTrue);
-        expect(cubit.state.hasChanges, isFalse);
-
-        await cubit.close();
-      },
-    );
-
-    test('submit sends only changed profile fields', () async {
+    test('saveProfile sends firstName, lastName, email and phone', () async {
       final repository = _TestAuthRepository();
       final cubit = PersonalInfoCubit(authRepository: repository);
 
-      await cubit.loadProfile();
-      cubit.updateFirstName('Noor Mohammed');
-      await cubit.submit();
+      final result = await cubit.saveProfile(
+        firstName: 'Noor',
+        lastName: 'Ali',
+        email: 'noor@example.com',
+        phone: '+966500000001',
+        l10n: l10n,
+      );
 
       expect(repository.updateCalls, 1);
-      expect(repository.lastName, 'Noor Mohammed Ali');
-      expect(repository.lastPhone, isNull);
-      expect(repository.lastDob, isNull);
-      expect(repository.lastGender, isNull);
-      expect(repository.lastMarketingOptIn, isNull);
-      expect(repository.lastAvatarPath, isNull);
+      expect(repository.lastFirstName, 'Noor');
+      expect(repository.lastLastName, 'Ali');
+      expect(repository.lastEmail, 'noor@example.com');
+      expect(repository.lastPhone, '+966500000001');
       expect(cubit.state.saveStatus, PersonalInfoSaveStatus.success);
+      expect(result, isNotNull);
+
+      await cubit.close();
+    });
+
+    test('saveProfile validates empty firstName', () async {
+      final repository = _TestAuthRepository();
+      final cubit = PersonalInfoCubit(authRepository: repository);
+
+      final result = await cubit.saveProfile(
+        firstName: '',
+        lastName: 'Ali',
+        email: 'noor@example.com',
+        phone: '+966500000001',
+        l10n: l10n,
+      );
+
+      expect(repository.updateCalls, 0);
+      expect(result, isNull);
+      expect(cubit.state.saveStatus, PersonalInfoSaveStatus.failure);
+      expect(cubit.state.fieldErrors['firstName'], l10n.firstNameTooShort);
+
+      await cubit.close();
+    });
+
+    test('saveProfile validates invalid email', () async {
+      final repository = _TestAuthRepository();
+      final cubit = PersonalInfoCubit(authRepository: repository);
+
+      final result = await cubit.saveProfile(
+        firstName: 'Noor',
+        lastName: 'Ali',
+        email: 'invalid-email',
+        phone: '+966500000001',
+        l10n: l10n,
+      );
+
+      expect(repository.updateCalls, 0);
+      expect(result, isNull);
+      expect(cubit.state.saveStatus, PersonalInfoSaveStatus.failure);
+      expect(cubit.state.fieldErrors['email'], l10n.enterValidEmail);
+
+      await cubit.close();
+    });
+
+    test('saveProfile includes gender and dob from state', () async {
+      final repository = _TestAuthRepository();
+      final cubit = PersonalInfoCubit(
+        authRepository: repository,
+        initialGender: 'female',
+        initialDateOfBirth: DateTime(1995, 1, 20),
+      );
+
+      await cubit.saveProfile(
+        firstName: 'Noor',
+        lastName: 'Ali',
+        email: 'noor@example.com',
+        phone: '+966500000001',
+        l10n: l10n,
+      );
+
+      expect(repository.lastGender, 'female');
+      expect(repository.lastDob, DateTime(1995, 1, 20));
 
       await cubit.close();
     });
@@ -56,58 +126,41 @@ class _TestAuthRepository extends AuthRepository {
     : super(Dio(BaseOptions(baseUrl: 'https://test.local/')));
 
   int updateCalls = 0;
-  String? lastName;
+  String? lastFirstName;
+  String? lastLastName;
+  String? lastEmail;
   String? lastPhone;
   DateTime? lastDob;
   String? lastGender;
-  bool? lastMarketingOptIn;
   String? lastAvatarPath;
 
   @override
-  Future<ApiResult<AuthUser>> getProfile() async {
-    return const ApiSuccess<AuthUser>(
-      AuthUser(
-        name: 'Noor Ali',
-        firstName: 'Noor',
-        lastName: 'Ali',
-        email: 'noor@example.com',
-        phone: '+966500000001',
-        dob: '1995-01-20',
-        gender: 'female',
-        marketingOptIn: true,
-        avatar: 'https://cdn.example.com/noor.jpg',
-      ),
-    );
-  }
-
-  @override
   Future<ApiResult<AuthUser>> updateProfile({
-    String? name,
+    String? firstName,
+    String? lastName,
+    String? email,
     String? phone,
     DateTime? dob,
     String? gender,
-    bool? marketingOptIn,
     String? avatarPath,
   }) async {
     updateCalls++;
-    lastName = name;
+    lastFirstName = firstName;
+    lastLastName = lastName;
+    lastEmail = email;
     lastPhone = phone;
     lastDob = dob;
     lastGender = gender;
-    lastMarketingOptIn = marketingOptIn;
     lastAvatarPath = avatarPath;
     return ApiSuccess<AuthUser>(
       AuthUser(
-        name: name ?? 'Noor Ali',
-        firstName: 'Noor',
-        lastName: 'Ali',
-        email: 'noor@example.com',
+        name: '$firstName $lastName',
+        firstName: firstName ?? 'Noor',
+        lastName: lastName ?? 'Ali',
+        email: email ?? 'noor@example.com',
         phone: phone ?? '+966500000001',
-        dob: (dob != null)
-            ? '${dob.year.toString().padLeft(4, '0')}-${dob.month.toString().padLeft(2, '0')}-${dob.day.toString().padLeft(2, '0')}'
-            : '1995-01-20',
+        dateOfBirth: dob ?? DateTime(1995, 1, 20),
         gender: gender ?? 'female',
-        marketingOptIn: marketingOptIn ?? true,
         avatar: 'https://cdn.example.com/noor.jpg',
       ),
     );

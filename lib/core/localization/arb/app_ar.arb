@@ -1323,6 +1323,12 @@
   "pointsAndAchievements": "النقاط والإنجازات",
   "selectDOB": "اختر تاريخ الميلاد",
   "dobMinimumAgeError": "يجب أن يكون عمرك 16 عامًا على الأقل.",
-  "reformerTower": "أخصائي أجهزة الريفورمر والتاور"
+  "reformerTower": "أخصائي أجهزة الريفورمر والتاور",
+  "firstNameTooShort": "يجب أن يكون الاسم الأول حرفين على الأقل",
+  "firstNameTooLong": "يجب ألا يزيد الاسم الأول عن 120 حرفًا",
+  "lastNameTooShort": "يجب أن يكون اسم العائلة حرفين على الأقل",
+  "lastNameTooLong": "يجب ألا يزيد اسم العائلة عن 120 حرفًا",
+  "enterValidEmail": "يُرجى إدخال عنوان بريد إلكتروني صالح",
+  "profileUpdateFailed": "فشل تحديث الملف الشخصي."
 }
 
