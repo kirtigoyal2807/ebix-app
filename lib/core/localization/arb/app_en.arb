@@ -277,6 +277,15 @@
   "viewMyBooking": "View My Booking",
   "browseMoreClasses": "Browse More Classes",
   "joinWailList": "Join Waitlist",
+  "waitlistRequiresMembership": "The waitlist is only available with an active membership.",
+  "memberTierBenefits": "Your {tierName} benefits",
+  "@memberTierBenefits": {
+    "placeholders": {
+      "tierName": {
+        "type": "String"
+      }
+    }
+  },
   "classIsFull": "Class Is Full",
   "classIsFullDescription": "Join the waitlist and we'll notify you immediately if a spot opens up.",
   "currentWaitList": "Current Waitlist",
@@ -398,6 +407,8 @@
   "healthInformation": "Health Information",
   "personalInformation": "Personal Information",
   "medicalHistory": "Medical History",
+  "subscriptionHealthWizardPhysicalActivityTitle": "Physical Activity",
+  "subscriptionHealthWizardPregnancyTitle": "Pregnancy",
   "chronicConditions": "Do you have any chronic medical conditions? (e.g., high blood pressure, diabetes, heart disease)",
   "surgeriesInjuries": "Have you had any recent surgeries or do you have any current injuries?",
   "painBonesMuscles": "Do you have any pain or problems in bones, joints, or muscles?",
@@ -625,6 +636,10 @@
   "idType": "ID Type",
   "selectIdType": "Select ID Type",
   "idNumber": "ID Number",
+  "idNumberNationalIdInvalid": "Enter a valid Saudi National ID (10 digits, starts with 1).",
+  "idNumberIqamaInvalid": "Enter a valid Iqama number (10 digits, starts with 2).",
+  "idNumberPassportInvalid": "Enter a valid passport number (6–20 letters or digits).",
+  "idNumberDriverLicenseInvalid": "Enter a valid driver's license number (4–24 letters or digits).",
   "filters": "Filters",
   "sortBy": "Sort by",
   "dateRange": "Date Range",
@@ -857,6 +872,7 @@
   "relationshipFriend": "Friend",
   "relationshipOther": "Other",
   "idTypeNationalId": "National ID",
+  "idTypeIqama": "Iqama",
   "idTypePassport": "Passport",
   "idTypeDriverLicense": "Driver License",
   "validUntil": "Valid Until",
@@ -1260,6 +1276,8 @@
   "upcomingClasses": "Upcoming Classes",
   "viewAllAishaClasses": "View All Aisha’s Classes",
   "browseAllClasses": "Browse All Classes",
+  "viewUpcomingClasses": "View upcoming classes",
+  "contentNoDataAvailable": "No data available",
   "certificationsTraining": "Certifications & Training",
   "pmaCertifiedInstructor": "PMA Certified Pilates Instructor",
   "matPilatesLevel3": "Mat Pilates Level III Certification",

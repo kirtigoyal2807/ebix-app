@@ -23,6 +23,16 @@ class BadgeCard extends StatelessWidget {
       buildWhen: (previous, current) =>
           previous.badgeDataList != current.badgeDataList,
       builder: (context, state) {
+        if (state.badgeDataList.isEmpty) {
+          return Padding(
+            padding: EdgeInsets.symmetric(vertical: AppSpacing.xl),
+            child: AppText(
+              context.l10n.contentNoDataAvailable,
+              style: (c) =>
+                  AppTextStyles.bodyLightText(c).copyWith(height: 1.55),
+            ),
+          );
+        }
         return GridView.builder(
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,

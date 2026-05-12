@@ -656,6 +656,15 @@ class AppLocalizationsAr extends AppLocalizations {
   String get joinWailList => 'الانضمام إلى قائمة الانتظار';
 
   @override
+  String get waitlistRequiresMembership =>
+      'قائمة الانتظار متاحة فقط لأصحاب العضوية الفعّالة.';
+
+  @override
+  String memberTierBenefits(String tierName) {
+    return 'مزايا $tierName';
+  }
+
+  @override
   String get classIsFull => 'الحصة ممتلئة';
 
   @override
@@ -988,6 +997,12 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get medicalHistory => 'التاريخ الطبي';
+
+  @override
+  String get subscriptionHealthWizardPhysicalActivityTitle => 'النشاط البدني';
+
+  @override
+  String get subscriptionHealthWizardPregnancyTitle => 'الحمل';
 
   @override
   String get chronicConditions =>
@@ -1487,6 +1502,22 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get idNumber => 'رقم الهوية';
+
+  @override
+  String get idNumberNationalIdInvalid =>
+      'يُرجى إدخال رقم الهوية الوطنية الصالح (١٠ أرقام تبدأ بالرقم ١).';
+
+  @override
+  String get idNumberIqamaInvalid =>
+      'يُرجى إدخال رقم إقامة صالح (١٠ أرقام يبدأ بالرقم ٢).';
+
+  @override
+  String get idNumberPassportInvalid =>
+      'يُرجى إدخال رقم جواز سفر صالح (6–20 من الأحرف والأرقام).';
+
+  @override
+  String get idNumberDriverLicenseInvalid =>
+      'يُرجى إدخال رقم رخصة قيادة صالح (4–24 من الأحرف والأرقام).';
 
   @override
   String get filters => 'الفلاتر';
@@ -2066,6 +2097,9 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get idTypeNationalId => 'الهوية الوطنية';
+
+  @override
+  String get idTypeIqama => 'الإقامة';
 
   @override
   String get idTypePassport => 'جواز السفر';
@@ -2941,6 +2975,12 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get browseAllClasses => 'تصفح جميع الحصص';
+
+  @override
+  String get viewUpcomingClasses => 'عرض الحصص القادمة';
+
+  @override
+  String get contentNoDataAvailable => 'لا تتوفر بيانات';
 
   @override
   String get certificationsTraining => 'الشهادات والتدريب';

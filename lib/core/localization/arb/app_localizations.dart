@@ -1322,6 +1322,18 @@ abstract class AppLocalizations {
   /// **'Join Waitlist'**
   String get joinWailList;
 
+  /// No description provided for @waitlistRequiresMembership.
+  ///
+  /// In en, this message translates to:
+  /// **'The waitlist is only available with an active membership.'**
+  String get waitlistRequiresMembership;
+
+  /// No description provided for @memberTierBenefits.
+  ///
+  /// In en, this message translates to:
+  /// **'Your {tierName} benefits'**
+  String memberTierBenefits(String tierName);
+
   /// No description provided for @classIsFull.
   ///
   /// In en, this message translates to:
@@ -1945,6 +1957,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Medical History'**
   String get medicalHistory;
+
+  /// No description provided for @subscriptionHealthWizardPhysicalActivityTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Physical Activity'**
+  String get subscriptionHealthWizardPhysicalActivityTitle;
+
+  /// No description provided for @subscriptionHealthWizardPregnancyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Pregnancy'**
+  String get subscriptionHealthWizardPregnancyTitle;
 
   /// No description provided for @chronicConditions.
   ///
@@ -2869,6 +2893,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'ID Number'**
   String get idNumber;
+
+  /// No description provided for @idNumberNationalIdInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid Saudi National ID (10 digits, starts with 1).'**
+  String get idNumberNationalIdInvalid;
+
+  /// No description provided for @idNumberIqamaInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid Iqama number (10 digits, starts with 2).'**
+  String get idNumberIqamaInvalid;
+
+  /// No description provided for @idNumberPassportInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid passport number (6–20 letters or digits).'**
+  String get idNumberPassportInvalid;
+
+  /// No description provided for @idNumberDriverLicenseInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid driver\'s license number (4–24 letters or digits).'**
+  String get idNumberDriverLicenseInvalid;
 
   /// No description provided for @filters.
   ///
@@ -3973,6 +4021,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'National ID'**
   String get idTypeNationalId;
+
+  /// No description provided for @idTypeIqama.
+  ///
+  /// In en, this message translates to:
+  /// **'Iqama'**
+  String get idTypeIqama;
 
   /// No description provided for @idTypePassport.
   ///
@@ -5575,6 +5629,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Browse All Classes'**
   String get browseAllClasses;
+
+  /// No description provided for @viewUpcomingClasses.
+  ///
+  /// In en, this message translates to:
+  /// **'View upcoming classes'**
+  String get viewUpcomingClasses;
+
+  /// No description provided for @contentNoDataAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'No data available'**
+  String get contentNoDataAvailable;
 
   /// No description provided for @certificationsTraining.
   ///

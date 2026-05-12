@@ -62,16 +62,6 @@ class WeeklyGraph extends StatelessWidget {
           minutes[idx] = d.minutes.toDouble();
         }
       }
-    } else {
-      return [
-        _BarData(labels[0], 45),
-        _BarData(labels[1], 80),
-        _BarData(labels[2], 35),
-        _BarData(labels[3], 90),
-        _BarData(labels[4], 50),
-        _BarData(labels[5], 0),
-        _BarData(labels[6], 0),
-      ];
     }
     return List.generate(7, (i) => _BarData(labels[i], minutes[i]));
   }
@@ -144,9 +134,7 @@ class WeeklyGraph extends StatelessWidget {
                       ).copyWith(height: 1.55),
                     ),
                     TextSpan(
-                      text: state.result != null
-                          ? ' ${summaryMinutes}m'
-                          : context.l10n.weekly_activity_summary,
+                      text: ' ${summaryMinutes}m',
                       style: AppTextStyles.textFieldHeading(context),
                     ),
                   ],

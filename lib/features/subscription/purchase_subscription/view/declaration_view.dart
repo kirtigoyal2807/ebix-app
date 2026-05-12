@@ -9,6 +9,7 @@ import 'package:pilates_app/core/validation/subscription_declaration_validators.
 import 'package:pilates_app/features/subscription/purchase_subscription/cubit/subscription_cubit.dart';
 import 'package:pilates_app/features/subscription/purchase_subscription/view/widgets/subscription_calendar_date_field.dart';
 import 'package:pilates_app/features/subscription/purchase_subscription/view/widgets/subscription_header.dart';
+import 'package:pilates_app/features/subscription/purchase_subscription/view/widgets/subscription_health_wizard_step.dart';
 import 'package:pilates_app/widgets/app_button.dart';
 import 'package:pilates_app/widgets/app_text.dart';
 import 'package:pilates_app/widgets/app_text_field.dart';
@@ -114,8 +115,8 @@ class _DeclarationViewState extends State<DeclarationView> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SubscriptionStepHeader(
-                      currentStep: 5,
-                      totalSteps: 6,
+                      wizardStep:
+                          SubscriptionHealthWizardStep.declaration,
                       isDark: isDark,
                     ),
                     SizedBox(height: AppSpacing.xl),

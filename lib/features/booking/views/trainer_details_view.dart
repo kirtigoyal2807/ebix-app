@@ -225,9 +225,9 @@ class _TrainerDetailsApiRouteState extends State<_TrainerDetailsApiRoute> {
                       borderRadius: BorderRadius.circular(AppRadius.md),
                     ),
                   ),
-                  onPressed: () => _openBrowseAllClasses(context),
+                  onPressed: () => _ensureUpcomingClassesVisible(animate: true),
                   child: AppText(
-                    context.l10n.browseAllClasses,
+                    context.l10n.viewUpcomingClasses,
                     textAlign: TextAlign.center,
                     maxLines: 2,
                     style: (c) => AppTextStyles.boldBody(
@@ -321,12 +321,10 @@ class _TrainerDetailsApiRouteState extends State<_TrainerDetailsApiRoute> {
                             ),
                           ),
                         ],
-                        if (effective.certifications.isNotEmpty) ...[
-                          SizedBox(height: AppSpacing.lg),
-                          _ApiCertificationsCard(
-                            certifications: effective.certifications,
-                          ),
-                        ],
+                        SizedBox(height: AppSpacing.lg),
+                        _ApiCertificationsCard(
+                          certifications: effective.certifications,
+                        ),
                         _TrainerTeachingStylesSection(
                           trainer: effective,
                           isDark: isDark,
@@ -533,45 +531,47 @@ class _TrainerTeachingStylesSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final styles = trainer.teachingStyles.isNotEmpty
-        ? trainer.teachingStyles
-        : [
-            context.l10n.dynamicTxt,
-            context.l10n.motivating,
-            context.l10n.detailOriented,
-            context.l10n.challenging,
-            context.l10n.supporting,
-          ];
+    final styles = trainer.teachingStyles;
+
+    final children = <Widget>[
+      SizedBox(height: AppSpacing.lg),
+      Padding(
+        padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+        child: AppText(
+          context.l10n.teachingStyle,
+          style: (c) =>
+              AppTextStyles.gelasioRegular(c).copyWith(height: 1.55),
+        ),
+      ),
+      SizedBox(height: AppSpacing.sm),
+      Padding(
+        padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+        child: styles.isEmpty
+            ? AppText(
+                context.l10n.contentNoDataAvailable,
+                style: (c) => AppTextStyles.bodyText(c).copyWith(
+                  color: isDark ? AppColors.darkGreyText : AppColors.lightGrey,
+                  height: 1.55,
+                ),
+              )
+            : Wrap(
+                direction: Axis.horizontal,
+                spacing: AppSpacing.sm,
+                runSpacing: AppSpacing.sm,
+                children: [
+                  for (final label in styles)
+                    _TrainerDetailsDemoView._teachingStyleCard(
+                      label: label,
+                      isDark: isDark,
+                    ),
+                ],
+              ),
+      ),
+    ];
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        SizedBox(height: AppSpacing.lg),
-        Padding(
-          padding:  EdgeInsets.symmetric(horizontal: AppSpacing.lg),
-          child: AppText(
-            context.l10n.teachingStyle,
-            style: (c) =>
-                AppTextStyles.gelasioRegular(c).copyWith(height: 1.55),
-          ),
-        ),
-        SizedBox(height: AppSpacing.sm),
-        Padding(
-          padding:  EdgeInsets.symmetric(horizontal: AppSpacing.lg),
-          child: Wrap(
-            direction: Axis.horizontal,
-            spacing: AppSpacing.sm,
-            runSpacing: AppSpacing.sm,
-            children: [
-              for (final label in styles)
-                _TrainerDetailsDemoView._teachingStyleCard(
-                  label: label,
-                  isDark: isDark,
-                ),
-            ],
-          ),
-        ),
-      ],
+      children: children,
     );
   }
 }
@@ -597,7 +597,7 @@ class _TrainerApiHeader extends StatelessWidget {
                       height: 90,
                       width: 90,
                       fit: BoxFit.cover,
-                      errorBuilder: (_, __, ___) => Image.asset(
+                      errorBuilder: (_, _, _) => Image.asset(
                         'assets/images/demo images/Trainer Avatar.png',
                         height: 90,
                         width: 90,
@@ -730,7 +730,21 @@ class _TrainerApiHeaderRating extends StatelessWidget {
       );
     }
 
-    return const SizedBox.shrink();
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: AppSpacing.sm),
+      child: AppText(
+        context.l10n.contentNoDataAvailable,
+        textAlign: TextAlign.center,
+        maxLines: 2,
+        style: (c) => AppTextStyles.helpAndSupportItemSubLabel(
+          c,
+        ).copyWith(
+          height: 1.2,
+          fontSize: 14,
+          color: isDark ? AppColors.darkGreyText : AppColors.lightGrey,
+        ),
+      ),
+    );
   }
 }
 
@@ -760,7 +774,17 @@ class _ApiCertificationsCard extends StatelessWidget {
             ).copyWith(height: 1.55),
           ),
           SizedBox(height: AppSpacing.xs),
-          for (final cert in certifications) _CertRow(cert: cert),
+          if (certifications.isEmpty)
+            AppText(
+              context.l10n.contentNoDataAvailable,
+              style: (c) =>
+                  AppTextStyles.bodyText(c).copyWith(
+                    height: 1.55,
+                    color: isDark ? AppColors.darkGreyText : AppColors.lightGrey,
+                  ),
+            )
+          else
+            for (final cert in certifications) _CertRow(cert: cert),
         ],
       ),
     );
@@ -1039,17 +1063,7 @@ class _TrainerDetailsDemoView extends StatelessWidget {
                 spotsLeft: 3,
                 isInPlan: true,
               ),
-               SizedBox(height: AppSpacing.md),
-              BookingClassCard(
-                title: 'Power Pilates',
-                trainerName: 'Sarah Mitchell',
-                studio: context.l10n.branchDowntown,
-                time: '${context.l10n.today}, 6:00 PM',
-                spotsLeft: 0,
-                isInPlan: false,
-                upgradeRequired: true,
-              ),
-               SizedBox(height: AppSpacing.lg),
+              SizedBox(height: AppSpacing.lg),
             ],
           ),
         ),

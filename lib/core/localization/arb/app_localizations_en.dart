@@ -661,6 +661,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get joinWailList => 'Join Waitlist';
 
   @override
+  String get waitlistRequiresMembership =>
+      'The waitlist is only available with an active membership.';
+
+  @override
+  String memberTierBenefits(String tierName) {
+    return 'Your $tierName benefits';
+  }
+
+  @override
   String get classIsFull => 'Class Is Full';
 
   @override
@@ -997,6 +1006,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get medicalHistory => 'Medical History';
+
+  @override
+  String get subscriptionHealthWizardPhysicalActivityTitle =>
+      'Physical Activity';
+
+  @override
+  String get subscriptionHealthWizardPregnancyTitle => 'Pregnancy';
 
   @override
   String get chronicConditions =>
@@ -1500,6 +1516,22 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get idNumber => 'ID Number';
+
+  @override
+  String get idNumberNationalIdInvalid =>
+      'Enter a valid Saudi National ID (10 digits, starts with 1).';
+
+  @override
+  String get idNumberIqamaInvalid =>
+      'Enter a valid Iqama number (10 digits, starts with 2).';
+
+  @override
+  String get idNumberPassportInvalid =>
+      'Enter a valid passport number (6–20 letters or digits).';
+
+  @override
+  String get idNumberDriverLicenseInvalid =>
+      'Enter a valid driver\'s license number (4–24 letters or digits).';
 
   @override
   String get filters => 'Filters';
@@ -2083,6 +2115,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get idTypeNationalId => 'National ID';
+
+  @override
+  String get idTypeIqama => 'Iqama';
 
   @override
   String get idTypePassport => 'Passport';
@@ -2963,6 +2998,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get browseAllClasses => 'Browse All Classes';
+
+  @override
+  String get viewUpcomingClasses => 'View upcoming classes';
+
+  @override
+  String get contentNoDataAvailable => 'No data available';
 
   @override
   String get certificationsTraining => 'Certifications & Training';

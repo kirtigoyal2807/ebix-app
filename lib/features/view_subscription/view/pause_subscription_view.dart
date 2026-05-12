@@ -401,23 +401,6 @@ class PauseSubscriptionView extends StatelessWidget {
                       },
                       variant: AppButtonVariant.primary,
                     ),
-                    SizedBox(height: AppSpacing.sm),
-                    Center(
-                      child: GestureDetector(
-                        onTap: () => Navigator.pop(context),
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(
-                            vertical: (AppSpacing.buttonHeight - 30) / 2,
-                          ),
-                          child: AppText(
-                            context.l10n.cancelSubscription,
-                            style: (context) => AppTextStyles.button(
-                              context,
-                            ).copyWith(color: AppColors.redLight),
-                          ),
-                        ),
-                      ),
-                    ),
                     SizedBox(height: AppSpacing.xl),
                   ],
                 );

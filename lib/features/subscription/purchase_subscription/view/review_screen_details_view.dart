@@ -211,8 +211,8 @@ class _ReviewScreenDetailsViewState extends State<ReviewScreenDetailsView> {
     }
   }
 
-  /// Discount in minor units from API or implied from subtotal − total.
-  int _effectiveDiscountMinor(CheckoutPricing? pricing) {
+  /// Discount from API totals (major currency units).
+  num _effectiveDiscountAmount(CheckoutPricing? pricing) {
     final explicit = pricing?.discountAmount;
     if (explicit != null && explicit > 0) return explicit;
     final sub = pricing?.subtotal;
@@ -234,7 +234,7 @@ class _ReviewScreenDetailsViewState extends State<ReviewScreenDetailsView> {
 
     final appliedCode = session.appliedOffer?.code?.trim();
     final entered = _couponCode.text.trim();
-    final disc = _effectiveDiscountMinor(session.pricing);
+    final disc = _effectiveDiscountAmount(session.pricing);
     final hasAppliedOffer = appliedCode != null && appliedCode.isNotEmpty;
 
     // User is typing a different code than the one on the session — hide success.
@@ -288,21 +288,21 @@ class _ReviewScreenDetailsViewState extends State<ReviewScreenDetailsView> {
 
     final cur = pricing?.currency?.trim();
     final currency = (cur != null && cur.isNotEmpty) ? cur : 'SAR';
-    final discountMinor = _effectiveDiscountMinor(pricing);
-    final subtotalMinor = pricing?.subtotal;
-    final totalMinor = pricing?.totalAmount ?? pricing?.subtotal;
-    final impliedSubtotal = (subtotalMinor != null && subtotalMinor > 0)
-        ? subtotalMinor
-        : (totalMinor != null && totalMinor > 0 && discountMinor > 0)
-        ? totalMinor + discountMinor
-        : subtotalMinor;
+    final discountAmt = _effectiveDiscountAmount(pricing);
+    final subtotalAmt = pricing?.subtotal;
+    final totalAmt = pricing?.totalAmount ?? pricing?.subtotal;
+    final impliedSubtotal = (subtotalAmt != null && subtotalAmt > 0)
+        ? subtotalAmt
+        : (totalAmt != null && totalAmt > 0 && discountAmt > 0)
+        ? totalAmt + discountAmt
+        : subtotalAmt;
     final showPriceBreakdown =
-        discountMinor > 0 && impliedSubtotal != null && impliedSubtotal > 0;
-    final headlineTotalMinor = (totalMinor != null && totalMinor > 0)
-        ? totalMinor
+        discountAmt > 0 && impliedSubtotal != null && impliedSubtotal > 0;
+    final headlineTotalAmt = (totalAmt != null && totalAmt > 0)
+        ? totalAmt
         : impliedSubtotal;
     final priceText = MembershipReceiptSummary.formatMoney(
-      headlineTotalMinor,
+      headlineTotalAmt,
       currency,
       locale,
     );
@@ -312,7 +312,7 @@ class _ReviewScreenDetailsViewState extends State<ReviewScreenDetailsView> {
       locale,
     );
     final discountText = MembershipReceiptSummary.formatMoney(
-      discountMinor,
+      discountAmt,
       currency,
       locale,
     );

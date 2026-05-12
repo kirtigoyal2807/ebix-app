@@ -31,6 +31,10 @@ class AppTextField extends StatefulWidget {
   /// Shows a clear icon when the field has text (non-[obscure] fields only).
   final bool showClearButton;
 
+  final TextCapitalization textCapitalization;
+  final bool autocorrect;
+  final bool enableSuggestions;
+
   /// Passed to the underlying [TextField.scrollPadding] (e.g. room above keyboard).
   final EdgeInsets scrollPadding;
 
@@ -58,6 +62,9 @@ class AppTextField extends StatefulWidget {
     this.controller,
     this.showClearButton = false,
     this.scrollPadding = const EdgeInsets.all(20.0),
+    this.textCapitalization = TextCapitalization.none,
+    this.autocorrect = true,
+    this.enableSuggestions = true,
     this.enabled = true,
     this.readOnly = false,
     this.onTap,
@@ -115,6 +122,18 @@ class _AppTextFieldState extends State<AppTextField> {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final theme = Theme.of(context);
     final hasError = widget.errorText != null;
+    final divider = theme.dividerColor;
+    final errorAccent = isDark ? AppColors.redDark : AppColors.redLight;
+    final borderColor = hasError ? errorAccent : divider;
+    final focusedBorderColor = hasError
+        ? errorAccent
+        : theme.colorScheme.primary;
+
+    OutlineInputBorder outlineBorder(Color color, {double width = 1}) =>
+        OutlineInputBorder(
+          borderRadius: BorderRadius.circular(AppRadius.md),
+          borderSide: BorderSide(color: color, width: width),
+        );
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -135,6 +154,9 @@ class _AppTextFieldState extends State<AppTextField> {
               focusNode: _focusNode,
               scrollPadding: widget.scrollPadding,
               maxLength: widget.maxLength,
+              autocorrect: widget.autocorrect,
+              enableSuggestions: widget.enableSuggestions,
+              textCapitalization: widget.textCapitalization,
               buildCounter:
                   (
                     context, {
@@ -156,6 +178,8 @@ class _AppTextFieldState extends State<AppTextField> {
               maxLines: widget.maxLines,
               inputFormatters: widget.inputFormatters,
               decoration: InputDecoration(
+                filled: true,
+                fillColor: theme.scaffoldBackgroundColor,
                 hintText: widget.hint,
                 hintStyle: AppTextStyles.textField(
                   context,
@@ -165,24 +189,13 @@ class _AppTextFieldState extends State<AppTextField> {
                   vertical: 14,
                 ),
 
-                /// BORDER
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(AppRadius.md),
-                  borderSide: BorderSide(
-                    color: hasError
-                        ? isDark
-                              ? AppColors.redDark
-                              : AppColors.redLight
-                        : theme.dividerColor,
-                  ),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(AppRadius.md),
-                  borderSide: BorderSide(
-                    color: hasError ? Colors.red : theme.colorScheme.primary,
-                    width: 1.5,
-                  ),
-                ),
+                border: outlineBorder(borderColor),
+                enabledBorder: outlineBorder(borderColor),
+                // Match enabled chrome when false so locked/read-only parity with height fields.
+                disabledBorder: outlineBorder(borderColor),
+                focusedBorder: outlineBorder(focusedBorderColor, width: 1.5),
+                errorBorder: outlineBorder(errorAccent),
+                focusedErrorBorder: outlineBorder(errorAccent, width: 1.5),
 
                 /// PASSWORD TOGGLE
                 // suffixIcon: widget.obscure

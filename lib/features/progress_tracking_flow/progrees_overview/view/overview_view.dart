@@ -73,17 +73,36 @@ class OverviewView extends StatelessWidget {
 
                 BlocBuilder<ProgressGoalCubit, ProgressGoalState>(
                   builder: (context, state) {
+                    final loading = state.status ==
+                            ProgressGoalStatus.loading ||
+                        state.status == ProgressGoalStatus.initial;
+                    if (loading && state.goal == null) {
+                      return SizedBox(
+                        height: 96,
+                        child: Center(
+                          child: CircularProgressIndicator.adaptive(
+                            valueColor: AlwaysStoppedAnimation(
+                              isDark
+                                  ? AppColors.languageIconDark
+                                  : AppColors.languageIcon,
+                            ),
+                          ),
+                        ),
+                      );
+                    }
                     final goal = state.goal;
-                    final title =
-                        goal?.goal != null && goal!.goal!.trim().isNotEmpty
+                    final emptyLabel = context.l10n.contentNoDataAvailable;
+                    final title = (goal?.goal != null &&
+                            goal!.goal!.trim().isNotEmpty)
                         ? goal.goal!.trim()
-                        : context.l10n.findMindfulness;
-                    final subtitle = goal != null
+                        : emptyLabel;
+                    final subtitle = (goal?.experience != null &&
+                            goal!.experience!.trim().isNotEmpty)
                         ? ProgressGoalSettings.experienceLabel(
                             context.l10n,
                             goal.experience,
                           )
-                        : context.l10n.edit_goal_intermediate_level;
+                        : emptyLabel;
                     return ListTile(
                       contentPadding: EdgeInsets.zero,
                       leading: SvgPicture.asset(

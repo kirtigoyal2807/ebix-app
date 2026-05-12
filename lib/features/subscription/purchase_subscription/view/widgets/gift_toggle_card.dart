@@ -20,6 +20,7 @@ class GiftToggleCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final screenHeight = MediaQuery.sizeOf(context).height;
+    final l10n = AppLocalizations.of(context);
 
     return Container(
       padding: const EdgeInsets.all(16),
@@ -31,7 +32,6 @@ class GiftToggleCard extends StatelessWidget {
       ),
       child: Row(
         children: [
-          // Gift Icon
           SvgPicture.asset(
             'assets/images/svg/ic_gift.svg',
             height: screenHeight * 0.04,
@@ -43,13 +43,12 @@ class GiftToggleCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 AppText(
-                  AppLocalizations.of(context).buyAsGift ?? 'Buy as Gift',
-                  style: AppTextStyles.textFieldHeading,
+                  l10n.buyAsGift,
+                  style: (context) => AppTextStyles.textFieldHeading(context),
                 ),
                 const SizedBox(height: 4),
                 AppText(
-                  AppLocalizations.of(context).perfectForFriends ??
-                      'Perfect for friends & family',
+                  l10n.perfectForFriends,
                   style: (context) => AppTextStyles.bodyTextSmall(
                     context,
                   ).copyWith(fontSize: 12),
@@ -58,7 +57,7 @@ class GiftToggleCard extends StatelessWidget {
             ),
           ),
           Transform.scale(
-            scale: 0.8, // 👈 reduce overall size (try 0.7–0.9)
+            scale: 0.8,
             child: CupertinoSwitch(
               value: isGift,
               onChanged: onToggle,

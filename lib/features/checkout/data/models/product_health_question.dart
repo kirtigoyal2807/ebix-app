@@ -71,7 +71,14 @@ class ProductHealthQuestion {
 
   bool get isBooleanQuestion {
     final t = type?.toLowerCase().trim();
-    return t == 'boolean' || t == 'bool';
+    if (t == null || t.isEmpty) return false;
+    return t == 'boolean' ||
+        t == 'bool' ||
+        t == 'yes_no' ||
+        t == 'yesno' ||
+        t == 'yes/no' ||
+        t == 'toggle' ||
+        t == 'switch';
   }
 
   bool get isCheckboxQuestion {

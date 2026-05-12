@@ -5,6 +5,9 @@ import 'package:pilates_app/config/theme/app_radius.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/core/localization/localization_extension.dart';
+import 'package:pilates_app/features/auth/cubit/auth_cubit.dart';
+import 'package:pilates_app/features/auth/data/models/auth_user.dart';
+import 'package:pilates_app/features/booking/booking_entitlements.dart';
 import 'package:pilates_app/features/booking/cubit/class_detail_cubit.dart';
 import 'package:pilates_app/features/booking/cubit/class_detail_state.dart';
 import 'package:pilates_app/features/booking/data/classes_repository.dart';
@@ -14,6 +17,7 @@ import 'package:pilates_app/features/booking/widgets/class_info_grid.dart';
 import 'package:pilates_app/features/booking/widgets/class_location_card.dart';
 import 'package:pilates_app/features/booking/widgets/class_about_section.dart';
 import 'package:pilates_app/features/booking/widgets/class_reviews_section.dart';
+import 'package:pilates_app/features/booking/widgets/upgrade_bottom_sheet.dart';
 import 'package:pilates_app/widgets/app_app_bar.dart';
 import 'package:pilates_app/widgets/app_text.dart';
 
@@ -78,7 +82,68 @@ class _ClassDetailBody extends StatelessWidget {
             return const Center(child: CircularProgressIndicator());
           }
 
+          final membership = userShowsPackageMembership(
+            context.select<AuthCubit, AuthUser?>(
+              (cubit) => cubit.state.user,
+            ),
+          );
           final canBookOrWaitlist = slot.hasBookableSlot;
+
+          void openUpgradeSheet() {
+            showModalBottomSheet<void>(
+              context: context,
+              isScrollControlled: true,
+              backgroundColor: Colors.transparent,
+              barrierColor: AppColors.bottomSheetShadow,
+              builder: (_) => const BranchNotInPlanSheet(),
+            );
+          }
+
+          void onPrimaryTap() {
+            if (!slot.hasBookableSlot) return;
+            if (slot.upgradeRequired) {
+              openUpgradeSheet();
+              return;
+            }
+            if (!slot.hasOpenSpots) {
+              if (!membership) {
+                openUpgradeSheet();
+                return;
+              }
+              Navigator.of(context).push(
+                MaterialPageRoute<void>(
+                  builder: (_) => JoinWaitlistView(slot: slot),
+                ),
+              );
+              return;
+            }
+            final packageBook = membership && slot.allowPackageBooking;
+            final dropIn = slot.allowSinglePurchase;
+            if (!packageBook && !dropIn) {
+              openUpgradeSheet();
+              return;
+            }
+            Navigator.of(context).push(
+              MaterialPageRoute<void>(
+                builder: (_) => BookClassConfirmView(
+                  calendarEventId: slot.calendarEventId,
+                  slot: slot,
+                ),
+              ),
+            );
+          }
+
+          String primaryLabel() {
+            if (!canBookOrWaitlist) return context.l10n.noUpcomingClasses;
+            if (slot.upgradeRequired) return context.l10n.upgradeRequired;
+            if (!slot.hasOpenSpots && !membership) {
+              return context.l10n.subscribeNow;
+            }
+            if (!slot.hasOpenSpots && membership) {
+              return context.l10n.joinWailList;
+            }
+            return context.l10n.bookThisClass;
+          }
 
           return Stack(
             children: [
@@ -180,26 +245,7 @@ class _ClassDetailBody extends StatelessWidget {
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
                   child: ElevatedButton(
-                    onPressed: !canBookOrWaitlist
-                        ? null
-                        : () {
-                            if (!slot.hasOpenSpots) {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (_) => JoinWaitlistView(slot: slot),
-                                ),
-                              );
-                            } else {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (_) => BookClassConfirmView(
-                                    calendarEventId: slot.calendarEventId,
-                                    slot: slot,
-                                  ),
-                                ),
-                              );
-                            }
-                          },
+                    onPressed: !canBookOrWaitlist ? null : onPrimaryTap,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.splashBackgroundDark,
                       foregroundColor: Colors.white,
@@ -211,11 +257,7 @@ class _ClassDetailBody extends StatelessWidget {
                       minimumSize: const Size(double.infinity, 48),
                     ),
                     child: AppText(
-                      !canBookOrWaitlist
-                          ? context.l10n.noUpcomingClasses
-                          : slot.hasOpenSpots
-                          ? context.l10n.bookThisClass
-                          : context.l10n.joinWailList,
+                      primaryLabel(),
                       style: (ctx) => AppTextStyles.button(ctx).copyWith(
                         fontSize: size.width * 0.04 > 16
                             ? 16

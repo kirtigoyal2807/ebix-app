@@ -25,10 +25,11 @@ class _SafetyViewState extends State<SafetyView> {
   late final TextEditingController _nameController;
   late final TextEditingController _signatureController;
   late final TextEditingController _dateController;
-  late final ScrollController _legalScrollController;
+  late final ScrollController _agreementScrollController;
 
-  /// User has reached the bottom of the safety legal text (or it did not scroll).
-  bool _legalTextScrolledToEnd = false;
+  /// True after the agreement text (inner scroll) reaches its bottom.
+  /// Matches [TermsAndConditionsView] scroll gating; user fields + Continue use this.
+  bool _agreementReadToBottom = false;
 
   String? _nameError;
   String? _signatureError;
@@ -65,47 +66,40 @@ class _SafetyViewState extends State<SafetyView> {
     _nameController = TextEditingController(text: safeName);
     _signatureController = TextEditingController(text: s.declarationSignature);
     _dateController = TextEditingController(text: safeDate);
-    _legalScrollController = ScrollController();
-    _legalScrollController.addListener(_onLegalScroll);
+    _agreementScrollController = ScrollController();
+    _agreementScrollController.addListener(_onAgreementScroll);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
       final cubit = context.read<SubscriptionCubit>();
       cubit.updateDeclarationName(_nameController.text);
       cubit.updateDeclarationDate(_dateController.text);
-      _maybeMarkShortLegalContentRead();
+      _syncAgreementReadProgress();
     });
   }
 
   @override
   void dispose() {
-    _legalScrollController.removeListener(_onLegalScroll);
-    _legalScrollController.dispose();
+    _agreementScrollController.removeListener(_onAgreementScroll);
+    _agreementScrollController.dispose();
     _nameController.dispose();
     _signatureController.dispose();
     _dateController.dispose();
     super.dispose();
   }
 
-  void _onLegalScroll() {
+  void _onAgreementScroll() {
     if (!mounted) return;
-    if (!_legalScrollController.hasClients) return;
-    _syncLegalReadProgress();
+    _syncAgreementReadProgress();
   }
 
-  void _syncLegalReadProgress() {
+  void _syncAgreementReadProgress() {
     if (!mounted) return;
-    if (!_legalScrollController.hasClients) return;
-    final p = _legalScrollController.position;
+    if (!_agreementScrollController.hasClients) return;
+    final p = _agreementScrollController.position;
     final atEnd = p.maxScrollExtent <= 8 || p.extentAfter <= 8;
-    if (atEnd && !_legalTextScrolledToEnd) {
-      setState(() => _legalTextScrolledToEnd = true);
+    if (atEnd && !_agreementReadToBottom) {
+      setState(() => _agreementReadToBottom = true);
     }
-  }
-
-  void _maybeMarkShortLegalContentRead() {
-    if (!mounted) return;
-    if (!_legalScrollController.hasClients) return;
-    _syncLegalReadProgress();
   }
 
   void _unfocusKeyboard() {
@@ -113,7 +107,7 @@ class _SafetyViewState extends State<SafetyView> {
   }
 
   void _onContinueToNext(AppLocalizations l10n) {
-    if (!_legalTextScrolledToEnd) {
+    if (!_agreementReadToBottom) {
       return;
     }
     _unfocusKeyboard();
@@ -160,7 +154,6 @@ class _SafetyViewState extends State<SafetyView> {
     final l10n = AppLocalizations.of(context);
     final cubit = context.read<SubscriptionCubit>();
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final size = MediaQuery.sizeOf(context);
 
     if (_nameController.text.trim().isEmpty) {
       final fallbackName = _resolvedProfileName();
@@ -175,6 +168,8 @@ class _SafetyViewState extends State<SafetyView> {
       cubit.updateDeclarationDate(today);
     }
 
+    final fieldsEnabled = _agreementReadToBottom;
+
     return Padding(
       padding: EdgeInsets.only(
         bottom: AppSpacing.lg,
@@ -184,205 +179,174 @@ class _SafetyViewState extends State<SafetyView> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          SizedBox(height: AppSpacing.sm),
+          AppText(
+            l10n.safetyConsent,
+            style: (style) => AppTextStyles.heading1(context),
+          ),
+          SizedBox(height: 4),
+          AppText(
+            l10n.pleaseReviewTerms,
+            style: (context) => AppTextStyles.bodyText(context),
+          ),
+          SizedBox(height: AppSpacing.lg),
           Expanded(
             child: GestureDetector(
               behavior: HitTestBehavior.translucent,
               onTap: _unfocusKeyboard,
-              child: SingleChildScrollView(
-                // Block skipping the legal read by scrolling past the inner box.
-                physics: _legalTextScrolledToEnd
-                    ? const AlwaysScrollableScrollPhysics()
-                    : const NeverScrollableScrollPhysics(),
-                keyboardDismissBehavior:
-                    ScrollViewKeyboardDismissBehavior.onDrag,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(height: AppSpacing.sm),
-                    AppText(
-                      l10n.safetyConsent,
-                      style: (style) => AppTextStyles.heading1(context),
-                    ),
-                    SizedBox(height: 4),
-                    AppText(
-                      l10n.pleaseReviewTerms,
-                      style: (context) => AppTextStyles.bodyText(context),
-                    ),
-                    SizedBox(height: AppSpacing.lg),
-
-                    SizedBox(
-                      height: size.height * 0.4,
-                      child: Container(
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          color: isDark
-                              ? AppColors.homeBackground
-                              : AppColors.whiteColor,
-                          borderRadius: BorderRadius.circular(16),
-                          border: Border.all(
-                            color: isDark
-                                ? AppColors.greyText
-                                : AppColors.buttonBorder,
-                          ),
-                        ),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(12),
-                          child: ScrollbarTheme(
-                            data: ScrollbarThemeData(
-                              thumbColor: WidgetStateProperty.all(
-                                isDark
-                                    ? AppColors.languageIconDark
-                                    : AppColors.languageIcon,
-                              ),
-                              trackColor: WidgetStateProperty.all(
-                                isDark
-                                    ? AppColors.greyText
-                                    : AppColors.buttonBorder,
-                              ),
-                              trackVisibility: WidgetStateProperty.all(true),
-                              thickness: WidgetStateProperty.all(4),
-                              radius: const Radius.circular(16),
-                            ),
-                            child: Scrollbar(
-                              thumbVisibility: true,
-                              controller: _legalScrollController,
-                              thickness: 4,
-                              radius: const Radius.circular(16),
-                              child: NotificationListener<ScrollNotification>(
-                                onNotification: (ScrollNotification n) {
-                                  if (n.metrics.axis != Axis.vertical) {
-                                    return false;
-                                  }
-                                  _syncLegalReadProgress();
-                                  return false;
-                                },
-                                child: SingleChildScrollView(
-                                  controller: _legalScrollController,
-                                  child: Padding(
-                                    padding: EdgeInsets.symmetric(
-                                      vertical: AppSpacing.md,
-                                      horizontal: AppSpacing.md,
-                                    ),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        AppText(
-                                          l10n.subscriptionAgreement,
-                                          style: (style) =>
-                                              AppTextStyles.helpAndSupportItemLabel(
-                                                context,
-                                              ).copyWith(
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.w500,
-                                                height: 1.5,
-                                              ),
-                                          maxLines: 4,
-                                        ),
-                                        SizedBox(height: AppSpacing.md),
-                                        Text(
-                                          l10n.safetyText,
-                                          style:
-                                              AppTextStyles.helpAndSupportItemLabel(
-                                                context,
-                                              ).copyWith(
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.w400,
-                                                color: isDark
-                                                    ? AppColors.darkGreyText
-                                                    : AppColors.greyText,
-                                                height: 1.5,
-                                              ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
+              child: NotificationListener<ScrollNotification>(
+                onNotification: (ScrollNotification n) {
+                  if (n.metrics.axis == Axis.vertical) {
+                    _syncAgreementReadProgress();
+                  }
+                  return false;
+                },
+                child: SingleChildScrollView(
+                  controller: _agreementScrollController,
+                  keyboardDismissBehavior:
+                      ScrollViewKeyboardDismissBehavior.onDrag,
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  child: Container(
+                    width: double.infinity,
+                    padding: EdgeInsets.all(AppSpacing.md),
+                    decoration: BoxDecoration(
+                      color: isDark
+                          ? AppColors.homeBackground
+                          : AppColors.whiteColor,
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(
+                        color: isDark
+                            ? AppColors.greyText
+                            : AppColors.buttonBorder,
                       ),
                     ),
-
-                    if (!_legalTextScrolledToEnd) ...[
-                      SizedBox(height: AppSpacing.sm),
-                      AppText(
-                        l10n.scrollLegalContentToContinue,
-                        style: (c) => AppTextStyles.captionText(c).copyWith(
-                          color: isDark
-                              ? AppColors.languageTextDark
-                              : AppColors.languageIcon,
-                          fontWeight: FontWeight.w500,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        AppText(
+                          l10n.subscriptionAgreement,
+                          style: (style) =>
+                              AppTextStyles.helpAndSupportItemLabel(
+                                context,
+                              ).copyWith(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w500,
+                                height: 1.5,
+                              ),
+                          maxLines: 4,
                         ),
-                        maxLines: 3,
-                      ),
-                    ],
-                    SizedBox(height: AppSpacing.lg),
-
-                    AppTextField(
-                      label: l10n.name,
-                      hint: l10n.name,
-                      controller: _nameController,
-                      enabled: false,
-                      readOnly: true,
-                      errorText: _nameError,
-                      keyboardType: TextInputType.name,
-                      onChanged: (_) {
-                        cubit.updateDeclarationName(_nameController.text);
-                        setState(() => _nameError = null);
-                      },
-                    ),
-                    SizedBox(height: AppSpacing.md),
-
-                    AppTextField(
-                      label: l10n.signature,
-                      hint: l10n.signature,
-                      controller: _signatureController,
-                      errorText: _signatureError,
-                      onChanged: (_) {
-                        cubit.updateDeclarationSignature(
-                          _signatureController.text,
-                        );
-                        setState(() => _signatureError = null);
-                      },
-                    ),
-                    SizedBox(height: AppSpacing.md),
-
-                    SubscriptionCalendarDateField(
-                      label: l10n.date,
-                      hint: l10n.date,
-                      controller: _dateController,
-                      enabled: false,
-                      onDateSelected: (d) {
-                        cubit.updateDeclarationDate(d);
-                        setState(() => _dateError = null);
-                      },
-                    ),
-                    if (_dateError != null) ...[
-                      SizedBox(height: 6),
-                      Text(
-                        _dateError!,
-                        style: AppTextStyles.bodyText(context).copyWith(
-                          fontSize: 12,
-                          color: isDark
-                              ? AppColors.redDark
-                              : AppColors.redLight,
+                        SizedBox(height: AppSpacing.md),
+                        Text(
+                          l10n.safetyText,
+                          style: AppTextStyles.helpAndSupportItemLabel(context)
+                              .copyWith(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w400,
+                                color: isDark
+                                    ? AppColors.darkGreyText
+                                    : AppColors.greyText,
+                                height: 1.5,
+                              ),
                         ),
-                      ),
-                    ],
-                    SizedBox(height: AppSpacing.lg),
-                  ],
+                      ],
+                    ),
+                  ),
                 ),
               ),
             ),
           ),
-
+          // Scroll when header + agreement + footer exceed the viewport (~112px+
+          // overflows on shorter devices). Continue stays pinned like Terms flow.
+          Flexible(
+            flex: 0,
+            fit: FlexFit.loose,
+            child: ListView(
+              shrinkWrap: true,
+              primary: false,
+              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+              physics: const ClampingScrollPhysics(),
+              padding: EdgeInsets.only(bottom: AppSpacing.sm),
+              children: [
+                if (!fieldsEnabled) ...[
+                  SizedBox(height: AppSpacing.sm),
+                  AppText(
+                    l10n.scrollLegalContentToContinue,
+                    style: (c) => AppTextStyles.captionText(c).copyWith(
+                      color: isDark
+                          ? AppColors.languageTextDark
+                          : AppColors.languageIcon,
+                      fontWeight: FontWeight.w500,
+                    ),
+                    maxLines: 3,
+                  ),
+                ],
+                SizedBox(height: AppSpacing.md),
+                GestureDetector(
+                  behavior: HitTestBehavior.translucent,
+                  onTap: _unfocusKeyboard,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      AppTextField(
+                        label: l10n.name,
+                        hint: l10n.name,
+                        controller: _nameController,
+                        enabled: fieldsEnabled,
+                        readOnly: true,
+                        errorText: _nameError,
+                        keyboardType: TextInputType.name,
+                        onChanged: (_) {
+                          cubit.updateDeclarationName(_nameController.text);
+                          setState(() => _nameError = null);
+                        },
+                      ),
+                      SizedBox(height: AppSpacing.md),
+                      AppTextField(
+                        label: l10n.signature,
+                        hint: l10n.signature,
+                        controller: _signatureController,
+                        enabled: fieldsEnabled,
+                        errorText: _signatureError,
+                        onChanged: (_) {
+                          cubit.updateDeclarationSignature(
+                            _signatureController.text,
+                          );
+                          setState(() => _signatureError = null);
+                        },
+                      ),
+                      SizedBox(height: AppSpacing.md),
+                      SubscriptionCalendarDateField(
+                        label: l10n.date,
+                        hint: l10n.date,
+                        controller: _dateController,
+                        enabled: fieldsEnabled,
+                        onDateSelected: (d) {
+                          cubit.updateDeclarationDate(d);
+                          setState(() => _dateError = null);
+                        },
+                      ),
+                      if (_dateError != null) ...[
+                        SizedBox(height: 6),
+                        Text(
+                          _dateError!,
+                          style: AppTextStyles.bodyText(context).copyWith(
+                            fontSize: 12,
+                            color: isDark
+                                ? AppColors.redDark
+                                : AppColors.redLight,
+                          ),
+                        ),
+                      ],
+                      SizedBox(height: AppSpacing.sm),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
           AppButton(
             label: l10n.continueToPayment,
-            onPressed: _legalTextScrolledToEnd
-                ? () => _onContinueToNext(l10n)
-                : null,
+            onPressed: fieldsEnabled ? () => _onContinueToNext(l10n) : null,
             buttonColor: isDark ? AppColors.primary : AppColors.primaryBrown,
             expanded: true,
           ),

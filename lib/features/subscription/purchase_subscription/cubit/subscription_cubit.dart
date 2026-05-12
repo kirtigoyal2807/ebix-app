@@ -7,6 +7,7 @@ import 'package:pilates_app/features/checkout/data/checkout_repository.dart';
 import 'package:pilates_app/features/checkout/data/models/checkout_payment_intent_result.dart';
 import 'package:pilates_app/features/checkout/data/models/product_health_question.dart';
 import 'package:pilates_app/features/checkout/data/models/product_health_questionnaire.dart';
+import 'package:pilates_app/features/subscription/purchase_subscription/health_questionnaire_query.dart';
 import 'package:pilates_app/features/subscription/purchase_subscription/subscription_api_ids.dart';
 
 part 'subscription_state.dart';
@@ -59,24 +60,26 @@ class SubscriptionCubit extends Cubit<SubscriptionState> {
     }
 
     emit(
-      state.copyWith(
-        selectedPlanId: planId,
-        selectedProductRequiresHealthIntake: nextIntake,
-        healthQuestionnaireQuestions: clearQuestionnaire
-            ? const []
-            : state.healthQuestionnaireQuestions,
-        healthQuestionnaireId: clearQuestionnaire
-            ? null
-            : state.healthQuestionnaireId,
-        healthQuestionnaireAnswers: clearQuestionnaire
-            ? const {}
-            : state.healthQuestionnaireAnswers,
-        healthQuestionnaireAnswerNotes: clearQuestionnaire
-            ? const {}
-            : state.healthQuestionnaireAnswerNotes,
-        personalInformationDynamicFields: clearQuestionnaire
-            ? const {}
-            : state.personalInformationDynamicFields,
+      _resolveHealthWizardState(
+        state.copyWith(
+          selectedPlanId: planId,
+          selectedProductRequiresHealthIntake: nextIntake,
+          healthQuestionnaireQuestions: clearQuestionnaire
+              ? const []
+              : state.healthQuestionnaireQuestions,
+          healthQuestionnaireId: clearQuestionnaire
+              ? null
+              : state.healthQuestionnaireId,
+          healthQuestionnaireAnswers: clearQuestionnaire
+              ? const {}
+              : state.healthQuestionnaireAnswers,
+          healthQuestionnaireAnswerNotes: clearQuestionnaire
+              ? const {}
+              : state.healthQuestionnaireAnswerNotes,
+          personalInformationDynamicFields: clearQuestionnaire
+              ? const {}
+              : state.personalInformationDynamicFields,
+        ),
       ),
     );
   }
@@ -124,16 +127,18 @@ class SubscriptionCubit extends Cubit<SubscriptionState> {
   }) {
     _cachedQuestionnaireProductId = null;
     emit(
-      state.copyWith(
-        checkoutSessionId: sessionId,
-        checkoutProductId: productId,
-        selectedProductRequiresHealthIntake:
-            requiresHealthIntake ?? state.selectedProductRequiresHealthIntake,
-        healthQuestionnaireQuestions: const [],
-        healthQuestionnaireId: null,
-        healthQuestionnaireAnswers: const {},
-        healthQuestionnaireAnswerNotes: const {},
-        personalInformationDynamicFields: const {},
+      _resolveHealthWizardState(
+        state.copyWith(
+          checkoutSessionId: sessionId,
+          checkoutProductId: productId,
+          selectedProductRequiresHealthIntake:
+              requiresHealthIntake ?? state.selectedProductRequiresHealthIntake,
+          healthQuestionnaireQuestions: const [],
+          healthQuestionnaireId: null,
+          healthQuestionnaireAnswers: const {},
+          healthQuestionnaireAnswerNotes: const {},
+          personalInformationDynamicFields: const {},
+        ),
       ),
     );
   }
@@ -146,7 +151,7 @@ class SubscriptionCubit extends Cubit<SubscriptionState> {
     ProductHealthQuestionnaire data, {
     int? fetchedForProductId,
   }) {
-    emit(
+    final next = _resolveHealthWizardState(
       state.copyWith(
         healthQuestionnaireId: data.questionnaireId,
         healthQuestionnaireQuestions: data.questions,
@@ -155,7 +160,8 @@ class SubscriptionCubit extends Cubit<SubscriptionState> {
         personalInformationDynamicFields: const {},
       ),
     );
-    if (data.questions.isEmpty) {
+    emit(next);
+    if (next.healthQuestionnaireQuestions.isEmpty) {
       _cachedQuestionnaireProductId = null;
     } else if (fetchedForProductId != null && fetchedForProductId > 0) {
       _cachedQuestionnaireProductId = fetchedForProductId;
@@ -224,7 +230,7 @@ class SubscriptionCubit extends Cubit<SubscriptionState> {
 
     if (value is bool && value == true) {
       final q = _questionnaireQuestionById(questionId);
-      if (q != null && q.isBooleanQuestion && q.allowOther != true) {
+      if (q != null && q.isBooleanQuestion) {
         final cur = notes[questionId]?.trim() ?? '';
         if (cur.isEmpty) {
           notes[questionId] = q.defaultAnswerNoteForBooleanYes();
@@ -253,9 +259,9 @@ class SubscriptionCubit extends Cubit<SubscriptionState> {
     return null;
   }
 
-  /// Free-text explanation when the user answers **Yes** on a boolean question with
-  /// **`allowOther: true`**. For **`allowOther` false**, the API may still require
-  /// `answerNote`; [setHealthQuestionnaireAnswer] stores [ProductHealthQuestion.defaultAnswerNoteForBooleanYes] automatically.
+  /// Free-text notes for API `answerNote` (e.g. checkbox **Other**). Boolean **Yes**
+  /// uses [setHealthQuestionnaireAnswer] to auto-fill [defaultAnswerNoteForBooleanYes]
+  /// when no custom note is set.
   void setHealthQuestionnaireAnswerNote(int questionId, String text) {
     final trimmed = text.trim();
     final notes = Map<int, String>.from(state.healthQuestionnaireAnswerNotes);
@@ -267,8 +273,7 @@ class SubscriptionCubit extends Cubit<SubscriptionState> {
     emit(state.copyWith(healthQuestionnaireAnswerNotes: notes));
   }
 
-  /// Validates questions in [group] for the current step (required fields + boolean
-  /// **Yes** explanations when [ProductHealthQuestion.allowOther] is true).
+  /// Validates questions in [group] for the current step (required fields, etc.).
   ///
   /// When [requireEveryQuestionInGroup] is `true`, every question in [group] must
   /// have a valid answer (treats optional API questions as required on that step).
@@ -297,11 +302,6 @@ class SubscriptionCubit extends Cubit<SubscriptionState> {
         }
       } else {
         if (v == null) continue;
-      }
-
-      if (v is bool && v == true && q.allowOther == true) {
-        final note = state.healthQuestionnaireAnswerNotes[id]?.trim() ?? '';
-        if (note.isEmpty) return false;
       }
     }
     return true;
@@ -489,16 +489,58 @@ class SubscriptionCubit extends Cubit<SubscriptionState> {
     return false;
   }
 
-  /// Steps 2–6 are medical → declaration; skipped when [SubscriptionState.selectedProductRequiresHealthIntake] is false.
-  bool _shouldSkipHealthQuestionnaireStep(int step) =>
-      !state.selectedProductRequiresHealthIntake && step >= 2 && step <= 6;
+  /// First step after the six-slot health wizard (`PersonalInfo`→`Declaration`).
+  static const int _safetyConsentStepIndex = 7;
+
+  /// Steps 1–6 are the questionnaire shell; skipped entirely when intake is false.
+  /// When intake is true and the product questionnaire has loaded, steps 2–5 are skipped if
+  /// that slice has no questions (matches per-screen API blocks).
+  bool _subscriptionWizardStepSkipped(SubscriptionState st, int step) {
+    return isSubscriptionHealthWizardShellStepSkipped(
+      selectedProductRequiresHealthIntake:
+          st.selectedProductRequiresHealthIntake,
+      questionnaireQuestions: st.healthQuestionnaireQuestions,
+      shellStep: step,
+    );
+  }
+
+  SubscriptionState _clampOutOfBandHealthWizardIfNoIntake(SubscriptionState s) {
+    if (s.selectedProductRequiresHealthIntake) return s;
+    if (s.currentStep >= 1 && s.currentStep <= 6) {
+      return s.copyWith(currentStep: _safetyConsentStepIndex);
+    }
+    return s;
+  }
+
+  /// After loading questionnaire data, advances past steps 2–5 that have no API questions.
+  SubscriptionState _withWizardStepSkippingEmptySlices(SubscriptionState base) {
+    var s = base;
+    final qs = s.healthQuestionnaireQuestions;
+    if (!s.selectedProductRequiresHealthIntake || qs.isEmpty) {
+      return s;
+    }
+    while (s.currentStep >= 2 &&
+        s.currentStep <= 5 &&
+        _subscriptionWizardStepSkipped(s, s.currentStep)) {
+      final nextStep = s.currentStep + 1;
+      if (nextStep > 10) break;
+      s = s.copyWith(currentStep: nextStep);
+    }
+    return s;
+  }
+
+  SubscriptionState _resolveHealthWizardState(SubscriptionState draft) {
+    return _clampOutOfBandHealthWizardIfNoIntake(
+      _withWizardStepSkippingEmptySlices(draft),
+    );
+  }
 
   void nextStep() {
     if (state.currentStep >= 10) {
       return;
     }
     var step = state.currentStep + 1;
-    while (_shouldSkipHealthQuestionnaireStep(step) && step < 10) {
+    while (step <= 10 && _subscriptionWizardStepSkipped(state, step)) {
       step++;
     }
     emit(state.copyWith(currentStep: step.clamp(0, 10)));
@@ -509,7 +551,7 @@ class SubscriptionCubit extends Cubit<SubscriptionState> {
       return;
     }
     var step = state.currentStep - 1;
-    while (_shouldSkipHealthQuestionnaireStep(step) && step > 0) {
+    while (step >= 1 && _subscriptionWizardStepSkipped(state, step)) {
       step--;
     }
     emit(state.copyWith(currentStep: step.clamp(0, 10)));

@@ -1,4 +1,5 @@
 import 'package:pilates_app/core/localization/arb/app_localizations.dart';
+import 'package:pilates_app/core/utils/currency_display.dart';
 
 /// One row from `GET /products` envelope `data` array.
 class CatalogProduct {
@@ -33,8 +34,8 @@ class CatalogProduct {
   final String entitlementType;
   final String name;
   final String description;
-  final int basePrice;
-  final int salePrice;
+  final num basePrice;
+  final num salePrice;
   final String currency;
   final bool isActive;
   final bool isRecommended;
@@ -58,6 +59,12 @@ class CatalogProduct {
       if (v is int) return v;
       if (v is num) return v.round();
       return int.tryParse(v?.toString() ?? '') ?? 0;
+    }
+
+    num asMajor(dynamic v) {
+      if (v == null) return 0;
+      if (v is num) return v;
+      return num.tryParse(v.toString().replaceAll(',', '')) ?? 0;
     }
 
     int? asIntNullable(dynamic v) {
@@ -106,8 +113,8 @@ class CatalogProduct {
       entitlementType: json['entitlementType']?.toString() ?? '',
       name: json['name']?.toString() ?? '',
       description: json['description']?.toString() ?? '',
-      basePrice: asInt(json['basePrice']),
-      salePrice: asInt(json['salePrice']),
+      basePrice: asMajor(json['basePrice']),
+      salePrice: asMajor(json['salePrice']),
       currency: json['currency']?.toString() ?? 'SAR',
       isActive: asBool(json['isActive']),
       isRecommended: asBool(json['isRecommended']),
@@ -170,7 +177,7 @@ class CatalogProduct {
     return <String, dynamic>{
       'id': id.toString(),
       'title': name,
-      'price': salePrice.toString(),
+      'price': formatPrice(salePrice),
       'currency': currency,
       'badge': isRecommended ? l10n.mostPopular : null,
       'isPopular': isRecommended,

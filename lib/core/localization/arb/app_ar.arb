@@ -277,6 +277,15 @@
   "viewMyBooking": "عرض حجوزاتي",
   "browseMoreClasses": "تصفح المزيد من الحصص",
   "joinWailList": "الانضمام إلى قائمة الانتظار",
+  "waitlistRequiresMembership": "قائمة الانتظار متاحة فقط لأصحاب العضوية الفعّالة.",
+  "memberTierBenefits": "مزايا {tierName}",
+  "@memberTierBenefits": {
+    "placeholders": {
+      "tierName": {
+        "type": "String"
+      }
+    }
+  },
   "classIsFull": "الحصة ممتلئة",
   "classIsFullDescription": "انضم إلى قائمة الانتظار وسنقوم بإشعارك فور توفر مكان.",
   "currentWaitList": "قائمة الانتظار الحالية",
@@ -398,6 +407,8 @@
   "healthInformation": "المعلومات الصحية",
   "personalInformation": "المعلومات الشخصية",
   "medicalHistory": "التاريخ الطبي",
+  "subscriptionHealthWizardPhysicalActivityTitle": "النشاط البدني",
+  "subscriptionHealthWizardPregnancyTitle": "الحمل",
   "chronicConditions": "هل تعاني من أي أمراض مزمنة؟ (مثل ارتفاع ضغط الدم، السكري، أمراض القلب)",
   "surgeriesInjuries": "هل أجريت أي عمليات جراحية مؤخرًا أو هل تعاني من أي إصابات حالية؟",
   "painBonesMuscles": "هل تعاني من أي ألم أو مشاكل في العظام أو المفاصل أو العضلات؟",
@@ -606,6 +617,10 @@
   "idType": "نوع الهوية",
   "selectIdType": "اختر نوع الهوية",
   "idNumber": "رقم الهوية",
+  "idNumberNationalIdInvalid": "يُرجى إدخال رقم الهوية الوطنية الصالح (١٠ أرقام تبدأ بالرقم ١).",
+  "idNumberIqamaInvalid": "يُرجى إدخال رقم إقامة صالح (١٠ أرقام يبدأ بالرقم ٢).",
+  "idNumberPassportInvalid": "يُرجى إدخال رقم جواز سفر صالح (6–20 من الأحرف والأرقام).",
+  "idNumberDriverLicenseInvalid": "يُرجى إدخال رقم رخصة قيادة صالح (4–24 من الأحرف والأرقام).",
   "filters": "الفلاتر",
   "sortBy": "ترتيب حسب",
   "dateRange": "نطاق التاريخ",
@@ -873,6 +888,7 @@
   "relationshipFriend": "صديق",
   "relationshipOther": "آخر",
   "idTypeNationalId": "الهوية الوطنية",
+  "idTypeIqama": "الإقامة",
   "idTypePassport": "جواز السفر",
   "idTypeDriverLicense": "رخصة القيادة",
   "validUntil": "صالح حتى",
@@ -1264,6 +1280,8 @@
   "upcomingClasses": "الحصص القادمة",
   "viewAllAishaClasses": "عرض جميع حصص عائشة",
   "browseAllClasses": "تصفح جميع الحصص",
+  "viewUpcomingClasses": "عرض الحصص القادمة",
+  "contentNoDataAvailable": "لا تتوفر بيانات",
   "certificationsTraining": "الشهادات والتدريب",
   "pmaCertifiedInstructor": "مدرب بيلاتس معتمد من PMA",
   "matPilatesLevel3": "شهادة مات بيلاتس المستوى الثالث",

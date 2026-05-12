@@ -36,32 +36,9 @@ class ClassInfoGrid extends StatelessWidget {
         Row(
           children: [
             Expanded(
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => TrainerDetailsView(
-                        trainer: TrainerResource(
-                          id: slot.trainerId ?? '',
-                          displayName: slot.trainerName,
-                          specialties: const [],
-                          certifications: const [],
-                          branches: const [],
-                          avatarUrl: slot.trainerImageUrl,
-                        ),
-                      ),
-                    ),
-                  );
-                },
-                child: _InfoCard(
-                  label: context.l10n.instructor,
-                  value: slot.trainerName.isNotEmpty
-                      ? slot.trainerName
-                      : context.l10n.trainerUnknown,
-                  showAvatar: true,
-                  imageUrl: slot.trainerImageUrl,
-                ),
+              child: _MaybeTappableTrainerCard(
+                canOpenProfile: (slot.trainerId ?? '').trim().isNotEmpty,
+                slot: slot,
               ),
             ),
             SizedBox(width: AppSpacing.md),
@@ -101,6 +78,54 @@ class ClassInfoGrid extends StatelessWidget {
     final tomorrow = today.add(const Duration(days: 1));
     if (slotDay == tomorrow) return 'Tomorrow, $timeStr';
     return '${DateFormat('EEE, MMM d').format(dt.toLocal())}, $timeStr';
+  }
+}
+
+/// Opens trainer profile only when [ClassSlotViewModel.trainerId] is non-empty for API-backed detail.
+class _MaybeTappableTrainerCard extends StatelessWidget {
+  const _MaybeTappableTrainerCard({
+    required this.canOpenProfile,
+    required this.slot,
+  });
+
+  final bool canOpenProfile;
+  final ClassSlotViewModel slot;
+
+  @override
+  Widget build(BuildContext context) {
+    final card = _InfoCard(
+      label: context.l10n.instructor,
+      value: slot.trainerName.isNotEmpty
+          ? slot.trainerName
+          : context.l10n.trainerUnknown,
+      showAvatar: true,
+      imageUrl: slot.trainerImageUrl,
+    );
+
+    if (!canOpenProfile) return card;
+
+    final id = (slot.trainerId ?? '').trim();
+
+    return GestureDetector(
+      onTap: () {
+        Navigator.push<void>(
+          context,
+          MaterialPageRoute<void>(
+            builder: (context) => TrainerDetailsView(
+              trainer: TrainerResource(
+                id: id,
+                displayName: slot.trainerName,
+                specialties: const [],
+                certifications: const [],
+                branches: const [],
+                avatarUrl: slot.trainerImageUrl,
+              ),
+            ),
+          ),
+        );
+      },
+      child: card,
+    );
   }
 }
 

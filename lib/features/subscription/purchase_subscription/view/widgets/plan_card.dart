@@ -195,7 +195,7 @@ class _PlanPriceText extends StatelessWidget {
                 ),
               ),
             ),
-            TextSpan(text: '${amount!.toStringAsFixed(2)}$suffix'),
+            TextSpan(text: '${formatPrice(amount!)}$suffix'),
           ],
         ),
         maxLines: 2,
