@@ -22,6 +22,7 @@ import '../../../core/localization/arb/app_localizations.dart';
 import '../../../widgets/app_button.dart';
 import '../../../widgets/app_dropdown.dart';
 import '../../../widgets/phone_number_field.dart';
+import '../../auth/widgets/phone_otp_view.dart';
 import '../cubit/personal_info_cubit.dart';
 import '../cubit/personal_info_state.dart';
 import '../widget/profile_picture_bottom_sheet.dart';
@@ -282,7 +283,7 @@ class _PersonalViewBodyState extends State<_PersonalViewBody> {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return BlocConsumer<PersonalInfoCubit, PersonalInfoState>(
       listenWhen: (prev, curr) => prev.saveStatus != curr.saveStatus,
-      listener: (context, state) {
+      listener: (context, state) async {
         if (state.saveStatus == PersonalInfoSaveStatus.success) {
           context.read<AuthCubit>().refreshProfileWhenSelectingAccountTab();
           Navigator.of(context).pop();
@@ -296,6 +297,26 @@ class _PersonalViewBodyState extends State<_PersonalViewBody> {
               ),
             ),
           );
+        } else if (state.saveStatus == PersonalInfoSaveStatus.phoneVerificationRequired) {
+          // Navigate to OTP verification screen
+          final verified = await Navigator.of(context).push<bool>(
+            MaterialPageRoute(
+              builder: (_) => PhoneOtpView(
+                phone: state.pendingPhoneNumber ?? '',
+                title: context.l10n.verifyPhone,
+                subtitlePrefix: context.l10n.enterCode,
+              ),
+            ),
+          );
+
+          // Reset cubit status
+          context.read<PersonalInfoCubit>().resetStatus();
+
+          // If OTP verified successfully, close PersonalView
+          if (verified == true && mounted) {
+            context.read<AuthCubit>().refreshProfileWhenSelectingAccountTab();
+            Navigator.of(context).pop();
+          }
         }
       },
       builder: (context, state) {

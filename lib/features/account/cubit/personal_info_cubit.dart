@@ -1,8 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pilates_app/core/localization/arb/app_localizations.dart';
-import 'package:pilates_app/core/network/api_result.dart';
 import 'package:pilates_app/features/account/cubit/personal_info_state.dart';
+import 'package:pilates_app/features/account/data/models/profile_update_result.dart';
 import 'package:pilates_app/features/auth/data/auth_repository.dart';
 import 'package:pilates_app/features/auth/data/models/auth_user.dart';
 
@@ -57,7 +57,8 @@ class PersonalInfoCubit extends Cubit<PersonalInfoState> {
   }
 
   /// Calls `PUT /customers/profile`. On success emits [PersonalInfoSaveStatus.success]
-  /// with the refreshed [AuthUser]; on failure emits [PersonalInfoSaveStatus.failure].
+  /// with the refreshed [AuthUser]; on phone change emits [PersonalInfoSaveStatus.phoneVerificationRequired];
+  /// on failure emits [PersonalInfoSaveStatus.failure].
   Future<AuthUser?> saveProfile({
     required String firstName,
     required String lastName,
@@ -70,6 +71,7 @@ class PersonalInfoCubit extends Cubit<PersonalInfoState> {
         saveStatus: PersonalInfoSaveStatus.loading,
         errorMessage: '',
         fieldErrors: {},
+        pendingPhoneNumber: null,
       ),
     );
 
@@ -112,7 +114,7 @@ class PersonalInfoCubit extends Cubit<PersonalInfoState> {
       return null;
     }
 
-    final result = await _authRepository.updateProfile(
+    final result = await _authRepository.updateProfileWithPhoneHandling(
       firstName: trimmedFirst.isNotEmpty ? trimmedFirst : null,
       lastName: trimmedLast.isNotEmpty ? trimmedLast : null,
       email: trimmedEmail.isNotEmpty ? trimmedEmail : null,
@@ -123,22 +125,37 @@ class PersonalInfoCubit extends Cubit<PersonalInfoState> {
     );
 
     switch (result) {
-      case ApiSuccess<AuthUser>(:final data):
+      case ProfileUpdateSuccess(:final user):
         emit(
           state.copyWith(
             saveStatus: PersonalInfoSaveStatus.success,
             errorMessage: '',
           ),
         );
-        return data;
-      case ApiFailure<AuthUser>(:final exception):
+        return user;
+      case ProfileUpdatePhoneVerificationRequired(:final phone):
+        emit(
+          state.copyWith(
+            saveStatus: PersonalInfoSaveStatus.phoneVerificationRequired,
+            pendingPhoneNumber: phone,
+            errorMessage: '',
+          ),
+        );
+        return null;
+      case ProfileUpdateFailure(:final message, :final fieldErrors):
         emit(
           state.copyWith(
             saveStatus: PersonalInfoSaveStatus.failure,
-            errorMessage: exception.message ?? l10n.profileUpdateFailed,
+            errorMessage: message,
+            fieldErrors: fieldErrors,
           ),
         );
         return null;
     }
+  }
+
+  /// Reset status to idle (useful after navigating to OTP screen).
+  void resetStatus() {
+    emit(state.copyWith(saveStatus: PersonalInfoSaveStatus.idle));
   }
 }

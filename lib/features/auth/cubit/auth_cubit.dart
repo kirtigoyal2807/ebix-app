@@ -1077,6 +1077,95 @@ class AuthCubit extends Cubit<AuthState> {
     return fields;
   }
 
+  // Profile Phone Verification
+  // These methods are used when updating phone number in profile
+
+  /// Verify phone OTP for profile phone update.
+  /// Does not check flow state - can be called from any flow.
+  Future<void> verifyProfilePhoneOtp({
+    required String phone,
+    required String code,
+  }) async {
+    final trimmedCode = code.trim();
+    if (phone.isEmpty || trimmedCode.length != 6) {
+      return;
+    }
+
+    emit(
+      state.copyWith(
+        signUpPhoneOtpUiStatus: SignUpPhoneOtpUiStatus.loading,
+        signUpPhoneOtpErrorMessage: '',
+        signUpPhoneOtpFieldErrors: {},
+      ),
+    );
+
+    final result = await _authRepository.verifyPhoneOtp(
+      phone: phone,
+      code: trimmedCode,
+    );
+
+    switch (result) {
+      case ApiSuccess<LoginEmailResult>(:final data):
+        await _tokenStorage.saveToken(data.token);
+        await _tokenStorage.saveUser(data.user);
+        emit(
+          state.copyWith(
+            user: data.user,
+            signUpPhoneOtpUiStatus: SignUpPhoneOtpUiStatus.idle,
+            signUpPhoneOtpErrorMessage: '',
+            signUpPhoneOtpFieldErrors: {},
+          ),
+        );
+      case ApiFailure<LoginEmailResult>(:final exception):
+        emit(
+          state.copyWith(
+            signUpPhoneOtpUiStatus: SignUpPhoneOtpUiStatus.idle,
+            signUpPhoneOtpErrorMessage: exception.message ?? '',
+            signUpPhoneOtpFieldErrors: _mapFieldErrors(exception),
+          ),
+        );
+    }
+  }
+
+  /// Resend phone OTP for profile phone update.
+  /// Does not check flow state - can be called from any flow.
+  Future<bool> resendProfilePhoneOtp(String phone) async {
+    final trimmedPhone = phone.trim();
+    if (trimmedPhone.isEmpty) {
+      return false;
+    }
+    if (state.phoneOtpSendUiStatus == PhoneOtpSendUiStatus.loading) {
+      return false;
+    }
+
+    emit(
+      state.copyWith(
+        phoneOtpSendUiStatus: PhoneOtpSendUiStatus.loading,
+        phoneOtpSendErrorMessage: '',
+      ),
+    );
+
+    final result = await _authRepository.sendPhoneOtp(phone: trimmedPhone);
+
+    switch (result) {
+      case ApiSuccess<bool>():
+        emit(
+          state.copyWith(
+            phoneOtpSendUiStatus: PhoneOtpSendUiStatus.idle,
+            phoneOtpSendErrorMessage: '',
+          ),
+        );
+      case ApiFailure<bool>(:final exception):
+        emit(
+          state.copyWith(
+            phoneOtpSendUiStatus: PhoneOtpSendUiStatus.idle,
+            phoneOtpSendErrorMessage: exception.message ?? '',
+          ),
+        );
+    }
+    return true;
+  }
+
   // Language
   void changeLanguage(Locale locale) {
     _localeBridge.languageCode = locale.languageCode;
