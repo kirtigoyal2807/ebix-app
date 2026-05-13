@@ -8,7 +8,9 @@ import 'package:pilates_app/core/localization/arb/app_localizations.dart';
 import 'package:pilates_app/core/validation/contact_validators.dart';
 import 'package:pilates_app/core/validation/subscription_declaration_validators.dart';
 import 'package:pilates_app/features/auth/cubit/auth_cubit.dart';
+import 'package:pilates_app/features/auth/cubit/auth_state.dart';
 import 'package:pilates_app/features/subscription/purchase_subscription/cubit/subscription_cubit.dart';
+import 'package:pilates_app/features/subscription/purchase_subscription/subscription_declaration_prefill.dart';
 import 'package:pilates_app/features/subscription/purchase_subscription/view/widgets/subscription_calendar_date_field.dart';
 import 'package:pilates_app/widgets/app_button.dart';
 import 'package:pilates_app/widgets/app_text.dart';
@@ -35,43 +37,36 @@ class _SafetyViewState extends State<SafetyView> {
   String? _signatureError;
   String? _dateError;
 
-  String _resolvedProfileName() {
-    final subState = context.read<SubscriptionCubit>().state;
-    final user = context.read<AuthCubit>().state.user;
-    final fromUserParts = [
-      user?.firstName?.trim() ?? '',
-      user?.lastName?.trim() ?? '',
-    ].where((name) => name.isNotEmpty).join(' ').trim();
-    if (fromUserParts.isNotEmpty) return fromUserParts;
-    final fromUserName = user?.name?.trim() ?? '';
-    if (fromUserName.isNotEmpty) return fromUserName;
-    final fromPersonalInfo = subState.name.trim();
-    if (fromPersonalInfo.isNotEmpty) return fromPersonalInfo;
-    return '';
-  }
-
   @override
   void initState() {
     super.initState();
     final s = context.read<SubscriptionCubit>().state;
-    final profileName = _resolvedProfileName();
-    final safeName = profileName.isNotEmpty
-        ? profileName
-        : (s.declarationName.trim().isNotEmpty ? s.declarationName : '');
+    final user = context.read<AuthCubit>().state.user;
     final today = DateFormat('dd-MM-yyyy').format(DateTime.now());
-    final safeDate = s.declarationDate.trim().isNotEmpty
-        ? s.declarationDate
-        : today;
+    final name = SubscriptionDeclarationPrefill.resolvedDeclarationName(s, user);
+    final date = SubscriptionDeclarationPrefill.resolvedDeclarationDate(s, today);
+    final sig = SubscriptionDeclarationPrefill.resolvedDeclarationSignature(
+      s,
+      name,
+    );
 
-    _nameController = TextEditingController(text: safeName);
-    _signatureController = TextEditingController(text: s.declarationSignature);
-    _dateController = TextEditingController(text: safeDate);
+    _nameController = TextEditingController(text: name);
+    _signatureController = TextEditingController(text: sig);
+    _dateController = TextEditingController(text: date);
     _agreementScrollController = ScrollController();
     _agreementScrollController.addListener(_onAgreementScroll);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
       final cubit = context.read<SubscriptionCubit>();
+      SubscriptionDeclarationPrefill.applyIfControllersEmpty(
+        cubit: cubit,
+        user: context.read<AuthCubit>().state.user,
+        nameController: _nameController,
+        signatureController: _signatureController,
+        dateController: _dateController,
+      );
       cubit.updateDeclarationName(_nameController.text);
+      cubit.updateDeclarationSignature(_signatureController.text);
       cubit.updateDeclarationDate(_dateController.text);
       _syncAgreementReadProgress();
     });
@@ -154,32 +149,48 @@ class _SafetyViewState extends State<SafetyView> {
     final l10n = AppLocalizations.of(context);
     final cubit = context.read<SubscriptionCubit>();
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final authUser = context.read<AuthCubit>().state.user;
 
-    if (_nameController.text.trim().isEmpty) {
-      final fallbackName = _resolvedProfileName();
-      if (fallbackName.isNotEmpty) {
-        _nameController.text = fallbackName;
-        cubit.updateDeclarationName(fallbackName);
-      }
-    }
-    if (_dateController.text.trim().isEmpty) {
-      final today = DateFormat('dd-MM-yyyy').format(DateTime.now());
-      _dateController.text = today;
-      cubit.updateDeclarationDate(today);
+    if (SubscriptionDeclarationPrefill.applyIfControllersEmpty(
+      cubit: cubit,
+      user: authUser,
+      nameController: _nameController,
+      signatureController: _signatureController,
+      dateController: _dateController,
+    )) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) setState(() {});
+      });
     }
 
     final fieldsEnabled = _agreementReadToBottom;
 
-    return Padding(
-      padding: EdgeInsets.only(
-        bottom: AppSpacing.lg,
-        left: AppSpacing.lg,
-        right: AppSpacing.lg,
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(height: AppSpacing.sm),
+    return BlocListener<AuthCubit, AuthState>(
+      listenWhen: (prev, next) =>
+          prev.user != next.user ||
+          prev.accountProfileRefreshStatus != next.accountProfileRefreshStatus,
+      listener: (context, _) {
+        final c = context.read<SubscriptionCubit>();
+        if (SubscriptionDeclarationPrefill.applyIfControllersEmpty(
+          cubit: c,
+          user: context.read<AuthCubit>().state.user,
+          nameController: _nameController,
+          signatureController: _signatureController,
+          dateController: _dateController,
+        )) {
+          setState(() {});
+        }
+      },
+      child: Padding(
+        padding: EdgeInsets.only(
+          bottom: AppSpacing.lg,
+          left: AppSpacing.lg,
+          right: AppSpacing.lg,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(height: AppSpacing.sm),
           AppText(
             l10n.safetyConsent,
             style: (style) => AppTextStyles.heading1(context),
@@ -201,30 +212,32 @@ class _SafetyViewState extends State<SafetyView> {
                   }
                   return false;
                 },
-                child: SingleChildScrollView(
-                  controller: _agreementScrollController,
-                  keyboardDismissBehavior:
-                      ScrollViewKeyboardDismissBehavior.onDrag,
-                  physics: const AlwaysScrollableScrollPhysics(),
-                  child: Container(
-                    width: double.infinity,
-                    padding: EdgeInsets.all(AppSpacing.md),
-                    decoration: BoxDecoration(
+                child: Container(
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: isDark
+                        ? AppColors.homeBackground
+                        : AppColors.whiteColor,
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(
                       color: isDark
-                          ? AppColors.homeBackground
-                          : AppColors.whiteColor,
-                      borderRadius: BorderRadius.circular(16),
-                      border: Border.all(
-                        color: isDark
-                            ? AppColors.greyText
-                            : AppColors.buttonBorder,
-                      ),
+                          ? AppColors.greyText
+                          : AppColors.buttonBorder,
                     ),
+                  ),
+                  clipBehavior: Clip.antiAlias,
+                  child: SingleChildScrollView(
+                    controller: _agreementScrollController,
+                    keyboardDismissBehavior:
+                        ScrollViewKeyboardDismissBehavior.onDrag,
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    padding: EdgeInsets.all(AppSpacing.md),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         AppText(
                           l10n.subscriptionAgreement,
+                          textAlign: TextAlign.start,
                           style: (style) =>
                               AppTextStyles.helpAndSupportItemLabel(
                                 context,
@@ -238,6 +251,7 @@ class _SafetyViewState extends State<SafetyView> {
                         SizedBox(height: AppSpacing.md),
                         Text(
                           l10n.safetyText,
+                          textAlign: TextAlign.start,
                           style: AppTextStyles.helpAndSupportItemLabel(context)
                               .copyWith(
                                 fontSize: 12,
@@ -352,6 +366,7 @@ class _SafetyViewState extends State<SafetyView> {
           ),
         ],
       ),
+    ),
     );
   }
 }
