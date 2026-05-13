@@ -501,7 +501,7 @@ class _SignUpPersonalInfoViewState extends State<SignUpPersonalInfoView> {
                                 });
                               },
                             ),
-                            SizedBox(height: AppSpacing.lmd),
+                            SizedBox(height: AppSpacing.xl),
                             SizedBox(
                               height:
                                   MediaQuery.sizeOf(context).height * 0.04 + 48,

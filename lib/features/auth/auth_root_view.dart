@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
+import 'package:pilates_app/config/theme/app_colors.dart';
 import 'package:pilates_app/core/localization/localization_extension.dart';
 import 'package:pilates_app/features/auth/post_login/post_login_experience_view.dart';
 import 'package:pilates_app/features/auth/post_login/post_login_goal_view.dart';
@@ -70,9 +71,20 @@ class _AuthRootViewState extends State<AuthRootView>
         builder: (context, state) {
           switch (state.flow) {
             case AuthFlow.splash:
-              return Lottie.asset(
-                "assets/json/splash_screen.json",
-                repeat: false,
+              final isDark =
+                  Theme.of(context).brightness == Brightness.dark;
+              final splashBg = isDark
+                  ? Colors.black
+                  : AppColors.splashBackgroundDark;
+              return ColoredBox(
+                color: splashBg,
+                child: SizedBox.expand(
+                  child: Lottie.asset(
+                    'assets/json/splash_screen.json',
+                    repeat: false,
+                    fit: BoxFit.cover,
+                  ),
+                ),
               );
 
             case AuthFlow.onboarding:
