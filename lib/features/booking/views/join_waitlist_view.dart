@@ -4,6 +4,9 @@ import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 
 import 'package:pilates_app/config/theme/app_spacing.dart';
+import 'package:pilates_app/features/auth/cubit/auth_cubit.dart';
+import 'package:pilates_app/features/auth/data/models/auth_user.dart';
+import 'package:pilates_app/features/booking/booking_entitlements.dart';
 import 'package:pilates_app/features/booking/cubit/waitlist_cubit.dart';
 import 'package:pilates_app/features/booking/cubit/waitlist_state.dart';
 import 'package:pilates_app/features/booking/data/classes_repository.dart';
@@ -59,6 +62,26 @@ class _JoinWaitlistBody extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final l10n = AppLocalizations.of(context);
+
+    if (!userShowsPackageMembership(
+      context.select<AuthCubit, AuthUser?>((c) => c.state.user),
+    )) {
+      return Scaffold(
+        backgroundColor: isDark ? AppColors.homeBackground : AppColors.whiteColor,
+        appBar: AppAppBar(
+          onBack: () => Navigator.of(context).pop(),
+          title: l10n.joinWailList,
+          isMoreMenu: false,
+        ),
+        body: Padding(
+          padding: EdgeInsets.all(AppSpacing.lg),
+          child: AppText(
+            l10n.waitlistRequiresMembership,
+            style: (c) => AppTextStyles.bodyText(c),
+          ),
+        ),
+      );
+    }
 
     return Scaffold(
       backgroundColor: isDark ? AppColors.homeBackground : AppColors.whiteColor,

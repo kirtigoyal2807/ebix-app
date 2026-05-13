@@ -5,9 +5,11 @@ import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/core/localization/arb/app_localizations.dart';
 import 'package:pilates_app/core/localization/localization_extension.dart';
+import 'package:pilates_app/features/checkout/data/checkout_repository.dart';
 import 'package:pilates_app/features/subscription/purchase_subscription/cubit/subscription_cubit.dart';
 import 'package:pilates_app/features/subscription/purchase_subscription/view/widgets/api_health_questionnaire_blocks.dart';
 import 'package:pilates_app/features/subscription/purchase_subscription/view/widgets/subscription_header.dart';
+import 'package:pilates_app/features/subscription/purchase_subscription/view/widgets/subscription_health_wizard_step.dart';
 import 'package:pilates_app/widgets/app_button.dart';
 import 'package:pilates_app/widgets/app_text.dart';
 import 'package:pilates_app/widgets/inline_validation_banner.dart';
@@ -21,6 +23,55 @@ class PregnancyView extends StatefulWidget {
 
 class _PregnancyViewState extends State<PregnancyView> {
   String? _validationMessage;
+  bool _questionnaireLoading = false;
+  bool _questionnaireLoadFailed = false;
+
+  bool _questionnaireHydrationScheduled = false;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_questionnaireHydrationScheduled) return;
+    _questionnaireHydrationScheduled = true;
+    final cubit = context.read<SubscriptionCubit>();
+    final needFetch =
+        cubit.state.selectedProductRequiresHealthIntake &&
+        cubit.state.healthQuestionnaireQuestions.isEmpty;
+    if (needFetch) {
+      setState(() => _questionnaireLoading = true);
+    }
+    WidgetsBinding.instance.addPostFrameCallback((_) => _ensureQuestionnaire());
+  }
+
+  Future<void> _ensureQuestionnaire() async {
+    if (!mounted) return;
+    final cubit = context.read<SubscriptionCubit>();
+    if (!cubit.state.selectedProductRequiresHealthIntake) {
+      setState(() {
+        _questionnaireLoading = false;
+        _questionnaireLoadFailed = false;
+      });
+      return;
+    }
+    if (cubit.state.healthQuestionnaireQuestions.isNotEmpty) {
+      setState(() {
+        _questionnaireLoading = false;
+        _questionnaireLoadFailed = false;
+      });
+      return;
+    }
+    setState(() {
+      _questionnaireLoading = true;
+      _questionnaireLoadFailed = false;
+    });
+    final repo = context.read<CheckoutRepository>();
+    final ok = await cubit.fetchHealthQuestionnaireForCurrentProduct(repo);
+    if (!mounted) return;
+    setState(() {
+      _questionnaireLoading = false;
+      _questionnaireLoadFailed = !ok;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,13 +103,25 @@ class _PregnancyViewState extends State<PregnancyView> {
                           c.selectedProductRequiresHealthIntake,
                   builder: (context, state) {
                     final intake = state.selectedProductRequiresHealthIntake;
+                    final apiPregnancyQs = pickQuestionsByIds(
+                      state.healthQuestionnaireQuestions,
+                      const [HealthQuestionnaireIds.pregnancy],
+                    );
+                    final useApiPregnancy =
+                        intake &&
+                        !_questionnaireLoading &&
+                        !_questionnaireLoadFailed &&
+                        apiPregnancyQs.isNotEmpty;
+                    final showStaticLegacy = !intake;
+
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         SubscriptionStepHeader(
-                          currentStep: 3,
-                          totalSteps: 6,
+                          wizardStep: SubscriptionHealthWizardStep.pregnancy,
                           isDark: isDark,
+                          showProgressCaption:
+                              !intake || !_questionnaireLoading,
                         ),
                         SizedBox(height: AppSpacing.xl),
                         AppText(
@@ -66,11 +129,51 @@ class _PregnancyViewState extends State<PregnancyView> {
                           style: (style) => AppTextStyles.heading1(context),
                         ),
                         SizedBox(height: AppSpacing.lg),
-                        if (intake) ...[
+                        if (intake && _questionnaireLoading) ...[
+                          Padding(
+                            padding: EdgeInsets.symmetric(
+                              vertical: AppSpacing.md,
+                            ),
+                            child: Center(
+                              child: SizedBox(
+                                width: 28,
+                                height: 28,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                        if (intake &&
+                            !_questionnaireLoading &&
+                            _questionnaireLoadFailed) ...[
+                          Padding(
+                            padding: EdgeInsets.only(bottom: AppSpacing.md),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Expanded(
+                                  child: AppText(
+                                    l10n.loginErrorGeneric,
+                                    style: (ctx) =>
+                                        AppTextStyles.captionText(ctx),
+                                  ),
+                                ),
+                                TextButton(
+                                  onPressed: _ensureQuestionnaire,
+                                  child: Text(l10n.retry),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                        if (useApiPregnancy) ...[
                           const ApiBooleanQuestionsBlock(
                             questionIds: [HealthQuestionnaireIds.pregnancy],
                           ),
-                        ] else ...[
+                        ],
+                        if (showStaticLegacy) ...[
                           _buildSectionHeader(context, l10n.areYouPregnant),
                           SizedBox(height: AppSpacing.md),
                           BlocBuilder<SubscriptionCubit, SubscriptionState>(
@@ -107,32 +210,38 @@ class _PregnancyViewState extends State<PregnancyView> {
               InlineValidationBanner(message: _validationMessage!),
             AppButton(
               label: l10n.continueTxt,
-              onPressed: () {
-                final intake = cubit.state.selectedProductRequiresHealthIntake;
-                if (intake) {
-                  final qs = pickQuestionsByIds(
-                    cubit.state.healthQuestionnaireQuestions,
-                    const [HealthQuestionnaireIds.pregnancy],
-                  );
-                  if (qs.isNotEmpty && !cubit.validateQuestionnaireGroup(qs)) {
-                    setState(
-                      () => _validationMessage =
-                          context.l10n.giftRecipientValidationError,
-                    );
-                    return;
-                  }
-                } else {
-                  if (cubit.state.isPregnant == null) {
-                    setState(
-                      () => _validationMessage =
-                          context.l10n.giftRecipientValidationError,
-                    );
-                    return;
-                  }
-                }
-                setState(() => _validationMessage = null);
-                cubit.nextStep();
-              },
+              onPressed:
+                  !cubit.state.selectedProductRequiresHealthIntake ||
+                      (!_questionnaireLoading && !_questionnaireLoadFailed)
+                  ? () {
+                      final intake =
+                          cubit.state.selectedProductRequiresHealthIntake;
+                      final qs = pickQuestionsByIds(
+                        cubit.state.healthQuestionnaireQuestions,
+                        const [HealthQuestionnaireIds.pregnancy],
+                      );
+                      if (intake) {
+                        if (qs.isNotEmpty &&
+                            !cubit.validateQuestionnaireGroup(qs)) {
+                          setState(
+                            () => _validationMessage =
+                                context.l10n.giftRecipientValidationError,
+                          );
+                          return;
+                        }
+                      } else {
+                        if (cubit.state.isPregnant == null) {
+                          setState(
+                            () => _validationMessage =
+                                context.l10n.giftRecipientValidationError,
+                          );
+                          return;
+                        }
+                      }
+                      setState(() => _validationMessage = null);
+                      cubit.nextStep();
+                    }
+                  : null,
               buttonColor: isDark ? AppColors.primary : AppColors.primaryBrown,
               expanded: true,
             ),

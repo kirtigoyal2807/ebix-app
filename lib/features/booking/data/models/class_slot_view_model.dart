@@ -71,8 +71,9 @@ class ClassSlotViewModel {
   /// `true` when the user can book or join waitlist for a concrete calendar event.
   bool get hasBookableSlot => calendarEventId.trim().isNotEmpty;
 
-  /// Upgrade required when class is not included in user's current package.
-  bool get upgradeRequired => !allowPackageBooking;
+  /// True when the user cannot book with a package **and** cannot buy a single
+  /// session — show upgrade / blocked UI only in this case (ISSUE-100/101).
+  bool get upgradeRequired => !allowPackageBooking && !allowSinglePurchase;
 
   /// Short label for UI when [avgRating] is present (includes `0`); `null` if API omitted rating.
   String? get averageRatingDisplayLabel {

@@ -241,7 +241,9 @@ class _PhoneNumberFieldState extends State<PhoneNumberField> {
             ),
             child: Row(
               children: [
-                CountryCodePicker(
+                IgnorePointer(
+                  ignoring: !widget.enabled,
+                  child: CountryCodePicker(
                   pickerStyle: PickerStyle.bottomSheet,
                   favorite: const ['SA'],
                   headerText: context.l10n.selectCountry,
@@ -281,6 +283,7 @@ class _PhoneNumberFieldState extends State<PhoneNumberField> {
                   backgroundColor: theme.colorScheme.surface,
                   barrierColor: Colors.black54,
                   dialogBackgroundColor: theme.colorScheme.surface,
+                ),
                 ),
 
                 Container(width: 1, height: 24, color: theme.dividerColor),

@@ -1,18 +1,55 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
+
 import 'package:pilates_app/config/theme/app_colors.dart';
 import 'package:pilates_app/config/theme/app_radius.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
+import 'package:pilates_app/core/localization/arb/app_localizations.dart';
 import 'package:pilates_app/core/localization/localization_extension.dart';
+import 'package:pilates_app/features/loyalty/data/models/loyalty_points_history_entry.dart';
+import 'package:pilates_app/features/loyalty/data/models/loyalty_tier.dart';
 import 'package:pilates_app/widgets/app_text.dart';
 
+import '../cubit/loyalty_tiers_cubit.dart';
+import '../cubit/loyalty_tiers_state.dart';
 import '../cubit/reward_cubit.dart';
 import '../cubit/reward_state.dart';
 import '../widget/filter_tab_widget.dart';
 import '../widget/reward_card.dart';
 import '../widget/select_branch_sheet.dart';
 import '../widget/sliver_benefit_card.dart';
+
+int? _newestBalanceAfter(List<LoyaltyPointsHistoryEntry> entries) {
+  if (entries.isEmpty) return null;
+  int order(LoyaltyPointsHistoryEntry e) {
+    final parsed = DateTime.tryParse(e.createdAt ?? '');
+    if (parsed != null) return parsed.millisecondsSinceEpoch;
+    final processed = DateTime.tryParse(e.processedAt ?? '');
+    return processed?.millisecondsSinceEpoch ?? 0;
+  }
+  final sorted = [...entries]..sort((a, b) => order(b).compareTo(order(a)));
+  return sorted.first.balanceAfter;
+}
+
+LoyaltyTier? _tierAfterSorted(List<LoyaltyTier> sorted, LoyaltyTier? current) {
+  if (current == null || current.id.isEmpty) return null;
+  final i = sorted.indexWhere((t) => t.id == current.id);
+  if (i < 0 || i + 1 >= sorted.length) return null;
+  return sorted[i + 1];
+}
+
+double? _tierRangeProgressFraction({
+  required int balance,
+  required LoyaltyTier current,
+  required LoyaltyTier? nextTier,
+}) {
+  final lo = current.pointsMin;
+  final hi = nextTier?.pointsMin;
+  if (lo == null || hi == null || hi <= lo) return null;
+  return ((balance - lo) / (hi - lo)).clamp(0.0, 1.0);
+}
 
 class RewardOverviewView extends StatelessWidget {
   const RewardOverviewView({super.key});
@@ -30,9 +67,28 @@ class RewardOverviewView extends StatelessWidget {
             SizedBox(height: AppSpacing.xl),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
-              child: AppText(
-                context.l10n.your_silver_benefits,
-                style: (context) => AppTextStyles.gelasioRegular(context),
+              child:
+              BlocBuilder<LoyaltyTiersCubit, LoyaltyTiersState>(
+                buildWhen: (p, c) => p.tiers != c.tiers || p.status != c.status,
+                builder: (context, tState) {
+                  LoyaltyTier? current;
+                  for (final t in tState.tiers) {
+                    if (t.isCurrent) {
+                      current = t;
+                      break;
+                    }
+                  }
+                  final name = current?.name.trim() ?? '';
+                  final heading = name.isEmpty
+                      ? context.l10n.your_silver_benefits
+                      : AppLocalizations.of(
+                    context,
+                  ).memberTierBenefits(name);
+                  return AppText(
+                    heading,
+                    style: (context) => AppTextStyles.gelasioRegular(context),
+                  );
+                },
               ),
             ),
             SizedBox(height: AppSpacing.md),
@@ -57,7 +113,7 @@ class RewardOverviewView extends StatelessWidget {
             SizedBox(height: AppSpacing.md),
             BlocBuilder<RewardCubit, RewardState>(
               buildWhen: (p, c) =>
-                  p.rewardsLoadStatus != c.rewardsLoadStatus ||
+              p.rewardsLoadStatus != c.rewardsLoadStatus ||
                   p.filteredRewards != c.filteredRewards ||
                   p.rewardsError != c.rewardsError ||
                   p.selectedRewardFilter != c.selectedRewardFilter ||
@@ -127,79 +183,183 @@ class RewardOverviewView extends StatelessWidget {
 
   Widget _BuildCard({required BuildContext context}) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
-      padding: EdgeInsets.symmetric(
-        vertical: AppSpacing.lmd,
-        horizontal: AppSpacing.lg,
-      ),
-      decoration: BoxDecoration(
-        color: isDark ? AppColors.primaryDarkButton : AppColors.seekBarLight,
-        borderRadius: BorderRadius.circular(AppRadius.md),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          AppText(
-            context.l10n.your_balance,
-            style: (context) => AppTextStyles.bodyText(context),
-          ),
-          SizedBox(height: 2),
-          AppText(
-            "1,440",
-            style: (context) =>
-                AppTextStyles.appBarText(context).copyWith(fontSize: 40),
-          ),
-          SizedBox(height: AppSpacing.lg),
-          AppText(
-            context.l10n.current_tier,
-            style: (context) =>
-                AppTextStyles.bodyText(context).copyWith(fontSize: 12),
-          ),
-          SizedBox(height: 2),
-          AppText(
-            context.l10n.silver_member,
-            style: (context) =>
-                AppTextStyles.textFieldHeading(context).copyWith(),
-          ),
-          SizedBox(height: AppSpacing.lg),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              AppText(
-                context.l10n.progress_to_gold,
-                style: (context) =>
-                    AppTextStyles.experienceButton(context).copyWith(),
-              ),
-              AppText(
-                context.l10n.points_to_go(750),
-                style: (context) =>
-                    AppTextStyles.experienceButton(context).copyWith(
-                      color: isDark
-                          ? AppColors.languageTextDark
-                          : AppColors.languageIcon,
-                    ),
-              ),
-            ],
-          ),
-          SizedBox(height: AppSpacing.base),
-          ClipRRect(
-            borderRadius: BorderRadius.circular(AppRadius.sm),
-            child: LinearProgressIndicator(
-              value: 0.6,
-              minHeight: 6,
-              backgroundColor: isDark
-                  ? Color(0xff1C1917)
-                  : AppColors.darkGreyBorder,
-              valueColor: AlwaysStoppedAnimation<Color>(
+    final locale = Localizations.localeOf(context).toLanguageTag();
+    final numberFormat = NumberFormat.decimalPattern(locale);
+
+    Widget balanceBlock(RewardState rewardState) {
+      switch (rewardState.historyLoadStatus) {
+        case RewardListLoadStatus.initial:
+        case RewardListLoadStatus.loading:
+          return SizedBox(
+            height: 48,
+            width: 48,
+            child: CircularProgressIndicator.adaptive(
+              strokeWidth: 3,
+              valueColor: AlwaysStoppedAnimation(
                 isDark
                     ? AppColors.subscriptionCardGradient2
                     : AppColors.languageIcon,
               ),
             ),
-          ),
-        ],
-      ),
+          );
+        case RewardListLoadStatus.failure:
+          return AppText(
+            '—',
+            style: (c) =>
+                AppTextStyles.appBarText(c).copyWith(fontSize: 40),
+          );
+        case RewardListLoadStatus.loaded:
+          final bal = _newestBalanceAfter(rewardState.pointsHistory) ?? 0;
+          return AppText(
+            numberFormat.format(bal),
+            style: (c) =>
+                AppTextStyles.appBarText(c).copyWith(fontSize: 40),
+          );
+      }
+    }
+
+    return BlocBuilder<RewardCubit, RewardState>(
+      buildWhen: (p, c) =>
+      p.pointsHistory != c.pointsHistory ||
+          p.historyLoadStatus != c.historyLoadStatus,
+      builder: (context, rewardState) {
+        return BlocBuilder<LoyaltyTiersCubit, LoyaltyTiersState>(
+          buildWhen: (p, c) => p.tiers != c.tiers || p.status != c.status,
+          builder: (context, tiersState) {
+            final tiers = tiersState.tiers;
+
+            LoyaltyTier? current;
+            for (final t in tiers) {
+              if (t.isCurrent) {
+                current = t;
+                break;
+              }
+            }
+
+            final next = _tierAfterSorted(tiers, current);
+            final balance =
+                _newestBalanceAfter(rewardState.pointsHistory) ?? 0;
+            double? frac;
+            if (current != null) {
+              frac = _tierRangeProgressFraction(
+                balance: balance,
+                current: current,
+                nextTier: next,
+              );
+            }
+
+            final ptsRemain = current?.pointsToNext;
+            final showPtsRow =
+                ptsRemain != null &&
+                    ptsRemain > 0 &&
+                    !tiers.isEmpty &&
+                    tiersState.status == LoyaltyTiersLoadStatus.loaded;
+            final nextName = next?.name.trim();
+            final progressLabel =
+            nextName != null && nextName.isNotEmpty
+                ? '${context.l10n.progress_to_gold}: $nextName'
+                : context.l10n.progress_to_gold;
+
+            return Container(
+              margin: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+              padding: EdgeInsets.symmetric(
+                vertical: AppSpacing.lmd,
+                horizontal: AppSpacing.lg,
+              ),
+              decoration: BoxDecoration(
+                color: isDark
+                    ? AppColors.primaryDarkButton
+                    : AppColors.seekBarLight,
+                borderRadius: BorderRadius.circular(AppRadius.md),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  AppText(
+                    context.l10n.your_balance,
+                    style: (c) => AppTextStyles.bodyText(c),
+                  ),
+                  SizedBox(height: 2),
+                  balanceBlock(rewardState),
+                  SizedBox(height: AppSpacing.lg),
+                  AppText(
+                    context.l10n.current_tier,
+                    style: (c) =>
+                        AppTextStyles.bodyText(c).copyWith(fontSize: 12),
+                  ),
+                  SizedBox(height: 2),
+                  if (tiersState.status ==
+                      LoyaltyTiersLoadStatus.loading &&
+                      tiers.isEmpty)
+                    Padding(
+                      padding: EdgeInsets.only(top: AppSpacing.sm),
+                      child: SizedBox(
+                        height: 20,
+                        width: 20,
+                        child: CircularProgressIndicator.adaptive(
+                          strokeWidth: 2,
+                          valueColor: AlwaysStoppedAnimation(
+                            isDark
+                                ? AppColors.subscriptionCardGradient2
+                                : AppColors.languageIcon,
+                          ),
+                        ),
+                      ),
+                    )
+                  else
+                    AppText(
+                      current?.name.trim().isNotEmpty == true
+                          ? current!.name.trim()
+                          : AppLocalizations.of(
+                        context,
+                      ).contentNoDataAvailable,
+                      style: (c) =>
+                          AppTextStyles.textFieldHeading(c).copyWith(),
+                    ),
+                  SizedBox(height: AppSpacing.lg),
+                  if (showPtsRow) ...[
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        AppText(
+                          progressLabel,
+                          style: (c) =>
+                              AppTextStyles.experienceButton(c).copyWith(),
+                        ),
+                        AppText(
+                          context.l10n.points_to_go(ptsRemain),
+                          style: (c) =>
+                              AppTextStyles.experienceButton(c).copyWith(
+                                color: isDark
+                                    ? AppColors.languageTextDark
+                                    : AppColors.languageIcon,
+                              ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: AppSpacing.base),
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(AppRadius.sm),
+                      child: LinearProgressIndicator(
+                        value: frac,
+                        minHeight: 6,
+                        backgroundColor: isDark
+                            ? const Color(0xff1C1917)
+                            : AppColors.darkGreyBorder,
+                        valueColor: AlwaysStoppedAnimation<Color>(
+                          isDark
+                              ? AppColors.subscriptionCardGradient2
+                              : AppColors.languageIcon,
+                        ),
+                      ),
+                    ),
+                  ],
+                ],
+              ),
+            );
+          },
+        );
+      },
     );
   }
 
@@ -241,14 +401,14 @@ class RewardOverviewView extends StatelessWidget {
                   SizedBox(height: AppSpacing.xs),
                   BlocBuilder<RewardCubit, RewardState>(
                     buildWhen: (p, c) =>
-                        p.selectedBranch != c.selectedBranch ||
+                    p.selectedBranch != c.selectedBranch ||
                         p.branchList != c.branchList,
                     builder: (context, state) {
                       final branch = state.branchList.isNotEmpty
                           ? state.branchList[state.selectedBranch.clamp(
-                              0,
-                              state.branchList.length - 1,
-                            )]
+                        0,
+                        state.branchList.length - 1,
+                      )]
                           : null;
                       final title = branch == null
                           ? ''

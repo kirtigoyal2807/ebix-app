@@ -10,8 +10,8 @@ import 'package:pilates_app/features/subscription/purchase_subscription/view/sub
 import 'package:pilates_app/features/view_subscription/cubit/subscriptions_cubit.dart';
 import 'package:pilates_app/features/view_subscription/cubit/subscriptions_state.dart';
 import 'package:pilates_app/features/view_subscription/view/pause_subscription_view.dart';
-import 'package:pilates_app/core/utils/currency_display.dart';
 import 'package:pilates_app/widgets/app_text.dart';
+import 'package:pilates_app/widgets/currency_amount_text.dart';
 
 import '../../../core/localization/localization_extension.dart';
 import '../../../widgets/app_button.dart';
@@ -28,19 +28,6 @@ class CurrentPlanView extends StatelessWidget {
     final t = p.entitlementType.trim();
     if (t.isNotEmpty) return t.replaceAll('_', ' ');
     return context.l10n.subscriptionTitle;
-  }
-
-  String _priceLine(CustomerSubscriptionResource p) {
-    if (p.pricePaid <= 0) return '—';
-    return formatCurrencyAmount(amount: p.pricePaid, code: 'SAR');
-  }
-
-  String _priceLineWithSuffix(CustomerSubscriptionResource p) {
-    final price = _priceLine(p);
-    if (price == '—') return price;
-    final entitlement = p.entitlementType.trim().toLowerCase();
-    final suffix = entitlement == 'subscription' ? ' / Month' : '';
-    return '$price$suffix';
   }
 
   String _sessionsLine(CustomerSubscriptionResource p) {
@@ -190,13 +177,21 @@ class CurrentPlanView extends StatelessWidget {
                                 height: 0,
                               ),
                         ),
-                        AppText(
-                          _priceLineWithSuffix(primary),
+                        CurrencyAmountText(
+                          amount: primary.pricePaid <= 0
+                              ? null
+                              : primary.pricePaid,
+                          currencyCode: 'SAR',
+                          priceSuffix:
+                              primary.entitlementType.trim().toLowerCase() ==
+                                      'subscription'
+                                  ? ' / Month'
+                                  : '',
                           style: (context) =>
                               AppTextStyles.bodyText(context).copyWith(
-                                color: AppColors.seekBarLight,
-                                fontSize: 16,
-                              ),
+                            color: AppColors.seekBarLight,
+                            fontSize: 16,
+                          ),
                         ),
                         SizedBox(height: AppSpacing.md),
                         SizedBox(
@@ -428,22 +423,6 @@ class CurrentPlanView extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: AppSpacing.sm),
-                  Center(
-                    child: GestureDetector(
-                      onTap: () => Navigator.pop(context),
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(
-                          vertical: (AppSpacing.buttonHeight - 30) / 2,
-                        ),
-                        child: AppText(
-                          context.l10n.cancelSubscription,
-                          style: (context) => AppTextStyles.button(
-                            context,
-                          ).copyWith(color: AppColors.redLight),
-                        ),
-                      ),
-                    ),
-                  ),
                 ],
               ),
             ),

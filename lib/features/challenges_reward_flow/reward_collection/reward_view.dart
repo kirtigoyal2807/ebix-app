@@ -7,10 +7,12 @@ import 'package:pilates_app/features/challenges_reward_flow/reward_collection/vi
 import 'package:pilates_app/features/challenges_reward_flow/reward_collection/widget/reward_tab.dart';
 import 'package:pilates_app/features/loyalty/data/loyalty_repository.dart';
 
+import 'package:pilates_app/features/challenges_reward_flow/reward_collection/cubit/loyalty_tiers_cubit.dart';
+import 'package:pilates_app/features/challenges_reward_flow/reward_collection/cubit/reward_cubit.dart';
+
 import '../../../config/theme/app_colors.dart';
 import '../../../config/theme/app_spacing.dart';
 import '../../../widgets/app_app_bar.dart';
-import 'cubit/reward_cubit.dart';
 
 class RewardView extends StatelessWidget {
   const RewardView({super.key});
@@ -18,15 +20,21 @@ class RewardView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    return BlocProvider(
-      create: (context) =>
-          RewardCubit(
-              context.read<LoyaltyRepository>(),
-              context.read<AuthRepository>(),
-            )
-            ..loadBranches()
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (ctx) =>
+              LoyaltyTiersCubit(ctx.read<LoyaltyRepository>())..load(),
+        ),
+        BlocProvider(
+          create: (ctx) => RewardCubit(
+            ctx.read<LoyaltyRepository>(),
+            ctx.read<AuthRepository>(),
+          )..loadBranches()
             ..loadRewards()
             ..loadPointsHistory(),
+        ),
+      ],
       child: DefaultTabController(
         length: 2,
         child: Scaffold(

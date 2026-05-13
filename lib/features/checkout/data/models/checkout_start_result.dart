@@ -13,6 +13,12 @@ int? _readInt(dynamic value) {
   return int.tryParse(value.toString());
 }
 
+num? _readNum(dynamic value) {
+  if (value == null) return null;
+  if (value is num) return value;
+  return num.tryParse(value.toString().replaceAll(',', ''));
+}
+
 int? _firstIntFromKeys(Map<String, dynamic> m, List<String> keys) {
   for (final k in keys) {
     final v = _readInt(m[k]);
@@ -169,40 +175,41 @@ class CheckoutPricing {
     this.setupFeeAmount,
   });
 
-  final int? subtotal;
-  final int? discountAmount;
-  final int? totalAmount;
+  /// Monetary fields are **major** units (never halalah ints from the backend).
+  final num? subtotal;
+  final num? discountAmount;
+  final num? totalAmount;
   final String? currency;
 
-  /// VAT / tax in minor units when the API includes it on `pricing`.
-  final int? taxAmount;
+  /// VAT / tax when the API includes it on `pricing`.
+  final num? taxAmount;
 
-  /// One-time setup fee in minor units when present.
-  final int? setupFeeAmount;
+  /// One-time setup fee when present.
+  final num? setupFeeAmount;
 
   static CheckoutPricing? maybeFrom(dynamic raw) {
     if (raw is! Map) return null;
     final m = Map<String, dynamic>.from(raw);
     return CheckoutPricing(
-      subtotal: _readInt(m['subtotal'] ?? m['sub_total']),
-      discountAmount: _readInt(
+      subtotal: _readNum(m['subtotal'] ?? m['sub_total']),
+      discountAmount: _readNum(
         m['discountAmount'] ??
             m['discount_amount'] ??
             m['couponDiscount'] ??
             m['coupon_discount'],
       ),
-      totalAmount: _readInt(
+      totalAmount: _readNum(
         m['totalAmount'] ?? m['total_amount'] ?? m['total'],
       ),
       currency: (m['currency'] ?? m['currency_code']) as String?,
-      taxAmount: _readInt(
+      taxAmount: _readNum(
         m['taxAmount'] ??
             m['tax'] ??
             m['tax_amount'] ??
             m['vatAmount'] ??
             m['vat'],
       ),
-      setupFeeAmount: _readInt(
+      setupFeeAmount: _readNum(
         m['setupFee'] ??
             m['setup_fee'] ??
             m['setupFeeAmount'] ??

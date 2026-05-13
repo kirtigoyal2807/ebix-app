@@ -714,9 +714,11 @@ class _BookingSuccessScreenState extends State<BookingSuccessScreen> {
           AppButton(
             label: l10n.viewMyBooking,
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (_) => const MyBookingView()),
+              Navigator.of(context).pushAndRemoveUntil<void>(
+                MaterialPageRoute<void>(
+                  builder: (_) => const MyBookingView(),
+                ),
+                (route) => route.isFirst,
               );
             },
             variant: AppButtonVariant.primary,

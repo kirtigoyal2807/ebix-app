@@ -28,9 +28,10 @@ class MembershipReceiptSummary {
   final String? paymentReference;
   final String? paidAtIso;
   final String? planName;
-  final int? subtotalMinor;
-  final int? discountMinor;
-  final int? totalMinor;
+  /// Amounts are **major** currency units (never halalah/minor); legacy field names kept for call sites.
+  final num? subtotalMinor;
+  final num? discountMinor;
+  final num? totalMinor;
   final String? currency;
   final String? providerName;
 
@@ -40,8 +41,8 @@ class MembershipReceiptSummary {
   /// Display invoice number when the API sends one; else UI falls back to [paymentReference].
   final String? invoiceNumber;
 
-  final int? taxMinor;
-  final int? setupFeeMinor;
+  final num? taxMinor;
+  final num? setupFeeMinor;
   final String? nextBillingAtIso;
   final String? cardLastFour;
   final String? paymentBrand;
@@ -134,16 +135,10 @@ class MembershipReceiptSummary {
 
   /// Receipt from `GET payments/{checkoutId}/success-summary` (`data`).
   ///
-  /// Pricing amounts on this API are **major** currency units (e.g. `799` SAR);
-  /// they are converted to **minor** units for [formatMoney] / [InvoiceDetailsCard].
+  /// Pricing amounts on this API are **major** currency units (e.g. `799` or `799.55`).
   static MembershipReceiptSummary fromPaymentSuccessSummary(
     PaymentSuccessSummary summary,
   ) {
-    int? majorToMinor(num? v) {
-      if (v == null) return null;
-      return (v * 100).round();
-    }
-
     final pricing = summary.pricing;
     final pay = summary.payment;
     final method = pay?.method?.trim();
@@ -164,9 +159,9 @@ class MembershipReceiptSummary {
                 ? invoiceDate
                 : null),
       planName: summary.package?.name?.trim(),
-      subtotalMinor: majorToMinor(pricing?.subtotal),
-      discountMinor: discountMajor != null ? majorToMinor(discountMajor) : null,
-      totalMinor: majorToMinor(pricing?.totalPaid ?? pricing?.subtotal),
+      subtotalMinor: pricing?.subtotal,
+      discountMinor: discountMajor,
+      totalMinor: pricing?.totalPaid ?? pricing?.subtotal,
       currency:
           (pricing?.currency != null && pricing!.currency!.trim().isNotEmpty)
           ? pricing.currency!.trim()
@@ -206,12 +201,12 @@ class MembershipReceiptSummary {
     final pricing = session?.pricing ?? intentPricing;
 
     final raw = intent?.raw;
-    int? total = pricing?.totalAmount;
+    num? total = pricing?.totalAmount;
     final cur = pricing?.currency ?? (raw?['currency'] as String?);
     if (total == null && raw != null) {
       final a = raw['amount'];
       if (a is num) {
-        total = a.toInt();
+        total = a;
       }
     }
 
@@ -246,16 +241,15 @@ class MembershipReceiptSummary {
     );
   }
 
-  /// [minor] is amount in smallest currency unit (e.g. halalah, cents), same as catalog `salePrice`.
-  static String formatMoney(int? minor, String currency, [String? locale]) {
-    if (minor == null) return '—';
-    final major = minor / 100.0;
-    return formatCurrencyAmount(amount: major, code: currency);
+  /// [majorUnit] is amount in **major** currency units (same as API pricing).
+  static String formatMoney(num? majorUnit, String currency, [String? locale]) {
+    if (majorUnit == null) return '—';
+    return formatCurrencyAmount(amount: majorUnit, code: currency);
   }
 
-  /// Backward-compatible alias; amounts are minor units → formatted major.
-  static String formatMinor(int? minor, String currency) =>
-      formatMoney(minor, currency);
+  /// Alias for [formatMoney].
+  static String formatMinor(num? majorUnit, String currency) =>
+      formatMoney(majorUnit, currency);
 
   static String? shortDateFromIso(String? iso) {
     if (iso == null || iso.trim().isEmpty) return null;

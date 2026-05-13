@@ -9,6 +9,7 @@ import 'package:pilates_app/features/checkout/data/checkout_repository.dart';
 import 'package:pilates_app/features/checkout/data/models/product_health_questionnaire.dart';
 import 'package:pilates_app/features/subscription/purchase_subscription/view/widgets/api_health_questionnaire_blocks.dart';
 import 'package:pilates_app/features/subscription/purchase_subscription/view/widgets/subscription_header.dart';
+import 'package:pilates_app/features/subscription/purchase_subscription/view/widgets/subscription_health_wizard_step.dart';
 import 'package:pilates_app/widgets/app_button.dart';
 import 'package:pilates_app/widgets/app_text.dart';
 import 'package:pilates_app/widgets/inline_validation_banner.dart';
@@ -132,9 +133,10 @@ class _MedicalHistoryViewState extends State<MedicalHistoryView> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         SubscriptionStepHeader(
-                          currentStep: 1,
-                          totalSteps: 6,
+                          wizardStep:
+                              SubscriptionHealthWizardStep.medicalHistory,
                           isDark: isDark,
+                          showProgressCaption: !_questionnaireLoading,
                         ),
                         SizedBox(height: AppSpacing.xl),
                         AppText(

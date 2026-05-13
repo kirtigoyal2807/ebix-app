@@ -31,6 +31,9 @@ class FakeAuthRepository extends AuthRepository {
   ApiResult<bool> verifyEmailCodeResult = const ApiSuccess<bool>(true);
   ApiResult<bool> resetPasswordResult = const ApiSuccess<bool>(true);
   ApiResult<bool> submitUserGoalResult = const ApiSuccess<bool>(true);
+  ApiResult<AuthUser> getProfileResult = const ApiSuccess<AuthUser>(
+    AuthUser(email: 'profile@example.com'),
+  );
   ApiResult<BranchesListResult> listBranchesResult =
       ApiSuccess<BranchesListResult>(
         BranchesListResult(
@@ -58,6 +61,7 @@ class FakeAuthRepository extends AuthRepository {
   int verifyEmailCodeCalls = 0;
   int resetPasswordCalls = 0;
   int submitUserGoalCalls = 0;
+  int getProfileCalls = 0;
   int listBranchesCalls = 0;
   int setHomeBranchCalls = 0;
   int logoutCalls = 0;
@@ -79,6 +83,7 @@ class FakeAuthRepository extends AuthRepository {
   int? lastSubmitMonthlyGoal;
   Map<String, dynamic>? lastListBranchesQuery;
   int? lastHomeBranchId;
+  Duration getProfileDelay = Duration.zero;
 
   @override
   Future<ApiResult<LoginEmailResult>> loginWithEmail({
@@ -177,6 +182,15 @@ class FakeAuthRepository extends AuthRepository {
     lastSubmitGoal = goal;
     lastSubmitMonthlyGoal = monthlyGoal;
     return submitUserGoalResult;
+  }
+
+  @override
+  Future<ApiResult<AuthUser>> getProfile() async {
+    getProfileCalls++;
+    if (getProfileDelay > Duration.zero) {
+      await Future<void>.delayed(getProfileDelay);
+    }
+    return getProfileResult;
   }
 
   @override

@@ -664,6 +664,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get joinWailList => 'Join Waitlist';
 
   @override
+  String get waitlistRequiresMembership =>
+      'The waitlist is only available with an active membership.';
+
+  @override
+  String memberTierBenefits(String tierName) {
+    return 'Your $tierName benefits';
+  }
+
+  @override
   String get classIsFull => 'Class Is Full';
 
   @override
@@ -1000,6 +1009,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get medicalHistory => 'Medical History';
+
+  @override
+  String get subscriptionHealthWizardPhysicalActivityTitle =>
+      'Physical Activity';
+
+  @override
+  String get subscriptionHealthWizardPregnancyTitle => 'Pregnancy';
 
   @override
   String get chronicConditions =>
@@ -1459,7 +1475,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get safetyText =>
-      'Please read carefully.\n I understand that Pilates is physical exercise and has some risk of injury.\n I join the class voluntarily.\n I confirm the information I provided is true.\n I will tell The Pilates Studio if my health changes, if I get injured, or if I become pregnant.\n I understand Pilates instructors are not doctors and cannot diagnose or treat medical problems.\n I accept responsibility for my own safety during sessions.\n I understand that The Pilates Studio is not responsible for injuries that happen during normal exercise, except in cases of serious negligence.\n My information will stay private and used only to keep me safe.\n In an emergency, I allow staff to get medical help for me.\n I have read and understood everything above.\n I agree to follow instructions and exercise safely.';
+      'Please read carefully.\nI understand that Pilates is physical exercise and has some risk of injury.\nI join the class voluntarily.\nI confirm the information I provided is true.\nI will tell The Pilates Studio if my health changes, if I get injured, or if I become pregnant.\nI understand Pilates instructors are not doctors and cannot diagnose or treat medical problems.\nI accept responsibility for my own safety during sessions.\nI understand that The Pilates Studio is not responsible for injuries that happen during normal exercise, except in cases of serious negligence.\nMy information will stay private and used only to keep me safe.\nIn an emergency, I allow staff to get medical help for me.\nI have read and understood everything above.\nI agree to follow instructions and exercise safely.';
 
   @override
   String get safetyConsent => 'Safety & Consent';
@@ -1503,6 +1519,22 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get idNumber => 'ID Number';
+
+  @override
+  String get idNumberNationalIdInvalid =>
+      'Enter a valid Saudi National ID (10 digits, starts with 1).';
+
+  @override
+  String get idNumberIqamaInvalid =>
+      'Enter a valid Iqama number (10 digits, starts with 2).';
+
+  @override
+  String get idNumberPassportInvalid =>
+      'Enter a valid passport number (6–20 letters or digits).';
+
+  @override
+  String get idNumberDriverLicenseInvalid =>
+      'Enter a valid driver\'s license number (4–24 letters or digits).';
 
   @override
   String get filters => 'Filters';
@@ -1631,6 +1663,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String voucherAppliedSavings(String amount) {
     return 'Voucher applied. You save $amount.';
   }
+
+  @override
+  String get voucherAppliedSavingsLead => 'Voucher applied. You save ';
+
+  @override
+  String get voucherAppliedSavingsEnd => '.';
 
   @override
   String voucherAppliedDiscountMessage(String amount) {
@@ -2086,6 +2124,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get idTypeNationalId => 'National ID';
+
+  @override
+  String get idTypeIqama => 'Iqama';
 
   @override
   String get idTypePassport => 'Passport';
@@ -2968,6 +3009,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get browseAllClasses => 'Browse All Classes';
 
   @override
+  String get viewUpcomingClasses => 'View upcoming classes';
+
+  @override
+  String get contentNoDataAvailable => 'No data available';
+
+  @override
   String get certificationsTraining => 'Certifications & Training';
 
   @override
@@ -3009,6 +3056,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get enterValidWeightKg => 'Please enter weight between 20 and 400 kg';
+
+  @override
+  String get pleaseFillHeight => 'Please fill in your height.';
+
+  @override
+  String get pleaseFillWeight => 'Please fill in your weight.';
 
   @override
   String get pleaseEnterPassword => 'Please enter your password';

@@ -14,9 +14,9 @@ import 'package:pilates_app/features/subscription/purchase_subscription/cubit/su
 import 'package:pilates_app/features/subscription/purchase_subscription/subscription_api_ids.dart';
 import 'package:pilates_app/features/subscription/purchase_subscription/view/review_screen_view.dart';
 import 'package:pilates_app/features/subscription/purchase_subscription/view/widgets/branch_selector.dart';
-import 'package:pilates_app/features/subscription/purchase_subscription/view/widgets/gift_toggle_card.dart';
 import 'package:pilates_app/features/subscription/purchase_subscription/view/widgets/plan_card.dart';
 import 'package:pilates_app/features/subscription/purchase_subscription/view/widgets/plan_details_modal.dart';
+import 'package:pilates_app/features/subscription/purchase_subscription/view/widgets/gift_toggle_card.dart';
 import 'package:pilates_app/features/subscription/purchase_subscription/view/health_information_view.dart';
 import 'package:pilates_app/features/subscription/purchase_subscription/view/medical_history_view.dart';
 import 'package:pilates_app/features/subscription/purchase_subscription/view/physical_activity_view.dart'; // Import
@@ -36,9 +36,8 @@ import '../../subscription_as_gift/gift_subscription_view.dart';
 class SubscriptionView extends StatelessWidget {
   const SubscriptionView({super.key, this.initialIsGift = false});
 
-  /// When `true` (e.g. Account → Gift Subscription), [SubscriptionState.isGift]
-  /// starts on so `POST checkout/start` uses `isGift: true` and the flow can open
-  /// [GiftSubscriptionView] with a real session id.
+  /// When `true` (e.g. Account → Gift subscription), checkout uses `isGift: true` and
+  /// opens [GiftSubscriptionView] after session creation.
   final bool initialIsGift;
 
   static const String routePath = '/subscription';
@@ -46,7 +45,7 @@ class SubscriptionView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => SubscriptionCubit(initialIsGift: initialIsGift),
+      create: (_) => SubscriptionCubit(initialIsGift: initialIsGift),
       child: const _SubscriptionViewContent(),
     );
   }
@@ -67,7 +66,15 @@ class _SubscriptionViewContent extends StatelessWidget {
         if (state.currentStep == 0) {
           appBarTitle = l10n.subscriptionTitle;
         } else if (state.currentStep >= 1 && state.currentStep <= 6) {
-          appBarTitle = l10n.healthInformation;
+          appBarTitle = switch (state.currentStep) {
+            1 => l10n.personalInformation,
+            2 => l10n.medicalHistory,
+            3 => l10n.subscriptionHealthWizardPhysicalActivityTitle,
+            4 => l10n.subscriptionHealthWizardPregnancyTitle,
+            5 => l10n.goals,
+            6 => l10n.declaration,
+            _ => l10n.healthInformation,
+          };
         } else if (state.currentStep == 7) {
           appBarTitle = l10n.safetyConsent;
         } else if (state.currentStep == 8) {
@@ -687,6 +694,12 @@ class _PlanSelectionStepState extends State<_PlanSelectionStep> {
             ),
           ),
         ),
+
+        if (_checkoutMessage != null)
+          Padding(
+            padding: const EdgeInsets.only(left: 24, right: 24, bottom: 8),
+            child: InlineValidationBanner(message: _checkoutMessage!),
+          ),
 
         // Fixed Bottom Button
         Padding(

@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+
+import 'package:pilates_app/features/auth/cubit/auth_cubit.dart';
+import 'package:pilates_app/features/auth/data/models/auth_user.dart';
+import 'package:pilates_app/features/booking/booking_entitlements.dart';
 
 import 'package:pilates_app/config/theme/app_colors.dart';
 import 'package:pilates_app/config/theme/app_radius.dart';
@@ -86,7 +91,12 @@ class BookingClassCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final size = MediaQuery.sizeOf(context);
+    final user = context.select<AuthCubit, AuthUser?>((c) => c.state.user);
 
+    final slot = _slot;
+    final showInPlanBadge = slot != null
+        ? (slot.allowPackageBooking && userShowsPackageMembership(user))
+        : isInPlan;
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
       // child:
@@ -165,7 +175,7 @@ class BookingClassCard extends StatelessWidget {
                     Expanded(
                       child: Row(
                         children: [
-                          if (isInPlan)
+                          if (showInPlanBadge)
                             Flexible(
                               child: Container(
                                 padding: EdgeInsets.symmetric(

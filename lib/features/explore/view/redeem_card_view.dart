@@ -27,7 +27,7 @@ class RedeemCardView extends StatelessWidget {
   final PendingGift? pendingGift;
 
   /// Optional callback fired after the success sheet's Continue is tapped — e.g.
-  /// to refresh the profile so `pendingGift` clears from `/auth/me`.
+  /// to refresh the profile so `pendingGift` clears from `/customers/profile`.
   final VoidCallback? onRedeemed;
 
   @override

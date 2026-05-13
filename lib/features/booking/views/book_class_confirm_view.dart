@@ -4,7 +4,13 @@ import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 
 import 'package:pilates_app/config/theme/app_spacing.dart';
+import 'package:pilates_app/core/network/api_result.dart';
+import 'package:pilates_app/core/utils/checkout_payment_launcher.dart';
+import 'package:pilates_app/core/utils/hosted_payment_webview_page.dart';
+import 'package:pilates_app/features/auth/cubit/auth_cubit.dart';
+import 'package:pilates_app/features/booking/booking_entitlements.dart';
 import 'package:pilates_app/features/booking/data/models/class_slot_view_model.dart';
+import 'package:pilates_app/features/my_booking/data/models/booking_resource.dart';
 import 'package:pilates_app/widgets/app_app_bar.dart';
 import 'package:pilates_app/widgets/app_shadow.dart';
 import 'package:pilates_app/widgets/app_text.dart';
@@ -13,8 +19,8 @@ import '../../../config/theme/app_colors.dart';
 import '../../../config/theme/app_radius.dart';
 import '../../../config/theme/app_text_styles.dart';
 import '../../../core/localization/arb/app_localizations.dart';
-import '../../../core/utils/currency_display.dart';
 import '../../../widgets/app_button.dart';
+import '../../../widgets/currency_amount_text.dart';
 import '../cubit/confirm_booking_cubit.dart';
 import '../cubit/confirm_booking_state.dart';
 import '../data/classes_repository.dart';
@@ -62,10 +68,18 @@ class BookClassConfirmView extends StatelessWidget {
         isMoreMenu: false,
       ),
       body: BlocProvider(
-        create: (context) => ConfirmBookingCubit(
-          context.read<ClassesRepository>(),
-          calendarEventId: calendarEventId,
-        ),
+        create: (context) {
+          final membership = userShowsPackageMembership(
+            context.read<AuthCubit>().state.user,
+          );
+          return ConfirmBookingCubit(
+            context.read<ClassesRepository>(),
+            calendarEventId: calendarEventId,
+            usePlanSessionBooking:
+                membership && slot.allowPackageBooking,
+            allowSinglePurchaseCheckout: slot.allowSinglePurchase,
+          );
+        },
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -87,10 +101,15 @@ class BookClassConfirmView extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
               child: BlocBuilder<ConfirmBookingCubit, ConfirmBookingState>(
                 builder: (context, state) {
+                  final membership = userShowsPackageMembership(
+                    context.read<AuthCubit>().state.user,
+                  );
+                  final canCheckout = (membership && slot.allowPackageBooking) ||
+                      slot.allowSinglePurchase;
                   return AppButton(
                     label: l10n.confirmBooking,
                     isLoading: state.isSubmitting,
-                    onPressed: state.isSubmitting
+                    onPressed: state.isSubmitting || !canCheckout
                         ? null
                         : () async {
                             final cubit = context.read<ConfirmBookingCubit>();
@@ -102,26 +121,74 @@ class BookClassConfirmView extends StatelessWidget {
                               );
                               return;
                             }
-                            final booking = await cubit.submitBooking();
+
+                            final classesRepo =
+                                context.read<ClassesRepository>();
+                            final messenger = ScaffoldMessenger.of(context);
+
+                            final result = await cubit.submit();
                             if (!context.mounted) return;
-                            if (booking != null) {
-                              Navigator.push(
+
+                            if (result.confirmedBooking != null) {
+                              _pushBookingSuccess(
                                 context,
-                                MaterialPageRoute(
-                                  builder: (context) => BookingSuccessScreen(
-                                    successPage: SuccessPage.booking,
-                                    slot: slot,
-                                    booking: booking,
-                                  ),
-                                ),
+                                result.confirmedBooking!,
                               );
                               return;
                             }
-                            final errorMessage = cubit.state.errorMessage;
-                            if (errorMessage != null &&
-                                errorMessage.isNotEmpty) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(content: Text(errorMessage)),
+
+                            final pending = result.pendingHostedPayment;
+                            if (pending != null) {
+                              final webResult =
+                                  await CheckoutPaymentLauncher
+                                      .openInAppPaymentWebView(
+                                context,
+                                pending.paymentUrl,
+                              );
+                              if (!context.mounted) return;
+                              if (webResult?.outcome !=
+                                  HostedPaymentWebViewOutcome.success) {
+                                return;
+                              }
+                              final confirmed = await classesRepo.confirmPayment(
+                                paymentReference: pending.paymentReference,
+                                paidAmount: pending.amount,
+                                currency: pending.currency,
+                              );
+                              if (!context.mounted) return;
+                              switch (confirmed) {
+                                case ApiSuccess(:final data):
+                                  _pushBookingSuccess(context, data);
+                                case ApiFailure(:final exception):
+                                  messenger.showSnackBar(
+                                    SnackBar(
+                                      content: Text(
+                                        exception.message ??
+                                            l10n.somethingWentWrong,
+                                      ),
+                                    ),
+                                  );
+                              }
+                              return;
+                            }
+
+                            final err = result.errorMessage;
+                            if (err != null && err.startsWith('_')) {
+                              messenger.showSnackBar(
+                                SnackBar(content: Text(l10n.somethingWentWrong)),
+                              );
+                              return;
+                            }
+                            if (err != null && err.isNotEmpty) {
+                              messenger.showSnackBar(
+                                SnackBar(content: Text(err)),
+                              );
+                              return;
+                            }
+                            if (!cubit.usePlanSessionBooking &&
+                                !cubit.allowSinglePurchaseCheckout) {
+                              messenger.showSnackBar(
+                                SnackBar(content: Text(l10n.upgradeRequired)),
                               );
                             }
                           },
@@ -275,9 +342,16 @@ class BookClassConfirmView extends StatelessWidget {
     required AppLocalizations l10n,
   }) {
     final price = slot.basePrice;
-    final priceLabel = price != null
-        ? _formatClassPrice(context, price)
-        : l10n.bookingPriceUnavailable;
+    final Widget priceValue = price != null
+        ? CurrencyAmountText(
+            amount: price,
+            currencyCode: 'SAR',
+            style: (context) => AppTextStyles.textFieldHeading(context),
+          )
+        : AppText(
+            l10n.bookingPriceUnavailable,
+            style: (context) => AppTextStyles.textFieldHeading(context),
+          );
 
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
@@ -299,14 +373,14 @@ class BookClassConfirmView extends StatelessWidget {
             ),
             child: Column(
               children: [
-                _buildPaymentRow(title: l10n.classFee, value: priceLabel),
+                _buildPaymentRow(title: l10n.classFee, value: priceValue),
                 SizedBox(height: AppSpacing.md),
                 Divider(
                   color: isDark ? AppColors.greyText : AppColors.darkGreyBorder,
                   height: 1,
                 ),
                 SizedBox(height: AppSpacing.md),
-                _buildPaymentRow(title: l10n.total, value: priceLabel),
+                _buildPaymentRow(title: l10n.total, value: priceValue),
               ],
             ),
           ),
@@ -315,21 +389,34 @@ class BookClassConfirmView extends StatelessWidget {
     );
   }
 
-  static String _formatClassPrice(BuildContext context, double amount) {
-    return formatCurrencyAmount(amount: amount, code: 'SAR');
+  void _pushBookingSuccess(BuildContext context, BookingResource booking) {
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute<void>(
+        builder: (_) => BookingSuccessScreen(
+          successPage: SuccessPage.booking,
+          slot: slot,
+          booking: booking,
+        ),
+      ),
+    );
   }
 
-  Widget _buildPaymentRow({required String title, required String value}) {
+  Widget _buildPaymentRow({required String title, required Widget value}) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        AppText(
-          title,
-          style: (context) => AppTextStyles.bodyTextSmall(context),
+        Flexible(
+          child: AppText(
+            title,
+            style: (context) => AppTextStyles.bodyTextSmall(context),
+          ),
         ),
-        AppText(
-          value,
-          style: (context) => AppTextStyles.textFieldHeading(context),
+        SizedBox(width: AppSpacing.sm),
+        Flexible(
+          child: Align(
+            alignment: Alignment.centerRight,
+            child: value,
+          ),
         ),
       ],
     );

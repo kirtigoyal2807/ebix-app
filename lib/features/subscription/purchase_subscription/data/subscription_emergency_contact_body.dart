@@ -5,6 +5,8 @@ String subscriptionEmergencyContactIdTypeApiValue(String? uiIdType) {
   switch (uiIdType?.trim()) {
     case 'National ID':
       return 'national_id';
+    case 'Iqama':
+      return 'iqama';
     case 'Passport':
       return 'passport';
     case 'Driver License':

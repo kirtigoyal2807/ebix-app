@@ -11,6 +11,8 @@ import '../../../config/theme/app_radius.dart';
 import '../../../config/theme/app_text_styles.dart';
 import '../../../widgets/app_text.dart';
 import 'cubit/badge_cubit.dart';
+import 'cubit/badge_state.dart';
+import 'model/badge_model.dart';
 
 class BadgeCollectionView extends StatelessWidget {
   const BadgeCollectionView({super.key});
@@ -36,32 +38,41 @@ class BadgeCollectionView extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  children: [
-                    Expanded(
-                      child: _totalCard(
-                        label: context.l10n.badge_bronze,
-                        value: "6",
-                        isDark: isDark,
-                      ),
-                    ),
-                    SizedBox(width: AppSpacing.md),
-                    Expanded(
-                      child: _totalCard(
-                        label: context.l10n.badge_silver,
-                        value: "4",
-                        isDark: isDark,
-                      ),
-                    ),
-                    SizedBox(width: AppSpacing.md),
-                    Expanded(
-                      child: _totalCard(
-                        label: context.l10n.badge_gold,
-                        value: "2",
-                        isDark: isDark,
-                      ),
-                    ),
-                  ],
+                BlocBuilder<BadgeCubit, BadgeState>(
+                  buildWhen: (p, c) => p.badgeDataList != c.badgeDataList,
+                  builder: (context, badgeState) {
+                    final earned = badgeState.badgeDataList
+                        .where((b) => b.status == BadgeStatus.earned)
+                        .length;
+                    final value = earned.toString();
+                    return Row(
+                      children: [
+                        Expanded(
+                          child: _totalCard(
+                            label: context.l10n.badge_bronze,
+                            value: value,
+                            isDark: isDark,
+                          ),
+                        ),
+                        SizedBox(width: AppSpacing.md),
+                        Expanded(
+                          child: _totalCard(
+                            label: context.l10n.badge_silver,
+                            value: value,
+                            isDark: isDark,
+                          ),
+                        ),
+                        SizedBox(width: AppSpacing.md),
+                        Expanded(
+                          child: _totalCard(
+                            label: context.l10n.badge_gold,
+                            value: value,
+                            isDark: isDark,
+                          ),
+                        ),
+                      ],
+                    );
+                  },
                 ),
                 SizedBox(height: AppSpacing.xl),
                 FilterButton(),

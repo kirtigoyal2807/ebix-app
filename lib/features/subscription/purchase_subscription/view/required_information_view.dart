@@ -8,6 +8,7 @@ import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/core/localization/arb/app_localizations.dart';
 import 'package:pilates_app/core/validation/contact_validators.dart';
+import 'package:pilates_app/core/validation/id_document_validators.dart';
 import 'package:pilates_app/core/validation/personal_information_validators.dart';
 import 'package:pilates_app/features/checkout/data/checkout_repository.dart';
 import 'package:pilates_app/features/subscription/purchase_subscription/data/subscription_emergency_contact_body.dart';
@@ -90,7 +91,8 @@ class _RequiredInformationViewState extends State<RequiredInformationView> {
 
     final s = cubit.state;
     final name = s.emergencyContactName.trim();
-    final idNum = s.idNumber.trim();
+    final idRaw = _idNumberController.text;
+    final idForRules = _idValueForRules(s.idType, idRaw);
 
     final nameOk = name.isNotEmpty && ContactValidators.isValidPersonName(name);
     final phoneOk = PersonalInformationValidators.isTenDigitMobile(
@@ -100,8 +102,7 @@ class _RequiredInformationViewState extends State<RequiredInformationView> {
         s.emergencyContactRelationship != null &&
         s.emergencyContactRelationship!.trim().isNotEmpty;
     final typeOk = s.idType != null && s.idType!.trim().isNotEmpty;
-    final idLen = idNum.length;
-    final idOk = idLen == 10;
+    final idOk = IdDocumentValidators.isValidForUiIdType(s.idType, idForRules);
 
     setState(() {
       _nameError = name.isEmpty
@@ -116,13 +117,21 @@ class _RequiredInformationViewState extends State<RequiredInformationView> {
           ? null
           : l10n.pleaseCompletePersonalInformation;
       _idTypeError = typeOk ? null : l10n.pleaseCompletePersonalInformation;
-      _idNumberError = idNum.isEmpty
-          ? l10n.pleaseCompletePersonalInformation
-          : (!idOk ? l10n.pleaseCompletePersonalInformation : null);
+      _idNumberError = _idNumberFieldError(s.idType, idRaw, l10n);
     });
 
     if (!nameOk || !phoneOk || !relOk || !typeOk || !idOk) {
       return;
+    }
+
+    final normalizedNt = s.idType?.trim();
+    final normalizedId =
+        (normalizedNt == 'National ID' || normalizedNt == 'Iqama')
+        ? _idValueForRules(s.idType, _idNumberController.text)
+        : _idNumberController.text.trim();
+    cubit.updateIdNumber(normalizedId);
+    if (_idNumberController.text != normalizedId) {
+      _idNumberController.text = normalizedId;
     }
 
     final messenger = ScaffoldMessenger.of(context);
@@ -198,12 +207,74 @@ class _RequiredInformationViewState extends State<RequiredInformationView> {
       RegExp(r'\D'),
       '',
     );
-    final idNumber = _idNumberController.text.trim();
+    final idRaw = _idNumberController.text;
+    final idForRules = _idValueForRules(s.idType, idRaw);
     return _emergencyNameController.text.trim().isNotEmpty &&
         phoneDigits.isNotEmpty &&
         (s.emergencyContactRelationship?.trim().isNotEmpty ?? false) &&
         (s.idType?.trim().isNotEmpty ?? false) &&
-        idNumber.isNotEmpty;
+        IdDocumentValidators.isValidForUiIdType(s.idType, idForRules);
+  }
+
+  /// Value passed to [IdDocumentValidators] (national: digits only).
+  String _idValueForRules(String? uiIdType, String raw) {
+    switch (uiIdType?.trim()) {
+      case 'National ID':
+      case 'Iqama':
+        return raw.replaceAll(RegExp(r'\D'), '');
+      default:
+        return raw.trim();
+    }
+  }
+
+  String? _idNumberFieldError(
+    String? uiIdType,
+    String raw,
+    AppLocalizations l10n,
+  ) {
+    final forRules = _idValueForRules(uiIdType, raw);
+    if (forRules.isEmpty) {
+      return l10n.pleaseCompletePersonalInformation;
+    }
+    if (!IdDocumentValidators.isValidForUiIdType(uiIdType, forRules)) {
+      switch (uiIdType?.trim()) {
+        case 'National ID':
+          return l10n.idNumberNationalIdInvalid;
+        case 'Iqama':
+          return l10n.idNumberIqamaInvalid;
+        case 'Passport':
+          return l10n.idNumberPassportInvalid;
+        case 'Driver License':
+          return l10n.idNumberDriverLicenseInvalid;
+        default:
+          return l10n.pleaseCompletePersonalInformation;
+      }
+    }
+    return null;
+  }
+
+  int _idNumberMaxLength(String? uiIdType) {
+    switch (uiIdType?.trim()) {
+      case 'National ID':
+      case 'Iqama':
+        return 10;
+      case 'Passport':
+        return 20;
+      case 'Driver License':
+        return 24;
+      default:
+        return 100;
+    }
+  }
+
+  TextInputType _idKeyboardType(String? uiIdType) {
+    switch (uiIdType?.trim()) {
+      case 'National ID':
+      case 'Iqama':
+        return TextInputType.number;
+      default:
+        return TextInputType.text;
+    }
   }
 
   /// Builds E.164-style emergency phone for the API (`dialCode` + national digits), max 30 chars.
@@ -464,6 +535,7 @@ class _RequiredInformationViewState extends State<RequiredInformationView> {
                               items:
                                   [
                                     'National ID',
+                                    'Iqama',
                                     'Passport',
                                     'Driver License',
                                   ].map((e) {
@@ -471,6 +543,9 @@ class _RequiredInformationViewState extends State<RequiredInformationView> {
                                     switch (e) {
                                       case 'National ID':
                                         label = l10n.idTypeNationalId;
+                                        break;
+                                      case 'Iqama':
+                                        label = l10n.idTypeIqama;
                                         break;
                                       case 'Passport':
                                         label = l10n.idTypePassport;
@@ -498,16 +573,23 @@ class _RequiredInformationViewState extends State<RequiredInformationView> {
                         ),
                         SizedBox(height: AppSpacing.md),
 
-                        AppTextField(
-                          label: l10n.idNumber,
-                          hint: l10n.idNumber,
-                          controller: _idNumberController,
-                          maxLength: 10,
-                          showCharacterCounter: false,
-                          errorText: _idNumberError,
-                          onChanged: (_) {
-                            cubit.updateIdNumber(_idNumberController.text);
-                            setState(() => _idNumberError = null);
+                        BlocBuilder<SubscriptionCubit, SubscriptionState>(
+                          buildWhen: (p, c) =>
+                              p.idType != c.idType,
+                          builder: (context, state) {
+                            return AppTextField(
+                              label: l10n.idNumber,
+                              hint: l10n.idNumber,
+                              controller: _idNumberController,
+                              maxLength: _idNumberMaxLength(state.idType),
+                              keyboardType: _idKeyboardType(state.idType),
+                              showCharacterCounter: false,
+                              errorText: _idNumberError,
+                              onChanged: (_) {
+                                cubit.updateIdNumber(_idNumberController.text);
+                                setState(() => _idNumberError = null);
+                              },
+                            );
                           },
                         ),
                         SizedBox(height: AppSpacing.xxl),
@@ -526,7 +608,10 @@ class _RequiredInformationViewState extends State<RequiredInformationView> {
                   buildWhen: (p, c) =>
                       p.emergencyContactRelationship !=
                           c.emergencyContactRelationship ||
-                      p.idType != c.idType,
+                      p.idType != c.idType ||
+                      p.idNumber != c.idNumber ||
+                      p.emergencyContactName != c.emergencyContactName ||
+                      p.emergencyContactPhone != c.emergencyContactPhone,
                   builder: (context, state) {
                     final canSubmit =
                         !_isSubmitting && _hasAllInformationFilled(state);

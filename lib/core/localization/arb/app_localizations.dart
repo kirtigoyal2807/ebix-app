@@ -1328,6 +1328,18 @@ abstract class AppLocalizations {
   /// **'Join Waitlist'**
   String get joinWailList;
 
+  /// No description provided for @waitlistRequiresMembership.
+  ///
+  /// In en, this message translates to:
+  /// **'The waitlist is only available with an active membership.'**
+  String get waitlistRequiresMembership;
+
+  /// No description provided for @memberTierBenefits.
+  ///
+  /// In en, this message translates to:
+  /// **'Your {tierName} benefits'**
+  String memberTierBenefits(String tierName);
+
   /// No description provided for @classIsFull.
   ///
   /// In en, this message translates to:
@@ -1951,6 +1963,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Medical History'**
   String get medicalHistory;
+
+  /// No description provided for @subscriptionHealthWizardPhysicalActivityTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Physical Activity'**
+  String get subscriptionHealthWizardPhysicalActivityTitle;
+
+  /// No description provided for @subscriptionHealthWizardPregnancyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Pregnancy'**
+  String get subscriptionHealthWizardPregnancyTitle;
 
   /// No description provided for @chronicConditions.
   ///
@@ -2789,7 +2813,7 @@ abstract class AppLocalizations {
   /// No description provided for @safetyText.
   ///
   /// In en, this message translates to:
-  /// **'Please read carefully.\n I understand that Pilates is physical exercise and has some risk of injury.\n I join the class voluntarily.\n I confirm the information I provided is true.\n I will tell The Pilates Studio if my health changes, if I get injured, or if I become pregnant.\n I understand Pilates instructors are not doctors and cannot diagnose or treat medical problems.\n I accept responsibility for my own safety during sessions.\n I understand that The Pilates Studio is not responsible for injuries that happen during normal exercise, except in cases of serious negligence.\n My information will stay private and used only to keep me safe.\n In an emergency, I allow staff to get medical help for me.\n I have read and understood everything above.\n I agree to follow instructions and exercise safely.'**
+  /// **'Please read carefully.\nI understand that Pilates is physical exercise and has some risk of injury.\nI join the class voluntarily.\nI confirm the information I provided is true.\nI will tell The Pilates Studio if my health changes, if I get injured, or if I become pregnant.\nI understand Pilates instructors are not doctors and cannot diagnose or treat medical problems.\nI accept responsibility for my own safety during sessions.\nI understand that The Pilates Studio is not responsible for injuries that happen during normal exercise, except in cases of serious negligence.\nMy information will stay private and used only to keep me safe.\nIn an emergency, I allow staff to get medical help for me.\nI have read and understood everything above.\nI agree to follow instructions and exercise safely.'**
   String get safetyText;
 
   /// No description provided for @safetyConsent.
@@ -2875,6 +2899,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'ID Number'**
   String get idNumber;
+
+  /// No description provided for @idNumberNationalIdInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid Saudi National ID (10 digits, starts with 1).'**
+  String get idNumberNationalIdInvalid;
+
+  /// No description provided for @idNumberIqamaInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid Iqama number (10 digits, starts with 2).'**
+  String get idNumberIqamaInvalid;
+
+  /// No description provided for @idNumberPassportInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid passport number (6–20 letters or digits).'**
+  String get idNumberPassportInvalid;
+
+  /// No description provided for @idNumberDriverLicenseInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid driver\'s license number (4–24 letters or digits).'**
+  String get idNumberDriverLicenseInvalid;
 
   /// No description provided for @filters.
   ///
@@ -3127,6 +3175,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Voucher applied. You save {amount}.'**
   String voucherAppliedSavings(String amount);
+
+  /// No description provided for @voucherAppliedSavingsLead.
+  ///
+  /// In en, this message translates to:
+  /// **'Voucher applied. You save '**
+  String get voucherAppliedSavingsLead;
+
+  /// No description provided for @voucherAppliedSavingsEnd.
+  ///
+  /// In en, this message translates to:
+  /// **'.'**
+  String get voucherAppliedSavingsEnd;
 
   /// No description provided for @voucherAppliedDiscountMessage.
   ///
@@ -3979,6 +4039,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'National ID'**
   String get idTypeNationalId;
+
+  /// No description provided for @idTypeIqama.
+  ///
+  /// In en, this message translates to:
+  /// **'Iqama'**
+  String get idTypeIqama;
 
   /// No description provided for @idTypePassport.
   ///
@@ -5582,6 +5648,18 @@ abstract class AppLocalizations {
   /// **'Browse All Classes'**
   String get browseAllClasses;
 
+  /// No description provided for @viewUpcomingClasses.
+  ///
+  /// In en, this message translates to:
+  /// **'View upcoming classes'**
+  String get viewUpcomingClasses;
+
+  /// No description provided for @contentNoDataAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'No data available'**
+  String get contentNoDataAvailable;
+
   /// No description provided for @certificationsTraining.
   ///
   /// In en, this message translates to:
@@ -5665,6 +5743,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Please enter weight between 20 and 400 kg'**
   String get enterValidWeightKg;
+
+  /// No description provided for @pleaseFillHeight.
+  ///
+  /// In en, this message translates to:
+  /// **'Please fill in your height.'**
+  String get pleaseFillHeight;
+
+  /// No description provided for @pleaseFillWeight.
+  ///
+  /// In en, this message translates to:
+  /// **'Please fill in your weight.'**
+  String get pleaseFillWeight;
 
   /// No description provided for @pleaseEnterPassword.
   ///

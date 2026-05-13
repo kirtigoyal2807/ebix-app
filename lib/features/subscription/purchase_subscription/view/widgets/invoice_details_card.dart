@@ -7,6 +7,7 @@ import 'package:pilates_app/features/checkout/data/models/membership_receipt_sum
 import '../../../../../config/theme/app_text_styles.dart';
 import '../../../../../core/localization/localization_extension.dart';
 import '../../../../../widgets/app_text.dart';
+import '../../../../../widgets/currency_amount_text.dart';
 
 class InvoiceDetailsCard extends StatelessWidget {
   const InvoiceDetailsCard({super.key, this.receipt});
@@ -108,47 +109,44 @@ class InvoiceDetailsCard extends StatelessWidget {
                       ),
                 ),
                 SizedBox(height: 64),
-                _buildRow(
+                _buildMoneyRow(
                   context,
                   r.planName?.trim().isNotEmpty == true
                       ? r.planName!.trim()
                       : context.l10n.premiumPlanMonthly,
-                  MembershipReceiptSummary.formatMoney(
-                    r.subtotalMinor ?? r.totalMinor,
-                    cur,
-                    lang,
-                  ),
+                  r.subtotalMinor ?? r.totalMinor,
+                  cur,
                   isDark,
                 ),
                 if (r.setupFeeMinor != null && r.setupFeeMinor != 0) ...[
                   SizedBox(height: AppSpacing.xs),
-                  _buildRow(
+                  _buildMoneyRow(
                     context,
                     context.l10n.setupFee,
-                    MembershipReceiptSummary.formatMoney(
-                      r.setupFeeMinor,
-                      cur,
-                      lang,
-                    ),
+                    r.setupFeeMinor,
+                    cur,
                     isDark,
                   ),
                 ],
                 if (r.taxMinor != null && r.taxMinor != 0) ...[
                   SizedBox(height: AppSpacing.xs),
-                  _buildRow(
+                  _buildMoneyRow(
                     context,
                     context.l10n.tax,
-                    MembershipReceiptSummary.formatMoney(r.taxMinor, cur, lang),
+                    r.taxMinor,
+                    cur,
                     isDark,
                   ),
                 ],
                 if (r.discountMinor != null && r.discountMinor != 0) ...[
                   SizedBox(height: AppSpacing.xs),
-                  _buildRow(
+                  _buildMoneyRow(
                     context,
                     context.l10n.discount,
-                    '-${MembershipReceiptSummary.formatMoney(r.discountMinor, cur, lang)}',
+                    r.discountMinor,
+                    cur,
                     isDark,
+                    leading: '- ',
                   ),
                 ],
                 SizedBox(height: AppSpacing.md),
@@ -157,10 +155,11 @@ class InvoiceDetailsCard extends StatelessWidget {
                   height: 1,
                 ),
                 SizedBox(height: AppSpacing.md),
-                _buildRow(
+                _buildMoneyRow(
                   context,
                   context.l10n.totalPaid,
-                  MembershipReceiptSummary.formatMoney(r.totalMinor, cur, lang),
+                  r.totalMinor,
+                  cur,
                   isDark,
                   isBold: true,
                 ),
@@ -208,6 +207,56 @@ class InvoiceDetailsCard extends StatelessWidget {
         MembershipReceiptSummary.shortDateFromIso(raw) ??
         raw;
     return 'Date: $formatted';
+  }
+
+  static Widget _buildMoneyRow(
+    BuildContext context,
+    String title,
+    num? amount,
+    String currency,
+    bool isDark, {
+    bool isBold = false,
+    String leading = '',
+  }) {
+    final valueStyle = AppTextStyles.textFieldHeading(context).copyWith(
+      fontSize: 12,
+      color: isDark ? AppColors.darkGreyText : AppColors.greyText,
+      height: 1.2,
+      fontWeight: isBold ? FontWeight.w600 : FontWeight.w400,
+    );
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Flexible(
+          flex: 3,
+          child: AppText(
+            title,
+            style: (context) => AppTextStyles.textFieldHeading(context).copyWith(
+              fontSize: 12,
+              fontWeight: FontWeight.w400,
+              color: AppColors.lightGrey,
+              height: 1.2,
+            ),
+          ),
+        ),
+        SizedBox(width: AppSpacing.sm),
+        Flexible(
+          flex: 2,
+          child: Align(
+            alignment: Alignment.centerRight,
+            child: CurrencyAmountText(
+              amount: amount,
+              currencyCode: currency,
+              leading: leading,
+              style: (_) => valueStyle,
+              maxLines: 2,
+              textAlign: TextAlign.end,
+            ),
+          ),
+        ),
+      ],
+    );
   }
 
   static Widget _buildRow(

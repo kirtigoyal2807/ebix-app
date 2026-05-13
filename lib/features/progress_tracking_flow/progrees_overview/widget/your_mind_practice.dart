@@ -42,17 +42,18 @@ class YourMindPractice extends StatelessWidget {
 
         final overview = state.overview;
         final isDark = Theme.of(context).brightness == Brightness.dark;
+        final emptyLabel = context.l10n.contentNoDataAvailable;
         final mindfulTitle = overview == null
-            ? '—'
+            ? emptyLabel
             : _formatMindfulHours(context, overview.mtdAttendedMinutes);
         final morningTitle = overview == null
-            ? '—'
+            ? emptyLabel
             : '${overview.mtdMorningSessions}';
         final flowTitle = overview == null
-            ? '—'
+            ? emptyLabel
             : '${overview.flowInstructors}';
         final peaceTitle = overview == null
-            ? '—'
+            ? emptyLabel
             : _formatInnerPeacePercent(overview.innerPeacePercent);
 
         return Padding(

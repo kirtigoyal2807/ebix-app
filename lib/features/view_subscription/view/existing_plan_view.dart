@@ -10,8 +10,8 @@ import 'package:pilates_app/features/invoice_history/data/subscriptions_reposito
 import 'package:pilates_app/features/view_subscription/cubit/subscriptions_cubit.dart';
 import 'package:pilates_app/features/view_subscription/cubit/subscriptions_state.dart';
 import 'package:pilates_app/features/view_subscription/view/pause_subscription_view.dart';
-import 'package:pilates_app/core/utils/currency_display.dart';
 import 'package:pilates_app/widgets/app_text.dart';
+import 'package:pilates_app/widgets/currency_amount_text.dart';
 
 import '../../../core/localization/localization_extension.dart';
 
@@ -59,11 +59,6 @@ class ExistingPlanView extends StatelessWidget {
     final t = s.entitlementType.trim();
     if (t.isEmpty) return '';
     return t.replaceAll('_', ' ');
-  }
-
-  String _priceLine(CustomerSubscriptionResource s) {
-    if (s.pricePaid <= 0) return '—';
-    return formatCurrencyAmount(amount: s.pricePaid, code: 'SAR');
   }
 
   String _sessionsLine(CustomerSubscriptionResource s) {
@@ -236,7 +231,17 @@ class ExistingPlanView extends StatelessWidget {
                 isDark: isDark,
                 planTitle: _planTitle(s, context),
                 entitlementLine: _entitlementLine(s),
-                priceLine: _priceLine(s),
+                priceLine: CurrencyAmountText(
+                  amount: s.pricePaid <= 0 ? null : s.pricePaid,
+                  currencyCode: 'SAR',
+                  maxLines: 2,
+                  style: (ctx) => AppTextStyles.bodyText(ctx).copyWith(
+                    fontWeight: FontWeight.w600,
+                    color: isDark
+                        ? AppColors.lightText
+                        : AppColors.darkText,
+                  ),
+                ),
                 sessionsLine: _sessionsLine(s),
                 periodLine: _periodLine(context, s),
                 freezeSummary: (f) => _freezeSummary(context, f),
@@ -296,7 +301,7 @@ class _SubscriptionHistoryCard extends StatelessWidget {
   final bool isDark;
   final String planTitle;
   final String entitlementLine;
-  final String priceLine;
+  final Widget priceLine;
   final String sessionsLine;
   final String periodLine;
   final String Function(SubscriptionFreeze f) freezeSummary;
@@ -489,16 +494,7 @@ class _SubscriptionHistoryCard extends StatelessWidget {
                       ).copyWith(color: AppColors.lightGrey),
                     ),
                     SizedBox(height: AppSpacing.xi),
-                    AppText(
-                      priceLine,
-                      style: (ctx) => AppTextStyles.bodyText(ctx).copyWith(
-                        fontWeight: FontWeight.w600,
-                        color: isDark
-                            ? AppColors.lightText
-                            : AppColors.darkText,
-                      ),
-                      maxLines: 2,
-                    ),
+                    priceLine,
                   ],
                 ),
               ),

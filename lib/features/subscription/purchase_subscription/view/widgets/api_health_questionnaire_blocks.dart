@@ -6,55 +6,11 @@ import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/core/localization/arb/app_localizations.dart';
 import 'package:pilates_app/features/checkout/data/models/product_health_question.dart';
 import 'package:pilates_app/features/subscription/purchase_subscription/cubit/subscription_cubit.dart';
+import 'package:pilates_app/features/subscription/purchase_subscription/health_questionnaire_query.dart';
 import 'package:pilates_app/widgets/app_text.dart';
 import 'package:pilates_app/widgets/app_text_field.dart';
 
-/// Question ids for the default "12 Session Health Form" product schema.
-abstract final class HealthQuestionnaireIds {
-  static const injuriesSurgeries = 1;
-  static const pregnancy = 2;
-  static const goals = 3;
-  static const medicalConditions = 4;
-  static const activityPilates = 5;
-}
-
-List<ProductHealthQuestion> pickQuestionsByIds(
-  List<ProductHealthQuestion> all,
-  List<int> ids,
-) {
-  final byId = <int, ProductHealthQuestion>{};
-  for (final q in all) {
-    final n = q.numericQuestionId;
-    if (n != null) {
-      byId[n] = q;
-    }
-  }
-  return [
-    for (final id in ids)
-      if (byId[id] != null) byId[id]!,
-  ];
-}
-
-/// All questions for the Medical History step from
-/// `GET …/questionnaires/product/{id}` except ids owned by other steps.
-List<ProductHealthQuestion> medicalQuestionsFromApi(
-  List<ProductHealthQuestion> all,
-) {
-  const reservedForOtherSteps = <int>{
-    HealthQuestionnaireIds.pregnancy,
-    HealthQuestionnaireIds.goals,
-    HealthQuestionnaireIds.activityPilates,
-  };
-  final filtered = all.where((q) {
-    final id = q.numericQuestionId;
-    if (id == null) return false;
-    if (q.isPersonalInformationEnvelopeField) return false;
-    return !reservedForOtherSteps.contains(id);
-  }).toList();
-  int sortKey(ProductHealthQuestion q) => q.order ?? q.numericQuestionId ?? 0;
-  filtered.sort((a, b) => sortKey(a).compareTo(sortKey(b)));
-  return filtered;
-}
+export 'package:pilates_app/features/subscription/purchase_subscription/health_questionnaire_query.dart';
 
 bool _answerContainsOption(Object? raw, String option) {
   if (raw == null) return false;
@@ -420,53 +376,6 @@ bool? _asBool(Object? v) {
   return null;
 }
 
-class _BooleanAnswerExplainField extends StatefulWidget {
-  const _BooleanAnswerExplainField({required this.questionId});
-
-  final int questionId;
-
-  @override
-  State<_BooleanAnswerExplainField> createState() =>
-      _BooleanAnswerExplainFieldState();
-}
-
-class _BooleanAnswerExplainFieldState
-    extends State<_BooleanAnswerExplainField> {
-  late final TextEditingController _controller;
-
-  @override
-  void initState() {
-    super.initState();
-    final initial =
-        context
-            .read<SubscriptionCubit>()
-            .state
-            .healthQuestionnaireAnswerNotes[widget.questionId] ??
-        '';
-    _controller = TextEditingController(text: initial);
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context);
-    final cubit = context.read<SubscriptionCubit>();
-    return AppTextField(
-      label: '',
-      hint: l10n.healthAnswerExplainHint,
-      controller: _controller,
-      maxLines: 4,
-      onChanged: (t) =>
-          cubit.setHealthQuestionnaireAnswerNote(widget.questionId, t),
-    );
-  }
-}
-
 class _BooleanYesNoRow extends StatelessWidget {
   const _BooleanYesNoRow({
     required this.question,
@@ -481,21 +390,11 @@ class _BooleanYesNoRow extends StatelessWidget {
   final bool isDark;
 
   void _onYesTap() {
-    final required = question.isRequired == true;
-    if (!required && value == true) {
-      onChanged(null);
-    } else {
-      onChanged(true);
-    }
+    onChanged(true);
   }
 
   void _onNoTap() {
-    final required = question.isRequired == true;
-    if (!required && value == false) {
-      onChanged(null);
-    } else {
-      onChanged(false);
-    }
+    onChanged(false);
   }
 
   @override
@@ -527,12 +426,6 @@ class _BooleanYesNoRow extends StatelessWidget {
           isDark: isDark,
           onTap: _onNoTap,
         ),
-        if (value == true &&
-            question.numericQuestionId != null &&
-            question.allowOther == true) ...[
-          SizedBox(height: AppSpacing.md),
-          _BooleanAnswerExplainField(questionId: question.numericQuestionId!),
-        ],
       ],
     );
   }

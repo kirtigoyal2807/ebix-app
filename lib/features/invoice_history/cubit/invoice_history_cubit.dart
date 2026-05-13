@@ -18,6 +18,19 @@ class InvoiceHistoryCubit extends Cubit<InvoiceHistoryState> {
   /// Client-side filter on `GET /invoices` rows ([InvoiceResource.type] / [InvoiceResource.status]).
   ///
   /// Avoid treating missing API `type` as subscription (that made every row match “Subscriptions”).
+  static bool _looksLikeSubscriptionInvoice(String typeLower, String titleLower) {
+    if (typeLower.contains('subscription') ||
+        typeLower.contains('membership') ||
+        typeLower.contains('member_ship') ||
+        typeLower.contains('recurring') ||
+        typeLower.contains('renewal')) {
+      return true;
+    }
+    return titleLower.contains('subscription') ||
+        titleLower.contains('membership') ||
+        titleLower.contains('renewal');
+  }
+
   static bool _matchesTab(InvoiceResource row, InvoiceCategory category) {
     final t = row.type.toLowerCase().trim();
     final title = row.title.toLowerCase();
@@ -39,6 +52,7 @@ class InvoiceHistoryCubit extends Cubit<InvoiceHistoryState> {
             title.contains('membership') ||
             title.contains('renewal');
       case InvoiceCategory.classes:
+        if (_looksLikeSubscriptionInvoice(t, title)) return false;
         return _isClassLikeInvoice(t, title);
       case InvoiceCategory.refunds:
         return row.isRefund || row.amount < 0;

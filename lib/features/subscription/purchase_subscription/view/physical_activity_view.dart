@@ -4,9 +4,11 @@ import 'package:pilates_app/config/theme/app_colors.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/core/localization/arb/app_localizations.dart';
+import 'package:pilates_app/features/checkout/data/checkout_repository.dart';
 import 'package:pilates_app/features/subscription/purchase_subscription/cubit/subscription_cubit.dart';
 import 'package:pilates_app/features/subscription/purchase_subscription/view/widgets/api_health_questionnaire_blocks.dart';
 import 'package:pilates_app/features/subscription/purchase_subscription/view/widgets/subscription_header.dart';
+import 'package:pilates_app/features/subscription/purchase_subscription/view/widgets/subscription_health_wizard_step.dart';
 import 'package:pilates_app/widgets/app_button.dart';
 import 'package:pilates_app/widgets/app_text.dart';
 import 'package:pilates_app/widgets/inline_validation_banner.dart';
@@ -20,6 +22,55 @@ class PhysicalActivityView extends StatefulWidget {
 
 class _PhysicalActivityViewState extends State<PhysicalActivityView> {
   String? _validationMessage;
+  bool _questionnaireLoading = false;
+  bool _questionnaireLoadFailed = false;
+
+  bool _questionnaireHydrationScheduled = false;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_questionnaireHydrationScheduled) return;
+    _questionnaireHydrationScheduled = true;
+    final cubit = context.read<SubscriptionCubit>();
+    final needFetch =
+        cubit.state.selectedProductRequiresHealthIntake &&
+        cubit.state.healthQuestionnaireQuestions.isEmpty;
+    if (needFetch) {
+      setState(() => _questionnaireLoading = true);
+    }
+    WidgetsBinding.instance.addPostFrameCallback((_) => _ensureQuestionnaire());
+  }
+
+  Future<void> _ensureQuestionnaire() async {
+    if (!mounted) return;
+    final cubit = context.read<SubscriptionCubit>();
+    if (!cubit.state.selectedProductRequiresHealthIntake) {
+      setState(() {
+        _questionnaireLoading = false;
+        _questionnaireLoadFailed = false;
+      });
+      return;
+    }
+    if (cubit.state.healthQuestionnaireQuestions.isNotEmpty) {
+      setState(() {
+        _questionnaireLoading = false;
+        _questionnaireLoadFailed = false;
+      });
+      return;
+    }
+    setState(() {
+      _questionnaireLoading = true;
+      _questionnaireLoadFailed = false;
+    });
+    final repo = context.read<CheckoutRepository>();
+    final ok = await cubit.fetchHealthQuestionnaireForCurrentProduct(repo);
+    if (!mounted) return;
+    setState(() {
+      _questionnaireLoading = false;
+      _questionnaireLoadFailed = !ok;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,15 +101,27 @@ class _PhysicalActivityViewState extends State<PhysicalActivityView> {
                         c.selectedProductRequiresHealthIntake,
                 builder: (context, state) {
                   final intake = state.selectedProductRequiresHealthIntake;
+                  final apiActivityQs = pickQuestionsByIds(
+                    state.healthQuestionnaireQuestions,
+                    const [HealthQuestionnaireIds.activityPilates],
+                  );
+                  final showStaticLegacy = !intake;
+                  final useApiActivity =
+                      intake &&
+                      !_questionnaireLoading &&
+                      !_questionnaireLoadFailed &&
+                      apiActivityQs.isNotEmpty;
 
                   return SingleChildScrollView(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         SubscriptionStepHeader(
-                          currentStep: 2,
-                          totalSteps: 6,
+                          wizardStep:
+                              SubscriptionHealthWizardStep.physicalActivity,
                           isDark: isDark,
+                          showProgressCaption:
+                              !intake || !_questionnaireLoading,
                         ),
                         SizedBox(height: AppSpacing.xl),
                         AppText(
@@ -66,10 +129,50 @@ class _PhysicalActivityViewState extends State<PhysicalActivityView> {
                           style: (style) => AppTextStyles.heading1(context),
                         ),
                         SizedBox(height: AppSpacing.lg),
-                        if (intake) ...[
+                        if (intake && _questionnaireLoading) ...[
+                          Padding(
+                            padding: EdgeInsets.symmetric(
+                              vertical: AppSpacing.md,
+                            ),
+                            child: Center(
+                              child: SizedBox(
+                                width: 28,
+                                height: 28,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                        if (intake &&
+                            !_questionnaireLoading &&
+                            _questionnaireLoadFailed) ...[
+                          Padding(
+                            padding: EdgeInsets.only(bottom: AppSpacing.md),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Expanded(
+                                  child: AppText(
+                                    l10n.loginErrorGeneric,
+                                    style: (ctx) =>
+                                        AppTextStyles.captionText(ctx),
+                                  ),
+                                ),
+                                TextButton(
+                                  onPressed: _ensureQuestionnaire,
+                                  child: Text(l10n.retry),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                        if (useApiActivity) ...[
                           const ApiActivityLevelQuestionBlock(),
                           SizedBox(height: AppSpacing.lg),
-                        ] else ...[
+                        ],
+                        if (showStaticLegacy) ...[
                           _buildSectionHeader(
                             context,
                             l10n.doYouExerciseRegularly,
@@ -173,73 +276,81 @@ class _PhysicalActivityViewState extends State<PhysicalActivityView> {
               InlineValidationBanner(message: _validationMessage!),
             AppButton(
               label: l10n.continueTxt,
-              onPressed: () {
-                final actQs = pickQuestionsByIds(
-                  cubit.state.healthQuestionnaireQuestions,
-                  const [HealthQuestionnaireIds.activityPilates],
-                );
-                if (actQs.isNotEmpty &&
-                    !cubit.validateQuestionnaireGroup(
-                      actQs,
-                      requireEveryQuestionInGroup: true,
-                    )) {
-                  setState(
-                    () => _validationMessage =
-                        l10n.physicalActivityStepIncomplete,
-                  );
-                  return;
-                }
-                final raw =
-                    cubit
-                        .state
-                        .healthQuestionnaireAnswers[HealthQuestionnaireIds
-                        .activityPilates];
-                if (raw is String && raw.trim().isNotEmpty) {
-                  cubit.updateExerciseRegularly(raw.trim());
-                } else if (raw is bool) {
-                  cubit.updateExerciseRegularly(raw ? 'yes' : 'no');
-                } else if (raw is List) {
-                  cubit.updateExerciseRegularly(
-                    raw.map((e) => e.toString()).join(', '),
-                  );
-                } else if (raw is Map) {
-                  final sel = raw['selected'];
-                  final other = raw['other'];
-                  final parts = <String>[];
-                  if (sel is List) {
-                    parts.addAll(sel.map((e) => e.toString()));
-                  }
-                  if (other is String && other.trim().isNotEmpty) {
-                    parts.add(other.trim());
-                  }
-                  if (parts.isNotEmpty) {
-                    cubit.updateExerciseRegularly(parts.join(', '));
-                  }
-                }
-                if (!cubit.state.selectedProductRequiresHealthIntake &&
-                    actQs.isEmpty) {
-                  final er = cubit.state.exerciseRegularly;
-                  if (er == null || er.trim().isEmpty) {
-                    setState(
-                      () => _validationMessage =
-                          l10n.physicalActivityStepIncomplete,
-                    );
-                    return;
-                  }
-                  final low = er.trim().toLowerCase();
-                  if (low == 'yes' || low == 'sometimes') {
-                    if (cubit.state.activityFrequency == null) {
-                      setState(
-                        () => _validationMessage =
-                            l10n.physicalActivityStepIncomplete,
+              onPressed:
+                  !cubit.state.selectedProductRequiresHealthIntake ||
+                      (!_questionnaireLoading && !_questionnaireLoadFailed)
+                  ? () {
+                      final intake =
+                          cubit.state.selectedProductRequiresHealthIntake;
+                      final actQs = pickQuestionsByIds(
+                        cubit.state.healthQuestionnaireQuestions,
+                        const [HealthQuestionnaireIds.activityPilates],
                       );
-                      return;
+                      if (intake) {
+                        if (actQs.isNotEmpty) {
+                          if (!cubit.validateQuestionnaireGroup(
+                            actQs,
+                            requireEveryQuestionInGroup: true,
+                          )) {
+                            setState(
+                              () => _validationMessage =
+                                  l10n.physicalActivityStepIncomplete,
+                            );
+                            return;
+                          }
+
+                          final raw =
+                              cubit
+                                  .state
+                                  .healthQuestionnaireAnswers[HealthQuestionnaireIds
+                                  .activityPilates];
+                          if (raw is String && raw.trim().isNotEmpty) {
+                            cubit.updateExerciseRegularly(raw.trim());
+                          } else if (raw is bool) {
+                            cubit.updateExerciseRegularly(raw ? 'yes' : 'no');
+                          } else if (raw is List) {
+                            cubit.updateExerciseRegularly(
+                              raw.map((e) => e.toString()).join(', '),
+                            );
+                          } else if (raw is Map) {
+                            final sel = raw['selected'];
+                            final other = raw['other'];
+                            final parts = <String>[];
+                            if (sel is List) {
+                              parts.addAll(sel.map((e) => e.toString()));
+                            }
+                            if (other is String && other.trim().isNotEmpty) {
+                              parts.add(other.trim());
+                            }
+                            if (parts.isNotEmpty) {
+                              cubit.updateExerciseRegularly(parts.join(', '));
+                            }
+                          }
+                        }
+                      } else {
+                        final er = cubit.state.exerciseRegularly;
+                        if (er == null || er.trim().isEmpty) {
+                          setState(
+                            () => _validationMessage =
+                                l10n.physicalActivityStepIncomplete,
+                          );
+                          return;
+                        }
+                        final low = er.trim().toLowerCase();
+                        if (low == 'yes' || low == 'sometimes') {
+                          if (cubit.state.activityFrequency == null) {
+                            setState(
+                              () => _validationMessage =
+                                  l10n.physicalActivityStepIncomplete,
+                            );
+                            return;
+                          }
+                        }
+                      }
+                      setState(() => _validationMessage = null);
+                      cubit.nextStep();
                     }
-                  }
-                }
-                setState(() => _validationMessage = null);
-                cubit.nextStep();
-              },
+                  : null,
               buttonColor: isDark ? AppColors.primary : AppColors.primaryBrown,
               expanded: true,
             ),
@@ -355,7 +466,6 @@ class _PhysicalActivityViewState extends State<PhysicalActivityView> {
   }
 
   Widget _buildSectionHeader(BuildContext context, String title) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
     return AppText(
       title,
       style: (style) => AppTextStyles.textFieldHeading(

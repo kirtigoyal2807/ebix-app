@@ -659,6 +659,15 @@ class AppLocalizationsAr extends AppLocalizations {
   String get joinWailList => 'الانضمام إلى قائمة الانتظار';
 
   @override
+  String get waitlistRequiresMembership =>
+      'قائمة الانتظار متاحة فقط لأصحاب العضوية الفعّالة.';
+
+  @override
+  String memberTierBenefits(String tierName) {
+    return 'مزايا $tierName';
+  }
+
+  @override
   String get classIsFull => 'الحصة ممتلئة';
 
   @override
@@ -991,6 +1000,12 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get medicalHistory => 'التاريخ الطبي';
+
+  @override
+  String get subscriptionHealthWizardPhysicalActivityTitle => 'النشاط البدني';
+
+  @override
+  String get subscriptionHealthWizardPregnancyTitle => 'الحمل';
 
   @override
   String get chronicConditions =>
@@ -1446,7 +1461,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get safetyText =>
-      'يرجى القراءة بعناية.\n أفهم أن تمارين البيلاتس هي نشاط بدني وقد تنطوي على بعض مخاطر الإصابة.\n أنضم إلى الصف بإرادتي الحرة.\n أؤكد أن المعلومات التي قدمتها صحيحة.\n سأبلغ استوديو البيلاتس في حال تغيّر وضعي الصحي، أو تعرضت لإصابة، أو أصبحت حاملاً.\n أفهم أن مدربي البيلاتس ليسوا أطباء ولا يمكنهم تشخيص أو علاج المشاكل الطبية.\n أتحمل المسؤولية الكاملة عن سلامتي أثناء الجلسات.\n أفهم أن استوديو البيلاتس غير مسؤول عن الإصابات التي تحدث أثناء التمارين العادية، إلا في حالات الإهمال الجسيم.\n ستبقى معلوماتي خاصة ولن تُستخدم إلا للحفاظ على سلامتي.\n في حالات الطوارئ، أسمح للموظفين بطلب المساعدة الطبية لي.\n لقد قرأت وفهمت كل ما ورد أعلاه.\n أوافق على اتباع التعليمات وممارسة التمارين بأمان.';
+      'يرجى القراءة بعناية.\nأفهم أن تمارين البيلاتس هي نشاط بدني وقد تنطوي على بعض مخاطر الإصابة.\nأنضم إلى الصف بإرادتي الحرة.\nأؤكد أن المعلومات التي قدمتها صحيحة.\nسأبلغ استوديو البيلاتس في حال تغيّر وضعي الصحي، أو تعرضت لإصابة، أو أصبحت حاملاً.\nأفهم أن مدربي البيلاتس ليسوا أطباء ولا يمكنهم تشخيص أو علاج المشاكل الطبية.\nأتحمل المسؤولية الكاملة عن سلامتي أثناء الجلسات.\nأفهم أن استوديو البيلاتس غير مسؤول عن الإصابات التي تحدث أثناء التمارين العادية، إلا في حالات الإهمال الجسيم.\nستبقى معلوماتي خاصة ولن تُستخدم إلا للحفاظ على سلامتي.\nفي حالات الطوارئ، أسمح للموظفين بطلب المساعدة الطبية لي.\nلقد قرأت وفهمت كل ما ورد أعلاه.\nأوافق على اتباع التعليمات وممارسة التمارين بأمان.';
 
   @override
   String get safetyConsent => 'السلامة والموافقة';
@@ -1490,6 +1505,22 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get idNumber => 'رقم الهوية';
+
+  @override
+  String get idNumberNationalIdInvalid =>
+      'يُرجى إدخال رقم الهوية الوطنية الصالح (١٠ أرقام تبدأ بالرقم ١).';
+
+  @override
+  String get idNumberIqamaInvalid =>
+      'يُرجى إدخال رقم إقامة صالح (١٠ أرقام يبدأ بالرقم ٢).';
+
+  @override
+  String get idNumberPassportInvalid =>
+      'يُرجى إدخال رقم جواز سفر صالح (6–20 من الأحرف والأرقام).';
+
+  @override
+  String get idNumberDriverLicenseInvalid =>
+      'يُرجى إدخال رقم رخصة قيادة صالح (4–24 من الأحرف والأرقام).';
 
   @override
   String get filters => 'الفلاتر';
@@ -1618,6 +1649,12 @@ class AppLocalizationsAr extends AppLocalizations {
   String voucherAppliedSavings(String amount) {
     return 'تم تطبيق القسيمة. توفيرك $amount.';
   }
+
+  @override
+  String get voucherAppliedSavingsLead => 'تم تطبيق القسيمة. توفيرك ';
+
+  @override
+  String get voucherAppliedSavingsEnd => '.';
 
   @override
   String voucherAppliedDiscountMessage(String amount) {
@@ -2069,6 +2106,9 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get idTypeNationalId => 'الهوية الوطنية';
+
+  @override
+  String get idTypeIqama => 'الإقامة';
 
   @override
   String get idTypePassport => 'جواز السفر';
@@ -2946,6 +2986,12 @@ class AppLocalizationsAr extends AppLocalizations {
   String get browseAllClasses => 'تصفح جميع الحصص';
 
   @override
+  String get viewUpcomingClasses => 'عرض الحصص القادمة';
+
+  @override
+  String get contentNoDataAvailable => 'لا تتوفر بيانات';
+
+  @override
   String get certificationsTraining => 'الشهادات والتدريب';
 
   @override
@@ -2987,6 +3033,12 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get enterValidWeightKg => 'يُرجى إدخال الوزن بين 20 و 400 كجم';
+
+  @override
+  String get pleaseFillHeight => 'يُرجى إدخال الطول.';
+
+  @override
+  String get pleaseFillWeight => 'يُرجى إدخال الوزن.';
 
   @override
   String get pleaseEnterPassword => 'يُرجى إدخال كلمة المرور';
