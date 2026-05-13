@@ -274,6 +274,8 @@ class _PersonalViewBodyState extends State<_PersonalViewBody> {
       lastName: _lastNameController.text.trim(),
       email: _emailController.text.trim(),
       phone: phone,
+      phoneNationalRaw: _phoneController.text,
+      phoneCountryIso3166: _phoneCountry?.code ?? _phoneCountryIso,
       l10n: context.l10n,
     );
   }

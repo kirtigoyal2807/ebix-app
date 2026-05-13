@@ -209,13 +209,51 @@ class _PhoneNumberFieldState extends State<PhoneNumberField> {
     return context.l10n.invalidPhoneForCountry;
   }
 
+  bool _isCurrentNumberValidForSelectedCountry() {
+    final isoCode = (_selectedCountryCode?.code ?? '').trim().toUpperCase();
+    if (PhoneNumberField._tryIso(isoCode) == null) return false;
+    final digits = (widget.controller?.text ?? '').replaceAll(RegExp(r'\D'), '');
+    if (digits.isEmpty) return false;
+    if (digits.length < _kMinNationalSignificantDigitsForValidation) {
+      return false;
+    }
+    return PhoneNumberField.isNationalNumberValid(
+      iso3166Alpha2: isoCode,
+      nationalDigitsOnly: digits,
+    );
+  }
+
+  /// Messages produced only by client-side phone checks. When the national number is
+  /// valid for the selected country, these may be hidden if still present from state;
+  /// other [errorText] values (API / server) stay visible.
+  bool _isKnownClientPhoneValidationMessage(
+    BuildContext context,
+    String message,
+  ) {
+    final t = message.trim();
+    if (t.isEmpty) return true;
+    final l10n = context.l10n;
+    return t == l10n.pleaseEnterPhone ||
+        t == l10n.invalidPhoneForCountry ||
+        t == l10n.phoneTenDigitsRequired ||
+        t == l10n.referralInvitePhoneTooLong ||
+        t == l10n.giftValidationRecipientPhone;
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
     final maxDigits = _effectiveMaxNationalDigits();
     final countryMessage = _countryValidationMessage(context);
-    final displayError = widget.errorText ?? countryMessage;
+    final parentError = widget.errorText;
+    final String? resolvedParentError =
+        _isCurrentNumberValidForSelectedCountry() &&
+                parentError != null &&
+                _isKnownClientPhoneValidationMessage(context, parentError)
+            ? null
+            : parentError;
+    final displayError = resolvedParentError ?? countryMessage;
     final hasError = displayError != null;
     final screenSize = MediaQuery.sizeOf(context);
 

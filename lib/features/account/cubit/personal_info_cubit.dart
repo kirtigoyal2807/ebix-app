@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pilates_app/core/localization/arb/app_localizations.dart';
+import 'package:pilates_app/core/validation/phone_number_country_validation.dart';
 import 'package:pilates_app/features/account/cubit/personal_info_state.dart';
 import 'package:pilates_app/features/account/data/models/profile_update_result.dart';
 import 'package:pilates_app/features/auth/data/auth_repository.dart';
@@ -64,6 +65,8 @@ class PersonalInfoCubit extends Cubit<PersonalInfoState> {
     required String lastName,
     required String email,
     required String phone,
+    required String phoneNationalRaw,
+    required String phoneCountryIso3166,
     required AppLocalizations l10n,
   }) async {
     emit(
@@ -100,6 +103,22 @@ class PersonalInfoCubit extends Cubit<PersonalInfoState> {
       );
       if (!emailRegex.hasMatch(trimmedEmail)) {
         fieldErrors['email'] = l10n.enterValidEmail;
+      }
+    }
+
+    // Matches [PhoneNumberField]: show error only when NSN has enough digits to validate.
+    const minNationalDigitsForCountryValidation = 3;
+    final iso = phoneCountryIso3166.trim().toUpperCase();
+    if (iso.length == 2) {
+      final phoneDigits =
+          phoneNationalRaw.replaceAll(RegExp(r'\D'), '');
+      if (phoneDigits.isNotEmpty &&
+          phoneDigits.length >= minNationalDigitsForCountryValidation &&
+          !PhoneNumberCountryValidation.isValidNationalNumber(
+            iso3166Alpha2: iso,
+            nationalDigitsOnly: phoneDigits,
+          )) {
+        fieldErrors['phone'] = l10n.invalidPhoneForCountry;
       }
     }
 

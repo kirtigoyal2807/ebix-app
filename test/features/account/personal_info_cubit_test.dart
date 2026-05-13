@@ -1,9 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:pilates_app/core/localization/arb/app_localizations.dart';
-import 'package:pilates_app/core/network/api_result.dart';
 import 'package:pilates_app/features/account/cubit/personal_info_cubit.dart';
 import 'package:pilates_app/features/account/cubit/personal_info_state.dart';
+import 'package:pilates_app/features/account/data/models/profile_update_result.dart';
 import 'package:pilates_app/features/auth/data/auth_repository.dart';
 import 'package:pilates_app/features/auth/data/models/auth_user.dart';
 
@@ -22,6 +22,9 @@ class _FakeL10n implements AppLocalizations {
 
   @override
   String get enterValidEmail => 'Please enter a valid email address';
+
+  @override
+  String get invalidPhoneForCountry => 'Invalid phone for country';
 
   @override
   String get profileUpdateFailed => 'Failed to update profile.';
@@ -43,6 +46,8 @@ void main() {
         lastName: 'Ali',
         email: 'noor@example.com',
         phone: '+966500000001',
+        phoneNationalRaw: '500000001',
+        phoneCountryIso3166: 'SA',
         l10n: l10n,
       );
 
@@ -66,6 +71,8 @@ void main() {
         lastName: 'Ali',
         email: 'noor@example.com',
         phone: '+966500000001',
+        phoneNationalRaw: '500000001',
+        phoneCountryIso3166: 'SA',
         l10n: l10n,
       );
 
@@ -86,6 +93,8 @@ void main() {
         lastName: 'Ali',
         email: 'invalid-email',
         phone: '+966500000001',
+        phoneNationalRaw: '500000001',
+        phoneCountryIso3166: 'SA',
         l10n: l10n,
       );
 
@@ -93,6 +102,28 @@ void main() {
       expect(result, isNull);
       expect(cubit.state.saveStatus, PersonalInfoSaveStatus.failure);
       expect(cubit.state.fieldErrors['email'], l10n.enterValidEmail);
+
+      await cubit.close();
+    });
+
+    test('saveProfile validates invalid national phone for country', () async {
+      final repository = _TestAuthRepository();
+      final cubit = PersonalInfoCubit(authRepository: repository);
+
+      final result = await cubit.saveProfile(
+        firstName: 'Noor',
+        lastName: 'Ali',
+        email: 'noor@example.com',
+        phone: '+1123',
+        phoneNationalRaw: '123',
+        phoneCountryIso3166: 'US',
+        l10n: l10n,
+      );
+
+      expect(repository.updateCalls, 0);
+      expect(result, isNull);
+      expect(cubit.state.saveStatus, PersonalInfoSaveStatus.failure);
+      expect(cubit.state.fieldErrors['phone'], l10n.invalidPhoneForCountry);
 
       await cubit.close();
     });
@@ -110,6 +141,8 @@ void main() {
         lastName: 'Ali',
         email: 'noor@example.com',
         phone: '+966500000001',
+        phoneNationalRaw: '500000001',
+        phoneCountryIso3166: 'SA',
         l10n: l10n,
       );
 
@@ -135,13 +168,13 @@ class _TestAuthRepository extends AuthRepository {
   String? lastAvatarPath;
 
   @override
-  Future<ApiResult<AuthUser>> updateProfile({
+  Future<ProfileUpdateResult> updateProfileWithPhoneHandling({
     String? firstName,
     String? lastName,
     String? email,
     String? phone,
-    DateTime? dob,
     String? gender,
+    DateTime? dob,
     String? avatarPath,
   }) async {
     updateCalls++;
@@ -152,7 +185,7 @@ class _TestAuthRepository extends AuthRepository {
     lastDob = dob;
     lastGender = gender;
     lastAvatarPath = avatarPath;
-    return ApiSuccess<AuthUser>(
+    return ProfileUpdateSuccess(
       AuthUser(
         name: '$firstName $lastName',
         firstName: firstName ?? 'Noor',
