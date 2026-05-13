@@ -101,7 +101,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get didntReceiveCode => 'Didn\'t receive code?';
 
   @override
-  String get resendCode => 'Resend Code';
+  String get resendCode => ' Resend Code';
 
   @override
   String get resendCodeIn => 'in';
@@ -1530,11 +1530,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get idNumberPassportInvalid =>
-      'Enter a valid passport number (6–20 letters or digits).';
+      'Enter a valid passport number (1 letter followed by 8 digits).';
 
   @override
   String get idNumberDriverLicenseInvalid =>
-      'Enter a valid driver\'s license number (4–24 letters or digits).';
+      'Enter a valid driving license number (10 digits).';
 
   @override
   String get filters => 'Filters';

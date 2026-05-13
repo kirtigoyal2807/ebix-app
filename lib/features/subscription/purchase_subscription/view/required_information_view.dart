@@ -126,7 +126,10 @@ class _RequiredInformationViewState extends State<RequiredInformationView> {
 
     final normalizedNt = s.idType?.trim();
     final normalizedId =
-        (normalizedNt == 'National ID' || normalizedNt == 'Iqama')
+        (normalizedNt == 'National ID' ||
+            normalizedNt == 'Iqama' ||
+            normalizedNt == 'Driver License' ||
+            normalizedNt == 'Passport')
         ? _idValueForRules(s.idType, _idNumberController.text)
         : _idNumberController.text.trim();
     cubit.updateIdNumber(normalizedId);
@@ -216,12 +219,15 @@ class _RequiredInformationViewState extends State<RequiredInformationView> {
         IdDocumentValidators.isValidForUiIdType(s.idType, idForRules);
   }
 
-  /// Value passed to [IdDocumentValidators] (national: digits only).
+  /// Value passed to [IdDocumentValidators] and API normalization where applicable.
   String _idValueForRules(String? uiIdType, String raw) {
     switch (uiIdType?.trim()) {
       case 'National ID':
       case 'Iqama':
+      case 'Driver License':
         return raw.replaceAll(RegExp(r'\D'), '');
+      case 'Passport':
+        return raw.replaceAll(RegExp(r'\s'), '');
       default:
         return raw.trim();
     }
@@ -259,9 +265,9 @@ class _RequiredInformationViewState extends State<RequiredInformationView> {
       case 'Iqama':
         return 10;
       case 'Passport':
-        return 20;
+        return 9;
       case 'Driver License':
-        return 24;
+        return 10;
       default:
         return 100;
     }
@@ -271,6 +277,7 @@ class _RequiredInformationViewState extends State<RequiredInformationView> {
     switch (uiIdType?.trim()) {
       case 'National ID':
       case 'Iqama':
+      case 'Driver License':
         return TextInputType.number;
       default:
         return TextInputType.text;
@@ -563,10 +570,19 @@ class _RequiredInformationViewState extends State<RequiredInformationView> {
                                     );
                                   }).toList(),
                               onChanged: (val) {
-                                if (val != null) {
-                                  cubit.updateIdType(val);
-                                  setState(() => _idTypeError = null);
+                                if (val == null) return;
+                                final previous = state.idType?.trim();
+                                final next = val.trim();
+                                final changed = previous != next;
+                                cubit.updateIdType(next);
+                                if (changed) {
+                                  _idNumberController.clear();
+                                  cubit.updateIdNumber('');
                                 }
+                                setState(() {
+                                  _idTypeError = null;
+                                  if (changed) _idNumberError = null;
+                                });
                               },
                             );
                           },

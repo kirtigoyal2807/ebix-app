@@ -275,7 +275,7 @@ abstract class AppLocalizations {
   /// No description provided for @resendCode.
   ///
   /// In en, this message translates to:
-  /// **'Resend Code'**
+  /// **' Resend Code'**
   String get resendCode;
 
   /// No description provided for @resendCodeIn.
@@ -2915,13 +2915,13 @@ abstract class AppLocalizations {
   /// No description provided for @idNumberPassportInvalid.
   ///
   /// In en, this message translates to:
-  /// **'Enter a valid passport number (6–20 letters or digits).'**
+  /// **'Enter a valid passport number (1 letter followed by 8 digits).'**
   String get idNumberPassportInvalid;
 
   /// No description provided for @idNumberDriverLicenseInvalid.
   ///
   /// In en, this message translates to:
-  /// **'Enter a valid driver\'s license number (4–24 letters or digits).'**
+  /// **'Enter a valid driving license number (10 digits).'**
   String get idNumberDriverLicenseInvalid;
 
   /// No description provided for @filters.

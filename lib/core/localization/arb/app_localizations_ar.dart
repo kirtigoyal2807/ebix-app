@@ -1516,11 +1516,11 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get idNumberPassportInvalid =>
-      'يُرجى إدخال رقم جواز سفر صالح (6–20 من الأحرف والأرقام).';
+      'يُرجى إدخال رقم جواز سفر صالح (حرف واحد متبوع بـ 8 أرقام).';
 
   @override
   String get idNumberDriverLicenseInvalid =>
-      'يُرجى إدخال رقم رخصة قيادة صالح (4–24 من الأحرف والأرقام).';
+      'يُرجى إدخال رقم رخصة قيادة صالح (10 أرقام).';
 
   @override
   String get filters => 'الفلاتر';

@@ -66,15 +66,15 @@ abstract final class IdDocumentValidators {
     return saudiGovernmentIdChecksumValid(d);
   }
 
+  /// Passport: one letter + 8 digits (e.g. `A12345678`).
   static bool isValidPassportNumber(String raw) {
     final compact = raw.replaceAll(RegExp(r'\s'), '');
-    if (compact.length < 6 || compact.length > 20) return false;
-    return RegExp(r'^[A-Za-z0-9]+$').hasMatch(compact);
+    return RegExp(r'^[A-Za-z]\d{8}$').hasMatch(compact);
   }
 
+  /// Driving license: exactly 10 digits.
   static bool isValidDriverLicenseNumber(String raw) {
-    final compact = raw.replaceAll(RegExp(r'\s'), '');
-    if (compact.length < 4 || compact.length > 24) return false;
-    return RegExp(r'^[A-Za-z0-9]+$').hasMatch(compact);
+    final digits = raw.replaceAll(RegExp(r'\D'), '');
+    return RegExp(r'^\d{10}$').hasMatch(digits);
   }
 }

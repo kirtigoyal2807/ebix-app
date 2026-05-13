@@ -111,6 +111,22 @@ class TopTrainersSection extends StatelessWidget {
     );
   }
 
+  void _openTrainerDetails(
+    BuildContext context,
+    HomeTrainer trainer, {
+    required bool scrollToUpcomingClassesOnOpen,
+  }) {
+    Navigator.push(
+      context,
+      MaterialPageRoute<void>(
+        builder: (context) => TrainerDetailsView(
+          trainer: _toTrainerResource(trainer),
+          scrollToUpcomingClassesOnOpen: scrollToUpcomingClassesOnOpen,
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
@@ -139,30 +155,25 @@ class TopTrainersSection extends StatelessWidget {
           return SizedBox(
             width: itemWidth,
             height: itemHeight,
-            child: GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => TrainerDetailsView(
-                      trainer: _toTrainerResource(trainer),
-                      scrollToUpcomingClassesOnOpen: true,
-                    ),
-                  ),
-                );
-              },
-              child: Container(
-                padding: EdgeInsets.all(pad),
-                decoration: BoxDecoration(
-                  color: isDark
-                      ? AppColors.trainerBlackBackgroundColor
-                      : AppColors.seekBarLight,
-                  borderRadius: BorderRadius.circular(AppRadius.md),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Expanded(
+            child: Container(
+              padding: EdgeInsets.all(pad),
+              decoration: BoxDecoration(
+                color: isDark
+                    ? AppColors.trainerBlackBackgroundColor
+                    : AppColors.seekBarLight,
+                borderRadius: BorderRadius.circular(AppRadius.md),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: GestureDetector(
+                      behavior: HitTestBehavior.opaque,
+                      onTap: () => _openTrainerDetails(
+                        context,
+                        trainer,
+                        scrollToUpcomingClassesOnOpen: false,
+                      ),
                       child: Center(
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -213,7 +224,15 @@ class TopTrainersSection extends StatelessWidget {
                         ),
                       ),
                     ),
-                    Padding(
+                  ),
+                  GestureDetector(
+                    behavior: HitTestBehavior.opaque,
+                    onTap: () => _openTrainerDetails(
+                      context,
+                      trainer,
+                      scrollToUpcomingClassesOnOpen: true,
+                    ),
+                    child: Padding(
                       padding: EdgeInsets.only(top: AppSpacing.xi),
                       child: AppText(
                         context.l10n.viewClasses,
@@ -231,8 +250,8 @@ class TopTrainersSection extends StatelessWidget {
                         textAlign: TextAlign.center,
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           );
