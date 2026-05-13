@@ -135,7 +135,11 @@ class _HomeShell extends StatelessWidget {
   Widget _buildBottomNavBar(BuildContext context, int currentIndex) {
     final size = MediaQuery.sizeOf(context);
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final bottomSafeArea = MediaQuery.paddingOf(context).bottom;
+    // Use viewPadding (not padding) so we still detect devices with system
+    // gesture / nav insets even when an ancestor SafeArea has consumed the
+    // padding. On devices with no system inset (e.g. older phones with
+    // hardware buttons) add a small bottom gap for visual comfort.
+    final bottomSafeArea = MediaQuery.viewPaddingOf(context).bottom;
     final bottomPadding = bottomSafeArea > 0 ? 0.0 : AppSpacing.base;
     final activeColor = isDark
         ? AppColors.languageIconDark
