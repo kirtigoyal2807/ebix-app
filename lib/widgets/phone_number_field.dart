@@ -286,7 +286,7 @@ class _PhoneNumberFieldState extends State<PhoneNumberField> {
                       padding: EdgeInsets.symmetric(horizontal: 2),
                       dialogSize: Size(
                         screenSize.width,
-                        screenSize.height * 0.74,
+                        screenSize.height * 0.7,
                       ),
                       boxDecoration: BoxDecoration(
                         color: theme.colorScheme.surface,
@@ -323,7 +323,11 @@ class _PhoneNumberFieldState extends State<PhoneNumberField> {
                   ),
                 ),
 
-                SizedBox(width: AppSpacing.sm),
+                Container(
+                width: 1,
+                height: 24,
+    color: theme.dividerColor,
+    ),
 
                 Expanded(
                   child: TextField(

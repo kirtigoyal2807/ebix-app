@@ -217,8 +217,8 @@ class AppTextStyles {
     return _applyArStyle(
       context,
       GoogleFonts.inter(
-        fontSize: 18,
-        fontWeight: FontWeight.w500,
+        // fontSize: 15,
+        fontWeight: FontWeight.w400,
         color: isDark ? AppColors.lightText : AppColors.darkText,
         height: 1.2,
         decoration: TextDecoration.none,
@@ -233,7 +233,7 @@ class AppTextStyles {
       context,
       GoogleFonts.inter(
         fontSize: 18,
-        fontWeight: FontWeight.w500,
+        fontWeight: FontWeight.w400,
         color: isDark ? AppColors.lightText : AppColors.darkText,
         height: 1.25,
         decoration: TextDecoration.none,
