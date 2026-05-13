@@ -12,6 +12,36 @@ void main() {
     );
   });
 
+  test(
+    'SA validates NSN only when country calling code was pasted into the field',
+    () {
+      expect(
+        PhoneNumberCountryValidation.isValidNationalNumber(
+          iso3166Alpha2: 'SA',
+          nationalDigitsOnly: '966501234567',
+        ),
+        isTrue,
+      );
+    },
+  );
+
+  test('IN rejects short NSN that only matched toll-free length metadata', () {
+    expect(
+      PhoneNumberCountryValidation.isValidNationalNumber(
+        iso3166Alpha2: 'IN',
+        nationalDigitsOnly: '98765432',
+      ),
+      isFalse,
+    );
+    expect(
+      PhoneNumberCountryValidation.isValidNationalNumber(
+        iso3166Alpha2: 'IN',
+        nationalDigitsOnly: '9876543210',
+      ),
+      isTrue,
+    );
+  });
+
   test('SA local mobile with leading 0 is valid', () {
     expect(
       PhoneNumberCountryValidation.isValidNationalNumber(

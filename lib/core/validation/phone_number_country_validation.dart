@@ -5,11 +5,44 @@ import 'package:pilates_app/core/localization/arb/app_localizations.dart';
 abstract final class PhoneNumberCountryValidation {
   PhoneNumberCountryValidation._();
 
+  /// Mobile / fixed-line only — never use untyped [PhoneNumber.isValidLength], which also
+  /// accepts toll-free, premium, shared-cost, etc. (e.g. India toll-free allows length 8).
+  static bool _hasValidSubscriberLength(PhoneNumber parsed) {
+    return parsed.isValidLength(type: PhoneNumberType.mobile) ||
+        parsed.isValidLength(type: PhoneNumberType.fixedLine);
+  }
+
+  /// Normalizes user-entered digits to the national subscriber number (NSN) for [iso3166Alpha2]:
+  /// strips non-digits, optionally removes a redundant leading country calling code when the
+  /// selected country's code was pasted together with the NSN, then strips one trunk `0`.
   static String _normalizedNationalDigits({
     required String iso3166Alpha2,
     required String nationalDigitsOnly,
   }) {
     var digits = nationalDigitsOnly.replaceAll(RegExp(r'\D'), '');
+    if (digits.isEmpty) return digits;
+
+    IsoCode iso;
+    try {
+      iso = IsoCode.fromJson(iso3166Alpha2.trim().toUpperCase());
+    } catch (_) {
+      return digits;
+    }
+
+    final cc = PhoneNumber(isoCode: iso, nsn: '0').countryCode;
+    if (cc.isNotEmpty &&
+        digits.startsWith(cc) &&
+        digits.length > cc.length) {
+      final withoutCc = digits.substring(cc.length);
+      final full = PhoneNumber(isoCode: iso, nsn: digits);
+      final stripped = PhoneNumber(isoCode: iso, nsn: withoutCc);
+      final fullOk = _hasValidSubscriberLength(full);
+      final strippedOk = _hasValidSubscriberLength(stripped);
+      if (!fullOk && strippedOk) {
+        digits = withoutCc;
+      }
+    }
+
     // Remove optional single leading zero for validation (common trunk prefix).
     // Example: 09876543210 -> 9876543210 for length validation.
     if (digits.startsWith('0') && digits.length > 1) {
@@ -35,16 +68,8 @@ abstract final class PhoneNumberCountryValidation {
       nationalDigitsOnly: nationalDigitsOnly,
     );
     if (digits.isEmpty) return false;
-    try {
-      final parsed = PhoneNumber.parse(digits, callerCountry: iso);
-      final hasSubscriberLength =
-          parsed.isValidLength(type: PhoneNumberType.mobile) ||
-          parsed.isValidLength(type: PhoneNumberType.fixedLine);
-      if (hasSubscriberLength) return true;
-      return parsed.isValidLength();
-    } catch (_) {
-      return false;
-    }
+    final parsed = PhoneNumber(isoCode: iso, nsn: digits);
+    return _hasValidSubscriberLength(parsed);
   }
 
   /// Null when the user may proceed (complete, valid national number for the country).
