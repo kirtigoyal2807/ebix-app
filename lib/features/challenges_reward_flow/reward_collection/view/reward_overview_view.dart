@@ -68,7 +68,7 @@ class RewardOverviewView extends StatelessWidget {
             Padding(
               padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
               child:
-                  BlocBuilder<LoyaltyTiersCubit, LoyaltyTiersState>(
+              BlocBuilder<LoyaltyTiersCubit, LoyaltyTiersState>(
                 buildWhen: (p, c) => p.tiers != c.tiers || p.status != c.status,
                 builder: (context, tState) {
                   LoyaltyTier? current;
@@ -82,8 +82,8 @@ class RewardOverviewView extends StatelessWidget {
                   final heading = name.isEmpty
                       ? context.l10n.your_silver_benefits
                       : AppLocalizations.of(
-                          context,
-                        ).memberTierBenefits(name);
+                    context,
+                  ).memberTierBenefits(name);
                   return AppText(
                     heading,
                     style: (context) => AppTextStyles.gelasioRegular(context),
@@ -113,7 +113,7 @@ class RewardOverviewView extends StatelessWidget {
             SizedBox(height: AppSpacing.md),
             BlocBuilder<RewardCubit, RewardState>(
               buildWhen: (p, c) =>
-                  p.rewardsLoadStatus != c.rewardsLoadStatus ||
+              p.rewardsLoadStatus != c.rewardsLoadStatus ||
                   p.filteredRewards != c.filteredRewards ||
                   p.rewardsError != c.rewardsError ||
                   p.selectedRewardFilter != c.selectedRewardFilter ||
@@ -220,7 +220,7 @@ class RewardOverviewView extends StatelessWidget {
 
     return BlocBuilder<RewardCubit, RewardState>(
       buildWhen: (p, c) =>
-          p.pointsHistory != c.pointsHistory ||
+      p.pointsHistory != c.pointsHistory ||
           p.historyLoadStatus != c.historyLoadStatus,
       builder: (context, rewardState) {
         return BlocBuilder<LoyaltyTiersCubit, LoyaltyTiersState>(
@@ -251,12 +251,12 @@ class RewardOverviewView extends StatelessWidget {
             final ptsRemain = current?.pointsToNext;
             final showPtsRow =
                 ptsRemain != null &&
-                ptsRemain > 0 &&
-                !tiers.isEmpty &&
-                tiersState.status == LoyaltyTiersLoadStatus.loaded;
+                    ptsRemain > 0 &&
+                    !tiers.isEmpty &&
+                    tiersState.status == LoyaltyTiersLoadStatus.loaded;
             final nextName = next?.name.trim();
             final progressLabel =
-                nextName != null && nextName.isNotEmpty
+            nextName != null && nextName.isNotEmpty
                 ? '${context.l10n.progress_to_gold}: $nextName'
                 : context.l10n.progress_to_gold;
 
@@ -289,7 +289,7 @@ class RewardOverviewView extends StatelessWidget {
                   ),
                   SizedBox(height: 2),
                   if (tiersState.status ==
-                          LoyaltyTiersLoadStatus.loading &&
+                      LoyaltyTiersLoadStatus.loading &&
                       tiers.isEmpty)
                     Padding(
                       padding: EdgeInsets.only(top: AppSpacing.sm),
@@ -311,8 +311,8 @@ class RewardOverviewView extends StatelessWidget {
                       current?.name.trim().isNotEmpty == true
                           ? current!.name.trim()
                           : AppLocalizations.of(
-                              context,
-                            ).contentNoDataAvailable,
+                        context,
+                      ).contentNoDataAvailable,
                       style: (c) =>
                           AppTextStyles.textFieldHeading(c).copyWith(),
                     ),
@@ -401,14 +401,14 @@ class RewardOverviewView extends StatelessWidget {
                   SizedBox(height: AppSpacing.xs),
                   BlocBuilder<RewardCubit, RewardState>(
                     buildWhen: (p, c) =>
-                        p.selectedBranch != c.selectedBranch ||
+                    p.selectedBranch != c.selectedBranch ||
                         p.branchList != c.branchList,
                     builder: (context, state) {
                       final branch = state.branchList.isNotEmpty
                           ? state.branchList[state.selectedBranch.clamp(
-                              0,
-                              state.branchList.length - 1,
-                            )]
+                        0,
+                        state.branchList.length - 1,
+                      )]
                           : null;
                       final title = branch == null
                           ? ''
