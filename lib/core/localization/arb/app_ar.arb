@@ -1297,6 +1297,8 @@
   "enterValidAge": "يُرجى إدخال عمر صالح بين 1 و 120",
   "enterValidHeightCm": "يُرجى إدخال الطول بين 50 و 300 سم",
   "enterValidWeightKg": "يُرجى إدخال الوزن بين 20 و 400 كجم",
+  "pleaseFillHeight": "يُرجى إدخال الطول.",
+  "pleaseFillWeight": "يُرجى إدخال الوزن.",
   "pleaseEnterPassword": "يُرجى إدخال كلمة المرور",
   "pleaseEnterPhone": "يُرجى إدخال رقم الهاتف",
   "invalidPhoneForCountry": "يُرجى إدخال رقم هاتف صالح لهذا البلد.",

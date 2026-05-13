@@ -5726,6 +5726,18 @@ abstract class AppLocalizations {
   /// **'Please enter weight between 20 and 400 kg'**
   String get enterValidWeightKg;
 
+  /// No description provided for @pleaseFillHeight.
+  ///
+  /// In en, this message translates to:
+  /// **'Please fill in your height.'**
+  String get pleaseFillHeight;
+
+  /// No description provided for @pleaseFillWeight.
+  ///
+  /// In en, this message translates to:
+  /// **'Please fill in your weight.'**
+  String get pleaseFillWeight;
+
   /// No description provided for @pleaseEnterPassword.
   ///
   /// In en, this message translates to:

@@ -1293,6 +1293,8 @@
   "enterValidAge": "Please enter a valid age between 1 and 120",
   "enterValidHeightCm": "Please enter height between 50 and 300 cm",
   "enterValidWeightKg": "Please enter weight between 20 and 400 kg",
+  "pleaseFillHeight": "Please fill in your height.",
+  "pleaseFillWeight": "Please fill in your weight.",
   "pleaseEnterPassword": "Please enter your password",
   "pleaseEnterPhone": "Please enter your phone number",
   "invalidPhoneForCountry": "Enter a valid phone number for this country.",

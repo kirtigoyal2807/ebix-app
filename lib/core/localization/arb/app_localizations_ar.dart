@@ -3026,6 +3026,12 @@ class AppLocalizationsAr extends AppLocalizations {
   String get enterValidWeightKg => 'يُرجى إدخال الوزن بين 20 و 400 كجم';
 
   @override
+  String get pleaseFillHeight => 'يُرجى إدخال الطول.';
+
+  @override
+  String get pleaseFillWeight => 'يُرجى إدخال الوزن.';
+
+  @override
   String get pleaseEnterPassword => 'يُرجى إدخال كلمة المرور';
 
   @override

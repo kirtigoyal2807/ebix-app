@@ -3049,6 +3049,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get enterValidWeightKg => 'Please enter weight between 20 and 400 kg';
 
   @override
+  String get pleaseFillHeight => 'Please fill in your height.';
+
+  @override
+  String get pleaseFillWeight => 'Please fill in your weight.';
+
+  @override
   String get pleaseEnterPassword => 'Please enter your password';
 
   @override
