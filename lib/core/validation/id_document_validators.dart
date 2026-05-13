@@ -1,10 +1,32 @@
 /// Rules for government ID on emergency-contact / checkout (`idType` + `idNumber`).
+///
+/// Per-type rules (after normalization in UI):
+/// - **National ID**: `^1\d{9}$` — 10 digits starting with 1 + valid Saudi checksum.
+/// - **Iqama**: `^2\d{9}$` — 10 digits starting with 2 + same checksum.
+/// - **Passport**: `^[A-Za-z]\d{8}$` — one letter + eight digits.
+/// - **Driver License**: `^\d{10}$` — ten digits.
 abstract final class IdDocumentValidators {
   IdDocumentValidators._();
 
+  /// Values accepted by the identity dropdown in [RequiredInformationView].
+  static const List<String> allowedUiIdTypes = <String>[
+    'National ID',
+    'Iqama',
+    'Passport',
+    'Driver License',
+  ];
+
+  /// `true` when [uiIdType] is one of [allowedUiIdTypes].
+  static bool isAllowedUiIdType(String? uiIdType) {
+    final t = uiIdType?.trim();
+    if (t == null || t.isEmpty) return false;
+    return allowedUiIdTypes.contains(t);
+  }
+
   /// UI dropdown values from [RequiredInformationView] (`National ID`, etc.).
   static bool isValidForUiIdType(String? uiIdType, String raw) {
-    final t = uiIdType?.trim();
+    if (!isAllowedUiIdType(uiIdType)) return false;
+    final t = uiIdType!.trim();
     final s = raw.trim();
     if (s.isEmpty) return false;
     switch (t) {
@@ -17,7 +39,7 @@ abstract final class IdDocumentValidators {
       case 'Driver License':
         return isValidDriverLicenseNumber(s);
       default:
-        return s.isNotEmpty && s.length <= 100;
+        return false;
     }
   }
 

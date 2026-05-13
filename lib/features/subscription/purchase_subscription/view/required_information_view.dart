@@ -92,7 +92,6 @@ class _RequiredInformationViewState extends State<RequiredInformationView> {
     final s = cubit.state;
     final name = s.emergencyContactName.trim();
     final idRaw = _idNumberController.text;
-    final idForRules = _idValueForRules(s.idType, idRaw);
 
     final nameOk = name.isNotEmpty && ContactValidators.isValidPersonName(name);
     final phoneOk = PersonalInformationValidators.isTenDigitMobile(
@@ -101,8 +100,8 @@ class _RequiredInformationViewState extends State<RequiredInformationView> {
     final relOk =
         s.emergencyContactRelationship != null &&
         s.emergencyContactRelationship!.trim().isNotEmpty;
-    final typeOk = s.idType != null && s.idType!.trim().isNotEmpty;
-    final idOk = IdDocumentValidators.isValidForUiIdType(s.idType, idForRules);
+    final typeOk = IdDocumentValidators.isAllowedUiIdType(s.idType);
+    final idOk = IdDocumentValidators.isValidForUiIdType(s.idType, idRaw);
 
     setState(() {
       _nameError = name.isEmpty
@@ -116,8 +115,17 @@ class _RequiredInformationViewState extends State<RequiredInformationView> {
       _relationshipError = relOk
           ? null
           : l10n.pleaseCompletePersonalInformation;
-      _idTypeError = typeOk ? null : l10n.pleaseCompletePersonalInformation;
-      _idNumberError = _idNumberFieldError(s.idType, idRaw, l10n);
+      _idTypeError = typeOk
+          ? null
+          : ((s.idType?.trim().isEmpty ?? true)
+                ? l10n.pleaseCompletePersonalInformation
+                : l10n.pleaseSelectValidIdType);
+      _idNumberError = _idNumberFieldError(
+        s.idType,
+        idRaw,
+        l10n,
+        treatEmptyAsNoError: false,
+      );
     });
 
     if (!nameOk || !phoneOk || !relOk || !typeOk || !idOk) {
@@ -205,18 +213,24 @@ class _RequiredInformationViewState extends State<RequiredInformationView> {
     }
   }
 
-  bool _hasAllInformationFilled(SubscriptionState s) {
-    final phoneDigits = _emergencyPhoneController.text.replaceAll(
-      RegExp(r'\D'),
-      '',
-    );
-    final idRaw = _idNumberController.text;
-    final idForRules = _idValueForRules(s.idType, idRaw);
-    return _emergencyNameController.text.trim().isNotEmpty &&
-        phoneDigits.isNotEmpty &&
-        (s.emergencyContactRelationship?.trim().isNotEmpty ?? false) &&
-        (s.idType?.trim().isNotEmpty ?? false) &&
-        IdDocumentValidators.isValidForUiIdType(s.idType, idForRules);
+  bool _hasMinimumFieldsForSubmitAttempt(SubscriptionState s, String idRaw) {
+    final name = s.emergencyContactName.trim();
+    if (name.isEmpty || !ContactValidators.isValidPersonName(name)) {
+      return false;
+    }
+    if (!PersonalInformationValidators.isTenDigitMobile(s.emergencyContactPhone)) {
+      return false;
+    }
+    if (s.emergencyContactRelationship?.trim().isEmpty ?? true) {
+      return false;
+    }
+    if (!IdDocumentValidators.isAllowedUiIdType(s.idType)) {
+      return false;
+    }
+    if (idRaw.trim().isEmpty) {
+      return false;
+    }
+    return true;
   }
 
   /// Value passed to [IdDocumentValidators] and API normalization where applicable.
@@ -236,13 +250,17 @@ class _RequiredInformationViewState extends State<RequiredInformationView> {
   String? _idNumberFieldError(
     String? uiIdType,
     String raw,
-    AppLocalizations l10n,
-  ) {
+    AppLocalizations l10n, {
+    bool treatEmptyAsNoError = false,
+  }) {
+    if (!IdDocumentValidators.isAllowedUiIdType(uiIdType)) {
+      return null;
+    }
     final forRules = _idValueForRules(uiIdType, raw);
     if (forRules.isEmpty) {
-      return l10n.pleaseCompletePersonalInformation;
+      return treatEmptyAsNoError ? null : l10n.pleaseCompletePersonalInformation;
     }
-    if (!IdDocumentValidators.isValidForUiIdType(uiIdType, forRules)) {
+    if (!IdDocumentValidators.isValidForUiIdType(uiIdType, raw)) {
       switch (uiIdType?.trim()) {
         case 'National ID':
           return l10n.idNumberNationalIdInvalid;
@@ -603,7 +621,14 @@ class _RequiredInformationViewState extends State<RequiredInformationView> {
                               errorText: _idNumberError,
                               onChanged: (_) {
                                 cubit.updateIdNumber(_idNumberController.text);
-                                setState(() => _idNumberError = null);
+                                setState(() {
+                                  _idNumberError = _idNumberFieldError(
+                                    cubit.state.idType,
+                                    _idNumberController.text,
+                                    l10n,
+                                    treatEmptyAsNoError: true,
+                                  );
+                                });
                               },
                             );
                           },
@@ -629,8 +654,11 @@ class _RequiredInformationViewState extends State<RequiredInformationView> {
                       p.emergencyContactName != c.emergencyContactName ||
                       p.emergencyContactPhone != c.emergencyContactPhone,
                   builder: (context, state) {
-                    final canSubmit =
-                        !_isSubmitting && _hasAllInformationFilled(state);
+                    final canSubmit = !_isSubmitting &&
+                        _hasMinimumFieldsForSubmitAttempt(
+                          state,
+                          _idNumberController.text,
+                        );
                     return AppButton(
                       label: l10n.submit,
                       onPressed: canSubmit

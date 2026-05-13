@@ -2894,6 +2894,12 @@ abstract class AppLocalizations {
   /// **'Select ID Type'**
   String get selectIdType;
 
+  /// No description provided for @pleaseSelectValidIdType.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select a valid ID type.'**
+  String get pleaseSelectValidIdType;
+
   /// No description provided for @idNumber.
   ///
   /// In en, this message translates to:
@@ -2903,25 +2909,25 @@ abstract class AppLocalizations {
   /// No description provided for @idNumberNationalIdInvalid.
   ///
   /// In en, this message translates to:
-  /// **'Enter a valid Saudi National ID (10 digits, starts with 1).'**
+  /// **'Invalid National ID. Enter 10 digits starting with 1 that pass the official Saudi checksum.'**
   String get idNumberNationalIdInvalid;
 
   /// No description provided for @idNumberIqamaInvalid.
   ///
   /// In en, this message translates to:
-  /// **'Enter a valid Iqama number (10 digits, starts with 2).'**
+  /// **'Invalid Iqama. Enter 10 digits starting with 2 that pass the official Saudi checksum.'**
   String get idNumberIqamaInvalid;
 
   /// No description provided for @idNumberPassportInvalid.
   ///
   /// In en, this message translates to:
-  /// **'Enter a valid passport number (1 letter followed by 8 digits).'**
+  /// **'Invalid passport. Enter 1 English letter (A–Z or a–z) followed by exactly 8 digits.'**
   String get idNumberPassportInvalid;
 
   /// No description provided for @idNumberDriverLicenseInvalid.
   ///
   /// In en, this message translates to:
-  /// **'Enter a valid driving license number (10 digits).'**
+  /// **'Invalid driving license. Enter exactly 10 digits only.'**
   String get idNumberDriverLicenseInvalid;
 
   /// No description provided for @filters.

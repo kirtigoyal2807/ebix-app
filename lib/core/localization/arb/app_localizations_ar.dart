@@ -1504,23 +1504,26 @@ class AppLocalizationsAr extends AppLocalizations {
   String get selectIdType => 'اختر نوع الهوية';
 
   @override
+  String get pleaseSelectValidIdType => 'يُرجى اختيار نوع هوية صالح.';
+
+  @override
   String get idNumber => 'رقم الهوية';
 
   @override
   String get idNumberNationalIdInvalid =>
-      'يُرجى إدخال رقم الهوية الوطنية الصالح (١٠ أرقام تبدأ بالرقم ١).';
+      'رقم الهوية الوطنية غير صالح. أدخل 10 أرقام تبدأ بـ 1 وتمر بالتحقق الرسمي السعودي.';
 
   @override
   String get idNumberIqamaInvalid =>
-      'يُرجى إدخال رقم إقامة صالح (١٠ أرقام يبدأ بالرقم ٢).';
+      'رقم الإقامة غير صالح. أدخل 10 أرقام تبدأ بـ 2 وتمر بالتحقق الرسمي السعودي.';
 
   @override
   String get idNumberPassportInvalid =>
-      'يُرجى إدخال رقم جواز سفر صالح (حرف واحد متبوع بـ 8 أرقام).';
+      'رقم جواز السفر غير صالح. أدخل حرفًا لاتينيًا واحدًا (A–Z أو a–z) متبوعًا بـ 8 أرقام بالضبط.';
 
   @override
   String get idNumberDriverLicenseInvalid =>
-      'يُرجى إدخال رقم رخصة قيادة صالح (10 أرقام).';
+      'رقم الرخصة غير صالح. أدخل 10 أرقام بالضبط دون أي أحرف أخرى.';
 
   @override
   String get filters => 'الفلاتر';

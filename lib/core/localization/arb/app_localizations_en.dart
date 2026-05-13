@@ -1518,23 +1518,26 @@ class AppLocalizationsEn extends AppLocalizations {
   String get selectIdType => 'Select ID Type';
 
   @override
+  String get pleaseSelectValidIdType => 'Please select a valid ID type.';
+
+  @override
   String get idNumber => 'ID Number';
 
   @override
   String get idNumberNationalIdInvalid =>
-      'Enter a valid Saudi National ID (10 digits, starts with 1).';
+      'Invalid National ID. Enter 10 digits starting with 1 that pass the official Saudi checksum.';
 
   @override
   String get idNumberIqamaInvalid =>
-      'Enter a valid Iqama number (10 digits, starts with 2).';
+      'Invalid Iqama. Enter 10 digits starting with 2 that pass the official Saudi checksum.';
 
   @override
   String get idNumberPassportInvalid =>
-      'Enter a valid passport number (1 letter followed by 8 digits).';
+      'Invalid passport. Enter 1 English letter (A–Z or a–z) followed by exactly 8 digits.';
 
   @override
   String get idNumberDriverLicenseInvalid =>
-      'Enter a valid driving license number (10 digits).';
+      'Invalid driving license. Enter exactly 10 digits only.';
 
   @override
   String get filters => 'Filters';
