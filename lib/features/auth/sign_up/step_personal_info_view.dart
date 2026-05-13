@@ -17,6 +17,7 @@ import 'package:pilates_app/widgets/phone_number_field.dart';
 
 import '../../../core/localization/localization_extension.dart';
 import '../../../core/utils/date_of_birth_constraints.dart';
+import '../../../core/utils/show_date_of_birth_picker.dart';
 import '../../../core/utils/input_validators.dart';
 import '../../../core/validation/phone_number_country_validation.dart';
 import 'widgets/sign_up_header.dart';
@@ -390,8 +391,8 @@ class _SignUpPersonalInfoViewState extends State<SignUpPersonalInfoView> {
                                           lastDob,
                                         );
                                     final DateTime? picked =
-                                        await showDatePicker(
-                                          context: context,
+                                        await showDateOfBirthPicker(
+                                          context,
                                           initialDate: initial,
                                           firstDate: firstDate,
                                           lastDate: lastDob,
@@ -500,6 +501,7 @@ class _SignUpPersonalInfoViewState extends State<SignUpPersonalInfoView> {
                                 });
                               },
                             ),
+                            SizedBox(height: AppSpacing.lmd),
                             SizedBox(
                               height:
                                   MediaQuery.sizeOf(context).height * 0.04 + 48,

@@ -4,6 +4,7 @@ import 'package:pilates_app/core/network/api_result.dart';
 import 'package:pilates_app/core/network/api_envelope.dart';
 import 'package:pilates_app/core/network/base_repository.dart';
 import 'package:pilates_app/core/network/network_exception.dart';
+import 'package:pilates_app/features/account/data/models/profile_update_result.dart';
 
 import 'models/branches_list_result.dart';
 import 'models/branch.dart';
@@ -249,10 +250,10 @@ class AuthRepository extends BaseRepository {
   }
 
   /// Customer profile — requires JWT (saved after login).
-  /// Uses `GET /auth/me` which returns full profile with goals, subscriptions, etc.
+  /// Uses `GET /customers/profile` which returns full profile with goals, subscriptions, etc.
   Future<ApiResult<AuthUser>> getProfile() {
     return get<AuthUser>(
-      'auth/me',
+      'customers/profile',
       fromJson: (json) => AuthUser.fromJson(json as Map<String, dynamic>),
     );
   }
@@ -260,6 +261,7 @@ class AuthRepository extends BaseRepository {
   /// Update customer profile — `PUT /customers/profile`. All fields optional.
   /// Send only the fields the user changed. Returns the updated [AuthUser].
   /// When [avatarPath] is provided, uses `multipart/form-data`; otherwise JSON.
+  /// When phone number changes, API may return phone verification required.
   Future<ApiResult<AuthUser>> updateProfile({
     String? firstName,
     String? lastName,
@@ -315,6 +317,123 @@ class AuthRepository extends BaseRepository {
       options: Options(contentType: 'application/json'),
       fromJson: (json) => AuthUser.fromJson(json as Map<String, dynamic>),
     );
+  }
+
+  /// Update profile with phone change detection.
+  /// Returns [ProfileUpdateResult.success] with updated user,
+  /// or [ProfileUpdateResult.phoneVerificationRequired] when OTP is sent.
+  ///
+  /// Note: API returns success=true even when phone verification is required,
+  /// so we need to check the raw response data for phoneVerificationRequired flag
+  /// before parsing as AuthUser.
+  Future<ProfileUpdateResult> updateProfileWithPhoneHandling({
+    String? firstName,
+    String? lastName,
+    String? email,
+    String? phone,
+    String? gender,
+    DateTime? dob,
+    String? avatarPath,
+  }) async {
+    final fields = <String, dynamic>{};
+    if (firstName != null && firstName.isNotEmpty) {
+      fields['firstName'] = firstName.trim();
+    }
+    if (lastName != null && lastName.isNotEmpty) {
+      fields['lastName'] = lastName.trim();
+    }
+    if (email != null && email.isNotEmpty) {
+      fields['email'] = email.trim();
+    }
+    if (phone != null && phone.isNotEmpty) fields['phone'] = phone;
+    if (gender != null && gender.isNotEmpty) fields['gender'] = gender;
+    if (dob != null) {
+      final y = dob.year.toString().padLeft(4, '0');
+      final m = dob.month.toString().padLeft(2, '0');
+      final d = dob.day.toString().padLeft(2, '0');
+      fields['dob'] = '$y-$m-$d';
+    }
+
+    final hasAvatar = avatarPath != null && avatarPath.isNotEmpty;
+
+    try {
+      final response = await httpClient.request<dynamic>(
+        'customers/profile',
+        data: hasAvatar
+            ? FormData.fromMap({
+                '_method': 'PUT',
+                ...fields,
+                'avatar': await MultipartFile.fromFile(
+                  avatarPath,
+                  filename: avatarPath.split('/').last,
+                ),
+              })
+            : fields,
+        options: Options(
+          method: hasAvatar ? 'POST' : 'PUT',
+          contentType: hasAvatar ? 'multipart/form-data' : 'application/json',
+        ),
+      );
+
+      final raw = response.data;
+      if (raw is! Map<String, dynamic>) {
+        return const ProfileUpdateFailure(message: 'Invalid response format');
+      }
+
+      final envelope = ApiEnvelopeParser.tryParse(raw);
+
+      // Check for phone verification required - API returns this with success=true
+      final responseData = raw['data'];
+      if (responseData is Map<String, dynamic>) {
+        final phoneVerificationRequired = responseData['phoneVerificationRequired'] as bool?;
+        final phoneNumber = responseData['phone'] as String?;
+        if (phoneVerificationRequired == true && phoneNumber != null) {
+          return ProfileUpdatePhoneVerificationRequired(
+            phone: phoneNumber,
+            otpCode: responseData['otpCode'] as String?,
+          );
+        }
+
+        // Normal success response with AuthUser data
+        if (envelope != null && envelope.success) {
+          final user = AuthUser.fromJson(responseData);
+          return ProfileUpdateSuccess(user);
+        }
+      }
+
+      return ProfileUpdateFailure(
+        message: envelope?.message ?? 'Profile update failed',
+        fieldErrors: _flattenFieldErrors(envelope?.fieldErrors),
+      );
+    } on DioException catch (e) {
+      final exception = NetworkException.fromDioException(e);
+      // Check if this is a phone verification response even in error case
+      final data = exception.responseData;
+      if (data is Map<String, dynamic>) {
+        final dataField = data['data'];
+        if (dataField is Map<String, dynamic>) {
+          final phoneVerificationRequired = dataField['phoneVerificationRequired'] as bool?;
+          final phoneNumber = dataField['phone'] as String?;
+          if (phoneVerificationRequired == true && phoneNumber != null) {
+            return ProfileUpdatePhoneVerificationRequired(
+              phone: phoneNumber,
+              otpCode: dataField['otpCode'] as String?,
+            );
+          }
+        }
+      }
+      return ProfileUpdateFailure(
+        message: exception.message ?? 'Profile update failed',
+        fieldErrors: _flattenFieldErrors(exception.fieldErrors),
+      );
+    } catch (e) {
+      return ProfileUpdateFailure(message: e.toString());
+    }
+  }
+
+  static Map<String, String> _flattenFieldErrors(Map<String, List<String>>? fieldErrors) {
+    if (fieldErrors == null || fieldErrors.isEmpty) return {};
+    return fieldErrors.map((key, value) => MapEntry(key, value.isNotEmpty ? value.first : ''));
   }
 
   /// Customer profile — requires JWT (saved after login).

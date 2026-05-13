@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-enum PersonalInfoSaveStatus { idle, loading, success, failure }
+enum PersonalInfoSaveStatus { idle, loading, success, failure, phoneVerificationRequired }
 
 class PersonalInfoState extends Equatable {
   final String? gender;
@@ -11,6 +11,9 @@ class PersonalInfoState extends Equatable {
   final String? selectedAvatarPath;
   final bool removeAvatar;
 
+  /// Phone number that requires OTP verification (when saveStatus is phoneVerificationRequired)
+  final String? pendingPhoneNumber;
+
   const PersonalInfoState({
     this.gender,
     this.dateOfBirth,
@@ -19,6 +22,7 @@ class PersonalInfoState extends Equatable {
     this.fieldErrors = const {},
     this.selectedAvatarPath,
     this.removeAvatar = false,
+    this.pendingPhoneNumber,
   });
 
   PersonalInfoState copyWith({
@@ -30,6 +34,7 @@ class PersonalInfoState extends Equatable {
     String? selectedAvatarPath,
     bool? removeAvatar,
     bool clearSelectedAvatar = false,
+    String? pendingPhoneNumber,
   }) {
     return PersonalInfoState(
       gender: gender ?? this.gender,
@@ -41,6 +46,7 @@ class PersonalInfoState extends Equatable {
           ? null
           : (selectedAvatarPath ?? this.selectedAvatarPath),
       removeAvatar: removeAvatar ?? this.removeAvatar,
+      pendingPhoneNumber: pendingPhoneNumber ?? this.pendingPhoneNumber,
     );
   }
 
@@ -53,5 +59,6 @@ class PersonalInfoState extends Equatable {
     fieldErrors,
     selectedAvatarPath,
     removeAvatar,
+    pendingPhoneNumber,
   ];
 }

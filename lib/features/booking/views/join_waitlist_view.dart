@@ -108,7 +108,6 @@ class _JoinWaitlistBody extends StatelessWidget {
             SizedBox(height: AppSpacing.lg),
             _buildErrorText(context),
             _buildFooterLinks(context, isDark),
-            SizedBox(height: MediaQuery.of(context).viewPadding.bottom),
           ],
         ),
       ),

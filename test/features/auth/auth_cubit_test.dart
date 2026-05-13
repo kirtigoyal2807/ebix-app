@@ -559,6 +559,70 @@ void main() {
     });
   });
 
+  group('AuthCubit profile refresh', () {
+    test(
+      'refreshProfileForAppOpenOrResume loads profile when authenticated',
+      () async {
+        await storage.saveToken('jwt-profile');
+        fakeRepo.getProfileResult = const ApiSuccess<AuthUser>(
+          AuthUser(email: 'fresh@example.com', name: 'Fresh User'),
+        );
+        final cubit = buildCubit(
+          seed: AuthState.initial().copyWith(
+            flow: AuthFlow.authenticated,
+            user: const AuthUser(email: 'cached@example.com'),
+          ),
+        );
+
+        await cubit.refreshProfileForAppOpenOrResume();
+
+        expect(fakeRepo.getProfileCalls, 1);
+        expect(cubit.state.user?.email, 'fresh@example.com');
+        expect(storage.readUser()?.email, 'fresh@example.com');
+        await cubit.close();
+      },
+    );
+
+    test(
+      'refreshProfileForAppOpenOrResume skips when not authenticated',
+      () async {
+        await storage.saveToken('jwt-profile');
+        final cubit = buildCubit(
+          seed: AuthState.initial().copyWith(flow: AuthFlow.signIn),
+        );
+
+        await cubit.refreshProfileForAppOpenOrResume();
+
+        expect(fakeRepo.getProfileCalls, 0);
+        await cubit.close();
+      },
+    );
+
+    test('loadProfile skips without a saved token', () async {
+      final cubit = buildCubit(
+        seed: AuthState.initial().copyWith(flow: AuthFlow.authenticated),
+      );
+
+      await cubit.loadProfile();
+
+      expect(fakeRepo.getProfileCalls, 0);
+      await cubit.close();
+    });
+
+    test('loadProfile reuses an in-flight profile request', () async {
+      await storage.saveToken('jwt-profile');
+      fakeRepo.getProfileDelay = const Duration(milliseconds: 10);
+      final cubit = buildCubit(
+        seed: AuthState.initial().copyWith(flow: AuthFlow.authenticated),
+      );
+
+      await Future.wait([cubit.loadProfile(), cubit.loadProfile()]);
+
+      expect(fakeRepo.getProfileCalls, 1);
+      await cubit.close();
+    });
+  });
+
   group('AuthCubit forgot password', () {
     test('requestForgotPassword success sets email', () async {
       fakeRepo.passwordForgotResult = const ApiSuccess<bool>(true);
