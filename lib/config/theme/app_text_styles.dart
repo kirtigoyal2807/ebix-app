@@ -212,6 +212,36 @@ class AppTextStyles {
     );
   }
 
+  static TextStyle phoneCountryCodeDial(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    return _applyArStyle(
+      context,
+      GoogleFonts.inter(
+        fontSize: 18,
+        fontWeight: FontWeight.w500,
+        color: isDark ? AppColors.lightText : AppColors.darkText,
+        height: 1.2,
+        decoration: TextDecoration.none,
+      ),
+      isHeading: false,
+    );
+  }
+
+  static TextStyle phoneCountryCodeBottomSheetItem(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    return _applyArStyle(
+      context,
+      GoogleFonts.inter(
+        fontSize: 18,
+        fontWeight: FontWeight.w500,
+        color: isDark ? AppColors.lightText : AppColors.darkText,
+        height: 1.25,
+        decoration: TextDecoration.none,
+      ),
+      isHeading: false,
+    );
+  }
+
   static TextStyle appBarTitle(BuildContext context, {FontWeight? fontWeight}) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return _applyArStyle(

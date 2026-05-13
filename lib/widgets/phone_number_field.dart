@@ -217,6 +217,7 @@ class _PhoneNumberFieldState extends State<PhoneNumberField> {
     final countryMessage = _countryValidationMessage(context);
     final displayError = widget.errorText ?? countryMessage;
     final hasError = displayError != null;
+    final screenSize = MediaQuery.sizeOf(context);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -243,50 +244,86 @@ class _PhoneNumberFieldState extends State<PhoneNumberField> {
               children: [
                 IgnorePointer(
                   ignoring: !widget.enabled,
-                  child: CountryCodePicker(
-                  pickerStyle: PickerStyle.bottomSheet,
-                  favorite: const ['SA'],
-                  headerText: context.l10n.selectCountry,
-                  onChanged: widget.enabled
-                      ? (CountryCode countryCode) => _onCountryChanged(countryCode)
-                      : null,
-                  initialSelection: widget.initialCountryIso,
-                  showCountryOnly: false,
-                  showOnlyCountryWhenClosed: false,
-                  alignLeft: false,
-                  padding: EdgeInsets.symmetric(horizontal: 2),
-                  boxDecoration: BoxDecoration(
-                    color: theme.colorScheme.surface,
-                    borderRadius: const BorderRadius.vertical(
-                      top: Radius.circular(AppRadius.md),
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: theme.colorScheme.shadow.withValues(alpha: 0.12),
-                        blurRadius: 12,
-                        offset: const Offset(0, -2),
+                  child: Theme(
+                    data: theme.copyWith(
+                      dividerColor: Colors.transparent,
+                      dividerTheme: const DividerThemeData(
+                        color: Colors.transparent,
+                        space: 0,
+                        thickness: 0,
                       ),
-                    ],
-                  ),
-                  searchDecoration: InputDecoration(
-                    hintText: context.l10n.searchCountry,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(AppRadius.md),
+                      bottomSheetTheme: theme.bottomSheetTheme.copyWith(
+                        showDragHandle: false,
+                      ),
+                      textButtonTheme: TextButtonThemeData(
+                        style: TextButton.styleFrom(
+                          foregroundColor:
+                              theme.colorScheme.onSurface,
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 8,
+                            vertical: 12,
+                          ),
+                          minimumSize: Size.zero,
+                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        ).copyWith(
+                          side: const WidgetStatePropertyAll(BorderSide.none),
+                        ),
+                      ),
                     ),
-                    contentPadding: EdgeInsets.symmetric(
-                      horizontal: AppSpacing.md,
-                      vertical: AppSpacing.md,
+                    child: CountryCodePicker(
+                      key: const ValueKey('phone_country_picker_no_divider'),
+                      pickerStyle: PickerStyle.bottomSheet,
+                      favorite: const ['SA'],
+                      headerText: context.l10n.selectCountry,
+                      onChanged: widget.enabled
+                          ? (CountryCode countryCode) =>
+                                _onCountryChanged(countryCode)
+                          : null,
+                      initialSelection: widget.initialCountryIso,
+                      showCountryOnly: false,
+                      showOnlyCountryWhenClosed: false,
+                      alignLeft: false,
+                      padding: EdgeInsets.symmetric(horizontal: 2),
+                      dialogSize: Size(
+                        screenSize.width,
+                        screenSize.height * 0.74,
+                      ),
+                      boxDecoration: BoxDecoration(
+                        color: theme.colorScheme.surface,
+                        borderRadius: const BorderRadius.vertical(
+                          top: Radius.circular(AppRadius.md),
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: theme.colorScheme.shadow
+                                .withValues(alpha: 0.12),
+                            blurRadius: 12,
+                            offset: const Offset(0, -2),
+                          ),
+                        ],
+                      ),
+                      searchDecoration: InputDecoration(
+                        hintText: context.l10n.searchCountry,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(AppRadius.md),
+                        ),
+                        contentPadding: EdgeInsets.symmetric(
+                          horizontal: AppSpacing.md,
+                          vertical: AppSpacing.md,
+                        ),
+                      ),
+                      textStyle: AppTextStyles.phoneCountryCodeDial(context),
+                      dialogTextStyle:
+                          AppTextStyles.phoneCountryCodeBottomSheetItem(context),
+                      flagWidth: 24,
+                      backgroundColor: theme.colorScheme.surface,
+                      barrierColor: Colors.black54,
+                      dialogBackgroundColor: theme.colorScheme.surface,
                     ),
                   ),
-                  textStyle: theme.textTheme.bodyMedium,
-                  flagWidth: 24,
-                  backgroundColor: theme.colorScheme.surface,
-                  barrierColor: Colors.black54,
-                  dialogBackgroundColor: theme.colorScheme.surface,
-                ),
                 ),
 
-                Container(width: 1, height: 24, color: theme.dividerColor),
+                SizedBox(width: AppSpacing.sm),
 
                 Expanded(
                   child: TextField(
