@@ -157,9 +157,7 @@ class PilatesApp extends StatelessWidget {
                             ? (child ?? const SizedBox.shrink())
                             : SafeArea(
                                 top: false,
-                                bottom: false,
-                                right:false,
-                                left:false,
+                                bottom: true,
                                 child: child ?? const SizedBox.shrink(),
                               ),
                       ),
