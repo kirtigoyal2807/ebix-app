@@ -5,18 +5,15 @@ import 'package:pilates_app/core/localization/arb/app_localizations.dart';
 abstract final class PhoneNumberCountryValidation {
   PhoneNumberCountryValidation._();
 
-  static const String _ksaIso = 'SA';
-
   static String _normalizedNationalDigits({
     required String iso3166Alpha2,
     required String nationalDigitsOnly,
   }) {
-    final digits = nationalDigitsOnly.replaceAll(RegExp(r'\D'), '');
-    final iso = iso3166Alpha2.trim().toUpperCase();
-    // KSA users often type local numbers with a trunk zero (05xxxxxxxx).
-    // Keep UX flexible, then normalize to NSN for validation/E.164.
-    if (iso == _ksaIso && digits.length == 10 && digits.startsWith('0')) {
-      return digits.substring(1);
+    var digits = nationalDigitsOnly.replaceAll(RegExp(r'\D'), '');
+    // Remove optional single leading zero for validation (common trunk prefix).
+    // Example: 09876543210 -> 9876543210 for length validation.
+    if (digits.startsWith('0') && digits.length > 1) {
+      digits = digits.substring(1);
     }
     return digits;
   }

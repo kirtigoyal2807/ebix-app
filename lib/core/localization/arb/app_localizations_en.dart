@@ -101,7 +101,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get didntReceiveCode => 'Didn\'t receive code?';
 
   @override
-  String get resendCode => ' Resend Code';
+  String get resendCode => 'Resend Code';
+
+  @override
+  String get resendCodeIn => 'in';
 
   @override
   String get verify => 'Verify';

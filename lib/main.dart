@@ -1,3 +1,4 @@
+import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -131,6 +132,7 @@ class PilatesApp extends StatelessWidget {
                   supportedLocales: [Locale('en'), Locale('ar')],
                   localizationsDelegates: [
                     AppLocalizations.delegate,
+                    CountryLocalizations.delegate,
                     GlobalMaterialLocalizations.delegate,
                     GlobalWidgetsLocalizations.delegate,
                     GlobalCupertinoLocalizations.delegate,

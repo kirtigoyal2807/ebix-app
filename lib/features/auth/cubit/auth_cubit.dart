@@ -316,16 +316,17 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   /// Resend OTP on sign-up step 2 — `POST /auth/phone/send`.
-  Future<void> resendSignUpPhoneOtp() async {
+  /// Returns `true` if a network request was made (success or failure), `false` if skipped.
+  Future<bool> resendSignUpPhoneOtp() async {
     if (state.flow != AuthFlow.signUp || state.signUpStep != 1) {
-      return;
+      return false;
     }
     if (state.phoneOtpSendUiStatus == PhoneOtpSendUiStatus.loading) {
-      return;
+      return false;
     }
     final phone = state.signUpPendingPhone.trim();
     if (phone.isEmpty) {
-      return;
+      return false;
     }
 
     emit(
@@ -353,6 +354,7 @@ class AuthCubit extends Cubit<AuthState> {
           ),
         );
     }
+    return true;
   }
 
   /// `GET /branches` when sign-up is on the branch step (loads once per visit).
@@ -736,16 +738,17 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   /// Resend OTP on sign-in phone verification — `POST /auth/phone/send`.
-  Future<void> resendSignInPhoneOtp() async {
+  /// Returns `true` if a network request was made (success or failure), `false` if skipped.
+  Future<bool> resendSignInPhoneOtp() async {
     if (state.flow != AuthFlow.signIn) {
-      return;
+      return false;
     }
     if (state.phoneOtpSendUiStatus == PhoneOtpSendUiStatus.loading) {
-      return;
+      return false;
     }
     final phone = state.signInPendingPhone.trim();
     if (phone.isEmpty) {
-      return;
+      return false;
     }
 
     emit(
@@ -773,6 +776,7 @@ class AuthCubit extends Cubit<AuthState> {
           ),
         );
     }
+    return true;
   }
 
   Future<void> register({
