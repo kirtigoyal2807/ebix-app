@@ -15,6 +15,7 @@ import 'core/storage/token_storage.dart';
 import 'features/account/data/notification_preferences_repository.dart';
 import 'features/auth/auth_root_view.dart';
 import 'features/auth/cubit/auth_cubit.dart';
+import 'features/auth/cubit/auth_flow.dart';
 import 'features/auth/cubit/auth_state.dart';
 import 'features/auth/data/auth_repository.dart';
 import 'features/booking/data/classes_repository.dart';
@@ -141,25 +142,26 @@ class PilatesApp extends StatelessWidget {
                   darkTheme: AppTheme.dark(),
                   themeMode: state.themeMode,
                   builder: (context, child) {
+                    final isSplashFlow =
+                        context.watch<AuthCubit>().state.flow ==
+                            AuthFlow.splash;
                     return GestureDetector(
                       behavior: HitTestBehavior.translucent,
                       onTap: () =>
                           FocusManager.instance.primaryFocus?.unfocus(),
-                      // Global bottom SafeArea so app UI (buttons, sticky
-                      // CTAs, bottom sheets) never sits behind the device's
-                      // system navigation / gesture bar. Top is left
-                      // untouched so AppBars and screens that read
-                      // viewPadding.top keep working as before.
-                      // The ColoredBox paints the bottom safe-area strip with
-                      // the current scaffold background so it visually blends
-                      // with screen content above it.
+                      // Splash is full-bleed (no SafeArea); otherwise global
+                      // bottom SafeArea keeps CTAs above the gesture bar.
                       child: ColoredBox(
                         color: Theme.of(context).scaffoldBackgroundColor,
-                        child: SafeArea(
-                          top: false,
-                          bottom: true,
-                          child: child ?? const SizedBox.shrink(),
-                        ),
+                        child: isSplashFlow
+                            ? (child ?? const SizedBox.shrink())
+                            : SafeArea(
+                                top: false,
+                                bottom: false,
+                                right:false,
+                                left:false,
+                                child: child ?? const SizedBox.shrink(),
+                              ),
                       ),
                     );
                   },
