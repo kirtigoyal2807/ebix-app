@@ -244,8 +244,12 @@ class SubscriptionCubit extends Cubit<SubscriptionState> {
       healthQuestionnaireAnswers: m,
       healthQuestionnaireAnswerNotes: notes,
     );
-    if (questionId == 2 && value is bool) {
-      next = next.copyWith(isPregnant: value);
+    if (questionId == HealthQuestionnaireIds.pregnancy) {
+      if (value is bool) {
+        next = next.copyWith(isPregnant: value);
+      } else if (value == null) {
+        next = next.copyWith(isPregnant: null);
+      }
     }
     emit(next);
   }

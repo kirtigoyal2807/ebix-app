@@ -1,6 +1,7 @@
 import 'package:pilates_app/features/checkout/data/models/product_health_question.dart';
 
 import '../cubit/subscription_cubit.dart';
+import '../health_questionnaire_query.dart';
 
 /// JSON-serializable `answer` value for one questionnaire row.
 dynamic _encodeHealthAnswerValue(Object? v) {
@@ -40,7 +41,12 @@ Map<String, dynamic> subscriptionHealthIntakeRequestBody(
       }
       final qid = q.numericQuestionId;
       if (qid == null) continue;
-      final v = state.healthQuestionnaireAnswers[qid];
+      var v = state.healthQuestionnaireAnswers[qid];
+      if (v == null &&
+          qid == HealthQuestionnaireIds.pregnancy &&
+          state.isPregnant != null) {
+        v = state.isPregnant;
+      }
       if (v == null) continue;
       final encoded = _encodeHealthAnswerValue(v);
       final row = <String, dynamic>{

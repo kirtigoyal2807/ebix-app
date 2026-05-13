@@ -390,21 +390,11 @@ class _BooleanYesNoRow extends StatelessWidget {
   final bool isDark;
 
   void _onYesTap() {
-    final required = question.isRequired == true;
-    if (!required && value == true) {
-      onChanged(null);
-    } else {
-      onChanged(true);
-    }
+    onChanged(true);
   }
 
   void _onNoTap() {
-    final required = question.isRequired == true;
-    if (!required && value == false) {
-      onChanged(null);
-    } else {
-      onChanged(false);
-    }
+    onChanged(false);
   }
 
   @override
