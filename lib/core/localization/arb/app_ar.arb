@@ -1346,6 +1346,7 @@
   "rewardsEarned": "المكافآت المكتسبة",
   "pointsAndAchievements": "النقاط والإنجازات",
   "selectDOB": "اختر تاريخ الميلاد",
+  "dateOfBirthPickerDone": "تم",
   "dobMinimumAgeError": "يجب أن يكون عمرك 16 عامًا على الأقل.",
   "reformerTower": "أخصائي أجهزة الريفورمر والتاور",
   "firstNameTooShort": "يجب أن يكون الاسم الأول حرفين على الأقل",

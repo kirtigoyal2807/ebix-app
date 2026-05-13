@@ -14,7 +14,7 @@ double? _jsonDouble(dynamic value) {
   return double.tryParse(value.toString());
 }
 
-/// Subset of profile fields from `POST /auth/login` → `data.user`, or [`GET /auth/me`].
+/// Subset of profile fields from `POST /auth/login` -> `data.user`, or [`GET /customers/profile`].
 class AuthUser {
   const AuthUser({
     this.id,
@@ -67,16 +67,16 @@ class AuthUser {
   /// Preferred language: `en` | `ar`.
   final String? language;
 
-  /// Home branch from `/auth/me` — abbreviated BranchResource.
+  /// Home branch from `/customers/profile` — abbreviated BranchResource.
   final UserHomeBranch? homeBranch;
 
   /// Brands the customer belongs to: `[{ id, name }]`.
   final List<UserBrand>? brands;
 
-  /// Goals from `/auth/me`: `{ experience, goal, monthlyGoal }`.
+  /// Goals from `/customers/profile`: `{ experience, goal, monthlyGoal }`.
   final UserGoals? goals;
 
-  /// Active subscriptions from `/auth/me`.
+  /// Active subscriptions from `/customers/profile`.
   final List<UserSubscription>? subscriptions;
 
   /// Oldest unredeemed gift sent to this customer's phone.
@@ -212,7 +212,7 @@ class AuthUser {
       membershipTotalSessions != null ||
       membershipSessionsRemaining != null;
 
-  /// Fallback when [`GET /home`] omits membership but [`GET /me`] carries plan info.
+  /// Fallback when [`GET /home`] omits membership but [`GET /customers/profile`] carries plan info.
   bool get showsMembershipWithoutHomePayload => _hasStoredMembershipHints;
 
   /// First name for greetings (home header, etc.).
@@ -294,7 +294,7 @@ class AuthUser {
   }
 }
 
-/// Home branch from `/auth/me` response.
+/// Home branch from `/customers/profile` response.
 class UserHomeBranch {
   const UserHomeBranch({this.id, this.name, this.slug, this.code});
 
@@ -320,7 +320,7 @@ class UserHomeBranch {
   };
 }
 
-/// Brand from `/auth/me` response.
+/// Brand from `/customers/profile` response.
 class UserBrand {
   const UserBrand({this.id, this.name});
 
@@ -334,7 +334,7 @@ class UserBrand {
   Map<String, dynamic> toJson() => {'id': id, 'name': name};
 }
 
-/// Goals from `/auth/me` response.
+/// Goals from `/customers/profile` response.
 class UserGoals {
   const UserGoals({this.experience, this.goal, this.monthlyGoal});
 
@@ -358,7 +358,7 @@ class UserGoals {
   };
 }
 
-/// Subscription from `/auth/me` response.
+/// Subscription from `/customers/profile` response.
 class UserSubscription {
   const UserSubscription({
     this.id,
@@ -429,7 +429,7 @@ class UserSubscription {
   };
 }
 
-/// Product in subscription from `/auth/me` response.
+/// Product in subscription from `/customers/profile` response.
 class SubscriptionProduct {
   const SubscriptionProduct({this.id, this.name});
 
@@ -446,7 +446,7 @@ class SubscriptionProduct {
   Map<String, dynamic> toJson() => {'id': id, 'name': name};
 }
 
-/// Pending gift from `/auth/me` response — oldest unredeemed gift sent to this
+/// Pending gift from `/customers/profile` response — oldest unredeemed gift sent to this
 /// customer's phone. Use [canBeRedeemed] to gate the redemption UI.
 class PendingGift {
   const PendingGift({
@@ -591,7 +591,7 @@ class PendingGiftRecipient {
   };
 }
 
-/// Sessions in subscription from `/auth/me` response.
+/// Sessions in subscription from `/customers/profile` response.
 class SubscriptionSessions {
   const SubscriptionSessions({this.total, this.used, this.remaining});
 

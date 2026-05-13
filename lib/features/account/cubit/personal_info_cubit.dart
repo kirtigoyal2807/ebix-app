@@ -1,8 +1,9 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pilates_app/core/localization/arb/app_localizations.dart';
-import 'package:pilates_app/core/network/api_result.dart';
+import 'package:pilates_app/core/validation/phone_number_country_validation.dart';
 import 'package:pilates_app/features/account/cubit/personal_info_state.dart';
+import 'package:pilates_app/features/account/data/models/profile_update_result.dart';
 import 'package:pilates_app/features/auth/data/auth_repository.dart';
 import 'package:pilates_app/features/auth/data/models/auth_user.dart';
 
@@ -57,12 +58,15 @@ class PersonalInfoCubit extends Cubit<PersonalInfoState> {
   }
 
   /// Calls `PUT /customers/profile`. On success emits [PersonalInfoSaveStatus.success]
-  /// with the refreshed [AuthUser]; on failure emits [PersonalInfoSaveStatus.failure].
+  /// with the refreshed [AuthUser]; on phone change emits [PersonalInfoSaveStatus.phoneVerificationRequired];
+  /// on failure emits [PersonalInfoSaveStatus.failure].
   Future<AuthUser?> saveProfile({
     required String firstName,
     required String lastName,
     required String email,
     required String phone,
+    required String phoneNationalRaw,
+    required String phoneCountryIso3166,
     required AppLocalizations l10n,
   }) async {
     emit(
@@ -70,6 +74,7 @@ class PersonalInfoCubit extends Cubit<PersonalInfoState> {
         saveStatus: PersonalInfoSaveStatus.loading,
         errorMessage: '',
         fieldErrors: {},
+        pendingPhoneNumber: null,
       ),
     );
 
@@ -101,6 +106,22 @@ class PersonalInfoCubit extends Cubit<PersonalInfoState> {
       }
     }
 
+    // Matches [PhoneNumberField]: show error only when NSN has enough digits to validate.
+    const minNationalDigitsForCountryValidation = 3;
+    final iso = phoneCountryIso3166.trim().toUpperCase();
+    if (iso.length == 2) {
+      final phoneDigits =
+          phoneNationalRaw.replaceAll(RegExp(r'\D'), '');
+      if (phoneDigits.isNotEmpty &&
+          phoneDigits.length >= minNationalDigitsForCountryValidation &&
+          !PhoneNumberCountryValidation.isValidNationalNumber(
+            iso3166Alpha2: iso,
+            nationalDigitsOnly: phoneDigits,
+          )) {
+        fieldErrors['phone'] = l10n.invalidPhoneForCountry;
+      }
+    }
+
     if (fieldErrors.isNotEmpty) {
       emit(
         state.copyWith(
@@ -112,7 +133,7 @@ class PersonalInfoCubit extends Cubit<PersonalInfoState> {
       return null;
     }
 
-    final result = await _authRepository.updateProfile(
+    final result = await _authRepository.updateProfileWithPhoneHandling(
       firstName: trimmedFirst.isNotEmpty ? trimmedFirst : null,
       lastName: trimmedLast.isNotEmpty ? trimmedLast : null,
       email: trimmedEmail.isNotEmpty ? trimmedEmail : null,
@@ -123,22 +144,37 @@ class PersonalInfoCubit extends Cubit<PersonalInfoState> {
     );
 
     switch (result) {
-      case ApiSuccess<AuthUser>(:final data):
+      case ProfileUpdateSuccess(:final user):
         emit(
           state.copyWith(
             saveStatus: PersonalInfoSaveStatus.success,
             errorMessage: '',
           ),
         );
-        return data;
-      case ApiFailure<AuthUser>(:final exception):
+        return user;
+      case ProfileUpdatePhoneVerificationRequired(:final phone):
+        emit(
+          state.copyWith(
+            saveStatus: PersonalInfoSaveStatus.phoneVerificationRequired,
+            pendingPhoneNumber: phone,
+            errorMessage: '',
+          ),
+        );
+        return null;
+      case ProfileUpdateFailure(:final message, :final fieldErrors):
         emit(
           state.copyWith(
             saveStatus: PersonalInfoSaveStatus.failure,
-            errorMessage: exception.message ?? l10n.profileUpdateFailed,
+            errorMessage: message,
+            fieldErrors: fieldErrors,
           ),
         );
         return null;
     }
+  }
+
+  /// Reset status to idle (useful after navigating to OTP screen).
+  void resetStatus() {
+    emit(state.copyWith(saveStatus: PersonalInfoSaveStatus.idle));
   }
 }

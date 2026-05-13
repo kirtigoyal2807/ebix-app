@@ -145,7 +145,22 @@ class PilatesApp extends StatelessWidget {
                       behavior: HitTestBehavior.translucent,
                       onTap: () =>
                           FocusManager.instance.primaryFocus?.unfocus(),
-                      child: child ?? SizedBox.shrink(),
+                      // Global bottom SafeArea so app UI (buttons, sticky
+                      // CTAs, bottom sheets) never sits behind the device's
+                      // system navigation / gesture bar. Top is left
+                      // untouched so AppBars and screens that read
+                      // viewPadding.top keep working as before.
+                      // The ColoredBox paints the bottom safe-area strip with
+                      // the current scaffold background so it visually blends
+                      // with screen content above it.
+                      child: ColoredBox(
+                        color: Theme.of(context).scaffoldBackgroundColor,
+                        child: SafeArea(
+                          top: false,
+                          bottom: true,
+                          child: child ?? const SizedBox.shrink(),
+                        ),
+                      ),
                     );
                   },
                   home: const AuthRootView(),

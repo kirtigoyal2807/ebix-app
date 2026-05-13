@@ -205,7 +205,6 @@ class _BookingSuccessScreenState extends State<BookingSuccessScreen> {
         body: SingleChildScrollView(
           padding: EdgeInsetsDirectional.only(
             top: MediaQuery.of(context).viewPadding.top,
-            bottom: MediaQuery.of(context).viewPadding.bottom,
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,

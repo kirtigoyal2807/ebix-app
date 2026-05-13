@@ -1,4 +1,4 @@
-// Shared parsing for `membership` on home [`GET /home`] or profile [`GET /me`].
+// Shared parsing for `membership` on home [`GET /home`] or profile [`GET /customers/profile`].
 // Prefers `status == active` when the API returns an array (see API docs).
 
 /// Normalized plan/session fields after parsing `membership` JSON.

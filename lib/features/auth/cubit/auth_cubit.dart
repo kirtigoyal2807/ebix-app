@@ -22,6 +22,7 @@ class AuthCubit extends Cubit<AuthState> {
   final AuthLocaleBridge _localeBridge;
 
   bool _logoutInFlight = false;
+  Future<void>? _profileRefreshFuture;
 
   /// [seed] is normally computed in [main] from [TokenStorage]: if a JWT exists,
   /// [AuthFlow.authenticated] skips splash/onboarding on cold start.
@@ -1026,19 +1027,51 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   Future<void> loadProfile() async {
+    final token = (_tokenStorage.readToken() ?? '').trim();
+    if (token.isEmpty) {
+      return;
+    }
+
+    final inFlight = _profileRefreshFuture;
+    if (inFlight != null) {
+      return inFlight;
+    }
+
+    final future = _loadProfile(token);
+    _profileRefreshFuture = future;
+    return future.whenComplete(() {
+      if (identical(_profileRefreshFuture, future)) {
+        _profileRefreshFuture = null;
+      }
+    });
+  }
+
+  Future<void> _loadProfile(String token) async {
     final result = await _authRepository.getProfile();
+    if (isClosed || (_tokenStorage.readToken() ?? '').trim() != token) {
+      return;
+    }
     switch (result) {
       case ApiSuccess<AuthUser>(:final data):
         await _tokenStorage.saveUser(data);
-        emit(state.copyWith(user: data));
+        if (!isClosed) {
+          emit(state.copyWith(user: data));
+        }
       case ApiFailure<AuthUser>():
-        // Profile load failed - user remains null
-        // This is not a critical error, user can continue without profile data
+        // Profile load failed - keep the last known user profile.
         break;
     }
   }
 
-  /// [`GET /auth/me`] after switching to the Account tab (not when already on it).
+  /// Refreshes authenticated profile data on cold open and app resume.
+  Future<void> refreshProfileForAppOpenOrResume() async {
+    if (state.flow != AuthFlow.authenticated) {
+      return;
+    }
+    await loadProfile();
+  }
+
+  /// [`GET /customers/profile`] after switching to the Account tab (not when already on it).
   Future<void> refreshProfileWhenSelectingAccountTab() async {
     emit(
       state.copyWith(
@@ -1075,6 +1108,95 @@ class AuthCubit extends Cubit<AuthState> {
       }
     }
     return fields;
+  }
+
+  // Profile Phone Verification
+  // These methods are used when updating phone number in profile
+
+  /// Verify phone OTP for profile phone update.
+  /// Does not check flow state - can be called from any flow.
+  Future<void> verifyProfilePhoneOtp({
+    required String phone,
+    required String code,
+  }) async {
+    final trimmedCode = code.trim();
+    if (phone.isEmpty || trimmedCode.length != 6) {
+      return;
+    }
+
+    emit(
+      state.copyWith(
+        signUpPhoneOtpUiStatus: SignUpPhoneOtpUiStatus.loading,
+        signUpPhoneOtpErrorMessage: '',
+        signUpPhoneOtpFieldErrors: {},
+      ),
+    );
+
+    final result = await _authRepository.verifyPhoneOtp(
+      phone: phone,
+      code: trimmedCode,
+    );
+
+    switch (result) {
+      case ApiSuccess<LoginEmailResult>(:final data):
+        await _tokenStorage.saveToken(data.token);
+        await _tokenStorage.saveUser(data.user);
+        emit(
+          state.copyWith(
+            user: data.user,
+            signUpPhoneOtpUiStatus: SignUpPhoneOtpUiStatus.idle,
+            signUpPhoneOtpErrorMessage: '',
+            signUpPhoneOtpFieldErrors: {},
+          ),
+        );
+      case ApiFailure<LoginEmailResult>(:final exception):
+        emit(
+          state.copyWith(
+            signUpPhoneOtpUiStatus: SignUpPhoneOtpUiStatus.idle,
+            signUpPhoneOtpErrorMessage: exception.message ?? '',
+            signUpPhoneOtpFieldErrors: _mapFieldErrors(exception),
+          ),
+        );
+    }
+  }
+
+  /// Resend phone OTP for profile phone update.
+  /// Does not check flow state - can be called from any flow.
+  Future<bool> resendProfilePhoneOtp(String phone) async {
+    final trimmedPhone = phone.trim();
+    if (trimmedPhone.isEmpty) {
+      return false;
+    }
+    if (state.phoneOtpSendUiStatus == PhoneOtpSendUiStatus.loading) {
+      return false;
+    }
+
+    emit(
+      state.copyWith(
+        phoneOtpSendUiStatus: PhoneOtpSendUiStatus.loading,
+        phoneOtpSendErrorMessage: '',
+      ),
+    );
+
+    final result = await _authRepository.sendPhoneOtp(phone: trimmedPhone);
+
+    switch (result) {
+      case ApiSuccess<bool>():
+        emit(
+          state.copyWith(
+            phoneOtpSendUiStatus: PhoneOtpSendUiStatus.idle,
+            phoneOtpSendErrorMessage: '',
+          ),
+        );
+      case ApiFailure<bool>(:final exception):
+        emit(
+          state.copyWith(
+            phoneOtpSendUiStatus: PhoneOtpSendUiStatus.idle,
+            phoneOtpSendErrorMessage: exception.message ?? '',
+          ),
+        );
+    }
+    return true;
   }
 
   // Language

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
@@ -17,8 +19,41 @@ import 'cubit/auth_flow.dart';
 import 'onboarding/onboarding_view.dart';
 import '../home/home_view.dart';
 
-class AuthRootView extends StatelessWidget {
+class AuthRootView extends StatefulWidget {
   const AuthRootView({super.key});
+
+  @override
+  State<AuthRootView> createState() => _AuthRootViewState();
+}
+
+class _AuthRootViewState extends State<AuthRootView>
+    with WidgetsBindingObserver {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _refreshProfileForAppOpenOrResume();
+    });
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      _refreshProfileForAppOpenOrResume();
+    }
+  }
+
+  void _refreshProfileForAppOpenOrResume() {
+    if (!mounted) return;
+    unawaited(context.read<AuthCubit>().refreshProfileForAppOpenOrResume());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,10 +86,7 @@ class AuthRootView extends StatelessWidget {
                 return IndexedStack(
                   index: state.signUpStep,
                   sizing: StackFit.expand,
-                  children: const [
-                    SignUpPersonalInfoView(),
-                    SignUpOtpView(),
-                  ],
+                  children: const [SignUpPersonalInfoView(), SignUpOtpView()],
                 );
               }
               switch (state.signUpStep) {
@@ -89,7 +121,8 @@ class AuthRootView extends StatelessWidget {
               // Load profile if user is null (app restarted with saved token)
               if (state.user == null) {
                 WidgetsBinding.instance.addPostFrameCallback((_) {
-                  context.read<AuthCubit>().loadProfile();
+                  if (!mounted) return;
+                  unawaited(context.read<AuthCubit>().loadProfile());
                 });
               }
               return const HomeView();

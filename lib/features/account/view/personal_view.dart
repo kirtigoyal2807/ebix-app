@@ -9,6 +9,7 @@ import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/core/localization/localization_extension.dart';
 import 'package:pilates_app/core/utils/date_of_birth_constraints.dart';
+import 'package:pilates_app/core/utils/show_date_of_birth_picker.dart';
 import 'package:pilates_app/core/utils/api_media_url.dart';
 import 'package:pilates_app/features/auth/cubit/auth_cubit.dart';
 import 'package:pilates_app/features/auth/data/models/auth_user.dart';
@@ -22,6 +23,7 @@ import '../../../core/localization/arb/app_localizations.dart';
 import '../../../widgets/app_button.dart';
 import '../../../widgets/app_dropdown.dart';
 import '../../../widgets/phone_number_field.dart';
+import '../../auth/widgets/phone_otp_view.dart';
 import '../cubit/personal_info_cubit.dart';
 import '../cubit/personal_info_state.dart';
 import '../widget/profile_picture_bottom_sheet.dart';
@@ -183,8 +185,8 @@ class _PersonalViewBodyState extends State<_PersonalViewBody> {
       firstDate,
       lastDob,
     );
-    final picked = await showDatePicker(
-      context: context,
+    final picked = await showDateOfBirthPicker(
+      context,
       initialDate: initialDate,
       firstDate: firstDate,
       lastDate: lastDob,
@@ -272,6 +274,8 @@ class _PersonalViewBodyState extends State<_PersonalViewBody> {
       lastName: _lastNameController.text.trim(),
       email: _emailController.text.trim(),
       phone: phone,
+      phoneNationalRaw: _phoneController.text,
+      phoneCountryIso3166: _phoneCountry?.code ?? _phoneCountryIso,
       l10n: context.l10n,
     );
   }
@@ -282,7 +286,7 @@ class _PersonalViewBodyState extends State<_PersonalViewBody> {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return BlocConsumer<PersonalInfoCubit, PersonalInfoState>(
       listenWhen: (prev, curr) => prev.saveStatus != curr.saveStatus,
-      listener: (context, state) {
+      listener: (context, state) async {
         if (state.saveStatus == PersonalInfoSaveStatus.success) {
           context.read<AuthCubit>().refreshProfileWhenSelectingAccountTab();
           Navigator.of(context).pop();
@@ -296,6 +300,26 @@ class _PersonalViewBodyState extends State<_PersonalViewBody> {
               ),
             ),
           );
+        } else if (state.saveStatus == PersonalInfoSaveStatus.phoneVerificationRequired) {
+          // Navigate to OTP verification screen
+          final verified = await Navigator.of(context).push<bool>(
+            MaterialPageRoute(
+              builder: (_) => PhoneOtpView(
+                phone: state.pendingPhoneNumber ?? '',
+                title: context.l10n.verifyPhone,
+                subtitlePrefix: context.l10n.enterCode,
+              ),
+            ),
+          );
+
+          // Reset cubit status
+          context.read<PersonalInfoCubit>().resetStatus();
+
+          // If OTP verified successfully, close PersonalView
+          if (verified == true && mounted) {
+            context.read<AuthCubit>().refreshProfileWhenSelectingAccountTab();
+            Navigator.of(context).pop();
+          }
         }
       },
       builder: (context, state) {
@@ -347,26 +371,35 @@ class _PersonalViewBodyState extends State<_PersonalViewBody> {
                     },
                   ),
                   SizedBox(height: AppSpacing.lg),
-                  AppTextField(
-                    hint: context.l10n.firstName,
-                    label: context.l10n.firstName,
-                    controller: _firstNameController,
-                    readOnly: !_isEditing,
+                  IgnorePointer(
+                    ignoring: !_isEditing,
+                    child: AppTextField(
+                      hint: context.l10n.firstName,
+                      label: context.l10n.firstName,
+                      controller: _firstNameController,
+                      readOnly: !_isEditing,
+                    ),
                   ),
                   SizedBox(height: AppSpacing.md),
-                  AppTextField(
-                    hint: context.l10n.lastName,
-                    label: context.l10n.lastName,
-                    controller: _lastNameController,
-                    readOnly: !_isEditing,
+                  IgnorePointer(
+                    ignoring: !_isEditing,
+                    child: AppTextField(
+                      hint: context.l10n.lastName,
+                      label: context.l10n.lastName,
+                      controller: _lastNameController,
+                      readOnly: !_isEditing,
+                    ),
                   ),
                   SizedBox(height: AppSpacing.md),
-                  AppTextField(
-                    hint: context.l10n.recipientEmailHint,
-                    label: l10n.emailAddress,
-                    keyboardType: TextInputType.emailAddress,
-                    controller: _emailController,
-                    readOnly: !_isEditing,
+                  IgnorePointer(
+                    ignoring: !_isEditing,
+                    child: AppTextField(
+                      hint: context.l10n.recipientEmailHint,
+                      label: l10n.emailAddress,
+                      keyboardType: TextInputType.emailAddress,
+                      controller: _emailController,
+                      readOnly: !_isEditing,
+                    ),
                   ),
                   SizedBox(height: AppSpacing.md),
                   IgnorePointer(
