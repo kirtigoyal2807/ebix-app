@@ -22,6 +22,7 @@ class AuthCubit extends Cubit<AuthState> {
   final AuthLocaleBridge _localeBridge;
 
   bool _logoutInFlight = false;
+  Future<void>? _profileRefreshFuture;
 
   /// [seed] is normally computed in [main] from [TokenStorage]: if a JWT exists,
   /// [AuthFlow.authenticated] skips splash/onboarding on cold start.
@@ -1026,19 +1027,51 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   Future<void> loadProfile() async {
+    final token = (_tokenStorage.readToken() ?? '').trim();
+    if (token.isEmpty) {
+      return;
+    }
+
+    final inFlight = _profileRefreshFuture;
+    if (inFlight != null) {
+      return inFlight;
+    }
+
+    final future = _loadProfile(token);
+    _profileRefreshFuture = future;
+    return future.whenComplete(() {
+      if (identical(_profileRefreshFuture, future)) {
+        _profileRefreshFuture = null;
+      }
+    });
+  }
+
+  Future<void> _loadProfile(String token) async {
     final result = await _authRepository.getProfile();
+    if (isClosed || (_tokenStorage.readToken() ?? '').trim() != token) {
+      return;
+    }
     switch (result) {
       case ApiSuccess<AuthUser>(:final data):
         await _tokenStorage.saveUser(data);
-        emit(state.copyWith(user: data));
+        if (!isClosed) {
+          emit(state.copyWith(user: data));
+        }
       case ApiFailure<AuthUser>():
-        // Profile load failed - user remains null
-        // This is not a critical error, user can continue without profile data
+        // Profile load failed - keep the last known user profile.
         break;
     }
   }
 
-  /// [`GET /auth/me`] after switching to the Account tab (not when already on it).
+  /// Refreshes authenticated profile data on cold open and app resume.
+  Future<void> refreshProfileForAppOpenOrResume() async {
+    if (state.flow != AuthFlow.authenticated) {
+      return;
+    }
+    await loadProfile();
+  }
+
+  /// [`GET /customers/profile`] after switching to the Account tab (not when already on it).
   Future<void> refreshProfileWhenSelectingAccountTab() async {
     emit(
       state.copyWith(

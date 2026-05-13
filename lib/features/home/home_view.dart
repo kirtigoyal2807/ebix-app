@@ -239,8 +239,8 @@ class _HomeShell extends StatelessWidget {
   }
 }
 
-/// Loads [`/auth/me`] on home entry and opens `RedeemCardView` directly
-/// when `pendingGift` is available. No local tracking; shows every time.
+/// Opens `RedeemCardView` directly when profile `pendingGift` is available.
+/// No local tracking; shows every time.
 /// Also refreshes home and profile when language changes.
 class _PendingGiftPopupTrigger extends StatefulWidget {
   const _PendingGiftPopupTrigger({required this.child});
@@ -324,8 +324,7 @@ class _PendingGiftPopupTriggerState extends State<_PendingGiftPopupTrigger> {
       },
       listener: (_, state) {
         final currentLocaleCode = state.locale.languageCode;
-        if (_lastLocaleCode != null &&
-            _lastLocaleCode != currentLocaleCode) {
+        if (_lastLocaleCode != null && _lastLocaleCode != currentLocaleCode) {
           _onLocaleChanged();
         }
         _lastLocaleCode = currentLocaleCode;
@@ -415,7 +414,7 @@ class HomeContentView extends StatelessWidget {
                   style: AppTextStyles.body,
                   textAlign: TextAlign.center,
                 ),
-                 SizedBox(height: AppSpacing.md),
+                SizedBox(height: AppSpacing.md),
                 ElevatedButton(
                   onPressed: () => context.read<HomeCubit>().loadHome(),
                   child: AppText(
@@ -481,18 +480,18 @@ class HomeContentView extends StatelessWidget {
                           return HomeHeader(userName: displayName);
                         },
                       ),
-                       SizedBox(height: AppSpacing.lg),
+                      SizedBox(height: AppSpacing.lg),
                       if (banners.isNotEmpty) ...[
                         SpringChallengeCard(
                           banners: banners,
                           onBannerTap: (banner) =>
                               _handleBannerTap(context, banner),
                         ),
-                         SizedBox(height: AppSpacing.lg),
+                        SizedBox(height: AppSpacing.lg),
                       ],
                       const QuickActions(),
                       if (receivedGifts.isNotEmpty) ...[
-                         SizedBox(height: AppSpacing.lg),
+                        SizedBox(height: AppSpacing.lg),
                         _sectionTitle(
                           context,
                           context.l10n.giftReceivedTitle,
@@ -512,14 +511,14 @@ class HomeContentView extends StatelessWidget {
                           return Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                               SizedBox(height: AppSpacing.lg),
+                              SizedBox(height: AppSpacing.lg),
                               _sectionTitle(
                                 context,
                                 context.l10n.yourMembership,
                                 isDark,
                                 size,
                               ),
-                               SizedBox(height: AppSpacing.md),
+                              SizedBox(height: AppSpacing.md),
                               MembershipCard(
                                 status: hasPlan
                                     ? HomeUserStatus.existing
@@ -539,14 +538,14 @@ class HomeContentView extends StatelessWidget {
                         },
                       ),
                       if (progress != null) ...[
-                         SizedBox(height: AppSpacing.lg),
+                        SizedBox(height: AppSpacing.lg),
                         _sectionTitle(
                           context,
                           context.l10n.yourProgress,
                           isDark,
                           size,
                         ),
-                         SizedBox(height: AppSpacing.md),
+                        SizedBox(height: AppSpacing.md),
                         ProgressCard(
                           status: progressStatus,
                           classesDone: attendedClasses,
@@ -556,14 +555,14 @@ class HomeContentView extends StatelessWidget {
                         ),
                       ],
                       if (featuredClass != null) ...[
-                         SizedBox(height: AppSpacing.lg),
+                        SizedBox(height: AppSpacing.lg),
                         _sectionTitle(
                           context,
                           context.l10n.featuredClass,
                           isDark,
                           size,
                         ),
-                         SizedBox(height: AppSpacing.md),
+                        SizedBox(height: AppSpacing.md),
                         FeaturedClassCard(featuredClass: featuredClass),
                       ],
                       BlocBuilder<AuthCubit, AuthState>(
@@ -579,7 +578,7 @@ class HomeContentView extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               if (classTypes.isNotEmpty) ...[
-                                 SizedBox(height: AppSpacing.lg),
+                                SizedBox(height: AppSpacing.lg),
                                 _sectionTitleWithSeeAll(
                                   context,
                                   context.l10n.classTypes,
@@ -588,11 +587,11 @@ class HomeContentView extends StatelessWidget {
                                   onTap: () =>
                                       context.read<HomeCubit>().setTab(1),
                                 ),
-                                 SizedBox(height: AppSpacing.md),
+                                SizedBox(height: AppSpacing.md),
                                 ClassTypesSection(classTypes: classTypes),
                               ],
                               if (topTrainers.isNotEmpty) ...[
-                                 SizedBox(height: AppSpacing.lg),
+                                SizedBox(height: AppSpacing.lg),
                                 _sectionTitleWithSeeAll(
                                   context,
                                   context.l10n.topTrainers,
@@ -603,15 +602,15 @@ class HomeContentView extends StatelessWidget {
                                     bookingTab: BookingTab.trainers,
                                   ),
                                 ),
-                                 SizedBox(height: AppSpacing.md),
+                                SizedBox(height: AppSpacing.md),
                                 TopTrainersSection(trainers: topTrainers),
                               ],
                             ],
                           );
                         },
                       ),
-                       SizedBox(height: AppSpacing.lg),
-                       SizedBox(height: AppSpacing.xl),
+                      SizedBox(height: AppSpacing.lg),
+                      SizedBox(height: AppSpacing.xl),
                     ],
                   ),
                 ),
@@ -630,7 +629,7 @@ class HomeContentView extends StatelessWidget {
     Size size,
   ) {
     return Padding(
-      padding:  EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+      padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
       child: AppText(
         title,
         style: (context) => AppTextStyles.heading1(context).copyWith(
@@ -650,7 +649,7 @@ class HomeContentView extends StatelessWidget {
     required VoidCallback onTap,
   }) {
     return Padding(
-      padding:  EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+      padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,

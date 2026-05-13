@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:pilates_app/core/network/api_result.dart';
 import 'package:pilates_app/features/auth/data/auth_repository.dart';
 import 'package:pilates_app/features/auth/data/models/auth_user.dart';
 
@@ -8,7 +7,7 @@ import '../../core/network/test_repository.dart';
 
 void main() {
   group('AuthRepository.getProfile', () {
-    test('GET auth/me parses envelope data into AuthUser', () async {
+    test('GET customers/profile parses envelope data into AuthUser', () async {
       RequestOptions? seen;
       final dio = createTestDio(
         onRequest: (options, handler) {
@@ -75,7 +74,7 @@ void main() {
 
       expect(result.isSuccess, isTrue);
       expect(seen?.method, 'GET');
-      expect(seen?.path, 'auth/me');
+      expect(seen?.path, 'customers/profile');
 
       expect(result.dataOrNull, isA<AuthUser>());
       final user = result.dataOrNull!;
@@ -108,61 +107,64 @@ void main() {
       expect(user.membershipPlanName, 'Reformer Monthly');
     });
 
-    test('GET auth/me parses pendingGift into typed PendingGift', () async {
-      final dio = createTestDio(
-        onRequest: (options, handler) {
-          handler.resolve(
-            Response(
-              requestOptions: options,
-              statusCode: 200,
-              data: const {
-                'success': true,
-                'message': 'Profile fetched',
-                'data': {
-                  'id': 42,
-                  'name': 'Noor Ali',
-                  'pendingGift': {
-                    'id': '94b6a623-4467-4869-9093-13a328038ef8',
-                    'status': {'value': 'sent', 'label': 'Sent'},
-                    'redemptionCode': 'GIFT-RPAF-BLHY',
-                    'recipient': {
-                      'name': 'hfgh ghg',
-                      'phone': '+9661234567890',
-                      'email': 'test@mailinator.com',
+    test(
+      'GET customers/profile parses pendingGift into typed PendingGift',
+      () async {
+        final dio = createTestDio(
+          onRequest: (options, handler) {
+            handler.resolve(
+              Response(
+                requestOptions: options,
+                statusCode: 200,
+                data: const {
+                  'success': true,
+                  'message': 'Profile fetched',
+                  'data': {
+                    'id': 42,
+                    'name': 'Noor Ali',
+                    'pendingGift': {
+                      'id': '94b6a623-4467-4869-9093-13a328038ef8',
+                      'status': {'value': 'sent', 'label': 'Sent'},
+                      'redemptionCode': 'GIFT-RPAF-BLHY',
+                      'recipient': {
+                        'name': 'hfgh ghg',
+                        'phone': '+9661234567890',
+                        'email': 'test@mailinator.com',
+                      },
+                      'message': 'Happy Birthday!\n— Ayesha',
+                      'deliveryDate': null,
+                      'sentAt': '2026-05-06 16:13:06',
+                      'redeemedAt': null,
+                      'expiresAt': '2027-05-06 16:13:06',
+                      'isRedeemed': false,
+                      'isExpired': false,
+                      'canBeRedeemed': true,
+                      'createdAt': '2026-05-06 16:13:06',
                     },
-                    'message': 'Happy Birthday!\n— Ayesha',
-                    'deliveryDate': null,
-                    'sentAt': '2026-05-06 16:13:06',
-                    'redeemedAt': null,
-                    'expiresAt': '2027-05-06 16:13:06',
-                    'isRedeemed': false,
-                    'isExpired': false,
-                    'canBeRedeemed': true,
-                    'createdAt': '2026-05-06 16:13:06',
                   },
                 },
-              },
-            ),
-          );
-        },
-      );
+              ),
+            );
+          },
+        );
 
-      final result = await AuthRepository(dio).getProfile();
-      expect(result.isSuccess, isTrue);
-      final gift = result.dataOrNull!.pendingGift;
-      expect(gift, isNotNull);
-      expect(gift!.id, '94b6a623-4467-4869-9093-13a328038ef8');
-      expect(gift.status, 'sent');
-      expect(gift.statusLabel, 'Sent');
-      expect(gift.redemptionCode, 'GIFT-RPAF-BLHY');
-      expect(gift.canBeRedeemed, isTrue);
-      expect(gift.isRedeemed, isFalse);
-      expect(gift.recipient?.name, 'hfgh ghg');
-      expect(gift.recipient?.phone, '+9661234567890');
-      expect(gift.message, 'Happy Birthday!\n— Ayesha');
-    });
+        final result = await AuthRepository(dio).getProfile();
+        expect(result.isSuccess, isTrue);
+        final gift = result.dataOrNull!.pendingGift;
+        expect(gift, isNotNull);
+        expect(gift!.id, '94b6a623-4467-4869-9093-13a328038ef8');
+        expect(gift.status, 'sent');
+        expect(gift.statusLabel, 'Sent');
+        expect(gift.redemptionCode, 'GIFT-RPAF-BLHY');
+        expect(gift.canBeRedeemed, isTrue);
+        expect(gift.isRedeemed, isFalse);
+        expect(gift.recipient?.name, 'hfgh ghg');
+        expect(gift.recipient?.phone, '+9661234567890');
+        expect(gift.message, 'Happy Birthday!\n— Ayesha');
+      },
+    );
 
-    test('GET auth/me uses envelope success path only', () async {
+    test('GET customers/profile uses envelope success path only', () async {
       RequestOptions? seen;
       final dio = createTestDio(
         onRequest: (options, handler) {
@@ -178,7 +180,7 @@ void main() {
       );
       final result = await AuthRepository(dio).getProfile();
       expect(result.isFailure, isTrue);
-      expect(seen?.path, 'auth/me');
+      expect(seen?.path, 'customers/profile');
       expect(result.exceptionOrNull?.message, 'nope');
     });
   });
