@@ -44,11 +44,20 @@ class AuthRootView extends StatelessWidget {
               return const OnboardingView();
 
             case AuthFlow.signUp:
+              // Keep personal info + OTP in one stack so step 0 state (text fields,
+              // gender dropdown) stays mounted while step 1 is shown, until OTP
+              // succeeds and [signUpStep] moves past 1.
+              if (state.signUpStep <= 1) {
+                return IndexedStack(
+                  index: state.signUpStep,
+                  sizing: StackFit.expand,
+                  children: const [
+                    SignUpPersonalInfoView(),
+                    SignUpOtpView(),
+                  ],
+                );
+              }
               switch (state.signUpStep) {
-                case 0:
-                  return const SignUpPersonalInfoView();
-                case 1:
-                  return const SignUpOtpView();
                 case 2:
                   return const SignUpExperienceView();
                 case 3:

@@ -98,42 +98,30 @@ class ReferralProgramCubit extends Cubit<ReferralProgramState> {
     final phone = inviteePhoneRaw.trim();
     final countryIso = inviteeCountryIso ?? 'SA';
 
-    // Validate name
-    if (name.isEmpty) {
-      emit(
-        state.copyWith(
-          inviteNameFieldIssue: InviteNameFieldIssue.empty,
-          inviteNameApiError: null,
-          invitePhoneFieldIssue: InvitePhoneFieldIssue.none,
-          invitePhoneApiError: null,
-        ),
-      );
-      return;
-    }
+    final inviteNameFieldIssue = name.isEmpty
+        ? InviteNameFieldIssue.empty
+        : InviteNameFieldIssue.none;
 
-    // Validate phone using the same validation as signup
     final phoneDigits = phone.replaceAll(RegExp(r'\D'), '');
+    final InvitePhoneFieldIssue invitePhoneFieldIssue;
     if (phoneDigits.isEmpty) {
-      emit(
-        state.copyWith(
-          inviteNameFieldIssue: InviteNameFieldIssue.none,
-          inviteNameApiError: null,
-          invitePhoneFieldIssue: InvitePhoneFieldIssue.empty,
-          invitePhoneApiError: null,
-        ),
-      );
-      return;
-    }
-
-    if (!PhoneNumberCountryValidation.isValidNationalNumber(
+      invitePhoneFieldIssue = InvitePhoneFieldIssue.empty;
+    } else if (!PhoneNumberCountryValidation.isValidNationalNumber(
           iso3166Alpha2: countryIso,
           nationalDigitsOnly: phoneDigits,
         )) {
+      invitePhoneFieldIssue = InvitePhoneFieldIssue.invalid;
+    } else {
+      invitePhoneFieldIssue = InvitePhoneFieldIssue.none;
+    }
+
+    if (inviteNameFieldIssue != InviteNameFieldIssue.none ||
+        invitePhoneFieldIssue != InvitePhoneFieldIssue.none) {
       emit(
         state.copyWith(
-          inviteNameFieldIssue: InviteNameFieldIssue.none,
+          inviteNameFieldIssue: inviteNameFieldIssue,
           inviteNameApiError: null,
-          invitePhoneFieldIssue: InvitePhoneFieldIssue.invalid,
+          invitePhoneFieldIssue: invitePhoneFieldIssue,
           invitePhoneApiError: null,
         ),
       );

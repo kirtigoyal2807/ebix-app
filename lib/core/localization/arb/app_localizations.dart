@@ -275,8 +275,14 @@ abstract class AppLocalizations {
   /// No description provided for @resendCode.
   ///
   /// In en, this message translates to:
-  /// **' Resend Code'**
+  /// **'Resend Code'**
   String get resendCode;
+
+  /// No description provided for @resendCodeIn.
+  ///
+  /// In en, this message translates to:
+  /// **'in'**
+  String get resendCodeIn;
 
   /// No description provided for @verify.
   ///

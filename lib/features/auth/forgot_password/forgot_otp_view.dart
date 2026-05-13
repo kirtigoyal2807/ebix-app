@@ -7,6 +7,7 @@ import 'package:pilates_app/features/auth/cubit/auth_cubit.dart';
 import 'package:pilates_app/features/auth/cubit/auth_state.dart';
 import 'package:pilates_app/features/auth/sign_up/widgets/otp_field.dart';
 import 'package:pilates_app/features/auth/sign_up/widgets/sign_up_header.dart';
+import 'package:pilates_app/features/auth/widgets/otp_resend_action.dart';
 import 'package:pilates_app/widgets/app_app_bar.dart';
 import 'package:pilates_app/widgets/app_button.dart';
 import 'package:pilates_app/widgets/app_scaffold.dart';
@@ -31,10 +32,7 @@ class _ForgotOtpViewState extends State<ForgotOtpView>
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (!mounted) return;
-      startResendCodeCooldown();
-    });
+    startResendCodeCooldown(notify: false);
   }
 
   Future<void> _verify(BuildContext context) async {
@@ -53,8 +51,11 @@ class _ForgotOtpViewState extends State<ForgotOtpView>
 
   Future<void> _resend(BuildContext context) async {
     if (isResendCodeOnCooldown) return;
-    startResendCodeCooldown();
-    await context.read<AuthCubit>().resendForgotPasswordEmail(widget.email);
+    try {
+      await context.read<AuthCubit>().resendForgotPasswordEmail(widget.email);
+    } finally {
+      if (mounted) startResendCodeCooldown();
+    }
   }
 
   @override
@@ -110,7 +111,6 @@ class _ForgotOtpViewState extends State<ForgotOtpView>
         final loading =
             state.forgotPasswordUiStatus == ForgotPasswordUiStatus.loading;
         final codeErr = state.forgotPasswordFieldErrors['code'];
-        final theme = Theme.of(context);
         final resendDisabled = loading || isResendCodeOnCooldown;
 
         return AppScaffold(
@@ -163,38 +163,12 @@ class _ForgotOtpViewState extends State<ForgotOtpView>
                         ],
                         SizedBox(height: AppSpacing.lg),
                         Center(
-                          child: GestureDetector(
+                          child: OtpResendAction(
                             key: const ValueKey('forgot_resend_code'),
-                            onTap: resendDisabled
-                                ? null
-                                : () => _resend(context),
-                            child: RichText(
-                              text: TextSpan(
-                                children: [
-                                  TextSpan(
-                                    text: '${context.l10n.didntReceiveCode} ',
-                                    style: AppTextStyles.caption(context)
-                                        .copyWith(
-                                          color: resendDisabled
-                                              ? theme.disabledColor
-                                              : (isDark
-                                                    ? AppColors.darkGreyText
-                                                    : AppColors.greyText),
-                                          fontWeight: FontWeight.w400,
-                                          height: 1.4,
-                                        ),
-                                  ),
-                                  TextSpan(
-                                    text: context.l10n.resendCode,
-                                    style: resendDisabled
-                                        ? AppTextStyles.boldBody(
-                                            context,
-                                          ).copyWith(color: theme.disabledColor)
-                                        : AppTextStyles.boldBody(context),
-                                  ),
-                                ],
-                              ),
-                            ),
+                            isOnCooldown: isResendCodeOnCooldown,
+                            cooldownRemaining: resendCodeCooldownRemaining,
+                            resendGestureDisabled: resendDisabled,
+                            onResend: () => _resend(context),
                           ),
                         ),
                       ],
