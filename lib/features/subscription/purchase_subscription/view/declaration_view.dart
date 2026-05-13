@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:pilates_app/config/theme/app_colors.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/core/localization/arb/app_localizations.dart';
 import 'package:pilates_app/core/validation/contact_validators.dart';
 import 'package:pilates_app/core/validation/subscription_declaration_validators.dart';
+import 'package:pilates_app/features/auth/cubit/auth_cubit.dart';
+import 'package:pilates_app/features/auth/cubit/auth_state.dart';
 import 'package:pilates_app/features/subscription/purchase_subscription/cubit/subscription_cubit.dart';
+import 'package:pilates_app/features/subscription/purchase_subscription/subscription_declaration_prefill.dart';
 import 'package:pilates_app/features/subscription/purchase_subscription/view/widgets/subscription_calendar_date_field.dart';
 import 'package:pilates_app/features/subscription/purchase_subscription/view/widgets/subscription_header.dart';
 import 'package:pilates_app/features/subscription/purchase_subscription/view/widgets/subscription_health_wizard_step.dart';
@@ -38,9 +42,27 @@ class _DeclarationViewState extends State<DeclarationView> {
   void initState() {
     super.initState();
     final s = context.read<SubscriptionCubit>().state;
-    _nameController = TextEditingController(text: s.declarationName);
+    final user = context.read<AuthCubit>().state.user;
+    final today = DateFormat('dd-MM-yyyy').format(DateTime.now());
+    final name = SubscriptionDeclarationPrefill.resolvedDeclarationName(s, user);
+    final date = SubscriptionDeclarationPrefill.resolvedDeclarationDate(s, today);
+
+    _nameController = TextEditingController(text: name);
     _signatureController = TextEditingController(text: s.declarationSignature);
-    _dateController = TextEditingController(text: s.declarationDate);
+    _dateController = TextEditingController(text: date);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      final cubit = context.read<SubscriptionCubit>();
+      SubscriptionDeclarationPrefill.applyIfControllersEmpty(
+        cubit: cubit,
+        user: context.read<AuthCubit>().state.user,
+        nameController: _nameController,
+        dateController: _dateController,
+      );
+      cubit.updateDeclarationName(_nameController.text);
+      cubit.updateDeclarationSignature(_signatureController.text);
+      cubit.updateDeclarationDate(_dateController.text);
+    });
   }
 
   @override
@@ -97,97 +119,125 @@ class _DeclarationViewState extends State<DeclarationView> {
     final cubit = context.read<SubscriptionCubit>();
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    return Padding(
-      padding: EdgeInsets.symmetric(
-        vertical: AppSpacing.lg,
-        horizontal: AppSpacing.lg,
-      ),
-      child: Column(
-        children: [
-          Expanded(
-            child: GestureDetector(
-              behavior: HitTestBehavior.translucent,
-              onTap: _unfocusKeyboard,
-              child: SingleChildScrollView(
-                keyboardDismissBehavior:
-                    ScrollViewKeyboardDismissBehavior.onDrag,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SubscriptionStepHeader(
-                      wizardStep:
-                          SubscriptionHealthWizardStep.declaration,
-                      isDark: isDark,
-                    ),
-                    SizedBox(height: AppSpacing.xl),
-                    AppText(
-                      l10n.declaration,
-                      style: (style) => AppTextStyles.gelasioMedium(
-                        context,
-                      ).copyWith(fontSize: 24, height: 1.2),
-                    ),
-                    SizedBox(height: AppSpacing.lg),
-                    _buildSectionHeader(context, l10n.declarationText),
-                    SizedBox(height: AppSpacing.md),
-                    AppTextField(
-                      label: l10n.name,
-                      hint: l10n.name,
-                      controller: _nameController,
-                      errorText: _nameError,
-                      keyboardType: TextInputType.name,
-                      onChanged: (_) {
-                        cubit.updateDeclarationName(_nameController.text);
-                        setState(() => _nameError = null);
-                      },
-                    ),
-                    SizedBox(height: AppSpacing.md),
-                    AppTextField(
-                      label: l10n.signature,
-                      hint: l10n.signature,
-                      controller: _signatureController,
-                      errorText: _signatureError,
-                      onChanged: (_) {
-                        cubit.updateDeclarationSignature(
-                          _signatureController.text,
-                        );
-                        setState(() => _signatureError = null);
-                      },
-                    ),
-                    SizedBox(height: AppSpacing.md),
-                    SubscriptionCalendarDateField(
-                      label: l10n.date,
-                      hint: l10n.date,
-                      controller: _dateController,
-                      onDateSelected: (d) {
-                        cubit.updateDeclarationDate(d);
-                        setState(() => _dateError = null);
-                      },
-                    ),
-                    if (_dateError != null) ...[
-                      SizedBox(height: 6),
-                      Text(
-                        _dateError!,
-                        style: AppTextStyles.bodyText(context).copyWith(
-                          fontSize: 12,
-                          color: Theme.of(context).brightness == Brightness.dark
-                              ? AppColors.redDark
-                              : AppColors.redLight,
-                        ),
+    if (SubscriptionDeclarationPrefill.applyIfControllersEmpty(
+      cubit: cubit,
+      user: context.read<AuthCubit>().state.user,
+      nameController: _nameController,
+      dateController: _dateController,
+    )) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) setState(() {});
+      });
+    }
+
+    return BlocListener<AuthCubit, AuthState>(
+      listenWhen: (prev, next) =>
+          prev.user != next.user ||
+          prev.accountProfileRefreshStatus != next.accountProfileRefreshStatus,
+      listener: (context, _) {
+        final c = context.read<SubscriptionCubit>();
+        if (SubscriptionDeclarationPrefill.applyIfControllersEmpty(
+          cubit: c,
+          user: context.read<AuthCubit>().state.user,
+          nameController: _nameController,
+          dateController: _dateController,
+        )) {
+          setState(() {});
+        }
+      },
+      child: Padding(
+        padding: EdgeInsets.symmetric(
+          vertical: AppSpacing.lg,
+          horizontal: AppSpacing.lg,
+        ),
+        child: Column(
+          children: [
+            Expanded(
+              child: GestureDetector(
+                behavior: HitTestBehavior.translucent,
+                onTap: _unfocusKeyboard,
+                child: SingleChildScrollView(
+                  keyboardDismissBehavior:
+                      ScrollViewKeyboardDismissBehavior.onDrag,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SubscriptionStepHeader(
+                        wizardStep:
+                            SubscriptionHealthWizardStep.declaration,
+                        isDark: isDark,
                       ),
+                      SizedBox(height: AppSpacing.xl),
+                      AppText(
+                        l10n.declaration,
+                        style: (style) => AppTextStyles.gelasioMedium(
+                          context,
+                        ).copyWith(fontSize: 24, height: 1.2),
+                      ),
+                      SizedBox(height: AppSpacing.lg),
+                      _buildSectionHeader(context, l10n.declarationText),
+                      SizedBox(height: AppSpacing.md),
+                      AppTextField(
+                        label: l10n.name,
+                        hint: l10n.name,
+                        controller: _nameController,
+                        errorText: _nameError,
+                        keyboardType: TextInputType.name,
+                        onChanged: (_) {
+                          cubit.updateDeclarationName(_nameController.text);
+                          setState(() => _nameError = null);
+                        },
+                      ),
+                      SizedBox(height: AppSpacing.md),
+                      AppTextField(
+                        label: l10n.signature,
+                        hint: l10n.signature,
+                        controller: _signatureController,
+                        errorText: _signatureError,
+                        onChanged: (_) {
+                          cubit.updateDeclarationSignature(
+                            _signatureController.text,
+                          );
+                          setState(() => _signatureError = null);
+                        },
+                      ),
+                      SizedBox(height: AppSpacing.md),
+                      SubscriptionCalendarDateField(
+                        label: l10n.date,
+                        hint: l10n.date,
+                        controller: _dateController,
+                        enabled: false,
+                        onDateSelected: (d) {
+                          cubit.updateDeclarationDate(d);
+                          setState(() => _dateError = null);
+                        },
+                      ),
+                      if (_dateError != null) ...[
+                        SizedBox(height: 6),
+                        Text(
+                          _dateError!,
+                          style: AppTextStyles.bodyText(context).copyWith(
+                            fontSize: 12,
+                            color: Theme.of(context).brightness == Brightness.dark
+                                ? AppColors.redDark
+                                : AppColors.redLight,
+                          ),
+                        ),
+                      ],
+                      SizedBox(height: AppSpacing.lg),
                     ],
-                    SizedBox(height: AppSpacing.lg),
-                  ],
+                  ),
                 ),
               ),
             ),
-          ),
-          AppButton(
-            label: l10n.continueTxt,
-            onPressed: () => _onContinue(l10n),
-            buttonColor: isDark ? AppColors.primary : AppColors.primaryBrown,
-            expanded: true,
-          ),
-        ],
+            AppButton(
+              label: l10n.continueTxt,
+              onPressed: () => _onContinue(l10n),
+              buttonColor: isDark ? AppColors.primary : AppColors.primaryBrown,
+              expanded: true,
+            ),
+          ],
+        ),
       ),
     );
   }

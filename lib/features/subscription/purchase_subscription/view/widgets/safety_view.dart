@@ -45,13 +45,9 @@ class _SafetyViewState extends State<SafetyView> {
     final today = DateFormat('dd-MM-yyyy').format(DateTime.now());
     final name = SubscriptionDeclarationPrefill.resolvedDeclarationName(s, user);
     final date = SubscriptionDeclarationPrefill.resolvedDeclarationDate(s, today);
-    final sig = SubscriptionDeclarationPrefill.resolvedDeclarationSignature(
-      s,
-      name,
-    );
 
     _nameController = TextEditingController(text: name);
-    _signatureController = TextEditingController(text: sig);
+    _signatureController = TextEditingController(text: s.declarationSignature);
     _dateController = TextEditingController(text: date);
     _agreementScrollController = ScrollController();
     _agreementScrollController.addListener(_onAgreementScroll);
@@ -62,7 +58,6 @@ class _SafetyViewState extends State<SafetyView> {
         cubit: cubit,
         user: context.read<AuthCubit>().state.user,
         nameController: _nameController,
-        signatureController: _signatureController,
         dateController: _dateController,
       );
       cubit.updateDeclarationName(_nameController.text);
@@ -155,7 +150,6 @@ class _SafetyViewState extends State<SafetyView> {
       cubit: cubit,
       user: authUser,
       nameController: _nameController,
-      signatureController: _signatureController,
       dateController: _dateController,
     )) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -175,7 +169,6 @@ class _SafetyViewState extends State<SafetyView> {
           cubit: c,
           user: context.read<AuthCubit>().state.user,
           nameController: _nameController,
-          signatureController: _signatureController,
           dateController: _dateController,
         )) {
           setState(() {});
@@ -333,7 +326,7 @@ class _SafetyViewState extends State<SafetyView> {
                         label: l10n.date,
                         hint: l10n.date,
                         controller: _dateController,
-                        enabled: fieldsEnabled,
+                        enabled: false,
                         onDateSelected: (d) {
                           cubit.updateDeclarationDate(d);
                           setState(() => _dateError = null);
