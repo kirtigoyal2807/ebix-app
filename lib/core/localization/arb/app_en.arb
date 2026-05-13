@@ -689,6 +689,8 @@
       }
     }
   },
+  "voucherAppliedSavingsLead": "Voucher applied. You save ",
+  "voucherAppliedSavingsEnd": ".",
   "voucherAppliedDiscountMessage": "You got {amount} off. Voucher applied successfully.",
   "@voucherAppliedDiscountMessage": {
     "placeholders": {

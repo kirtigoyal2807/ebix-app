@@ -14,6 +14,7 @@ import '../../../../widgets/app_button.dart';
 import '../../../../widgets/app_shadow.dart';
 import '../../../../widgets/app_text.dart';
 import '../../../../widgets/app_text_field.dart';
+import '../../../../widgets/currency_amount_text.dart';
 import '../../../../widgets/dotted_underline.dart';
 import '../../../checkout/data/checkout_repository.dart';
 import '../../../checkout/data/models/checkout_start_result.dart';
@@ -261,10 +262,22 @@ class _ReviewScreenDetailsViewState extends State<ReviewScreenDetailsView> {
         );
 
     if (disc > 0) {
-      final amt = MembershipReceiptSummary.formatMoney(disc, currency, locale);
+      final st = successStyle(context);
       return Padding(
         padding: EdgeInsets.only(top: AppSpacing.sm),
-        child: AppText(l10n.voucherAppliedSavings(amt), style: successStyle),
+        child: Text.rich(
+          TextSpan(
+            children: [
+              TextSpan(text: l10n.voucherAppliedSavingsLead, style: st),
+              ...currencyAmountInlineSpans(
+                amount: disc,
+                currencyCode: currency,
+                textStyle: st,
+              ),
+              TextSpan(text: l10n.voucherAppliedSavingsEnd, style: st),
+            ],
+          ),
+        ),
       );
     }
 
@@ -301,25 +314,7 @@ class _ReviewScreenDetailsViewState extends State<ReviewScreenDetailsView> {
     final headlineTotalAmt = (totalAmt != null && totalAmt > 0)
         ? totalAmt
         : impliedSubtotal;
-    final priceText = MembershipReceiptSummary.formatMoney(
-      headlineTotalAmt,
-      currency,
-      locale,
-    );
-    final subtotalText = MembershipReceiptSummary.formatMoney(
-      impliedSubtotal,
-      currency,
-      locale,
-    );
-    final discountText = MembershipReceiptSummary.formatMoney(
-      discountAmt,
-      currency,
-      locale,
-    );
     final suffix = product?.billingPriceSuffix ?? '';
-    final headlinePriceLine = suffix.isNotEmpty
-        ? '$priceText$suffix'
-        : priceText;
     final planName = product?.name?.trim();
     final planTitle = (planName != null && planName.isNotEmpty)
         ? planName
@@ -425,8 +420,10 @@ class _ReviewScreenDetailsViewState extends State<ReviewScreenDetailsView> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Expanded(
-                  child: AppText(
-                    headlinePriceLine,
+                  child: CurrencyAmountText(
+                    amount: headlineTotalAmt,
+                    currencyCode: currency,
+                    priceSuffix: suffix,
                     style: (context) =>
                         AppTextStyles.bodyText(
                           context,
@@ -446,13 +443,24 @@ class _ReviewScreenDetailsViewState extends State<ReviewScreenDetailsView> {
               SizedBox(height: AppSpacing.md),
               _buildClassDetailRow(
                 label: '${l10n.checkoutSubtotal}:',
-                value: subtotalText,
+                valueWidget: CurrencyAmountText(
+                  amount: impliedSubtotal,
+                  currencyCode: currency,
+                  style: (ctx) => AppTextStyles.bodyText(ctx),
+                  textAlign: TextAlign.end,
+                ),
                 isDark: isDark,
               ),
               SizedBox(height: AppSpacing.sm),
               _buildClassDetailRow(
                 label: '${l10n.checkoutVoucherDiscount}:',
-                value: '- $discountText',
+                valueWidget: CurrencyAmountText(
+                  amount: discountAmt,
+                  currencyCode: currency,
+                  leading: '- ',
+                  style: (ctx) => AppTextStyles.bodyText(ctx),
+                  textAlign: TextAlign.end,
+                ),
                 isDark: isDark,
               ),
             ],
@@ -631,11 +639,13 @@ class _ReviewScreenDetailsViewState extends State<ReviewScreenDetailsView> {
 
   Widget _buildClassDetailRow({
     required String label,
-    required String value,
+    String? value,
+    Widget? valueWidget,
     required bool isDark,
     bool isMultiLine = false,
     bool isBorder = true,
   }) {
+    assert(value != null || valueWidget != null);
     return SizedBox(
       width: double.infinity,
       child: CustomPaint(
@@ -659,10 +669,11 @@ class _ReviewScreenDetailsViewState extends State<ReviewScreenDetailsView> {
               ),
               SizedBox(width: AppSpacing.md),
               Expanded(
-                child: AppText(
-                  value,
-                  style: (context) => AppTextStyles.bodyText(context),
-                ),
+                child: valueWidget ??
+                    AppText(
+                      value!,
+                      style: (context) => AppTextStyles.bodyText(context),
+                    ),
               ),
             ],
           ),

@@ -3170,6 +3170,18 @@ abstract class AppLocalizations {
   /// **'Voucher applied. You save {amount}.'**
   String voucherAppliedSavings(String amount);
 
+  /// No description provided for @voucherAppliedSavingsLead.
+  ///
+  /// In en, this message translates to:
+  /// **'Voucher applied. You save '**
+  String get voucherAppliedSavingsLead;
+
+  /// No description provided for @voucherAppliedSavingsEnd.
+  ///
+  /// In en, this message translates to:
+  /// **'.'**
+  String get voucherAppliedSavingsEnd;
+
   /// No description provided for @voucherAppliedDiscountMessage.
   ///
   /// In en, this message translates to:

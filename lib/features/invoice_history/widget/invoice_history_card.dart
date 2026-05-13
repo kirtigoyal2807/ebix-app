@@ -3,6 +3,7 @@ import 'package:pilates_app/config/theme/app_colors.dart';
 import 'package:pilates_app/config/theme/app_radius.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/widgets/app_text.dart';
+import 'package:pilates_app/widgets/currency_amount_text.dart';
 
 import '../../../config/theme/app_text_styles.dart';
 import '../../../core/localization/localization_extension.dart';
@@ -12,7 +13,8 @@ class InvoiceHistoryCard extends StatelessWidget {
   final String title;
   final String subTitle;
   final String date;
-  final String amount;
+  final num? amountValue;
+  final String currencyCode;
   final bool? refund;
   final VoidCallback? onView;
   final VoidCallback? onDownload;
@@ -23,7 +25,8 @@ class InvoiceHistoryCard extends StatelessWidget {
     required this.title,
     required this.subTitle,
     required this.date,
-    required this.amount,
+    required this.amountValue,
+    required this.currencyCode,
     this.refund = false,
     this.onView,
     this.onDownload,
@@ -71,9 +74,11 @@ class InvoiceHistoryCard extends StatelessWidget {
                     ),
                   ),
                   SizedBox(width: AppSpacing.sm),
-                  AppText(
-                    amount,
+                  CurrencyAmountText(
+                    amount: amountValue,
+                    currencyCode: currencyCode,
                     maxLines: 1,
+                    textAlign: TextAlign.end,
                     style: (context) =>
                         AppTextStyles.experienceButton(context).copyWith(
                           color: refund == true

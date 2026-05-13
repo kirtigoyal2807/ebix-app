@@ -19,8 +19,8 @@ import '../../../config/theme/app_colors.dart';
 import '../../../config/theme/app_radius.dart';
 import '../../../config/theme/app_text_styles.dart';
 import '../../../core/localization/arb/app_localizations.dart';
-import '../../../core/utils/currency_display.dart';
 import '../../../widgets/app_button.dart';
+import '../../../widgets/currency_amount_text.dart';
 import '../cubit/confirm_booking_cubit.dart';
 import '../cubit/confirm_booking_state.dart';
 import '../data/classes_repository.dart';
@@ -342,9 +342,16 @@ class BookClassConfirmView extends StatelessWidget {
     required AppLocalizations l10n,
   }) {
     final price = slot.basePrice;
-    final priceLabel = price != null
-        ? _formatClassPrice(context, price)
-        : l10n.bookingPriceUnavailable;
+    final Widget priceValue = price != null
+        ? CurrencyAmountText(
+            amount: price,
+            currencyCode: 'SAR',
+            style: (context) => AppTextStyles.textFieldHeading(context),
+          )
+        : AppText(
+            l10n.bookingPriceUnavailable,
+            style: (context) => AppTextStyles.textFieldHeading(context),
+          );
 
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
@@ -366,24 +373,20 @@ class BookClassConfirmView extends StatelessWidget {
             ),
             child: Column(
               children: [
-                _buildPaymentRow(title: l10n.classFee, value: priceLabel),
+                _buildPaymentRow(title: l10n.classFee, value: priceValue),
                 SizedBox(height: AppSpacing.md),
                 Divider(
                   color: isDark ? AppColors.greyText : AppColors.darkGreyBorder,
                   height: 1,
                 ),
                 SizedBox(height: AppSpacing.md),
-                _buildPaymentRow(title: l10n.total, value: priceLabel),
+                _buildPaymentRow(title: l10n.total, value: priceValue),
               ],
             ),
           ),
         ],
       ),
     );
-  }
-
-  static String _formatClassPrice(BuildContext context, double amount) {
-    return formatCurrencyAmount(amount: amount, code: 'SAR');
   }
 
   void _pushBookingSuccess(BuildContext context, BookingResource booking) {
@@ -398,17 +401,22 @@ class BookClassConfirmView extends StatelessWidget {
     );
   }
 
-  Widget _buildPaymentRow({required String title, required String value}) {
+  Widget _buildPaymentRow({required String title, required Widget value}) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        AppText(
-          title,
-          style: (context) => AppTextStyles.bodyTextSmall(context),
+        Flexible(
+          child: AppText(
+            title,
+            style: (context) => AppTextStyles.bodyTextSmall(context),
+          ),
         ),
-        AppText(
-          value,
-          style: (context) => AppTextStyles.textFieldHeading(context),
+        SizedBox(width: AppSpacing.sm),
+        Flexible(
+          child: Align(
+            alignment: Alignment.centerRight,
+            child: value,
+          ),
         ),
       ],
     );

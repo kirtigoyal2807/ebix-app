@@ -670,6 +670,8 @@
       }
     }
   },
+  "voucherAppliedSavingsLead": "تم تطبيق القسيمة. توفيرك ",
+  "voucherAppliedSavingsEnd": ".",
   "voucherAppliedDiscountMessage": "وفّرت {amount}. تم تطبيق القسيمة بنجاح.",
   "@voucherAppliedDiscountMessage": {
     "placeholders": {

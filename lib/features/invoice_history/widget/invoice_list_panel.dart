@@ -8,7 +8,6 @@ import 'package:pilates_app/features/invoice_history/cubit/invoice_history_state
 import 'package:pilates_app/features/invoice_history/data/models/invoice_resource.dart';
 import 'package:pilates_app/features/invoice_history/widget/empty_data_view.dart';
 import 'package:pilates_app/features/invoice_history/widget/invoice_history_card.dart';
-import 'package:pilates_app/core/utils/currency_display.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class InvoiceListPanel extends StatelessWidget {
@@ -54,10 +53,6 @@ class InvoiceListPanel extends StatelessWidget {
               : 'assets/images/svg/invoice_history/ic_no_refund.svg',
         );
     }
-  }
-
-  static String _formatMoney(InvoiceResource inv, String languageCode) {
-    return formatCurrencyAmount(amount: inv.amount, code: inv.currency);
   }
 
   static void _showUnavailable(BuildContext context) {
@@ -196,7 +191,8 @@ class InvoiceListPanel extends StatelessWidget {
                   date: DateFormat.yMMMd(
                     languageCode,
                   ).format(inv.issuedAt.toLocal()),
-                  amount: _formatMoney(inv, languageCode),
+                  amountValue: inv.amount,
+                  currencyCode: inv.currency,
                   refund: inv.isRefund,
                   onView: () => openInvoiceView(context, inv.pdfUrl),
                   onDownload: () => openInvoiceDownload(context, inv.pdfUrl),

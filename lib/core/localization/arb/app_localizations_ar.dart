@@ -1648,6 +1648,12 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
+  String get voucherAppliedSavingsLead => 'تم تطبيق القسيمة. توفيرك ';
+
+  @override
+  String get voucherAppliedSavingsEnd => '.';
+
+  @override
   String voucherAppliedDiscountMessage(String amount) {
     return 'وفّرت $amount. تم تطبيق القسيمة بنجاح.';
   }

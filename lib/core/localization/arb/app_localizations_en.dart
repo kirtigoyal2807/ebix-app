@@ -1662,6 +1662,12 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get voucherAppliedSavingsLead => 'Voucher applied. You save ';
+
+  @override
+  String get voucherAppliedSavingsEnd => '.';
+
+  @override
   String voucherAppliedDiscountMessage(String amount) {
     return 'You got $amount off. Voucher applied successfully.';
   }
