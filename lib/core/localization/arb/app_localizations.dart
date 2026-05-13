@@ -6014,6 +6014,12 @@ abstract class AppLocalizations {
   /// **'Select Date of birth'**
   String get selectDOB;
 
+  /// No description provided for @dateOfBirthPickerDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get dateOfBirthPickerDone;
+
   /// No description provided for @dobMinimumAgeError.
   ///
   /// In en, this message translates to:

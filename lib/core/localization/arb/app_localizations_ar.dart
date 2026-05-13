@@ -3175,6 +3175,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get selectDOB => 'اختر تاريخ الميلاد';
 
   @override
+  String get dateOfBirthPickerDone => 'تم';
+
+  @override
   String get dobMinimumAgeError => 'يجب أن يكون عمرك 16 عامًا على الأقل.';
 
   @override

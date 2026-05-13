@@ -1342,6 +1342,7 @@
   "rewardsEarned": "Rewards Earned",
   "pointsAndAchievements": "Points and achievements",
   "selectDOB": "Select Date of birth",
+  "dateOfBirthPickerDone": "Done",
   "dobMinimumAgeError": "You must be at least 16 years old.",
   "reformerTower": "Reformer & Tower Equipment Specialist",
   "firstNameTooShort": "First name must be at least 2 characters",

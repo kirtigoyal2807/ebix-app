@@ -9,6 +9,7 @@ import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/core/localization/localization_extension.dart';
 import 'package:pilates_app/core/utils/date_of_birth_constraints.dart';
+import 'package:pilates_app/core/utils/show_date_of_birth_picker.dart';
 import 'package:pilates_app/core/utils/api_media_url.dart';
 import 'package:pilates_app/features/auth/cubit/auth_cubit.dart';
 import 'package:pilates_app/features/auth/data/models/auth_user.dart';
@@ -184,8 +185,8 @@ class _PersonalViewBodyState extends State<_PersonalViewBody> {
       firstDate,
       lastDob,
     );
-    final picked = await showDatePicker(
-      context: context,
+    final picked = await showDateOfBirthPicker(
+      context,
       initialDate: initialDate,
       firstDate: firstDate,
       lastDate: lastDob,
