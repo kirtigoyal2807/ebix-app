@@ -2462,6 +2462,14 @@ class AppLocalizationsAr extends AppLocalizations {
   String get share_badge => 'مشاركة الشارة';
 
   @override
+  String get badge_share_locked_status => 'لم يتم الحصول عليها بعد';
+
+  @override
+  String badge_share_footer(String appName) {
+    return 'تمت المشاركة عبر $appName';
+  }
+
+  @override
   String get badge_bronze => 'برونزي';
 
   @override

@@ -3,14 +3,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pilates_app/config/theme/app_colors.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
+import 'package:pilates_app/core/localization/localization_extension.dart';
+import 'package:pilates_app/features/loyalty/data/models/loyalty_badge.dart';
 import 'package:pilates_app/widgets/app_text.dart';
 
 import '../../../../config/theme/app_radius.dart';
 import '../../../../config/theme/app_text_styles.dart';
-import '../../../../core/localization/localization_extension.dart';
 import '../cubit/badge_cubit.dart';
 import '../cubit/badge_state.dart';
-import '../model/badge_model.dart';
 import 'badge_sheet.dart';
 
 class BadgeCard extends StatelessWidget {
@@ -20,10 +20,13 @@ class BadgeCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return BlocBuilder<BadgeCubit, BadgeState>(
-      buildWhen: (previous, current) =>
-          previous.badgeDataList != current.badgeDataList,
+      buildWhen: (p, c) =>
+          p.badges != c.badges ||
+          p.selectedBadgeTypeKey != c.selectedBadgeTypeKey ||
+          p.status != c.status,
       builder: (context, state) {
-        if (state.badgeDataList.isEmpty) {
+        final items = state.filteredBadges;
+        if (items.isEmpty) {
           return Padding(
             padding: EdgeInsets.symmetric(vertical: AppSpacing.xl),
             child: AppText(
@@ -39,57 +42,72 @@ class BadgeCard extends StatelessWidget {
             mainAxisSpacing: AppSpacing.md,
             crossAxisSpacing: AppSpacing.md,
           ),
-          itemCount: state.badgeDataList.length,
-          physics: NeverScrollableScrollPhysics(),
+          itemCount: items.length,
+          physics: const NeverScrollableScrollPhysics(),
           shrinkWrap: true,
           itemBuilder: (context, index) {
-            final item = state.badgeDataList[index];
+            final badge = items[index];
             return GestureDetector(
               onTap: () {
-                showModalBottomSheet(
+                showModalBottomSheet<void>(
                   context: context,
                   isScrollControlled: true,
                   barrierColor: AppColors.bottomSheetShadow,
-
-                  builder: (_) => BadgeSheetBottomSheet(
-                    imageIcon: isDark ? item.darkImage : item.image,
-                    title: getBadgeName(context, item.badgeName),
-                  ),
+                  builder: (_) => BadgeSheetBottomSheet(badge: badge),
                 );
               },
               child: Container(
-                height: 142,
                 padding: EdgeInsets.all(AppSpacing.md),
                 decoration: BoxDecoration(
                   color: isDark
                       ? AppColors.homeBackground
                       : AppColors.whiteColor,
                   border: Border.all(
-                    color: isDark ? AppColors.greyText : AppColors.buttonBorder,
+                    color: badge.isEarned
+                        ? (isDark ? AppColors.darkGreyBorder : AppColors.primary)
+                        : (isDark
+                            ? AppColors.greyText
+                            : AppColors.buttonBorder),
                   ),
                   borderRadius: BorderRadius.circular(AppRadius.md),
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    SvgPicture.asset(
-                      isDark ? item.darkImage : item.image,
-                      height: 56,
-                      width: 56,
-                    ),
+                    _BadgeThumb(badge: badge, isDark: isDark),
                     SizedBox(height: AppSpacing.md),
-                    AppText(
-                      getBadgeName(context, item.badgeName),
-                      style: (context) =>
-                          AppTextStyles.textFieldHeading(context),
-                    ),
-                    SizedBox(height: 2),
-                    AppText(
-                      getStatus(context, item.status),
-                      style: (context) => AppTextStyles.bodyLightText(
-                        context,
-                      ).copyWith(fontSize: 12),
+                    Flexible(
+                      child: Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            AppText(
+                              badge.name.trim().isNotEmpty
+                                  ? badge.name
+                                  : badge.badgeKey,
+                              style: (context) =>
+                                  AppTextStyles.textFieldHeading(context),
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              textAlign: TextAlign.center,
+                            ),
+                            SizedBox(height: 2),
+                            AppText(
+                              badge.isEarned
+                                  ? context.l10n.earned
+                                  : context.l10n.locked,
+                              style: (context) =>
+                                  AppTextStyles.bodyLightText(
+                                    context,
+                                  ).copyWith(fontSize: 12),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              textAlign: TextAlign.center,
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                   ],
                 ),
@@ -100,36 +118,39 @@ class BadgeCard extends StatelessWidget {
       },
     );
   }
+}
 
-  String getBadgeName(BuildContext context, BadgeData badgeData) {
-    switch (badgeData) {
-      case BadgeData.februaryStreak:
-        return context.l10n.february_streak;
-      case BadgeData.studioLegend:
-        return context.l10n.studio_legend;
-      case BadgeData.firstStep:
-        return context.l10n.first_step;
-      case BadgeData.earlyBird:
-        return context.l10n.early_bird;
-      case BadgeData.lotusBlossom:
-        return context.l10n.lotus_blossom;
-      case BadgeData.coreStrength:
-        return context.l10n.core_strength;
-      case BadgeData.weekWarrior:
-        return context.l10n.week_warrior;
-      case BadgeData.balanceMaster:
-        return context.l10n.balance_master;
-      default:
-        return "";
+class _BadgeThumb extends StatelessWidget {
+  const _BadgeThumb({required this.badge, required this.isDark});
+
+  final LoyaltyBadge badge;
+  final bool isDark;
+
+  @override
+  Widget build(BuildContext context) {
+    final url = badge.iconUrl;
+    if (url != null && url.isNotEmpty) {
+      return ClipRRect(
+        borderRadius: BorderRadius.circular(8),
+        child: Image.network(
+          url,
+          height: 56,
+          width: 56,
+          fit: BoxFit.cover,
+          errorBuilder: (_, _, _) => _fallbackSvg(isDark),
+        ),
+      );
     }
+    return _fallbackSvg(isDark);
   }
 
-  String getStatus(BuildContext context, BadgeStatus status) {
-    switch (status) {
-      case BadgeStatus.locked:
-        return context.l10n.locked;
-      case BadgeStatus.earned:
-        return context.l10n.earned;
-    }
+  Widget _fallbackSvg(bool isDark) {
+    return SvgPicture.asset(
+      isDark
+          ? 'assets/images/svg/progress_tracking/ic_dark_consistency_flow.svg'
+          : 'assets/images/svg/progress_tracking/ic_consistency_flow.svg',
+      height: 56,
+      width: 56,
+    );
   }
 }

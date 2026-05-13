@@ -21,6 +21,16 @@ class LoyaltyBadge {
   final DateTime? earnedAt;
 
   factory LoyaltyBadge.fromJson(Map<String, dynamic> json) {
+    final earnedAt = _parseDate(json['earnedAt'] ?? json['earned_at']);
+    final explicitEarned =
+        json['isEarned'] == true || json['is_earned'] == true;
+    final explicitNotEarned =
+        json['isEarned'] == false || json['is_earned'] == false;
+
+    /// `GET loyalty/badges` marks completion via [earnedAt]; achievements may send flags only.
+    final isEarned =
+        explicitEarned || (!explicitNotEarned && earnedAt != null);
+
     return LoyaltyBadge(
       id: _parseId(json['id']),
       name: '${json['name'] ?? ''}',
@@ -28,8 +38,8 @@ class LoyaltyBadge {
       iconUrl: _nullableNonEmptyString(json['iconUrl'] ?? json['icon_url']),
       badgeKey: '${json['badgeKey'] ?? json['badge_key'] ?? ''}',
       badgeType: '${json['badgeType'] ?? json['badge_type'] ?? ''}',
-      isEarned: json['isEarned'] == true || json['is_earned'] == true,
-      earnedAt: _parseDate(json['earnedAt'] ?? json['earned_at']),
+      isEarned: isEarned,
+      earnedAt: earnedAt,
     );
   }
 

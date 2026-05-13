@@ -1,6 +1,7 @@
 import 'package:pilates_app/core/network/api_result.dart';
 import 'package:pilates_app/core/network/base_repository.dart';
 
+import 'models/loyalty_badge.dart';
 import 'models/loyalty_achievements_result.dart';
 import 'models/loyalty_challenge.dart';
 import 'models/loyalty_challenge_detail.dart';
@@ -58,6 +59,17 @@ class LoyaltyRepository extends BaseRepository {
         .toList();
   }
 
+  static List<LoyaltyBadge> _badgesFromJson(dynamic json) {
+    if (json is! List) return [];
+    return json
+        .map(
+          (e) => LoyaltyBadge.fromJson(
+            e is Map<String, dynamic> ? e : Map<String, dynamic>.from(e as Map),
+          ),
+        )
+        .toList();
+  }
+
   static List<LoyaltyTier> _tiersFromJson(dynamic json) {
     List<dynamic> list;
     if (json is List) {
@@ -104,6 +116,14 @@ class LoyaltyRepository extends BaseRepository {
       'loyalty/achievements',
       fromJson: (json) =>
           LoyaltyAchievementsResult.fromJson(json as Map<String, dynamic>),
+    );
+  }
+
+  /// User/catalog badges (`GET loyalty/badges`). Envelope `data` is a list of badges.
+  Future<ApiResult<List<LoyaltyBadge>>> getBadges() {
+    return get<List<LoyaltyBadge>>(
+      'loyalty/badges',
+      fromJson: _badgesFromJson,
     );
   }
 

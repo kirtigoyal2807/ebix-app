@@ -18,7 +18,22 @@ import '../../widgets/app_app_bar.dart';
 import 'achievement/achievement_view.dart';
 
 class ProgressTrackingView extends StatelessWidget {
-  const ProgressTrackingView({super.key});
+  const ProgressTrackingView({
+    super.key,
+    this.initialTabIndex = tabOverview,
+  });
+
+  /// Overview tab (monthly progress, weekly activity, goals).
+  static const int tabOverview = 0;
+
+  /// Session history list.
+  static const int tabHistory = 1;
+
+  /// Loyalty achievements ([AchievementView]); matches [progressTabBar] tab order.
+  static const int tabAchievements = 2;
+
+  /// Index into [progressTabBar] / [TabBarView] children (**0…2**).
+  final int initialTabIndex;
 
   @override
   Widget build(BuildContext context) {
@@ -39,6 +54,7 @@ class ProgressTrackingView extends StatelessWidget {
       ],
       child: DefaultTabController(
         length: 3,
+        initialIndex: initialTabIndex.clamp(0, 2),
         child: Scaffold(
           backgroundColor: isDark
               ? AppColors.homeBackground
@@ -77,7 +93,11 @@ class ProgressTrackingView extends StatelessWidget {
             ),
           ),
           body: TabBarView(
-            children: [OverviewView(), HistoryView(), AchievementView()],
+            children: [
+              OverviewView(),
+              HistoryView(),
+              const AchievementView(),
+            ],
           ),
         ),
       ),

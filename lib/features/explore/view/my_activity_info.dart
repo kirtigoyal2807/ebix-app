@@ -91,9 +91,11 @@ class MyActivityInfo extends StatelessWidget {
         SizedBox(height: AppSpacing.lmd),
         AccountInfoTile(
           onTap: () {
-            Navigator.push(
+            Navigator.push<void>(
               context,
-              MaterialPageRoute(builder: (context) => BadgeCollectionView()),
+              MaterialPageRoute<void>(
+                builder: (context) => const BadgeCollectionView(),
+              ),
             );
           },
           icon: isDark

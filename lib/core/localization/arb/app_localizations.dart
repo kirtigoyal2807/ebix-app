@@ -4730,6 +4730,18 @@ abstract class AppLocalizations {
   /// **'Share This Badge'**
   String get share_badge;
 
+  /// No description provided for @badge_share_locked_status.
+  ///
+  /// In en, this message translates to:
+  /// **'Not earned yet'**
+  String get badge_share_locked_status;
+
+  /// No description provided for @badge_share_footer.
+  ///
+  /// In en, this message translates to:
+  /// **'Shared via {appName}'**
+  String badge_share_footer(String appName);
+
   /// No description provided for @badge_bronze.
   ///
   /// In en, this message translates to:

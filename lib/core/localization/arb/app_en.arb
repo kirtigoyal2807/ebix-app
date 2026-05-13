@@ -1016,6 +1016,15 @@
   "badge_complete_classes": "Complete {count} classes in {month}",
   "badge_earned_on": "Earned on {date}",
   "share_badge": "Share This Badge",
+  "badge_share_locked_status": "Not earned yet",
+  "badge_share_footer": "Shared via {appName}",
+  "@badge_share_footer": {
+    "placeholders": {
+      "appName": {
+        "type": "String"
+      }
+    }
+  },
   "badge_bronze": "Bronze",
   "badge_silver": "Silver",
   "badge_gold": "Gold",

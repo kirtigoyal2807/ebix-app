@@ -2483,6 +2483,14 @@ class AppLocalizationsEn extends AppLocalizations {
   String get share_badge => 'Share This Badge';
 
   @override
+  String get badge_share_locked_status => 'Not earned yet';
+
+  @override
+  String badge_share_footer(String appName) {
+    return 'Shared via $appName';
+  }
+
+  @override
   String get badge_bronze => 'Bronze';
 
   @override

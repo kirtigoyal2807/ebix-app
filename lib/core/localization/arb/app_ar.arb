@@ -1032,6 +1032,15 @@
   "locked": "مقفل",
   "badge_earned_on": "تم الحصول عليه في {date}",
   "share_badge": "مشاركة الشارة",
+  "badge_share_locked_status": "لم يتم الحصول عليها بعد",
+  "badge_share_footer": "تمت المشاركة عبر {appName}",
+  "@badge_share_footer": {
+    "placeholders": {
+      "appName": {
+        "type": "String"
+      }
+    }
+  },
   "badge_bronze": "برونزي",
   "badge_silver": "فضي",
   "badge_gold": "ذهبي",

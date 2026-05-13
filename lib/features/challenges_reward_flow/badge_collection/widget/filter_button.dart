@@ -13,71 +13,84 @@ import '../cubit/badge_state.dart';
 class FilterButton extends StatelessWidget {
   const FilterButton({super.key});
 
+  static String _formatTypeLabel(String raw) {
+    if (raw.trim().isEmpty) return raw;
+    return raw
+        .split(RegExp(r'[_\s]+'))
+        .where((s) => s.isNotEmpty)
+        .map(
+          (s) =>
+              '${s[0].toUpperCase()}${s.length > 1 ? s.substring(1).toLowerCase() : ''}',
+        )
+        .join(' ');
+  }
+
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return BlocBuilder<BadgeCubit, BadgeState>(
+      buildWhen: (p, c) =>
+          p.badges != c.badges || p.selectedBadgeTypeKey != c.selectedBadgeTypeKey,
       builder: (context, state) {
-        return SizedBox(
-          height: 28,
-
-          child: ListView.separated(
-            itemCount: state.badgeList.length,
-            shrinkWrap: true,
-            scrollDirection: Axis.horizontal,
-            separatorBuilder: (context, index) => const SizedBox(width: 10),
-            itemBuilder: (context, index) {
-              bool isSelected = state.selectedBadge == state.badgeList[index];
-
-              return GestureDetector(
-                onTap: () {
-                  context.read<BadgeCubit>().setSelectedBadgeType(
-                    state.badgeList[index],
-                  );
-                },
-                child: Container(
-                  width: 74,
-                  alignment: Alignment.center,
-                  padding: EdgeInsets.symmetric(
-                    horizontal: AppSpacing.base,
-                    vertical: AppSpacing.xs,
-                  ),
-                  decoration: BoxDecoration(
-                    color: isSelected
-                        ? AppColors.primary
-                        : isDark
-                        ? AppColors.primaryDarkButton
-                        : AppColors.greyContainerBg,
-                    borderRadius: BorderRadius.circular(AppRadius.base),
-                  ),
-                  child: AppText(
-                    getBadgeLabel(context, state.badgeList[index]),
-                    style: (context) =>
-                        AppTextStyles.textFieldHeading(context).copyWith(
-                          color: isSelected || isDark
-                              ? Colors.white
-                              : AppColors.darkText,
-                        ),
-                  ),
-                ),
-              );
-            },
-          ),
+        final types = state.distinctBadgeTypes;
+        return Wrap(
+          spacing: AppSpacing.sm,
+          runSpacing: AppSpacing.sm,
+          children: [
+            _filterChip(
+              context: context,
+              label: context.l10n.all,
+              selected: state.selectedBadgeTypeKey == null,
+              isDark: isDark,
+              onTap: () =>
+                  context.read<BadgeCubit>().setBadgeTypeFilter(null),
+            ),
+            for (final t in types)
+              _filterChip(
+                context: context,
+                label: _formatTypeLabel(t),
+                selected:
+                    state.selectedBadgeTypeKey?.toLowerCase() == t.toLowerCase(),
+                isDark: isDark,
+                onTap: () =>
+                    context.read<BadgeCubit>().setBadgeTypeFilter(t),
+              ),
+          ],
         );
       },
     );
   }
 
-  String getBadgeLabel(BuildContext context, BadgeType type) {
-    switch (type) {
-      case BadgeType.all:
-        return context.l10n.all;
-      case BadgeType.bronze:
-        return context.l10n.badge_bronze;
-      case BadgeType.silver:
-        return context.l10n.badge_silver;
-      case BadgeType.gold:
-        return context.l10n.badge_gold;
-    }
+  Widget _filterChip({
+    required BuildContext context,
+    required String label,
+    required bool selected,
+    required bool isDark,
+    required VoidCallback onTap,
+  }) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: EdgeInsets.symmetric(
+          horizontal: AppSpacing.md,
+          vertical: AppSpacing.xs,
+        ),
+        decoration: BoxDecoration(
+          color: selected
+              ? AppColors.primary
+              : isDark
+                  ? AppColors.primaryDarkButton
+                  : AppColors.greyContainerBg,
+          borderRadius: BorderRadius.circular(AppRadius.base),
+        ),
+        child: AppText(
+          label,
+          style: (context) =>
+              AppTextStyles.textFieldHeading(context).copyWith(
+                color: selected || isDark ? Colors.white : AppColors.darkText,
+              ),
+        ),
+      ),
+    );
   }
 }
