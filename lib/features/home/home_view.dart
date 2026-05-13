@@ -135,13 +135,15 @@ class _HomeShell extends StatelessWidget {
   Widget _buildBottomNavBar(BuildContext context, int currentIndex) {
     final size = MediaQuery.sizeOf(context);
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final bottomSafeArea = MediaQuery.paddingOf(context).bottom;
+    final bottomPadding = bottomSafeArea > 0 ? 0.0 : AppSpacing.base;
     final activeColor = isDark
         ? AppColors.languageIconDark
         : AppColors.languageIcon;
     final inactiveColor = isDark ? AppColors.lightGrey : AppColors.lightGrey;
 
     return Container(
-      padding: EdgeInsets.only(bottom: 12),
+      padding: EdgeInsets.only(bottom: bottomPadding),
       decoration: BoxDecoration(
         color: isDark ? AppColors.homeBackground : AppColors.whiteColor,
         border: Border(
