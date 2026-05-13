@@ -347,26 +347,35 @@ class _PersonalViewBodyState extends State<_PersonalViewBody> {
                     },
                   ),
                   SizedBox(height: AppSpacing.lg),
-                  AppTextField(
-                    hint: context.l10n.firstName,
-                    label: context.l10n.firstName,
-                    controller: _firstNameController,
-                    readOnly: !_isEditing,
+                  IgnorePointer(
+                    ignoring: !_isEditing,
+                    child: AppTextField(
+                      hint: context.l10n.firstName,
+                      label: context.l10n.firstName,
+                      controller: _firstNameController,
+                      readOnly: !_isEditing,
+                    ),
                   ),
                   SizedBox(height: AppSpacing.md),
-                  AppTextField(
-                    hint: context.l10n.lastName,
-                    label: context.l10n.lastName,
-                    controller: _lastNameController,
-                    readOnly: !_isEditing,
+                  IgnorePointer(
+                    ignoring: !_isEditing,
+                    child: AppTextField(
+                      hint: context.l10n.lastName,
+                      label: context.l10n.lastName,
+                      controller: _lastNameController,
+                      readOnly: !_isEditing,
+                    ),
                   ),
                   SizedBox(height: AppSpacing.md),
-                  AppTextField(
-                    hint: context.l10n.recipientEmailHint,
-                    label: l10n.emailAddress,
-                    keyboardType: TextInputType.emailAddress,
-                    controller: _emailController,
-                    readOnly: !_isEditing,
+                  IgnorePointer(
+                    ignoring: !_isEditing,
+                    child: AppTextField(
+                      hint: context.l10n.recipientEmailHint,
+                      label: l10n.emailAddress,
+                      keyboardType: TextInputType.emailAddress,
+                      controller: _emailController,
+                      readOnly: !_isEditing,
+                    ),
                   ),
                   SizedBox(height: AppSpacing.md),
                   IgnorePointer(
