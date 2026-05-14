@@ -2876,6 +2876,30 @@ abstract class AppLocalizations {
   /// **'Select Relationship'**
   String get selectRelationship;
 
+  /// No description provided for @emergencyContactNameRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter the contact name.'**
+  String get emergencyContactNameRequired;
+
+  /// No description provided for @emergencyContactRelationshipRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select a relationship.'**
+  String get emergencyContactRelationshipRequired;
+
+  /// No description provided for @emergencyContactIdTypeRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select an ID type.'**
+  String get emergencyContactIdTypeRequired;
+
+  /// No description provided for @emergencyContactIdNumberRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your ID number.'**
+  String get emergencyContactIdNumberRequired;
+
   /// No description provided for @identityVerification.
   ///
   /// In en, this message translates to:

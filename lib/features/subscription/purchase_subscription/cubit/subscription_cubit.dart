@@ -2,7 +2,6 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
 import 'package:pilates_app/core/validation/contact_validators.dart';
-import 'package:pilates_app/core/validation/personal_information_validators.dart';
 import 'package:pilates_app/features/checkout/data/checkout_repository.dart';
 import 'package:pilates_app/features/checkout/data/models/checkout_payment_intent_result.dart';
 import 'package:pilates_app/features/checkout/data/models/product_health_question.dart';
@@ -15,6 +14,9 @@ part 'subscription_state.dart';
 class SubscriptionCubit extends Cubit<SubscriptionState> {
   SubscriptionCubit({bool initialIsGift = false})
     : super(SubscriptionState(isGift: initialIsGift));
+
+  /// National-number digit cap (aligned with [PhoneNumberField] / ITU).
+  static const int _kPhoneNationalDigitsMax = 17;
 
   /// Last product id used for a successful `GET …/questionnaires/product/{id}`.
   /// Used to skip redundant prefetches when the schema is already in memory.
@@ -627,8 +629,9 @@ class SubscriptionCubit extends Cubit<SubscriptionState> {
 
   /// Validates the given API personal questions (required text/email/phone rules).
   bool validateApiPersonalInformationQuestions(
-    List<ProductHealthQuestion> questions,
-  ) {
+    List<ProductHealthQuestion> questions, {
+    String phoneCountryIso3166Alpha2 = 'SA',
+  }) {
     for (final q in questions) {
       final v = apiPersonalFieldValue(q);
       final trimmed = v.trim();
@@ -645,7 +648,11 @@ class SubscriptionCubit extends Cubit<SubscriptionState> {
       }
       if (q.personalInformationStateSlot == 'phoneNumber' ||
           q.isPhoneInputQuestion) {
-        if (!PersonalInformationValidators.isTenDigitMobile(trimmed)) {
+        final digits = trimmed.replaceAll(RegExp(r'\D'), '');
+        if (!PhoneNumberCountryValidation.isValidNationalNumber(
+              iso3166Alpha2: phoneCountryIso3166Alpha2,
+              nationalDigitsOnly: digits,
+            )) {
           return false;
         }
       }
@@ -664,7 +671,9 @@ class SubscriptionCubit extends Cubit<SubscriptionState> {
 
   void updatePhone(String val) {
     final digits = val.replaceAll(RegExp(r'\D'), '');
-    final limited = digits.length > 10 ? digits.substring(0, 10) : digits;
+    final limited = digits.length > _kPhoneNationalDigitsMax
+        ? digits.substring(0, _kPhoneNationalDigitsMax)
+        : digits;
     emit(state.copyWith(phoneNumber: limited));
   }
 

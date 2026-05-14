@@ -1495,6 +1495,19 @@ class AppLocalizationsAr extends AppLocalizations {
   String get selectRelationship => 'اختر صلة القرابة';
 
   @override
+  String get emergencyContactNameRequired => 'يُرجى إدخال اسم جهة الاتصال.';
+
+  @override
+  String get emergencyContactRelationshipRequired =>
+      'يُرجى اختيار صلة القرابة.';
+
+  @override
+  String get emergencyContactIdTypeRequired => 'يُرجى اختيار نوع الهوية.';
+
+  @override
+  String get emergencyContactIdNumberRequired => 'يُرجى إدخال رقم الهوية.';
+
+  @override
   String get identityVerification => 'التحقق من الهوية';
 
   @override
