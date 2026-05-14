@@ -331,7 +331,12 @@ class BookClassConfirmView extends StatelessWidget {
           size: 16,
         ),
         const SizedBox(width: 4),
-        AppText(text, style: (context) => AppTextStyles.bodyTextSmall(context)),
+        Expanded(
+          child: AppText(
+            text,
+            style: (context) => AppTextStyles.bodyTextSmall(context),
+          ),
+        ),
       ],
     );
   }
