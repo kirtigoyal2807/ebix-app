@@ -36,22 +36,13 @@ class BookClassConfirmView extends StatelessWidget {
   final String calendarEventId;
   final ClassSlotViewModel slot;
 
-  String get _timeLabel {
-    final now = DateTime.now();
-    final today = DateTime(now.year, now.month, now.day);
-    final slotDay = DateTime(
-      slot.startAt.year,
-      slot.startAt.month,
-      slot.startAt.day,
-    );
-    final start = DateFormat('h:mm a').format(slot.startAt.toLocal());
-    final end = DateFormat('h:mm a').format(slot.endAt.toLocal());
-    final prefix = slotDay == today
-        ? 'Today'
-        : slotDay == today.add(const Duration(days: 1))
-        ? 'Tomorrow'
-        : DateFormat('EEE, MMM d').format(slot.startAt.toLocal());
-    return '$prefix, $start – $end';
+  /// "May 19, 01:30PM" style — month + day, start time only (matches design).
+  String _scheduleTimeLabel(BuildContext context) {
+    final locale = Localizations.localeOf(context).toString();
+    final start = slot.startAt.toLocal();
+    final dateStr = DateFormat('MMM d', locale).format(start);
+    final timeStr = DateFormat('hh:mma', locale).format(start);
+    return '$dateStr, $timeStr';
   }
 
   @override
@@ -83,7 +74,7 @@ class BookClassConfirmView extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildClassDetailsCard(isDark: isDark),
+            _buildClassDetailsCard(context: context, isDark: isDark),
             SizedBox(height: AppSpacing.sm),
             Divider(
               color: isDark ? AppColors.greyText : AppColors.buttonBorder,
@@ -204,7 +195,10 @@ class BookClassConfirmView extends StatelessWidget {
     );
   }
 
-  Widget _buildClassDetailsCard({required bool isDark}) {
+  Widget _buildClassDetailsCard({
+    required BuildContext context,
+    required bool isDark,
+  }) {
     return Container(
       margin: EdgeInsets.symmetric(
         vertical: AppSpacing.md,
@@ -271,7 +265,7 @@ class BookClassConfirmView extends StatelessWidget {
                 SizedBox(height: AppSpacing.sm),
                 _buildDetailRow(
                   icon: Icons.watch_later_outlined,
-                  text: _timeLabel,
+                  text: _scheduleTimeLabel(context),
                   isDark: isDark,
                 ),
                 SizedBox(height: AppSpacing.sm),
