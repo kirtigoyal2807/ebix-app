@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Exclude session + TokenStorage prefs from Auto Backup so reinstall does not restore JWT. -->
+<full-backup-content>
+    <exclude domain="sharedpref" path="FlutterSharedPreferences.xml"/>
+    <exclude domain="file" path="datastore/FlutterSharedPreferences.preferences_pb"/>
+</full-backup-content>
