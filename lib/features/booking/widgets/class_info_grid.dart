@@ -170,6 +170,7 @@ class _InfoCard extends StatelessWidget {
 
     return Container(
       padding: EdgeInsets.all(AppSpacing.md),
+      height: MediaQuery.of(context).size.height *0.11,
       decoration: BoxDecoration(
         color: isDark ? AppColors.homeBackground : AppColors.whiteColor,
         borderRadius: BorderRadius.circular(AppRadius.md),
