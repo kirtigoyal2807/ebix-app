@@ -26,7 +26,8 @@ Map<String, dynamic> subscriptionEmergencyContactBody({
   return <String, dynamic>{
     'emergencyContactName': state.emergencyContactName.trim(),
     'emergencyContactPhone': formattedEmergencyPhone.trim(),
-    'emergencyContactRelationship': state.emergencyContactRelationship!.trim(),
+    'emergencyContactRelationship':
+        (state.emergencyContactRelationship ?? '').trim(),
     'idType': subscriptionEmergencyContactIdTypeApiValue(state.idType),
     'idNumber': state.idNumber.trim(),
   };

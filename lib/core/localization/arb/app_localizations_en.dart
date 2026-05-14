@@ -1509,6 +1509,19 @@ class AppLocalizationsEn extends AppLocalizations {
   String get selectRelationship => 'Select Relationship';
 
   @override
+  String get emergencyContactNameRequired => 'Please enter the contact name.';
+
+  @override
+  String get emergencyContactRelationshipRequired =>
+      'Please select a relationship.';
+
+  @override
+  String get emergencyContactIdTypeRequired => 'Please select an ID type.';
+
+  @override
+  String get emergencyContactIdNumberRequired => 'Please enter your ID number.';
+
+  @override
   String get identityVerification => 'Identity Verification';
 
   @override
