@@ -81,7 +81,7 @@ class AppButton extends StatelessWidget {
         ? ElevatedButton(
             onPressed: effectiveOnPressed,
             style: ElevatedButton.styleFrom(
-              backgroundColor: isDark
+              disabledBackgroundColor: isDark
                   ? AppColors.lightBlackColor
                   : AppColors.darkGreyBorder,
               shape: RoundedRectangleBorder(

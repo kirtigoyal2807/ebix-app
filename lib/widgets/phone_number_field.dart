@@ -136,7 +136,9 @@ class _PhoneNumberFieldState extends State<PhoneNumberField> {
     super.didChangeDependencies();
     if (_initialCountryNotifiedParent) return;
     _initialCountryNotifiedParent = true;
-    final raw = CountryCode.tryFromCountryCode(widget.initialCountryIso.trim().toUpperCase());
+    final raw = CountryCode.tryFromCountryCode(
+      widget.initialCountryIso.trim().toUpperCase(),
+    );
     if (raw != null) {
       final localized = raw.localize(context);
       setState(() => _selectedCountryCode = localized);
@@ -164,7 +166,23 @@ class _PhoneNumberFieldState extends State<PhoneNumberField> {
     setState(() {
       _selectedCountryCode = country;
     });
+    _trimPhoneDigitsToEffectiveMax();
     widget.onCountryChanged?.call(country);
+  }
+
+  void _trimPhoneDigitsToEffectiveMax() {
+    final controller = widget.controller;
+    if (controller == null) return;
+    final maxDigits = _effectiveMaxNationalDigits();
+    final digits = controller.text.replaceAll(RegExp(r'\D'), '');
+    if (digits.length <= maxDigits) return;
+
+    final limited = digits.substring(0, maxDigits);
+    controller.value = TextEditingValue(
+      text: limited,
+      selection: TextSelection.collapsed(offset: limited.length),
+    );
+    widget.onChanged?.call(limited);
   }
 
   @override
@@ -183,9 +201,6 @@ class _PhoneNumberFieldState extends State<PhoneNumberField> {
       _maxSubscriberNationalDigits(iso),
       _kMaxNationalSignificantDigits,
     );
-    // Allow optional single leading zero (trunk prefix) for all countries.
-    // Example: 09876543210 (11 digits) -> normalized to 9876543210 (10 digits).
-    cap = math.min(cap + 1, _kMaxNationalSignificantDigits);
     if (widget.maxPhoneDigits != null) {
       cap = math.min(cap, widget.maxPhoneDigits!);
     }
@@ -195,7 +210,10 @@ class _PhoneNumberFieldState extends State<PhoneNumberField> {
   String? _countryValidationMessage(BuildContext context) {
     final isoCode = (_selectedCountryCode?.code ?? '').trim().toUpperCase();
     if (PhoneNumberField._tryIso(isoCode) == null) return null;
-    final digits = (widget.controller?.text ?? '').replaceAll(RegExp(r'\D'), '');
+    final digits = (widget.controller?.text ?? '').replaceAll(
+      RegExp(r'\D'),
+      '',
+    );
     if (digits.isEmpty) return null;
     if (digits.length < _kMinNationalSignificantDigitsForValidation) {
       return null;
@@ -212,7 +230,10 @@ class _PhoneNumberFieldState extends State<PhoneNumberField> {
   bool _isCurrentNumberValidForSelectedCountry() {
     final isoCode = (_selectedCountryCode?.code ?? '').trim().toUpperCase();
     if (PhoneNumberField._tryIso(isoCode) == null) return false;
-    final digits = (widget.controller?.text ?? '').replaceAll(RegExp(r'\D'), '');
+    final digits = (widget.controller?.text ?? '').replaceAll(
+      RegExp(r'\D'),
+      '',
+    );
     if (digits.isEmpty) return false;
     if (digits.length < _kMinNationalSignificantDigitsForValidation) {
       return false;
@@ -249,10 +270,10 @@ class _PhoneNumberFieldState extends State<PhoneNumberField> {
     final parentError = widget.errorText;
     final String? resolvedParentError =
         _isCurrentNumberValidForSelectedCountry() &&
-                parentError != null &&
-                _isKnownClientPhoneValidationMessage(context, parentError)
-            ? null
-            : parentError;
+            parentError != null &&
+            _isKnownClientPhoneValidationMessage(context, parentError)
+        ? null
+        : parentError;
     final displayError = resolvedParentError ?? countryMessage;
     final hasError = displayError != null;
     final screenSize = MediaQuery.sizeOf(context);
@@ -294,18 +315,20 @@ class _PhoneNumberFieldState extends State<PhoneNumberField> {
                         showDragHandle: false,
                       ),
                       textButtonTheme: TextButtonThemeData(
-                        style: TextButton.styleFrom(
-                          foregroundColor:
-                              theme.colorScheme.onSurface,
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 8,
-                            vertical: 12,
-                          ),
-                          minimumSize: Size.zero,
-                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                        ).copyWith(
-                          side: const WidgetStatePropertyAll(BorderSide.none),
-                        ),
+                        style:
+                            TextButton.styleFrom(
+                              foregroundColor: theme.colorScheme.onSurface,
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 8,
+                                vertical: 12,
+                              ),
+                              minimumSize: Size.zero,
+                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                            ).copyWith(
+                              side: const WidgetStatePropertyAll(
+                                BorderSide.none,
+                              ),
+                            ),
                       ),
                     ),
                     child: CountryCodePicker(
@@ -333,8 +356,9 @@ class _PhoneNumberFieldState extends State<PhoneNumberField> {
                         ),
                         boxShadow: [
                           BoxShadow(
-                            color: theme.colorScheme.shadow
-                                .withValues(alpha: 0.12),
+                            color: theme.colorScheme.shadow.withValues(
+                              alpha: 0.12,
+                            ),
                             blurRadius: 12,
                             offset: const Offset(0, -2),
                           ),
@@ -352,7 +376,9 @@ class _PhoneNumberFieldState extends State<PhoneNumberField> {
                       ),
                       textStyle: AppTextStyles.phoneCountryCodeDial(context),
                       dialogTextStyle:
-                          AppTextStyles.phoneCountryCodeBottomSheetItem(context),
+                          AppTextStyles.phoneCountryCodeBottomSheetItem(
+                            context,
+                          ),
                       flagWidth: 24,
                       backgroundColor: theme.colorScheme.surface,
                       barrierColor: Colors.black54,
@@ -361,11 +387,7 @@ class _PhoneNumberFieldState extends State<PhoneNumberField> {
                   ),
                 ),
 
-                Container(
-                width: 1,
-                height: 24,
-    color: theme.dividerColor,
-    ),
+                Container(width: 1, height: 24, color: theme.dividerColor),
 
                 Expanded(
                   child: TextField(
