@@ -39,7 +39,7 @@ class HistoryView extends StatelessWidget {
                     builder: (context, state) {
                       if (state.isLoading && state.sessions.isEmpty) {
                         return const Padding(
-                          padding: EdgeInsets.symmetric(vertical: 24),
+                          padding: const EdgeInsets.symmetric(vertical: 24),
                           child: Center(child: CircularProgressIndicator()),
                         );
                       }
