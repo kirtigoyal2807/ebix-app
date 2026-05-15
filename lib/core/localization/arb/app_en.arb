@@ -1373,6 +1373,8 @@
   "lastNameTooShort": "Last name must be at least 2 characters",
   "lastNameTooLong": "Last name must be at most 120 characters",
   "enterValidEmail": "Please enter a valid email address",
-  "profileUpdateFailed": "Failed to update profile."
+  "profileUpdateFailed": "Failed to update profile.",
+  "offlineTitle": "Looks like you're offline",
+  "offlineTryAgain": "Try Again"
 }
 

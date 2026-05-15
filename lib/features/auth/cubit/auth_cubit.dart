@@ -24,6 +24,8 @@ class AuthCubit extends Cubit<AuthState> {
 
   bool _logoutInFlight = false;
   Future<void>? _profileRefreshFuture;
+  bool _splashPendingConnectivity = false;
+  bool _splashStarted = false;
 
   /// [seed] is normally computed in [main] from [TokenStorage]: if a JWT exists,
   /// [AuthFlow.authenticated] skips splash/onboarding on cold start.
@@ -67,6 +69,15 @@ class AuthCubit extends Cubit<AuthState> {
        super(seed.copyWith(user: tokenStorage.readUser())) {
     _localeBridge.languageCode = state.locale.languageCode;
     if (startSplash) {
+      _splashPendingConnectivity = true;
+    }
+  }
+
+  /// Called when [AppBootstrapView] confirms the device has network access.
+  void onConnectivityReady() {
+    if (_splashPendingConnectivity && !_splashStarted) {
+      _splashPendingConnectivity = false;
+      _splashStarted = true;
       _startSplash();
     }
   }

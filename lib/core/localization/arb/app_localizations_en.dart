@@ -3255,4 +3255,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get profileUpdateFailed => 'Failed to update profile.';
+
+  @override
+  String get offlineTitle => 'Looks like you\'re offline';
+
+  @override
+  String get offlineTryAgain => 'Try Again';
 }

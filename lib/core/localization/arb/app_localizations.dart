@@ -6121,6 +6121,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Failed to update profile.'**
   String get profileUpdateFailed;
+
+  /// No description provided for @offlineTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Looks like you\'re offline'**
+  String get offlineTitle;
+
+  /// No description provided for @offlineTryAgain.
+  ///
+  /// In en, this message translates to:
+  /// **'Try Again'**
+  String get offlineTryAgain;
 }
 
 class _AppLocalizationsDelegate

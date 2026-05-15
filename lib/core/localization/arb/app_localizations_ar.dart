@@ -3232,4 +3232,10 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get profileUpdateFailed => 'فشل تحديث الملف الشخصي.';
+
+  @override
+  String get offlineTitle => 'يبدو أنك غير متصل بالإنترنت';
+
+  @override
+  String get offlineTryAgain => 'حاول مرة أخرى';
 }

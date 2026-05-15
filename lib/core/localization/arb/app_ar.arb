@@ -1376,6 +1376,8 @@
   "lastNameTooShort": "يجب أن يكون اسم العائلة حرفين على الأقل",
   "lastNameTooLong": "يجب ألا يزيد اسم العائلة عن 120 حرفًا",
   "enterValidEmail": "يُرجى إدخال عنوان بريد إلكتروني صالح",
-  "profileUpdateFailed": "فشل تحديث الملف الشخصي."
+  "profileUpdateFailed": "فشل تحديث الملف الشخصي.",
+  "offlineTitle": "يبدو أنك غير متصل بالإنترنت",
+  "offlineTryAgain": "حاول مرة أخرى"
 }
 
