@@ -9,6 +9,7 @@ import 'package:pilates_app/features/account/data/models/profile_update_result.d
 import 'models/branches_list_result.dart';
 import 'models/branch.dart';
 import 'models/login_email_result.dart';
+import 'models/profile_verify_phone_result.dart';
 import 'models/pagination_meta.dart';
 import 'models/register_gender.dart';
 import 'models/auth_user.dart';
@@ -58,6 +59,20 @@ class AuthRepository extends BaseRepository {
       data: {'phone': phone.trim(), 'code': code.trim()},
       fromJson: (json) =>
           LoginEmailResult.fromJson(json as Map<String, dynamic>),
+    );
+  }
+
+  /// Verify OTP after profile phone change — JWT customer. Body: `phone`, `otp` (6 digits).
+  Future<ApiResult<ProfileVerifyPhoneResult>> verifyProfilePhone({
+    required String phone,
+    required String otp,
+  }) {
+    return post<ProfileVerifyPhoneResult>(
+      'auth/profile/verify-phone',
+      data: {'phone': phone.trim(), 'code': otp.trim()},
+      fromJson: (json) => ProfileVerifyPhoneResult.fromJson(
+        json as Map<String, dynamic>,
+      ),
     );
   }
 
@@ -319,13 +334,35 @@ class AuthRepository extends BaseRepository {
     );
   }
 
-  /// Update profile with phone change detection.
-  /// Returns [ProfileUpdateResult.success] with updated user,
-  /// or [ProfileUpdateResult.phoneVerificationRequired] when OTP is sent.
+  /// Confirms a pending email change — JWT customer.
+  Future<ApiResult<AuthUser>> verifyProfileEmail({
+    required String email,
+    required String code,
+  }) {
+    return post<AuthUser>(
+      'auth/profile/verify-email',
+      data: {'email': email.trim(), 'code': code.trim()},
+      fromJson: (json) => _authUserFromProfileVerifyPayload(json),
+    );
+  }
+
+  /// Parses `data` when it is either a full customer object or `{ "user": { ... } }`.
+  static AuthUser _authUserFromProfileVerifyPayload(dynamic json) {
+    if (json is! Map) {
+      throw FormatException('Profile verify: expected JSON object');
+    }
+    final map = Map<String, dynamic>.from(json);
+    final nested = map['user'];
+    if (nested is Map) {
+      return AuthUser.fromJson(Map<String, dynamic>.from(nested));
+    }
+    return AuthUser.fromJson(map);
+  }
+
+  /// Update profile with phone/email verification flags in the envelope `data`.
   ///
-  /// Note: API returns success=true even when phone verification is required,
-  /// so we need to check the raw response data for phoneVerificationRequired flag
-  /// before parsing as AuthUser.
+  /// Returns [ProfileUpdateSuccess] with updated user, or a pending verification
+  /// result when the API sends OTP (success may still be true on the envelope).
   Future<ProfileUpdateResult> updateProfileWithPhoneHandling({
     String? firstName,
     String? lastName,
@@ -382,21 +419,32 @@ class AuthRepository extends BaseRepository {
 
       final envelope = ApiEnvelopeParser.tryParse(raw);
 
-      // Check for phone verification required - API returns this with success=true
       final responseData = raw['data'];
-      if (responseData is Map<String, dynamic>) {
-        final phoneVerificationRequired = responseData['phoneVerificationRequired'] as bool?;
-        final phoneNumber = responseData['phone'] as String?;
+      if (responseData is Map) {
+        final rd = Map<String, dynamic>.from(responseData);
+        final emailVerificationRequired =
+            rd['emailVerificationRequired'] as bool?;
+        final pendingEmail = rd['email'] as String?;
+        if (emailVerificationRequired == true &&
+            pendingEmail != null &&
+            pendingEmail.trim().isNotEmpty) {
+          return ProfileUpdateEmailVerificationRequired(
+            email: pendingEmail.trim(),
+          );
+        }
+        final phoneVerificationRequired =
+            rd['phoneVerificationRequired'] as bool?;
+        final phoneNumber = rd['phone'] as String?;
         if (phoneVerificationRequired == true && phoneNumber != null) {
           return ProfileUpdatePhoneVerificationRequired(
             phone: phoneNumber,
-            otpCode: responseData['otpCode'] as String?,
+            otpCode: rd['otpCode'] as String?,
           );
         }
 
         // Normal success response with AuthUser data
         if (envelope != null && envelope.success) {
-          final user = AuthUser.fromJson(responseData);
+          final user = AuthUser.fromJson(rd);
           return ProfileUpdateSuccess(user);
         }
       }
@@ -410,9 +458,21 @@ class AuthRepository extends BaseRepository {
       // Check if this is a phone verification response even in error case
       final data = exception.responseData;
       if (data is Map<String, dynamic>) {
-        final dataField = data['data'];
-        if (dataField is Map<String, dynamic>) {
-          final phoneVerificationRequired = dataField['phoneVerificationRequired'] as bool?;
+        final dataFieldRaw = data['data'];
+        if (dataFieldRaw is Map) {
+          final dataField = Map<String, dynamic>.from(dataFieldRaw);
+          final emailVerificationRequired =
+              dataField['emailVerificationRequired'] as bool?;
+          final pendingEmail = dataField['email'] as String?;
+          if (emailVerificationRequired == true &&
+              pendingEmail != null &&
+              pendingEmail.trim().isNotEmpty) {
+            return ProfileUpdateEmailVerificationRequired(
+              email: pendingEmail.trim(),
+            );
+          }
+          final phoneVerificationRequired =
+              dataField['phoneVerificationRequired'] as bool?;
           final phoneNumber = dataField['phone'] as String?;
           if (phoneVerificationRequired == true && phoneNumber != null) {
             return ProfileUpdatePhoneVerificationRequired(

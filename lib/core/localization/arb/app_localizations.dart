@@ -620,6 +620,18 @@ abstract class AppLocalizations {
   /// **'Enter the OTP sent to your email to verify your identity. Once verified, you can proceed to reset your password.'**
   String get otpVerificationSubtitle;
 
+  /// No description provided for @profileEmailVerificationTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Verify your new email'**
+  String get profileEmailVerificationTitle;
+
+  /// No description provided for @profileEmailVerificationSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'We sent a 6-digit code to {email}. Enter it below to confirm your updated email address.'**
+  String profileEmailVerificationSubtitle(String email);
+
   /// No description provided for @usernameHint.
   ///
   /// In en, this message translates to:

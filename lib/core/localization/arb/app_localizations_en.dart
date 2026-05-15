@@ -282,6 +282,14 @@ class AppLocalizationsEn extends AppLocalizations {
       'Enter the OTP sent to your email to verify your identity. Once verified, you can proceed to reset your password.';
 
   @override
+  String get profileEmailVerificationTitle => 'Verify your new email';
+
+  @override
+  String profileEmailVerificationSubtitle(String email) {
+    return 'We sent a 6-digit code to $email. Enter it below to confirm your updated email address.';
+  }
+
+  @override
   String get usernameHint => 'username@gmail.com';
 
   @override

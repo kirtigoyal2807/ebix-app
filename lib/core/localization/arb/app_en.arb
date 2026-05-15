@@ -91,6 +91,15 @@
   "sendCode": "Send Code",
   "otpVerificationTitle": "OTP Verification",
   "otpVerificationSubtitle": "Enter the OTP sent to your email to verify your identity. Once verified, you can proceed to reset your password.",
+  "profileEmailVerificationTitle": "Verify your new email",
+  "profileEmailVerificationSubtitle": "We sent a 6-digit code to {email}. Enter it below to confirm your updated email address.",
+  "@profileEmailVerificationSubtitle": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
   "usernameHint": "username@gmail.com",
   "gender": "Gender",
   "selectGender": "Select Gender",

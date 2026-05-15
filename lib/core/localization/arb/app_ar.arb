@@ -91,6 +91,15 @@
   "sendCode": "إرسال الرمز",
   "otpVerificationTitle": "التحقق من الرمز",
   "otpVerificationSubtitle": "أدخل الرمز المرسل إلى بريدك الإلكتروني للتحقق من هويتك. بمجرد التحقق، يمكنك المتابعة لإعادة تعيين كلمة المرور الخاصة بك.",
+  "profileEmailVerificationTitle": "تأكيد بريدك الإلكتروني الجديد",
+  "profileEmailVerificationSubtitle": "أرسلنا رمزًا مكوّنًا من 6 أرقام إلى {email}. أدخله أدناه لتأكيد عنوان بريدك المحدّث.",
+  "@profileEmailVerificationSubtitle": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
   "usernameHint": "username@gmail.com",
   "gender": "الجنس",
   "selectGender": "اختر الجنس",

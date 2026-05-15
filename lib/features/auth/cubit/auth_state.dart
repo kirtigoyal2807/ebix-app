@@ -24,6 +24,12 @@ enum SignUpPhoneOtpUiStatus { idle, loading }
 /// `/auth/phone/send` (resend code) — separate from verify loading.
 enum PhoneOtpSendUiStatus { idle, loading }
 
+/// Profile email OTP verify (`POST /auth/profile/verify-email`).
+enum ProfileEmailOtpUiStatus { idle, loading }
+
+/// Resend email code while verifying profile email (`POST /auth/email/send`).
+enum ProfileEmailSendUiStatus { idle, loading }
+
 /// Shown on Account tab while [`GET customers/profile`] runs after switching to that tab.
 enum AccountProfileRefreshStatus { idle, loading }
 
@@ -95,6 +101,12 @@ class AuthState extends Equatable {
   final PhoneOtpSendUiStatus phoneOtpSendUiStatus;
   final String phoneOtpSendErrorMessage;
 
+  final ProfileEmailOtpUiStatus profileEmailOtpUiStatus;
+  final String profileEmailOtpErrorMessage;
+  final Map<String, String> profileEmailOtpFieldErrors;
+  final ProfileEmailSendUiStatus profileEmailSendUiStatus;
+  final String profileEmailSendErrorMessage;
+
   /// Sign-up branch step: `GET /branches` + `POST /auth/home-branch`.
   final SignUpBranchesLoadStatus signUpBranchesLoadStatus;
   final List<Branch> signUpBranches;
@@ -140,6 +152,11 @@ class AuthState extends Equatable {
     required this.signUpPhoneOtpFieldErrors,
     required this.phoneOtpSendUiStatus,
     required this.phoneOtpSendErrorMessage,
+    required this.profileEmailOtpUiStatus,
+    required this.profileEmailOtpErrorMessage,
+    required this.profileEmailOtpFieldErrors,
+    required this.profileEmailSendUiStatus,
+    required this.profileEmailSendErrorMessage,
     required this.signUpBranchesLoadStatus,
     required this.signUpBranches,
     this.signUpBranchesPagination,
@@ -187,6 +204,11 @@ class AuthState extends Equatable {
       signUpPhoneOtpFieldErrors: const {},
       phoneOtpSendUiStatus: PhoneOtpSendUiStatus.idle,
       phoneOtpSendErrorMessage: '',
+      profileEmailOtpUiStatus: ProfileEmailOtpUiStatus.idle,
+      profileEmailOtpErrorMessage: '',
+      profileEmailOtpFieldErrors: const {},
+      profileEmailSendUiStatus: ProfileEmailSendUiStatus.idle,
+      profileEmailSendErrorMessage: '',
       signUpBranchesLoadStatus: SignUpBranchesLoadStatus.idle,
       signUpBranches: const [],
       signUpBranchesPagination: null,
@@ -238,6 +260,11 @@ class AuthState extends Equatable {
     Map<String, String>? signUpPhoneOtpFieldErrors,
     PhoneOtpSendUiStatus? phoneOtpSendUiStatus,
     String? phoneOtpSendErrorMessage,
+    ProfileEmailOtpUiStatus? profileEmailOtpUiStatus,
+    String? profileEmailOtpErrorMessage,
+    Map<String, String>? profileEmailOtpFieldErrors,
+    ProfileEmailSendUiStatus? profileEmailSendUiStatus,
+    String? profileEmailSendErrorMessage,
     SignUpBranchesLoadStatus? signUpBranchesLoadStatus,
     List<Branch>? signUpBranches,
     PaginationMeta? signUpBranchesPagination,
@@ -305,6 +332,16 @@ class AuthState extends Equatable {
       phoneOtpSendUiStatus: phoneOtpSendUiStatus ?? this.phoneOtpSendUiStatus,
       phoneOtpSendErrorMessage:
           phoneOtpSendErrorMessage ?? this.phoneOtpSendErrorMessage,
+      profileEmailOtpUiStatus:
+          profileEmailOtpUiStatus ?? this.profileEmailOtpUiStatus,
+      profileEmailOtpErrorMessage:
+          profileEmailOtpErrorMessage ?? this.profileEmailOtpErrorMessage,
+      profileEmailOtpFieldErrors:
+          profileEmailOtpFieldErrors ?? this.profileEmailOtpFieldErrors,
+      profileEmailSendUiStatus:
+          profileEmailSendUiStatus ?? this.profileEmailSendUiStatus,
+      profileEmailSendErrorMessage:
+          profileEmailSendErrorMessage ?? this.profileEmailSendErrorMessage,
       signUpBranchesLoadStatus:
           signUpBranchesLoadStatus ?? this.signUpBranchesLoadStatus,
       signUpBranches: signUpBranches ?? this.signUpBranches,
@@ -375,6 +412,16 @@ class AuthState extends Equatable {
     );
   }
 
+  AuthState clearedProfileEmailOtp() {
+    return copyWith(
+      profileEmailOtpUiStatus: ProfileEmailOtpUiStatus.idle,
+      profileEmailOtpErrorMessage: '',
+      profileEmailOtpFieldErrors: {},
+      profileEmailSendUiStatus: ProfileEmailSendUiStatus.idle,
+      profileEmailSendErrorMessage: '',
+    );
+  }
+
   /// Clears phone OTP step draft (when leaving sign-up or restarting).
   AuthState clearedSignUpPhoneVerification() {
     return copyWith(
@@ -423,6 +470,11 @@ class AuthState extends Equatable {
     signUpPhoneOtpFieldErrors,
     phoneOtpSendUiStatus,
     phoneOtpSendErrorMessage,
+    profileEmailOtpUiStatus,
+    profileEmailOtpErrorMessage,
+    profileEmailOtpFieldErrors,
+    profileEmailSendUiStatus,
+    profileEmailSendErrorMessage,
     signUpBranchesLoadStatus,
     signUpBranches,
     signUpBranchesPagination,

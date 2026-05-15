@@ -151,12 +151,53 @@ void main() {
 
       await cubit.close();
     });
+
+    test(
+      'resendVerificationCode repeats profile update with last payload',
+      () async {
+        final repository = _TestAuthRepository(
+          nextResult: const ProfileUpdatePhoneVerificationRequired(
+            phone: '+966500000001',
+          ),
+        );
+        final cubit = PersonalInfoCubit(authRepository: repository);
+
+        await cubit.saveProfile(
+          firstName: 'Noor',
+          lastName: 'Ali',
+          email: 'noor@example.com',
+          phone: '+966500000001',
+          phoneNationalRaw: '500000001',
+          phoneCountryIso3166: 'SA',
+          l10n: l10n,
+        );
+
+        expect(repository.updateCalls, 1);
+        expect(
+          cubit.state.saveStatus,
+          PersonalInfoSaveStatus.phoneVerificationRequired,
+        );
+
+        final resent = await cubit.resendVerificationCode();
+
+        expect(resent, isTrue);
+        expect(repository.updateCalls, 2);
+        expect(repository.lastFirstName, 'Noor');
+        expect(repository.lastPhone, '+966500000001');
+        expect(cubit.state.resendStatus, PersonalInfoResendStatus.idle);
+        expect(cubit.state.resendErrorMessage, isEmpty);
+
+        await cubit.close();
+      },
+    );
   });
 }
 
 class _TestAuthRepository extends AuthRepository {
-  _TestAuthRepository()
+  _TestAuthRepository({this.nextResult})
     : super(Dio(BaseOptions(baseUrl: 'https://test.local/')));
+
+  final ProfileUpdateResult? nextResult;
 
   int updateCalls = 0;
   String? lastFirstName;
@@ -185,6 +226,9 @@ class _TestAuthRepository extends AuthRepository {
     lastDob = dob;
     lastGender = gender;
     lastAvatarPath = avatarPath;
+    if (nextResult != null) {
+      return nextResult!;
+    }
     return ProfileUpdateSuccess(
       AuthUser(
         name: '$firstName $lastName',

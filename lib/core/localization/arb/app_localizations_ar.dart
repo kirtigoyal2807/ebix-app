@@ -278,6 +278,14 @@ class AppLocalizationsAr extends AppLocalizations {
       'أدخل الرمز المرسل إلى بريدك الإلكتروني للتحقق من هويتك. بمجرد التحقق، يمكنك المتابعة لإعادة تعيين كلمة المرور الخاصة بك.';
 
   @override
+  String get profileEmailVerificationTitle => 'تأكيد بريدك الإلكتروني الجديد';
+
+  @override
+  String profileEmailVerificationSubtitle(String email) {
+    return 'أرسلنا رمزًا مكوّنًا من 6 أرقام إلى $email. أدخله أدناه لتأكيد عنوان بريدك المحدّث.';
+  }
+
+  @override
   String get usernameHint => 'username@gmail.com';
 
   @override
