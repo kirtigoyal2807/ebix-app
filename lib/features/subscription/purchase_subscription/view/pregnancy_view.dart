@@ -88,7 +88,7 @@ class _PregnancyViewState extends State<PregnancyView> {
       },
       child: Padding(
         padding: EdgeInsets.symmetric(
-          vertical: AppSpacing.lg,
+          vertical: AppSpacing.xi,
           horizontal: AppSpacing.lg,
         ),
         child: Column(

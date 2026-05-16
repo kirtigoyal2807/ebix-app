@@ -87,7 +87,7 @@ class _PhysicalActivityViewState extends State<PhysicalActivityView> {
       },
       child: Padding(
         padding: EdgeInsets.symmetric(
-          vertical: AppSpacing.lg,
+          vertical: AppSpacing.xi,
           horizontal: AppSpacing.lg,
         ),
         child: Column(

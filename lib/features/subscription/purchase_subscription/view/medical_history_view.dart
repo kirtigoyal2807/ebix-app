@@ -105,7 +105,7 @@ class _MedicalHistoryViewState extends State<MedicalHistoryView> {
       },
       child: Padding(
         padding: EdgeInsets.symmetric(
-          vertical: AppSpacing.lg,
+          vertical: AppSpacing.xi,
           horizontal: AppSpacing.lg,
         ),
         child: Column(
