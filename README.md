@@ -5,11 +5,11 @@ A Flutter application for pilates workouts with multi-language support and theme
 ## Configuration
 
 The app uses Cubit for state management with the following configuration:
-- State management: Flutter Bloc/Cubit
-- Navigation: GoRouter
-- Localization: Flutter i18n with ARB files
-- Theme: Material Design 3 with persistent storage
-- Storage: SharedPreferences for user preferences
+- State management: Flutter Bloc / Cubit (feature-level cubits)
+- Navigation: `MaterialApp` and `Navigator` (auth flow via `AuthRootView`; modal routes where needed)
+- Localization: `intl` + `flutter_localizations` with ARB files under `lib/core/localization/arb`
+- Theme: Material with centralized `AppTheme` / `AppColors` (light & dark), driven by `AuthCubit` with persistent preferences
+- Storage: `SharedPreferences` via `TokenStorage` and related persistence
 
 ## Installation
 
@@ -27,20 +27,28 @@ The app uses Cubit for state management with the following configuration:
 
 ```
 lib/
-├── main.dart                 # App entry point
-├── cubit/                    # State management
-│   ├── app/                  # Language state
-│   └── theme/                # Theme state
+├── main.dart                 # App entry, DI (Dio, repositories), `PilatesApp`
 ├── config/                   # App configuration
-│   ├── routes/               # Navigation routes
-│   └── theme/                # Theme configuration
-├── l10n/                     # Localization files
-├── pages/                    # App screens
-│   ├── home/                 # Home page
-│   └── settings/             # Settings page
-├── models/                   # Data models
-├── widgets/                  # Reusable widgets
-└── utils/                    # Utility functions
+│   └── theme/                # `AppTheme`, colors, typography, spacing
+├── core/                     # Shared infrastructure
+│   ├── constants/            # API and app constants
+│   ├── localization/arb/    # `app_en.arb`, `app_ar.arb`, generated l10n
+│   ├── network/              # Dio client, repositories base layer
+│   ├── storage/              # Token and preference storage
+│   ├── utils/                # Helpers
+│   ├── validation/           # Shared validation
+│   └── connectivity/         # Connectivity checks for bootstrap
+├── features/                 # Feature modules (auth, home, booking, account, …)
+│   ├── auth/                 # Onboarding, sign-in/up, auth cubit
+│   ├── connectivity/         # Offline gate and no-internet UI
+│   ├── home/
+│   ├── account/
+│   ├── booking/
+│   ├── explore/
+│   ├── checkout/
+│   └── …                     # Other domains (subscriptions, loyalty, etc.)
+├── widgets/                  # Shared UI (`AppScaffold`, `AppTextField`, …)
+└── …
 ```
 
 ## Localization Languages
