@@ -91,6 +91,15 @@
   "sendCode": "Send Code",
   "otpVerificationTitle": "OTP Verification",
   "otpVerificationSubtitle": "Enter the OTP sent to your email to verify your identity. Once verified, you can proceed to reset your password.",
+  "profileEmailVerificationTitle": "Verify your new email",
+  "profileEmailVerificationSubtitle": "We sent a 6-digit code to {email}. Enter it below to confirm your updated email address.",
+  "@profileEmailVerificationSubtitle": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
   "usernameHint": "username@gmail.com",
   "gender": "Gender",
   "selectGender": "Select Gender",
@@ -1364,6 +1373,8 @@
   "lastNameTooShort": "Last name must be at least 2 characters",
   "lastNameTooLong": "Last name must be at most 120 characters",
   "enterValidEmail": "Please enter a valid email address",
-  "profileUpdateFailed": "Failed to update profile."
+  "profileUpdateFailed": "Failed to update profile.",
+  "offlineTitle": "Looks like you're offline",
+  "offlineTryAgain": "Try Again"
 }
 

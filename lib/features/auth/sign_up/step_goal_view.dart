@@ -61,7 +61,7 @@ class _SignUpGoalViewState extends State<SignUpGoalView> {
             isMoreMenu: false,
           ),
           body: Padding(
-            padding: EdgeInsets.only(top: AppSpacing.md),
+            padding: EdgeInsets.only(top: AppSpacing.xi),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

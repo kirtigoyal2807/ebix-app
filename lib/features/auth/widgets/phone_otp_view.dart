@@ -5,6 +5,8 @@ import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/core/localization/localization_extension.dart';
 import 'package:pilates_app/core/mixins/resend_code_cooldown_mixin.dart';
+import 'package:pilates_app/features/account/cubit/personal_info_cubit.dart';
+import 'package:pilates_app/features/account/cubit/personal_info_state.dart';
 import 'package:pilates_app/features/auth/cubit/auth_cubit.dart';
 import 'package:pilates_app/features/auth/cubit/auth_state.dart';
 import 'package:pilates_app/features/auth/sign_up/widgets/otp_field.dart';
@@ -72,9 +74,8 @@ class _PhoneOtpViewState extends State<PhoneOtpView>
   Future<void> _resend(BuildContext context) async {
     if (isResendCodeOnCooldown) return;
     try {
-      final cubit = context.read<AuthCubit>();
-      // Use resendProfilePhoneOtp which works for any flow
-      final attempted = await cubit.resendProfilePhoneOtp(widget.phone);
+      final attempted =
+          await context.read<PersonalInfoCubit>().resendVerificationCode();
       if (mounted && attempted) startResendCodeCooldown();
     } catch (_) {
       if (mounted) startResendCodeCooldown();
@@ -120,18 +121,16 @@ class _PhoneOtpViewState extends State<PhoneOtpView>
           }
         }
       },
-      child: BlocListener<AuthCubit, AuthState>(
+      child: BlocListener<PersonalInfoCubit, PersonalInfoState>(
         listenWhen: (previous, current) {
-          return previous.phoneOtpSendUiStatus == PhoneOtpSendUiStatus.loading &&
-              current.phoneOtpSendUiStatus == PhoneOtpSendUiStatus.idle;
+          return previous.resendStatus == PersonalInfoResendStatus.loading &&
+              current.resendStatus == PersonalInfoResendStatus.idle;
         },
         listener: (context, state) {
-          if (state.phoneOtpSendErrorMessage.isNotEmpty) {
-            final text = state.phoneOtpSendErrorMessage.trim().isEmpty
-                ? context.l10n.loginErrorGeneric
-                : state.phoneOtpSendErrorMessage;
+          final err = state.resendErrorMessage.trim();
+          if (err.isNotEmpty) {
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(text)),
+              SnackBar(content: Text(err)),
             );
           } else {
             ScaffoldMessenger.of(context).showSnackBar(
@@ -146,13 +145,14 @@ class _PhoneOtpViewState extends State<PhoneOtpView>
             isMoreMenu: false,
           ),
           body: BlocBuilder<AuthCubit, AuthState>(
-            builder: (context, state) {
-              final loading = state.signUpPhoneOtpUiStatus ==
+            builder: (context, authState) {
+              final personalState = context.watch<PersonalInfoCubit>().state;
+              final loading = authState.signUpPhoneOtpUiStatus ==
                   SignUpPhoneOtpUiStatus.loading;
               final blockInteraction =
-                  state.phoneOtpSendUiStatus == PhoneOtpSendUiStatus.loading;
-              final codeErr = state.signUpPhoneOtpFieldErrors['code'];
-              final phoneErr = state.signUpPhoneOtpFieldErrors['phone'];
+                  personalState.resendStatus == PersonalInfoResendStatus.loading;
+              final codeErr = authState.signUpPhoneOtpFieldErrors['code'];
+              final phoneErr = authState.signUpPhoneOtpFieldErrors['phone'];
               final resendDisabled =
                   blockInteraction || loading || isResendCodeOnCooldown;
 

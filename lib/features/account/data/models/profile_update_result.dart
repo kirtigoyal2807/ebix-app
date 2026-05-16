@@ -1,6 +1,6 @@
 import 'package:pilates_app/features/auth/data/models/auth_user.dart';
 
-/// Result of profile update: either updated user or phone verification required.
+/// Result of profile update: success, pending phone/email verification, or failure.
 sealed class ProfileUpdateResult {
   const ProfileUpdateResult();
 }
@@ -23,6 +23,13 @@ final class ProfileUpdatePhoneVerificationRequired extends ProfileUpdateResult {
 
   /// Debug OTP code (only present in dev environment).
   final String? otpCode;
+}
+
+/// Email verification required before the new email is active.
+final class ProfileUpdateEmailVerificationRequired extends ProfileUpdateResult {
+  const ProfileUpdateEmailVerificationRequired({required this.email});
+
+  final String email;
 }
 
 /// Profile update failed.

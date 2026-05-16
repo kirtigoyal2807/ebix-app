@@ -55,6 +55,7 @@ class HomeView extends StatelessWidget {
           context.read<AuthCubit>().authRepository.httpClient,
         ),
         tokenStorage: context.read<AuthCubit>().tokenStorage,
+        authRepository: context.read<AuthCubit>().authRepository,
         initialState: HomeState.initial().copyWith(
           currentIndex: initialNavIndex,
           selectedBookingTab: initialBookingTab,
@@ -163,9 +164,12 @@ class _HomeShell extends StatelessWidget {
           final homeCubit = context.read<HomeCubit>();
           final previousIndex = homeCubit.state.currentIndex;
           homeCubit.setTab(index);
-          // Refresh profile when switching to home tab (0) or account tab (3)
-          if ((index == 0 && previousIndex != 0) ||
-              (index == 3 && previousIndex != 3)) {
+          // Refresh home and profile when switching to home tab (0) without loading indicator
+          if (index == 0 && previousIndex != 0) {
+            homeCubit.refreshHomeAndProfileSilently();
+          }
+          // Refresh profile when switching to account tab (3)
+          if (index == 3 && previousIndex != 3) {
             context.read<AuthCubit>().refreshProfileWhenSelectingAccountTab();
           }
         },

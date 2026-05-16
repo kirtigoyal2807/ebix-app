@@ -10,6 +10,7 @@ import 'package:pilates_app/core/storage/token_storage.dart';
 import 'package:pilates_app/features/auth/data/auth_repository.dart';
 import 'package:pilates_app/features/auth/data/models/branches_list_result.dart';
 import 'package:pilates_app/features/auth/data/models/login_email_result.dart';
+import 'package:pilates_app/features/auth/data/models/profile_verify_phone_result.dart';
 import 'package:pilates_app/features/auth/data/models/register_gender.dart';
 import 'package:pilates_app/features/auth/data/models/auth_user.dart';
 
@@ -23,6 +24,8 @@ class AuthCubit extends Cubit<AuthState> {
 
   bool _logoutInFlight = false;
   Future<void>? _profileRefreshFuture;
+  bool _splashPendingConnectivity = false;
+  bool _splashStarted = false;
 
   /// [seed] is normally computed in [main] from [TokenStorage]: if a JWT exists,
   /// [AuthFlow.authenticated] skips splash/onboarding on cold start.
@@ -66,6 +69,15 @@ class AuthCubit extends Cubit<AuthState> {
        super(seed.copyWith(user: tokenStorage.readUser())) {
     _localeBridge.languageCode = state.locale.languageCode;
     if (startSplash) {
+      _splashPendingConnectivity = true;
+    }
+  }
+
+  /// Called when [AppBootstrapView] confirms the device has network access.
+  void onConnectivityReady() {
+    if (_splashPendingConnectivity && !_splashStarted) {
+      _splashPendingConnectivity = false;
+      _splashStarted = true;
       _startSplash();
     }
   }
@@ -502,7 +514,8 @@ class AuthCubit extends Cubit<AuthState> {
           .clearedForgotPasswordFlow()
           .clearedSignInPhoneVerification()
           .clearedSignUpBranchUi()
-          .clearedSignUpPhoneVerification(),
+          .clearedSignUpPhoneVerification()
+          .clearedProfileEmailOtp(),
     );
   }
 
@@ -526,7 +539,8 @@ class AuthCubit extends Cubit<AuthState> {
           )
           .clearedPostLoginProfile()
           .clearedForgotPasswordFlow()
-          .clearedSignInPhoneVerification(),
+          .clearedSignInPhoneVerification()
+          .clearedProfileEmailOtp(),
     );
   }
 
@@ -1132,14 +1146,17 @@ class AuthCubit extends Cubit<AuthState> {
       ),
     );
 
-    final result = await _authRepository.verifyPhoneOtp(
+    final result = await _authRepository.verifyProfilePhone(
       phone: phone,
-      code: trimmedCode,
+      otp: trimmedCode,
     );
 
     switch (result) {
-      case ApiSuccess<LoginEmailResult>(:final data):
-        await _tokenStorage.saveToken(data.token);
+      case ApiSuccess<ProfileVerifyPhoneResult>(:final data):
+        final newToken = data.token;
+        if (newToken != null && newToken.isNotEmpty) {
+          await _tokenStorage.saveToken(newToken);
+        }
         await _tokenStorage.saveUser(data.user);
         emit(
           state.copyWith(
@@ -1149,54 +1166,70 @@ class AuthCubit extends Cubit<AuthState> {
             signUpPhoneOtpFieldErrors: {},
           ),
         );
-      case ApiFailure<LoginEmailResult>(:final exception):
+      case ApiFailure<ProfileVerifyPhoneResult>(:final exception):
+        final fieldErrors = _mapFieldErrors(exception);
+        if (fieldErrors['code'] == null && fieldErrors['otp'] != null) {
+          fieldErrors['code'] = fieldErrors['otp']!;
+        }
         emit(
           state.copyWith(
             signUpPhoneOtpUiStatus: SignUpPhoneOtpUiStatus.idle,
             signUpPhoneOtpErrorMessage: exception.message ?? '',
-            signUpPhoneOtpFieldErrors: _mapFieldErrors(exception),
+            signUpPhoneOtpFieldErrors: fieldErrors,
           ),
         );
     }
   }
 
-  /// Resend phone OTP for profile phone update.
-  /// Does not check flow state - can be called from any flow.
-  Future<bool> resendProfilePhoneOtp(String phone) async {
-    final trimmedPhone = phone.trim();
-    if (trimmedPhone.isEmpty) {
-      return false;
-    }
-    if (state.phoneOtpSendUiStatus == PhoneOtpSendUiStatus.loading) {
-      return false;
+  /// Verify email code after profile email change — `POST /auth/profile/verify-email`.
+  Future<void> verifyProfileEmailCode({
+    required String email,
+    required String code,
+  }) async {
+    final trimmedEmail = email.trim();
+    final trimmedCode = code.trim();
+    if (trimmedEmail.isEmpty || trimmedCode.length != 6) {
+      return;
     }
 
     emit(
       state.copyWith(
-        phoneOtpSendUiStatus: PhoneOtpSendUiStatus.loading,
-        phoneOtpSendErrorMessage: '',
+        profileEmailOtpUiStatus: ProfileEmailOtpUiStatus.loading,
+        profileEmailOtpErrorMessage: '',
+        profileEmailOtpFieldErrors: {},
       ),
     );
 
-    final result = await _authRepository.sendPhoneOtp(phone: trimmedPhone);
+    final result = await _authRepository.verifyProfileEmail(
+      email: trimmedEmail,
+      code: trimmedCode,
+    );
 
     switch (result) {
-      case ApiSuccess<bool>():
+      case ApiSuccess<AuthUser>(:final data):
+        await _tokenStorage.saveUser(data);
         emit(
           state.copyWith(
-            phoneOtpSendUiStatus: PhoneOtpSendUiStatus.idle,
-            phoneOtpSendErrorMessage: '',
+            user: data,
+            profileEmailOtpUiStatus: ProfileEmailOtpUiStatus.idle,
+            profileEmailOtpErrorMessage: '',
+            profileEmailOtpFieldErrors: {},
           ),
         );
-      case ApiFailure<bool>(:final exception):
+      case ApiFailure<AuthUser>(:final exception):
+        var fieldErrors = _mapFieldErrors(exception);
+        if (fieldErrors['code'] == null && fieldErrors['email'] != null) {
+          fieldErrors = Map<String, String>.from(fieldErrors)
+            ..['code'] = fieldErrors['email']!;
+        }
         emit(
           state.copyWith(
-            phoneOtpSendUiStatus: PhoneOtpSendUiStatus.idle,
-            phoneOtpSendErrorMessage: exception.message ?? '',
+            profileEmailOtpUiStatus: ProfileEmailOtpUiStatus.idle,
+            profileEmailOtpErrorMessage: exception.message ?? '',
+            profileEmailOtpFieldErrors: fieldErrors,
           ),
         );
     }
-    return true;
   }
 
   // Language

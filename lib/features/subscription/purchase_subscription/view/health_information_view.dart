@@ -368,7 +368,7 @@ class _HealthInformationViewState extends State<HealthInformationView> {
 
         return Padding(
           padding: EdgeInsets.symmetric(
-            vertical: AppSpacing.lg,
+            vertical: AppSpacing.xi,
             horizontal: AppSpacing.lg,
           ),
           child: Column(

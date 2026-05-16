@@ -110,18 +110,23 @@ class ExperienceOption extends StatelessWidget {
                   ),
 
                   SizedBox(height: AppSpacing.xs),
-                  AppText(
-                    description,
-                    style: (context) => AppTextStyles.body(context).copyWith(
-                      color: isDark
-                          ? AppColors.darkGreyText
-                          : AppColors.greyText,
+                  SizedBox(
+                    width: double.infinity,
+                    child: AppText(
+                      description,
+                      maxLines: 2,
+                      overflow: TextOverflow.clip,
+                      style: (context) => AppTextStyles.body(context).copyWith(
+                        color: isDark
+                            ? AppColors.darkGreyText
+                            : AppColors.greyText,
+                      ),
                     ),
                   ),
                 ],
               ),
             ),
-            SizedBox(width: AppSpacing.lg),
+            SizedBox(width: AppSpacing.sm),
 
             if (selected)
               Container(

@@ -179,7 +179,7 @@ class _SignUpBranchViewState extends State<SignUpBranchView> {
             isMoreMenu: false,
           ),
           body: Padding(
-            padding: EdgeInsets.only(top: AppSpacing.md),
+            padding: EdgeInsets.only(top: AppSpacing.xi),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

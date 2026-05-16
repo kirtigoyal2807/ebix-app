@@ -50,42 +50,48 @@ class ClassInfoGrid extends StatelessWidget {
 
     return Column(
       children: [
-        Row(
-          children: [
-            Expanded(
-              child: _MaybeTappableTrainerCard(
-                canOpenProfile: (slot.trainerId ?? '').trim().isNotEmpty,
-                slot: slot,
+        IntrinsicHeight(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Expanded(
+                child: _MaybeTappableTrainerCard(
+                  canOpenProfile: (slot.trainerId ?? '').trim().isNotEmpty,
+                  slot: slot,
+                ),
               ),
-            ),
-            SizedBox(width: AppSpacing.md),
-            Expanded(
-              child: _InfoCard(
-                label: context.l10n.duration,
-                value: durationLabel,
-              ),
-            ),
-          ],
-        ),
-        SizedBox(height: AppSpacing.md),
-        Row(
-          children: [
-            // Date & Time card: full width when no membership, otherwise half width
-            Expanded(
-              flex: hasMembership ? 1 : 2,
-              child: _InfoCard(label: context.l10n.dateTime, value: dateLabel),
-            ),
-            // Only show availability card when user has membership
-            if (hasMembership) ...[
               SizedBox(width: AppSpacing.md),
               Expanded(
                 child: _InfoCard(
-                  label: context.l10n.availability,
-                  value: availability,
+                  label: context.l10n.duration,
+                  value: durationLabel,
                 ),
               ),
             ],
-          ],
+          ),
+        ),
+        SizedBox(height: AppSpacing.md),
+        IntrinsicHeight(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              // Date & Time card: full width when no membership, otherwise half width
+              Expanded(
+                flex: hasMembership ? 1 : 2,
+                child: _InfoCard(label: context.l10n.dateTime, value: dateLabel),
+              ),
+              // Only show availability card when user has membership
+              if (hasMembership) ...[
+                SizedBox(width: AppSpacing.md),
+                Expanded(
+                  child: _InfoCard(
+                    label: context.l10n.availability,
+                    value: availability,
+                  ),
+                ),
+              ],
+            ],
+          ),
         ),
       ],
     );
@@ -168,9 +174,11 @@ class _InfoCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
+    final minCardHeight = MediaQuery.sizeOf(context).height * 0.11;
+
     return Container(
       padding: EdgeInsets.all(AppSpacing.md),
-      height: MediaQuery.of(context).size.height *0.11,
+      constraints: BoxConstraints(minHeight: minCardHeight),
       decoration: BoxDecoration(
         color: isDark ? AppColors.homeBackground : AppColors.whiteColor,
         borderRadius: BorderRadius.circular(AppRadius.md),
@@ -181,15 +189,18 @@ class _InfoCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
         children: [
           AppText(
             label,
+            maxLines: 1,
             style: (ctx) => AppTextStyles.captionText(
               ctx,
             ).copyWith(color: AppColors.lightGrey, fontSize: 12),
           ),
           SizedBox(height: AppSpacing.xs),
           Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               if (showAvatar) ...[
                 CircleAvatar(
@@ -202,12 +213,12 @@ class _InfoCard extends StatelessWidget {
                             as ImageProvider,
                 ),
                 const SizedBox(width: 8),
-              ] else ...[
-                const SizedBox(height: 24),
               ],
               Expanded(
                 child: AppText(
                   value,
+                  maxLines: 2,
+                  overflow: TextOverflow.clip,
                   style: (ctx) => AppTextStyles.boldBody(ctx).copyWith(
                     fontSize: 14,
                     color: showAvatar
