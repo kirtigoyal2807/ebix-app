@@ -78,6 +78,11 @@ class _PersonalViewBodyState extends State<_PersonalViewBody> {
   late String _phoneCountryIso;
   CountryCode? _phoneCountry;
 
+  final _firstNameFocus = FocusNode();
+  final _lastNameFocus = FocusNode();
+  final _emailFocus = FocusNode();
+  final _phoneFocus = FocusNode();
+
   @override
   void initState() {
     super.initState();
@@ -106,6 +111,10 @@ class _PersonalViewBodyState extends State<_PersonalViewBody> {
     _emailController.dispose();
     _phoneController.dispose();
     _dobController.dispose();
+    _firstNameFocus.dispose();
+    _lastNameFocus.dispose();
+    _emailFocus.dispose();
+    _phoneFocus.dispose();
     super.dispose();
   }
 
@@ -402,6 +411,12 @@ class _PersonalViewBodyState extends State<_PersonalViewBody> {
                       hint: context.l10n.firstName,
                       label: context.l10n.firstName,
                       controller: _firstNameController,
+                      focusNode: _firstNameFocus,
+                      keyboardType: TextInputType.name,
+                      textInputAction: TextInputAction.next,
+                      onFieldSubmitted: (_) => FocusScope.of(
+                        context,
+                      ).requestFocus(_lastNameFocus),
                       readOnly: !_isEditing,
                     ),
                   ),
@@ -412,6 +427,11 @@ class _PersonalViewBodyState extends State<_PersonalViewBody> {
                       hint: context.l10n.lastName,
                       label: context.l10n.lastName,
                       controller: _lastNameController,
+                      focusNode: _lastNameFocus,
+                      keyboardType: TextInputType.name,
+                      textInputAction: TextInputAction.next,
+                      onFieldSubmitted: (_) =>
+                          FocusScope.of(context).requestFocus(_emailFocus),
                       readOnly: !_isEditing,
                     ),
                   ),
@@ -423,6 +443,10 @@ class _PersonalViewBodyState extends State<_PersonalViewBody> {
                       label: l10n.emailAddress,
                       keyboardType: TextInputType.emailAddress,
                       controller: _emailController,
+                      focusNode: _emailFocus,
+                      textInputAction: TextInputAction.next,
+                      onFieldSubmitted: (_) =>
+                          FocusScope.of(context).requestFocus(_phoneFocus),
                       readOnly: !_isEditing,
                     ),
                   ),
@@ -437,6 +461,10 @@ class _PersonalViewBodyState extends State<_PersonalViewBody> {
                       countryCode: '+1',
                       flagAsset: 'assets/flags/us.svg',
                       controller: _phoneController,
+                      focusNode: _phoneFocus,
+                      textInputAction: TextInputAction.done,
+                      onFieldSubmitted: (_) =>
+                          FocusManager.instance.primaryFocus?.unfocus(),
                       initialCountryIso: _phoneCountryIso,
                       onCountryChanged: (country) {
                         setState(() {
