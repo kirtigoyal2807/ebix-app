@@ -1,6 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pilates_app/core/network/api_result.dart';
 import 'package:pilates_app/core/storage/token_storage.dart';
+import 'package:pilates_app/features/auth/data/auth_repository.dart';
+import 'package:pilates_app/features/auth/data/models/auth_user.dart';
 import 'package:pilates_app/features/booking/cubit/booking_state.dart';
 
 import '../data/home_repository.dart';
@@ -11,13 +13,16 @@ class HomeCubit extends Cubit<HomeState> {
   HomeCubit({
     required HomeRepository homeRepository,
     required TokenStorage tokenStorage,
+    required AuthRepository authRepository,
     HomeState? initialState,
   }) : _homeRepository = homeRepository,
        _tokenStorage = tokenStorage,
+       _authRepository = authRepository,
        super(initialState ?? HomeState.initial());
 
   final HomeRepository _homeRepository;
   final TokenStorage _tokenStorage;
+  final AuthRepository _authRepository;
 
   void setTab(int index, {BookingTab? bookingTab, String? classCategory}) {
     emit(
@@ -121,6 +126,54 @@ class HomeCubit extends Cubit<HomeState> {
             errorMessage: exception.message ?? '',
           ),
         );
+    }
+  }
+
+  /// Refreshes both home and profile data silently without showing loading indicator.
+  /// Used when clicking on home tab to refresh data in background.
+  Future<void> refreshHomeAndProfileSilently() async {
+    // Only refresh if we already have data (avoid loading state on initial load)
+    if (state.data == null) {
+      return;
+    }
+
+    emit(state.copyWith(errorMessage: ''));
+
+    // Call both APIs in parallel
+    final results = await Future.wait([
+      _homeRepository.fetchHome(),
+      _authRepository.getProfile(),
+    ]);
+
+    final homeResult = results[0] as ApiResult<HomeResponse>;
+    final profileResult = results[1] as ApiResult<AuthUser>;
+
+    // Handle home result
+    switch (homeResult) {
+      case ApiSuccess<HomeResponse>(:final data):
+        final planName = data.membership?.planName?.trim() ?? '';
+        if (planName.isNotEmpty) {
+          await _tokenStorage.saveMembershipPlanName(planName);
+        }
+        emit(
+          state.copyWith(
+            loadStatus: HomeLoadStatus.loaded,
+            errorMessage: '',
+            data: data,
+          ),
+        );
+      case ApiFailure<HomeResponse>():
+        // Silently fail - don't show error or loading state
+        break;
+    }
+
+    // Handle profile result - save to storage if successful
+    switch (profileResult) {
+      case ApiSuccess<AuthUser>(:final data):
+        await _tokenStorage.saveUser(data);
+      case ApiFailure<AuthUser>():
+        // Silently fail - keep existing user data
+        break;
     }
   }
 }

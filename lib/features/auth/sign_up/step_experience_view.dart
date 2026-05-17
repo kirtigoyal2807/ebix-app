@@ -38,7 +38,7 @@ class _SignUpExperienceViewState extends State<SignUpExperienceView> {
       body: Padding(
         padding: EdgeInsets.symmetric(
           // horizontal: AppSpacing.lg,
-          vertical: AppSpacing.md,
+          vertical: AppSpacing.xi,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

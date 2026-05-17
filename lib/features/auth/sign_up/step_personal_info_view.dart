@@ -46,6 +46,8 @@ class _SignUpPersonalInfoViewState extends State<SignUpPersonalInfoView> {
   final _confirmPasswordFocus = FocusNode();
   final _phoneFocus = FocusNode();
 
+  final _scrollController = ScrollController();
+
   CountryCode? _phoneCountry;
   String? _genderValue;
   String? _clientFirstNameError;
@@ -55,6 +57,53 @@ class _SignUpPersonalInfoViewState extends State<SignUpPersonalInfoView> {
   String? _clientGenderError;
   String? _clientDobError;
   String? _clientPhoneError;
+
+  /// Reserve space for sticky bottom CTA so [Scrollable.ensureVisible] / [scrollPadding] scroll past it.
+  static double _signupStickyInset() {
+    return AppSpacing.buttonHeight + AppSpacing.md * 2 + AppSpacing.lg;
+  }
+
+  EdgeInsets _signupFieldScrollPadding(BuildContext context) {
+    final bottom = _signupStickyInset();
+    return EdgeInsets.fromLTRB(20, 20, 20, bottom);
+  }
+
+  void _signUpScrollFieldOnFocus(FocusNode node) {
+    if (!node.hasFocus) return;
+    void scroll() {
+      if (!mounted || !node.hasFocus) return;
+      final ctx = node.context;
+      if (ctx == null || !ctx.mounted) return;
+      Scrollable.ensureVisible(
+        ctx,
+        duration: const Duration(milliseconds: 280),
+        curve: Curves.easeOutCubic,
+        alignment: 0.12,
+      );
+    }
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      scroll();
+      // Second tick: keyboard inset / SafeArea can settle after the first frame.
+      WidgetsBinding.instance.addPostFrameCallback((_) => scroll());
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    for (final node in <FocusNode>[
+      _firstNameFocus,
+      _lastNameFocus,
+      _emailFocus,
+      _dobFocus,
+      _passwordFocus,
+      _confirmPasswordFocus,
+      _phoneFocus,
+    ]) {
+      node.addListener(() => _signUpScrollFieldOnFocus(node));
+    }
+  }
 
   @override
   void dispose() {
@@ -71,6 +120,7 @@ class _SignUpPersonalInfoViewState extends State<SignUpPersonalInfoView> {
     _passwordFocus.dispose();
     _confirmPasswordFocus.dispose();
     _phoneFocus.dispose();
+    _scrollController.dispose();
     super.dispose();
   }
 
@@ -219,7 +269,7 @@ class _SignUpPersonalInfoViewState extends State<SignUpPersonalInfoView> {
             padding: EdgeInsets.only(
               left: AppSpacing.lg,
               right: AppSpacing.lg,
-              top: AppSpacing.md,
+              top: AppSpacing.xi,
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -250,6 +300,9 @@ class _SignUpPersonalInfoViewState extends State<SignUpPersonalInfoView> {
                   child: Stack(
                     children: [
                       SingleChildScrollView(
+                        controller: _scrollController,
+                        keyboardDismissBehavior:
+                            ScrollViewKeyboardDismissBehavior.onDrag,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -265,6 +318,7 @@ class _SignUpPersonalInfoViewState extends State<SignUpPersonalInfoView> {
                               key: const ValueKey('signup_firstName'),
                               controller: _firstNameController,
                               focusNode: _firstNameFocus,
+                              scrollPadding: _signupFieldScrollPadding(context),
                               label: context.l10n.firstName,
                               hint: context.l10n.signupFirstNameHint,
                               keyboardType: TextInputType.name,
@@ -285,6 +339,7 @@ class _SignUpPersonalInfoViewState extends State<SignUpPersonalInfoView> {
                               key: const ValueKey('signup_lastName'),
                               controller: _lastNameController,
                               focusNode: _lastNameFocus,
+                              scrollPadding: _signupFieldScrollPadding(context),
                               label: context.l10n.lastName,
                               hint: context.l10n.signupLastNameHint,
                               keyboardType: TextInputType.name,
@@ -305,6 +360,7 @@ class _SignUpPersonalInfoViewState extends State<SignUpPersonalInfoView> {
                               key: const ValueKey('signup_email'),
                               controller: _emailController,
                               focusNode: _emailFocus,
+                              scrollPadding: _signupFieldScrollPadding(context),
                               label: context.l10n.emailAddress,
                               hint: 'Ayesha@gmail.com',
                               keyboardType: TextInputType.emailAddress,
@@ -361,6 +417,9 @@ class _SignUpPersonalInfoViewState extends State<SignUpPersonalInfoView> {
                               builder: (context, state) {
                                 return AppTextField(
                                   focusNode: _dobFocus,
+                                  scrollPadding: _signupFieldScrollPadding(
+                                    context,
+                                  ),
                                   style: AppTextStyles.textField(context)
                                       .copyWith(
                                         color: state.dateOfBirth.isEmpty
@@ -432,6 +491,7 @@ class _SignUpPersonalInfoViewState extends State<SignUpPersonalInfoView> {
                               key: const ValueKey('signup_password'),
                               controller: _passwordController,
                               focusNode: _passwordFocus,
+                              scrollPadding: _signupFieldScrollPadding(context),
                               label: context.l10n.password,
                               hint: '**********',
                               obscure: true,
@@ -442,28 +502,6 @@ class _SignUpPersonalInfoViewState extends State<SignUpPersonalInfoView> {
                                 context,
                               ).requestFocus(_confirmPasswordFocus),
                               errorText: fe['password'],
-                              onChanged: (_) => setState(() {
-                                _clientConfirmError = null;
-                              }),
-                            ),
-                            SizedBox(height: AppSpacing.md),
-                            AppTextField(
-                              key: const ValueKey('signup_confirm_password'),
-                              controller: _confirmPasswordController,
-                              focusNode: _confirmPasswordFocus,
-                              label: context.l10n.confirmPassword,
-                              hint: '**********',
-                              obscure: true,
-                              keyboardType: TextInputType.visiblePassword,
-                              maxLines: 1,
-                              textInputAction: TextInputAction.next,
-                              onFieldSubmitted: (_) => FocusScope.of(
-                                context,
-                              ).requestFocus(_phoneFocus),
-                              errorText:
-                                  _clientConfirmError ??
-                                  fe['password_confirmation'] ??
-                                  fe['confirm_password'],
                               onChanged: (_) => setState(() {
                                 _clientConfirmError = null;
                               }),
@@ -483,11 +521,35 @@ class _SignUpPersonalInfoViewState extends State<SignUpPersonalInfoView> {
                               ),
                             ],
                             SizedBox(height: AppSpacing.md),
+                            AppTextField(
+                              key: const ValueKey('signup_confirm_password'),
+                              controller: _confirmPasswordController,
+                              focusNode: _confirmPasswordFocus,
+                              scrollPadding: _signupFieldScrollPadding(context),
+                              label: context.l10n.confirmPassword,
+                              hint: '**********',
+                              obscure: true,
+                              keyboardType: TextInputType.visiblePassword,
+                              maxLines: 1,
+                              textInputAction: TextInputAction.next,
+                              onFieldSubmitted: (_) => FocusScope.of(
+                                context,
+                              ).requestFocus(_phoneFocus),
+                              errorText:
+                                  _clientConfirmError ??
+                                  fe['password_confirmation'] ??
+                                  fe['confirm_password'],
+                              onChanged: (_) => setState(() {
+                                _clientConfirmError = null;
+                              }),
+                            ),
+                            SizedBox(height: AppSpacing.md),
                             PhoneNumberField(
                               key: const ValueKey('signup_phone'),
                               label: context.l10n.phoneNumber,
                               controller: _phoneController,
                               focusNode: _phoneFocus,
+                              scrollPadding: _signupFieldScrollPadding(context),
                               textInputAction: TextInputAction.done,
                               onFieldSubmitted: (_) =>
                                   FocusManager.instance.primaryFocus?.unfocus(),
@@ -501,11 +563,8 @@ class _SignUpPersonalInfoViewState extends State<SignUpPersonalInfoView> {
                                 });
                               },
                             ),
-                            SizedBox(height: AppSpacing.xl),
-                            SizedBox(
-                              height:
-                                  MediaQuery.sizeOf(context).height * 0.04 + 48,
-                            ),
+                            const SizedBox(height: 26),
+                            SizedBox(height: _signupStickyInset()),
                           ],
                         ),
                       ),

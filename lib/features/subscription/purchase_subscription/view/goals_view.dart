@@ -89,7 +89,7 @@ class _GoalsViewState extends State<GoalsView> {
       },
       child: Padding(
         padding: EdgeInsets.symmetric(
-          vertical: AppSpacing.lg,
+          vertical: AppSpacing.xi,
           horizontal: AppSpacing.lg,
         ),
         child: Column(

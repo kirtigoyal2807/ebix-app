@@ -129,4 +129,11 @@ class AppColors {
   static final darkLightBlue = Color(0xff173447);
 
   static final darkShadow = Color(0xff120F0D);
+
+  // No internet screen
+  static const offlineBackgroundDark = Color(0xFF120D0B);
+  static const offlineCircleLight = Color(0xFFFFF6ED);
+  static const offlineCircleDark = Color(0xFF241B18);
+  static const offlineTryAgainLight = Color(0xFF80604D);
+  static const offlineTryAgainDark = Color(0xFFB59D8E);
 }

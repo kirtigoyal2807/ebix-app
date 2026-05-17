@@ -64,6 +64,9 @@ class PhoneNumberField extends StatefulWidget {
 
   final ValueChanged<String>? onFieldSubmitted;
 
+  /// Extra inset when scrolling this field into view above the keyboard (matches [TextField.scrollPadding]).
+  final EdgeInsets scrollPadding;
+
   const PhoneNumberField({
     super.key,
     required this.label,
@@ -79,6 +82,7 @@ class PhoneNumberField extends StatefulWidget {
     this.focusNode,
     this.textInputAction = TextInputAction.next,
     this.onFieldSubmitted,
+    this.scrollPadding = const EdgeInsets.all(20.0),
   });
 
   /// Validates [nationalDigitsOnly] (no country code) for [iso3166Alpha2] (e.g. `AE`, `SA`).
@@ -393,6 +397,7 @@ class _PhoneNumberFieldState extends State<PhoneNumberField> {
                   child: TextField(
                     controller: widget.controller,
                     focusNode: _focusNode,
+                    scrollPadding: widget.scrollPadding,
                     enabled: widget.enabled,
                     keyboardType: TextInputType.phone,
                     textDirection: TextDirection.ltr,

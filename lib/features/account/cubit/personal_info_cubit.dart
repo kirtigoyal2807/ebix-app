@@ -57,8 +57,9 @@ class PersonalInfoCubit extends Cubit<PersonalInfoState> {
     emit(state.copyWith(clearSelectedAvatar: true, removeAvatar: true));
   }
 
-  /// Calls `PUT /customers/profile`. On success emits [PersonalInfoSaveStatus.success]
-  /// with the refreshed [AuthUser]; on phone change emits [PersonalInfoSaveStatus.phoneVerificationRequired];
+  /// Calls profile update API. On success emits [PersonalInfoSaveStatus.success];
+  /// when the API requires phone OTP emits [PersonalInfoSaveStatus.phoneVerificationRequired];
+  /// when it requires email OTP emits [PersonalInfoSaveStatus.emailVerificationRequired];
   /// on failure emits [PersonalInfoSaveStatus.failure].
   Future<AuthUser?> saveProfile({
     required String firstName,
@@ -74,7 +75,8 @@ class PersonalInfoCubit extends Cubit<PersonalInfoState> {
         saveStatus: PersonalInfoSaveStatus.loading,
         errorMessage: '',
         fieldErrors: {},
-        pendingPhoneNumber: null,
+        resetPendingPhone: true,
+        resetPendingEmail: true,
       ),
     );
 
@@ -133,11 +135,20 @@ class PersonalInfoCubit extends Cubit<PersonalInfoState> {
       return null;
     }
 
-    final result = await _authRepository.updateProfileWithPhoneHandling(
+    final resendPayload = ProfileUpdateResendPayload(
       firstName: trimmedFirst.isNotEmpty ? trimmedFirst : null,
       lastName: trimmedLast.isNotEmpty ? trimmedLast : null,
       email: trimmedEmail.isNotEmpty ? trimmedEmail : null,
       phone: phone.isNotEmpty ? phone : null,
+    );
+
+    emit(state.copyWith(lastProfileUpdatePayload: resendPayload));
+
+    final result = await _authRepository.updateProfileWithPhoneHandling(
+      firstName: resendPayload.firstName,
+      lastName: resendPayload.lastName,
+      email: resendPayload.email,
+      phone: resendPayload.phone,
       gender: state.gender,
       dob: state.dateOfBirth,
       avatarPath: state.selectedAvatarPath,
@@ -157,6 +168,17 @@ class PersonalInfoCubit extends Cubit<PersonalInfoState> {
           state.copyWith(
             saveStatus: PersonalInfoSaveStatus.phoneVerificationRequired,
             pendingPhoneNumber: phone,
+            resetPendingEmail: true,
+            errorMessage: '',
+          ),
+        );
+        return null;
+      case ProfileUpdateEmailVerificationRequired(:final email):
+        emit(
+          state.copyWith(
+            saveStatus: PersonalInfoSaveStatus.emailVerificationRequired,
+            pendingEmail: email,
+            resetPendingPhone: true,
             errorMessage: '',
           ),
         );
@@ -176,5 +198,68 @@ class PersonalInfoCubit extends Cubit<PersonalInfoState> {
   /// Reset status to idle (useful after navigating to OTP screen).
   void resetStatus() {
     emit(state.copyWith(saveStatus: PersonalInfoSaveStatus.idle));
+  }
+
+  /// Resend OTP by repeating the profile update API with the last submitted fields.
+  Future<bool> resendVerificationCode() async {
+    final payload = state.lastProfileUpdatePayload;
+    if (payload == null) {
+      return false;
+    }
+    if (state.resendStatus == PersonalInfoResendStatus.loading) {
+      return false;
+    }
+
+    emit(
+      state.copyWith(
+        resendStatus: PersonalInfoResendStatus.loading,
+        resendErrorMessage: '',
+      ),
+    );
+
+    final result = await _authRepository.updateProfileWithPhoneHandling(
+      firstName: payload.firstName,
+      lastName: payload.lastName,
+      email: payload.email,
+      phone: payload.phone,
+      gender: state.gender,
+      dob: state.dateOfBirth,
+      avatarPath: state.selectedAvatarPath,
+    );
+
+    switch (result) {
+      case ProfileUpdateSuccess():
+        emit(
+          state.copyWith(
+            resendStatus: PersonalInfoResendStatus.idle,
+            resendErrorMessage: '',
+          ),
+        );
+      case ProfileUpdatePhoneVerificationRequired(:final phone):
+        emit(
+          state.copyWith(
+            resendStatus: PersonalInfoResendStatus.idle,
+            resendErrorMessage: '',
+            pendingPhoneNumber: phone,
+          ),
+        );
+      case ProfileUpdateEmailVerificationRequired(:final email):
+        emit(
+          state.copyWith(
+            resendStatus: PersonalInfoResendStatus.idle,
+            resendErrorMessage: '',
+            pendingEmail: email,
+          ),
+        );
+      case ProfileUpdateFailure(:final message, :final fieldErrors):
+        emit(
+          state.copyWith(
+            resendStatus: PersonalInfoResendStatus.idle,
+            resendErrorMessage: message,
+            fieldErrors: fieldErrors,
+          ),
+        );
+    }
+    return true;
   }
 }

@@ -1,16 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pilates_app/config/theme/app_colors.dart';
-import 'package:pilates_app/config/theme/app_spacing.dart';
-import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/features/auth/cubit/auth_cubit.dart';
 import 'package:pilates_app/features/auth/cubit/auth_state.dart';
-import 'package:pilates_app/features/auth/sign_up/widgets/otp_field.dart';
-import 'package:pilates_app/features/auth/sign_up/widgets/sign_up_header.dart';
-import 'package:pilates_app/features/auth/widgets/otp_resend_action.dart';
-import 'package:pilates_app/widgets/app_app_bar.dart';
-import 'package:pilates_app/widgets/app_button.dart';
-import 'package:pilates_app/widgets/app_scaffold.dart';
+import 'package:pilates_app/features/auth/widgets/email_otp_verification_layout.dart';
 
 import '../../../core/localization/localization_extension.dart';
 import '../../../core/mixins/resend_code_cooldown_mixin.dart';
@@ -60,8 +52,6 @@ class _ForgotOtpViewState extends State<ForgotOtpView>
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-
     return BlocConsumer<AuthCubit, AuthState>(
       listenWhen: (previous, current) {
         final finished =
@@ -113,77 +103,27 @@ class _ForgotOtpViewState extends State<ForgotOtpView>
         final codeErr = state.forgotPasswordFieldErrors['code'];
         final resendDisabled = loading || isResendCodeOnCooldown;
 
-        return AppScaffold(
-          appBar: AppAppBar(
-            onBack: () => Navigator.of(context).pop(),
-            title: context.l10n.forgotPasswordTitle,
-          ),
-          body: Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: AppSpacing.lg,
-              vertical: AppSpacing.md,
-            ),
-            child: Column(
-              children: [
-                Expanded(
-                  child: SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(height: AppSpacing.lg),
-                        SignUpHeader(
-                          title: context.l10n.otpVerificationTitle,
-                          subtitle: context.l10n.otpVerificationSubtitle,
-                          step: 0,
-                          totalSteps: 0,
-                        ),
-                        SizedBox(height: AppSpacing.xxl),
-                        Center(
-                          child: OtpField(
-                            key: const ValueKey('forgot_otp_field'),
-                            length: 6,
-                            onCompleted: (otp) {
-                              setState(() => _code = otp);
-                            },
-                          ),
-                        ),
-                        if (codeErr != null) ...[
-                          SizedBox(height: AppSpacing.sm),
-                          Center(
-                            child: Text(
-                              codeErr,
-                              style: AppTextStyles.caption(context).copyWith(
-                                color: isDark
-                                    ? AppColors.redDark
-                                    : AppColors.redLight,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                        ],
-                        SizedBox(height: AppSpacing.lg),
-                        Center(
-                          child: OtpResendAction(
-                            key: const ValueKey('forgot_resend_code'),
-                            isOnCooldown: isResendCodeOnCooldown,
-                            cooldownRemaining: resendCodeCooldownRemaining,
-                            resendGestureDisabled: resendDisabled,
-                            onResend: () => _resend(context),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                AppButton(
-                  key: const ValueKey('forgot_verify_code'),
-                  label: context.l10n.verify,
-                  isLoading: loading,
-                  onPressed: loading ? null : () => _verify(context),
-                ),
-              ],
-            ),
-          ),
+        return EmailOtpVerificationLayout(
+          appBarTitle: context.l10n.forgotPasswordTitle,
+          headerTitle: context.l10n.otpVerificationTitle,
+          headerSubtitle: context.l10n.otpVerificationSubtitle,
+          verifyLoading: loading,
+          blockInteraction: loading,
+          codeError: codeErr,
+          resendDisabled: resendDisabled,
+          verifyButtonLabel: context.l10n.verify,
+          otpFieldKey: const ValueKey('forgot_otp_field'),
+          resendActionKey: const ValueKey('forgot_resend_code'),
+          verifyButtonKey: const ValueKey('forgot_verify_code'),
+          isResendOnCooldown: isResendCodeOnCooldown,
+          resendCooldownRemaining: resendCodeCooldownRemaining,
+          onBack: () => Navigator.of(context).pop(),
+          onOtpChanged: (otp) => setState(() => _code = otp),
+          onOtpCompleted: (otp) {
+            setState(() => _code = otp);
+          },
+          onResend: () => _resend(context),
+          onVerifyPressed: () => _verify(context),
         );
       },
     );

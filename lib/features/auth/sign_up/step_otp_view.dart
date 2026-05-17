@@ -146,7 +146,7 @@ class _SignUpOtpViewState extends State<SignUpOtpView>
                 Padding(
                   padding: EdgeInsets.symmetric(
                     horizontal: AppSpacing.lg,
-                    vertical: AppSpacing.md,
+                    vertical: AppSpacing.xi,
                   ),
                   child: Column(
                     children: [

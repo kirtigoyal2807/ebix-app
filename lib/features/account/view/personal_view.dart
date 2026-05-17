@@ -24,6 +24,7 @@ import '../../../widgets/app_button.dart';
 import '../../../widgets/app_dropdown.dart';
 import '../../../widgets/phone_number_field.dart';
 import '../../auth/widgets/phone_otp_view.dart';
+import '../../auth/widgets/profile_email_verification_view.dart';
 import '../cubit/personal_info_cubit.dart';
 import '../cubit/personal_info_state.dart';
 import '../widget/profile_picture_bottom_sheet.dart';
@@ -77,6 +78,11 @@ class _PersonalViewBodyState extends State<_PersonalViewBody> {
   late String _phoneCountryIso;
   CountryCode? _phoneCountry;
 
+  final _firstNameFocus = FocusNode();
+  final _lastNameFocus = FocusNode();
+  final _emailFocus = FocusNode();
+  final _phoneFocus = FocusNode();
+
   @override
   void initState() {
     super.initState();
@@ -105,6 +111,10 @@ class _PersonalViewBodyState extends State<_PersonalViewBody> {
     _emailController.dispose();
     _phoneController.dispose();
     _dobController.dispose();
+    _firstNameFocus.dispose();
+    _lastNameFocus.dispose();
+    _emailFocus.dispose();
+    _phoneFocus.dispose();
     super.dispose();
   }
 
@@ -300,23 +310,47 @@ class _PersonalViewBodyState extends State<_PersonalViewBody> {
               ),
             ),
           );
-        } else if (state.saveStatus == PersonalInfoSaveStatus.phoneVerificationRequired) {
-          // Navigate to OTP verification screen
+        } else if (state.saveStatus == PersonalInfoSaveStatus.emailVerificationRequired) {
+          final personalInfoCubit = context.read<PersonalInfoCubit>();
           final verified = await Navigator.of(context).push<bool>(
             MaterialPageRoute(
-              builder: (_) => PhoneOtpView(
-                phone: state.pendingPhoneNumber ?? '',
-                title: context.l10n.verifyPhone,
-                subtitlePrefix: context.l10n.enterCode,
+              builder: (_) => BlocProvider.value(
+                value: personalInfoCubit,
+                child: ProfileEmailVerificationView(
+                  email: state.pendingEmail ?? '',
+                ),
               ),
             ),
           );
 
+          if (!context.mounted) return;
+          context.read<PersonalInfoCubit>().resetStatus();
+
+          if (verified == true && context.mounted) {
+            context.read<AuthCubit>().refreshProfileWhenSelectingAccountTab();
+            Navigator.of(context).pop();
+          }
+        } else if (state.saveStatus == PersonalInfoSaveStatus.phoneVerificationRequired) {
+          final personalInfoCubit = context.read<PersonalInfoCubit>();
+          final verified = await Navigator.of(context).push<bool>(
+            MaterialPageRoute(
+              builder: (_) => BlocProvider.value(
+                value: personalInfoCubit,
+                child: PhoneOtpView(
+                  phone: state.pendingPhoneNumber ?? '',
+                  title: context.l10n.verifyPhone,
+                  subtitlePrefix: context.l10n.enterCode,
+                ),
+              ),
+            ),
+          );
+
+          if (!context.mounted) return;
           // Reset cubit status
           context.read<PersonalInfoCubit>().resetStatus();
 
           // If OTP verified successfully, close PersonalView
-          if (verified == true && mounted) {
+          if (verified == true && context.mounted) {
             context.read<AuthCubit>().refreshProfileWhenSelectingAccountTab();
             Navigator.of(context).pop();
           }
@@ -377,6 +411,12 @@ class _PersonalViewBodyState extends State<_PersonalViewBody> {
                       hint: context.l10n.firstName,
                       label: context.l10n.firstName,
                       controller: _firstNameController,
+                      focusNode: _firstNameFocus,
+                      keyboardType: TextInputType.name,
+                      textInputAction: TextInputAction.next,
+                      onFieldSubmitted: (_) => FocusScope.of(
+                        context,
+                      ).requestFocus(_lastNameFocus),
                       readOnly: !_isEditing,
                     ),
                   ),
@@ -387,6 +427,11 @@ class _PersonalViewBodyState extends State<_PersonalViewBody> {
                       hint: context.l10n.lastName,
                       label: context.l10n.lastName,
                       controller: _lastNameController,
+                      focusNode: _lastNameFocus,
+                      keyboardType: TextInputType.name,
+                      textInputAction: TextInputAction.next,
+                      onFieldSubmitted: (_) =>
+                          FocusScope.of(context).requestFocus(_emailFocus),
                       readOnly: !_isEditing,
                     ),
                   ),
@@ -398,6 +443,10 @@ class _PersonalViewBodyState extends State<_PersonalViewBody> {
                       label: l10n.emailAddress,
                       keyboardType: TextInputType.emailAddress,
                       controller: _emailController,
+                      focusNode: _emailFocus,
+                      textInputAction: TextInputAction.next,
+                      onFieldSubmitted: (_) =>
+                          FocusScope.of(context).requestFocus(_phoneFocus),
                       readOnly: !_isEditing,
                     ),
                   ),
@@ -412,6 +461,10 @@ class _PersonalViewBodyState extends State<_PersonalViewBody> {
                       countryCode: '+1',
                       flagAsset: 'assets/flags/us.svg',
                       controller: _phoneController,
+                      focusNode: _phoneFocus,
+                      textInputAction: TextInputAction.done,
+                      onFieldSubmitted: (_) =>
+                          FocusManager.instance.primaryFocus?.unfocus(),
                       initialCountryIso: _phoneCountryIso,
                       onCountryChanged: (country) {
                         setState(() {

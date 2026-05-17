@@ -6,6 +6,7 @@ import 'package:pilates_app/features/auth/data/models/branches_list_result.dart'
 import 'package:pilates_app/features/auth/data/models/branch.dart';
 import 'package:pilates_app/features/auth/data/models/auth_user.dart';
 import 'package:pilates_app/features/auth/data/models/login_email_result.dart';
+import 'package:pilates_app/features/auth/data/models/profile_verify_phone_result.dart';
 import 'package:pilates_app/features/auth/data/models/register_gender.dart';
 
 /// Test double with configurable outcomes for auth API methods.
@@ -24,11 +25,17 @@ class FakeAuthRepository extends AuthRepository {
           token: 'phone-verify-jwt',
         ),
       );
+
+  /// When set, [verifyProfilePhone] returns this; otherwise it mirrors [verifyPhoneOtpResult].
+  ApiResult<ProfileVerifyPhoneResult>? verifyProfilePhoneResultOverride;
   ApiResult<bool> phoneOtpResult = const ApiSuccess<bool>(true);
   ApiResult<bool> sendPhoneOtpResult = const ApiSuccess<bool>(true);
   ApiResult<bool> passwordForgotResult = const ApiSuccess<bool>(true);
   ApiResult<bool> sendEmailVerificationResult = const ApiSuccess<bool>(true);
   ApiResult<bool> verifyEmailCodeResult = const ApiSuccess<bool>(true);
+  ApiResult<AuthUser> verifyProfileEmailResult = const ApiSuccess<AuthUser>(
+    AuthUser(email: 'profile-email@example.com'),
+  );
   ApiResult<bool> resetPasswordResult = const ApiSuccess<bool>(true);
   ApiResult<bool> submitUserGoalResult = const ApiSuccess<bool>(true);
   ApiResult<AuthUser> getProfileResult = const ApiSuccess<AuthUser>(
@@ -54,11 +61,13 @@ class FakeAuthRepository extends AuthRepository {
   int loginCalls = 0;
   int registerCalls = 0;
   int verifyPhoneOtpCalls = 0;
+  int verifyProfilePhoneCalls = 0;
   int phoneOtpCalls = 0;
   int sendPhoneOtpCalls = 0;
   int passwordForgotCalls = 0;
   int sendEmailVerificationCalls = 0;
   int verifyEmailCodeCalls = 0;
+  int verifyProfileEmailCalls = 0;
   int resetPasswordCalls = 0;
   int submitUserGoalCalls = 0;
   int getProfileCalls = 0;
@@ -71,11 +80,15 @@ class FakeAuthRepository extends AuthRepository {
   String? lastRegisterPhone;
   String? lastVerifyPhoneOtpPhone;
   String? lastVerifyPhoneOtpCode;
+  String? lastVerifyProfilePhonePhone;
+  String? lastVerifyProfilePhoneOtp;
   String? lastSendPhoneOtpPhone;
   String? lastForgotEmail;
   String? lastSendEmailVerificationEmail;
   String? lastVerifyEmail;
   String? lastVerifyCode;
+  String? lastVerifyProfileEmail;
+  String? lastVerifyProfileEmailCode;
   String? lastResetEmail;
   String? lastResetPassword;
   String? lastSubmitExperience;
@@ -123,6 +136,28 @@ class FakeAuthRepository extends AuthRepository {
   }
 
   @override
+  Future<ApiResult<ProfileVerifyPhoneResult>> verifyProfilePhone({
+    required String phone,
+    required String otp,
+  }) async {
+    verifyProfilePhoneCalls++;
+    lastVerifyProfilePhonePhone = phone;
+    lastVerifyProfilePhoneOtp = otp;
+    final override = verifyProfilePhoneResultOverride;
+    if (override != null) {
+      return override;
+    }
+    switch (verifyPhoneOtpResult) {
+      case ApiSuccess<LoginEmailResult>(:final data):
+        return ApiSuccess(
+          ProfileVerifyPhoneResult(user: data.user, token: data.token),
+        );
+      case ApiFailure<LoginEmailResult>(:final exception):
+        return ApiFailure<ProfileVerifyPhoneResult>(exception);
+    }
+  }
+
+  @override
   Future<ApiResult<bool>> requestPhoneLoginOtp({required String phone}) async {
     phoneOtpCalls++;
     return phoneOtpResult;
@@ -158,6 +193,17 @@ class FakeAuthRepository extends AuthRepository {
     lastVerifyEmail = email;
     lastVerifyCode = code;
     return verifyEmailCodeResult;
+  }
+
+  @override
+  Future<ApiResult<AuthUser>> verifyProfileEmail({
+    required String email,
+    required String code,
+  }) async {
+    verifyProfileEmailCalls++;
+    lastVerifyProfileEmail = email;
+    lastVerifyProfileEmailCode = code;
+    return verifyProfileEmailResult;
   }
 
   @override

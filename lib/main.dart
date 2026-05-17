@@ -13,7 +13,7 @@ import 'core/network/auth_locale_bridge.dart';
 import 'core/network/dio_client.dart';
 import 'core/storage/token_storage.dart';
 import 'features/account/data/notification_preferences_repository.dart';
-import 'features/auth/auth_root_view.dart';
+import 'features/connectivity/app_bootstrap_view.dart';
 import 'features/auth/cubit/auth_cubit.dart';
 import 'features/auth/cubit/auth_flow.dart';
 import 'features/auth/cubit/auth_state.dart';
@@ -163,7 +163,7 @@ class PilatesApp extends StatelessWidget {
                       ),
                     );
                   },
-                  home: const AuthRootView(),
+                  home: const AppBootstrapView(),
                 );
               },
             ),
