@@ -85,11 +85,26 @@ String formatCurrencyAmount({
   required String code,
   int decimals = 2,
 }) {
+  return formatCurrencyAmountLeading(
+    amount: amount,
+    code: code,
+    decimals: decimals,
+  );
+}
+
+/// Symbol then amount in LTR order — for embedding in RTL sentences (buttons, l10n).
+String formatCurrencyAmountLeading({
+  required num amount,
+  required String code,
+  int decimals = 2,
+}) {
   final symbol = currencySymbolForCode(code);
   final formattedNumber = isSaudiRiyalCode(code)
       ? formatPrice(amount)
       : formatCurrencyNumber(amount, decimals: decimals);
-  final formatted = '$symbol $formattedNumber';
+  // LRI + LRM keeps "﷼ 90" left-to-right inside Arabic copy.
+  const lrm = '\u200E';
+  final formatted = '$lrm$symbol\u00A0$formattedNumber';
   return '$_ltrIsolateStart$formatted$_directionalIsolateEnd';
 }
 

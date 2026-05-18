@@ -4,9 +4,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 
 import 'package:pilates_app/config/theme/app_spacing.dart';
-import 'package:pilates_app/core/network/api_result.dart';
-import 'package:pilates_app/core/utils/checkout_payment_launcher.dart';
-import 'package:pilates_app/core/utils/hosted_payment_webview_page.dart';
 import 'package:pilates_app/features/auth/cubit/auth_cubit.dart';
 import 'package:pilates_app/features/booking/booking_entitlements.dart';
 import 'package:pilates_app/features/booking/data/models/class_slot_view_model.dart';
@@ -24,6 +21,8 @@ import '../../../widgets/currency_amount_text.dart';
 import '../cubit/confirm_booking_cubit.dart';
 import '../cubit/confirm_booking_state.dart';
 import '../data/classes_repository.dart';
+import '../utils/class_single_session_checkout.dart';
+import '../widgets/upgrade_bottom_sheet.dart';
 import 'booking_success_view.dart';
 
 class BookClassConfirmView extends StatelessWidget {
@@ -35,6 +34,39 @@ class BookClassConfirmView extends StatelessWidget {
 
   final String calendarEventId;
   final ClassSlotViewModel slot;
+
+  bool _resolveHasMembership(BuildContext context) {
+    final auth = context.read<AuthCubit>();
+    return userHasMembershipPlanHint(
+      user: auth.state.user,
+      storedPlanName: auth.tokenStorage.readMembershipPlanName(),
+    );
+  }
+
+  bool _usePlanSessionBooking(BuildContext context) {
+    return _resolveHasMembership(context) && slot.allowPackageBooking;
+  }
+
+  void _openBranchNotInPlanSheet(BuildContext context) {
+    BranchNotInPlanSheet.show(
+      context,
+      singleClassPrice: slot.basePrice,
+      showPaySingleClass: slot.allowSinglePurchase,
+      onPaySingleClass: () => _processSingleSessionCheckout(context),
+    );
+  }
+
+  Future<void> _processSingleSessionCheckout(BuildContext context) async {
+    final l10n = AppLocalizations.of(context);
+    await ClassSingleSessionCheckout.run(
+      context: context,
+      repository: context.read<ClassesRepository>(),
+      calendarEventId: calendarEventId,
+      l10n: l10n,
+      cubit: context.read<ConfirmBookingCubit>(),
+      onSuccess: (booking) => _pushBookingSuccess(context, booking),
+    );
+  }
 
   /// "May 19, 01:30PM" style — month + day, start time only (matches design).
   String _scheduleTimeLabel(BuildContext context) {
@@ -60,14 +92,10 @@ class BookClassConfirmView extends StatelessWidget {
       ),
       body: BlocProvider(
         create: (context) {
-          final membership = userShowsPackageMembership(
-            context.read<AuthCubit>().state.user,
-          );
           return ConfirmBookingCubit(
             context.read<ClassesRepository>(),
             calendarEventId: calendarEventId,
-            usePlanSessionBooking:
-                membership && slot.allowPackageBooking,
+            usePlanSessionBooking: _usePlanSessionBooking(context),
             allowSinglePurchaseCheckout: slot.allowSinglePurchase,
           );
         },
@@ -92,10 +120,10 @@ class BookClassConfirmView extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
               child: BlocBuilder<ConfirmBookingCubit, ConfirmBookingState>(
                 builder: (context, state) {
-                  final membership = userShowsPackageMembership(
-                    context.read<AuthCubit>().state.user,
-                  );
-                  final canCheckout = (membership && slot.allowPackageBooking) ||
+                  final hasMembership = _resolveHasMembership(context);
+                  final usePlanBooking = _usePlanSessionBooking(context);
+                  final canCheckout = usePlanBooking ||
+                      !hasMembership ||
                       slot.allowSinglePurchase;
                   return AppButton(
                     label: l10n.confirmBooking,
@@ -113,75 +141,43 @@ class BookClassConfirmView extends StatelessWidget {
                               return;
                             }
 
-                            final classesRepo =
-                                context.read<ClassesRepository>();
+                            if (!hasMembership) {
+                              _openBranchNotInPlanSheet(context);
+                              return;
+                            }
+
                             final messenger = ScaffoldMessenger.of(context);
 
-                            final result = await cubit.submit();
-                            if (!context.mounted) return;
-
-                            if (result.confirmedBooking != null) {
-                              _pushBookingSuccess(
-                                context,
-                                result.confirmedBooking!,
-                              );
-                              return;
-                            }
-
-                            final pending = result.pendingHostedPayment;
-                            if (pending != null) {
-                              final webResult =
-                                  await CheckoutPaymentLauncher
-                                      .openInAppPaymentWebView(
-                                context,
-                                pending.paymentUrl,
+                            if (usePlanBooking) {
+                              final result = await cubit.submit(
+                                usePlanSession: true,
                               );
                               if (!context.mounted) return;
-                              if (webResult?.outcome !=
-                                  HostedPaymentWebViewOutcome.success) {
+
+                              if (result.confirmedBooking != null) {
+                                _pushBookingSuccess(
+                                  context,
+                                  result.confirmedBooking!,
+                                );
                                 return;
                               }
-                              final confirmed = await classesRepo.confirmPayment(
-                                paymentReference: pending.paymentReference,
-                                paidAmount: pending.amount,
-                                currency: pending.currency,
-                              );
-                              if (!context.mounted) return;
-                              switch (confirmed) {
-                                case ApiSuccess(:final data):
-                                  _pushBookingSuccess(context, data);
-                                case ApiFailure(:final exception):
-                                  messenger.showSnackBar(
-                                    SnackBar(
-                                      content: Text(
-                                        exception.message ??
-                                            l10n.somethingWentWrong,
-                                      ),
-                                    ),
-                                  );
+
+                              final err = result.errorMessage;
+                              if (err != null && err.startsWith('_')) {
+                                messenger.showSnackBar(
+                                  SnackBar(
+                                    content: Text(l10n.somethingWentWrong),
+                                  ),
+                                );
+                              } else if (err != null && err.isNotEmpty) {
+                                messenger.showSnackBar(
+                                  SnackBar(content: Text(err)),
+                                );
                               }
                               return;
                             }
 
-                            final err = result.errorMessage;
-                            if (err != null && err.startsWith('_')) {
-                              messenger.showSnackBar(
-                                SnackBar(content: Text(l10n.somethingWentWrong)),
-                              );
-                              return;
-                            }
-                            if (err != null && err.isNotEmpty) {
-                              messenger.showSnackBar(
-                                SnackBar(content: Text(err)),
-                              );
-                              return;
-                            }
-                            if (!cubit.usePlanSessionBooking &&
-                                !cubit.allowSinglePurchaseCheckout) {
-                              messenger.showSnackBar(
-                                SnackBar(content: Text(l10n.upgradeRequired)),
-                              );
-                            }
+                            await _processSingleSessionCheckout(context);
                           },
                     variant: AppButtonVariant.primary,
                   );
@@ -340,17 +336,34 @@ class BookClassConfirmView extends StatelessWidget {
     required bool isDark,
     required AppLocalizations l10n,
   }) {
+    final hasMembership = _resolveHasMembership(context);
+
     final price = slot.basePrice;
-    final Widget priceValue = price != null
+    final Widget pricedAmount = price != null
         ? CurrencyAmountText(
             amount: price,
             currencyCode: 'SAR',
-            style: (context) => AppTextStyles.textFieldHeading(context),
+            style: AppTextStyles.textFieldHeading,
           )
         : AppText(
             l10n.bookingPriceUnavailable,
-            style: (context) => AppTextStyles.textFieldHeading(context),
+            style: AppTextStyles.textFieldHeading,
           );
+
+    final Widget classFeeValue = hasMembership
+        ? AppText(
+            l10n.includedInPlan,
+            style: AppTextStyles.textFieldHeading,
+          )
+        : pricedAmount;
+
+    final Widget totalValue = hasMembership
+        ? CurrencyAmountText(
+            amount: 0,
+            currencyCode: 'SAR',
+            style: AppTextStyles.textFieldHeading,
+          )
+        : pricedAmount;
 
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
@@ -372,14 +385,14 @@ class BookClassConfirmView extends StatelessWidget {
             ),
             child: Column(
               children: [
-                _buildPaymentRow(title: l10n.classFee, value: priceValue),
+                _buildPaymentRow(title: l10n.classFee, value: classFeeValue),
                 SizedBox(height: AppSpacing.md),
                 Divider(
                   color: isDark ? AppColors.greyText : AppColors.darkGreyBorder,
                   height: 1,
                 ),
                 SizedBox(height: AppSpacing.md),
-                _buildPaymentRow(title: l10n.total, value: priceValue),
+                _buildPaymentRow(title: l10n.total, value: totalValue),
               ],
             ),
           ),
