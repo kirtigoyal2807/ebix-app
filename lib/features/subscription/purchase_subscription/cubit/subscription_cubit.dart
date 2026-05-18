@@ -30,7 +30,7 @@ class SubscriptionCubit extends Cubit<SubscriptionState> {
   Map<String, dynamic>? _deferredReceiptGatewayCallback;
 
   bool get hasDeferredPostPaymentReceipt =>
-      _deferredReceiptPaymentIntent != null;
+      state.deferPaymentReceiptPending && _deferredReceiptPaymentIntent != null;
 
   CheckoutPaymentIntentResult? get deferredPostPaymentReceiptIntent =>
       _deferredReceiptPaymentIntent;
@@ -44,11 +44,13 @@ class SubscriptionCubit extends Cubit<SubscriptionState> {
   }) {
     _deferredReceiptPaymentIntent = intent;
     _deferredReceiptGatewayCallback = gatewayCallback;
+    emit(state.copyWith(deferPaymentReceiptPending: true));
   }
 
   void clearDeferredPostPaymentReceiptContext() {
     _deferredReceiptPaymentIntent = null;
     _deferredReceiptGatewayCallback = null;
+    emit(state.copyWith(deferPaymentReceiptPending: false));
   }
 
   void selectPlan(String planId, {bool? requiresHealthIntake}) {
@@ -130,11 +132,14 @@ class SubscriptionCubit extends Cubit<SubscriptionState> {
     bool? requiresHealthIntake,
   }) {
     _cachedQuestionnaireProductId = null;
+    _deferredReceiptPaymentIntent = null;
+    _deferredReceiptGatewayCallback = null;
     emit(
       _resolveHealthWizardState(
         state.copyWith(
           checkoutSessionId: sessionId,
           checkoutProductId: productId,
+          deferPaymentReceiptPending: false,
           selectedProductRequiresHealthIntake:
               requiresHealthIntake ?? state.selectedProductRequiresHealthIntake,
           healthQuestionnaireQuestions: const [],

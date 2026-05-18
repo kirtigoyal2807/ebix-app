@@ -42,8 +42,6 @@ class _RequiredInformationViewState extends State<RequiredInformationView> {
   String? _idNumberError;
 
   bool _isSubmitting = false;
-  bool get _hasDeferredSuccessfulPayment =>
-      context.read<SubscriptionCubit>().hasDeferredPostPaymentReceipt;
 
   void _unfocusKeyboard() {
     FocusManager.instance.primaryFocus?.unfocus();
@@ -340,44 +338,61 @@ class _RequiredInformationViewState extends State<RequiredInformationView> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        if (_hasDeferredSuccessfulPayment) ...[
-                          Container(
-                            width: double.infinity,
-                            padding: EdgeInsets.all(AppSpacing.md),
-                            decoration: BoxDecoration(
-                              color: AppColors.successColor.withValues(
-                                alpha: 0.12,
-                              ),
-                              borderRadius: BorderRadius.circular(12),
-                              border: Border.all(
-                                color: AppColors.successColor.withValues(
-                                  alpha: 0.35,
-                                ),
-                              ),
-                            ),
-                            child: Row(
+                        BlocBuilder<SubscriptionCubit, SubscriptionState>(
+                          buildWhen: (previous, current) =>
+                              previous.deferPaymentReceiptPending !=
+                                  current.deferPaymentReceiptPending ||
+                              previous.currentStep != current.currentStep,
+                          builder: (context, blocState) {
+                            if (!blocState.deferPaymentReceiptPending) {
+                              return const SizedBox.shrink();
+                            }
+                            return Column(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: [
-                                const Icon(
-                                  Icons.check_circle_outline,
-                                  color: AppColors.successColor,
-                                  size: 20,
-                                ),
-                                SizedBox(width: AppSpacing.sm),
-                                Expanded(
-                                  child: AppText(
-                                    'Payment successful',
-                                    style: (c) =>
-                                        AppTextStyles.bodyText(c).copyWith(
-                                          color: AppColors.successColor,
-                                          fontWeight: FontWeight.w600,
+                                Container(
+                                  width: double.infinity,
+                                  padding: EdgeInsets.all(AppSpacing.md),
+                                  decoration: BoxDecoration(
+                                    color: AppColors.successColor.withValues(
+                                      alpha: 0.12,
+                                    ),
+                                    borderRadius: BorderRadius.circular(12),
+                                    border: Border.all(
+                                      color: AppColors.successColor.withValues(
+                                        alpha: 0.35,
+                                      ),
+                                    ),
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      const Icon(
+                                        Icons.check_circle_outline,
+                                        color: AppColors.successColor,
+                                        size: 20,
+                                      ),
+                                      SizedBox(width: AppSpacing.sm),
+                                      Expanded(
+                                        child: AppText(
+                                          'Payment successful',
+                                          style: (c) =>
+                                              AppTextStyles.bodyText(c)
+                                                  .copyWith(
+                                                    color:
+                                                        AppColors.successColor,
+                                                    fontWeight: FontWeight.w600,
+                                                  ),
                                         ),
+                                      ),
+                                    ],
                                   ),
                                 ),
+                                SizedBox(height: AppSpacing.lg),
                               ],
-                            ),
-                          ),
-                          SizedBox(height: AppSpacing.lg),
-                        ],
+                            );
+                          },
+                        ),
                         Container(
                           padding: EdgeInsets.all(AppSpacing.md),
                           decoration: BoxDecoration(

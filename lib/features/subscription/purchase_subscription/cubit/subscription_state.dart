@@ -23,6 +23,9 @@ class SubscriptionState extends Equatable {
   /// From `POST /checkout/start` — used for coupon, payment, and questionnaire APIs.
   final String checkoutSessionId;
   final int checkoutProductId;
+  /// `true` when hosted checkout succeeded but receipt is deferred until
+  /// emergency / ID submit (`RequiredInformationView` success banner).
+  final bool deferPaymentReceiptPending;
 
   /// From `GET health-intake/questionnaires/product/{productId}` (or by id).
   final List<ProductHealthQuestion> healthQuestionnaireQuestions;
@@ -85,6 +88,7 @@ class SubscriptionState extends Equatable {
     this.selectedProductRequiresHealthIntake = false,
     this.checkoutSessionId = '',
     this.checkoutProductId = 0,
+    this.deferPaymentReceiptPending = false,
     this.healthQuestionnaireQuestions = const [],
     this.healthQuestionnaireId,
     this.healthQuestionnaireAnswers = const {},
@@ -125,6 +129,7 @@ class SubscriptionState extends Equatable {
     bool? selectedProductRequiresHealthIntake,
     String? checkoutSessionId,
     int? checkoutProductId,
+    bool? deferPaymentReceiptPending,
     List<ProductHealthQuestion>? healthQuestionnaireQuestions,
     Object? healthQuestionnaireId = _unsetQuestionnaireId,
     Map<int, Object?>? healthQuestionnaireAnswers,
@@ -166,6 +171,8 @@ class SubscriptionState extends Equatable {
           this.selectedProductRequiresHealthIntake,
       checkoutSessionId: checkoutSessionId ?? this.checkoutSessionId,
       checkoutProductId: checkoutProductId ?? this.checkoutProductId,
+      deferPaymentReceiptPending:
+          deferPaymentReceiptPending ?? this.deferPaymentReceiptPending,
       healthQuestionnaireQuestions:
           healthQuestionnaireQuestions ?? this.healthQuestionnaireQuestions,
       healthQuestionnaireId:
@@ -218,6 +225,7 @@ class SubscriptionState extends Equatable {
     selectedProductRequiresHealthIntake,
     checkoutSessionId,
     checkoutProductId,
+    deferPaymentReceiptPending,
     healthQuestionnaireQuestions,
     healthQuestionnaireId,
     healthQuestionnaireAnswers,
