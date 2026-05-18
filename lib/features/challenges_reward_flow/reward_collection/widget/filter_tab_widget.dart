@@ -30,33 +30,39 @@ class FilterTabButton extends StatelessWidget {
               bool isSelected =
                   state.selectedRewardFilter == state.rewardFilterList[index];
 
-              return GestureDetector(
-                onTap: () {
-                  context.read<RewardCubit>().setSelectedFilterType(
-                    state.rewardFilterList[index],
-                  );
-                },
-                child: Container(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: AppSpacing.base,
-                    vertical: AppSpacing.xs,
-                  ),
-                  decoration: BoxDecoration(
-                    color: isSelected
-                        ? AppColors.primary
-                        : isDark
-                        ? AppColors.primaryDarkButton
-                        : AppColors.greyContainerBg,
-                    borderRadius: BorderRadius.circular(AppRadius.base),
-                  ),
-                  child: AppText(
-                    getLabel(context, state.rewardFilterList[index]),
-                    style: (context) =>
-                        AppTextStyles.textFieldHeading(context).copyWith(
-                          color: isSelected || isDark
-                              ? Colors.white
-                              : AppColors.darkText,
-                        ),
+              return Align(
+                alignment: Alignment.center,
+                child: GestureDetector(
+                  onTap: () {
+                    context.read<RewardCubit>().setSelectedFilterType(
+                      state.rewardFilterList[index],
+                    );
+                  },
+                  child: Container(
+                    alignment: Alignment.center,
+                    padding: EdgeInsets.symmetric(
+                      horizontal: AppSpacing.base,
+                      vertical: AppSpacing.xs,
+                    ),
+                    decoration: BoxDecoration(
+                      color: isSelected
+                          ? AppColors.primary
+                          : isDark
+                          ? AppColors.primaryDarkButton
+                          : AppColors.greyContainerBg,
+                      borderRadius: BorderRadius.circular(AppRadius.base),
+                    ),
+                    child: AppText(
+                      getLabel(context, state.rewardFilterList[index]),
+                      maxLines: 1,
+                      style: (context) =>
+                          AppTextStyles.textFieldHeading(context).copyWith(
+                            height: 1,
+                            color: isSelected || isDark
+                                ? Colors.white
+                                : AppColors.darkText,
+                          ),
+                    ),
                   ),
                 ),
               );

@@ -191,7 +191,7 @@ class _SignInViewState extends State<SignInView> {
                                         height: 2,
                                         color: _selectedTab == 0
                                             ? (isDark
-                                                  ? AppColors.languageTextDark
+                                                  ? AppColors.tabSelectedtLineDark
                                                   : AppColors.primary)
                                             : Colors.transparent,
                                       ),
@@ -226,7 +226,7 @@ class _SignInViewState extends State<SignInView> {
                                         height: 2,
                                         color: _selectedTab == 1
                                             ? (isDark
-                                                  ? AppColors.languageTextDark
+                                                  ? AppColors.tabSelectedtLineDark
                                                   : AppColors.primary)
                                             : Colors.transparent,
                                       ),

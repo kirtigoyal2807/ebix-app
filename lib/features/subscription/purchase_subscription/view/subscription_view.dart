@@ -514,9 +514,9 @@ class _PlanSelectionStepState extends State<_PlanSelectionStep> {
                     children: [
                       AppText(
                         l10n.select_branch,
-                        style: (context) => AppTextStyles.bodyTextSmall(
+                        style: (context) => AppTextStyles.gelasioMedium(
                           context,
-                        ).copyWith(fontWeight: FontWeight.w600),
+                        ).copyWith(fontSize: 18),
                       ),
                       SizedBox(height: AppSpacing.sm),
                       if (_branchesLoading)

@@ -57,57 +57,58 @@ class BadgeCard extends StatelessWidget {
                 );
               },
               child: Container(
-                padding: EdgeInsets.all(AppSpacing.md),
+                padding: EdgeInsets.symmetric(
+                  horizontal: AppSpacing.md,
+                  vertical: AppSpacing.lmd,
+                ),
                 decoration: BoxDecoration(
-                  color: isDark
-                      ? AppColors.homeBackground
-                      : AppColors.whiteColor,
+                  borderRadius: BorderRadius.circular(AppRadius.base),
                   border: Border.all(
-                    color: badge.isEarned
-                        ? (isDark ? AppColors.darkGreyBorder : AppColors.primary)
-                        : (isDark
-                            ? AppColors.greyText
-                            : AppColors.buttonBorder),
+                    color: isDark
+                        ? AppColors.greyText
+                        : AppColors.buttonBorder,
+                    width: 1,
                   ),
-                  borderRadius: BorderRadius.circular(AppRadius.md),
                 ),
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     _BadgeThumb(badge: badge, isDark: isDark),
                     SizedBox(height: AppSpacing.md),
-                    Flexible(
-                      child: Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            AppText(
-                              badge.name.trim().isNotEmpty
-                                  ? badge.name
-                                  : badge.badgeKey,
-                              style: (context) =>
-                                  AppTextStyles.textFieldHeading(context),
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                              textAlign: TextAlign.center,
-                            ),
-                            SizedBox(height: 2),
-                            AppText(
-                              badge.isEarned
-                                  ? context.l10n.earned
-                                  : context.l10n.locked,
-                              style: (context) =>
-                                  AppTextStyles.bodyLightText(
-                                    context,
-                                  ).copyWith(fontSize: 12),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              textAlign: TextAlign.center,
-                            ),
-                          ],
-                        ),
+                    AppText(
+                      badge.name.trim().isNotEmpty
+                          ? badge.name
+                          : badge.badgeKey,
+                      style: (context) =>
+                          AppTextStyles.textFieldHeading(context).copyWith(
+                        height: 1.2,
+                        fontWeight: FontWeight.w500,
+                        color: isDark
+                            ? AppColors.lightText
+                            : AppColors.darkText,
                       ),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.center,
+                    ),
+                    SizedBox(height: AppSpacing.xs),
+                    AppText(
+                      badge.isEarned
+                          ? context.l10n.earned
+                          : context.l10n.locked,
+                      style: (context) => AppTextStyles.captionText(
+                        context,
+                      ).copyWith(
+                        fontSize: 12,
+                        height: 1.2,
+                        color: isDark
+                            ? AppColors.darkGreyText
+                            : AppColors.lightGrey,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.center,
                     ),
                   ],
                 ),
@@ -120,37 +121,91 @@ class BadgeCard extends StatelessWidget {
   }
 }
 
+Color _badgeAccentColor(LoyaltyBadge badge) {
+  if (!badge.isEarned) {
+    return AppColors.lightGrey;
+  }
+  final type = badge.badgeType.toLowerCase();
+  if (type.contains('gold')) {
+    return AppColors.upgradeDarkLockBackgroundColor;
+  }
+  if (type.contains('silver')) {
+    return AppColors.primaryDark;
+  }
+  if (type.contains('bronze')) {
+    return AppColors.primary;
+  }
+  return AppColors.primaryDark;
+}
+
 class _BadgeThumb extends StatelessWidget {
   const _BadgeThumb({required this.badge, required this.isDark});
+
+  static const double _outerSize = 64;
+  static const double _innerSize = 56;
+  static const double _iconSize = 28;
 
   final LoyaltyBadge badge;
   final bool isDark;
 
   @override
   Widget build(BuildContext context) {
-    final url = badge.iconUrl;
-    if (url != null && url.isNotEmpty) {
-      return ClipRRect(
-        borderRadius: BorderRadius.circular(8),
-        child: Image.network(
-          url,
-          height: 56,
-          width: 56,
-          fit: BoxFit.cover,
-          errorBuilder: (_, _, _) => _fallbackSvg(isDark),
+    final accent = _badgeAccentColor(badge);
+    return Container(
+      width: _outerSize,
+      height: _outerSize,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(AppRadius.md),
+        boxShadow: isDark
+            ? [
+                BoxShadow(
+                  color: AppColors.blackColor.withValues(alpha: 0.45),
+                  blurRadius: 8,
+                  offset: const Offset(0, 4),
+                ),
+              ]
+            : null,
+      ),
+      alignment: Alignment.center,
+      child: Container(
+        width: _innerSize,
+        height: _innerSize,
+        decoration: BoxDecoration(
+          color: accent,
+          borderRadius: BorderRadius.circular(AppRadius.sm),
         ),
-      );
-    }
-    return _fallbackSvg(isDark);
+        clipBehavior: Clip.antiAlias,
+        child: _buildIcon(),
+      ),
+    );
   }
 
-  Widget _fallbackSvg(bool isDark) {
-    return SvgPicture.asset(
-      isDark
-          ? 'assets/images/svg/progress_tracking/ic_dark_consistency_flow.svg'
-          : 'assets/images/svg/progress_tracking/ic_consistency_flow.svg',
-      height: 56,
-      width: 56,
+  Widget _buildIcon() {
+    final url = badge.iconUrl?.trim();
+    if (url != null && url.isNotEmpty) {
+      return Image.network(
+        url,
+        width: _innerSize,
+        height: _innerSize,
+        fit: BoxFit.cover,
+        errorBuilder: (_, _, _) => _fallbackSvg(),
+      );
+    }
+    return _fallbackSvg();
+  }
+
+  Widget _fallbackSvg() {
+    return Center(
+      child: ColorFiltered(
+        colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn),
+        child: SvgPicture.asset(
+          isDark
+              ? 'assets/images/svg/progress_tracking/ic_dark_consistency_flow.svg'
+              : 'assets/images/svg/progress_tracking/ic_consistency_flow.svg',
+          height: _iconSize,
+          width: _iconSize,
+        ),
+      ),
     );
   }
 }

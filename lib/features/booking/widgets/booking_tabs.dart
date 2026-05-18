@@ -63,7 +63,7 @@ class _TabItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final activeColor = (isDark ? AppColors.darkGreyBorder : AppColors.primary);
+    final activeColor = (isDark ? AppColors.tabSelectedtLineDark : AppColors.primary);
     final inactiveColor = isDark ? AppColors.lightGrey : AppColors.lightGrey;
 
     return Expanded(
