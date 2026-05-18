@@ -17,7 +17,10 @@ import 'package:pilates_app/features/booking/widgets/class_info_grid.dart';
 import 'package:pilates_app/features/booking/widgets/class_location_card.dart';
 import 'package:pilates_app/features/booking/widgets/class_about_section.dart';
 import 'package:pilates_app/features/booking/widgets/class_reviews_section.dart';
+import 'package:pilates_app/features/booking/utils/class_single_session_checkout.dart';
 import 'package:pilates_app/features/booking/widgets/upgrade_bottom_sheet.dart';
+import 'package:pilates_app/features/subscription/purchase_subscription/view/subscription_view.dart';
+import 'booking_success_view.dart';
 import 'package:pilates_app/widgets/app_app_bar.dart';
 import 'package:pilates_app/widgets/app_text.dart';
 
@@ -82,20 +85,38 @@ class _ClassDetailBody extends StatelessWidget {
             return const Center(child: CircularProgressIndicator());
           }
 
-          final membership = userShowsPackageMembership(
-            context.select<AuthCubit, AuthUser?>(
-              (cubit) => cubit.state.user,
-            ),
+          final auth = context.read<AuthCubit>();
+          final hasMembership = userHasMembershipPlanHint(
+            user: auth.state.user,
+            storedPlanName: auth.tokenStorage.readMembershipPlanName(),
           );
           final canBookOrWaitlist = slot.hasBookableSlot;
+          final showWaitlistAction = canBookOrWaitlist && !slot.hasOpenSpots;
 
           void openUpgradeSheet() {
-            showModalBottomSheet<void>(
-              context: context,
-              isScrollControlled: true,
-              backgroundColor: Colors.transparent,
-              barrierColor: AppColors.bottomSheetShadow,
-              builder: (_) => const BranchNotInPlanSheet(),
+            BranchNotInPlanSheet.show(
+              context,
+              singleClassPrice: slot.basePrice,
+              showPaySingleClass: slot.allowSinglePurchase,
+              onPaySingleClass: slot.allowSinglePurchase
+                  ? () => ClassSingleSessionCheckout.run(
+                        context: context,
+                        repository: context.read<ClassesRepository>(),
+                        calendarEventId: slot.calendarEventId,
+                        l10n: context.l10n,
+                        onSuccess: (booking) {
+                          Navigator.of(context).pushReplacement(
+                            MaterialPageRoute<void>(
+                              builder: (_) => BookingSuccessScreen(
+                                successPage: SuccessPage.booking,
+                                slot: slot,
+                                booking: booking,
+                              ),
+                            ),
+                          );
+                        },
+                      )
+                  : null,
             );
           }
 
@@ -106,8 +127,12 @@ class _ClassDetailBody extends StatelessWidget {
               return;
             }
             if (!slot.hasOpenSpots) {
-              if (!membership) {
-                openUpgradeSheet();
+              if (!hasMembership) {
+                Navigator.of(context).push(
+                  MaterialPageRoute<void>(
+                    builder: (_) => const SubscriptionView(),
+                  ),
+                );
                 return;
               }
               Navigator.of(context).push(
@@ -117,7 +142,7 @@ class _ClassDetailBody extends StatelessWidget {
               );
               return;
             }
-            final packageBook = membership && slot.allowPackageBooking;
+            final packageBook = hasMembership && slot.allowPackageBooking;
             final dropIn = slot.allowSinglePurchase;
             if (!packageBook && !dropIn) {
               openUpgradeSheet();
@@ -136,10 +161,10 @@ class _ClassDetailBody extends StatelessWidget {
           String primaryLabel() {
             if (!canBookOrWaitlist) return context.l10n.noUpcomingClasses;
             if (slot.upgradeRequired) return context.l10n.upgradeRequired;
-            if (!slot.hasOpenSpots && !membership) {
-              return context.l10n.subscribeNow;
+            if (showWaitlistAction && !hasMembership) {
+              return context.l10n.buyPlanToJoinWaitlist;
             }
-            if (!slot.hasOpenSpots && membership) {
+            if (showWaitlistAction && hasMembership) {
               return context.l10n.joinWailList;
             }
             return context.l10n.bookThisClass;

@@ -28,15 +28,16 @@ class ConfirmBookingCubit extends Cubit<ConfirmBookingState> {
     emit(state.copyWith(agreePolicy: !state.agreePolicy));
   }
 
-  /// Package booking when [usePlanSessionBooking], otherwise hosted single-session
-  /// purchase when [allowSinglePurchaseCheckout].
-  Future<ConfirmBookingSubmitResult> submit() async {
+  /// Package booking when [usePlanSessionBooking] (or [usePlanSession] override),
+  /// otherwise hosted single-session purchase when [allowSinglePurchaseCheckout].
+  Future<ConfirmBookingSubmitResult> submit({bool? usePlanSession}) async {
     if (!state.agreePolicy) {
       return const ConfirmBookingSubmitResult();
     }
     emit(state.copyWith(isSubmitting: true, errorMessage: null));
 
-    if (usePlanSessionBooking) {
+    final planBook = usePlanSession ?? usePlanSessionBooking;
+    if (planBook) {
       final result = await _repository.bookWithPlan(calendarEventId);
       switch (result) {
         case ApiSuccess(:final data):

@@ -12,6 +12,9 @@ import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/core/localization/localization_extension.dart';
 import 'package:pilates_app/features/booking/data/models/class_slot_view_model.dart';
+import 'package:pilates_app/features/booking/data/classes_repository.dart';
+import 'package:pilates_app/features/booking/utils/class_single_session_checkout.dart';
+import 'package:pilates_app/features/booking/views/booking_success_view.dart';
 import 'package:pilates_app/features/booking/widgets/upgrade_bottom_sheet.dart';
 import 'package:pilates_app/widgets/app_text.dart';
 import '../../../widgets/app_shadow.dart';
@@ -106,12 +109,34 @@ class BookingClassCard extends StatelessWidget {
       child: InkWell(
         onTap: () {
           if (upgradeRequired) {
-            showModalBottomSheet(
-              context: context,
-              isScrollControlled: true,
-              backgroundColor: Colors.transparent,
-              barrierColor: AppColors.bottomSheetShadow,
-              builder: (_) => const BranchNotInPlanSheet(),
+            final slot = _slot;
+            BranchNotInPlanSheet.show(
+              context,
+              singleClassPrice: slot?.basePrice,
+              showPaySingleClass:
+                  slot != null && slot.allowSinglePurchase,
+              onPaySingleClass: slot != null && slot.allowSinglePurchase
+                  ? () async {
+                      await ClassSingleSessionCheckout.run(
+                        context: context,
+                        repository: context.read<ClassesRepository>(),
+                        calendarEventId: slot.calendarEventId,
+                        l10n: context.l10n,
+                        onSuccess: (booking) {
+                          if (!context.mounted) return;
+                          Navigator.of(context).push(
+                            MaterialPageRoute<void>(
+                              builder: (_) => BookingSuccessScreen(
+                                successPage: SuccessPage.booking,
+                                slot: slot,
+                                booking: booking,
+                              ),
+                            ),
+                          );
+                        },
+                      );
+                    }
+                  : null,
             );
           } else {
             Navigator.of(context).push(

@@ -577,6 +577,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get classFee => 'Class Fee';
 
   @override
+  String get includedInPlan => 'Included in plan';
+
+  @override
   String get bookingPriceUnavailable => '—';
 
   @override
@@ -670,6 +673,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get joinWailList => 'Join Waitlist';
+
+  @override
+  String get buyPlanToJoinWaitlist => 'Buy Plan to Join Waitlist';
 
   @override
   String get waitlistRequiresMembership =>
@@ -767,11 +773,11 @@ class AppLocalizationsEn extends AppLocalizations {
       '\"Sarah is incredible! Her classes are challenging but she makes sure everyone feels supported. I\'ve seen amazing progress in my core strength.\"';
 
   @override
-  String get branchNotInPlanTitle => 'Branch not in your plan';
+  String get branchNotInPlanTitle => 'No active plan';
 
   @override
   String get branchNotInPlanDescription =>
-      'Westside Studio is not included in your Premium Plan. Upgrade your plan or pay per class to access this location.';
+      'Unlock your pilates experience. Buy a plan';
 
   @override
   String get yourPlan => 'Your Plan';
@@ -786,10 +792,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get elitePlan => 'Elite Plan (All locations)';
 
   @override
-  String get upgradeToElite => 'Upgrade to Elite Plan';
+  String get upgradeToElite => 'Buy a Plan';
 
   @override
-  String get paySingleClass => 'Pay \$24 for Single Class';
+  String get paySingleClassPrefix => 'Pay ';
+
+  @override
+  String get paySingleClassSuffix => ' for Single Class';
 
   @override
   String get cancel => 'Cancel';

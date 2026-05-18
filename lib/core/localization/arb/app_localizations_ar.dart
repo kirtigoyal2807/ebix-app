@@ -572,6 +572,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get classFee => 'رسوم الحصة';
 
   @override
+  String get includedInPlan => 'مشمولة في الباقة';
+
+  @override
   String get bookingPriceUnavailable => '—';
 
   @override
@@ -665,6 +668,9 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get joinWailList => 'الانضمام إلى قائمة الانتظار';
+
+  @override
+  String get buyPlanToJoinWaitlist => 'اشترِ خطة للانضمام إلى قائمة الانتظار';
 
   @override
   String get waitlistRequiresMembership =>
@@ -762,11 +768,10 @@ class AppLocalizationsAr extends AppLocalizations {
       '\"سارة رائعة! حصصها مليئة بالتحديات لكنها تحرص على أن يشعر الجميع بالدعم. لقد رأيت تقدماً مذهلاً في قوتي الأساسية.\"';
 
   @override
-  String get branchNotInPlanTitle => 'هذا الفرع غير مشمول في خطتك';
+  String get branchNotInPlanTitle => 'لا توجد خطة نشطة';
 
   @override
-  String get branchNotInPlanDescription =>
-      'استوديو ويست سايد غير مشمول في خطتك المميزة. قم بترقية خطتك أو ادفع لكل حصة للوصول إلى هذا الموقع.';
+  String get branchNotInPlanDescription => 'اكتشف تجربة البيلاتس. اشترِ خطة';
 
   @override
   String get yourPlan => 'خطتك';
@@ -781,10 +786,13 @@ class AppLocalizationsAr extends AppLocalizations {
   String get elitePlan => 'خطة النخبة (جميع المواقع)';
 
   @override
-  String get upgradeToElite => 'الترقية إلى خطة النخبة';
+  String get upgradeToElite => 'اشترِ خطة';
 
   @override
-  String get paySingleClass => 'ادفع 24 دولارًا لحصة واحدة';
+  String get paySingleClassPrefix => 'ادفع ';
+
+  @override
+  String get paySingleClassSuffix => ' لحصة واحدة';
 
   @override
   String get cancel => 'إلغاء';

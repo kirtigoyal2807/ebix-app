@@ -1172,6 +1172,12 @@ abstract class AppLocalizations {
   /// **'Class Fee'**
   String get classFee;
 
+  /// No description provided for @includedInPlan.
+  ///
+  /// In en, this message translates to:
+  /// **'Included in plan'**
+  String get includedInPlan;
+
   /// No description provided for @bookingPriceUnavailable.
   ///
   /// In en, this message translates to:
@@ -1339,6 +1345,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Join Waitlist'**
   String get joinWailList;
+
+  /// No description provided for @buyPlanToJoinWaitlist.
+  ///
+  /// In en, this message translates to:
+  /// **'Buy Plan to Join Waitlist'**
+  String get buyPlanToJoinWaitlist;
 
   /// No description provided for @waitlistRequiresMembership.
   ///
@@ -1511,13 +1523,13 @@ abstract class AppLocalizations {
   /// No description provided for @branchNotInPlanTitle.
   ///
   /// In en, this message translates to:
-  /// **'Branch not in your plan'**
+  /// **'No active plan'**
   String get branchNotInPlanTitle;
 
   /// No description provided for @branchNotInPlanDescription.
   ///
   /// In en, this message translates to:
-  /// **'Westside Studio is not included in your Premium Plan. Upgrade your plan or pay per class to access this location.'**
+  /// **'Unlock your pilates experience. Buy a plan'**
   String get branchNotInPlanDescription;
 
   /// No description provided for @yourPlan.
@@ -1547,14 +1559,20 @@ abstract class AppLocalizations {
   /// No description provided for @upgradeToElite.
   ///
   /// In en, this message translates to:
-  /// **'Upgrade to Elite Plan'**
+  /// **'Buy a Plan'**
   String get upgradeToElite;
 
-  /// No description provided for @paySingleClass.
+  /// No description provided for @paySingleClassPrefix.
   ///
   /// In en, this message translates to:
-  /// **'Pay \$24 for Single Class'**
-  String get paySingleClass;
+  /// **'Pay '**
+  String get paySingleClassPrefix;
+
+  /// No description provided for @paySingleClassSuffix.
+  ///
+  /// In en, this message translates to:
+  /// **' for Single Class'**
+  String get paySingleClassSuffix;
 
   /// No description provided for @cancel.
   ///
