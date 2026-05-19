@@ -36,6 +36,8 @@ class AppColors {
   static const borderDark = Color(0xFF2A2623);
   static const languageIconDark = Color(0xFF9A7E6D);
   static const languageTextDark = Color(0xFFB59D8E);
+    static const tabSelectedtLineDark = Color(0xFFDDCABF);
+
   static const redDark = Color(0xFFEB8E90);
   static const successBorderDark = Color(0xFF8ECEAA);
 

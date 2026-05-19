@@ -131,30 +131,35 @@ class _PlanDetailsModalState extends State<PlanDetailsModal> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     if (_displayPlan['badge'] != null)
-                      Container(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 8,
-                          vertical: 4,
-                        ),
-                        decoration: BoxDecoration(
-                          color: _displayPlan['isPopular'] == true
-                              ? AppColors.goldStarColor
-                              : (isDark
-                                    ? const Color(0x3BFDC700)
-                                    : AppColors.goldStarColor),
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: AppText(
-                          _displayPlan['badge'],
-                          style: (context) =>
-                              AppTextStyles.body(context).copyWith(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w500,
-                                color: (isDark
-                                    ? AppColors.blackColor
-                                    : AppColors.darkText),
-                              ),
-                        ),
+                      Column(
+                        children: [
+                          Container(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 8,
+                              vertical: 4,
+                            ),
+                            decoration: BoxDecoration(
+                              color: _displayPlan['isPopular'] == true
+                                  ? AppColors.goldStarColor
+                                  : (isDark
+                                        ? const Color(0x3BFDC700)
+                                        : AppColors.goldStarColor),
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: AppText(
+                              _displayPlan['badge'],
+                              style: (context) =>
+                                  AppTextStyles.body(context).copyWith(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w500,
+                                    color: (isDark
+                                        ? AppColors.blackColor
+                                        : AppColors.darkText),
+                                  ),
+                            ),
+                          ),
+                          SizedBox(height: AppSpacing.base + 1),
+                        ],
                       )
                     else
                       SizedBox(),

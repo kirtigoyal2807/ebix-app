@@ -19,6 +19,8 @@ class ViewSubscriptionView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final tabBar = subscriptionTabBar(context: context, isDark: isDark);
+    final tabBarBottomHeight = tabBar.preferredSize.height + 1;
     return BlocProvider(
       create: (context) => SubscriptionsCubit(
         context.read<SubscriptionsRepository>(),
@@ -29,7 +31,7 @@ class ViewSubscriptionView extends StatelessWidget {
         child: Scaffold(
           appBar: AppAppBar(
             leading: Padding(
-              padding: EdgeInsets.only(left: AppSpacing.lmd),
+              padding: EdgeInsets.only(left: AppSpacing.md),
               child: IconButton(
                 icon: const Icon(Icons.arrow_back_ios_rounded, size: 20),
                 onPressed: () => Navigator.of(context).pop(),
@@ -39,16 +41,13 @@ class ViewSubscriptionView extends StatelessWidget {
             title: context.l10n.mySubscription,
             isMoreMenu: false,
             bottomPreferredSize: PreferredSize(
-              preferredSize: const Size.fromHeight(110),
+              preferredSize: Size.fromHeight(tabBarBottomHeight),
               child: Column(
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   Padding(
-                    padding: EdgeInsets.only(
-                      left: AppSpacing.lg,
-                      right: AppSpacing.lg,
-                      top: AppSpacing.md,
-                    ),
-                    child: subscriptionTabBar(context: context, isDark: isDark),
+                    padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+                    child: tabBar,
                   ),
                   Divider(
                     height: 1,
