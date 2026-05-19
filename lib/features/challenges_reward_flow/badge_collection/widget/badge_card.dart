@@ -41,6 +41,8 @@ class BadgeCard extends StatelessWidget {
             crossAxisCount: 2,
             mainAxisSpacing: AppSpacing.md,
             crossAxisSpacing: AppSpacing.md,
+            // Taller than square: thumb + padding + 2-line title + caption.
+            childAspectRatio: 0.88,
           ),
           itemCount: items.length,
           physics: const NeverScrollableScrollPhysics(),
@@ -75,22 +77,24 @@ class BadgeCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     _BadgeThumb(badge: badge, isDark: isDark),
-                    SizedBox(height: AppSpacing.md),
-                    AppText(
-                      badge.name.trim().isNotEmpty
-                          ? badge.name
-                          : badge.badgeKey,
-                      style: (context) =>
-                          AppTextStyles.textFieldHeading(context).copyWith(
-                        height: 1.2,
-                        fontWeight: FontWeight.w500,
-                        color: isDark
-                            ? AppColors.lightText
-                            : AppColors.darkText,
+                    SizedBox(height: AppSpacing.sm),
+                    Flexible(
+                      child: AppText(
+                        badge.name.trim().isNotEmpty
+                            ? badge.name
+                            : badge.badgeKey,
+                        style: (context) =>
+                            AppTextStyles.textFieldHeading(context).copyWith(
+                          height: 1.2,
+                          fontWeight: FontWeight.w500,
+                          color: isDark
+                              ? AppColors.lightText
+                              : AppColors.darkText,
+                        ),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        textAlign: TextAlign.center,
                       ),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      textAlign: TextAlign.center,
                     ),
                     SizedBox(height: AppSpacing.xs),
                     AppText(
@@ -101,7 +105,7 @@ class BadgeCard extends StatelessWidget {
                         context,
                       ).copyWith(
                         fontSize: 12,
-                        height: 1.2,
+                        height: 1,
                         color: isDark
                             ? AppColors.darkGreyText
                             : AppColors.lightGrey,

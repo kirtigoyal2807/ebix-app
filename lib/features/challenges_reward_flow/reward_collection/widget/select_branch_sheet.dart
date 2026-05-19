@@ -160,8 +160,8 @@ class _BranchOption extends StatelessWidget {
                       ).copyWith(fontSize: 12, height: 1.35);
                       return base.copyWith(
                         color: isDark
-                            ? AppColors.goldStarColor.withValues(alpha: 0.95)
-                            : AppColors.goldStarColor,
+                            ? AppColors.darkGreyText
+                            : AppColors.greyText,
                       );
                     },
                   ),

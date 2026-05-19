@@ -66,11 +66,17 @@ class _MyBookingScaffoldState extends State<_MyBookingScaffold>
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final tabBar = bookingTabBar(
+      context: context,
+      isDark: isDark,
+      controller: _tabController,
+    );
+    final tabBarBottomHeight = tabBar.preferredSize.height + 1;
     return Scaffold(
       backgroundColor: isDark ? AppColors.homeBackground : AppColors.whiteColor,
       appBar: AppAppBar(
         leading: Padding(
-          padding: EdgeInsets.only(left: AppSpacing.lmd),
+          padding: EdgeInsets.only(left: AppSpacing.md),
           child: IconButton(
             icon: const Icon(Icons.arrow_back_ios_rounded, size: 20),
             onPressed: () => Navigator.of(context).pop(),
@@ -80,20 +86,13 @@ class _MyBookingScaffoldState extends State<_MyBookingScaffold>
         title: context.l10n.myBookings,
         isMoreMenu: false,
         bottomPreferredSize: PreferredSize(
-          preferredSize: const Size.fromHeight(110),
+          preferredSize: Size.fromHeight(tabBarBottomHeight),
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
               Padding(
-                padding: EdgeInsets.only(
-                  left: AppSpacing.lg,
-                  right: AppSpacing.lg,
-                  top: AppSpacing.md,
-                ),
-                child: bookingTabBar(
-                  context: context,
-                  isDark: isDark,
-                  controller: _tabController,
-                ),
+                padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+                child: tabBar,
               ),
               Divider(
                 height: 1,

@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pilates_app/config/theme/app_colors.dart';
+import 'package:pilates_app/config/theme/app_radius.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/core/localization/localization_extension.dart';
+import 'package:pilates_app/features/booking/widgets/no_reviews_yet_row.dart';
 import 'package:pilates_app/features/booking/widgets/tag_chip.dart';
 import 'package:pilates_app/widgets/app_text.dart';
 
-import '../../../config/theme/app_radius.dart';
 import '../../../widgets/app_shadow.dart';
-import '../data/models/trainer_resource.dart';
 import '../cubit/booking_cubit.dart';
+import '../data/models/trainer_resource.dart';
 import '../views/trainer_details_view.dart';
 
 class TrainerCard extends StatelessWidget {
@@ -19,13 +19,15 @@ class TrainerCard extends StatelessWidget {
 
   final TrainerResource trainer;
 
+  static const _avatarSize = 56.0;
+
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final size = MediaQuery.sizeOf(context);
-    final titleSize = size.width * 0.04 > 16 ? 16.0 : size.width * 0.04;
-    final metaSize = size.width * 0.03 > 14 ? 14.0 : size.width * 0.03;
-    final subtitle = trainer.specialties.take(5).join(' · ');
+    final subtitle = trainer.specialties.isNotEmpty
+        ? trainer.specialties.first
+        : null;
+    final tagLabels = _tagLabels(context);
 
     return GestureDetector(
       onTap: () {
@@ -73,139 +75,154 @@ class TrainerCard extends StatelessWidget {
                   ),
                 ],
         ),
-        child: Row(
+        child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _TrainerAvatar(trainer: trainer),
-            SizedBox(width: AppSpacing.md),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _TrainerAvatar(trainer: trainer),
+                SizedBox(width: AppSpacing.md),
+                Expanded(
+                  child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Expanded(
-                        child: AppText(
-                          trainer.displayName,
+                      AppText(
+                        trainer.displayName,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: (context) => AppTextStyles.boldBody(context)
+                            .copyWith(
+                              fontSize: 14,
+                              height: 1.25,
+                              fontWeight: FontWeight.w500,
+                              color: isDark
+                                  ? AppColors.lightText
+                                  : AppColors.darkText,
+                            ),
+                      ),
+                      if (subtitle != null) ...[
+                        SizedBox(height: AppSpacing.xs),
+                        AppText(
+                          subtitle,
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
-                          style: (context) =>
-                              AppTextStyles.boldBody(context).copyWith(
-                                fontSize: titleSize,
-                                height: 1.2,
+                          style: (context) => AppTextStyles.bodyText(context)
+                              .copyWith(
+                                height: 1.3,
                                 color: isDark
-                                    ? AppColors.lightText
-                                    : AppColors.darkText,
+                                    ? AppColors.darkGreyText
+                                    : AppColors.lightGrey,
                               ),
                         ),
-                      ),
-                      SizedBox(width: AppSpacing.sm),
-                      Flexible(
-                        child: Align(
-                          alignment: AlignmentDirectional.centerEnd,
-                          child: _TrainerRatingRow(
-                            trainer: trainer,
-                            isDark: isDark,
-                          ),
-                        ),
-                      ),
+                      ],
+                      SizedBox(height: AppSpacing.xs),
+                      _TrainerRatingRow(trainer: trainer, isDark: isDark),
                     ],
                   ),
-                  if (subtitle.isNotEmpty) ...[
-                    SizedBox(height: AppSpacing.sm),
-                    AppText(
-                      subtitle,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: (context) =>
-                          AppTextStyles.captionText(context).copyWith(
-                            fontSize: metaSize,
-                            color: isDark
-                                ? AppColors.darkGreyText
-                                : AppColors.lightGrey,
-                          ),
-                    ),
-                  ],
+                ),
+              ],
+            ),
+            SizedBox(height: AppSpacing.xi),
+            if (tagLabels.isNotEmpty)
+
+              Column(
+                children: [
                   SizedBox(height: AppSpacing.base),
                   Wrap(
-                    direction: Axis.horizontal,
+                    alignment: WrapAlignment.start,
+                    crossAxisAlignment: WrapCrossAlignment.start,
                     spacing: AppSpacing.sm,
                     runSpacing: AppSpacing.sm,
                     children: [
-                      if (trainer.yearsExperience != null)
+                      for (final label in tagLabels)
                         TagChip(
-                          label: context.l10n.yearsExperience(
-                            trainer.yearsExperience!,
-                          ),
+                          label: label,
                           fontSize: 14,
+                          pillShape: true,
+                          constrainWidth: false,
                         ),
-                      for (final s in trainer.specialties.take(3))
-                        TagChip(label: s, fontSize: 14),
                     ],
                   ),
-                  if (trainer.bio != null &&
-                      trainer.bio!.trim().isNotEmpty) ...[
-                    SizedBox(height: AppSpacing.sm),
-                    AppText(
-                      trainer.bio!.trim(),
-                      maxLines: 4,
-                      overflow: TextOverflow.ellipsis,
-                      style: (context) =>
-                          AppTextStyles.bodyText(context).copyWith(height: 1.4),
-                    ),
-                  ],
-                  if (trainer.branches.isNotEmpty) ...[
-                    SizedBox(height: AppSpacing.sm),
-                    _buildIconRow(
-                      icon: Icon(
-                        Icons.location_on_outlined,
-                        color: isDark
-                            ? AppColors.languageIconDark
-                            : AppColors.languageIcon,
-                        size: 16,
-                      ),
-                      label: trainer.branches.map((b) => b.name).join(', '),
-                    ),
-                  ],
-                  if (trainer.classesThisWeekCount != null) ...[
-                    SizedBox(height: AppSpacing.sm),
-                    _buildIconRow(
-                      icon: SvgPicture.asset(
-                        "assets/images/svg/ic_physical_therapy.svg",
-                        height: 16,
-                        width: 16,
-                        color: isDark
-                            ? AppColors.languageIconDark
-                            : AppColors.languageIcon,
-                      ),
-                      label: context.l10n.classesThisWeek(
-                        trainer.classesThisWeekCount!,
-                      ),
-                    ),
-                  ],
                 ],
               ),
-            ),
+            if (trainer.bio != null && trainer.bio!.trim().isNotEmpty) ...[
+              SizedBox(height: AppSpacing.sm),
+              AppText(
+                trainer.bio!.trim(),
+                maxLines: 3,
+                overflow: TextOverflow.ellipsis,
+                style: (context) => AppTextStyles.bodyText(context).copyWith(
+                  fontSize: 12,
+                  height: 1.4,
+                  color: isDark
+                      ? AppColors.darkGreyText
+                      : AppColors.lightGrey,
+                ),
+              ),
+            ],
+            if (trainer.branches.isNotEmpty) ...[
+              SizedBox(height: AppSpacing.sm),
+              _LocationRow(
+                label: trainer.branches.map((b) => b.name).join(', '),
+                isDark: isDark,
+              ),
+            ],
           ],
         ),
       ),
     );
   }
 
-  Widget _buildIconRow({required Widget icon, required String label}) {
+  /// Same sources as trainer details tags: experience + specialties (list capped at 3).
+  List<String> _tagLabels(BuildContext context) {
+    final labels = <String>[];
+
+    final years = trainer.yearsExperience;
+    if (years != null) {
+      labels.add(context.l10n.yearsExperience(years));
+    }
+
+    for (final s in trainer.specialties.take(3)) {
+      final t = s.trim();
+      if (t.isEmpty || labels.contains(t)) continue;
+      labels.add(t);
+    }
+
+    return labels;
+  }
+}
+
+class _LocationRow extends StatelessWidget {
+  const _LocationRow({required this.label, required this.isDark});
+
+  final String label;
+  final bool isDark;
+
+  @override
+  Widget build(BuildContext context) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(padding: EdgeInsets.only(top: 1), child: icon),
+        Padding(
+          padding: const EdgeInsets.only(top: 1),
+          child: Icon(
+            Icons.location_on_outlined,
+            color: isDark ? AppColors.languageIconDark : AppColors.languageIcon,
+            size: 16,
+          ),
+        ),
         SizedBox(width: AppSpacing.xs),
         Expanded(
           child: AppText(
             label,
-            maxLines: 3,
+            maxLines: 2,
             overflow: TextOverflow.ellipsis,
-            style: (context) =>
-                AppTextStyles.bodyText(context).copyWith(height: 1.3),
+            style: (context) => AppTextStyles.bodyText(context).copyWith(
+              fontSize: 12,
+              height: 1.3,
+              color: isDark ? AppColors.darkGreyText : AppColors.greyText,
+            ),
           ),
         ),
       ],
@@ -226,66 +243,68 @@ class _TrainerRatingRow extends StatelessWidget {
     final avgValue = trainer.averageRatingValue;
     final avgText = trainer.displayAverageRating;
 
-    if (avgValue != null) {
-      return Row(
+    if (avgValue == null && avgText.isEmpty) {
+      if (count > 0) {
+        return _ratingShell(
+          child: AppText(
+            '($count ${context.l10n.reviews})',
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: (context) => AppTextStyles.bodyText(context).copyWith(
+              height: 1,
+              color: isDark ? AppColors.darkGreyText : AppColors.lightGrey,
+            ),
+          ),
+        );
+      }
+      return const NoReviewsYetRow(center: false);
+    }
+
+    final ratingLabel = avgValue != null
+        ? (avgText.isNotEmpty ? avgText : avgValue.toStringAsFixed(1))
+        : avgText;
+
+    return _ratingShell(
+      child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
           AppText(
-            avgText.isNotEmpty ? avgText : avgValue.toStringAsFixed(1),
+            ratingLabel,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: (context) => AppTextStyles.boldBody(context).copyWith(
+              fontSize: 14,
+              height: 1,
               color: isDark ? AppColors.lightText : AppColors.darkText,
             ),
           ),
           if (count > 0) ...[
-            const SizedBox(width: 2),
+            SizedBox(width: AppSpacing.xs),
             AppText(
               '($count)',
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
-              style: (context) => AppTextStyles.captionText(context),
+              style: (context) => AppTextStyles.bodyText(context).copyWith(
+                height: 1,
+                color: isDark ? AppColors.darkGreyText : AppColors.lightGrey,
+              ),
             ),
           ],
         ],
-      );
-    }
+      ),
+    );
+  }
 
-    if (avgText.isNotEmpty) {
-      return Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          AppText(
-            avgText,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: (context) => AppTextStyles.boldBody(context).copyWith(
-              color: isDark ? AppColors.lightText : AppColors.darkText,
-            ),
-          ),
-          if (count > 0) ...[
-            const SizedBox(width: 2),
-            AppText(
-              '($count)',
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: (context) => AppTextStyles.captionText(context),
-            ),
-          ],
-        ],
-      );
-    }
-
-    if (count > 0) {
-      return AppText(
-        '($count)',
-        maxLines: 1,
-        overflow: TextOverflow.ellipsis,
-        style: (context) => AppTextStyles.captionText(context),
-      );
-    }
-
-    return const SizedBox.shrink();
+  Widget _ratingShell({required Widget child}) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        const Icon(Icons.star, color: AppColors.goldStarColor, size: 16),
+        SizedBox(width: AppSpacing.xs),
+        Flexible(child: child),
+      ],
+    );
   }
 }
 
@@ -296,29 +315,39 @@ class _TrainerAvatar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final borderColor = isDark ? AppColors.greyText : AppColors.buttonBorder;
+
+    Widget image;
     final url = trainer.avatarUrl;
     if (url != null && url.isNotEmpty) {
-      return ClipOval(
-        child: Image.network(
-          url,
-          height: 56,
-          width: 56,
+      image = Image.network(
+        url,
+        height: TrainerCard._avatarSize,
+        width: TrainerCard._avatarSize,
+        fit: BoxFit.cover,
+        errorBuilder: (_, _, _) => Image.asset(
+          'assets/images/demo images/Trainer Avatar.png',
+          height: TrainerCard._avatarSize,
+          width: TrainerCard._avatarSize,
           fit: BoxFit.cover,
-          errorBuilder: (_, _, _) => Image.asset(
-            'assets/images/demo images/Trainer Avatar.png',
-            height: 56,
-            width: 56,
-          ),
         ),
       );
-    }
-    return ClipOval(
-      child: Image.asset(
+    } else {
+      image = Image.asset(
         'assets/images/demo images/Trainer Avatar.png',
-        height: 56,
-        width: 56,
+        height: TrainerCard._avatarSize,
+        width: TrainerCard._avatarSize,
         fit: BoxFit.cover,
+      );
+    }
+
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        border: Border.all(color: borderColor, width: 1),
       ),
+      child: ClipOval(child: image),
     );
   }
 }

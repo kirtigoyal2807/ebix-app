@@ -27,6 +27,33 @@ class SignUpOtpView extends StatefulWidget {
 class _SignUpOtpViewState extends State<SignUpOtpView>
     with ResendCodeCooldownMixin {
   String _otp = '';
+  String? _localValidationError;
+
+  Color _otpErrorColor(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    return isDark ? AppColors.redText : AppColors.redLight;
+  }
+
+  String? _otpErrorMessage(AuthState state) {
+    if (_localValidationError != null && _localValidationError!.isNotEmpty) {
+      return _localValidationError;
+    }
+    final fe = state.signUpPhoneOtpFieldErrors;
+    final codeErr = fe['code'];
+    if (codeErr != null && codeErr.isNotEmpty) return codeErr;
+    final phoneErr = fe['phone'];
+    if (phoneErr != null && phoneErr.isNotEmpty) return phoneErr;
+    if (state.signUpPhoneOtpUiStatus != SignUpPhoneOtpUiStatus.loading &&
+        state.signUpPhoneOtpErrorMessage.trim().isNotEmpty &&
+        fe.isEmpty) {
+      return state.signUpPhoneOtpErrorMessage.trim();
+    }
+    if (state.phoneOtpSendUiStatus != PhoneOtpSendUiStatus.loading &&
+        state.phoneOtpSendErrorMessage.trim().isNotEmpty) {
+      return state.phoneOtpSendErrorMessage.trim();
+    }
+    return null;
+  }
 
   @override
   void initState() {
@@ -44,18 +71,27 @@ class _SignUpOtpViewState extends State<SignUpOtpView>
     final cubit = context.read<AuthCubit>();
     final phone = cubit.state.signUpPendingPhone.trim();
     if (phone.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(context.l10n.phoneVerificationMissingPhone)),
+      setState(
+        () => _localValidationError = context.l10n.phoneVerificationMissingPhone,
       );
       return;
     }
     if (_otp.trim().length != 6) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(context.l10n.phoneVerificationEnterSixDigits)),
+      setState(
+        () =>
+            _localValidationError = context.l10n.phoneVerificationEnterSixDigits,
       );
       return;
     }
+    setState(() => _localValidationError = null);
     await cubit.verifySignUpPhoneOtp(code: _otp.trim());
+  }
+
+  void _onOtpChanged(String otp) {
+    setState(() {
+      _otp = otp;
+      _localValidationError = null;
+    });
   }
 
   Future<void> _resend(BuildContext context) async {
@@ -89,14 +125,7 @@ class _SignUpOtpViewState extends State<SignUpOtpView>
                 current.phoneOtpSendUiStatus == PhoneOtpSendUiStatus.idle;
           },
           listener: (context, state) {
-            if (state.phoneOtpSendErrorMessage.isNotEmpty) {
-              final text = state.phoneOtpSendErrorMessage.trim().isEmpty
-                  ? context.l10n.loginErrorGeneric
-                  : state.phoneOtpSendErrorMessage;
-              ScaffoldMessenger.of(
-                context,
-              ).showSnackBar(SnackBar(content: Text(text)));
-            } else {
+            if (state.phoneOtpSendErrorMessage.isEmpty) {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(content: Text(context.l10n.registerOtpSent)),
               );
@@ -104,22 +133,7 @@ class _SignUpOtpViewState extends State<SignUpOtpView>
           },
         ),
       ],
-      child: BlocConsumer<AuthCubit, AuthState>(
-        listenWhen: (previous, current) {
-          return previous.signUpPhoneOtpUiStatus ==
-                  SignUpPhoneOtpUiStatus.loading &&
-              current.signUpPhoneOtpUiStatus == SignUpPhoneOtpUiStatus.idle &&
-              current.signUpPhoneOtpErrorMessage.isNotEmpty &&
-              current.signUpPhoneOtpFieldErrors.isEmpty;
-        },
-        listener: (context, state) {
-          final text = state.signUpPhoneOtpErrorMessage.trim().isEmpty
-              ? context.l10n.loginErrorGeneric
-              : state.signUpPhoneOtpErrorMessage;
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(SnackBar(content: Text(text)));
-        },
+      child: BlocBuilder<AuthCubit, AuthState>(
         builder: (context, state) {
           final loading =
               state.signUpPhoneOtpUiStatus == SignUpPhoneOtpUiStatus.loading;
@@ -129,9 +143,7 @@ class _SignUpOtpViewState extends State<SignUpOtpView>
           final subtitle = phone.isEmpty
               ? context.l10n.enterCode
               : '${context.l10n.enterCode} $phone';
-          final fe = state.signUpPhoneOtpFieldErrors;
-          final codeErr = fe['code'];
-          final phoneErr = fe['phone'];
+          final otpError = _otpErrorMessage(state);
           final resendDisabled =
               blockInteraction || loading || isResendCodeOnCooldown;
 
@@ -192,27 +204,20 @@ class _SignUpOtpViewState extends State<SignUpOtpView>
 
                               OtpField(
                                 length: 6,
-                                onChanged: (otp) => setState(() => _otp = otp),
+                                onChanged: _onOtpChanged,
                                 onCompleted: (otp) {
-                                  setState(() => _otp = otp);
+                                  _onOtpChanged(otp);
                                   context
                                       .read<AuthCubit>()
                                       .verifySignUpPhoneOtp(code: otp);
                                 },
                               ),
 
-                              if (codeErr != null || phoneErr != null) ...[
-                                SizedBox(height: AppSpacing.sm),
-                                AppText(
-                                  codeErr ?? phoneErr ?? '',
-                                  style: (c) =>
-                                      AppTextStyles.caption(c).copyWith(
-                                        color: isDark
-                                            ? AppColors.redDark
-                                            : AppColors.redLight,
-                                      ),
+                              if (otpError != null && otpError.isNotEmpty)
+                                _SignUpOtpInlineError(
+                                  message: otpError,
+                                  color: _otpErrorColor(context),
                                 ),
-                              ],
 
                               SizedBox(height: AppSpacing.lg),
 
@@ -252,6 +257,51 @@ class _SignUpOtpViewState extends State<SignUpOtpView>
             ),
           );
         },
+      ),
+    );
+  }
+}
+
+class _SignUpOtpInlineError extends StatelessWidget {
+  const _SignUpOtpInlineError({
+    required this.message,
+    required this.color,
+  });
+
+  final String message;
+  final Color color;
+
+  @override
+  Widget build(BuildContext context) {
+    final maxWidth =
+        MediaQuery.sizeOf(context).width - (AppSpacing.lg * 2);
+    return Padding(
+      padding: EdgeInsets.only(top: AppSpacing.base),
+      child: Center(
+        child: ConstrainedBox(
+          constraints: BoxConstraints(maxWidth: maxWidth),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Icon(Icons.info_outline, size: 18, color: color),
+              SizedBox(width: AppSpacing.xs),
+              Flexible(
+                child: AppText(
+                  message,
+                  maxLines: 3,
+                  textAlign: TextAlign.center,
+                  style: (c) => AppTextStyles.bodyText(c).copyWith(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
+                    height: 1.2,
+                    color: color,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

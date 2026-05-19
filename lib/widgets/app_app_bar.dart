@@ -28,37 +28,34 @@ class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
       surfaceTintColor: Colors.transparent,
       shadowColor: Colors.transparent,
       forceMaterialTransparency: true,
-      // IMPORTANT (Material 3)
       backgroundColor: isDark ? AppColors.homeBackground : AppColors.whiteColor,
       scrolledUnderElevation: 0,
-      // IMPORTANT
-      leading: Padding(
-        padding: const EdgeInsets.only(top: 16),
-        child:
-            leading ??
-            (onBack != null
-                ? IconButton(
-                    icon: const Icon(Icons.arrow_back_ios_rounded, size: 20),
-                    onPressed: onBack,
-                  )
-                : null),
-      ),
-
-      title: Padding(
-        padding: const EdgeInsets.only(top: 16),
-        child: AppText(title!, style: AppTextStyles.appBarTitle),
-      ),
+      leading: leading ??
+          (onBack != null
+              ? IconButton(
+                  icon: const Icon(Icons.arrow_back_ios_rounded, size: 20),
+                  onPressed: onBack,
+                )
+              : null),
+      title: title == null
+          ? null
+          : AppText(
+              title!,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: (context) =>
+                  AppTextStyles.appBarTitle(context).copyWith(height: 1),
+            ),
       centerTitle: true,
       elevation: 0,
-      actions: actions ?? [(isMoreMenu ?? true) ? SizedBox() : SizedBox()],
+      actions: actions ?? [(isMoreMenu ?? true) ? const SizedBox() : const SizedBox()],
       bottom: bottomPreferredSize,
-
-      // backgroundColor: Colors.white,
     );
   }
 
   @override
-  Size get preferredSize =>
-      bottomPreferredSize?.preferredSize ??
-      const Size.fromHeight(kToolbarHeight + 16);
+  Size get preferredSize {
+    final bottomHeight = bottomPreferredSize?.preferredSize.height ?? 0;
+    return Size.fromHeight(kToolbarHeight + bottomHeight);
+  }
 }
