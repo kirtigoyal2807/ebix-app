@@ -42,6 +42,14 @@ class AppDropDown<T> extends StatelessWidget {
         ButtonTheme(
           alignedDropdown: true,
           child: DropdownButtonFormField<T>(
+            key: ValueKey<Object?>(
+              Object.hash(
+                T,
+                value,
+                items.length,
+                items.map((i) => i.value).toList(),
+              ),
+            ),
             initialValue: value,
 
             isDense: true,

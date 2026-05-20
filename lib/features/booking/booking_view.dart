@@ -165,18 +165,50 @@ class _BookingBodyState extends State<BookingBody> {
 // Classes tab body — reads ClassesCubit + BookingState for local filtering
 // ---------------------------------------------------------------------------
 
-class _ClassesTab extends StatelessWidget {
+class _ClassesTab extends StatefulWidget {
   const _ClassesTab({required this.bookingState});
 
   final BookingState bookingState;
 
   @override
+  State<_ClassesTab> createState() => _ClassesTabState();
+}
+
+class _ClassesTabState extends State<_ClassesTab> {
+  final ScrollController _listScrollController = ScrollController();
+
+  @override
+  void dispose() {
+    _listScrollController.dispose();
+    super.dispose();
+  }
+
+  void _scrollClassesListToTop() {
+    if (!_listScrollController.hasClients) return;
+    _listScrollController.animateTo(
+      0,
+      duration: const Duration(milliseconds: 320),
+      curve: Curves.easeOutCubic,
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final bookingState = widget.bookingState;
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     // Keep search / filters / subscription outside ClassesCubit rebuilds so the
     // search field is not recreated when loading or data updates (fixes cleared text).
-    return Column(
+    return BlocListener<BookingCubit, BookingState>(
+      listenWhen: (previous, current) =>
+          previous.classesScrollToTopNonce != current.classesScrollToTopNonce,
+      listener: (context, state) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (!mounted) return;
+          _scrollClassesListToTop();
+        });
+      },
+      child: Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         const BookingSearchBar(),
@@ -218,6 +250,7 @@ class _ClassesTab extends StatelessWidget {
                 child: Stack(
                   children: [
                     ListView(
+                      controller: _listScrollController,
                       padding: EdgeInsets.symmetric(vertical: AppSpacing.lg),
                       children: _buildClassCards(
                         context,
@@ -246,6 +279,7 @@ class _ClassesTab extends StatelessWidget {
           ),
         ),
       ],
+      ),
     );
   }
 

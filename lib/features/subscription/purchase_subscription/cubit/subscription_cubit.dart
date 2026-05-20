@@ -562,7 +562,11 @@ class SubscriptionCubit extends Cubit<SubscriptionState> {
     while (step <= 10 && _subscriptionWizardStepSkipped(state, step)) {
       step++;
     }
-    emit(state.copyWith(currentStep: step.clamp(0, 10)));
+    emit(
+      _resolveHealthWizardState(
+        state.copyWith(currentStep: step.clamp(0, 10)),
+      ),
+    );
   }
 
   void previousStep() {

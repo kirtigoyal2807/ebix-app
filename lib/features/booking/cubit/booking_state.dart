@@ -15,6 +15,9 @@ class BookingState extends Equatable {
   final List<TrainerType> trainerTypeList;
   final TrainerType selectedTrainerType;
 
+  /// Incremented when the classes list should scroll to the top (e.g. Browse All Classes).
+  final int classesScrollToTopNonce;
+
   const BookingState({
     this.selectedTab = BookingTab.classes,
     this.searchQuery = '',
@@ -25,6 +28,7 @@ class BookingState extends Equatable {
     this.classDetailStatus = ClassDetailStatus.initial,
     this.selectedTrainerType = TrainerType.allTrainers,
     required this.trainerTypeList,
+    this.classesScrollToTopNonce = 0,
   });
 
   BookingState copyWith({
@@ -36,6 +40,7 @@ class BookingState extends Equatable {
     String? selectedGender,
     ClassDetailStatus? classDetailStatus,
     TrainerType? selectedTrainerType,
+    int? classesScrollToTopNonce,
   }) {
     return BookingState(
       selectedTab: selectedTab ?? this.selectedTab,
@@ -47,6 +52,8 @@ class BookingState extends Equatable {
       classDetailStatus: classDetailStatus ?? this.classDetailStatus,
       selectedTrainerType: selectedTrainerType ?? this.selectedTrainerType,
       trainerTypeList: trainerTypeList,
+      classesScrollToTopNonce:
+          classesScrollToTopNonce ?? this.classesScrollToTopNonce,
     );
   }
 
@@ -61,6 +68,7 @@ class BookingState extends Equatable {
     classDetailStatus,
     selectedTrainerType,
     trainerTypeList,
+    classesScrollToTopNonce,
   ];
 }
 

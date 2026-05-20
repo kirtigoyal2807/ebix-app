@@ -211,6 +211,45 @@ class NotificationPreferences {
     );
   }
 
+  /// PUT payload when the user toggles **All Notifications** (master switch).
+  Map<String, dynamic> masterTogglePreferencesPatch(bool enabled) {
+    return <String, dynamic>{
+      'allNotifications': enabled,
+      'channels': <String, dynamic>{
+        'inApp': enabled,
+        'push': enabled,
+        'email': enabled,
+        'sms': enabled,
+      },
+      'classNotifications': <String, dynamic>{
+        'beforeClassStart': enabled,
+        'dayBeforeReminder': enabled,
+        'bookingConfirmed': enabled,
+        'bookingCancelled': enabled,
+        'waitlistPromoted': enabled,
+      },
+      'subscriptionNotifications': <String, dynamic>{
+        'paymentConfirmations': enabled,
+        'renewalReminders': enabled,
+        'expiryReminders': enabled,
+      },
+      'marketingNotifications': <String, dynamic>{
+        'promotions': enabled,
+        'productUpdates': enabled,
+      },
+      'loyaltyNotifications': <String, dynamic>{
+        'pointsEarned': enabled,
+        'challengeUpdates': enabled,
+        'rewardRedeemed': enabled,
+        'badgeEarned': enabled,
+      },
+      'referralNotifications': <String, dynamic>{
+        'referralSuccess': enabled,
+        'inviteUpdates': enabled,
+      },
+    };
+  }
+
   NotificationPreferences copyWith({
     bool? rootPush,
     bool? rootEmail,

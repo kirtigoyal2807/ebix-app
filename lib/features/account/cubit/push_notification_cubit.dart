@@ -103,27 +103,26 @@ class PushNotificationCubit extends Cubit<PushNotificationState> {
     final prefs = state.preferences;
     if (prefs == null) return;
 
-    emit(state.copyWith(allNotification: value));
-
     emit(
       state.copyWith(
         status: PushNotificationStatus.updating,
         errorMessage: null,
+        allNotification: value,
+        beforeClassStart: value,
+        dayBeforeRemainder: value,
+        paymentConfirmation: value,
+        renewalRemainder: value,
+        promotionOffer: value,
+        appUpdate: value,
+        newChallenges: value,
+        rewardEarn: value,
       ),
     );
 
     final result = await _repository.updatePreferences(
       push: value,
-      email: prefs.rootEmail,
-      preferences: {
-        'allNotifications': value,
-        'channels': {
-          'inApp': value,
-          'push': value,
-          'email': value,
-          'sms': value,
-        },
-      },
+      email: value,
+      preferences: prefs.masterTogglePreferencesPatch(value),
     );
 
     switch (result) {
@@ -136,6 +135,7 @@ class PushNotificationCubit extends Cubit<PushNotificationState> {
             errorMessage: exception.message,
           ),
         );
+        await _reloadPreferencesAfterUpdate();
     }
   }
 
