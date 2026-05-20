@@ -130,12 +130,7 @@ class _RequiredInformationViewState extends State<RequiredInformationView> {
       return;
     }
 
-    final normalizedNt = s.idType?.trim();
-    final normalizedId =
-        (normalizedNt == 'National ID' ||
-            normalizedNt == 'Iqama' ||
-            normalizedNt == 'Driver License' ||
-            normalizedNt == 'Passport')
+    final normalizedId = IdDocumentValidators.isAllowedUiIdType(s.idType)
         ? _idValueForRules(s.idType, _idNumberController.text)
         : _idNumberController.text.trim();
     cubit.updateIdNumber(normalizedId);
@@ -236,10 +231,7 @@ class _RequiredInformationViewState extends State<RequiredInformationView> {
     switch (uiIdType?.trim()) {
       case 'National ID':
       case 'Iqama':
-      case 'Driver License':
         return raw.replaceAll(RegExp(r'\D'), '');
-      case 'Passport':
-        return raw.replaceAll(RegExp(r'\s'), '');
       default:
         return raw.trim();
     }
@@ -264,10 +256,6 @@ class _RequiredInformationViewState extends State<RequiredInformationView> {
           return l10n.idNumberNationalIdInvalid;
         case 'Iqama':
           return l10n.idNumberIqamaInvalid;
-        case 'Passport':
-          return l10n.idNumberPassportInvalid;
-        case 'Driver License':
-          return l10n.idNumberDriverLicenseInvalid;
         default:
           return l10n.pleaseCompletePersonalInformation;
       }
@@ -276,28 +264,13 @@ class _RequiredInformationViewState extends State<RequiredInformationView> {
   }
 
   int _idNumberMaxLength(String? uiIdType) {
-    switch (uiIdType?.trim()) {
-      case 'National ID':
-      case 'Iqama':
-        return 10;
-      case 'Passport':
-        return 9;
-      case 'Driver License':
-        return 10;
-      default:
-        return 100;
-    }
+    return IdDocumentValidators.isAllowedUiIdType(uiIdType) ? 10 : 100;
   }
 
   TextInputType _idKeyboardType(String? uiIdType) {
-    switch (uiIdType?.trim()) {
-      case 'National ID':
-      case 'Iqama':
-      case 'Driver License':
-        return TextInputType.number;
-      default:
-        return TextInputType.text;
-    }
+    return IdDocumentValidators.isAllowedUiIdType(uiIdType)
+        ? TextInputType.number
+        : TextInputType.text;
   }
 
   /// Builds E.164-style emergency phone for the API (`dialCode` + national digits), max 30 chars.
@@ -567,33 +540,23 @@ class _RequiredInformationViewState extends State<RequiredInformationView> {
                         BlocBuilder<SubscriptionCubit, SubscriptionState>(
                           buildWhen: (p, c) => p.idType != c.idType,
                           builder: (context, state) {
+                            final selectedIdType =
+                                IdDocumentValidators.isAllowedUiIdType(
+                                  state.idType,
+                                )
+                                ? state.idType
+                                : null;
                             return AppDropDown<String>(
                               label: l10n.idType,
                               hint: l10n.selectIdType,
-                              value: state.idType,
+                              value: selectedIdType,
                               errorText: _idTypeError,
-                              items:
-                                  [
-                                    'National ID',
-                                    'Iqama',
-                                    'Passport',
-                                    'Driver License',
-                                  ].map((e) {
-                                    String label = e;
-                                    switch (e) {
-                                      case 'National ID':
-                                        label = l10n.idTypeNationalId;
-                                        break;
-                                      case 'Iqama':
-                                        label = l10n.idTypeIqama;
-                                        break;
-                                      case 'Passport':
-                                        label = l10n.idTypePassport;
-                                        break;
-                                      case 'Driver License':
-                                        label = l10n.idTypeDriverLicense;
-                                        break;
-                                    }
+                              items: IdDocumentValidators.allowedUiIdTypes.map((e) {
+                                    final label = switch (e) {
+                                      'National ID' => l10n.idTypeNationalId,
+                                      'Iqama' => l10n.idTypeIqama,
+                                      _ => e,
+                                    };
                                     return DropdownMenuItem(
                                       value: e,
                                       child: Text(

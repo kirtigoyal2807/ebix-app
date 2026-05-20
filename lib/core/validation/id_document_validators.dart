@@ -3,8 +3,6 @@
 /// Per-type rules (after normalization in UI):
 /// - **National ID**: `^1\d{9}$` — 10 digits starting with 1 + valid Saudi checksum.
 /// - **Iqama**: `^2\d{9}$` — 10 digits starting with 2 + same checksum.
-/// - **Passport**: `^[A-Za-z]\d{8}$` — one letter + eight digits.
-/// - **Driver License**: `^\d{10}$` — ten digits.
 abstract final class IdDocumentValidators {
   IdDocumentValidators._();
 
@@ -12,8 +10,6 @@ abstract final class IdDocumentValidators {
   static const List<String> allowedUiIdTypes = <String>[
     'National ID',
     'Iqama',
-    'Passport',
-    'Driver License',
   ];
 
   /// `true` when [uiIdType] is one of [allowedUiIdTypes].
@@ -34,10 +30,6 @@ abstract final class IdDocumentValidators {
         return _isValidNationalIdentityDigits(raw);
       case 'Iqama':
         return _isValidIqamaDigits(raw);
-      case 'Passport':
-        return isValidPassportNumber(s);
-      case 'Driver License':
-        return isValidDriverLicenseNumber(s);
       default:
         return false;
     }
