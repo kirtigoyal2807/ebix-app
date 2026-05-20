@@ -13,6 +13,7 @@ import 'package:pilates_app/widgets/app_button.dart';
 import 'package:pilates_app/widgets/app_scaffold.dart';
 import 'package:pilates_app/widgets/app_text.dart';
 import 'package:pilates_app/widgets/inline_validation_banner.dart';
+import 'package:pilates_app/widgets/app_loading_indicator.dart';
 
 import 'widgets/sign_up_header.dart';
 import 'widgets/sign_up_progress.dart';
@@ -238,7 +239,7 @@ class _SignUpBranchViewState extends State<SignUpBranchView> {
                                       vertical: AppSpacing.xxl,
                                     ),
                                     child: Center(
-                                      child: CircularProgressIndicator(),
+                                      child: const AppInlineBusy(),
                                     ),
                                   )
                                 else if (failure)

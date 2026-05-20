@@ -1,3 +1,4 @@
+import 'package:pilates_app/widgets/app_loading_indicator.dart';
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -387,11 +388,7 @@ class _ReviewScreenDetailsViewState extends State<ReviewScreenDetailsView> {
             Padding(
               padding: EdgeInsets.symmetric(vertical: AppSpacing.lg),
               child: Center(
-                child: SizedBox(
-                  width: 28,
-                  height: 28,
-                  child: CircularProgressIndicator(strokeWidth: 2),
-                ),
+                child: AppInlineBusy(size: 28),
               ),
             )
           else if (session == null && _checkoutLoadError != null) ...[

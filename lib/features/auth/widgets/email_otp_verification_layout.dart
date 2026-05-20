@@ -8,6 +8,7 @@ import 'package:pilates_app/features/auth/widgets/otp_resend_action.dart';
 import 'package:pilates_app/widgets/app_app_bar.dart';
 import 'package:pilates_app/widgets/app_button.dart';
 import 'package:pilates_app/widgets/app_scaffold.dart';
+import 'package:pilates_app/widgets/app_loading_indicator.dart';
 
 /// Shared email OTP UI (forgot-password flow and profile email verification).
 class EmailOtpVerificationLayout extends StatelessWidget {
@@ -137,7 +138,7 @@ class EmailOtpVerificationLayout extends StatelessWidget {
             const Positioned.fill(
               child: ColoredBox(
                 color: Color(0x33000000),
-                child: Center(child: CircularProgressIndicator()),
+                child: const AppLoadingIndicator(),
               ),
             ),
         ],

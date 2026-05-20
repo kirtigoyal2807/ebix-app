@@ -22,7 +22,9 @@ import 'package:pilates_app/features/booking/widgets/upgrade_bottom_sheet.dart';
 import 'package:pilates_app/features/subscription/purchase_subscription/view/subscription_view.dart';
 import 'booking_success_view.dart';
 import 'package:pilates_app/widgets/app_app_bar.dart';
+import 'package:pilates_app/widgets/app_loading_indicator.dart';
 import 'package:pilates_app/widgets/app_text.dart';
+import 'package:pilates_app/widgets/app_loading_indicator.dart';
 
 import 'book_class_confirm_view.dart';
 import 'join_waitlist_view.dart';
@@ -70,7 +72,7 @@ class _ClassDetailBody extends StatelessWidget {
         builder: (context, state) {
           // Show full-screen loader only when there's no preloaded data
           if (state.isLoading && state.slot == null) {
-            return const Center(child: CircularProgressIndicator());
+            return const AppLoadingIndicator();
           }
 
           if (state.hasError && state.slot == null) {
@@ -82,7 +84,7 @@ class _ClassDetailBody extends StatelessWidget {
 
           final slot = state.slot;
           if (slot == null) {
-            return const Center(child: CircularProgressIndicator());
+            return const AppLoadingIndicator();
           }
 
           final auth = context.read<AuthCubit>();
@@ -178,7 +180,11 @@ class _ClassDetailBody extends StatelessWidget {
                   top: 0,
                   left: 0,
                   right: 0,
-                  child: LinearProgressIndicator(minHeight: 3),
+                  child: LinearProgressIndicator(
+                    minHeight: 3,
+                    color: AppLoadingColors.indicator,
+                    backgroundColor: AppColors.darkGreyBorder,
+                  ),
                 ),
               SingleChildScrollView(
                 padding: EdgeInsets.only(bottom: size.height * 0.15),

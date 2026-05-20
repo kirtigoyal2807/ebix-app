@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
 import 'package:pilates_app/config/theme/app_colors.dart';
 import 'package:pilates_app/core/localization/localization_extension.dart';
+import 'package:pilates_app/core/notifications/notification_permission_service.dart';
 import 'package:pilates_app/features/auth/post_login/post_login_experience_view.dart';
 import 'package:pilates_app/features/auth/post_login/post_login_goal_view.dart';
 import 'package:pilates_app/features/auth/sign_in/sign_in_phone_otp_view.dart';
@@ -35,6 +36,7 @@ class _AuthRootViewState extends State<AuthRootView>
     WidgetsBinding.instance.addObserver(this);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _refreshProfileForAppOpenOrResume();
+      _requestNotificationPermissionIfAuthenticated();
     });
   }
 
@@ -56,6 +58,14 @@ class _AuthRootViewState extends State<AuthRootView>
     unawaited(context.read<AuthCubit>().refreshProfileForAppOpenOrResume());
   }
 
+  void _requestNotificationPermissionIfAuthenticated() {
+    if (!mounted) return;
+    if (context.read<AuthCubit>().state.flow != AuthFlow.authenticated) {
+      return;
+    }
+    unawaited(NotificationPermissionService.requestIfNeeded());
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocListener<AuthCubit, AuthState>(
@@ -67,9 +77,16 @@ class _AuthRootViewState extends State<AuthRootView>
         ).showSnackBar(SnackBar(content: Text(context.l10n.registerOtpSent)));
         context.read<AuthCubit>().clearRegisterOtpSuccessBanner();
       },
-      child: BlocBuilder<AuthCubit, AuthState>(
-        builder: (context, state) {
-          switch (state.flow) {
+      child: BlocListener<AuthCubit, AuthState>(
+        listenWhen: (previous, current) =>
+            previous.flow != AuthFlow.authenticated &&
+            current.flow == AuthFlow.authenticated,
+        listener: (context, state) {
+          unawaited(NotificationPermissionService.requestIfNeeded());
+        },
+        child: BlocBuilder<AuthCubit, AuthState>(
+          builder: (context, state) {
+            switch (state.flow) {
             case AuthFlow.splash:
               final isDark =
                   Theme.of(context).brightness == Brightness.dark;
@@ -138,8 +155,9 @@ class _AuthRootViewState extends State<AuthRootView>
                 });
               }
               return const HomeView();
-          }
-        },
+            }
+          },
+        ),
       ),
     );
   }

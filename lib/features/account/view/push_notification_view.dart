@@ -1,11 +1,15 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:pilates_app/core/constants/check_in_policy.dart';
+import 'package:pilates_app/core/notifications/notification_permission_service.dart';
 import 'package:pilates_app/config/theme/app_colors.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/widgets/app_text.dart';
+import 'package:pilates_app/widgets/app_loading_indicator.dart';
 
 import '../../../config/theme/app_spacing.dart';
 import '../../../core/localization/arb/app_localizations.dart';
@@ -35,7 +39,7 @@ class PushNotificationView extends StatelessWidget {
         body: BlocBuilder<PushNotificationCubit, PushNotificationState>(
           builder: (context, state) {
             if (state.status == PushNotificationStatus.loading) {
-              return const Center(child: CircularProgressIndicator());
+              return const AppLoadingIndicator();
             }
 
             if (state.status == PushNotificationStatus.error &&
@@ -273,7 +277,7 @@ class PushNotificationView extends StatelessWidget {
                   Positioned.fill(
                     child: Container(
                       color: Colors.black.withValues(alpha: 0.3),
-                      child: const Center(child: CircularProgressIndicator()),
+                      child: const AppLoadingIndicator(),
                     ),
                   ),
               ],

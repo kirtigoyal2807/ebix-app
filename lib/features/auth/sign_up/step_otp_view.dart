@@ -7,6 +7,7 @@ import 'package:pilates_app/widgets/app_app_bar.dart';
 import 'package:pilates_app/widgets/app_button.dart';
 import 'package:pilates_app/widgets/app_scaffold.dart';
 import 'package:pilates_app/widgets/app_text.dart';
+import 'package:pilates_app/widgets/app_loading_indicator.dart';
 
 import '../../../core/localization/localization_extension.dart';
 import '../../../core/mixins/resend_code_cooldown_mixin.dart';
@@ -250,7 +251,7 @@ class _SignUpOtpViewState extends State<SignUpOtpView>
                   const Positioned.fill(
                     child: ColoredBox(
                       color: Color(0x33000000),
-                      child: Center(child: CircularProgressIndicator()),
+                      child: const AppLoadingIndicator(),
                     ),
                   ),
               ],

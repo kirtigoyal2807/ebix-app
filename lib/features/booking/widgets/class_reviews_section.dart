@@ -12,6 +12,7 @@ import 'package:pilates_app/features/booking/data/models/reviews_list_result.dar
 import 'package:pilates_app/features/booking/data/reviews_repository.dart';
 import 'package:pilates_app/features/booking/widgets/trainer_average_stars.dart';
 import 'package:pilates_app/widgets/app_text.dart';
+import 'package:pilates_app/widgets/app_loading_indicator.dart';
 
 /// When [reviewableType] + [reviewableId] are set: `GET /reviews` (§14.1).
 ///
@@ -204,7 +205,7 @@ class _DynamicReviewsSectionState extends State<_DynamicReviewsSection> {
                 snapshot.data == null) {
               return const Padding(
                 padding: EdgeInsets.symmetric(vertical: 48),
-                child: Center(child: CircularProgressIndicator.adaptive()),
+                child: const AppLoadingIndicator(),
               );
             }
             final data = snapshot.data!;

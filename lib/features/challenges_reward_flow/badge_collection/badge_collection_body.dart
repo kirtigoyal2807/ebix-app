@@ -6,6 +6,7 @@ import 'package:pilates_app/features/challenges_reward_flow/badge_collection/wid
 import 'package:pilates_app/features/challenges_reward_flow/badge_collection/widget/filter_button.dart';
 import 'package:pilates_app/widgets/app_button.dart';
 import 'package:pilates_app/widgets/app_text.dart';
+import 'package:pilates_app/widgets/app_loading_indicator.dart';
 
 import '../../../config/theme/app_colors.dart';
 import '../../../config/theme/app_radius.dart';
@@ -43,7 +44,7 @@ class BadgeCollectionBody extends StatelessWidget {
                     state.badges.isEmpty)
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: AppSpacing.xxl),
-                    child: Center(child: CircularProgressIndicator()),
+                    child: const AppLoadingIndicator(),
                   )
                 else ...[
                   Row(

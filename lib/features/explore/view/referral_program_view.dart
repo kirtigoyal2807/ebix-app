@@ -8,6 +8,7 @@ import 'package:pilates_app/widgets/app_app_bar.dart';
 import 'package:pilates_app/widgets/app_text.dart';
 import 'package:pilates_app/widgets/app_text_field.dart';
 import 'package:pilates_app/widgets/phone_number_field.dart';
+import 'package:pilates_app/widgets/app_loading_indicator.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../config/theme/app_radius.dart';
@@ -200,7 +201,7 @@ class _ReferralProgramScaffoldState extends State<_ReferralProgramScaffold> {
                                 vertical: AppSpacing.xl,
                               ),
                               child: const Center(
-                                child: CircularProgressIndicator(),
+                                child: const AppInlineBusy(),
                               ),
                             );
                           }
@@ -302,7 +303,7 @@ class _ReferralProgramScaffoldState extends State<_ReferralProgramScaffold> {
         if (loading) {
           inner = Padding(
             padding: EdgeInsets.symmetric(vertical: AppSpacing.xl),
-            child: Center(child: CircularProgressIndicator()),
+            child: const AppLoadingIndicator(),
           );
         } else if (failedFirstLoad) {
           inner = Column(

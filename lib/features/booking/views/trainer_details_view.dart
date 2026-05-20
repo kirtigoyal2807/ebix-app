@@ -14,6 +14,7 @@ import 'package:pilates_app/features/booking/data/models/trainer_resource.dart';
 import 'package:pilates_app/features/booking/data/trainers_repository.dart';
 import 'package:pilates_app/features/home/cubit/home_cubit.dart';
 import 'package:pilates_app/widgets/app_app_bar.dart';
+import 'package:pilates_app/widgets/app_loading_indicator.dart';
 import 'package:pilates_app/widgets/app_text.dart';
 
 import '../../../config/theme/app_colors.dart';
@@ -454,7 +455,7 @@ class _TrainerDetailsApiRouteState extends State<_TrainerDetailsApiRoute> {
                           const Padding(
                             padding: EdgeInsets.symmetric(vertical: 24),
                             child: Center(
-                              child: CircularProgressIndicator.adaptive(),
+                              child: AppInlineBusy(size: 28),
                             ),
                           )
                         else if (classesRes != null &&

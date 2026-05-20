@@ -8,6 +8,7 @@ import 'package:pilates_app/features/invoice_history/cubit/invoice_history_state
 import 'package:pilates_app/features/invoice_history/data/models/invoice_resource.dart';
 import 'package:pilates_app/features/invoice_history/widget/empty_data_view.dart';
 import 'package:pilates_app/features/invoice_history/widget/invoice_history_card.dart';
+import 'package:pilates_app/widgets/app_loading_indicator.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class InvoiceListPanel extends StatelessWidget {
@@ -133,7 +134,7 @@ class InvoiceListPanel extends StatelessWidget {
       builder: (context, state) {
         if (state.loadStatus == InvoicesLoadStatus.loading &&
             state.invoices.isEmpty) {
-          return const Center(child: CircularProgressIndicator.adaptive());
+          return const AppLoadingIndicator();
         }
 
         if (state.loadStatus == InvoicesLoadStatus.failure &&

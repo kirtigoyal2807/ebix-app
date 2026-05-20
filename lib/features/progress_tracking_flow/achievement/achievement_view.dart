@@ -12,6 +12,7 @@ import 'package:pilates_app/features/progress_tracking_flow/achievement/view/you
 import 'package:pilates_app/features/progress_tracking_flow/achievement/widget/achievement_card.dart';
 import 'package:pilates_app/widgets/app_button.dart';
 import 'package:pilates_app/widgets/app_text.dart';
+import 'package:pilates_app/widgets/app_loading_indicator.dart';
 
 import '../../../config/theme/app_radius.dart';
 import '../../../config/theme/app_spacing.dart';
@@ -37,7 +38,7 @@ class AchievementView extends StatelessWidget {
       builder: (context, state) {
         if (state.status == LoyaltyAchievementsStatus.loading &&
             state.data == null) {
-          return const Center(child: CircularProgressIndicator());
+          return const AppLoadingIndicator();
         }
         if (state.status == LoyaltyAchievementsStatus.failure &&
             state.data == null) {

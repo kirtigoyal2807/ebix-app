@@ -11,6 +11,7 @@ import 'package:pilates_app/features/loyalty/data/loyalty_repository.dart';
 import 'package:pilates_app/features/loyalty/data/models/loyalty_tier.dart';
 import 'package:pilates_app/widgets/app_app_bar.dart';
 import 'package:pilates_app/widgets/app_text.dart';
+import 'package:pilates_app/widgets/app_loading_indicator.dart';
 
 /// Loyalty tier catalog from [LoyaltyRepository.getTiers] (`GET loyalty/tiers`).
 class LoyaltyTiersView extends StatelessWidget {
@@ -42,7 +43,7 @@ class _LoyaltyTiersScaffold extends StatelessWidget {
           switch (state.status) {
             case LoyaltyTiersLoadStatus.initial:
             case LoyaltyTiersLoadStatus.loading:
-              return const Center(child: CircularProgressIndicator());
+              return const AppLoadingIndicator();
             case LoyaltyTiersLoadStatus.failure:
               return Center(
                 child: Padding(

@@ -9,6 +9,7 @@ import 'package:pilates_app/features/progress_tracking_flow/achievement/cubit/lo
 import 'package:pilates_app/features/progress_tracking_flow/achievement/cubit/loyalty_achievements_state.dart';
 import 'package:pilates_app/widgets/app_button.dart';
 import 'package:pilates_app/widgets/app_text.dart';
+import 'package:pilates_app/widgets/app_loading_indicator.dart';
 
 import '../../../../config/theme/app_colors.dart';
 import '../../../../config/theme/app_radius.dart';
@@ -46,7 +47,7 @@ class YourJourneyView extends StatelessWidget {
           final data = state.data;
           if (state.status == LoyaltyAchievementsStatus.loading &&
               data == null) {
-            return const Center(child: CircularProgressIndicator());
+            return const AppLoadingIndicator();
           }
           if (data == null) {
             return Center(

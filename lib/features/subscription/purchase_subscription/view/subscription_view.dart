@@ -30,6 +30,7 @@ import 'package:pilates_app/widgets/app_app_bar.dart';
 import 'package:pilates_app/widgets/app_button.dart';
 import 'package:pilates_app/widgets/app_text.dart';
 import 'package:pilates_app/widgets/inline_validation_banner.dart';
+import 'package:pilates_app/widgets/app_loading_indicator.dart';
 
 import '../../subscription_as_gift/gift_subscription_view.dart';
 
@@ -321,7 +322,7 @@ class _PlanSelectionStepState extends State<_PlanSelectionStep> {
       context: context,
       barrierDismissible: false,
       builder: (dialogContext) =>
-          const Center(child: CircularProgressIndicator()),
+          const AppLoadingIndicator(),
     );
 
     state = cubit.state;
@@ -545,11 +546,7 @@ class _PlanSelectionStepState extends State<_PlanSelectionStep> {
                             vertical: AppSpacing.md,
                           ),
                           child: Center(
-                            child: SizedBox(
-                              width: 28,
-                              height: 28,
-                              child: CircularProgressIndicator(strokeWidth: 2),
-                            ),
+                            child: AppInlineBusy(size: 28),
                           ),
                         )
                       else if (_branchesLoadFailed)
@@ -627,11 +624,7 @@ class _PlanSelectionStepState extends State<_PlanSelectionStep> {
                       vertical: AppSpacing.lg,
                     ),
                     child: Center(
-                      child: SizedBox(
-                        width: 28,
-                        height: 28,
-                        child: CircularProgressIndicator(strokeWidth: 2),
-                      ),
+                      child: AppInlineBusy(size: 28),
                     ),
                   )
                 else

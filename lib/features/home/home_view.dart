@@ -8,6 +8,7 @@ import 'package:pilates_app/core/localization/localization_extension.dart';
 import 'package:pilates_app/features/explore/view/redeem_card_view.dart';
 import 'package:pilates_app/features/explore/widget/receive_gift_sheet.dart';
 import 'package:pilates_app/widgets/app_text.dart';
+import 'package:pilates_app/widgets/app_loading_indicator.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../account/account_view.dart';
 import '../auth/cubit/auth_cubit.dart';
@@ -410,7 +411,7 @@ class HomeContentView extends StatelessWidget {
       builder: (context, state) {
         if (state.loadStatus == HomeLoadStatus.initial ||
             state.loadStatus == HomeLoadStatus.loading) {
-          return const Center(child: CircularProgressIndicator());
+          return const AppLoadingIndicator();
         }
         if (state.loadStatus == HomeLoadStatus.failure && state.data == null) {
           return Center(

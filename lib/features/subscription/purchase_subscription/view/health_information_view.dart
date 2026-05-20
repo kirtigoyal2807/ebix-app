@@ -23,6 +23,7 @@ import 'package:pilates_app/widgets/app_text.dart';
 import 'package:pilates_app/widgets/app_text_field.dart';
 import 'package:pilates_app/widgets/inline_validation_banner.dart';
 import 'package:pilates_app/widgets/phone_number_field.dart';
+import 'package:pilates_app/widgets/app_loading_indicator.dart';
 
 class HealthInformationView extends StatefulWidget {
   const HealthInformationView({super.key});
@@ -417,13 +418,7 @@ class _HealthInformationViewState extends State<HealthInformationView> {
                                     bottom: AppSpacing.md,
                                   ),
                                   child: Center(
-                                    child: SizedBox(
-                                      width: 24,
-                                      height: 24,
-                                      child: CircularProgressIndicator(
-                                        strokeWidth: 2,
-                                      ),
-                                    ),
+                                    child: AppInlineBusy(size: 24),
                                   ),
                                 ),
                               AppTextField(

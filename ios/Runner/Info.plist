@@ -39,6 +39,8 @@
 	<string>We use your location to suggest the nearest branch for you.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>We use your location to suggest the nearest branch for you.</string>
+	<key>NSUserNotificationsUsageDescription</key>
+	<string>We send reminders about your classes, bookings, and account updates.</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

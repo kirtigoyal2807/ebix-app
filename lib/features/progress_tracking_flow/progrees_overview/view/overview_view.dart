@@ -9,6 +9,7 @@ import 'package:pilates_app/core/localization/localization_extension.dart';
 import 'package:pilates_app/features/progress_tracking_flow/data/models/progress_goal_settings.dart';
 import 'package:pilates_app/features/progress_tracking_flow/progrees_overview/cubit/progress_goal_cubit.dart';
 import 'package:pilates_app/features/progress_tracking_flow/progrees_overview/cubit/progress_goal_state.dart';
+import 'package:pilates_app/widgets/app_loading_indicator.dart';
 import 'package:pilates_app/widgets/app_text.dart';
 
 import '../widget/goal_progress.dart';
@@ -80,13 +81,7 @@ class OverviewView extends StatelessWidget {
                       return SizedBox(
                         height: 96,
                         child: Center(
-                          child: CircularProgressIndicator.adaptive(
-                            valueColor: AlwaysStoppedAnimation(
-                              isDark
-                                  ? AppColors.languageIconDark
-                                  : AppColors.languageIcon,
-                            ),
-                          ),
+                          child: const AppLoadingIndicator(centered: false),
                         ),
                       );
                     }

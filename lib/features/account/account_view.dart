@@ -12,6 +12,7 @@ import 'package:pilates_app/features/account/widget/profile_card.dart';
 import 'package:pilates_app/features/auth/cubit/auth_cubit.dart';
 import 'package:pilates_app/features/auth/cubit/auth_state.dart';
 import 'package:pilates_app/widgets/app_app_bar.dart';
+import 'package:pilates_app/widgets/blocking_loading_overlay.dart';
 
 import '../../config/theme/app_radius.dart';
 import '../../core/localization/localization_extension.dart';
@@ -111,10 +112,7 @@ class AccountView extends StatelessWidget {
                   ),
                 ),
               ),
-              if (loading)
-                const Positioned.fill(
-                  child: Center(child: CircularProgressIndicator()),
-                ),
+              if (loading) const BlockingLoadingOverlay(),
             ],
           ),
         );

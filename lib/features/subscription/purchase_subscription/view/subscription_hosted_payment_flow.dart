@@ -9,6 +9,7 @@ import 'package:pilates_app/features/checkout/data/checkout_repository.dart';
 import 'package:pilates_app/features/checkout/data/models/checkout_payment_intent_result.dart';
 import 'package:pilates_app/features/subscription/purchase_subscription/data/subscription_health_intake_request.dart';
 import 'package:pilates_app/features/subscription/purchase_subscription/cubit/subscription_cubit.dart';
+import 'package:pilates_app/widgets/app_loading_indicator.dart';
 
 Future<void> pushSubscriptionReceiptScreen(
   BuildContext context,
@@ -55,7 +56,7 @@ Future<void> runSubscriptionHostedPaymentFlow(
     context: context,
     barrierDismissible: false,
     builder: (dialogContext) =>
-        const Center(child: CircularProgressIndicator()),
+        const AppLoadingIndicator(),
   );
 
   final requiresIntake = cubit.state.selectedProductRequiresHealthIntake;
@@ -142,7 +143,7 @@ Future<void> runSubscriptionHostedPaymentFlow(
         context: context,
         barrierDismissible: false,
         builder: (dialogContext) =>
-            const Center(child: CircularProgressIndicator()),
+            const AppLoadingIndicator(),
       );
       try {
         await pushSubscriptionReceiptScreen(

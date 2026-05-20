@@ -15,6 +15,7 @@ import 'package:pilates_app/features/subscription/purchase_subscription/data/sub
 import 'package:pilates_app/features/subscription/purchase_subscription/cubit/subscription_cubit.dart';
 import 'package:pilates_app/features/subscription/purchase_subscription/view/subscription_hosted_payment_flow.dart';
 import 'package:pilates_app/widgets/app_button.dart';
+import 'package:pilates_app/widgets/app_loading_indicator.dart';
 import 'package:pilates_app/widgets/app_dropdown.dart';
 import 'package:pilates_app/widgets/app_text.dart';
 import 'package:pilates_app/widgets/app_text_field.dart';
@@ -658,11 +659,7 @@ class _RequiredInformationViewState extends State<RequiredInformationView> {
             child: AbsorbPointer(
               child: ColoredBox(
                 color: Colors.black.withValues(alpha: 0.25),
-                child: Center(
-                  child: CircularProgressIndicator(
-                    color: isDark ? AppColors.primary : AppColors.primaryBrown,
-                  ),
-                ),
+                child: const AppLoadingIndicator(),
               ),
             ),
           ),

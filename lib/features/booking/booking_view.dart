@@ -12,6 +12,7 @@ import 'package:pilates_app/features/booking/data/trainers_repository.dart';
 import 'package:pilates_app/features/home/cubit/home_cubit.dart';
 import 'package:pilates_app/features/home/cubit/home_state.dart';
 import 'package:pilates_app/features/booking/views/trainer_view.dart';
+import 'package:pilates_app/widgets/app_loading_indicator.dart';
 import 'package:pilates_app/widgets/app_text.dart';
 import 'cubit/booking_cubit.dart';
 import 'cubit/booking_state.dart';
@@ -192,7 +193,7 @@ class _ClassesTab extends StatelessWidget {
           child: BlocBuilder<ClassesCubit, ClassesState>(
             builder: (context, classesState) {
               if (classesState.isLoading && classesState.allClasses.isEmpty) {
-                return const Center(child: CircularProgressIndicator());
+                return const AppLoadingIndicator();
               }
 
               if (classesState.hasError && classesState.allClasses.isEmpty) {
@@ -226,11 +227,17 @@ class _ClassesTab extends StatelessWidget {
                       ),
                     ),
                     if (classesState.isLoading)
-                      const Positioned(
+                      Positioned(
                         top: 0,
                         left: 0,
                         right: 0,
-                        child: LinearProgressIndicator(minHeight: 3),
+                        child: LinearProgressIndicator(
+                          minHeight: 3,
+                          color: AppLoadingColors.indicator,
+                          backgroundColor: isDark
+                              ? AppColors.progressBGColor
+                              : AppColors.darkGreyBorder,
+                        ),
                       ),
                   ],
                 ),

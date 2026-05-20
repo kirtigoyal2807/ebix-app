@@ -50,6 +50,9 @@ post_install do |installer|
       unless defs.include?('PERMISSION_LOCATION_WHENINUSE=1')
         defs << 'PERMISSION_LOCATION_WHENINUSE=1'
       end
+      unless defs.include?('PERMISSION_NOTIFICATIONS=1')
+        defs << 'PERMISSION_NOTIFICATIONS=1'
+      end
       config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] = defs
     end
   end
