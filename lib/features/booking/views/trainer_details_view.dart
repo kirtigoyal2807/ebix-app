@@ -66,6 +66,51 @@ void _openBrowseAllClasses(BuildContext context) {
   }
 }
 
+/// Scroll padding so content is not hidden behind the sticky bottom bar.
+const _kTrainerDetailsBottomBarScrollPadding = 72.0;
+
+class _TrainerBrowseAllClassesBottomBar extends StatelessWidget {
+  const _TrainerBrowseAllClassesBottomBar({required this.onPressed});
+
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: Padding(
+        padding: EdgeInsets.fromLTRB(
+          AppSpacing.lg,
+          AppSpacing.sm,
+          AppSpacing.lg,
+          AppSpacing.md,
+        ),
+        child: SizedBox(
+          width: double.infinity,
+          child: FilledButton(
+            style: FilledButton.styleFrom(
+              backgroundColor: AppColors.primary,
+              foregroundColor: AppColors.whiteColor,
+              padding: const EdgeInsets.symmetric(vertical: 14),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(AppRadius.md),
+              ),
+            ),
+            onPressed: onPressed,
+            child: AppText(
+              context.l10n.browseAllClasses,
+              textAlign: TextAlign.center,
+              maxLines: 2,
+              style: (c) => AppTextStyles.boldBody(
+                c,
+              ).copyWith(color: AppColors.whiteColor, fontSize: 16),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 /// Trainer profile: pass [trainer] from §12.1 list for API-backed details (`GET /trainers/{id}`).
 /// Omit [trainer] to keep the legacy marketing/demo layout (home shortcuts).
 class TrainerDetailsView extends StatelessWidget {
@@ -207,37 +252,8 @@ class _TrainerDetailsApiRouteState extends State<_TrainerDetailsApiRoute> {
             isMoreMenu: false,
             onBack: () => Navigator.of(context).pop(),
           ),
-          bottomNavigationBar: SafeArea(
-            child: Padding(
-              padding: EdgeInsets.fromLTRB(
-                AppSpacing.lg,
-                AppSpacing.sm,
-                AppSpacing.lg,
-                AppSpacing.md,
-              ),
-              child: SizedBox(
-                width: double.infinity,
-                child: FilledButton(
-                  style: FilledButton.styleFrom(
-                    backgroundColor: AppColors.primary,
-                    foregroundColor: AppColors.whiteColor,
-                    padding: const EdgeInsets.symmetric(vertical: 14),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(AppRadius.md),
-                    ),
-                  ),
-                  onPressed: () => _ensureUpcomingClassesVisible(animate: true),
-                  child: AppText(
-                    context.l10n.viewUpcomingClasses,
-                    textAlign: TextAlign.center,
-                    maxLines: 2,
-                    style: (c) => AppTextStyles.boldBody(
-                      c,
-                    ).copyWith(color: AppColors.whiteColor, fontSize: 16),
-                  ),
-                ),
-              ),
-            ),
+          bottomNavigationBar: _TrainerBrowseAllClassesBottomBar(
+            onPressed: () => _openBrowseAllClasses(context),
           ),
           body: RefreshIndicator(
             onRefresh: () async {
@@ -475,7 +491,7 @@ class _TrainerDetailsApiRouteState extends State<_TrainerDetailsApiRoute> {
                             BookingClassCard.fromSlot(slot),
                             SizedBox(height: AppSpacing.md),
                           ],
-                        SizedBox(height: AppSpacing.xl),
+                        SizedBox(height: _kTrainerDetailsBottomBarScrollPadding),
                       ],
                     ),
                   ),
@@ -838,39 +854,13 @@ class _TrainerDetailsDemoView extends StatelessWidget {
         isMoreMenu: false,
         onBack: () => Navigator.of(context).pop(),
       ),
-      bottomNavigationBar: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.fromLTRB(
-            AppSpacing.lg,
-            AppSpacing.sm,
-            AppSpacing.lg,
-            AppSpacing.md,
-          ),
-          child: SizedBox(
-            width: double.infinity,
-            child: FilledButton(
-              style: FilledButton.styleFrom(
-                backgroundColor: AppColors.primary,
-                foregroundColor: AppColors.whiteColor,
-                padding: const EdgeInsets.symmetric(vertical: 14),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(AppRadius.md),
-                ),
-              ),
-              onPressed: () => _openBrowseAllClasses(context),
-              child: AppText(
-                context.l10n.browseAllClasses,
-                textAlign: TextAlign.center,
-                maxLines: 2,
-                style: (c) => AppTextStyles.boldBody(
-                  c,
-                ).copyWith(color: AppColors.whiteColor, fontSize: 16),
-              ),
-            ),
-          ),
-        ),
+      bottomNavigationBar: _TrainerBrowseAllClassesBottomBar(
+        onPressed: () => _openBrowseAllClasses(context),
       ),
       body: SingleChildScrollView(
+        padding: const EdgeInsets.only(
+          bottom: _kTrainerDetailsBottomBarScrollPadding,
+        ),
         child: Padding(
           padding: EdgeInsets.symmetric(vertical: AppSpacing.sm),
           child: Column(
