@@ -23,7 +23,7 @@ class RedeemCardView extends StatelessWidget {
   const RedeemCardView({
     super.key,
     this.pendingGift,
-    this.onRedeemed,
+    this.onRedeemSuccess,
     this.routePopsAfterSuccessModal = 1,
   });
 
@@ -33,9 +33,9 @@ class RedeemCardView extends StatelessWidget {
   /// opens the manual code-entry bottom sheet.
   final PendingGift? pendingGift;
 
-  /// Optional callback fired after the success sheet's Continue is tapped — e.g.
-  /// to refresh the profile so `pendingGift` clears from `/customers/profile`.
-  final VoidCallback? onRedeemed;
+  /// Optional callback fired once when `POST /gifts/redeem` succeeds — before
+  /// the success sheet is shown (e.g. silent home + `/auth/me` refresh).
+  final VoidCallback? onRedeemSuccess;
 
   /// How many routes to pop after the success modal is closed (not counting the
   /// modal). Use `2` when this screen was opened on top of [ReceiveGiftSheet]
@@ -48,7 +48,7 @@ class RedeemCardView extends StatelessWidget {
 
     final body = _RedeemCardBody(
       pendingGift: pendingGift,
-      onRedeemed: onRedeemed,
+      onRedeemSuccess: onRedeemSuccess,
     );
 
     final scaffold = Container(
@@ -97,7 +97,7 @@ class RedeemCardView extends StatelessWidget {
             ),
             child: _RedeemButton(
               pendingGift: pendingGift,
-              onRedeemed: onRedeemed,
+              onRedeemSuccess: onRedeemSuccess,
               routePopsAfterSuccessModal: routePopsAfterSuccessModal,
             ),
           ),
@@ -116,10 +116,13 @@ class RedeemCardView extends StatelessWidget {
 }
 
 class _RedeemCardBody extends StatelessWidget {
-  const _RedeemCardBody({required this.pendingGift, required this.onRedeemed});
+  const _RedeemCardBody({
+    required this.pendingGift,
+    required this.onRedeemSuccess,
+  });
 
   final PendingGift? pendingGift;
-  final VoidCallback? onRedeemed;
+  final VoidCallback? onRedeemSuccess;
 
   @override
   Widget build(BuildContext context) {
@@ -424,12 +427,12 @@ class _MessageCard extends StatelessWidget {
 class _RedeemButton extends StatelessWidget {
   const _RedeemButton({
     required this.pendingGift,
-    required this.onRedeemed,
+    required this.onRedeemSuccess,
     required this.routePopsAfterSuccessModal,
   });
 
   final PendingGift? pendingGift;
-  final VoidCallback? onRedeemed;
+  final VoidCallback? onRedeemSuccess;
   final int routePopsAfterSuccessModal;
 
   @override
@@ -456,10 +459,10 @@ class _RedeemButton extends StatelessWidget {
       listener: (context, state) {
         if (state.successPending) {
           context.read<RedeemGiftCubit>().consumeSuccess();
+          onRedeemSuccess?.call();
           _showSuccessSheet(
             context,
             routePopsAfterSuccessModal: routePopsAfterSuccessModal,
-            onRedeemed: onRedeemed,
           );
         } else if (state.serverError != null && state.serverError!.isNotEmpty) {
           ScaffoldMessenger.of(
@@ -483,7 +486,6 @@ class _RedeemButton extends StatelessWidget {
   void _showSuccessSheet(
     BuildContext context, {
     required int routePopsAfterSuccessModal,
-    required VoidCallback? onRedeemed,
   }) {
     showModalBottomSheet<void>(
       context: context,
@@ -501,7 +503,6 @@ class _RedeemButton extends StatelessWidget {
             Navigator.of(context).pop();
             remaining--;
           }
-          onRedeemed?.call();
         },
       ),
     );

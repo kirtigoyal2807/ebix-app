@@ -313,10 +313,16 @@ class _PendingGiftPopupTriggerState extends State<_PendingGiftPopupTrigger> {
               builder: (_) => RedeemCardView(
                 pendingGift: gift,
                 routePopsAfterSuccessModal: 2,
-                onRedeemed: () {
-                  context
-                      .read<AuthCubit>()
-                      .refreshProfileWhenSelectingAccountTab();
+                onRedeemSuccess: () {
+                  unawaited(
+                    context
+                        .read<HomeCubit>()
+                        .refreshHomeAndProfileSilently()
+                        .then((_) {
+                      if (!context.mounted) return;
+                      context.read<AuthCubit>().syncUserFromStorage();
+                    }),
+                  );
                 },
               ),
             ),
