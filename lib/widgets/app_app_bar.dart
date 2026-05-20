@@ -30,6 +30,8 @@ class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
       forceMaterialTransparency: true,
       backgroundColor: isDark ? AppColors.homeBackground : AppColors.whiteColor,
       scrolledUnderElevation: 0,
+      // Only show back when [onBack] / [leading] is set — never Material's implied back.
+      automaticallyImplyLeading: false,
       leading: leading ??
           (onBack != null
               ? IconButton(

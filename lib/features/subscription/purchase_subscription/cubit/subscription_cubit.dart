@@ -59,10 +59,36 @@ class SubscriptionCubit extends Cubit<SubscriptionState> {
     final planChanged = planId != state.selectedPlanId;
     final intakeChanged =
         nextIntake != state.selectedProductRequiresHealthIntake;
-    final clearQuestionnaire = !nextIntake || planChanged || intakeChanged;
 
-    if (clearQuestionnaire) {
+    if (planChanged) {
       _cachedQuestionnaireProductId = null;
+      _deferredReceiptPaymentIntent = null;
+      _deferredReceiptGatewayCallback = null;
+      emit(
+        _resolveHealthWizardState(
+          _freshWizardState(
+            state,
+            selectedPlanId: planId,
+            selectedProductRequiresHealthIntake: nextIntake,
+            currentStep: 0,
+          ),
+        ),
+      );
+      return;
+    }
+
+    if (intakeChanged) {
+      _cachedQuestionnaireProductId = null;
+      emit(
+        _resolveHealthWizardState(
+          _freshWizardState(
+            state,
+            selectedPlanId: planId,
+            selectedProductRequiresHealthIntake: nextIntake,
+          ),
+        ),
+      );
+      return;
     }
 
     emit(
@@ -70,21 +96,6 @@ class SubscriptionCubit extends Cubit<SubscriptionState> {
         state.copyWith(
           selectedPlanId: planId,
           selectedProductRequiresHealthIntake: nextIntake,
-          healthQuestionnaireQuestions: clearQuestionnaire
-              ? const []
-              : state.healthQuestionnaireQuestions,
-          healthQuestionnaireId: clearQuestionnaire
-              ? null
-              : state.healthQuestionnaireId,
-          healthQuestionnaireAnswers: clearQuestionnaire
-              ? const {}
-              : state.healthQuestionnaireAnswers,
-          healthQuestionnaireAnswerNotes: clearQuestionnaire
-              ? const {}
-              : state.healthQuestionnaireAnswerNotes,
-          personalInformationDynamicFields: clearQuestionnaire
-              ? const {}
-              : state.personalInformationDynamicFields,
         ),
       ),
     );
@@ -136,17 +147,12 @@ class SubscriptionCubit extends Cubit<SubscriptionState> {
     _deferredReceiptGatewayCallback = null;
     emit(
       _resolveHealthWizardState(
-        state.copyWith(
+        _freshWizardState(
+          state,
           checkoutSessionId: sessionId,
           checkoutProductId: productId,
-          deferPaymentReceiptPending: false,
           selectedProductRequiresHealthIntake:
               requiresHealthIntake ?? state.selectedProductRequiresHealthIntake,
-          healthQuestionnaireQuestions: const [],
-          healthQuestionnaireId: null,
-          healthQuestionnaireAnswers: const {},
-          healthQuestionnaireAnswerNotes: const {},
-          personalInformationDynamicFields: const {},
         ),
       ),
     );
@@ -560,7 +566,7 @@ class SubscriptionCubit extends Cubit<SubscriptionState> {
   }
 
   void previousStep() {
-    if (state.currentStep <= 0) {
+    if (state.currentStep <= 0 || state.currentStep >= 10) {
       return;
     }
     var step = state.currentStep - 1;
@@ -783,4 +789,33 @@ class SubscriptionCubit extends Cubit<SubscriptionState> {
   void updateIdType(String val) => emit(state.copyWith(idType: val));
 
   void updateIdNumber(String val) => emit(state.copyWith(idNumber: val));
+
+  /// Clears checkout wizard answers/consents; keeps plan, branch, gift, and step.
+  ///
+  /// Used when the user picks a different plan or starts a new checkout session so
+  /// health intake, declaration, terms, and emergency contact do not carry over.
+  SubscriptionState _freshWizardState(
+    SubscriptionState base, {
+    String? selectedPlanId,
+    int? selectedBranchId,
+    bool? isGift,
+    int? currentStep,
+    bool? selectedProductRequiresHealthIntake,
+    String? checkoutSessionId,
+    int? checkoutProductId,
+    SubscriptionStatus? status,
+  }) {
+    return SubscriptionState(
+      status: status ?? base.status,
+      selectedPlanId: selectedPlanId ?? base.selectedPlanId,
+      selectedBranchId: selectedBranchId ?? base.selectedBranchId,
+      isGift: isGift ?? base.isGift,
+      currentStep: currentStep ?? base.currentStep,
+      selectedProductRequiresHealthIntake:
+          selectedProductRequiresHealthIntake ??
+          base.selectedProductRequiresHealthIntake,
+      checkoutSessionId: checkoutSessionId ?? '',
+      checkoutProductId: checkoutProductId ?? 0,
+    );
+  }
 }

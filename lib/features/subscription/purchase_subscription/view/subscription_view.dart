@@ -54,6 +54,19 @@ class SubscriptionView extends StatelessWidget {
 class _SubscriptionViewContent extends StatelessWidget {
   const _SubscriptionViewContent();
 
+  static List<Widget> _wizardSteps(Key wizardKey) => [
+        HealthInformationView(key: wizardKey),
+        MedicalHistoryView(key: wizardKey),
+        PhysicalActivityView(key: wizardKey),
+        PregnancyView(key: wizardKey),
+        GoalsView(key: wizardKey),
+        DeclarationView(key: wizardKey),
+        SafetyView(key: wizardKey),
+        TermsAndConditionsView(key: wizardKey),
+        ReviewScreenView(key: wizardKey),
+        RequiredInformationView(key: wizardKey),
+      ];
+
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
@@ -87,7 +100,12 @@ class _SubscriptionViewContent extends StatelessWidget {
           appBarTitle = l10n.subscriptionTitle;
         }
 
-        return Scaffold(
+        // Step 10: emergency contact + ID — mandatory; no back navigation.
+        final isMandatoryRequiredInfoStep = state.currentStep == 10;
+
+        return PopScope(
+          canPop: !isMandatoryRequiredInfoStep,
+          child: Scaffold(
           // Plan details (step 9) has voucher + text fields — must resize with keyboard.
           resizeToAvoidBottomInset: true,
           backgroundColor: isDark
@@ -96,33 +114,35 @@ class _SubscriptionViewContent extends StatelessWidget {
           appBar: AppAppBar(
             title: appBarTitle,
             isMoreMenu: false,
-            onBack: () {
-              if (state.currentStep > 0) {
-                context.read<SubscriptionCubit>().previousStep();
-              } else {
-                Navigator.of(context).pop();
-                // context.pop();
-              }
-            },
+            leading: isMandatoryRequiredInfoStep
+                ? const SizedBox.shrink()
+                : null,
+            onBack: isMandatoryRequiredInfoStep
+                ? null
+                : () {
+                    if (state.currentStep > 0) {
+                      context.read<SubscriptionCubit>().previousStep();
+                    } else {
+                      Navigator.of(context).pop();
+                    }
+                  },
           ),
           body: SafeArea(
             child: IndexedStack(
               index: state.currentStep,
               children: [
                 const _PlanSelectionStep(),
-                const HealthInformationView(),
-                const MedicalHistoryView(),
-                const PhysicalActivityView(), // Step 3
-                const PregnancyView(), // Step 4
-                const GoalsView(), // Step 5
-                const DeclarationView(), // Step 6
-                const SafetyView(),
-                const TermsAndConditionsView(),
-                const ReviewScreenView(),
-                const RequiredInformationView(),
+                // Remount wizard steps when plan or checkout session changes so
+                // local controllers do not show stale data after a plan switch.
+                ..._wizardSteps(
+                  ValueKey<String>(
+                    '${state.selectedPlanId}|${state.checkoutSessionId}',
+                  ),
+                ),
               ],
             ),
           ),
+        ),
         );
       },
     );

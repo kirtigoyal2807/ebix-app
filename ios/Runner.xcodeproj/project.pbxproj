@@ -499,6 +499,8 @@
 				DEVELOPMENT_TEAM = SH89WG45GM;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Runner/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "The Pilates";
+				INFOPLIST_KEY_CFBundleName = "The Pilates";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -683,6 +685,8 @@
 				DEVELOPMENT_TEAM = SH89WG45GM;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Runner/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "The Pilates";
+				INFOPLIST_KEY_CFBundleName = "The Pilates";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -707,6 +711,8 @@
 				DEVELOPMENT_TEAM = SH89WG45GM;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Runner/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "The Pilates";
+				INFOPLIST_KEY_CFBundleName = "The Pilates";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
