@@ -5,6 +5,7 @@ import 'package:pilates_app/config/theme/app_radius.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/core/localization/localization_extension.dart';
+import 'package:pilates_app/features/auth/data/models/branch.dart';
 import 'package:pilates_app/features/booking/cubit/classes_cubit.dart';
 import 'package:pilates_app/features/booking/cubit/classes_state.dart';
 import 'package:pilates_app/features/booking/data/models/class_slot_view_model.dart';
@@ -47,8 +48,8 @@ class BookingFilterChips extends StatelessWidget {
         return BlocBuilder<ClassesCubit, ClassesState>(
           builder: (context, classesState) {
             final slots = classesState.allSlots;
-            final branchOptions = _buildBranchOptions(
-              slots,
+            final branchOptions = _buildBranchOptionsFromApi(
+              state.branches,
               selectedBranch: state.selectedBranch,
             );
             final categoryOptions = _buildCategoryOptions(
@@ -121,10 +122,10 @@ class BookingFilterChips extends StatelessWidget {
                   ),
                   SizedBox(width: AppSpacing.sm),
                   _FilterChip(
-                    label: state.selectedBranch == 'All Branches'
+                    label: state.selectedBranch == kAllBranchesFilter
                         ? context.l10n.allBranches
                         : state.selectedBranch,
-                    isSelected: state.selectedBranch != 'All Branches',
+                    isSelected: state.selectedBranch != kAllBranchesFilter,
                     onTap: () => _showFilter(
                       context,
                       title: context.l10n.branch,
@@ -133,7 +134,7 @@ class BookingFilterChips extends StatelessWidget {
                       onSelect: cubit.setBranch,
                       labelBuilder: (opt) => _getBranchLabel(context, opt),
                     ),
-                    onClear: () => cubit.setBranch('All Branches'),
+                    onClear: () => cubit.setBranch(kAllBranchesFilter),
                   ),
                 ],
               ),
@@ -144,21 +145,20 @@ class BookingFilterChips extends StatelessWidget {
     );
   }
 
-  List<String> _buildBranchOptions(
-    List<ClassSlotViewModel> slots, {
+  /// Branch names from `GET /branches` via [BookingCubit.loadBranches].
+  List<String> _buildBranchOptionsFromApi(
+    List<Branch> branches, {
     required String selectedBranch,
   }) {
-    final branchSet = <String>{};
-    for (final slot in slots) {
-      final name = slot.branchName.trim();
-      if (name.isNotEmpty) {
-        branchSet.add(name);
-      }
-    }
-    final dynamicBranches = branchSet.toList()
+    final names = branches
+        .map((b) => b.title.trim())
+        .where((name) => name.isNotEmpty)
+        .toSet()
+        .toList()
       ..sort((a, b) => a.toLowerCase().compareTo(b.toLowerCase()));
-    final options = <String>['All Branches', ...dynamicBranches];
-    if (selectedBranch != 'All Branches' && !options.contains(selectedBranch)) {
+    final options = <String>[kAllBranchesFilter, ...names];
+    if (selectedBranch != kAllBranchesFilter &&
+        !options.contains(selectedBranch)) {
       options.add(selectedBranch);
     }
     return options;
@@ -278,22 +278,8 @@ class BookingFilterChips extends StatelessWidget {
   }
 
   String _getBranchLabel(BuildContext context, String opt) {
-    switch (opt) {
-      case 'All Branches':
-        return context.l10n.allBranches;
-      case 'Branch 1':
-        return context.l10n.branch1;
-      case 'Branch 2':
-        return context.l10n.branch2;
-      case 'Branch 3':
-        return context.l10n.branch3;
-      case 'Branch 4':
-        return context.l10n.branch4;
-      case 'Branch 5':
-        return context.l10n.branch5;
-      default:
-        return opt;
-    }
+    if (opt == kAllBranchesFilter) return context.l10n.allBranches;
+    return opt;
   }
 }
 

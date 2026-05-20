@@ -1,15 +1,21 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pilates_app/core/network/api_result.dart';
+import 'package:pilates_app/features/auth/data/auth_repository.dart';
 import 'booking_state.dart';
 
 class BookingCubit extends Cubit<BookingState> {
-  BookingCubit({this.initialTab = BookingTab.classes})
-    : super(
-        BookingState(
-          selectedTab: initialTab,
-          trainerTypeList: TrainerType.values,
-        ),
-      );
+  BookingCubit({
+    required AuthRepository authRepository,
+    this.initialTab = BookingTab.classes,
+  })  : _authRepository = authRepository,
+        super(
+          BookingState(
+            selectedTab: initialTab,
+            trainerTypeList: TrainerType.values,
+          ),
+        );
 
+  final AuthRepository _authRepository;
   final BookingTab initialTab;
 
   void setTab(BookingTab tab) {
@@ -34,6 +40,38 @@ class BookingCubit extends Cubit<BookingState> {
 
   void setGender(String gender) {
     emit(state.copyWith(selectedGender: gender));
+  }
+
+  /// `GET /branches` — options for the booking branch filter chip.
+  Future<void> loadBranches({bool force = false}) async {
+    if (!force &&
+        (state.branchesLoadStatus == BranchesLoadStatus.loading ||
+            state.branchesLoadStatus == BranchesLoadStatus.loaded)) {
+      return;
+    }
+
+    emit(state.copyWith(branchesLoadStatus: BranchesLoadStatus.loading));
+
+    final result = await _authRepository.listBranches(
+      queryParameters: const {'page': 1, 'per_page': 50},
+    );
+
+    if (isClosed) return;
+
+    switch (result) {
+      case ApiSuccess(:final data):
+        final branches = data.branches
+            .where((b) => b.isActive && b.title.trim().isNotEmpty)
+            .toList();
+        emit(
+          state.copyWith(
+            branches: branches,
+            branchesLoadStatus: BranchesLoadStatus.loaded,
+          ),
+        );
+      case ApiFailure():
+        emit(state.copyWith(branchesLoadStatus: BranchesLoadStatus.failure));
+    }
   }
 
   void loadClassDetails() {

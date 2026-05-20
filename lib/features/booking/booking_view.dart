@@ -4,6 +4,7 @@ import 'package:pilates_app/config/theme/app_colors.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/core/localization/localization_extension.dart';
+import 'package:pilates_app/features/auth/data/auth_repository.dart';
 import 'package:pilates_app/features/booking/cubit/classes_cubit.dart';
 import 'package:pilates_app/features/booking/cubit/classes_state.dart';
 import 'package:pilates_app/features/booking/data/classes_repository.dart';
@@ -31,7 +32,12 @@ class BookingView extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (_) => BookingCubit(initialTab: initialTab)),
+        BlocProvider(
+          create: (ctx) => BookingCubit(
+            initialTab: initialTab,
+            authRepository: ctx.read<AuthRepository>(),
+          ),
+        ),
         BlocProvider(
           create: (ctx) => TrainersCubit(ctx.read<TrainersRepository>()),
         ),
@@ -56,6 +62,7 @@ class BookingView extends StatelessWidget {
           if (homeState.currentIndex == 1 &&
               bookingCubit.state.selectedTab == BookingTab.classes) {
             final booking = bookingCubit.state;
+            bookingCubit.loadBranches();
             context.read<ClassesCubit>().load(
               search: booking.searchQuery.trim().isEmpty
                   ? null
@@ -78,6 +85,15 @@ class BookingBody extends StatefulWidget {
 
 class _BookingBodyState extends State<BookingBody> {
   @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      context.read<BookingCubit>().loadBranches();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
@@ -91,6 +107,7 @@ class _BookingBodyState extends State<BookingBody> {
                 previous.selectedTab != BookingTab.classes;
           },
           listener: (context, bookingState) {
+            context.read<BookingCubit>().loadBranches();
             context.read<ClassesCubit>().load(
               search: bookingState.searchQuery.trim().isEmpty
                   ? null
@@ -284,8 +301,8 @@ class _ClassesTab extends StatelessWidget {
   ) {
     var result = slots;
 
-    // Branch filter
-    if (state.selectedBranch != 'All Branches') {
+    // Branch filter (selected title from `GET /branches`)
+    if (state.selectedBranch != kAllBranchesFilter) {
       final selectedBranch = _normalizedToken(state.selectedBranch);
       result = result.where((s) {
         final branchName = _normalizedToken(s.branchName);
