@@ -149,6 +149,9 @@ class HomeFeaturedClass {
     required this.image,
     required this.spotsLeft,
     required this.inPlan,
+    required this.allowPackageBooking,
+    required this.allowSinglePurchase,
+    required this.upgradeRequired,
     this.calendarEventId,
     this.classId,
   });
@@ -160,12 +163,20 @@ class HomeFeaturedClass {
   final String? image;
   final int? spotsLeft;
   final bool? inPlan;
+  final bool? allowPackageBooking;
+  final bool? allowSinglePurchase;
+  final bool? upgradeRequired;
 
   /// Calendar event UUID from home payload (e.g. the featured slot).
   final String? calendarEventId;
 
   /// Class type UUID — required to open ClassDetailView (`GET /classes/{id}`).
   final String? classId;
+
+  /// Same rule as [ClassSlotViewModel.upgradeRequired] when API omits the flag.
+  bool get showsUpgradeRequired =>
+      upgradeRequired ??
+      (!(allowPackageBooking ?? false) && !(allowSinglePurchase ?? false));
 
   factory HomeFeaturedClass.fromJson(Map<String, dynamic> json) {
     final availability = _toMapOrNull(json['availability']);
@@ -178,6 +189,15 @@ class HomeFeaturedClass {
       image: resolveApiMediaUrl(json['image']?.toString()),
       spotsLeft: _toIntOrNull(availability?['spotsLeft']),
       inPlan: flags?['inPlan'] is bool ? flags!['inPlan'] as bool : null,
+      allowPackageBooking: flags?['allowPackageBooking'] is bool
+          ? flags!['allowPackageBooking'] as bool
+          : null,
+      allowSinglePurchase: flags?['allowSinglePurchase'] is bool
+          ? flags!['allowSinglePurchase'] as bool
+          : null,
+      upgradeRequired: flags?['upgradeRequired'] is bool
+          ? flags!['upgradeRequired'] as bool
+          : null,
       calendarEventId:
           json['calendarEventId']?.toString() ??
           json['calendar_event_id']?.toString() ??

@@ -48,7 +48,11 @@ void main() {
                       'branchName': 'Riyadh',
                       'startAt': '2026-05-02T10:00:00+03:00',
                       'availability': {'spotsLeft': 5},
-                      'flags': {'inPlan': true},
+                      'flags': {
+                        'inPlan': true,
+                        'allowPackageBooking': true,
+                        'upgradeRequired': false,
+                      },
                     },
                   ],
                   'classTypes': [
@@ -84,6 +88,8 @@ void main() {
       expect(data.banners, hasLength(1));
       expect(data.progress?.mtdAttendedClasses, 3);
       expect(data.featuredClasses.first.className, 'Reformer Flow');
+      expect(data.featuredClasses.first.allowPackageBooking, isTrue);
+      expect(data.featuredClasses.first.showsUpgradeRequired, isFalse);
       expect(data.classTypes, hasLength(1));
       expect(data.topTrainers, hasLength(1));
       expect(data.receivedGifts, hasLength(1));
