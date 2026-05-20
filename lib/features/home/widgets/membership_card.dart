@@ -7,6 +7,7 @@ import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/core/localization/localization_extension.dart';
 import 'package:pilates_app/widgets/app_text.dart';
 import '../../subscription/purchase_subscription/view/subscription_view.dart';
+import '../../view_subscription/view_subscription_view.dart';
 import '../cubit/home_state.dart';
 
 class MembershipCard extends StatelessWidget {
@@ -39,6 +40,16 @@ class MembershipCard extends StatelessWidget {
       return '$t ${context.l10n.classes}';
     }
     return context.l10n.unlimitedClasses;
+  }
+
+  void _onViewPlansPressed(BuildContext context) {
+    final Widget destination = status == HomeUserStatus.existing
+        ? const ViewSubscriptionView()
+        : const SubscriptionView();
+    Navigator.push<void>(
+      context,
+      MaterialPageRoute<void>(builder: (_) => destination),
+    );
   }
 
   @override
@@ -135,14 +146,7 @@ class MembershipCard extends StatelessWidget {
                           ),
                           SizedBox(height: AppSpacing.md),
                           ElevatedButton(
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => SubscriptionView(),
-                                ),
-                              );
-                            },
+                            onPressed: () => _onViewPlansPressed(context),
                             style: ElevatedButton.styleFrom(
                               backgroundColor: isDark
                                   ? AppColors.seekBarLight
@@ -242,12 +246,7 @@ class MembershipCard extends StatelessWidget {
             ),
           ),
           ElevatedButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => SubscriptionView()),
-              );
-            },
+            onPressed: () => _onViewPlansPressed(context),
             style: ElevatedButton.styleFrom(
               backgroundColor: isDark
                   ? AppColors.seekBarLight
