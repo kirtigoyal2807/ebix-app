@@ -7,6 +7,7 @@ import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/core/localization/localization_extension.dart';
 import 'package:pilates_app/widgets/app_text.dart';
 import '../../subscription/purchase_subscription/view/subscription_view.dart';
+import '../../view_subscription/view_subscription_view.dart';
 import '../cubit/home_state.dart';
 
 class MembershipCard extends StatelessWidget {
@@ -245,7 +246,9 @@ class MembershipCard extends StatelessWidget {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => SubscriptionView()),
+                MaterialPageRoute(
+                  builder: (context) => const ViewSubscriptionView(),
+                ),
               );
             },
             style: ElevatedButton.styleFrom(
@@ -264,7 +267,7 @@ class MembershipCard extends StatelessWidget {
               minimumSize: const Size(0, 32),
             ),
             child: AppText(
-              context.l10n.viewPlans,
+              context.l10n.view,
               style: (context) => AppTextStyles.boldBody(context).copyWith(
                 color: isDark ? AppColors.blackColor : AppColors.darkText,
                 fontSize: size.width * 0.035 > 14 ? 14 : size.width * 0.035,
