@@ -3115,6 +3115,12 @@ class AppLocalizationsAr extends AppLocalizations {
   String get signupLastNameHint => 'طاجب';
 
   @override
+  String get referralCode => 'رمز الإحالة';
+
+  @override
+  String get signupReferralCodeHint => 'أدخل الرمز';
+
+  @override
   String get pleaseSelectGender => 'يُرجى اختيار الجنس';
 
   @override

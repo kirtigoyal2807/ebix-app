@@ -5894,6 +5894,18 @@ abstract class AppLocalizations {
   /// **'Tajib'**
   String get signupLastNameHint;
 
+  /// No description provided for @referralCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Referral Code'**
+  String get referralCode;
+
+  /// No description provided for @signupReferralCodeHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter Code'**
+  String get signupReferralCodeHint;
+
   /// No description provided for @pleaseSelectGender.
   ///
   /// In en, this message translates to:

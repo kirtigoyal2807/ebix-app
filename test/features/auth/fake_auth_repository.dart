@@ -118,6 +118,7 @@ class FakeAuthRepository extends AuthRepository {
     required String password,
     RegisterGender? gender,
     DateTime? dob,
+    String referralCode = '',
   }) async {
     registerCalls++;
     lastRegisterEmail = email;

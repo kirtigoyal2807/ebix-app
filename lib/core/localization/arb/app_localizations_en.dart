@@ -3140,6 +3140,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get signupLastNameHint => 'Tajib';
 
   @override
+  String get referralCode => 'Referral Code';
+
+  @override
+  String get signupReferralCodeHint => 'Enter Code';
+
+  @override
   String get pleaseSelectGender => 'Please select your gender';
 
   @override

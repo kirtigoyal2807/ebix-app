@@ -803,6 +803,7 @@ class AuthCubit extends Cubit<AuthState> {
     required String password,
     RegisterGender? gender,
     DateTime? dob,
+    String referralCode = '',
   }) async {
     emit(
       state
@@ -832,6 +833,7 @@ class AuthCubit extends Cubit<AuthState> {
       password: password,
       gender: gender,
       dob: dob,
+      referralCode: referralCode,
     );
 
     switch (result) {

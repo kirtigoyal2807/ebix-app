@@ -85,12 +85,14 @@ class AuthRepository extends BaseRepository {
     required String password,
     RegisterGender? gender,
     DateTime? dob,
+    String referralCode = '',
   }) {
     final data = <String, dynamic>{
       'firstName': firstName.trim(),
       'email': email.trim(),
       'phone': phone.trim(),
       'password': password,
+      'referralCode': referralCode.trim(),
     };
     final ln = lastName?.trim();
     if (ln != null && ln.isNotEmpty) {

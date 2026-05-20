@@ -232,7 +232,6 @@ class _SignUpGoalViewState extends State<SignUpGoalView> {
                         ),
                       ),
 
-                      if (_selectedIndex != null)
                         // Sticky action button
                         Positioned(
                           left: 0,

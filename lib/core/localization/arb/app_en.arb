@@ -1335,6 +1335,8 @@
   "pleaseEnterFriendName": "Please enter your friend's name",
   "signupFirstNameHint": "Ayesha",
   "signupLastNameHint": "Tajib",
+  "referralCode": "Referral Code",
+  "signupReferralCodeHint": "Enter Code",
   "pleaseSelectGender": "Please select your gender",
   "pleaseSelectDateOfBirth": "Please select your date of birth",
   "forgotPasswordCodeSent": "A 6-digit code was sent to your email.",

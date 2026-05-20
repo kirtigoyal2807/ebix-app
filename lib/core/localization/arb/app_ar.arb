@@ -1339,6 +1339,8 @@
   "pleaseEnterFriendName": "يُرجى إدخال اسم صديقك",
   "signupFirstNameHint": "عائشة",
   "signupLastNameHint": "طاجب",
+  "referralCode": "رمز الإحالة",
+  "signupReferralCodeHint": "أدخل الرمز",
   "pleaseSelectGender": "يُرجى اختيار الجنس",
   "pleaseSelectDateOfBirth": "يُرجى اختيار تاريخ الميلاد",
   "forgotPasswordCodeSent": "تم إرسال رمز مكوّن من 6 أرقام إلى بريدك الإلكتروني.",
