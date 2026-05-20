@@ -129,7 +129,7 @@ class HomeCubit extends Cubit<HomeState> {
     }
   }
 
-  /// Refreshes both home and profile data silently without showing loading indicator.
+  /// Refreshes both home and user (`GET /auth/me`) silently without showing loading indicator.
   /// Used when clicking on home tab to refresh data in background.
   Future<void> refreshHomeAndProfileSilently() async {
     // Only refresh if we already have data (avoid loading state on initial load)
@@ -142,7 +142,7 @@ class HomeCubit extends Cubit<HomeState> {
     // Call both APIs in parallel
     final results = await Future.wait([
       _homeRepository.fetchHome(),
-      _authRepository.getProfile(),
+      _authRepository.getAuthMe(),
     ]);
 
     final homeResult = results[0] as ApiResult<HomeResponse>;

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -166,7 +168,12 @@ class _HomeShell extends StatelessWidget {
           homeCubit.setTab(index);
           // Refresh home and profile when switching to home tab (0) without loading indicator
           if (index == 0 && previousIndex != 0) {
-            homeCubit.refreshHomeAndProfileSilently();
+            unawaited(
+              homeCubit.refreshHomeAndProfileSilently().then((_) {
+                if (!context.mounted) return;
+                context.read<AuthCubit>().syncUserFromStorage();
+              }),
+            );
           }
           // Refresh profile when switching to account tab (3)
           if (index == 3 && previousIndex != 3) {
@@ -265,13 +272,16 @@ class _PendingGiftPopupTrigger extends StatefulWidget {
 class _PendingGiftPopupTriggerState extends State<_PendingGiftPopupTrigger> {
   String? _lastLocaleCode;
 
+  /// Avoid stacking multiple gift sheets when auth state updates repeatedly.
+  bool _pendingGiftSheetVisible = false;
+
   @override
   void initState() {
     super.initState();
     _lastLocaleCode = context.read<AuthCubit>().state.locale.languageCode;
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (!mounted) return;
-      await context.read<AuthCubit>().loadProfile();
+      await context.read<AuthCubit>().loadAuthMe();
       if (!mounted) return;
       _maybeShow(context.read<AuthCubit>().state);
     });
@@ -284,10 +294,12 @@ class _PendingGiftPopupTriggerState extends State<_PendingGiftPopupTrigger> {
     if (homeIndex != 0) return;
     final gift = state.user?.pendingGift;
     if (gift == null) return;
-    if (gift.canBeRedeemed != true) return;
-    final id = gift.id;
-    if (id == null || id.isEmpty) return;
+    if (gift.id == null || gift.id!.isEmpty) return;
+    if (gift.isRedeemed == true || gift.isExpired == true) return;
+    if (gift.canBeRedeemed == false) return;
+    if (_pendingGiftSheetVisible) return;
 
+    _pendingGiftSheetVisible = true;
     showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
@@ -300,6 +312,7 @@ class _PendingGiftPopupTriggerState extends State<_PendingGiftPopupTrigger> {
             MaterialPageRoute(
               builder: (_) => RedeemCardView(
                 pendingGift: gift,
+                routePopsAfterSuccessModal: 2,
                 onRedeemed: () {
                   context
                       .read<AuthCubit>()
@@ -310,25 +323,32 @@ class _PendingGiftPopupTriggerState extends State<_PendingGiftPopupTrigger> {
           );
         },
       ),
-    );
+    ).whenComplete(() {
+      _pendingGiftSheetVisible = false;
+    });
   }
 
   void _onLocaleChanged() {
     // Refresh home and profile when language changes (with loading indicator)
     context.read<HomeCubit>().refreshHomeWithLoading();
-    context.read<AuthCubit>().loadProfile();
+    context.read<AuthCubit>().loadAuthMe();
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocListener<AuthCubit, AuthState>(
       listenWhen: (previous, current) {
-        // Listen for pending gift changes OR locale changes
+        if (previous.locale.languageCode != current.locale.languageCode) {
+          return true;
+        }
         if (previous.user?.pendingGift?.id != current.user?.pendingGift?.id) {
           return true;
         }
-        if (previous.locale.languageCode != current.locale.languageCode) {
-          return true;
+        // Same gift id but user object replaced (e.g. [TokenStorage] sync after `/auth/me`).
+        if (!identical(previous.user, current.user)) {
+          final prevGift = previous.user?.pendingGift;
+          final nextGift = current.user?.pendingGift;
+          if (prevGift != null || nextGift != null) return true;
         }
         return false;
       },
@@ -472,7 +492,7 @@ class HomeContentView extends StatelessWidget {
                 onRefresh: () async {
                   await Future.wait<void>([
                     context.read<HomeCubit>().refreshHome(),
-                    context.read<AuthCubit>().loadProfile(),
+                    context.read<AuthCubit>().loadAuthMe(),
                   ]);
                 },
                 child: SingleChildScrollView(

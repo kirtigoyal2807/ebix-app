@@ -273,6 +273,38 @@ class AuthRepository extends BaseRepository {
     );
   }
 
+  /// Parses [`GET /auth/me`] envelope `data` — nested `user` / `customer` or a flat user map.
+  /// Pending gift may sit on the parent object while profile fields nest under `user`.
+  AuthUser _parseAuthMeUser(dynamic json) {
+    final outer = Map<String, dynamic>.from(json as Map);
+    Map<String, dynamic>? inner;
+    for (final key in const ['user', 'customer']) {
+      final blob = outer[key];
+      if (blob is Map) {
+        inner = Map<String, dynamic>.from(blob);
+        break;
+      }
+    }
+    if (inner != null) {
+      final combined = Map<String, dynamic>.from(inner);
+      if (!combined.containsKey('pendingGift') &&
+          !combined.containsKey('pending_gift')) {
+        final gift = outer['pendingGift'] ?? outer['pending_gift'];
+        if (gift != null) combined['pendingGift'] = gift;
+      }
+      return AuthUser.fromJson(combined);
+    }
+    return AuthUser.fromJson(outer);
+  }
+
+  /// Authenticated user — requires JWT. Used from home refresh; same [AuthUser] envelope as [getProfile].
+  Future<ApiResult<AuthUser>> getAuthMe() {
+    return get<AuthUser>(
+      'auth/me',
+      fromJson: _parseAuthMeUser,
+    );
+  }
+
   /// Update customer profile — `PUT /customers/profile`. All fields optional.
   /// Send only the fields the user changed. Returns the updated [AuthUser].
   /// When [avatarPath] is provided, uses `multipart/form-data`; otherwise JSON.

@@ -24,6 +24,7 @@ class AuthCubit extends Cubit<AuthState> {
 
   bool _logoutInFlight = false;
   Future<void>? _profileRefreshFuture;
+  Future<void>? _authMeRefreshFuture;
   bool _splashPendingConnectivity = false;
   bool _splashStarted = false;
 
@@ -1051,7 +1052,7 @@ class AuthCubit extends Cubit<AuthState> {
       return inFlight;
     }
 
-    final future = _loadProfile(token);
+    final future = _loadUser(token, _authRepository.getProfile);
     _profileRefreshFuture = future;
     return future.whenComplete(() {
       if (identical(_profileRefreshFuture, future)) {
@@ -1060,8 +1061,32 @@ class AuthCubit extends Cubit<AuthState> {
     });
   }
 
-  Future<void> _loadProfile(String token) async {
-    final result = await _authRepository.getProfile();
+  /// Loads the authenticated user via [`GET /auth/me`] (home shell / lightweight refresh).
+  Future<void> loadAuthMe() async {
+    final token = (_tokenStorage.readToken() ?? '').trim();
+    if (token.isEmpty) {
+      return;
+    }
+
+    final inFlight = _authMeRefreshFuture;
+    if (inFlight != null) {
+      return inFlight;
+    }
+
+    final future = _loadUser(token, _authRepository.getAuthMe);
+    _authMeRefreshFuture = future;
+    return future.whenComplete(() {
+      if (identical(_authMeRefreshFuture, future)) {
+        _authMeRefreshFuture = null;
+      }
+    });
+  }
+
+  Future<void> _loadUser(
+    String token,
+    Future<ApiResult<AuthUser>> Function() fetch,
+  ) async {
+    final result = await fetch();
     if (isClosed || (_tokenStorage.readToken() ?? '').trim() != token) {
       return;
     }
@@ -1077,12 +1102,21 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
-  /// Refreshes authenticated profile data on cold open and app resume.
+  /// Re-applies the latest [AuthUser] from [TokenStorage] to [state.user].
+  ///
+  /// Used when another layer persists user from [`GET /auth/me`] without going
+  /// through this cubit (e.g. [HomeCubit.refreshHomeAndProfileSilently]).
+  void syncUserFromStorage() {
+    if (isClosed || state.flow != AuthFlow.authenticated) return;
+    emit(state.copyWith(user: _tokenStorage.readUser()));
+  }
+
+  /// Refreshes authenticated user via [`GET /auth/me`] on cold open and app resume.
   Future<void> refreshProfileForAppOpenOrResume() async {
     if (state.flow != AuthFlow.authenticated) {
       return;
     }
-    await loadProfile();
+    await loadAuthMe();
   }
 
   /// [`GET /customers/profile`] after switching to the Account tab (not when already on it).

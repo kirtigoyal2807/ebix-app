@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pilates_app/config/theme/app_colors.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/core/localization/localization_extension.dart';
 import 'package:pilates_app/core/network/api_result.dart';
@@ -110,9 +111,12 @@ class _ChangeHomeBranchState extends State<ChangeHomeBranch> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final screenTitle = widget.title?.isNotEmpty == true
         ? widget.title!
         : context.l10n.changeHomeBranch;
+    final showUpdateButton =
+        !widget.readOnly && _selectedBranchId != null;
 
     return Scaffold(
       appBar: AppAppBar(
@@ -122,26 +126,57 @@ class _ChangeHomeBranchState extends State<ChangeHomeBranch> {
       ),
       body: Column(
         children: [
-          Expanded(child: _buildBranchesContent(context)),
-          if (!widget.readOnly)
-            Padding(
-              padding: EdgeInsets.only(
-                bottom: AppSpacing.md,
-                left: AppSpacing.lg,
-                right: AppSpacing.lg,
-              ),
-              child: AppButton(
-                label: context.l10n.updateHomeBranch,
-                variant: AppButtonVariant.primary,
-                isLoading: _isUpdatingHomeBranch,
-                onPressed:
-                    (_selectedBranchId == null ||
-                        _isLoadingBranches ||
-                        _isUpdatingHomeBranch)
-                    ? null
-                    : _updateHomeBranch,
-              ),
+          Expanded(
+            child: Stack(
+              children: [
+                _buildBranchesContent(context),
+                if (showUpdateButton)
+                  Positioned(
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    child: Container(
+                      height: AppSpacing.md + 52,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.bottomCenter,
+                          end: Alignment.topCenter,
+                          colors: isDark
+                              ? [
+                                  AppColors.darkShadow,
+                                  AppColors.darkShadow.withValues(alpha: 0),
+                                ]
+                              : [
+                                  Colors.white,
+                                  Colors.white.withValues(alpha: 0),
+                                ],
+                        ),
+                      ),
+                    ),
+                  ),
+                if (showUpdateButton)
+                  Positioned(
+                    left: 0,
+                    right: 0,
+                    bottom: AppSpacing.md,
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+                      child: AppButton(
+                        label: context.l10n.updateHomeBranch,
+                        variant: AppButtonVariant.primary,
+                        isLoading: _isUpdatingHomeBranch,
+                        onPressed:
+                            (_selectedBranchId == null ||
+                                _isLoadingBranches ||
+                                _isUpdatingHomeBranch)
+                            ? null
+                            : _updateHomeBranch,
+                      ),
+                    ),
+                  ),
+              ],
             ),
+          ),
         ],
       ),
     );
@@ -180,7 +215,11 @@ class _ChangeHomeBranchState extends State<ChangeHomeBranch> {
       return Center(child: Text(context.l10n.noBranchesAvailable));
     }
 
+    final showUpdateButton =
+        !widget.readOnly && _selectedBranchId != null;
+
     return SingleChildScrollView(
+      physics: const AlwaysScrollableScrollPhysics(),
       child: Padding(
         padding: EdgeInsets.symmetric(
           vertical: AppSpacing.md,
@@ -189,25 +228,30 @@ class _ChangeHomeBranchState extends State<ChangeHomeBranch> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
-          children: _branches
-              .map(
-                (branch) => Padding(
-                  padding: EdgeInsets.only(bottom: AppSpacing.base),
-                  child: BranchOption(
-                    title: branch.title,
-                    city: branch.city,
-                    distance: branch.distance,
-                    type: branch.typeLabel,
-                    imageUrl: branch.imageUrl,
-                    isOnBoarding: false,
-                    selected: _selectedBranchId == branch.id,
-                    onTap: widget.readOnly
-                        ? () {}
-                        : () => setState(() => _selectedBranchId = branch.id),
-                  ),
+          children: [
+            ..._branches.map(
+              (branch) => Padding(
+                padding: EdgeInsets.only(bottom: AppSpacing.base),
+                child: BranchOption(
+                  title: branch.title,
+                  city: branch.city,
+                  distance: branch.distance,
+                  type: branch.typeLabel,
+                  imageUrl: branch.imageUrl,
+                  isOnBoarding: false,
+                  selected: _selectedBranchId == branch.id,
+                  onTap: widget.readOnly
+                      ? () {}
+                      : () => setState(() => _selectedBranchId = branch.id),
                 ),
-              )
-              .toList(),
+              ),
+            ),
+            SizedBox(
+              height: showUpdateButton
+                  ? AppSpacing.xxxl * 2
+                  : AppSpacing.xxxl,
+            ),
+          ],
         ),
       ),
     );

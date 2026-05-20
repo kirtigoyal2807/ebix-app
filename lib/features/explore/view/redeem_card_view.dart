@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:lottie/lottie.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:pilates_app/config/theme/app_colors.dart';
 import 'package:pilates_app/config/theme/app_radius.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
@@ -18,7 +20,12 @@ import '../../../widgets/dotted_underline.dart';
 import '../widget/redeem_gift_card_sheet.dart';
 
 class RedeemCardView extends StatelessWidget {
-  const RedeemCardView({super.key, this.pendingGift, this.onRedeemed});
+  const RedeemCardView({
+    super.key,
+    this.pendingGift,
+    this.onRedeemed,
+    this.routePopsAfterSuccessModal = 1,
+  });
 
   /// When provided, the screen renders the actual gift content (sender/message/code)
   /// and the "Redeem Your Gift" button calls `POST /gifts/redeem` directly with
@@ -29,6 +36,11 @@ class RedeemCardView extends StatelessWidget {
   /// Optional callback fired after the success sheet's Continue is tapped — e.g.
   /// to refresh the profile so `pendingGift` clears from `/customers/profile`.
   final VoidCallback? onRedeemed;
+
+  /// How many routes to pop after the success modal is closed (not counting the
+  /// modal). Use `2` when this screen was opened on top of [ReceiveGiftSheet]
+  /// (pending gift on home); default `1` is only [RedeemCardView].
+  final int routePopsAfterSuccessModal;
 
   @override
   Widget build(BuildContext context) {
@@ -86,6 +98,7 @@ class RedeemCardView extends StatelessWidget {
             child: _RedeemButton(
               pendingGift: pendingGift,
               onRedeemed: onRedeemed,
+              routePopsAfterSuccessModal: routePopsAfterSuccessModal,
             ),
           ),
         ),
@@ -192,6 +205,13 @@ class _MessageCard extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final code = pendingGift?.redemptionCode?.trim();
     final hasCode = code != null && code.isNotEmpty;
+    final planDescriptionHtml = pendingGift?.plan?.description?.trim();
+    final baseCaption = AppTextStyles.captionText(context).copyWith(
+      color: isDark ? AppColors.lightText : AppColors.lightGrey,
+      height: 1.5,
+    );
+    final giftPlanIncludesMaxLinesHeight =
+        (baseCaption.fontSize ?? 12) * (baseCaption.height ?? 1.5) * 6;
 
     return Container(
       padding: EdgeInsets.all(AppSpacing.md),
@@ -225,16 +245,69 @@ class _MessageCard extends StatelessWidget {
             ).copyWith(height: 1.2),
           ),
           SizedBox(height: AppSpacing.base),
-          if (pendingGift?.plan?.description?.trim().isNotEmpty ?? false)
+          if (planDescriptionHtml != null && planDescriptionHtml.isNotEmpty)
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 4.0),
-              child: AppText(
-                pendingGift!.plan!.description!.trim(),
-                style: (context) => AppTextStyles.captionText(context).copyWith(
-                  color: isDark ? AppColors.lightText : AppColors.lightGrey,
-                  height: 1.5,
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  maxHeight: giftPlanIncludesMaxLinesHeight,
                 ),
-                maxLines: 6,
+                child: ClipRect(
+                  child: SizedBox(
+                    width: double.infinity,
+                    child: Html(
+                      data: planDescriptionHtml,
+                      shrinkWrap: true,
+                      style: {
+                        'body': Style(
+                          margin: Margins.zero,
+                          padding: HtmlPaddings.zero,
+                          fontSize: FontSize(baseCaption.fontSize ?? 12),
+                          color: baseCaption.color,
+                          fontFamily: baseCaption.fontFamily,
+                          textAlign: TextAlign.start,
+                        ),
+                        'p': Style(
+                          margin: Margins.only(bottom: 8),
+                          textAlign: TextAlign.start,
+                        ),
+                        'h1': Style(
+                          margin: Margins.only(top: 8, bottom: 8),
+                          textAlign: TextAlign.start,
+                        ),
+                        'h2': Style(
+                          margin: Margins.only(top: 8, bottom: 8),
+                          textAlign: TextAlign.start,
+                        ),
+                        'h3': Style(
+                          margin: Margins.only(top: 8, bottom: 8),
+                          textAlign: TextAlign.start,
+                        ),
+                        'ul': Style(
+                          margin: Margins.only(bottom: 8),
+                          textAlign: TextAlign.start,
+                        ),
+                        'ol': Style(
+                          margin: Margins.only(bottom: 8),
+                          textAlign: TextAlign.start,
+                        ),
+                        'div': Style(textAlign: TextAlign.start),
+                        'li': Style(textAlign: TextAlign.start),
+                      },
+                      onLinkTap: (url, attributes, element) async {
+                        if (url == null || url.isEmpty) return;
+                        final uri = Uri.tryParse(url.trim());
+                        if (uri == null) return;
+                        try {
+                          await launchUrl(
+                            uri,
+                            mode: LaunchMode.externalApplication,
+                          );
+                        } catch (_) {}
+                      },
+                    ),
+                  ),
+                ),
               ),
             ),
           SizedBox(height: AppSpacing.xl),
@@ -349,10 +422,15 @@ class _MessageCard extends StatelessWidget {
 }
 
 class _RedeemButton extends StatelessWidget {
-  const _RedeemButton({required this.pendingGift, required this.onRedeemed});
+  const _RedeemButton({
+    required this.pendingGift,
+    required this.onRedeemed,
+    required this.routePopsAfterSuccessModal,
+  });
 
   final PendingGift? pendingGift;
   final VoidCallback? onRedeemed;
+  final int routePopsAfterSuccessModal;
 
   @override
   Widget build(BuildContext context) {
@@ -378,7 +456,11 @@ class _RedeemButton extends StatelessWidget {
       listener: (context, state) {
         if (state.successPending) {
           context.read<RedeemGiftCubit>().consumeSuccess();
-          _showSuccessSheet(context);
+          _showSuccessSheet(
+            context,
+            routePopsAfterSuccessModal: routePopsAfterSuccessModal,
+            onRedeemed: onRedeemed,
+          );
         } else if (state.serverError != null && state.serverError!.isNotEmpty) {
           ScaffoldMessenger.of(
             context,
@@ -398,7 +480,11 @@ class _RedeemButton extends StatelessWidget {
     );
   }
 
-  void _showSuccessSheet(BuildContext context) {
+  void _showSuccessSheet(
+    BuildContext context, {
+    required int routePopsAfterSuccessModal,
+    required VoidCallback? onRedeemed,
+  }) {
     showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
@@ -409,8 +495,11 @@ class _RedeemButton extends StatelessWidget {
       builder: (_) => GiftRedeemSuccessSheet(
         onContinue: () {
           Navigator.of(context).pop();
-          if (Navigator.of(context).canPop()) {
+          var remaining = routePopsAfterSuccessModal;
+          while (remaining > 0 && context.mounted) {
+            if (!Navigator.of(context).canPop()) break;
             Navigator.of(context).pop();
+            remaining--;
           }
           onRedeemed?.call();
         },

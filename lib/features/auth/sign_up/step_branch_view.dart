@@ -303,81 +303,91 @@ class _SignUpBranchViewState extends State<SignUpBranchView> {
                                     state.selectedSignUpBranchId,
                                     fe,
                                   ),
-                                SizedBox(height: AppSpacing.lg),
+                                SizedBox(
+                                  height:
+                                      
+                                      ((state.selectedSignUpBranchId != null)
+                                          ?AppSpacing.xxxl * 2
+                                          : AppSpacing.xxxl),
+                                ),
                               ],
                             ),
                           ),
                         ),
                       ),
-                      Positioned(
-                        bottom: 0,
-                        left: 0,
-                        right: 0,
-                        child: Container(
-                          height: AppSpacing.md + 52,
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              begin:
-                                  Alignment.bottomCenter, // start from bottom
-                              end: Alignment.topCenter, // fade to top
-                              colors: isDark
-                                  ? [
-                                      AppColors.darkShadow,
-                                      AppColors.darkShadow.withValues(alpha: 0),
-                                    ]
-                                  : [
-                                      Colors.white,
-                                      Colors.white.withValues(alpha: 0),
-                                    ],
+                      if (state.selectedSignUpBranchId != null)
+                        Positioned(
+                          bottom: 0,
+                          left: 0,
+                          right: 0,
+                          child: Container(
+                            height: AppSpacing.md + 52,
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                begin:
+                                    Alignment.bottomCenter, // start from bottom
+                                end: Alignment.topCenter, // fade to top
+                                colors: isDark
+                                    ? [
+                                        AppColors.darkShadow,
+                                        AppColors.darkShadow.withValues(
+                                          alpha: 0,
+                                        ),
+                                      ]
+                                    : [
+                                        Colors.white,
+                                        Colors.white.withValues(alpha: 0),
+                                      ],
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                      Positioned(
-                        left: 0,
-                        right: 0,
-                        bottom: AppSpacing.md,
-                        child: Column(
-                          children: [
-                            if (_branchPickErrorMessage != null)
+                      if (state.selectedSignUpBranchId != null)
+                        Positioned(
+                          left: 0,
+                          right: 0,
+                          bottom: AppSpacing.md,
+                          child: Column(
+                            children: [
+                              if (_branchPickErrorMessage != null)
+                                Padding(
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: AppSpacing.lg,
+                                  ),
+                                  child: InlineValidationBanner(
+                                    message: _branchPickErrorMessage!,
+                                  ),
+                                ),
+                              if (_branchSubmitErrorMessage != null &&
+                                  (_branchPickErrorMessage == null))
+                                Padding(
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: AppSpacing.lg,
+                                  ),
+                                  child: InlineValidationBanner(
+                                    message: _branchSubmitErrorMessage!,
+                                  ),
+                                ),
                               Padding(
                                 padding: EdgeInsets.symmetric(
                                   horizontal: AppSpacing.lg,
                                 ),
-                                child: InlineValidationBanner(
-                                  message: _branchPickErrorMessage!,
+                                child: AppButton(
+                                  key: const ValueKey('sign_up_branch_finish'),
+                                  label: context.l10n.finishSignUp,
+                                  isLoading: saving,
+                                  onPressed:
+                                      (loading ||
+                                          saving ||
+                                          failure ||
+                                          branches.isEmpty)
+                                      ? null
+                                      : () => _onFinish(context),
                                 ),
                               ),
-                            if (_branchSubmitErrorMessage != null &&
-                                (_branchPickErrorMessage == null))
-                              Padding(
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: AppSpacing.lg,
-                                ),
-                                child: InlineValidationBanner(
-                                  message: _branchSubmitErrorMessage!,
-                                ),
-                              ),
-                            Padding(
-                              padding: EdgeInsets.symmetric(
-                                horizontal: AppSpacing.lg,
-                              ),
-                              child: AppButton(
-                                key: const ValueKey('sign_up_branch_finish'),
-                                label: context.l10n.finishSignUp,
-                                isLoading: saving,
-                                onPressed:
-                                    (loading ||
-                                        saving ||
-                                        failure ||
-                                        branches.isEmpty)
-                                    ? null
-                                    : () => _onFinish(context),
-                              ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
-                      ),
                     ],
                   ),
                 ),

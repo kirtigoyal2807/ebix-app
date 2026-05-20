@@ -71,6 +71,7 @@ class FakeAuthRepository extends AuthRepository {
   int resetPasswordCalls = 0;
   int submitUserGoalCalls = 0;
   int getProfileCalls = 0;
+  int getAuthMeCalls = 0;
   int listBranchesCalls = 0;
   int setHomeBranchCalls = 0;
   int logoutCalls = 0;
@@ -233,6 +234,15 @@ class FakeAuthRepository extends AuthRepository {
   @override
   Future<ApiResult<AuthUser>> getProfile() async {
     getProfileCalls++;
+    if (getProfileDelay > Duration.zero) {
+      await Future<void>.delayed(getProfileDelay);
+    }
+    return getProfileResult;
+  }
+
+  @override
+  Future<ApiResult<AuthUser>> getAuthMe() async {
+    getAuthMeCalls++;
     if (getProfileDelay > Duration.zero) {
       await Future<void>.delayed(getProfileDelay);
     }
