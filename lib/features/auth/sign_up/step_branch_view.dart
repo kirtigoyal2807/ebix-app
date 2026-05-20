@@ -299,16 +299,15 @@ class _SignUpBranchViewState extends State<SignUpBranchView> {
                                 else
                                   ..._branchTiles(
                                     context,
-                                    branches,
+                                    _branchesNearestFirst(branches),
                                     state.selectedSignUpBranchId,
                                     fe,
                                   ),
                                 SizedBox(
                                   height:
-                                      
                                       ((state.selectedSignUpBranchId != null)
-                                          ?AppSpacing.xxxl * 2
-                                          : AppSpacing.xxxl),
+                                      ? AppSpacing.xxxl * 2
+                                      : AppSpacing.xxxl),
                                 ),
                               ],
                             ),
@@ -426,6 +425,49 @@ class _SignUpBranchViewState extends State<SignUpBranchView> {
     );
   }
 
+  double? _distanceMetersToBranch(Branch branch) {
+    if (_userLat == null ||
+        _userLng == null ||
+        branch.lat == null ||
+        branch.lng == null) {
+      return null;
+    }
+    return Geolocator.distanceBetween(
+      _userLat!,
+      _userLng!,
+      branch.lat!,
+      branch.lng!,
+    );
+  }
+
+  /// When location is available, nearest branch first (lowest distance).
+  List<Branch> _branchesNearestFirst(List<Branch> branches) {
+    if (_userLat == null || _userLng == null) {
+      return branches;
+    }
+    final sorted = List<Branch>.from(branches);
+    sorted.sort((a, b) {
+      final da = _distanceMetersToBranch(a);
+      final db = _distanceMetersToBranch(b);
+      if (da == null && db == null) return 0;
+      if (da == null) return 1;
+      if (db == null) return -1;
+      return da.compareTo(db);
+    });
+    return sorted;
+  }
+
+  String _distanceLabelForBranch(Branch branch) {
+    final meters = _distanceMetersToBranch(branch);
+    if (meters == null) {
+      return branch.distance.isEmpty ? '-' : branch.distance;
+    }
+    if (meters < 1000) {
+      return '${meters.toStringAsFixed(0)} m';
+    }
+    return '${(meters / 1000).toStringAsFixed(1)} km';
+  }
+
   List<Widget> _branchTiles(
     BuildContext context,
     List<Branch> branches,
@@ -438,30 +480,7 @@ class _SignUpBranchViewState extends State<SignUpBranchView> {
     for (var i = 0; i < branches.length; i++) {
       final b = branches[i];
       final selected = b.id == selectedId;
-
-      // Compute distance from user's location to branch coordinates.
-      // Priority: calculate locally if we have both positions; otherwise fall
-      // back to the server-provided label; otherwise show '-'.
-      final String distance;
-      if (_userLat != null &&
-          _userLng != null &&
-          b.lat != null &&
-          b.lng != null) {
-        final meters = Geolocator.distanceBetween(
-          _userLat!,
-          _userLng!,
-          b.lat!,
-          b.lng!,
-        );
-        if (meters < 1000) {
-          distance = '${meters.toStringAsFixed(0)} m';
-        } else {
-          final km = meters / 1000;
-          distance = '${km.toStringAsFixed(1)} km';
-        }
-      } else {
-        distance = b.distance.isEmpty ? '-' : b.distance;
-      }
+      final distance = _distanceLabelForBranch(b);
 
       out.add(
         KeyedSubtree(
