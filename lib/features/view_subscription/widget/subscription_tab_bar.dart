@@ -29,7 +29,7 @@ PreferredSizeWidget subscriptionTabBar({
       color: Colors.transparent,
       border: Border(
         bottom: BorderSide(
-          color: isDark ? AppColors.darkGreyBorder : AppColors.primary,
+          color: isDark ? AppColors.tabSelectedtLineDark : AppColors.primary,
           width: 2,
         ),
       ),

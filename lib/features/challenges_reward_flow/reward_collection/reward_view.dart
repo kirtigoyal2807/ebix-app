@@ -20,6 +20,8 @@ class RewardView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final tabBar = rewardTabBar(context: context, isDark: isDark);
+    final tabBarBottomHeight = tabBar.preferredSize.height + 1;
     return MultiBlocProvider(
       providers: [
         BlocProvider(
@@ -40,7 +42,7 @@ class RewardView extends StatelessWidget {
         child: Scaffold(
           appBar: AppAppBar(
             leading: Padding(
-              padding: EdgeInsets.only(left: AppSpacing.lmd),
+              padding: EdgeInsets.only(left: AppSpacing.md),
               child: IconButton(
                 icon: const Icon(Icons.arrow_back_ios_rounded, size: 20),
                 onPressed: () => Navigator.of(context).pop(),
@@ -50,12 +52,13 @@ class RewardView extends StatelessWidget {
             title: context.l10n.rewards,
             isMoreMenu: false,
             bottomPreferredSize: PreferredSize(
-              preferredSize: const Size.fromHeight(94),
+              preferredSize: Size.fromHeight(tabBarBottomHeight),
               child: Column(
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
-                    child: rewardTabBar(context: context, isDark: isDark),
+                    child: tabBar,
                   ),
                   Divider(
                     height: 1,

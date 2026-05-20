@@ -20,6 +20,7 @@ import '../../../config/theme/app_colors.dart';
 import '../../../config/theme/app_radius.dart';
 import '../widgets/booking_class_card.dart';
 import '../widgets/class_reviews_section.dart';
+import '../widgets/no_reviews_yet_row.dart';
 import '../widgets/tag_chip.dart';
 
 typedef _TrainerDetailBundle = ({
@@ -208,7 +209,7 @@ class _TrainerDetailsApiRouteState extends State<_TrainerDetailsApiRoute> {
           ),
           bottomNavigationBar: SafeArea(
             child: Padding(
-              padding:  EdgeInsets.fromLTRB(
+              padding: EdgeInsets.fromLTRB(
                 AppSpacing.lg,
                 AppSpacing.sm,
                 AppSpacing.lg,
@@ -260,7 +261,7 @@ class _TrainerDetailsApiRouteState extends State<_TrainerDetailsApiRoute> {
                             data != null &&
                             data.isFailure)
                           Padding(
-                            padding:  EdgeInsets.symmetric(
+                            padding: EdgeInsets.symmetric(
                               horizontal: AppSpacing.lg,
                             ),
                             child: AppText(
@@ -274,23 +275,26 @@ class _TrainerDetailsApiRouteState extends State<_TrainerDetailsApiRoute> {
                         _TrainerApiHeader(trainer: effective),
                         SizedBox(height: AppSpacing.md),
                         Padding(
-                          padding:  EdgeInsets.symmetric(
+                          padding: EdgeInsets.symmetric(
                             horizontal: AppSpacing.lg,
                           ),
-                          child: Wrap(
-                            spacing: AppSpacing.sm,
-                            runSpacing: AppSpacing.sm,
-                            children: [
-                              if (effective.yearsExperience != null)
-                                TagChip(
-                                  label: context.l10n.yearsExperience(
-                                    effective.yearsExperience!,
+                          child: Center(
+                            child: Wrap(
+                              alignment: WrapAlignment.center,
+                              spacing: AppSpacing.sm,
+                              runSpacing: AppSpacing.sm,
+                              children: [
+                                if (effective.yearsExperience != null)
+                                  TagChip(
+                                    label: context.l10n.yearsExperience(
+                                      effective.yearsExperience!,
+                                    ),
+                                    fontSize: 14,
                                   ),
-                                  fontSize: 14,
-                                ),
-                              for (final s in effective.specialties)
-                                TagChip(label: s, fontSize: 14),
-                            ],
+                                for (final s in effective.specialties)
+                                  TagChip(label: s, fontSize: 14),
+                              ],
+                            ),
                           ),
                         ),
                         _TrainerStatsRow(trainer: effective, isDark: isDark),
@@ -298,7 +302,7 @@ class _TrainerDetailsApiRouteState extends State<_TrainerDetailsApiRoute> {
                             effective.bio!.trim().isNotEmpty) ...[
                           SizedBox(height: AppSpacing.lg),
                           Padding(
-                            padding:  EdgeInsets.symmetric(
+                            padding: EdgeInsets.symmetric(
                               horizontal: AppSpacing.lg,
                             ),
                             child: AppText(
@@ -309,7 +313,7 @@ class _TrainerDetailsApiRouteState extends State<_TrainerDetailsApiRoute> {
                           ),
                           SizedBox(height: AppSpacing.xs),
                           Padding(
-                            padding:  EdgeInsets.symmetric(
+                            padding: EdgeInsets.symmetric(
                               horizontal: AppSpacing.lg,
                             ),
                             child: AppText(
@@ -325,31 +329,45 @@ class _TrainerDetailsApiRouteState extends State<_TrainerDetailsApiRoute> {
                         _ApiCertificationsCard(
                           certifications: effective.certifications,
                         ),
-                        _TrainerTeachingStylesSection(
-                          trainer: effective,
-                          isDark: isDark,
-                        ),
+                        if (effective.teachingStyles.isNotEmpty)
+                          _TrainerTeachingStylesSection(
+                            trainer: effective,
+                            isDark: isDark,
+                          ),
                         if (effective.branches.isNotEmpty) ...[
                           SizedBox(height: AppSpacing.md),
                           Padding(
-                            padding:  EdgeInsets.symmetric(
+                            padding: EdgeInsets.symmetric(
                               horizontal: AppSpacing.lg,
                             ),
                             child: AppText(
                               context.l10n.branch,
-                              style: (c) => AppTextStyles.textFieldHeading(c),
+                              style: (c) => AppTextStyles.gelasioRegular(
+                                c,
+                              ).copyWith(height: 1.55),
                             ),
                           ),
+                          SizedBox(height: AppSpacing.sm),
                           Padding(
-                            padding:  EdgeInsets.symmetric(
+                            padding: EdgeInsets.symmetric(
                               horizontal: AppSpacing.lg,
                             ),
-                            child: AppText(
-                              effective.branches.map((b) => b.name).join(', '),
-                              maxLines: 8,
-                              style: (c) => AppTextStyles.bodyText(
-                                c,
-                              ).copyWith(height: 1.4),
+                            child: Wrap(
+                              spacing: AppSpacing.sm,
+                              runSpacing: AppSpacing.sm,
+                              children: [
+                                for (final branch in effective.branches)
+                                  TagChip(
+                                    label: branch.name,
+                                    fontSize: 14,
+                                    backgroundColor: isDark
+                                        ? AppColors.primaryDarkButton
+                                        : AppColors.greyContainerBg,
+                                    textColor: isDark
+                                        ? AppColors.lightText
+                                        : AppColors.darkText,
+                                  ),
+                              ],
                             ),
                           ),
                         ],
@@ -373,7 +391,7 @@ class _TrainerDetailsApiRouteState extends State<_TrainerDetailsApiRoute> {
                         KeyedSubtree(
                           key: _upcomingClassesSectionKey,
                           child: Padding(
-                            padding:  EdgeInsets.symmetric(
+                            padding: EdgeInsets.symmetric(
                               horizontal: AppSpacing.lg,
                             ),
                             child: Row(
@@ -427,7 +445,7 @@ class _TrainerDetailsApiRouteState extends State<_TrainerDetailsApiRoute> {
                             classesRes.isFailure &&
                             slots.isEmpty)
                           Padding(
-                            padding:  EdgeInsets.symmetric(
+                            padding: EdgeInsets.symmetric(
                               horizontal: AppSpacing.lg,
                             ),
                             child: AppText(
@@ -442,7 +460,7 @@ class _TrainerDetailsApiRouteState extends State<_TrainerDetailsApiRoute> {
                           )
                         else if (slots.isEmpty)
                           Padding(
-                            padding:  EdgeInsets.symmetric(
+                            padding: EdgeInsets.symmetric(
                               horizontal: AppSpacing.lg,
                             ),
                             child: AppText(
@@ -455,7 +473,7 @@ class _TrainerDetailsApiRouteState extends State<_TrainerDetailsApiRoute> {
                         else
                           for (final slot in slots.take(6)) ...[
                             BookingClassCard.fromSlot(slot),
-                             SizedBox(height: AppSpacing.md),
+                            SizedBox(height: AppSpacing.md),
                           ],
                         SizedBox(height: AppSpacing.xl),
                       ],
@@ -495,7 +513,7 @@ class _TrainerStatsRow extends StatelessWidget {
     if (entries.isEmpty) return const SizedBox.shrink();
 
     return Padding(
-      padding:  EdgeInsets.fromLTRB(
+      padding: EdgeInsets.fromLTRB(
         AppSpacing.lg,
         AppSpacing.md,
         AppSpacing.lg,
@@ -539,8 +557,7 @@ class _TrainerTeachingStylesSection extends StatelessWidget {
         padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
         child: AppText(
           context.l10n.teachingStyle,
-          style: (c) =>
-              AppTextStyles.gelasioRegular(c).copyWith(height: 1.55),
+          style: (c) => AppTextStyles.gelasioRegular(c).copyWith(height: 1.55),
         ),
       ),
       SizedBox(height: AppSpacing.sm),
@@ -555,14 +572,19 @@ class _TrainerTeachingStylesSection extends StatelessWidget {
                 ),
               )
             : Wrap(
-                direction: Axis.horizontal,
                 spacing: AppSpacing.sm,
                 runSpacing: AppSpacing.sm,
                 children: [
                   for (final label in styles)
-                    _TrainerDetailsDemoView._teachingStyleCard(
+                    TagChip(
                       label: label,
-                      isDark: isDark,
+                      fontSize: 14,
+                      backgroundColor: isDark
+                          ? AppColors.primaryDarkButton
+                          : AppColors.greyContainerBg,
+                      textColor: isDark
+                          ? AppColors.lightText
+                          : AppColors.darkText,
                     ),
                 ],
               ),
@@ -586,7 +608,7 @@ class _TrainerApiHeader extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final avatar = trainer.avatarUrl;
     return Padding(
-      padding:  EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+      padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
       child: Column(
         children: [
           Center(
@@ -619,7 +641,7 @@ class _TrainerApiHeader extends StatelessWidget {
             style: (c) => AppTextStyles.heading1(c).copyWith(height: 1.55),
           ),
           if (trainer.specialties.isNotEmpty) ...[
-            SizedBox(height: AppSpacing.xs),
+            SizedBox(height: AppSpacing.xs - 2),
             AppText(
               trainer.specialties.first,
               textAlign: TextAlign.center,
@@ -627,7 +649,7 @@ class _TrainerApiHeader extends StatelessWidget {
               style: (c) => AppTextStyles.bodyText(c).copyWith(height: 1.55),
             ),
           ],
-          SizedBox(height: 10),
+          SizedBox(height: AppSpacing.xs),
           _TrainerApiHeaderRating(trainer: trainer, isDark: isDark),
         ],
       ),
@@ -730,21 +752,7 @@ class _TrainerApiHeaderRating extends StatelessWidget {
       );
     }
 
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: AppSpacing.sm),
-      child: AppText(
-        context.l10n.contentNoDataAvailable,
-        textAlign: TextAlign.center,
-        maxLines: 2,
-        style: (c) => AppTextStyles.helpAndSupportItemSubLabel(
-          c,
-        ).copyWith(
-          height: 1.2,
-          fontSize: 14,
-          color: isDark ? AppColors.darkGreyText : AppColors.lightGrey,
-        ),
-      ),
-    );
+    return const NoReviewsYetRow();
   }
 }
 
@@ -757,8 +765,8 @@ class _ApiCertificationsCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
-      margin:  EdgeInsets.symmetric(horizontal: AppSpacing.md),
-      padding:  EdgeInsets.all(AppSpacing.md),
+      margin: EdgeInsets.symmetric(horizontal: AppSpacing.md),
+      padding: EdgeInsets.all(AppSpacing.md),
       decoration: BoxDecoration(
         color: isDark ? AppColors.primaryDarkButton : AppColors.seekBarLight,
         borderRadius: BorderRadius.circular(AppRadius.md),
@@ -777,11 +785,10 @@ class _ApiCertificationsCard extends StatelessWidget {
           if (certifications.isEmpty)
             AppText(
               context.l10n.contentNoDataAvailable,
-              style: (c) =>
-                  AppTextStyles.bodyText(c).copyWith(
-                    height: 1.55,
-                    color: isDark ? AppColors.darkGreyText : AppColors.lightGrey,
-                  ),
+              style: (c) => AppTextStyles.bodyText(c).copyWith(
+                height: 1.55,
+                color: isDark ? AppColors.darkGreyText : AppColors.lightGrey,
+              ),
             )
           else
             for (final cert in certifications) _CertRow(cert: cert),
@@ -833,7 +840,7 @@ class _TrainerDetailsDemoView extends StatelessWidget {
       ),
       bottomNavigationBar: SafeArea(
         child: Padding(
-          padding:  EdgeInsets.fromLTRB(
+          padding: EdgeInsets.fromLTRB(
             AppSpacing.lg,
             AppSpacing.sm,
             AppSpacing.lg,
@@ -880,7 +887,7 @@ class _TrainerDetailsDemoView extends StatelessWidget {
               ),
               SizedBox(height: AppSpacing.base),
               Padding(
-                padding:  EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+                padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
                 child: AppText(
                   'Aisha Sherin',
                   textAlign: TextAlign.center,
@@ -890,7 +897,7 @@ class _TrainerDetailsDemoView extends StatelessWidget {
                 ),
               ),
               Padding(
-                padding:  EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+                padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
                 child: AppText(
                   context.l10n.powerPilatesSpecialist,
                   textAlign: TextAlign.center,
@@ -901,7 +908,7 @@ class _TrainerDetailsDemoView extends StatelessWidget {
               ),
               SizedBox(height: 10),
               Padding(
-                padding:  EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+                padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
                 child: Wrap(
                   alignment: WrapAlignment.center,
                   crossAxisAlignment: WrapCrossAlignment.center,
@@ -944,7 +951,7 @@ class _TrainerDetailsDemoView extends StatelessWidget {
               ),
               SizedBox(height: AppSpacing.md),
               Padding(
-                padding:  EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+                padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
                 child: Row(
                   children: [
                     Expanded(
@@ -978,7 +985,7 @@ class _TrainerDetailsDemoView extends StatelessWidget {
               ),
               SizedBox(height: AppSpacing.lg),
               Padding(
-                padding:  EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+                padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
                 child: AppText(
                   '${context.l10n.about} Aisha',
                   style: (c) => AppTextStyles.gelasioRegular(c),
@@ -987,7 +994,7 @@ class _TrainerDetailsDemoView extends StatelessWidget {
               ),
               SizedBox(height: AppSpacing.xs),
               Padding(
-                padding:  EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+                padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
                 child: AppText(
                   context.l10n.trainerAboutDescription,
                   style: (c) =>
@@ -1002,7 +1009,7 @@ class _TrainerDetailsDemoView extends StatelessWidget {
               ),
               SizedBox(height: AppSpacing.lg),
               Padding(
-                padding:  EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+                padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
                 child: AppText(
                   context.l10n.teachingStyle,
                   style: (c) =>
@@ -1011,7 +1018,7 @@ class _TrainerDetailsDemoView extends StatelessWidget {
               ),
               SizedBox(height: AppSpacing.sm),
               Padding(
-                padding:  EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+                padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
                 child: Wrap(
                   direction: Axis.horizontal,
                   spacing: AppSpacing.sm,
@@ -1044,7 +1051,7 @@ class _TrainerDetailsDemoView extends StatelessWidget {
               const ClassReviewsSection(),
               SizedBox(height: AppSpacing.xl),
               Padding(
-                padding:  EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+                padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
                 child: AppText(
                   context.l10n.upcomingClasses,
                   style: (c) => AppTextStyles.heading1(c).copyWith(
@@ -1079,7 +1086,7 @@ class _TrainerDetailsDemoView extends StatelessWidget {
   }) {
     return Container(
       constraints: const BoxConstraints(minHeight: 96),
-      padding:  EdgeInsets.symmetric(vertical: AppSpacing.sm),
+      padding: EdgeInsets.symmetric(vertical: AppSpacing.sm),
       decoration: BoxDecoration(
         color: isDark ? AppColors.homeBackground : Colors.white,
         borderRadius: BorderRadius.circular(AppRadius.md),
@@ -1099,7 +1106,7 @@ class _TrainerDetailsDemoView extends StatelessWidget {
           ),
           SizedBox(height: AppSpacing.xs),
           Padding(
-            padding:  EdgeInsets.symmetric(horizontal: AppSpacing.sm),
+            padding: EdgeInsets.symmetric(horizontal: AppSpacing.sm),
             child: AppText(
               label,
               maxLines: 4,

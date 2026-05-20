@@ -30,35 +30,44 @@ class InvoiceCategoryButtons extends StatelessWidget {
                   state.selectedInvoiceCategory ==
                   state.invoiceCategoryList[index];
 
-              return GestureDetector(
-                onTap: () {
-                  context
-                      .read<InvoiceHistoryCubit>()
-                      .setSelectedInvoiceCategory(
+              return Align(
+                alignment: Alignment.center,
+                child: GestureDetector(
+                  onTap: () {
+                    context
+                        .read<InvoiceHistoryCubit>()
+                        .setSelectedInvoiceCategory(
+                          state.invoiceCategoryList[index],
+                        );
+                  },
+                  child: Container(
+                    alignment: Alignment.center,
+                    padding: EdgeInsets.symmetric(
+                      horizontal: AppSpacing.base,
+                      vertical: AppSpacing.xs,
+                    ),
+                    decoration: BoxDecoration(
+                      color: isSelected
+                          ? AppColors.primary
+                          : isDark
+                          ? AppColors.primaryDarkButton
+                          : AppColors.greyContainerBg,
+                      borderRadius: BorderRadius.circular(AppRadius.base),
+                    ),
+                    child: AppText(
+                      getCategoryLabel(
+                        context,
                         state.invoiceCategoryList[index],
-                      );
-                },
-                child: Container(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: AppSpacing.base,
-                    vertical: AppSpacing.xs,
-                  ),
-                  decoration: BoxDecoration(
-                    color: isSelected
-                        ? AppColors.primary
-                        : isDark
-                        ? AppColors.primaryDarkButton
-                        : AppColors.greyContainerBg,
-                    borderRadius: BorderRadius.circular(AppRadius.base),
-                  ),
-                  child: AppText(
-                    getCategoryLabel(context, state.invoiceCategoryList[index]),
-                    style: (context) =>
-                        AppTextStyles.textFieldHeading(context).copyWith(
-                          color: isSelected || isDark
-                              ? Colors.white
-                              : AppColors.darkText,
-                        ),
+                      ),
+                      maxLines: 1,
+                      style: (context) =>
+                          AppTextStyles.textFieldHeading(context).copyWith(
+                            height: 1,
+                            color: isSelected || isDark
+                                ? Colors.white
+                                : AppColors.darkText,
+                          ),
+                    ),
                   ),
                 ),
               );

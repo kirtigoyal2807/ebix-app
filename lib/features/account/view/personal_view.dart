@@ -431,28 +431,26 @@ class _PersonalViewBodyState extends State<_PersonalViewBody> {
                       keyboardType: TextInputType.name,
                       textInputAction: TextInputAction.next,
                       onFieldSubmitted: (_) =>
-                          FocusScope.of(context).requestFocus(_emailFocus),
+                          FocusManager.instance.primaryFocus?.unfocus(),
                       readOnly: !_isEditing,
                     ),
                   ),
                   SizedBox(height: AppSpacing.md),
+                  // TEMP: email not editable in edit mode — remove when re-enabling.
                   IgnorePointer(
-                    ignoring: !_isEditing,
                     child: AppTextField(
                       hint: context.l10n.recipientEmailHint,
                       label: l10n.emailAddress,
                       keyboardType: TextInputType.emailAddress,
                       controller: _emailController,
                       focusNode: _emailFocus,
-                      textInputAction: TextInputAction.next,
-                      onFieldSubmitted: (_) =>
-                          FocusScope.of(context).requestFocus(_phoneFocus),
-                      readOnly: !_isEditing,
+                      readOnly: true,
+                      enabled: false,
                     ),
                   ),
                   SizedBox(height: AppSpacing.md),
+                  // TEMP: phone + country code not editable in edit mode — remove when re-enabling.
                   IgnorePointer(
-                    ignoring: !_isEditing,
                     child: PhoneNumberField(
                       key: ValueKey<String?>(
                         'personal_phone_${widget.initialUser?.phone ?? ''}',
@@ -462,9 +460,7 @@ class _PersonalViewBodyState extends State<_PersonalViewBody> {
                       flagAsset: 'assets/flags/us.svg',
                       controller: _phoneController,
                       focusNode: _phoneFocus,
-                      textInputAction: TextInputAction.done,
-                      onFieldSubmitted: (_) =>
-                          FocusManager.instance.primaryFocus?.unfocus(),
+                      enabled: false,
                       initialCountryIso: _phoneCountryIso,
                       onCountryChanged: (country) {
                         setState(() {

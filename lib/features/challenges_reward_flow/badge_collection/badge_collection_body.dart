@@ -107,49 +107,47 @@ class BadgeCollectionBody extends StatelessWidget {
     required String label,
     required bool isDark,
   }) {
-    return Container(
-      height: 83,
-      decoration: BoxDecoration(
-        color: isDark ? AppColors.homeBackground : Colors.white,
-        borderRadius: BorderRadius.circular(AppRadius.md),
-        border: Border.all(
-          color: isDark ? AppColors.greyText : AppColors.buttonBorder,
+    return AspectRatio(
+      aspectRatio: 1.1,
+      child: Container(
+        decoration: BoxDecoration(
+          color: isDark ? Colors.transparent : AppColors.whiteColor,
+          borderRadius: BorderRadius.circular(AppRadius.base),
+          border: Border.all(
+            color: isDark ? AppColors.greyText : AppColors.buttonBorder,
+            width: 1,
+          ),
         ),
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Flexible(
-            child: Center(
-              child: AppText(
-                value,
-                style: (ctx) => AppTextStyles.bottomSheetTitle(
-                  ctx,
-                ).copyWith(
-                  fontWeight: FontWeight.w600,
-                  height: 1.55,
-                  fontSize: 24,
-                ),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                textAlign: TextAlign.center,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            AppText(
+              value,
+              style: (ctx) => AppTextStyles.bottomSheetTitle(ctx).copyWith(
+                fontWeight: FontWeight.w600,
+                fontSize: 24,
+                height: 1,
+                color: isDark ? AppColors.lightText : AppColors.darkText,
               ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              textAlign: TextAlign.center,
             ),
-          ),
-          SizedBox(height: 2),
-          Flexible(
-            child: Center(
-              child: AppText(
-                label,
-                style: (ctx) =>
-                    AppTextStyles.caption(ctx).copyWith(height: 1.55, fontSize: 12),
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                textAlign: TextAlign.center,
+            SizedBox(height: AppSpacing.sm),
+            AppText(
+              label,
+              style: (ctx) => AppTextStyles.captionText(ctx).copyWith(
+                fontSize: 12,
+                height: 1.2,
+                fontWeight: FontWeight.w400,
+                color: isDark ? AppColors.darkGreyText : AppColors.lightGrey,
               ),
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              textAlign: TextAlign.center,
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

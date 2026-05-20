@@ -290,6 +290,8 @@ class _DynamicReviewsContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final color = isDark ? AppColors.darkGreyText : AppColors.textSecondaryLight;
+
     final bd = summaryRatingBreakdown;
     final bdTotal = (bd != null && bd.length == 5)
         ? bd.fold<int>(0, (a, b) => a + b)
@@ -302,11 +304,12 @@ class _DynamicReviewsContent extends StatelessWidget {
 
     if (reviews.isEmpty && displayCount == 0) {
       return Padding(
-        padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg, vertical: 8),
+        padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
         child: AppText(
           context.l10n.noReviewsYet,
-          style: (c) =>
-              AppTextStyles.bodyText(c).copyWith(color: AppColors.lightGrey),
+          style: (c) => AppTextStyles.bodyText(
+            c,
+          ).copyWith(fontSize: 12, color: color, height: 1.2),
         ),
       );
     }

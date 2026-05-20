@@ -316,7 +316,7 @@ class MyBookingClassCard extends StatelessWidget {
                   ],
                 ),
               ),
-
+              SizedBox(height: AppSpacing.xi),
               // Info part
               Padding(
                 padding: EdgeInsets.only(
