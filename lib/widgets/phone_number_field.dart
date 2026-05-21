@@ -10,6 +10,7 @@ import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/core/localization/localization_extension.dart';
 import 'package:pilates_app/core/validation/phone_number_country_validation.dart';
+import 'package:pilates_app/core/widgets/app_form_field_decoration.dart';
 
 import 'app_text.dart';
 
@@ -292,7 +293,9 @@ class _PhoneNumberFieldState extends State<PhoneNumberField> {
         Directionality(
           textDirection: TextDirection.ltr,
           child: Container(
+            height: AppFormFieldDecoration.singleLineFieldHeight,
             decoration: BoxDecoration(
+              color: theme.scaffoldBackgroundColor,
               borderRadius: BorderRadius.circular(AppRadius.md),
               border: Border.all(
                 color: hasError
@@ -304,6 +307,7 @@ class _PhoneNumberFieldState extends State<PhoneNumberField> {
               ),
             ),
             child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 IgnorePointer(
                   ignoring: !widget.enabled,
@@ -322,10 +326,10 @@ class _PhoneNumberFieldState extends State<PhoneNumberField> {
                         style:
                             TextButton.styleFrom(
                               foregroundColor: theme.colorScheme.onSurface,
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 8,
-                                vertical: 12,
-                              ),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 8,
+                      ),
                               minimumSize: Size.zero,
                               tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                             ).copyWith(
@@ -416,10 +420,8 @@ class _PhoneNumberFieldState extends State<PhoneNumberField> {
                         context,
                       ).copyWith(color: AppColors.lightGrey),
                       border: InputBorder.none,
-                      contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 14,
-                        vertical: 14,
-                      ),
+                      contentPadding:
+                          AppFormFieldDecoration.contentPadding,
                     ),
                   ),
                 ),
