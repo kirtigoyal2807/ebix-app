@@ -232,33 +232,33 @@ class _SignUpGoalViewState extends State<SignUpGoalView> {
                         ),
                       ),
 
-                      // Sticky action button
-                      Positioned(
-                        left: 0,
-                        right: 0,
-                        bottom: AppSpacing.md,
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: AppSpacing.lg,
-                          ),
-                          child: AppButton(
-                            key: const ValueKey('sign_up_goal_submit'),
-                            label: context.l10n.continueTxt,
-                            isLoading: loading,
-                            onPressed: loading || _selectedIndex == null
-                                ? null
-                                : () {
-                                    context
-                                        .read<AuthCubit>()
-                                        .submitSignUpGoalAndAdvance(
-                                          goal: PostLoginGoalApi
-                                              .ordered[_selectedIndex!],
-                                          monthlyGoal: _monthlyClasses,
-                                        );
-                                  },
+                        // Sticky action button
+                        Positioned(
+                          left: 0,
+                          right: 0,
+                          bottom: AppSpacing.md,
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: AppSpacing.lg,
+                            ),
+                            child: AppButton(
+                              key: const ValueKey('sign_up_goal_submit'),
+                              label: context.l10n.continueTxt,
+                              isLoading: loading,
+                              onPressed: loading || _selectedIndex == null
+                                  ? null
+                                  : () {
+                                      context
+                                          .read<AuthCubit>()
+                                          .submitSignUpGoalAndAdvance(
+                                            goal: PostLoginGoalApi
+                                                .ordered[_selectedIndex!],
+                                            monthlyGoal: _monthlyClasses,
+                                          );
+                                    },
+                            ),
                           ),
                         ),
-                      ),
                     ],
                   ),
                 ),

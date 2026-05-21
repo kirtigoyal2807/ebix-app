@@ -14,6 +14,16 @@ double? _jsonDouble(dynamic value) {
   return double.tryParse(value.toString());
 }
 
+bool? _jsonBool(dynamic value) {
+  if (value == null) return null;
+  if (value is bool) return value;
+  if (value is num) return value != 0;
+  final s = value.toString().trim().toLowerCase();
+  if (s == 'true' || s == '1' || s == 'yes') return true;
+  if (s == 'false' || s == '0' || s == 'no') return false;
+  return null;
+}
+
 /// Subset of profile fields from `POST /auth/login` -> `data.user`, or [`GET /customers/profile`].
 class AuthUser {
   const AuthUser({
@@ -140,8 +150,10 @@ class AuthUser {
       brands: _parseBrands(json['brands']),
       goals: _parseGoals(json['goals']),
       subscriptions: subscriptionsList,
-      pendingGift: _parsePendingGift(json['pendingGift']),
-      hasPendingGiftKey: json.containsKey('pendingGift'),
+      pendingGift:
+          _parsePendingGift(json['pendingGift'] ?? json['pending_gift']),
+      hasPendingGiftKey:
+          json.containsKey('pendingGift') || json.containsKey('pending_gift'),
       emailVerified: json['emailVerified'] as bool?,
       phoneVerified: json['phoneVerified'] as bool?,
       createdAt: _parseDateTime(json['createdAt']),
@@ -517,9 +529,11 @@ class PendingGift {
       sentAt: json['sentAt'] as String?,
       redeemedAt: json['redeemedAt'] as String?,
       expiresAt: json['expiresAt'] as String?,
-      isRedeemed: json['isRedeemed'] as bool?,
-      isExpired: json['isExpired'] as bool?,
-      canBeRedeemed: json['canBeRedeemed'] as bool?,
+      isRedeemed: _jsonBool(json['isRedeemed'] ?? json['is_redeemed']),
+      isExpired: _jsonBool(json['isExpired'] ?? json['is_expired']),
+      canBeRedeemed: _jsonBool(
+        json['canBeRedeemed'] ?? json['can_be_redeemed'],
+      ),
       plan: plan,
       createdAt: json['createdAt'] as String?,
     );

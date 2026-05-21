@@ -37,6 +37,7 @@ class _SignUpPersonalInfoViewState extends State<SignUpPersonalInfoView> {
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
   final _phoneController = TextEditingController();
+  final _referralCodeController = TextEditingController();
 
   final _firstNameFocus = FocusNode();
   final _lastNameFocus = FocusNode();
@@ -45,6 +46,7 @@ class _SignUpPersonalInfoViewState extends State<SignUpPersonalInfoView> {
   final _passwordFocus = FocusNode();
   final _confirmPasswordFocus = FocusNode();
   final _phoneFocus = FocusNode();
+  final _referralCodeFocus = FocusNode();
 
   final _scrollController = ScrollController();
 
@@ -100,6 +102,7 @@ class _SignUpPersonalInfoViewState extends State<SignUpPersonalInfoView> {
       _passwordFocus,
       _confirmPasswordFocus,
       _phoneFocus,
+      _referralCodeFocus,
     ]) {
       node.addListener(() => _signUpScrollFieldOnFocus(node));
     }
@@ -113,6 +116,7 @@ class _SignUpPersonalInfoViewState extends State<SignUpPersonalInfoView> {
     _passwordController.dispose();
     _confirmPasswordController.dispose();
     _phoneController.dispose();
+    _referralCodeController.dispose();
     _firstNameFocus.dispose();
     _lastNameFocus.dispose();
     _emailFocus.dispose();
@@ -120,6 +124,7 @@ class _SignUpPersonalInfoViewState extends State<SignUpPersonalInfoView> {
     _passwordFocus.dispose();
     _confirmPasswordFocus.dispose();
     _phoneFocus.dispose();
+    _referralCodeFocus.dispose();
     _scrollController.dispose();
     super.dispose();
   }
@@ -224,6 +229,7 @@ class _SignUpPersonalInfoViewState extends State<SignUpPersonalInfoView> {
       password: password,
       gender: _mapGender(_genderValue),
       dob: dob,
+      referralCode: _referralCodeController.text.trim(),
     );
   }
 
@@ -550,9 +556,10 @@ class _SignUpPersonalInfoViewState extends State<SignUpPersonalInfoView> {
                               controller: _phoneController,
                               focusNode: _phoneFocus,
                               scrollPadding: _signupFieldScrollPadding(context),
-                              textInputAction: TextInputAction.done,
-                              onFieldSubmitted: (_) =>
-                                  FocusManager.instance.primaryFocus?.unfocus(),
+                              textInputAction: TextInputAction.next,
+                              onFieldSubmitted: (_) => FocusScope.of(
+                                context,
+                              ).requestFocus(_referralCodeFocus),
                               countryCode: '+1',
                               flagAsset: 'assets/flags/us.svg',
                               errorText: _clientPhoneError ?? fe['phone'],
@@ -562,6 +569,21 @@ class _SignUpPersonalInfoViewState extends State<SignUpPersonalInfoView> {
                                   _clientPhoneError = null;
                                 });
                               },
+                            ),
+                            SizedBox(height: AppSpacing.md),
+                            AppTextField(
+                              key: const ValueKey('signup_referral_code'),
+                              controller: _referralCodeController,
+                              focusNode: _referralCodeFocus,
+                              scrollPadding: _signupFieldScrollPadding(context),
+                              label: context.l10n.referralCode,
+                              hint: context.l10n.signupReferralCodeHint,
+                              keyboardType: TextInputType.text,
+                              textInputAction: TextInputAction.done,
+                              onFieldSubmitted: (_) =>
+                                  FocusManager.instance.primaryFocus?.unfocus(),
+                              errorText:
+                                  fe['referralcode'] ?? fe['referral_code'],
                             ),
                             const SizedBox(height: 26),
                             SizedBox(height: _signupStickyInset()),

@@ -5,7 +5,6 @@ import 'package:intl/intl.dart';
 
 import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/features/auth/cubit/auth_cubit.dart';
-import 'package:pilates_app/features/auth/data/models/auth_user.dart';
 import 'package:pilates_app/features/booking/booking_entitlements.dart';
 import 'package:pilates_app/features/booking/cubit/waitlist_cubit.dart';
 import 'package:pilates_app/features/booking/cubit/waitlist_state.dart';
@@ -63,8 +62,10 @@ class _JoinWaitlistBody extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final l10n = AppLocalizations.of(context);
 
-    if (!userShowsPackageMembership(
-      context.select<AuthCubit, AuthUser?>((c) => c.state.user),
+    final auth = context.watch<AuthCubit>();
+    if (!userHasMembershipPlanHint(
+      user: auth.state.user,
+      storedPlanName: auth.tokenStorage.readMembershipPlanName(),
     )) {
       return Scaffold(
         backgroundColor: isDark ? AppColors.homeBackground : AppColors.whiteColor,

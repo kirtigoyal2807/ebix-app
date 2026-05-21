@@ -49,7 +49,13 @@ class GiftRedeemSuccessSheet extends StatelessWidget {
                           ? AppColors.whiteColor
                           : AppColors.blackColor,
                     ),
-                    onTap: () => Navigator.of(context).pop(),
+                    onTap: () {
+                      if (onContinue != null) {
+                        onContinue!();
+                      } else {
+                        Navigator.of(context).pop();
+                      }
+                    },
                   ),
                 ],
               ),

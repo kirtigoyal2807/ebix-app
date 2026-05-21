@@ -561,7 +561,7 @@ void main() {
 
   group('AuthCubit profile refresh', () {
     test(
-      'refreshProfileForAppOpenOrResume loads profile when authenticated',
+      'refreshProfileForAppOpenOrResume loads user via auth/me when authenticated',
       () async {
         await storage.saveToken('jwt-profile');
         fakeRepo.getProfileResult = const ApiSuccess<AuthUser>(
@@ -576,7 +576,8 @@ void main() {
 
         await cubit.refreshProfileForAppOpenOrResume();
 
-        expect(fakeRepo.getProfileCalls, 1);
+        expect(fakeRepo.getAuthMeCalls, 1);
+        expect(fakeRepo.getProfileCalls, 0);
         expect(cubit.state.user?.email, 'fresh@example.com');
         expect(storage.readUser()?.email, 'fresh@example.com');
         await cubit.close();
@@ -593,6 +594,7 @@ void main() {
 
         await cubit.refreshProfileForAppOpenOrResume();
 
+        expect(fakeRepo.getAuthMeCalls, 0);
         expect(fakeRepo.getProfileCalls, 0);
         await cubit.close();
       },
@@ -619,6 +621,30 @@ void main() {
       await Future.wait([cubit.loadProfile(), cubit.loadProfile()]);
 
       expect(fakeRepo.getProfileCalls, 1);
+      await cubit.close();
+    });
+
+    test('loadAuthMe skips without a saved token', () async {
+      final cubit = buildCubit(
+        seed: AuthState.initial().copyWith(flow: AuthFlow.authenticated),
+      );
+
+      await cubit.loadAuthMe();
+
+      expect(fakeRepo.getAuthMeCalls, 0);
+      await cubit.close();
+    });
+
+    test('loadAuthMe reuses an in-flight auth/me request', () async {
+      await storage.saveToken('jwt-profile');
+      fakeRepo.getProfileDelay = const Duration(milliseconds: 10);
+      final cubit = buildCubit(
+        seed: AuthState.initial().copyWith(flow: AuthFlow.authenticated),
+      );
+
+      await Future.wait([cubit.loadAuthMe(), cubit.loadAuthMe()]);
+
+      expect(fakeRepo.getAuthMeCalls, 1);
       await cubit.close();
     });
   });

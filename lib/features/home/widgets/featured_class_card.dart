@@ -15,7 +15,7 @@ import 'package:pilates_app/widgets/app_text.dart';
 
 import '../../../widgets/app_shadow.dart';
 import '../../booking/views/class_detail_view.dart';
-import 'plan_status_badge.dart';
+import 'package:pilates_app/widgets/class_plan_badges.dart';
 
 class FeaturedClassCard extends StatelessWidget {
   const FeaturedClassCard({super.key, required this.featuredClass});
@@ -30,6 +30,7 @@ class FeaturedClassCard extends StatelessWidget {
     final user = context.select<AuthCubit, AuthUser?>((c) => c.state.user);
     final showInPlanBadge =
         featuredClass.inPlan == true && userShowsPackageMembership(user);
+    final upgradeRequired = featuredClass.showsUpgradeRequired;
 
     return Container(
       margin: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
@@ -83,20 +84,30 @@ class FeaturedClassCard extends StatelessWidget {
               ),
             ),
           ),
-          Padding(
-            padding: EdgeInsets.only(
-              right: AppSpacing.md,
-              left: AppSpacing.md,
-              top: AppSpacing.base,
-            ),
-            child: PlanStatusBadge(inPlan: showInPlanBadge),
+          if (showInPlanBadge || upgradeRequired)
+            Padding(
+              padding: EdgeInsets.only(
+                right: AppSpacing.md,
+                left: AppSpacing.md,
+                top: AppSpacing.base,
+              ),
+              child: Row(
+                children: [
+                  if (showInPlanBadge)
+                    const Flexible(child: InYourPlanBadge()),
+                  if (upgradeRequired)
+                    const Flexible(child: UpgradeRequiredBadge()),
+                ],
+              ),
           ),
           Padding(
             padding: EdgeInsets.only(
               right: AppSpacing.md,
               left: AppSpacing.md,
               bottom: AppSpacing.md,
-              top: AppSpacing.sm,
+              top: (showInPlanBadge || upgradeRequired)
+                  ? AppSpacing.sm
+                  : AppSpacing.base,
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
