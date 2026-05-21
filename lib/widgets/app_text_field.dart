@@ -139,9 +139,10 @@ class _AppTextFieldState extends State<AppTextField> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         /// LABEL
-        if (widget.label != null)
-          AppText(widget.label ?? "", style: AppTextStyles.textFieldHeading),
-        if (widget.label != null) SizedBox(height: AppSpacing.sm),
+        if (widget.label != null && widget.label!.trim().isNotEmpty) ...[
+          AppText(widget.label!, style: AppTextStyles.textFieldHeading),
+          SizedBox(height: AppSpacing.sm),
+        ],
 
         /// TEXT FIELD
         Stack(

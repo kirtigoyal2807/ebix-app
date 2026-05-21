@@ -99,7 +99,15 @@ class ProductHealthQuestion {
 
   bool get isFreeTextQuestion {
     final t = type?.toLowerCase().trim();
-    return t == 'text' || t == 'textarea' || t == 'string';
+    if (t == null || t.isEmpty) return false;
+    return t == 'text' ||
+        t == 'textarea' ||
+        t == 'string' ||
+        t == 'short_text' ||
+        t == 'long_text' ||
+        t == 'multiline' ||
+        t == 'multi_line' ||
+        t == 'text_area';
   }
 
   bool get isNumericInputQuestion {

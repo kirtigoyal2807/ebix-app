@@ -1,3 +1,4 @@
+import 'package:pilates_app/widgets/app_loading_indicator.dart';
 import 'dart:async';
 import 'dart:convert';
 
@@ -328,7 +329,7 @@ return '';
               Positioned.fill(
                 child: ColoredBox(
                   color: Theme.of(context).scaffoldBackgroundColor,
-                  child: const Center(child: CircularProgressIndicator()),
+                  child: const AppLoadingIndicator(),
                 ),
               ),
           ],

@@ -8,6 +8,7 @@ import 'package:pilates_app/features/auth/cubit/auth_cubit.dart';
 import 'package:pilates_app/features/auth/data/models/branch.dart';
 import 'package:pilates_app/widgets/app_app_bar.dart';
 import 'package:pilates_app/widgets/app_button.dart';
+import 'package:pilates_app/widgets/app_loading_indicator.dart';
 
 import '../../auth/sign_up/widgets/branch_option.dart';
 
@@ -184,7 +185,7 @@ class _ChangeHomeBranchState extends State<ChangeHomeBranch> {
 
   Widget _buildBranchesContent(BuildContext context) {
     if (_isLoadingBranches) {
-      return const Center(child: CircularProgressIndicator());
+      return const AppLoadingIndicator();
     }
 
     if (_loadErrorMessage.isNotEmpty) {

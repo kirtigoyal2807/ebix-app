@@ -29,8 +29,7 @@ class FeaturedClassCard extends StatelessWidget {
     final imageHeight = size.height * 0.18;
     final user = context.select<AuthCubit, AuthUser?>((c) => c.state.user);
     final showInPlanBadge =
-        featuredClass.allowPackageBooking == true &&
-        userShowsPackageMembership(user);
+        featuredClass.inPlan == true && userShowsPackageMembership(user);
     final upgradeRequired = featuredClass.showsUpgradeRequired;
 
     return Container(
@@ -101,6 +100,7 @@ class FeaturedClassCard extends StatelessWidget {
                 ],
               ),
             ),
+          ),
           Padding(
             padding: EdgeInsets.only(
               right: AppSpacing.md,

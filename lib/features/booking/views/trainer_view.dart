@@ -5,6 +5,7 @@ import '../../../config/theme/app_colors.dart';
 import '../../../config/theme/app_spacing.dart';
 import '../../../config/theme/app_text_styles.dart';
 import '../../../core/localization/localization_extension.dart';
+import '../../../widgets/app_loading_indicator.dart';
 import '../../../widgets/app_text.dart';
 import '../cubit/booking_cubit.dart';
 import '../cubit/booking_state.dart';
@@ -54,9 +55,7 @@ class TrainerView extends StatelessWidget {
                 builder: (context, state) {
                   if (state.status == TrainersLoadStatus.loading &&
                       state.items.isEmpty) {
-                    return const Center(
-                      child: CircularProgressIndicator.adaptive(),
-                    );
+                    return const AppLoadingIndicator();
                   }
 
                   if (state.status == TrainersLoadStatus.failure &&

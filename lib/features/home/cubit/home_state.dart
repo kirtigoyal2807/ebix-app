@@ -17,6 +17,9 @@ class HomeState extends Equatable {
   final BookingTab selectedBookingTab;
   final String? selectedClassCategory;
 
+  /// Bumped when trainer details (opened from home) requests classes with all filters cleared.
+  final int browseAllClassesNonce;
+
   const HomeState({
     required this.currentIndex,
     required this.loadStatus,
@@ -24,6 +27,7 @@ class HomeState extends Equatable {
     required this.data,
     required this.selectedBookingTab,
     required this.selectedClassCategory,
+    required this.browseAllClassesNonce,
   });
 
   factory HomeState.initial() {
@@ -34,6 +38,7 @@ class HomeState extends Equatable {
       data: null,
       selectedBookingTab: BookingTab.classes,
       selectedClassCategory: null,
+      browseAllClassesNonce: 0,
     );
   }
 
@@ -44,6 +49,7 @@ class HomeState extends Equatable {
     HomeResponse? data,
     BookingTab? selectedBookingTab,
     Object? selectedClassCategory = _unsetClassCategory,
+    int? browseAllClassesNonce,
     bool clearData = false,
   }) {
     return HomeState(
@@ -55,6 +61,8 @@ class HomeState extends Equatable {
       selectedClassCategory: selectedClassCategory == _unsetClassCategory
           ? this.selectedClassCategory
           : selectedClassCategory as String?,
+      browseAllClassesNonce:
+          browseAllClassesNonce ?? this.browseAllClassesNonce,
     );
   }
 
@@ -66,5 +74,6 @@ class HomeState extends Equatable {
     data,
     selectedBookingTab,
     selectedClassCategory,
+    browseAllClassesNonce,
   ];
 }

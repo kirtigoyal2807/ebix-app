@@ -16,6 +16,7 @@ import 'package:pilates_app/features/my_booking/my_booking_view.dart';
 import 'package:pilates_app/features/my_booking/widget/my_booking_class_card.dart';
 import 'package:pilates_app/widgets/app_button.dart';
 import 'package:pilates_app/widgets/app_text.dart';
+import 'package:pilates_app/widgets/app_loading_indicator.dart';
 
 /// One tab: loads [GET /my-bookings](status_group) and shows loading / empty / error / list.
 class MyBookingsTabBody extends StatelessWidget {
@@ -192,7 +193,7 @@ class MyBookingsTabBody extends StatelessWidget {
           );
         }
         if (tab.isLoading) {
-          return const Center(child: CircularProgressIndicator());
+          return const AppLoadingIndicator();
         }
         if (!tab.hasFetched && tab.errorMessage == null) {
           return const SizedBox.shrink();

@@ -15,6 +15,7 @@ import 'package:pilates_app/features/loyalty/data/loyalty_repository.dart';
 import 'package:pilates_app/features/loyalty/data/models/loyalty_leaderboard_entry.dart';
 import 'package:pilates_app/widgets/app_app_bar.dart';
 import 'package:pilates_app/widgets/app_text.dart';
+import 'package:pilates_app/widgets/app_loading_indicator.dart';
 
 import '../../../../widgets/dotted_underline.dart';
 
@@ -50,7 +51,7 @@ class _ChallengesDetailScaffold extends StatelessWidget {
         builder: (context, state) {
           if (state.status == ChallengeDetailLoadStatus.loading ||
               state.status == ChallengeDetailLoadStatus.initial) {
-            return const Center(child: CircularProgressIndicator());
+            return const AppLoadingIndicator();
           }
           if (state.status == ChallengeDetailLoadStatus.failure) {
             return Center(

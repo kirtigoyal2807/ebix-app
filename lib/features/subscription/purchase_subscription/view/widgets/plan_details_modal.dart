@@ -13,6 +13,7 @@ import 'package:pilates_app/features/subscription/purchase_subscription/cubit/su
 import 'package:pilates_app/widgets/app_button.dart';
 import 'package:pilates_app/widgets/app_text.dart';
 import 'package:pilates_app/widgets/currency_amount_text.dart';
+import 'package:pilates_app/widgets/app_loading_indicator.dart';
 
 /// Bottom sheet for plan summary. When [plan] `id` parses to a positive int,
 /// loads `GET /products/{id}` and merges price, features, [requiresHealthIntake],
@@ -196,11 +197,7 @@ class _PlanDetailsModalState extends State<PlanDetailsModal> {
             if (_detailLoading) ...[
               SizedBox(height: AppSpacing.sm),
               const Center(
-                child: SizedBox(
-                  width: 24,
-                  height: 24,
-                  child: CircularProgressIndicator(strokeWidth: 2),
-                ),
+                child: AppInlineBusy(size: 24),
               ),
             ],
             SizedBox(height: AppSpacing.sm),

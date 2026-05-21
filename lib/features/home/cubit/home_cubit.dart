@@ -41,6 +41,18 @@ class HomeCubit extends Cubit<HomeState> {
     emit(state.copyWith(selectedClassCategory: null));
   }
 
+  /// Home → trainer details → Browse All Classes (no [BookingCubit] on pushed route).
+  void requestBrowseAllClasses() {
+    emit(
+      state.copyWith(
+        currentIndex: 1,
+        selectedBookingTab: BookingTab.classes,
+        selectedClassCategory: null,
+        browseAllClassesNonce: state.browseAllClassesNonce + 1,
+      ),
+    );
+  }
+
   Future<void> loadHome() async {
     emit(state.copyWith(loadStatus: HomeLoadStatus.loading, errorMessage: ''));
 

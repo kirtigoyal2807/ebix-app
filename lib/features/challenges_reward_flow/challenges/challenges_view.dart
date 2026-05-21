@@ -14,6 +14,7 @@ import 'package:pilates_app/features/challenges_reward_flow/challenges/widget/ne
 import 'package:pilates_app/features/loyalty/data/loyalty_repository.dart';
 import 'package:pilates_app/widgets/app_app_bar.dart';
 import 'package:pilates_app/widgets/app_text.dart';
+import 'package:pilates_app/widgets/app_loading_indicator.dart';
 
 class ChallengesView extends StatelessWidget {
   const ChallengesView({super.key});
@@ -44,7 +45,7 @@ class _ChallengesViewBody extends StatelessWidget {
         builder: (context, state) {
           if (state.status == ChallengesLoadStatus.loading ||
               state.status == ChallengesLoadStatus.initial) {
-            return const Center(child: CircularProgressIndicator());
+            return const AppLoadingIndicator();
           }
           if (state.status == ChallengesLoadStatus.failure) {
             return Center(

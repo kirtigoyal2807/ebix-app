@@ -5,6 +5,7 @@ import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/features/loyalty/data/models/loyalty_points_history_entry.dart';
 import 'package:pilates_app/widgets/app_text.dart';
+import 'package:pilates_app/widgets/app_loading_indicator.dart';
 
 import '../../../../core/localization/localization_extension.dart';
 import '../cubit/reward_cubit.dart';
@@ -47,7 +48,7 @@ class RewardHistoryView extends StatelessWidget {
         switch (state.historyLoadStatus) {
           case RewardListLoadStatus.initial:
           case RewardListLoadStatus.loading:
-            return const Center(child: CircularProgressIndicator());
+            return const AppLoadingIndicator();
           case RewardListLoadStatus.failure:
             return ListView(
               padding: EdgeInsetsGeometry.all(AppSpacing.lg),

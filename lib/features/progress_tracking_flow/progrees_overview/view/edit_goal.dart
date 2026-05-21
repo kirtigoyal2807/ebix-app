@@ -6,6 +6,7 @@ import 'package:pilates_app/features/progress_tracking_flow/progrees_overview/cu
 import 'package:pilates_app/features/progress_tracking_flow/progrees_overview/cubit/progress_goal_state.dart';
 import 'package:pilates_app/features/progress_tracking_flow/progrees_overview/goal_form_mapping.dart';
 import 'package:pilates_app/widgets/app_button.dart';
+import 'package:pilates_app/widgets/app_loading_indicator.dart';
 
 import '../../../../config/theme/app_colors.dart';
 import '../../../../config/theme/app_radius.dart';
@@ -95,7 +96,7 @@ class _EditGoalState extends State<EditGoal> {
         builder: (context, state) {
           if (state.status == ProgressGoalStatus.loading &&
               state.goal == null) {
-            return const Center(child: CircularProgressIndicator());
+            return const AppLoadingIndicator();
           }
           if (state.status == ProgressGoalStatus.failure &&
               state.goal == null) {

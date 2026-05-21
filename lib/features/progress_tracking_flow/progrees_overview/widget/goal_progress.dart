@@ -7,6 +7,7 @@ import 'package:pilates_app/core/localization/localization_extension.dart';
 import 'package:pilates_app/features/progress_tracking_flow/progrees_overview/cubit/progress_overview_cubit.dart';
 import 'package:pilates_app/features/progress_tracking_flow/progrees_overview/cubit/progress_overview_state.dart';
 import 'package:pilates_app/widgets/app_text.dart';
+import 'package:pilates_app/widgets/app_loading_indicator.dart';
 
 import '../../../../config/theme/app_radius.dart';
 
@@ -24,7 +25,7 @@ class GoalProgress extends StatelessWidget {
             margin: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
             height: 200,
             alignment: Alignment.center,
-            child: const CircularProgressIndicator(),
+            child: const AppInlineBusy(),
           );
         }
         final overview = state.overview;

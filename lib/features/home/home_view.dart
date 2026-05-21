@@ -10,6 +10,7 @@ import 'package:pilates_app/core/localization/localization_extension.dart';
 import 'package:pilates_app/features/explore/view/redeem_card_view.dart';
 import 'package:pilates_app/features/explore/widget/receive_gift_sheet.dart';
 import 'package:pilates_app/widgets/app_text.dart';
+import 'package:pilates_app/widgets/app_loading_indicator.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../account/account_view.dart';
 import '../auth/cubit/auth_cubit.dart';
@@ -389,11 +390,13 @@ class _HomeBookingFlowTabListenerState
   void initState() {
     super.initState();
     openClassesBookingTabAfterPopToRoot.addListener(_onOpenClassesRequest);
+    openBrowseAllClassesAfterPopToRoot.addListener(_onBrowseAllClassesRequest);
   }
 
   @override
   void dispose() {
     openClassesBookingTabAfterPopToRoot.removeListener(_onOpenClassesRequest);
+    openBrowseAllClassesAfterPopToRoot.removeListener(_onBrowseAllClassesRequest);
     super.dispose();
   }
 
@@ -401,6 +404,12 @@ class _HomeBookingFlowTabListenerState
     if (!openClassesBookingTabAfterPopToRoot.value || !mounted) return;
     openClassesBookingTabAfterPopToRoot.value = false;
     context.read<HomeCubit>().setTab(1, bookingTab: BookingTab.classes);
+  }
+
+  void _onBrowseAllClassesRequest() {
+    if (!openBrowseAllClassesAfterPopToRoot.value || !mounted) return;
+    openBrowseAllClassesAfterPopToRoot.value = false;
+    context.read<HomeCubit>().requestBrowseAllClasses();
   }
 
   @override
@@ -436,7 +445,7 @@ class HomeContentView extends StatelessWidget {
       builder: (context, state) {
         if (state.loadStatus == HomeLoadStatus.initial ||
             state.loadStatus == HomeLoadStatus.loading) {
-          return const Center(child: CircularProgressIndicator());
+          return const AppLoadingIndicator();
         }
         if (state.loadStatus == HomeLoadStatus.failure && state.data == null) {
           return Center(

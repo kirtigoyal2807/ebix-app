@@ -30,6 +30,7 @@ import 'package:pilates_app/widgets/app_app_bar.dart';
 import 'package:pilates_app/widgets/app_button.dart';
 import 'package:pilates_app/widgets/app_text.dart';
 import 'package:pilates_app/widgets/inline_validation_banner.dart';
+import 'package:pilates_app/widgets/app_loading_indicator.dart';
 
 import '../../subscription_as_gift/gift_subscription_view.dart';
 
@@ -53,6 +54,19 @@ class SubscriptionView extends StatelessWidget {
 
 class _SubscriptionViewContent extends StatelessWidget {
   const _SubscriptionViewContent();
+
+  static List<Widget> _wizardSteps(Key wizardKey) => [
+        HealthInformationView(key: wizardKey),
+        MedicalHistoryView(key: wizardKey),
+        PhysicalActivityView(key: wizardKey),
+        PregnancyView(key: wizardKey),
+        GoalsView(key: wizardKey),
+        DeclarationView(key: wizardKey),
+        SafetyView(key: wizardKey),
+        TermsAndConditionsView(key: wizardKey),
+        ReviewScreenView(key: wizardKey),
+        RequiredInformationView(key: wizardKey),
+      ];
 
   @override
   Widget build(BuildContext context) {
@@ -87,7 +101,12 @@ class _SubscriptionViewContent extends StatelessWidget {
           appBarTitle = l10n.subscriptionTitle;
         }
 
-        return Scaffold(
+        // Step 10: emergency contact + ID — mandatory; no back navigation.
+        final isMandatoryRequiredInfoStep = state.currentStep == 10;
+
+        return PopScope(
+          canPop: !isMandatoryRequiredInfoStep,
+          child: Scaffold(
           // Plan details (step 9) has voucher + text fields — must resize with keyboard.
           resizeToAvoidBottomInset: true,
           backgroundColor: isDark
@@ -96,33 +115,35 @@ class _SubscriptionViewContent extends StatelessWidget {
           appBar: AppAppBar(
             title: appBarTitle,
             isMoreMenu: false,
-            onBack: () {
-              if (state.currentStep > 0) {
-                context.read<SubscriptionCubit>().previousStep();
-              } else {
-                Navigator.of(context).pop();
-                // context.pop();
-              }
-            },
+            leading: isMandatoryRequiredInfoStep
+                ? const SizedBox.shrink()
+                : null,
+            onBack: isMandatoryRequiredInfoStep
+                ? null
+                : () {
+                    if (state.currentStep > 0) {
+                      context.read<SubscriptionCubit>().previousStep();
+                    } else {
+                      Navigator.of(context).pop();
+                    }
+                  },
           ),
           body: SafeArea(
             child: IndexedStack(
               index: state.currentStep,
               children: [
                 const _PlanSelectionStep(),
-                const HealthInformationView(),
-                const MedicalHistoryView(),
-                const PhysicalActivityView(), // Step 3
-                const PregnancyView(), // Step 4
-                const GoalsView(), // Step 5
-                const DeclarationView(), // Step 6
-                const SafetyView(),
-                const TermsAndConditionsView(),
-                const ReviewScreenView(),
-                const RequiredInformationView(),
+                // Remount wizard steps when plan or checkout session changes so
+                // local controllers do not show stale data after a plan switch.
+                ..._wizardSteps(
+                  ValueKey<String>(
+                    '${state.selectedPlanId}|${state.checkoutSessionId}',
+                  ),
+                ),
               ],
             ),
           ),
+        ),
         );
       },
     );
@@ -301,7 +322,7 @@ class _PlanSelectionStepState extends State<_PlanSelectionStep> {
       context: context,
       barrierDismissible: false,
       builder: (dialogContext) =>
-          const Center(child: CircularProgressIndicator()),
+          const AppLoadingIndicator(),
     );
 
     state = cubit.state;
@@ -525,11 +546,7 @@ class _PlanSelectionStepState extends State<_PlanSelectionStep> {
                             vertical: AppSpacing.md,
                           ),
                           child: Center(
-                            child: SizedBox(
-                              width: 28,
-                              height: 28,
-                              child: CircularProgressIndicator(strokeWidth: 2),
-                            ),
+                            child: AppInlineBusy(size: 28),
                           ),
                         )
                       else if (_branchesLoadFailed)
@@ -607,11 +624,7 @@ class _PlanSelectionStepState extends State<_PlanSelectionStep> {
                       vertical: AppSpacing.lg,
                     ),
                     child: Center(
-                      child: SizedBox(
-                        width: 28,
-                        height: 28,
-                        child: CircularProgressIndicator(strokeWidth: 2),
-                      ),
+                      child: AppInlineBusy(size: 28),
                     ),
                   )
                 else

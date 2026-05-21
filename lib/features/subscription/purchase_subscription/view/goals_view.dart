@@ -14,6 +14,7 @@ import 'package:pilates_app/widgets/app_button.dart';
 import 'package:pilates_app/widgets/app_text.dart';
 import 'package:pilates_app/widgets/app_text_field.dart';
 import 'package:pilates_app/widgets/inline_validation_banner.dart';
+import 'package:pilates_app/widgets/app_loading_indicator.dart';
 
 class GoalsView extends StatefulWidget {
   const GoalsView({super.key});
@@ -143,13 +144,7 @@ class _GoalsViewState extends State<GoalsView> {
                                 vertical: AppSpacing.md,
                               ),
                               child: Center(
-                                child: SizedBox(
-                                  width: 28,
-                                  height: 28,
-                                  child: CircularProgressIndicator(
-                                    strokeWidth: 2,
-                                  ),
-                                ),
+                                child: AppInlineBusy(size: 28),
                               ),
                             ),
                           ],

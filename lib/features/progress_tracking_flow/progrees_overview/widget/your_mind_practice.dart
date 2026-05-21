@@ -7,6 +7,7 @@ import 'package:pilates_app/core/localization/localization_extension.dart';
 import 'package:pilates_app/features/progress_tracking_flow/progrees_overview/cubit/progress_overview_cubit.dart';
 import 'package:pilates_app/features/progress_tracking_flow/progrees_overview/cubit/progress_overview_state.dart';
 import 'package:pilates_app/widgets/app_text.dart';
+import 'package:pilates_app/widgets/app_loading_indicator.dart';
 
 import '../../../../config/theme/app_colors.dart';
 import '../../../../config/theme/app_radius.dart';
@@ -33,7 +34,7 @@ class YourMindPractice extends StatelessWidget {
                 const SizedBox(
                   height: 200,
                   width: double.infinity,
-                  child: Center(child: CircularProgressIndicator()),
+                  child: const AppLoadingIndicator(),
                 ),
               ],
             ),

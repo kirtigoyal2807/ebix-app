@@ -9,6 +9,7 @@ import 'package:pilates_app/features/progress_tracking_flow/view_session_history
 import 'package:pilates_app/features/progress_tracking_flow/view_session_history/view/session_history_view.dart';
 import 'package:pilates_app/features/progress_tracking_flow/view_session_history/widget/session_history_card.dart';
 import 'package:pilates_app/widgets/app_text.dart';
+import 'package:pilates_app/widgets/app_loading_indicator.dart';
 
 import '../../../widgets/app_button.dart';
 
@@ -40,7 +41,7 @@ class HistoryView extends StatelessWidget {
                       if (state.isLoading && state.sessions.isEmpty) {
                         return const Padding(
                           padding: const EdgeInsets.symmetric(vertical: 24),
-                          child: Center(child: CircularProgressIndicator()),
+                          child: const AppLoadingIndicator(),
                         );
                       }
                       if (state.sessions.isEmpty) {

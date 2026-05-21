@@ -12,6 +12,7 @@ import 'package:pilates_app/features/subscription/purchase_subscription/view/wid
 import 'package:pilates_app/widgets/app_button.dart';
 import 'package:pilates_app/widgets/app_text.dart';
 import 'package:pilates_app/widgets/inline_validation_banner.dart';
+import 'package:pilates_app/widgets/app_loading_indicator.dart';
 
 class PhysicalActivityView extends StatefulWidget {
   const PhysicalActivityView({super.key});
@@ -135,13 +136,7 @@ class _PhysicalActivityViewState extends State<PhysicalActivityView> {
                               vertical: AppSpacing.md,
                             ),
                             child: Center(
-                              child: SizedBox(
-                                width: 28,
-                                height: 28,
-                                child: CircularProgressIndicator(
-                                  strokeWidth: 2,
-                                ),
-                              ),
+                              child: AppInlineBusy(size: 28),
                             ),
                           ),
                         ],

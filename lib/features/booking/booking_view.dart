@@ -13,6 +13,7 @@ import 'package:pilates_app/features/booking/data/trainers_repository.dart';
 import 'package:pilates_app/features/home/cubit/home_cubit.dart';
 import 'package:pilates_app/features/home/cubit/home_state.dart';
 import 'package:pilates_app/features/booking/views/trainer_view.dart';
+import 'package:pilates_app/widgets/app_loading_indicator.dart';
 import 'package:pilates_app/widgets/app_text.dart';
 import 'cubit/booking_cubit.dart';
 import 'cubit/booking_state.dart';
@@ -46,6 +47,13 @@ class BookingView extends StatelessWidget {
         ),
       ],
       child: BlocListener<HomeCubit, HomeState>(
+        listenWhen: (previous, current) =>
+            previous.browseAllClassesNonce != current.browseAllClassesNonce,
+        listener: (context, homeState) {
+          context.read<BookingCubit>().openBrowseAllClassesFromTrainer();
+          context.read<ClassesCubit>().load(search: null, force: true);
+        },
+        child: BlocListener<HomeCubit, HomeState>(
         listener: (context, homeState) {
           final bookingCubit = context.read<BookingCubit>();
           if (homeState.currentIndex == 1 &&
@@ -71,6 +79,7 @@ class BookingView extends StatelessWidget {
           }
         },
         child: const BookingBody(),
+        ),
       ),
     );
   }
@@ -181,18 +190,50 @@ class _BookingBodyState extends State<BookingBody> {
 // Classes tab body — reads ClassesCubit + BookingState for local filtering
 // ---------------------------------------------------------------------------
 
-class _ClassesTab extends StatelessWidget {
+class _ClassesTab extends StatefulWidget {
   const _ClassesTab({required this.bookingState});
 
   final BookingState bookingState;
 
   @override
+  State<_ClassesTab> createState() => _ClassesTabState();
+}
+
+class _ClassesTabState extends State<_ClassesTab> {
+  final ScrollController _listScrollController = ScrollController();
+
+  @override
+  void dispose() {
+    _listScrollController.dispose();
+    super.dispose();
+  }
+
+  void _scrollClassesListToTop() {
+    if (!_listScrollController.hasClients) return;
+    _listScrollController.animateTo(
+      0,
+      duration: const Duration(milliseconds: 320),
+      curve: Curves.easeOutCubic,
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final bookingState = widget.bookingState;
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     // Keep search / filters / subscription outside ClassesCubit rebuilds so the
     // search field is not recreated when loading or data updates (fixes cleared text).
-    return Column(
+    return BlocListener<BookingCubit, BookingState>(
+      listenWhen: (previous, current) =>
+          previous.classesScrollToTopNonce != current.classesScrollToTopNonce,
+      listener: (context, state) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (!mounted) return;
+          _scrollClassesListToTop();
+        });
+      },
+      child: Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         const BookingSearchBar(),
@@ -209,7 +250,7 @@ class _ClassesTab extends StatelessWidget {
           child: BlocBuilder<ClassesCubit, ClassesState>(
             builder: (context, classesState) {
               if (classesState.isLoading && classesState.allClasses.isEmpty) {
-                return const Center(child: CircularProgressIndicator());
+                return const AppLoadingIndicator();
               }
 
               if (classesState.hasError && classesState.allClasses.isEmpty) {
@@ -234,6 +275,7 @@ class _ClassesTab extends StatelessWidget {
                 child: Stack(
                   children: [
                     ListView(
+                      controller: _listScrollController,
                       padding: EdgeInsets.symmetric(vertical: AppSpacing.lg),
                       children: _buildClassCards(
                         context,
@@ -243,11 +285,17 @@ class _ClassesTab extends StatelessWidget {
                       ),
                     ),
                     if (classesState.isLoading)
-                      const Positioned(
+                      Positioned(
                         top: 0,
                         left: 0,
                         right: 0,
-                        child: LinearProgressIndicator(minHeight: 3),
+                        child: LinearProgressIndicator(
+                          minHeight: 3,
+                          color: AppLoadingColors.indicator,
+                          backgroundColor: isDark
+                              ? AppColors.progressBGColor
+                              : AppColors.darkGreyBorder,
+                        ),
                       ),
                   ],
                 ),
@@ -256,6 +304,7 @@ class _ClassesTab extends StatelessWidget {
           ),
         ),
       ],
+      ),
     );
   }
 

@@ -6,6 +6,7 @@ import 'package:pilates_app/core/constants/check_in_policy.dart';
 import 'package:pilates_app/config/theme/app_colors.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/widgets/app_text.dart';
+import 'package:pilates_app/widgets/app_loading_indicator.dart';
 
 import '../../../config/theme/app_spacing.dart';
 import '../../../core/localization/arb/app_localizations.dart';
@@ -35,7 +36,7 @@ class PushNotificationView extends StatelessWidget {
         body: BlocBuilder<PushNotificationCubit, PushNotificationState>(
           builder: (context, state) {
             if (state.status == PushNotificationStatus.loading) {
-              return const Center(child: CircularProgressIndicator());
+              return const AppLoadingIndicator();
             }
 
             if (state.status == PushNotificationStatus.error &&
@@ -94,11 +95,11 @@ class PushNotificationView extends StatelessWidget {
                             CheckInPolicy.kOpensBeforeStart.inMinutes,
                           ),
                           switchValue: state.beforeClassStart,
-                          onChanged: (bool p1) {
-                            context
-                                .read<PushNotificationCubit>()
-                                .changeBeforeClassStart(p1);
-                          },
+                          onChanged: state.allNotification
+                              ? (bool p1) => context
+                                    .read<PushNotificationCubit>()
+                                    .changeBeforeClassStart(p1)
+                              : null,
                         ),
                         SizedBox(height: AppSpacing.md),
                         Divider(
@@ -112,11 +113,11 @@ class PushNotificationView extends StatelessWidget {
                           title: l10n.dayBeforeReminder,
                           subTitle: l10n.dayBeforeReminderSubtitle,
                           switchValue: state.dayBeforeRemainder,
-                          onChanged: (bool p1) {
-                            context
-                                .read<PushNotificationCubit>()
-                                .changeDayBeforeRemainder(p1);
-                          },
+                          onChanged: state.allNotification
+                              ? (bool p1) => context
+                                    .read<PushNotificationCubit>()
+                                    .changeDayBeforeRemainder(p1)
+                              : null,
                         ),
                         SizedBox(height: AppSpacing.xl),
                         titleText(text: l10n.subscriptionBilling),
@@ -125,11 +126,11 @@ class PushNotificationView extends StatelessWidget {
                           title: l10n.paymentConfirmations,
                           subTitle: l10n.paymentConfirmationsSubtitle,
                           switchValue: state.paymentConfirmation,
-                          onChanged: (bool p1) {
-                            context
-                                .read<PushNotificationCubit>()
-                                .changePaymentConfirmation(p1);
-                          },
+                          onChanged: state.allNotification
+                              ? (bool p1) => context
+                                    .read<PushNotificationCubit>()
+                                    .changePaymentConfirmation(p1)
+                              : null,
                         ),
                         SizedBox(height: AppSpacing.md),
                         Divider(
@@ -143,11 +144,11 @@ class PushNotificationView extends StatelessWidget {
                           title: l10n.renewalReminders,
                           subTitle: l10n.renewalRemindersSubtitle,
                           switchValue: state.renewalRemainder,
-                          onChanged: (bool p1) {
-                            context
-                                .read<PushNotificationCubit>()
-                                .changeRenewalRemainder(p1);
-                          },
+                          onChanged: state.allNotification
+                              ? (bool p1) => context
+                                    .read<PushNotificationCubit>()
+                                    .changeRenewalRemainder(p1)
+                              : null,
                         ),
                         SizedBox(height: AppSpacing.xl),
                         titleText(text: l10n.marketingUpdates),
@@ -156,11 +157,11 @@ class PushNotificationView extends StatelessWidget {
                           title: l10n.promotionsOffers,
                           subTitle: l10n.promotionsOffersSubtitle,
                           switchValue: state.promotionOffer,
-                          onChanged: (bool p1) {
-                            context
-                                .read<PushNotificationCubit>()
-                                .changePromotionOffer(p1);
-                          },
+                          onChanged: state.allNotification
+                              ? (bool p1) => context
+                                    .read<PushNotificationCubit>()
+                                    .changePromotionOffer(p1)
+                              : null,
                         ),
                         SizedBox(height: AppSpacing.md),
                         Divider(
@@ -174,11 +175,11 @@ class PushNotificationView extends StatelessWidget {
                           title: l10n.appUpdates,
                           subTitle: l10n.appUpdatesSubtitle,
                           switchValue: state.appUpdate,
-                          onChanged: (bool p1) {
-                            context
-                                .read<PushNotificationCubit>()
-                                .changeAppUpdate(p1);
-                          },
+                          onChanged: state.allNotification
+                              ? (bool p1) => context
+                                    .read<PushNotificationCubit>()
+                                    .changeAppUpdate(p1)
+                              : null,
                         ),
                         SizedBox(height: AppSpacing.xl),
                         titleText(text: l10n.challengesRewards),
@@ -187,11 +188,11 @@ class PushNotificationView extends StatelessWidget {
                           title: l10n.newChallenges,
                           subTitle: l10n.newChallengesSubtitle,
                           switchValue: state.newChallenges,
-                          onChanged: (bool p1) {
-                            context
-                                .read<PushNotificationCubit>()
-                                .changeNewChallenges(p1);
-                          },
+                          onChanged: state.allNotification
+                              ? (bool p1) => context
+                                    .read<PushNotificationCubit>()
+                                    .changeNewChallenges(p1)
+                              : null,
                         ),
                         SizedBox(height: AppSpacing.md),
                         Divider(
@@ -241,11 +242,11 @@ class PushNotificationView extends StatelessWidget {
                                   0.8, // 👈 reduce overall size (try 0.7–0.9)
                               child: CupertinoSwitch(
                                 value: state.rewardEarn,
-                                onChanged: (bool p1) {
-                                  context
-                                      .read<PushNotificationCubit>()
-                                      .changeRewardEarn(p1);
-                                },
+                                onChanged: state.allNotification
+                                    ? (bool p1) => context
+                                          .read<PushNotificationCubit>()
+                                          .changeRewardEarn(p1)
+                                    : null,
 
                                 inactiveThumbColor: isDark
                                     ? AppColors.primary
@@ -273,7 +274,7 @@ class PushNotificationView extends StatelessWidget {
                   Positioned.fill(
                     child: Container(
                       color: Colors.black.withValues(alpha: 0.3),
-                      child: const Center(child: CircularProgressIndicator()),
+                      child: const AppLoadingIndicator(),
                     ),
                   ),
               ],

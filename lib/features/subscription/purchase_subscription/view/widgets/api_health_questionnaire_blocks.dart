@@ -54,19 +54,45 @@ class ApiDynamicMedicalQuestionsBlock extends StatelessWidget {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            for (final q in qs) ...[
-              _MedicalQuestionBody(
-                question: q,
+            for (var i = 0; i < qs.length; i++) ...[
+              _MedicalQuestionGroup(
+                key: ValueKey(
+                  'medical-q-${qs[i].id ?? qs[i].key ?? qs[i].order ?? i}',
+                ),
+                question: qs[i],
                 isDark: isDark,
-                answer: q.numericQuestionId != null
-                    ? state.healthQuestionnaireAnswers[q.numericQuestionId!]
+                answer: qs[i].numericQuestionId != null
+                    ? state.healthQuestionnaireAnswers[qs[i].numericQuestionId!]
                     : null,
               ),
-              SizedBox(height: AppSpacing.lg),
+              if (i < qs.length - 1) SizedBox(height: AppSpacing.lg),
             ],
           ],
         );
       },
+    );
+  }
+}
+
+/// One API question — label and input stay in a single tight group.
+class _MedicalQuestionGroup extends StatelessWidget {
+  const _MedicalQuestionGroup({
+    super.key,
+    required this.question,
+    required this.isDark,
+    required this.answer,
+  });
+
+  final ProductHealthQuestion question;
+  final bool isDark;
+  final Object? answer;
+
+  @override
+  Widget build(BuildContext context) {
+    return _MedicalQuestionBody(
+      question: question,
+      isDark: isDark,
+      answer: answer,
     );
   }
 }
@@ -156,7 +182,7 @@ class ApiCheckboxQuestionBlock extends StatelessWidget {
             color: isDark ? AppColors.lightText : AppColors.darkText,
           ),
         ),
-        SizedBox(height: AppSpacing.md),
+        SizedBox(height: AppSpacing.sm),
         for (final row in rows)
           _MedicalOptionRow(
             label: row.label,
@@ -174,10 +200,10 @@ class ApiCheckboxQuestionBlock extends StatelessWidget {
         if (question.allowOther == true) ...[
           SizedBox(height: AppSpacing.sm),
           AppTextField(
-            label: '',
             hint: l10n.other,
             initialValue: _otherAnswerText(rawAnswer) ?? '',
             onChanged: (t) => cubit.setHealthQuestionnaireOtherText(id, t),
+            showCharacterCounter: false,
           ),
         ],
       ],
@@ -213,7 +239,7 @@ class _MedicalRadioQuestion extends StatelessWidget {
             color: isDark ? AppColors.lightText : AppColors.darkText,
           ),
         ),
-        SizedBox(height: AppSpacing.md),
+        SizedBox(height: AppSpacing.sm),
         for (final row in rows)
           _MedicalOptionRow(
             label: row.label,
@@ -226,35 +252,67 @@ class _MedicalRadioQuestion extends StatelessWidget {
   }
 }
 
-class _MedicalTextQuestion extends StatelessWidget {
+bool _isMedicalTextarea(ProductHealthQuestion q) {
+  final t = q.type?.toLowerCase().trim() ?? '';
+  return t == 'textarea' ||
+      t == 'multi_line' ||
+      t == 'multiline' ||
+      t == 'text_area';
+}
+
+class _MedicalTextQuestion extends StatefulWidget {
   const _MedicalTextQuestion({required this.question, required this.rawAnswer});
 
   final ProductHealthQuestion question;
   final Object? rawAnswer;
 
   @override
+  State<_MedicalTextQuestion> createState() => _MedicalTextQuestionState();
+}
+
+class _MedicalTextQuestionState extends State<_MedicalTextQuestion> {
+  late final TextEditingController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = TextEditingController(
+      text: widget.rawAnswer?.toString() ?? '',
+    );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final cubit = context.read<SubscriptionCubit>();
-    final id = question.numericQuestionId!;
-    final text = rawAnswer?.toString() ?? '';
+    final q = widget.question;
+    final id = q.numericQuestionId!;
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final label =
+        '${q.displayLabel}${q.isRequired == true ? ' *' : ''}';
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
       children: [
         AppText(
-          '${question.displayLabel}${question.isRequired == true ? ' *' : ''}',
+          label,
           style: (ctx) => AppTextStyles.bodyTextSmall(ctx).copyWith(
             fontWeight: FontWeight.w600,
             color: isDark ? AppColors.lightText : AppColors.darkText,
           ),
         ),
-        SizedBox(height: AppSpacing.md),
+        SizedBox(height: AppSpacing.sm),
         AppTextField(
-          label: '',
-          hint: question.displayLabel,
-          initialValue: text,
-          maxLines: question.type?.toLowerCase().trim() == 'textarea' ? 6 : 1,
+          controller: _controller,
+          hint: q.displayLabel,
+          maxLines: _isMedicalTextarea(q) ? 6 : 1,
+          showCharacterCounter: false,
           onChanged: (val) => cubit.setHealthQuestionnaireAnswer(id, val),
         ),
       ],
@@ -405,6 +463,7 @@ class _BooleanYesNoRow extends StatelessWidget {
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
       children: [
         AppText(
           '$label$requiredMark',
@@ -413,7 +472,7 @@ class _BooleanYesNoRow extends StatelessWidget {
             color: isDark ? AppColors.lightText : AppColors.darkText,
           ),
         ),
-        SizedBox(height: AppSpacing.md),
+        SizedBox(height: AppSpacing.sm),
         _MedicalOptionRow(
           label: l10n.yes,
           isSelected: value == true,

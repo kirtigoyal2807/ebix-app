@@ -11,6 +11,7 @@ import 'package:pilates_app/core/localization/localization_extension.dart';
 import 'package:pilates_app/features/loyalty/data/models/loyalty_points_history_entry.dart';
 import 'package:pilates_app/features/loyalty/data/models/loyalty_tier.dart';
 import 'package:pilates_app/widgets/app_text.dart';
+import 'package:pilates_app/widgets/app_loading_indicator.dart';
 
 import '../cubit/loyalty_tiers_cubit.dart';
 import '../cubit/loyalty_tiers_state.dart';
@@ -124,7 +125,7 @@ class RewardOverviewView extends StatelessWidget {
                   case RewardListLoadStatus.loading:
                     return Padding(
                       padding: EdgeInsets.symmetric(vertical: AppSpacing.xl),
-                      child: Center(child: CircularProgressIndicator()),
+                      child: const AppLoadingIndicator(),
                     );
                   case RewardListLoadStatus.failure:
                     return Padding(
@@ -193,14 +194,7 @@ class RewardOverviewView extends StatelessWidget {
           return SizedBox(
             height: 48,
             width: 48,
-            child: CircularProgressIndicator.adaptive(
-              strokeWidth: 3,
-              valueColor: AlwaysStoppedAnimation(
-                isDark
-                    ? AppColors.subscriptionCardGradient2
-                    : AppColors.languageIcon,
-              ),
-            ),
+            child: const AppInlineBusy(size: 48),
           );
         case RewardListLoadStatus.failure:
           return AppText(
@@ -296,14 +290,7 @@ class RewardOverviewView extends StatelessWidget {
                       child: SizedBox(
                         height: 20,
                         width: 20,
-                        child: CircularProgressIndicator.adaptive(
-                          strokeWidth: 2,
-                          valueColor: AlwaysStoppedAnimation(
-                            isDark
-                                ? AppColors.subscriptionCardGradient2
-                                : AppColors.languageIcon,
-                          ),
-                        ),
+                        child: const AppInlineBusy(size: 20),
                       ),
                     )
                   else

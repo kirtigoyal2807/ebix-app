@@ -4,16 +4,15 @@ import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/core/localization/localization_extension.dart';
 import 'package:pilates_app/core/network/api_result.dart';
-import 'package:pilates_app/features/booking/cubit/booking_cubit.dart';
-import 'package:pilates_app/features/booking/cubit/booking_state.dart';
 import 'package:pilates_app/features/booking/data/classes_repository.dart';
 import 'package:pilates_app/features/booking/data/models/class_slot_view_model.dart';
 import 'package:pilates_app/features/booking/data/models/gym_class_resource.dart';
 import 'package:pilates_app/features/booking/data/models/trainer_certification.dart';
 import 'package:pilates_app/features/booking/data/models/trainer_resource.dart';
 import 'package:pilates_app/features/booking/data/trainers_repository.dart';
-import 'package:pilates_app/features/home/cubit/home_cubit.dart';
+import 'package:pilates_app/features/home/booking_flow_navigation.dart';
 import 'package:pilates_app/widgets/app_app_bar.dart';
+import 'package:pilates_app/widgets/app_loading_indicator.dart';
 import 'package:pilates_app/widgets/app_text.dart';
 
 import '../../../config/theme/app_colors.dart';
@@ -55,14 +54,48 @@ List<ClassSlotViewModel> _trainerUpcomingSlots(
 }
 
 void _openBrowseAllClasses(BuildContext context) {
-  try {
-    context.read<BookingCubit>().setTab(BookingTab.classes);
-  } catch (_) {}
-  try {
-    context.read<HomeCubit>().setTab(1, bookingTab: BookingTab.classes);
-  } catch (_) {}
-  if (Navigator.of(context).canPop()) {
-    Navigator.of(context).pop();
+  // Pushed routes are not under [HomeCubit] / [BookingCubit]; pop to root first.
+  popToRootAndOpenBrowseAllClasses(context);
+}
+
+/// Placed after the upcoming-classes list; visible when the user scrolls to the end.
+class _BrowseAllClassesEndButton extends StatelessWidget {
+  const _BrowseAllClassesEndButton({required this.onPressed});
+
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.fromLTRB(
+        AppSpacing.lg,
+        AppSpacing.lg,
+        AppSpacing.lg,
+        AppSpacing.xl,
+      ),
+      child: SizedBox(
+        width: double.infinity,
+        child: FilledButton(
+          style: FilledButton.styleFrom(
+            backgroundColor: AppColors.primary,
+            foregroundColor: AppColors.whiteColor,
+            padding: const EdgeInsets.symmetric(vertical: 14),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(AppRadius.md),
+            ),
+          ),
+          onPressed: onPressed,
+          child: AppText(
+            context.l10n.browseAllClasses,
+            textAlign: TextAlign.center,
+            maxLines: 2,
+            style: (c) => AppTextStyles.boldBody(
+              c,
+            ).copyWith(color: AppColors.whiteColor, fontSize: 16),
+          ),
+        ),
+      ),
+    );
   }
 }
 
@@ -206,38 +239,6 @@ class _TrainerDetailsApiRouteState extends State<_TrainerDetailsApiRoute> {
             title: context.l10n.trainerDetails,
             isMoreMenu: false,
             onBack: () => Navigator.of(context).pop(),
-          ),
-          bottomNavigationBar: SafeArea(
-            child: Padding(
-              padding: EdgeInsets.fromLTRB(
-                AppSpacing.lg,
-                AppSpacing.sm,
-                AppSpacing.lg,
-                AppSpacing.md,
-              ),
-              child: SizedBox(
-                width: double.infinity,
-                child: FilledButton(
-                  style: FilledButton.styleFrom(
-                    backgroundColor: AppColors.primary,
-                    foregroundColor: AppColors.whiteColor,
-                    padding: const EdgeInsets.symmetric(vertical: 14),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(AppRadius.md),
-                    ),
-                  ),
-                  onPressed: () => _ensureUpcomingClassesVisible(animate: true),
-                  child: AppText(
-                    context.l10n.viewUpcomingClasses,
-                    textAlign: TextAlign.center,
-                    maxLines: 2,
-                    style: (c) => AppTextStyles.boldBody(
-                      c,
-                    ).copyWith(color: AppColors.whiteColor, fontSize: 16),
-                  ),
-                ),
-              ),
-            ),
           ),
           body: RefreshIndicator(
             onRefresh: () async {
@@ -394,40 +395,16 @@ class _TrainerDetailsApiRouteState extends State<_TrainerDetailsApiRoute> {
                             padding: EdgeInsets.symmetric(
                               horizontal: AppSpacing.lg,
                             ),
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  child: AppText(
-                                    context.l10n.upcomingClasses,
-                                    maxLines: 2,
-                                    style: (c) =>
-                                        AppTextStyles.heading1(c).copyWith(
-                                          color: isDark
-                                              ? AppColors.lightText
-                                              : AppColors.darkText,
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.w400,
-                                        ),
-                                  ),
-                                ),
-                                InkWell(
-                                  onTap: () => _openBrowseAllClasses(context),
-                                  child: AppText(
-                                    context.l10n.seeAll,
-                                    maxLines: 1,
-                                    style: (c) =>
-                                        AppTextStyles.captionText(
-                                          c,
-                                          fontWeight: FontWeight.w500,
-                                        ).copyWith(
-                                          color: isDark
-                                              ? AppColors.languageTextDark
-                                              : AppColors.languageIcon,
-                                          fontSize: 14,
-                                        ),
-                                  ),
-                                ),
-                              ],
+                            child: AppText(
+                              context.l10n.upcomingClasses,
+                              maxLines: 2,
+                              style: (c) => AppTextStyles.heading1(c).copyWith(
+                                color: isDark
+                                    ? AppColors.lightText
+                                    : AppColors.darkText,
+                                fontSize: 18,
+                                fontWeight: FontWeight.w400,
+                              ),
                             ),
                           ),
                         ),
@@ -438,7 +415,7 @@ class _TrainerDetailsApiRouteState extends State<_TrainerDetailsApiRoute> {
                           const Padding(
                             padding: EdgeInsets.symmetric(vertical: 24),
                             child: Center(
-                              child: CircularProgressIndicator.adaptive(),
+                              child: AppInlineBusy(size: 28),
                             ),
                           )
                         else if (classesRes != null &&
@@ -475,7 +452,11 @@ class _TrainerDetailsApiRouteState extends State<_TrainerDetailsApiRoute> {
                             BookingClassCard.fromSlot(slot),
                             SizedBox(height: AppSpacing.md),
                           ],
-                        SizedBox(height: AppSpacing.xl),
+                        if (snapshot.connectionState != ConnectionState.waiting ||
+                            bundle != null)
+                          _BrowseAllClassesEndButton(
+                            onPressed: () => _openBrowseAllClasses(context),
+                          ),
                       ],
                     ),
                   ),
@@ -838,38 +819,6 @@ class _TrainerDetailsDemoView extends StatelessWidget {
         isMoreMenu: false,
         onBack: () => Navigator.of(context).pop(),
       ),
-      bottomNavigationBar: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.fromLTRB(
-            AppSpacing.lg,
-            AppSpacing.sm,
-            AppSpacing.lg,
-            AppSpacing.md,
-          ),
-          child: SizedBox(
-            width: double.infinity,
-            child: FilledButton(
-              style: FilledButton.styleFrom(
-                backgroundColor: AppColors.primary,
-                foregroundColor: AppColors.whiteColor,
-                padding: const EdgeInsets.symmetric(vertical: 14),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(AppRadius.md),
-                ),
-              ),
-              onPressed: () => _openBrowseAllClasses(context),
-              child: AppText(
-                context.l10n.browseAllClasses,
-                textAlign: TextAlign.center,
-                maxLines: 2,
-                style: (c) => AppTextStyles.boldBody(
-                  c,
-                ).copyWith(color: AppColors.whiteColor, fontSize: 16),
-              ),
-            ),
-          ),
-        ),
-      ),
       body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.symmetric(vertical: AppSpacing.sm),
@@ -1070,7 +1019,9 @@ class _TrainerDetailsDemoView extends StatelessWidget {
                 spotsLeft: 3,
                 isInPlan: true,
               ),
-              SizedBox(height: AppSpacing.lg),
+              _BrowseAllClassesEndButton(
+                onPressed: () => _openBrowseAllClasses(context),
+              ),
             ],
           ),
         ),

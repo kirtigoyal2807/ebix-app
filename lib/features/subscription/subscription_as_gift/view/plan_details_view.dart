@@ -7,6 +7,7 @@ import 'package:pilates_app/core/utils/hosted_payment_webview_page.dart';
 import 'package:pilates_app/features/checkout/data/checkout_repository.dart';
 
 import 'package:pilates_app/widgets/app_app_bar.dart';
+import 'package:pilates_app/widgets/app_loading_indicator.dart';
 
 import '../../../../config/theme/app_colors.dart';
 import '../../../../core/localization/arb/app_localizations.dart';
@@ -72,7 +73,7 @@ class PlanDetailsView extends StatelessWidget {
       context: context,
       barrierDismissible: false,
       builder: (dialogContext) =>
-          const Center(child: CircularProgressIndicator()),
+          const AppLoadingIndicator(),
     );
 
     final result = await repo.fetchPaymentIntent(id);

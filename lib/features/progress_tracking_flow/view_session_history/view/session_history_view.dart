@@ -5,6 +5,7 @@ import 'package:pilates_app/config/theme/app_radius.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/core/localization/localization_extension.dart';
 import 'package:pilates_app/widgets/app_text.dart';
+import 'package:pilates_app/widgets/app_loading_indicator.dart';
 
 import '../../../../config/theme/app_text_styles.dart';
 import '../../../../widgets/app_app_bar.dart';
@@ -120,7 +121,7 @@ class SessionHistoryView extends StatelessWidget {
                     );
                   }
                   if (state.isLoading && state.sessions.isEmpty) {
-                    return const Center(child: CircularProgressIndicator());
+                    return const AppLoadingIndicator();
                   }
                   if (state.sessions.isEmpty) {
                     return ListView(

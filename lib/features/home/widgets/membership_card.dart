@@ -263,7 +263,7 @@ class MembershipCard extends StatelessWidget {
               minimumSize: const Size(0, 32),
             ),
             child: AppText(
-              context.l10n.viewPlans,
+              context.l10n.view,
               style: (context) => AppTextStyles.boldBody(context).copyWith(
                 color: isDark ? AppColors.blackColor : AppColors.darkText,
                 fontSize: size.width * 0.035 > 14 ? 14 : size.width * 0.035,

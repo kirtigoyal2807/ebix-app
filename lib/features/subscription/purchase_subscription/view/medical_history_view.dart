@@ -13,6 +13,7 @@ import 'package:pilates_app/features/subscription/purchase_subscription/view/wid
 import 'package:pilates_app/widgets/app_button.dart';
 import 'package:pilates_app/widgets/app_text.dart';
 import 'package:pilates_app/widgets/inline_validation_banner.dart';
+import 'package:pilates_app/widgets/app_loading_indicator.dart';
 
 class MedicalHistoryView extends StatefulWidget {
   const MedicalHistoryView({super.key});
@@ -150,13 +151,7 @@ class _MedicalHistoryViewState extends State<MedicalHistoryView> {
                               vertical: AppSpacing.md,
                             ),
                             child: Center(
-                              child: SizedBox(
-                                width: 28,
-                                height: 28,
-                                child: CircularProgressIndicator(
-                                  strokeWidth: 2,
-                                ),
-                              ),
+                              child: AppInlineBusy(size: 28),
                             ),
                           ),
                         if (!_questionnaireLoading &&

@@ -13,6 +13,7 @@ import 'package:pilates_app/features/auth/widgets/otp_resend_action.dart';
 import 'package:pilates_app/widgets/app_app_bar.dart';
 import 'package:pilates_app/widgets/app_button.dart';
 import 'package:pilates_app/widgets/app_scaffold.dart';
+import 'package:pilates_app/widgets/app_loading_indicator.dart';
 
 class SignInPhoneOtpView extends StatefulWidget {
   const SignInPhoneOtpView({super.key});
@@ -182,7 +183,7 @@ class _SignInPhoneOtpViewState extends State<SignInPhoneOtpView>
                   const Positioned.fill(
                     child: ColoredBox(
                       color: Color(0x33000000),
-                      child: Center(child: CircularProgressIndicator()),
+                      child: const AppLoadingIndicator(),
                     ),
                   ),
               ],

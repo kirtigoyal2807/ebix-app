@@ -12,6 +12,7 @@ import 'package:pilates_app/features/view_subscription/cubit/subscriptions_state
 import 'package:pilates_app/features/view_subscription/view/pause_subscription_view.dart';
 import 'package:pilates_app/widgets/app_text.dart';
 import 'package:pilates_app/widgets/currency_amount_text.dart';
+import 'package:pilates_app/widgets/app_loading_indicator.dart';
 
 import '../../../core/localization/localization_extension.dart';
 import '../../../widgets/app_button.dart';
@@ -55,7 +56,7 @@ class CurrentPlanView extends StatelessWidget {
       builder: (context, state) {
         if (state.status == SubscriptionsLoadStatus.loading &&
             state.subscriptions.isEmpty) {
-          return const Center(child: CircularProgressIndicator());
+          return const AppLoadingIndicator();
         }
 
         if (state.status == SubscriptionsLoadStatus.failure &&

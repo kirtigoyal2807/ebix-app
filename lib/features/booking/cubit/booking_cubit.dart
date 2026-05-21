@@ -89,4 +89,33 @@ class BookingCubit extends Cubit<BookingState> {
   void setTrainer(TrainerType trainerType) {
     emit(state.copyWith(selectedTrainerType: trainerType));
   }
+
+  /// Clears class filters/search and signals the classes list to scroll to top.
+  void resetClassFiltersAndScrollToTop() {
+    emit(
+      state.copyWith(
+        searchQuery: '',
+        selectedBranch: 'All Branches',
+        selectedDate: 'All Dates',
+        selectedCategory: 'All Categories',
+        selectedGender: 'All Gender',
+        classesScrollToTopNonce: state.classesScrollToTopNonce + 1,
+      ),
+    );
+  }
+
+  /// Trainer Details → full classes catalog with no filters.
+  void openBrowseAllClassesFromTrainer() {
+    emit(
+      state.copyWith(
+        selectedTab: BookingTab.classes,
+        searchQuery: '',
+        selectedBranch: 'All Branches',
+        selectedDate: 'All Dates',
+        selectedCategory: 'All Categories',
+        selectedGender: 'All Gender',
+        classesScrollToTopNonce: state.classesScrollToTopNonce + 1,
+      ),
+    );
+  }
 }

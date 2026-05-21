@@ -23,6 +23,7 @@ import 'package:pilates_app/widgets/app_text.dart';
 import 'package:pilates_app/widgets/app_text_field.dart';
 import 'package:pilates_app/widgets/inline_validation_banner.dart';
 import 'package:pilates_app/widgets/phone_number_field.dart';
+import 'package:pilates_app/widgets/app_loading_indicator.dart';
 
 class HealthInformationView extends StatefulWidget {
   const HealthInformationView({super.key});
@@ -49,7 +50,6 @@ class _HealthInformationViewState extends State<HealthInformationView> {
   String? _emailError;
 
   bool _questionnaireLoading = false;
-  bool _attemptedPersonalQuestionnaireFetch = false;
 
   String? _apiExtrasValidationMessage;
 
@@ -117,7 +117,6 @@ class _HealthInformationViewState extends State<HealthInformationView> {
     final needsPrefetch = sub.selectedProductRequiresHealthIntake &&
         sub.healthQuestionnaireQuestions.isEmpty;
     _questionnaireLoading = needsPrefetch;
-    _attemptedPersonalQuestionnaireFetch = !needsPrefetch;
 
     _nameController = TextEditingController(text: _mergedName(sub, user));
     _ageController = TextEditingController(text: _mergedAge(sub, user));
@@ -173,25 +172,39 @@ class _HealthInformationViewState extends State<HealthInformationView> {
     }
   }
 
+  /// Fills height/weight from profile when controllers are still empty (e.g. user
+  /// loaded after this step mounted).
+  void _hydrateProfileMeasurementsIfNeeded(AuthUser? user) {
+    if (user == null) return;
+    var changed = false;
+    final apiHeight = user.heightCm?.trim() ?? '';
+    if (apiHeight.isNotEmpty && _heightController.text.trim().isEmpty) {
+      _heightController.text = apiHeight;
+      changed = true;
+    }
+    final apiWeight = user.weightKg?.trim() ?? '';
+    if (apiWeight.isNotEmpty && _weightController.text.trim().isEmpty) {
+      _weightController.text = apiWeight;
+      changed = true;
+    }
+    if (changed) {
+      _syncCubitFromControllers();
+    }
+  }
+
   Future<void> _ensureQuestionnaire() async {
     final cubit = context.read<SubscriptionCubit>();
     final st = cubit.state;
 
     if (!st.selectedProductRequiresHealthIntake) {
       if (mounted) {
-        setState(() {
-          _questionnaireLoading = false;
-          _attemptedPersonalQuestionnaireFetch = true;
-        });
+        setState(() => _questionnaireLoading = false);
       }
       return;
     }
     if (st.healthQuestionnaireQuestions.isNotEmpty) {
       if (mounted) {
-        setState(() {
-          _questionnaireLoading = false;
-          _attemptedPersonalQuestionnaireFetch = true;
-        });
+        setState(() => _questionnaireLoading = false);
       }
       return;
     }
@@ -201,10 +214,7 @@ class _HealthInformationViewState extends State<HealthInformationView> {
 
     await cubit.fetchHealthQuestionnaireForCurrentProduct(repo);
     if (!mounted) return;
-    setState(() {
-      _questionnaireLoading = false;
-      _attemptedPersonalQuestionnaireFetch = true;
-    });
+    setState(() => _questionnaireLoading = false);
   }
 
   @override
@@ -277,34 +287,12 @@ class _HealthInformationViewState extends State<HealthInformationView> {
   void _onContinuePersonalInformation(BuildContext context) {
     _unfocusKeyboard();
     final cubit = context.read<SubscriptionCubit>();
+    _syncCubitFromControllers();
+
+    // Advisory only — never block wizard navigation (12-session / API extras can
+    // fail here without field-level errors).
     setState(() => _apiExtrasValidationMessage = null);
-
-    final sEarly = cubit.state;
-    final questionnairePendingHydration =
-        sEarly.selectedProductRequiresHealthIntake &&
-        sEarly.healthQuestionnaireQuestions.isEmpty;
-    if (questionnairePendingHydration &&
-        (_questionnaireLoading || !_attemptedPersonalQuestionnaireFetch)) {
-      return;
-    }
-
-    if (!_validatePersonalInformationFields(context, cubit)) {
-      return;
-    }
-
-    final s = cubit.state;
-    final extras = extraPersonalInformationQuestionsFromApi(
-      s.healthQuestionnaireQuestions,
-    );
-    if (s.selectedProductRequiresHealthIntake && extras.isNotEmpty) {
-      if (!cubit.validateApiPersonalInformationQuestions(extras)) {
-        setState(
-          () => _apiExtrasValidationMessage =
-              AppLocalizations.of(context).pleaseCompletePersonalInformation,
-        );
-        return;
-      }
-    }
+    _validatePersonalInformationFields(context, cubit);
 
     cubit.nextStep();
   }
@@ -327,8 +315,11 @@ class _HealthInformationViewState extends State<HealthInformationView> {
       },
       child: BlocListener<AuthCubit, AuthState>(
         listenWhen: (p, c) => p.user != c.user,
-        listener: (_, __) {
-          if (mounted) setState(() {});
+        listener: (context, state) {
+          if (!mounted) return;
+          _hydrateProfileMeasurementsIfNeeded(state.user);
+          _applyApiLockedValuesIfNeeded(state.user);
+          setState(() {});
         },
         child: BlocBuilder<SubscriptionCubit, SubscriptionState>(
           buildWhen: (p, c) =>
@@ -356,17 +347,13 @@ class _HealthInformationViewState extends State<HealthInformationView> {
             final emailLocked =
                 PersonalInformationProfileLock.shouldLockEmail(authUser);
             _applyApiLockedValuesIfNeeded(authUser);
-        final extraQs = extraPersonalInformationQuestionsFromApi(
-          state.healthQuestionnaireQuestions,
-        );
-        final questionnairePendingHydration =
-            state.selectedProductRequiresHealthIntake &&
-                state.healthQuestionnaireQuestions.isEmpty;
+            _hydrateProfileMeasurementsIfNeeded(authUser);
+            final extraQs = extraPersonalInformationQuestionsFromApi(
+              state.healthQuestionnaireQuestions,
+            );
+            final waitingForQuestionnaire = _questionnaireLoading;
 
-        final waitingForQuestionnaire = questionnairePendingHydration &&
-            (_questionnaireLoading || !_attemptedPersonalQuestionnaireFetch);
-
-        return Padding(
+            return Padding(
           padding: EdgeInsets.symmetric(
             vertical: AppSpacing.xi,
             horizontal: AppSpacing.lg,
@@ -417,13 +404,7 @@ class _HealthInformationViewState extends State<HealthInformationView> {
                                     bottom: AppSpacing.md,
                                   ),
                                   child: Center(
-                                    child: SizedBox(
-                                      width: 24,
-                                      height: 24,
-                                      child: CircularProgressIndicator(
-                                        strokeWidth: 2,
-                                      ),
-                                    ),
+                                    child: AppInlineBusy(size: 24),
                                   ),
                                 ),
                               AppTextField(
@@ -611,9 +592,7 @@ class _HealthInformationViewState extends State<HealthInformationView> {
               ],
               AppButton(
                 label: l10n.continueTxt,
-                onPressed: waitingForQuestionnaire
-                    ? null
-                    : () => _onContinuePersonalInformation(context),
+                onPressed: () => _onContinuePersonalInformation(context),
                 buttonColor: isDark
                     ? AppColors.primary
                     : AppColors.primaryBrown,

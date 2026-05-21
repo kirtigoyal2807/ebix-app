@@ -9,6 +9,7 @@ import 'package:pilates_app/features/progress_tracking_flow/data/models/weekly_a
 import 'package:pilates_app/features/progress_tracking_flow/progrees_overview/cubit/weekly_activity_cubit.dart';
 import 'package:pilates_app/features/progress_tracking_flow/progrees_overview/cubit/weekly_activity_state.dart';
 import 'package:pilates_app/widgets/app_text.dart';
+import 'package:pilates_app/widgets/app_loading_indicator.dart';
 
 import '../../../../config/theme/app_colors.dart';
 import '../../../../config/theme/app_radius.dart';
@@ -82,7 +83,7 @@ class WeeklyGraph extends StatelessWidget {
             padding: EdgeInsets.all(AppSpacing.md),
             height: 220,
             alignment: Alignment.center,
-            child: const CircularProgressIndicator(),
+            child: const AppInlineBusy(),
           );
         }
         final data = _barsFromWeek(context, state.result);
