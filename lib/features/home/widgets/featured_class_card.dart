@@ -99,7 +99,6 @@ class FeaturedClassCard extends StatelessWidget {
                     const Flexible(child: UpgradeRequiredBadge()),
                 ],
               ),
-            ),
           ),
           Padding(
             padding: EdgeInsets.only(
