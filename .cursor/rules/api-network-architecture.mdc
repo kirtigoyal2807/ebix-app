@@ -1,5 +1,5 @@
 ---
-description: How to add and call HTTP APIs — Dio, BaseRepository, ApiResult, Cubits, tests
+description: How to add and call HTTP APIs — Dio, BaseRepository, ApiResult, Cubits
 alwaysApply: true
 ---
 
@@ -27,10 +27,5 @@ Use this for **every** new endpoint or API change. **Never** call `Dio` from wid
 ## UI
 
 - **BlocBuilder / BlocConsumer** only; no direct HTTP. User-visible copy: **l10n**, not raw API strings unless intentionally passed through state.
-
-## Tests
-
-- **Fake repo**: `FakeXRepository extends XRepository` + `@override` returning `ApiResult` (see `test/features/auth/fake_auth_repository.dart`).
-- **Request contract**: `createTestDio` + interceptor (see `test/core/network/test_repository.dart`, `auth_repository_*_test.dart`).
 
 **Do not:** bypass `BaseRepository` for app code; duplicate envelope parsing; call Dio from presentation layer.
