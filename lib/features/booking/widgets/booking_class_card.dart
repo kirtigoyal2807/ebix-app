@@ -43,7 +43,7 @@ class BookingClassCard extends StatelessWidget {
     required this.time,
     required this.spotsLeft,
     this.avgRating,
-    this.isInPlan = true,
+    this.isInPlan = false,
     this.upgradeRequired = false,
     this.calendarEventId = BookingDemoCalendarEvent.id,
     this.classId = BookingDemoClass.id,

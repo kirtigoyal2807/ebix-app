@@ -364,11 +364,13 @@ class _HomeBookingFlowTabListenerState
   void initState() {
     super.initState();
     openClassesBookingTabAfterPopToRoot.addListener(_onOpenClassesRequest);
+    openBrowseAllClassesAfterPopToRoot.addListener(_onBrowseAllClassesRequest);
   }
 
   @override
   void dispose() {
     openClassesBookingTabAfterPopToRoot.removeListener(_onOpenClassesRequest);
+    openBrowseAllClassesAfterPopToRoot.removeListener(_onBrowseAllClassesRequest);
     super.dispose();
   }
 
@@ -376,6 +378,12 @@ class _HomeBookingFlowTabListenerState
     if (!openClassesBookingTabAfterPopToRoot.value || !mounted) return;
     openClassesBookingTabAfterPopToRoot.value = false;
     context.read<HomeCubit>().setTab(1, bookingTab: BookingTab.classes);
+  }
+
+  void _onBrowseAllClassesRequest() {
+    if (!openBrowseAllClassesAfterPopToRoot.value || !mounted) return;
+    openBrowseAllClassesAfterPopToRoot.value = false;
+    context.read<HomeCubit>().requestBrowseAllClasses();
   }
 
   @override

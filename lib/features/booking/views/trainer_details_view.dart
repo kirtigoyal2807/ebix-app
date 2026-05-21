@@ -4,16 +4,13 @@ import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/core/localization/localization_extension.dart';
 import 'package:pilates_app/core/network/api_result.dart';
-import 'package:pilates_app/features/booking/cubit/booking_cubit.dart';
-import 'package:pilates_app/features/booking/cubit/booking_state.dart';
-import 'package:pilates_app/features/booking/cubit/classes_cubit.dart';
 import 'package:pilates_app/features/booking/data/classes_repository.dart';
 import 'package:pilates_app/features/booking/data/models/class_slot_view_model.dart';
 import 'package:pilates_app/features/booking/data/models/gym_class_resource.dart';
 import 'package:pilates_app/features/booking/data/models/trainer_certification.dart';
 import 'package:pilates_app/features/booking/data/models/trainer_resource.dart';
 import 'package:pilates_app/features/booking/data/trainers_repository.dart';
-import 'package:pilates_app/features/home/cubit/home_cubit.dart';
+import 'package:pilates_app/features/home/booking_flow_navigation.dart';
 import 'package:pilates_app/widgets/app_app_bar.dart';
 import 'package:pilates_app/widgets/app_loading_indicator.dart';
 import 'package:pilates_app/widgets/app_text.dart';
@@ -57,17 +54,8 @@ List<ClassSlotViewModel> _trainerUpcomingSlots(
 }
 
 void _openBrowseAllClasses(BuildContext context) {
-  try {
-    context.read<BookingCubit>().openBrowseAllClassesFromTrainer();
-    context.read<ClassesCubit>().load(search: null, force: true);
-  } catch (_) {}
-  try {
-    context.read<HomeCubit>().clearSelectedClassCategory();
-    context.read<HomeCubit>().setTab(1, bookingTab: BookingTab.classes);
-  } catch (_) {}
-  if (Navigator.of(context).canPop()) {
-    Navigator.of(context).pop();
-  }
+  // Pushed routes are not under [HomeCubit] / [BookingCubit]; pop to root first.
+  popToRootAndOpenBrowseAllClasses(context);
 }
 
 /// Placed after the upcoming-classes list; visible when the user scrolls to the end.

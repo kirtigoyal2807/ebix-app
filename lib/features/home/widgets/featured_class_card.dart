@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
 import 'package:pilates_app/config/theme/app_colors.dart';
@@ -6,6 +7,9 @@ import 'package:pilates_app/config/theme/app_radius.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/core/localization/localization_extension.dart';
+import 'package:pilates_app/features/auth/cubit/auth_cubit.dart';
+import 'package:pilates_app/features/auth/data/models/auth_user.dart';
+import 'package:pilates_app/features/booking/booking_entitlements.dart';
 import 'package:pilates_app/features/home/data/models/home_response.dart';
 import 'package:pilates_app/widgets/app_text.dart';
 
@@ -23,6 +27,9 @@ class FeaturedClassCard extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final size = MediaQuery.sizeOf(context);
     final imageHeight = size.height * 0.18;
+    final user = context.select<AuthCubit, AuthUser?>((c) => c.state.user);
+    final showInPlanBadge =
+        featuredClass.inPlan == true && userShowsPackageMembership(user);
 
     return Container(
       margin: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
@@ -82,7 +89,7 @@ class FeaturedClassCard extends StatelessWidget {
               left: AppSpacing.md,
               top: AppSpacing.base,
             ),
-            child: PlanStatusBadge(inPlan: featuredClass.inPlan == true),
+            child: PlanStatusBadge(inPlan: showInPlanBadge),
           ),
           Padding(
             padding: EdgeInsets.only(

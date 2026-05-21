@@ -24,66 +24,35 @@ class AppDropDown<T> extends StatelessWidget {
     this.errorText,
   });
 
+  static bool _valueInItems<T>(T? value, List<DropdownMenuItem<T>> items) {
+    if (value == null) return false;
+    for (final item in items) {
+      if (item.value == value) return true;
+    }
+    return false;
+  }
+
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final theme = Theme.of(context);
     final hasError = errorText != null;
+    final selectedValue = _valueInItems(value, items) ? value : null;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        /// LABEL
         AppText(label, style: AppTextStyles.textFieldHeading),
-
         SizedBox(height: AppSpacing.sm),
-
-        /// DROPDOWN
         ButtonTheme(
           alignedDropdown: true,
-          child: DropdownButtonFormField<T>(
-            key: ValueKey<Object?>(
-              Object.hash(
-                T,
-                value,
-                items.length,
-                items.map((i) => i.value).toList(),
-              ),
-            ),
-            initialValue: value,
-
-            isDense: true,
-            items: items,
-            onChanged: onChanged,
-            isExpanded: true,
-
-            style: AppTextStyles.textField(context),
-            hint: Text(
-              hint,
-              style: AppTextStyles.textField(
-                context,
-              ).copyWith(color: AppColors.lightGrey),
-            ),
-            icon: Padding(
-              padding: const EdgeInsets.only(right: 12),
-              child: Icon(
-                Icons.keyboard_arrow_down,
-                color: isDark ? AppColors.lightGrey : AppColors.arrowIcon,
-                size: 24,
-              ),
-            ),
+          child: InputDecorator(
             decoration: InputDecoration(
               isDense: true,
-              // hintText: hint,
-              hintStyle: AppTextStyles.textField(
-                context,
-              ).copyWith(color: AppColors.lightGrey),
               contentPadding: const EdgeInsets.symmetric(
                 horizontal: 14,
-                vertical: 14,
+                vertical: 4,
               ),
-
-              /// BORDER
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(AppRadius.md),
                 borderSide: BorderSide(
@@ -113,14 +82,33 @@ class AppDropDown<T> extends StatelessWidget {
                 ),
               ),
             ),
-            dropdownColor: isDark
-                ? AppColors.surfaceDark
-                : AppColors.surfaceLight,
-            borderRadius: BorderRadius.circular(AppRadius.md),
+            child: DropdownButtonHideUnderline(
+              child: DropdownButton<T>(
+                isExpanded: true,
+                isDense: true,
+                value: selectedValue,
+                hint: Text(
+                  hint,
+                  style: AppTextStyles.textField(
+                    context,
+                  ).copyWith(color: AppColors.lightGrey),
+                ),
+                items: items,
+                onChanged: onChanged,
+                style: AppTextStyles.textField(context),
+                icon: Icon(
+                  Icons.keyboard_arrow_down,
+                  color: isDark ? AppColors.lightGrey : AppColors.arrowIcon,
+                  size: 24,
+                ),
+                dropdownColor: isDark
+                    ? AppColors.surfaceDark
+                    : AppColors.surfaceLight,
+                borderRadius: BorderRadius.circular(AppRadius.md),
+              ),
+            ),
           ),
         ),
-
-        /// ERROR MESSAGE
         if (hasError) ...[
           const SizedBox(height: 6),
           Row(

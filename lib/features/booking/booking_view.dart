@@ -41,6 +41,13 @@ class BookingView extends StatelessWidget {
         ),
       ],
       child: BlocListener<HomeCubit, HomeState>(
+        listenWhen: (previous, current) =>
+            previous.browseAllClassesNonce != current.browseAllClassesNonce,
+        listener: (context, homeState) {
+          context.read<BookingCubit>().openBrowseAllClassesFromTrainer();
+          context.read<ClassesCubit>().load(search: null, force: true);
+        },
+        child: BlocListener<HomeCubit, HomeState>(
         listener: (context, homeState) {
           final bookingCubit = context.read<BookingCubit>();
           if (homeState.currentIndex == 1 &&
@@ -65,6 +72,7 @@ class BookingView extends StatelessWidget {
           }
         },
         child: const BookingBody(),
+        ),
       ),
     );
   }
