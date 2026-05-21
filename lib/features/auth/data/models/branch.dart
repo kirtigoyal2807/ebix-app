@@ -27,9 +27,24 @@ class Branch extends Equatable {
   final int rewardsCount;
 
   factory Branch.fromJson(Map<String, dynamic> json) {
+    final nested = _mapOrNull(json['branch']);
     return Branch(
-      id: _asInt(json['id']),
-      title: _string(json['name'] ?? json['title'] ?? json['branch_name']),
+      id: _asInt(
+        json['id'] ??
+            json['branchId'] ??
+            json['branch_id'] ??
+            nested?['id'] ??
+            nested?['branchId'] ??
+            nested?['branch_id'],
+      ),
+      title: _string(
+        json['name'] ??
+            json['title'] ??
+            json['branch_name'] ??
+            nested?['name'] ??
+            nested?['title'] ??
+            nested?['branch_name'],
+      ),
       city: _cityFromJson(json),
       distance: _string(
         json['distance_label'] ?? json['distance'] ?? json['km_away'],
@@ -43,6 +58,12 @@ class Branch extends Equatable {
       isActive: json['isActive'] as bool? ?? json['active'] as bool? ?? true,
       rewardsCount: _asInt(json['rewardsCount'] ?? json['rewards_count']),
     );
+  }
+
+  static Map<String, dynamic>? _mapOrNull(dynamic value) {
+    if (value is Map<String, dynamic>) return value;
+    if (value is Map) return Map<String, dynamic>.from(value);
+    return null;
   }
 
   static int _asInt(dynamic v) {

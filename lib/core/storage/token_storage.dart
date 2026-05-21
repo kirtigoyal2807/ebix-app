@@ -13,6 +13,7 @@ class TokenStorage {
 
   static const _kAccessToken = 'auth_access_token';
   static const _kUserData = 'auth_user_data';
+  static const _kHomeBranchId = 'auth_home_branch_id';
   static const _kMembershipPlanName = 'membership_plan_name';
   static const _kAppLocaleLanguageCode = 'app_locale_language_code';
 
@@ -47,6 +48,20 @@ class TokenStorage {
   }
 
   Future<void> clearUser() => _prefs.remove(_kUserData);
+
+  /// Last home branch chosen via `POST /auth/home-branch` (survives profile shape quirks).
+  int? readHomeBranchId() {
+    final id = _prefs.getInt(_kHomeBranchId);
+    if (id == null || id <= 0) return null;
+    return id;
+  }
+
+  Future<void> saveHomeBranchId(int id) async {
+    if (id <= 0) return;
+    await _prefs.setInt(_kHomeBranchId, id);
+  }
+
+  Future<void> clearHomeBranchId() => _prefs.remove(_kHomeBranchId);
 
   String? readMembershipPlanName() => _prefs.getString(_kMembershipPlanName);
 

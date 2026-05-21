@@ -7,6 +7,35 @@ import '../../core/network/test_repository.dart';
 
 void main() {
   group('AuthRepository.listBranches', () {
+    test('parses branches nested under data.branches in envelope', () async {
+      final dio = createTestDio(
+        onRequest: (options, handler) {
+          handler.resolve(
+            Response(
+              requestOptions: options,
+              statusCode: 200,
+              data: {
+                'success': true,
+                'message': 'ok',
+                'data': {
+                  'branches': [
+                    {'id': 1, 'name': 'Branch A', 'city': 'Riyadh'},
+                    {'id': 2, 'name': 'Branch B', 'city': 'Jeddah'},
+                  ],
+                },
+              },
+            ),
+          );
+        },
+      );
+      final repo = AuthRepository(dio);
+
+      final result = await repo.listBranches();
+      expect(result.isSuccess, isTrue);
+      expect(result.dataOrNull!.branches, hasLength(2));
+      expect(result.dataOrNull!.branches.map((b) => b.id), [1, 2]);
+    });
+
     test(
       'GET /branches uses query params and parses data + meta.pagination',
       () async {

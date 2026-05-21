@@ -246,8 +246,17 @@ class AuthRepository extends BaseRepository {
   static List<dynamic>? _coerceList(dynamic payload) {
     if (payload is List<dynamic>) return payload;
     if (payload is Map) {
-      final d = payload['data'] ?? payload['items'] ?? payload['branches'];
-      if (d is List<dynamic>) return d;
+      final map = payload is Map<String, dynamic>
+          ? payload
+          : Map<String, dynamic>.from(payload);
+      for (final key in ['data', 'items', 'branches', 'results', 'records']) {
+        final d = map[key];
+        if (d is List<dynamic>) return d;
+        if (d is Map) {
+          final nested = _coerceList(d);
+          if (nested != null) return nested;
+        }
+      }
     }
     return null;
   }

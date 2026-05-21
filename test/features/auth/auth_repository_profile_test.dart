@@ -164,6 +164,33 @@ void main() {
       },
     );
 
+    test('parses flat home_branch_id when homeBranch object is absent', () async {
+      final dio = createTestDio(
+        onRequest: (options, handler) {
+          handler.resolve(
+            Response(
+              requestOptions: options,
+              statusCode: 200,
+              data: const {
+                'success': true,
+                'message': 'ok',
+                'data': {
+                  'id': 42,
+                  'name': 'Noor Ali',
+                  'home_branch_id': 7,
+                  'home_branch_name': 'Jeddah Studio',
+                },
+              },
+            ),
+          );
+        },
+      );
+
+      final user = (await AuthRepository(dio).getProfile()).dataOrNull!;
+      expect(user.homeBranch?.id, 7);
+      expect(user.homeBranch?.name, 'Jeddah Studio');
+    });
+
     test('GET customers/profile uses envelope success path only', () async {
       RequestOptions? seen;
       final dio = createTestDio(
