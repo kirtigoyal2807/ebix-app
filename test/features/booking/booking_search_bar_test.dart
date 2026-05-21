@@ -29,7 +29,10 @@ void main() {
   testWidgets('BookingSearchBar keeps text when parent rebuilds', (
     WidgetTester tester,
   ) async {
-    final cubit = BookingCubit(authRepository: FakeAuthRepository());
+    final cubit = BookingCubit(
+      authRepository: FakeAuthRepository(),
+      initialLocaleLanguageCode: 'en',
+    );
     await pumpSearchHarness(
       tester,
       child: BlocProvider<BookingCubit>.value(
@@ -68,7 +71,10 @@ void main() {
   testWidgets('BookingSearchBar syncs when cubit searchQuery changes', (
     WidgetTester tester,
   ) async {
-    final cubit = BookingCubit(authRepository: FakeAuthRepository());
+    final cubit = BookingCubit(
+      authRepository: FakeAuthRepository(),
+      initialLocaleLanguageCode: 'en',
+    );
     await pumpSearchHarness(
       tester,
       child: BlocProvider<BookingCubit>.value(

@@ -4,6 +4,8 @@ import 'package:pilates_app/config/theme/app_colors.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/core/localization/localization_extension.dart';
+import 'package:pilates_app/features/auth/cubit/auth_cubit.dart';
+import 'package:pilates_app/features/auth/cubit/auth_state.dart';
 import 'package:pilates_app/features/auth/data/auth_repository.dart';
 import 'package:pilates_app/features/booking/cubit/classes_cubit.dart';
 import 'package:pilates_app/features/booking/cubit/classes_state.dart';
@@ -24,6 +26,30 @@ import 'widgets/booking_filter_chips.dart';
 import 'widgets/booking_subscription_card.dart';
 import 'widgets/booking_class_card.dart';
 
+/// Loads branch filter options and the classes list — only for the Classes sub-tab.
+void _loadClassesTabData(
+  BuildContext context,
+  BookingState bookingState, {
+  bool force = false,
+}) {
+  final bookingCubit = context.read<BookingCubit>();
+  bookingCubit.syncClassFiltersForLocale(
+    context.read<AuthCubit>().state.locale.languageCode,
+  );
+  final state = bookingCubit.state;
+  bookingCubit.loadBranches(force: force);
+  context.read<ClassesCubit>().load(
+    search: state.searchQuery.trim().isEmpty ? null : state.searchQuery.trim(),
+    force: force,
+  );
+}
+
+/// True when the booking bottom-nav tab is visible and the Classes sub-tab is active.
+bool _isClassesTabVisible(BuildContext context) {
+  if (context.read<HomeCubit>().state.currentIndex != 1) return false;
+  return context.read<BookingCubit>().state.selectedTab == BookingTab.classes;
+}
+
 class BookingView extends StatelessWidget {
   const BookingView({super.key, this.initialTab = BookingTab.classes});
 
@@ -37,6 +63,8 @@ class BookingView extends StatelessWidget {
           create: (ctx) => BookingCubit(
             initialTab: initialTab,
             authRepository: ctx.read<AuthRepository>(),
+            initialLocaleLanguageCode:
+                ctx.read<AuthCubit>().state.locale.languageCode,
           ),
         ),
         BlocProvider(
@@ -50,32 +78,36 @@ class BookingView extends StatelessWidget {
         listenWhen: (previous, current) =>
             previous.browseAllClassesNonce != current.browseAllClassesNonce,
         listener: (context, homeState) {
-          context.read<BookingCubit>().openBrowseAllClassesFromTrainer();
+          final bookingCubit = context.read<BookingCubit>();
+          bookingCubit.openBrowseAllClassesFromTrainer();
+          bookingCubit.loadBranches(force: true);
           context.read<ClassesCubit>().load(search: null, force: true);
         },
         child: BlocListener<HomeCubit, HomeState>(
+        listenWhen: (previous, current) {
+          if (current.currentIndex != 1) return false;
+          if (previous.currentIndex != current.currentIndex) return true;
+          if (previous.selectedBookingTab != current.selectedBookingTab) {
+            return true;
+          }
+          final category = current.selectedClassCategory;
+          return category != null &&
+              category.trim().isNotEmpty &&
+              category != previous.selectedClassCategory;
+        },
         listener: (context, homeState) {
           final bookingCubit = context.read<BookingCubit>();
-          if (homeState.currentIndex == 1 &&
-              bookingCubit.state.selectedTab != homeState.selectedBookingTab) {
+          if (bookingCubit.state.selectedTab != homeState.selectedBookingTab) {
             bookingCubit.setTab(homeState.selectedBookingTab);
           }
           final selectedClassCategory = homeState.selectedClassCategory;
-          if (homeState.currentIndex == 1 &&
-              selectedClassCategory != null &&
+          if (selectedClassCategory != null &&
               selectedClassCategory.trim().isNotEmpty) {
             bookingCubit.setCategory(selectedClassCategory);
             context.read<HomeCubit>().clearSelectedClassCategory();
           }
-          if (homeState.currentIndex == 1 &&
-              bookingCubit.state.selectedTab == BookingTab.classes) {
-            final booking = bookingCubit.state;
-            bookingCubit.loadBranches();
-            context.read<ClassesCubit>().load(
-              search: booking.searchQuery.trim().isEmpty
-                  ? null
-                  : booking.searchQuery.trim(),
-            );
+          if (bookingCubit.state.selectedTab == BookingTab.classes) {
+            _loadClassesTabData(context, bookingCubit.state);
           }
         },
         child: const BookingBody(),
@@ -94,20 +126,28 @@ class BookingBody extends StatefulWidget {
 
 class _BookingBodyState extends State<BookingBody> {
   @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (!mounted) return;
-      context.read<BookingCubit>().loadBranches();
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return MultiBlocListener(
       listeners: [
+        // Re-fetch branches (and classes) when locale changes while Classes tab is shown.
+        BlocListener<AuthCubit, AuthState>(
+          listenWhen: (previous, current) =>
+              previous.locale.languageCode != current.locale.languageCode,
+          listener: (context, authState) {
+            final bookingCubit = context.read<BookingCubit>();
+            final classesCubit = context.read<ClassesCubit>();
+            bookingCubit.syncClassFiltersForLocale(
+              authState.locale.languageCode,
+            );
+            bookingCubit.invalidateBranchesCache();
+            classesCubit.invalidateClassesCache();
+            if (!_isClassesTabVisible(context)) return;
+            bookingCubit.loadBranches(force: true);
+            classesCubit.load(search: null, force: true);
+          },
+        ),
         // Classes tab: load when user switches from Trainers to Classes in-app
         // (bottom-nav entry is handled by HomeCubit listener above).
         BlocListener<BookingCubit, BookingState>(
@@ -116,12 +156,7 @@ class _BookingBodyState extends State<BookingBody> {
                 previous.selectedTab != BookingTab.classes;
           },
           listener: (context, bookingState) {
-            context.read<BookingCubit>().loadBranches();
-            context.read<ClassesCubit>().load(
-              search: bookingState.searchQuery.trim().isEmpty
-                  ? null
-                  : bookingState.searchQuery.trim(),
-            );
+            _loadClassesTabData(context, bookingState);
           },
         ),
         // Trainers tab: reload on tab change / search / type filter

@@ -7,7 +7,9 @@ class BookingCubit extends Cubit<BookingState> {
   BookingCubit({
     required AuthRepository authRepository,
     this.initialTab = BookingTab.classes,
+    required String initialLocaleLanguageCode,
   })  : _authRepository = authRepository,
+        _classFiltersLocaleCode = initialLocaleLanguageCode,
         super(
           BookingState(
             selectedTab: initialTab,
@@ -17,6 +19,9 @@ class BookingCubit extends Cubit<BookingState> {
 
   final AuthRepository _authRepository;
   final BookingTab initialTab;
+
+  /// Last locale applied to class filter chips (date, branch, category, gender, search).
+  String _classFiltersLocaleCode;
 
   void setTab(BookingTab tab) {
     emit(state.copyWith(selectedTab: tab));
@@ -40,6 +45,20 @@ class BookingCubit extends Cubit<BookingState> {
 
   void setGender(String gender) {
     emit(state.copyWith(selectedGender: gender));
+  }
+
+  /// Clears cached branch filter data (e.g. after app locale changes).
+  void invalidateBranchesCache() {
+    if (state.branches.isEmpty &&
+        state.branchesLoadStatus == BranchesLoadStatus.initial) {
+      return;
+    }
+    emit(
+      state.copyWith(
+        branches: const [],
+        branchesLoadStatus: BranchesLoadStatus.initial,
+      ),
+    );
   }
 
   /// `GET /branches` — options for the booking branch filter chip.
@@ -90,15 +109,32 @@ class BookingCubit extends Cubit<BookingState> {
     emit(state.copyWith(selectedTrainerType: trainerType));
   }
 
-  /// Clears class filters/search and signals the classes list to scroll to top.
-  void resetClassFiltersAndScrollToTop() {
+  /// Resets all class filter chips and search to their default values.
+  void clearClassFilters() {
     emit(
       state.copyWith(
         searchQuery: '',
-        selectedBranch: 'All Branches',
-        selectedDate: 'All Dates',
+        selectedBranch: kAllBranchesFilter,
+        selectedDate: 'Today',
         selectedCategory: 'All Categories',
         selectedGender: 'All Gender',
+      ),
+    );
+  }
+
+  /// Clears class filter chips when [languageCode] changes (locale switch).
+  void syncClassFiltersForLocale(String languageCode) {
+    if (_classFiltersLocaleCode == languageCode) return;
+    _classFiltersLocaleCode = languageCode;
+    clearClassFilters();
+  }
+
+  /// Clears class filters/search and signals the classes list to scroll to top.
+  void resetClassFiltersAndScrollToTop() {
+    clearClassFilters();
+    emit(
+      state.copyWith(
+        selectedDate: 'All Dates',
         classesScrollToTopNonce: state.classesScrollToTopNonce + 1,
       ),
     );
@@ -106,14 +142,11 @@ class BookingCubit extends Cubit<BookingState> {
 
   /// Trainer Details → full classes catalog with no filters.
   void openBrowseAllClassesFromTrainer() {
+    clearClassFilters();
     emit(
       state.copyWith(
         selectedTab: BookingTab.classes,
-        searchQuery: '',
-        selectedBranch: 'All Branches',
         selectedDate: 'All Dates',
-        selectedCategory: 'All Categories',
-        selectedGender: 'All Gender',
         classesScrollToTopNonce: state.classesScrollToTopNonce + 1,
       ),
     );
