@@ -151,7 +151,7 @@ class _AuthRootViewState extends State<AuthRootView>
               if (state.user == null) {
                 WidgetsBinding.instance.addPostFrameCallback((_) {
                   if (!mounted) return;
-                  unawaited(context.read<AuthCubit>().loadProfile());
+                  unawaited(context.read<AuthCubit>().loadAuthMe());
                 });
               }
               return const HomeView();

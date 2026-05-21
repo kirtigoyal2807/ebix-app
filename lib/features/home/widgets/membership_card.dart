@@ -42,6 +42,16 @@ class MembershipCard extends StatelessWidget {
     return context.l10n.unlimitedClasses;
   }
 
+  void _onViewPlansPressed(BuildContext context) {
+    final Widget destination = status == HomeUserStatus.existing
+        ? const ViewSubscriptionView()
+        : const SubscriptionView();
+    Navigator.push<void>(
+      context,
+      MaterialPageRoute<void>(builder: (_) => destination),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     switch (status) {
@@ -136,14 +146,7 @@ class MembershipCard extends StatelessWidget {
                           ),
                           SizedBox(height: AppSpacing.md),
                           ElevatedButton(
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => SubscriptionView(),
-                                ),
-                              );
-                            },
+                            onPressed: () => _onViewPlansPressed(context),
                             style: ElevatedButton.styleFrom(
                               backgroundColor: isDark
                                   ? AppColors.seekBarLight
@@ -243,14 +246,7 @@ class MembershipCard extends StatelessWidget {
             ),
           ),
           ElevatedButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const ViewSubscriptionView(),
-                ),
-              );
-            },
+            onPressed: () => _onViewPlansPressed(context),
             style: ElevatedButton.styleFrom(
               backgroundColor: isDark
                   ? AppColors.seekBarLight

@@ -1,8 +1,14 @@
 import 'package:equatable/equatable.dart';
+import 'package:pilates_app/features/auth/data/models/branch.dart';
 
 enum BookingTab { classes, trainers }
 
 enum ClassDetailStatus { initial, loading, loaded, error }
+
+enum BranchesLoadStatus { initial, loading, loaded, failure }
+
+/// Sentinel for the branch filter chip and local class filtering.
+const String kAllBranchesFilter = 'All Branches';
 
 class BookingState extends Equatable {
   final BookingTab selectedTab;
@@ -14,6 +20,8 @@ class BookingState extends Equatable {
   final ClassDetailStatus classDetailStatus;
   final List<TrainerType> trainerTypeList;
   final TrainerType selectedTrainerType;
+  final List<Branch> branches;
+  final BranchesLoadStatus branchesLoadStatus;
 
   /// Incremented when the classes list should scroll to the top (e.g. Browse All Classes).
   final int classesScrollToTopNonce;
@@ -21,13 +29,15 @@ class BookingState extends Equatable {
   const BookingState({
     this.selectedTab = BookingTab.classes,
     this.searchQuery = '',
-    this.selectedBranch = 'All Branches',
+    this.selectedBranch = kAllBranchesFilter,
     this.selectedDate = 'Today',
     this.selectedCategory = 'All Categories',
     this.selectedGender = 'All Gender',
     this.classDetailStatus = ClassDetailStatus.initial,
     this.selectedTrainerType = TrainerType.allTrainers,
     required this.trainerTypeList,
+    this.branches = const [],
+    this.branchesLoadStatus = BranchesLoadStatus.initial,
     this.classesScrollToTopNonce = 0,
   });
 
@@ -40,6 +50,8 @@ class BookingState extends Equatable {
     String? selectedGender,
     ClassDetailStatus? classDetailStatus,
     TrainerType? selectedTrainerType,
+    List<Branch>? branches,
+    BranchesLoadStatus? branchesLoadStatus,
     int? classesScrollToTopNonce,
   }) {
     return BookingState(
@@ -52,6 +64,8 @@ class BookingState extends Equatable {
       classDetailStatus: classDetailStatus ?? this.classDetailStatus,
       selectedTrainerType: selectedTrainerType ?? this.selectedTrainerType,
       trainerTypeList: trainerTypeList,
+      branches: branches ?? this.branches,
+      branchesLoadStatus: branchesLoadStatus ?? this.branchesLoadStatus,
       classesScrollToTopNonce:
           classesScrollToTopNonce ?? this.classesScrollToTopNonce,
     );
@@ -68,6 +82,8 @@ class BookingState extends Equatable {
     classDetailStatus,
     selectedTrainerType,
     trainerTypeList,
+    branches,
+    branchesLoadStatus,
     classesScrollToTopNonce,
   ];
 }

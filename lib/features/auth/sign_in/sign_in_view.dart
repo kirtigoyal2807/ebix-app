@@ -152,7 +152,7 @@ class _SignInViewState extends State<SignInView> {
                             horizontal: AppSpacing.lg,
                           ),
                           child: SignUpHeader(
-                            title: '${context.l10n.welcome} Tasha',
+                            title: context.l10n.welcome,
                             subtitle: context.l10n.enterYourLoginDetails,
                             step: 1,
                             totalSteps: 5,

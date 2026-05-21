@@ -85,12 +85,14 @@ class AuthRepository extends BaseRepository {
     required String password,
     RegisterGender? gender,
     DateTime? dob,
+    String referralCode = '',
   }) {
     final data = <String, dynamic>{
       'firstName': firstName.trim(),
       'email': email.trim(),
       'phone': phone.trim(),
       'password': password,
+      'referralCode': referralCode.trim(),
     };
     final ln = lastName?.trim();
     if (ln != null && ln.isNotEmpty) {
@@ -270,6 +272,38 @@ class AuthRepository extends BaseRepository {
     return get<AuthUser>(
       'customers/profile',
       fromJson: (json) => AuthUser.fromJson(json as Map<String, dynamic>),
+    );
+  }
+
+  /// Parses [`GET /auth/me`] envelope `data` — nested `user` / `customer` or a flat user map.
+  /// Pending gift may sit on the parent object while profile fields nest under `user`.
+  AuthUser _parseAuthMeUser(dynamic json) {
+    final outer = Map<String, dynamic>.from(json as Map);
+    Map<String, dynamic>? inner;
+    for (final key in const ['user', 'customer']) {
+      final blob = outer[key];
+      if (blob is Map) {
+        inner = Map<String, dynamic>.from(blob);
+        break;
+      }
+    }
+    if (inner != null) {
+      final combined = Map<String, dynamic>.from(inner);
+      if (!combined.containsKey('pendingGift') &&
+          !combined.containsKey('pending_gift')) {
+        final gift = outer['pendingGift'] ?? outer['pending_gift'];
+        if (gift != null) combined['pendingGift'] = gift;
+      }
+      return AuthUser.fromJson(combined);
+    }
+    return AuthUser.fromJson(outer);
+  }
+
+  /// Authenticated user — requires JWT. Used from home refresh; same [AuthUser] envelope as [getProfile].
+  Future<ApiResult<AuthUser>> getAuthMe() {
+    return get<AuthUser>(
+      'auth/me',
+      fromJson: _parseAuthMeUser,
     );
   }
 

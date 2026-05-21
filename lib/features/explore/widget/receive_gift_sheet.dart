@@ -79,7 +79,8 @@ class ReceiveGiftSheet extends StatelessWidget {
               AppButton(
                 label: context.l10n.viewGift,
                 onPressed: () {
-                  Navigator.of(context).pop();
+                  // Leave this sheet on the stack so the redemption screen can pop
+                  // both it and [RedeemCardView] after a successful redeem flow.
                   onViewGift?.call();
                 },
                 variant: AppButtonVariant.primary,

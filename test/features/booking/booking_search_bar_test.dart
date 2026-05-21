@@ -6,6 +6,8 @@ import 'package:pilates_app/core/localization/arb/app_localizations.dart';
 import 'package:pilates_app/features/booking/cubit/booking_cubit.dart';
 import 'package:pilates_app/features/booking/widgets/booking_search_bar.dart';
 
+import '../auth/fake_auth_repository.dart';
+
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
@@ -27,7 +29,7 @@ void main() {
   testWidgets('BookingSearchBar keeps text when parent rebuilds', (
     WidgetTester tester,
   ) async {
-    final cubit = BookingCubit();
+    final cubit = BookingCubit(authRepository: FakeAuthRepository());
     await pumpSearchHarness(
       tester,
       child: BlocProvider<BookingCubit>.value(
@@ -66,7 +68,7 @@ void main() {
   testWidgets('BookingSearchBar syncs when cubit searchQuery changes', (
     WidgetTester tester,
   ) async {
-    final cubit = BookingCubit();
+    final cubit = BookingCubit(authRepository: FakeAuthRepository());
     await pumpSearchHarness(
       tester,
       child: BlocProvider<BookingCubit>.value(
