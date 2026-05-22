@@ -246,8 +246,17 @@ class AuthRepository extends BaseRepository {
   static List<dynamic>? _coerceList(dynamic payload) {
     if (payload is List<dynamic>) return payload;
     if (payload is Map) {
-      final d = payload['data'] ?? payload['items'] ?? payload['branches'];
-      if (d is List<dynamic>) return d;
+      final map = payload is Map<String, dynamic>
+          ? payload
+          : Map<String, dynamic>.from(payload);
+      for (final key in ['data', 'items', 'branches', 'results', 'records']) {
+        final d = map[key];
+        if (d is List<dynamic>) return d;
+        if (d is Map) {
+          final nested = _coerceList(d);
+          if (nested != null) return nested;
+        }
+      }
     }
     return null;
   }
@@ -310,6 +319,7 @@ class AuthRepository extends BaseRepository {
   /// Update customer profile — `PUT /customers/profile`. All fields optional.
   /// Send only the fields the user changed. Returns the updated [AuthUser].
   /// When [avatarPath] is provided, uses `multipart/form-data`; otherwise JSON.
+  /// When [removeAvatar] is true, sends `avatar: false` to clear the profile picture.
   /// When phone number changes, API may return phone verification required.
   Future<ApiResult<AuthUser>> updateProfile({
     String? firstName,
@@ -319,6 +329,7 @@ class AuthRepository extends BaseRepository {
     String? gender,
     DateTime? dob,
     String? avatarPath,
+    bool removeAvatar = false,
   }) async {
     final fields = <String, dynamic>{};
     if (firstName != null && firstName.isNotEmpty) {
@@ -340,6 +351,9 @@ class AuthRepository extends BaseRepository {
     }
 
     final hasAvatar = avatarPath != null && avatarPath.isNotEmpty;
+    if (!hasAvatar && removeAvatar) {
+      fields['avatar'] = false;
+    }
 
     if (hasAvatar) {
       // PHP/Laravel backends don't parse multipart/form-data on PUT requests,
@@ -405,6 +419,7 @@ class AuthRepository extends BaseRepository {
     String? gender,
     DateTime? dob,
     String? avatarPath,
+    bool removeAvatar = false,
   }) async {
     final fields = <String, dynamic>{};
     if (firstName != null && firstName.isNotEmpty) {
@@ -426,6 +441,9 @@ class AuthRepository extends BaseRepository {
     }
 
     final hasAvatar = avatarPath != null && avatarPath.isNotEmpty;
+    if (!hasAvatar && removeAvatar) {
+      fields['avatar'] = false;
+    }
 
     try {
       final response = await httpClient.request<dynamic>(

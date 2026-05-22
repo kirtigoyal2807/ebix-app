@@ -439,6 +439,7 @@ class AuthCubit extends Cubit<AuthState> {
 
     switch (result) {
       case ApiSuccess<bool>():
+        await _tokenStorage.saveHomeBranchId(id);
         emit(
           state
               .copyWith(flow: AuthFlow.authenticated, signUpExperience: '')
@@ -495,6 +496,7 @@ class AuthCubit extends Cubit<AuthState> {
     }
     await _tokenStorage.clearToken();
     await _tokenStorage.clearUser();
+    await _tokenStorage.clearHomeBranchId();
     await _tokenStorage.clearMembershipPlanName();
     emit(
       state
@@ -523,6 +525,7 @@ class AuthCubit extends Cubit<AuthState> {
   Future<void> cancelPostLoginSetup() async {
     await _tokenStorage.clearToken();
     await _tokenStorage.clearUser();
+    await _tokenStorage.clearHomeBranchId();
     await _tokenStorage.clearMembershipPlanName();
     emit(
       state
@@ -1043,15 +1046,17 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
-  Future<void> loadProfile() async {
+  Future<void> loadProfile({bool force = false}) async {
     final token = (_tokenStorage.readToken() ?? '').trim();
     if (token.isEmpty) {
       return;
     }
 
-    final inFlight = _profileRefreshFuture;
-    if (inFlight != null) {
-      return inFlight;
+    if (!force) {
+      final inFlight = _profileRefreshFuture;
+      if (inFlight != null) {
+        return inFlight;
+      }
     }
 
     final future = _loadUser(token, _authRepository.getProfile);
@@ -1062,6 +1067,9 @@ class AuthCubit extends Cubit<AuthState> {
       }
     });
   }
+
+  /// Persisted home branch id from `POST /auth/home-branch`.
+  int? get storedHomeBranchId => _tokenStorage.readHomeBranchId();
 
   /// Loads the authenticated user via [`GET /auth/me`] (home shell / lightweight refresh).
   Future<void> loadAuthMe() async {
@@ -1094,14 +1102,43 @@ class AuthCubit extends Cubit<AuthState> {
     }
     switch (result) {
       case ApiSuccess<AuthUser>(:final data):
-        await _tokenStorage.saveUser(data);
+        final merged = _mergeHomeBranchFromCache(state.user, data);
+        final homeBranchId = merged.homeBranch?.id;
+        if (homeBranchId != null && homeBranchId > 0) {
+          await _tokenStorage.saveHomeBranchId(homeBranchId);
+        }
+        await _tokenStorage.saveUser(merged);
         if (!isClosed) {
-          emit(state.copyWith(user: data));
+          emit(state.copyWith(user: merged));
         }
       case ApiFailure<AuthUser>():
         // Profile load failed - keep the last known user profile.
         break;
     }
+  }
+
+  /// Keeps a valid home branch when profile/`auth/me` omits or clears it.
+  AuthUser _mergeHomeBranchFromCache(AuthUser? previous, AuthUser incoming) {
+    final incomingId = incoming.homeBranch?.id;
+    if (incomingId != null && incomingId > 0) {
+      return incoming;
+    }
+
+    final storedId = _tokenStorage.readHomeBranchId();
+    final prevBranch = previous?.homeBranch;
+    final fallbackId = storedId ?? prevBranch?.id;
+    if (fallbackId == null || fallbackId <= 0) {
+      return incoming;
+    }
+
+    final map = incoming.toJson();
+    map['homeBranch'] = UserHomeBranch(
+      id: fallbackId,
+      name: prevBranch?.name,
+      slug: prevBranch?.slug,
+      code: prevBranch?.code,
+    ).toJson();
+    return AuthUser.fromJson(map);
   }
 
   /// Re-applies the latest [AuthUser] from [TokenStorage] to [state.user].
@@ -1111,6 +1148,23 @@ class AuthCubit extends Cubit<AuthState> {
   void syncUserFromStorage() {
     if (isClosed || state.flow != AuthFlow.authenticated) return;
     emit(state.copyWith(user: _tokenStorage.readUser()));
+  }
+
+  /// Updates cached profile home branch after `POST /auth/home-branch`.
+  Future<void> patchHomeBranch(UserHomeBranch homeBranch) async {
+    final user = state.user;
+    if (user == null || isClosed) return;
+    final id = homeBranch.id;
+    if (id != null && id > 0) {
+      await _tokenStorage.saveHomeBranchId(id);
+    }
+    final map = user.toJson();
+    map['homeBranch'] = homeBranch.toJson();
+    final updated = AuthUser.fromJson(map);
+    await _tokenStorage.saveUser(updated);
+    if (!isClosed) {
+      emit(state.copyWith(user: updated));
+    }
   }
 
   /// Refreshes authenticated user via [`GET /auth/me`] on cold open and app resume.

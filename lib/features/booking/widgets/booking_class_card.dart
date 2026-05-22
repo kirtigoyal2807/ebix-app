@@ -101,6 +101,8 @@ class BookingClassCard extends StatelessWidget {
     final showInPlanBadge = slot != null
         ? (slot.allowPackageBooking && userShowsPackageMembership(user))
         : isInPlan;
+    final showUpgradeBadge =
+        !userShowsPackageMembership(user) || upgradeRequired;
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
       // child:
@@ -203,7 +205,7 @@ class BookingClassCard extends StatelessWidget {
                         children: [
                           if (showInPlanBadge)
                             const Flexible(child: InYourPlanBadge()),
-                          if (upgradeRequired)
+                          if (showUpgradeBadge)
                             const Flexible(child: UpgradeRequiredBadge()),
                         ],
                       ),
@@ -281,7 +283,7 @@ class BookingClassCard extends StatelessWidget {
 
                     SizedBox(height: AppSpacing.xs),
                     AppText(
-                      upgradeRequired
+                      showUpgradeBadge
                           ? '$studio • $time'
                           : '$studio • $time • ${context.l10n.spotsLeft(spotsLeft)}',
                       style: (context) =>

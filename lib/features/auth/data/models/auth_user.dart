@@ -116,67 +116,87 @@ class AuthUser {
   final int? membershipSessionsRemaining;
 
   factory AuthUser.fromJson(Map<String, dynamic> json) {
-    final membershipSnap = parseMembershipField(json['membership']);
+    final root = _unwrapProfileRoot(json);
+    final membershipSnap = parseMembershipField(root['membership']);
 
     // Parse subscriptions for membership info fallback
-    final subscriptionsList = _parseSubscriptions(json['subscriptions']);
+    final subscriptionsList = _parseSubscriptions(root['subscriptions']);
     final activeSubscription = subscriptionsList?.isNotEmpty == true
         ? subscriptionsList!.first
         : null;
 
     return AuthUser(
-      id: json['id']?.toString(),
-      firstName: json['first_name'] as String? ?? json['firstName'] as String?,
-      lastName: json['last_name'] as String? ?? json['lastName'] as String?,
-      name: json['name'] as String? ?? json['full_name'] as String?,
-      email: json['email'] as String?,
-      phone: json['phone'] as String?,
+      id: root['id']?.toString(),
+      firstName:
+          root['first_name'] as String? ?? root['firstName'] as String?,
+      lastName: root['last_name'] as String? ?? root['lastName'] as String?,
+      name: root['name'] as String? ?? root['full_name'] as String?,
+      email: root['email'] as String?,
+      phone: root['phone'] as String?,
       heightCm: _trimOrNull(
-        json['height_cm'] ?? json['heightCm'] ?? json['height'],
+        root['height_cm'] ?? root['heightCm'] ?? root['height'],
       ),
       weightKg: _trimOrNull(
-        json['weight_kg'] ?? json['weightKg'] ?? json['weight'],
+        root['weight_kg'] ?? root['weightKg'] ?? root['weight'],
       ),
-      gender: _trimOrNull(json['gender']),
-      avatar: json['avatar'] as String?,
+      gender: _trimOrNull(root['gender']),
+      avatar: root['avatar'] as String?,
       dateOfBirth: _parseDateOfBirth(
-        json['dob'] ??
-            json['date_of_birth'] ??
-            json['dateOfBirth'] ??
-            json['birth_date'],
+        root['dob'] ??
+            root['date_of_birth'] ??
+            root['dateOfBirth'] ??
+            root['birth_date'],
       ),
-      language: _trimOrNull(json['language']),
-      homeBranch: _parseHomeBranch(json['homeBranch']),
-      brands: _parseBrands(json['brands']),
-      goals: _parseGoals(json['goals']),
+      language: _trimOrNull(root['language']),
+      homeBranch: _parseHomeBranch(
+        root['homeBranch'] ??
+            root['home_branch'] ??
+            _homeBranchFromFlatId(root),
+      ),
+      brands: _parseBrands(root['brands']),
+      goals: _parseGoals(root['goals']),
       subscriptions: subscriptionsList,
       pendingGift:
-          _parsePendingGift(json['pendingGift'] ?? json['pending_gift']),
-      hasPendingGiftKey:
-          json.containsKey('pendingGift') || json.containsKey('pending_gift'),
-      emailVerified: json['emailVerified'] as bool?,
-      phoneVerified: json['phoneVerified'] as bool?,
-      createdAt: _parseDateTime(json['createdAt']),
-      updatedAt: _parseDateTime(json['updatedAt']),
+          _parsePendingGift(root['pendingGift'] ?? root['pending_gift']),
+      hasPendingGiftKey: root.containsKey('pendingGift') ||
+          root.containsKey('pending_gift'),
+      emailVerified: root['emailVerified'] as bool?,
+      phoneVerified: root['phoneVerified'] as bool?,
+      createdAt: _parseDateTime(root['createdAt']),
+      updatedAt: _parseDateTime(root['updatedAt']),
       membershipPlanName:
           membershipSnap?.planName ??
           activeSubscription?.product?.name ??
-          _trimOrNull(json['membershipPlanName']) ??
-          _trimOrNull(json['planName']) ??
-          _trimOrNull(json['plan_name']),
+          _trimOrNull(root['membershipPlanName']) ??
+          _trimOrNull(root['planName']) ??
+          _trimOrNull(root['plan_name']),
       membershipTotalSessions:
           membershipSnap?.totalSessions ??
           activeSubscription?.sessions?.total ??
-          _parseInt(json['membershipTotalSessions']) ??
-          _parseInt(json['totalSessions']) ??
-          _parseInt(json['total_sessions']),
+          _parseInt(root['membershipTotalSessions']) ??
+          _parseInt(root['totalSessions']) ??
+          _parseInt(root['total_sessions']),
       membershipSessionsRemaining:
           membershipSnap?.sessionsRemaining ??
           activeSubscription?.sessions?.remaining ??
-          _parseInt(json['membershipSessionsRemaining']) ??
-          _parseInt(json['sessionsRemaining']) ??
-          _parseInt(json['sessions_remaining']),
+          _parseInt(root['membershipSessionsRemaining']) ??
+          _parseInt(root['sessionsRemaining']) ??
+          _parseInt(root['sessions_remaining']),
     );
+  }
+
+  /// Profile payloads may nest fields under `customer` / `user`.
+  static Map<String, dynamic> _unwrapProfileRoot(Map<String, dynamic> json) {
+    for (final key in const ['customer', 'user', 'profile']) {
+      final nested = json[key];
+      if (nested is Map<String, dynamic>) {
+        return {...Map<String, dynamic>.from(nested), ...json}..remove(key);
+      }
+      if (nested is Map) {
+        return {...Map<String, dynamic>.from(nested), ...json}..remove(key);
+      }
+    }
+    return json;
   }
 
   Map<String, dynamic> toJson() => <String, dynamic>{
@@ -271,8 +291,37 @@ class AuthUser {
 
   static UserHomeBranch? _parseHomeBranch(dynamic value) {
     if (value == null) return null;
-    if (value is! Map<String, dynamic>) return null;
+    if (value is int || value is num) {
+      final id = _jsonInt(value);
+      return id != null && id > 0 ? UserHomeBranch(id: id) : null;
+    }
+    if (value is String) {
+      final id = int.tryParse(value.trim());
+      return id != null && id > 0 ? UserHomeBranch(id: id) : null;
+    }
+    if (value is! Map<String, dynamic>) {
+      if (value is Map) {
+        return UserHomeBranch.fromJson(Map<String, dynamic>.from(value));
+      }
+      return null;
+    }
     return UserHomeBranch.fromJson(value);
+  }
+
+  /// When the API only returns `homeBranchId` / `home_branch_id` on the profile root.
+  static Map<String, dynamic>? _homeBranchFromFlatId(Map<String, dynamic> json) {
+    final id = _jsonInt(
+      json['homeBranchId'] ??
+          json['home_branch_id'] ??
+          json['homeBranch_id'],
+    );
+    if (id == null || id <= 0) return null;
+    return {
+      'id': id,
+      'name': json['homeBranchName'] ?? json['home_branch_name'],
+      'slug': json['homeBranchSlug'] ?? json['home_branch_slug'],
+      'code': json['homeBranchCode'] ?? json['home_branch_code'],
+    };
   }
 
   static List<UserBrand>? _parseBrands(dynamic value) {
@@ -317,8 +366,14 @@ class UserHomeBranch {
 
   factory UserHomeBranch.fromJson(Map<String, dynamic> json) {
     return UserHomeBranch(
-      id: _jsonInt(json['id']),
-      name: json['name'] as String?,
+      id: _jsonInt(
+        json['id'] ??
+            json['branchId'] ??
+            json['branch_id'] ??
+            json['homeBranchId'] ??
+            json['home_branch_id'],
+      ),
+      name: json['name'] as String? ?? json['title'] as String?,
       slug: json['slug'] as String?,
       code: json['code'] as String?,
     );

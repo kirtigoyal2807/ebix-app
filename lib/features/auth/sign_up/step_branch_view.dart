@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:pilates_app/config/theme/app_colors.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
@@ -8,6 +7,7 @@ import 'package:pilates_app/core/localization/localization_extension.dart';
 import 'package:pilates_app/features/auth/cubit/auth_cubit.dart';
 import 'package:pilates_app/features/auth/cubit/auth_state.dart';
 import 'package:pilates_app/features/auth/data/models/branch.dart';
+import 'package:pilates_app/features/auth/utils/branch_location_utils.dart';
 import 'package:pilates_app/widgets/app_app_bar.dart';
 import 'package:pilates_app/widgets/app_button.dart';
 import 'package:pilates_app/widgets/app_scaffold.dart';
@@ -43,8 +43,6 @@ class _SignUpBranchViewState extends State<SignUpBranchView> {
   }
 
   Future<void> _requestLocationAndLoadBranches() async {
-    // Every time this screen is opened/refreshed, restart the location flow
-    // so branch distance and sorting always use the latest permission decision.
     if (mounted) {
       setState(() {
         _awaitingPermission = true;
@@ -53,78 +51,20 @@ class _SignUpBranchViewState extends State<SignUpBranchView> {
       });
     }
 
-    // Use Geolocator for iOS/Android permission prompts. `permission_handler`
-    // relies on CocoaPods preprocessor flags; if misconfigured, iOS may never
-    // show the system dialog. Geolocator talks to CLLocationManager directly.
-    LocationPermission permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-    }
+    final coords = await BranchLocationUtils.resolveUserCoordinates(context);
     if (!mounted) return;
 
-    double? lat;
-    double? lng;
+    setState(() {
+      _userLat = coords.lat;
+      _userLng = coords.lng;
+    });
 
-    // User chose "Don't allow" permanently, or iOS equivalent — open Settings.
-    if (permission == LocationPermission.deniedForever) {
-      await _showLocationSettingsDialog();
-      if (!mounted) return;
-      await context.read<AuthCubit>().loadSignUpBranches();
-      if (!mounted) return;
-      setState(() => _awaitingPermission = false);
-      return;
-    }
-
-    if (permission == LocationPermission.whileInUse ||
-        permission == LocationPermission.always) {
-      try {
-        final position = await Geolocator.getCurrentPosition(
-          locationSettings: const LocationSettings(
-            accuracy: LocationAccuracy.medium,
-            timeLimit: Duration(seconds: 10),
-          ),
-        );
-        if (!mounted) return;
-        lat = position.latitude;
-        lng = position.longitude;
-        setState(() {
-          _userLat = lat;
-          _userLng = lng;
-        });
-      } catch (_) {
-        // Couldn't get position (timeout, hardware error, etc.) — fall through
-        // and load branches without coordinates.
-        if (!mounted) return;
-      }
-    }
-
-    await context.read<AuthCubit>().loadSignUpBranches(lat: lat, lng: lng);
+    await context.read<AuthCubit>().loadSignUpBranches(
+      lat: coords.lat,
+      lng: coords.lng,
+    );
     if (!mounted) return;
     setState(() => _awaitingPermission = false);
-  }
-
-  Future<void> _showLocationSettingsDialog() async {
-    await showDialog<void>(
-      context: context,
-      barrierDismissible: false,
-      builder: (ctx) => AlertDialog(
-        title: Text(context.l10n.locationPermissionTitle),
-        content: Text(context.l10n.locationPermissionMessage),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(ctx).pop(),
-            child: Text(context.l10n.notNow),
-          ),
-          TextButton(
-            onPressed: () {
-              Navigator.of(ctx).pop();
-              Geolocator.openAppSettings();
-            },
-            child: Text(context.l10n.openSettings),
-          ),
-        ],
-      ),
-    );
   }
 
   void _onFinish(BuildContext context) {
@@ -300,7 +240,11 @@ class _SignUpBranchViewState extends State<SignUpBranchView> {
                                 else
                                   ..._branchTiles(
                                     context,
-                                    _branchesNearestFirst(branches),
+                                    BranchLocationUtils.sortNearestFirst(
+                                      branches,
+                                      userLat: _userLat,
+                                      userLng: _userLng,
+                                    ),
                                     state.selectedSignUpBranchId,
                                     fe,
                                   ),
@@ -418,49 +362,6 @@ class _SignUpBranchViewState extends State<SignUpBranchView> {
     );
   }
 
-  double? _distanceMetersToBranch(Branch branch) {
-    if (_userLat == null ||
-        _userLng == null ||
-        branch.lat == null ||
-        branch.lng == null) {
-      return null;
-    }
-    return Geolocator.distanceBetween(
-      _userLat!,
-      _userLng!,
-      branch.lat!,
-      branch.lng!,
-    );
-  }
-
-  /// When location is available, nearest branch first (lowest distance).
-  List<Branch> _branchesNearestFirst(List<Branch> branches) {
-    if (_userLat == null || _userLng == null) {
-      return branches;
-    }
-    final sorted = List<Branch>.from(branches);
-    sorted.sort((a, b) {
-      final da = _distanceMetersToBranch(a);
-      final db = _distanceMetersToBranch(b);
-      if (da == null && db == null) return 0;
-      if (da == null) return 1;
-      if (db == null) return -1;
-      return da.compareTo(db);
-    });
-    return sorted;
-  }
-
-  String _distanceLabelForBranch(Branch branch) {
-    final meters = _distanceMetersToBranch(branch);
-    if (meters == null) {
-      return branch.distance.isEmpty ? '-' : branch.distance;
-    }
-    if (meters < 1000) {
-      return '${meters.toStringAsFixed(0)} m';
-    }
-    return '${(meters / 1000).toStringAsFixed(1)} km';
-  }
-
   List<Widget> _branchTiles(
     BuildContext context,
     List<Branch> branches,
@@ -473,7 +374,11 @@ class _SignUpBranchViewState extends State<SignUpBranchView> {
     for (var i = 0; i < branches.length; i++) {
       final b = branches[i];
       final selected = b.id == selectedId;
-      final distance = _distanceLabelForBranch(b);
+      final distance = BranchLocationUtils.distanceLabel(
+        b,
+        userLat: _userLat,
+        userLng: _userLng,
+      );
 
       out.add(
         KeyedSubtree(

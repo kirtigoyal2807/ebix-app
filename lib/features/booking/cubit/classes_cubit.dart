@@ -11,6 +11,14 @@ class ClassesCubit extends Cubit<ClassesState> {
   /// Monotonically increased so in-flight responses from older searches are ignored.
   int _listRequestId = 0;
 
+  /// Clears cached class list (e.g. after app locale changes).
+  void invalidateClassesCache() {
+    if (state.status == ClassesLoadStatus.initial && state.allClasses.isEmpty) {
+      return;
+    }
+    emit(const ClassesState());
+  }
+
   /// Load class list from API. [search] is forwarded as a query param (§13.2).
   Future<void> load({String? search, bool force = false}) async {
     if (!force && state.isLoaded && errorMessage == null) return;
