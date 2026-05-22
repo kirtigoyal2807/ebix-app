@@ -204,8 +204,10 @@ class _PersonalViewBodyState extends State<_PersonalViewBody> {
 
   Future<void> _showProfilePictureOptions(BuildContext context) async {
     final cubit = context.read<PersonalInfoCubit>();
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final action = await showModalBottomSheet<ProfilePictureAction>(
       context: context,
+      backgroundColor: isDark ? AppColors.homeBackground : AppColors.whiteColor,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),

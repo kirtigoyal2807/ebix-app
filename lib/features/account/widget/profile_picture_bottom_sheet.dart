@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pilates_app/config/theme/app_colors.dart';
 import 'package:pilates_app/config/theme/app_radius.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
@@ -17,6 +18,7 @@ class ProfilePictureBottomSheet extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Material(
+      color: isDark ? AppColors.homeBackground : AppColors.whiteColor,
       borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       child: SafeArea(
         top: false,
@@ -56,20 +58,41 @@ class ProfilePictureBottomSheet extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: AppSpacing.base),
-                  _ProfilePictureOption(
-                    title: context.l10n.takePicture,
-                    onTap: () =>
-                        Navigator.of(context).pop(ProfilePictureAction.camera),
-                  ),
-                  _ProfilePictureOption(
-                    title: context.l10n.accessFromGallery,
-                    onTap: () =>
-                        Navigator.of(context).pop(ProfilePictureAction.gallery),
-                  ),
-                  _ProfilePictureOption(
-                    title: context.l10n.removeProfilePicture,
-                    onTap: () =>
-                        Navigator.of(context).pop(ProfilePictureAction.remove),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+                    child: Column(
+                      children: [
+                        _ProfilePictureOption(
+                          iconAsset: isDark
+                              ? 'assets/images/svg/account/cameraDark.svg'
+                              : 'assets/images/svg/account/cameraLight.svg',
+                          title: context.l10n.takePicture,
+                          onTap: () => Navigator.of(context).pop(
+                            ProfilePictureAction.camera,
+                          ),
+                        ),
+                        SizedBox(height: AppSpacing.md),
+                        _ProfilePictureOption(
+                          iconAsset: isDark
+                              ? 'assets/images/svg/account/galleryDark.svg'
+                              : 'assets/images/svg/account/galleryLight.svg',
+                          title: context.l10n.accessFromGallery,
+                          onTap: () => Navigator.of(context).pop(
+                            ProfilePictureAction.gallery,
+                          ),
+                        ),
+                        SizedBox(height: AppSpacing.md),
+                        _ProfilePictureOption(
+                          iconAsset: isDark
+                              ? 'assets/images/svg/account/deleteDark.svg'
+                              : 'assets/images/svg/account/deleteLight.svg',
+                          title: context.l10n.removeProfilePicture,
+                          onTap: () => Navigator.of(context).pop(
+                            ProfilePictureAction.remove,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                   SizedBox(height: AppSpacing.md),
                 ],
@@ -83,10 +106,15 @@ class ProfilePictureBottomSheet extends StatelessWidget {
 }
 
 class _ProfilePictureOption extends StatefulWidget {
+  final String iconAsset;
   final String title;
   final VoidCallback onTap;
 
-  const _ProfilePictureOption({required this.title, required this.onTap});
+  const _ProfilePictureOption({
+    required this.iconAsset,
+    required this.title,
+    required this.onTap,
+  });
 
   @override
   State<_ProfilePictureOption> createState() => _ProfilePictureOptionState();
@@ -107,11 +135,6 @@ class _ProfilePictureOptionState extends State<_ProfilePictureOption> {
       },
       child: Container(
         width: double.infinity,
-        padding: EdgeInsets.symmetric(
-          horizontal: AppSpacing.base,
-          vertical: AppSpacing.md,
-        ),
-        margin: EdgeInsets.symmetric(horizontal: AppSpacing.base),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(AppRadius.md),
           border: Border.all(
@@ -126,7 +149,23 @@ class _ProfilePictureOptionState extends State<_ProfilePictureOption> {
                     : AppColors.selectedLanguageBg)
               : Colors.transparent,
         ),
-        child: AppText(widget.title, style: AppTextStyles.experienceButton),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SvgPicture.asset(
+              widget.iconAsset,
+              width: 24,
+              height: 24,
+            ),
+            SizedBox(width: AppSpacing.md),
+            Expanded(
+              child: AppText(
+                widget.title,
+                style: AppTextStyles.experienceButton,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
