@@ -87,20 +87,42 @@ class RedeemCardView extends StatelessWidget {
           centerTitle: true,
           elevation: 0,
         ),
-        body: body,
-        bottomNavigationBar: SafeArea(
-          top: false,
-          child: Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: AppSpacing.lg,
-              vertical: AppSpacing.md,
+        body: Stack(
+          fit: StackFit.expand,
+          children: [
+            body,
+            Positioned(
+              bottom: 0,
+              left: 0,
+              right: 0,
+              child: Container(
+                height: AppSpacing.md + 52,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.bottomCenter,
+                    end: Alignment.topCenter,
+                    colors: [
+                      AppColors.subscriptionCardGradient2,
+                      AppColors.subscriptionCardGradient2.withValues(alpha: 0),
+                    ],
+                  ),
+                ),
+              ),
             ),
-            child: _RedeemButton(
-              pendingGift: pendingGift,
-              onRedeemSuccess: onRedeemSuccess,
-              routePopsAfterSuccessModal: routePopsAfterSuccessModal,
+            Positioned(
+              left: 0,
+              right: 0,
+              bottom: AppSpacing.md,
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+                child: _RedeemButton(
+                  pendingGift: pendingGift,
+                  onRedeemSuccess: onRedeemSuccess,
+                  routePopsAfterSuccessModal: routePopsAfterSuccessModal,
+                ),
+              ),
             ),
-          ),
+          ],
         ),
       ),
     );
@@ -166,6 +188,7 @@ class _RedeemCardBody extends StatelessWidget {
             ),
             SizedBox(height: AppSpacing.lg),
             _MessageCard(pendingGift: pendingGift),
+            SizedBox(height: AppSpacing.xxxl * 2),
           ],
         ),
       ),
