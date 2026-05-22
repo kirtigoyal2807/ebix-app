@@ -31,6 +31,8 @@ class FeaturedClassCard extends StatelessWidget {
     final showInPlanBadge =
         featuredClass.inPlan == true && userShowsPackageMembership(user);
     final upgradeRequired = featuredClass.showsUpgradeRequired;
+    final showUpgradeBadge =
+        !userShowsPackageMembership(user) || upgradeRequired;
 
     return Container(
       margin: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
@@ -84,7 +86,7 @@ class FeaturedClassCard extends StatelessWidget {
               ),
             ),
           ),
-          if (showInPlanBadge || upgradeRequired)
+          if (showInPlanBadge || showUpgradeBadge)
             Padding(
               padding: EdgeInsets.only(
                 right: AppSpacing.md,
@@ -95,7 +97,7 @@ class FeaturedClassCard extends StatelessWidget {
                 children: [
                   if (showInPlanBadge)
                     const Flexible(child: InYourPlanBadge()),
-                  if (upgradeRequired)
+                  if (showUpgradeBadge)
                     const Flexible(child: UpgradeRequiredBadge()),
                 ],
               ),
@@ -105,7 +107,7 @@ class FeaturedClassCard extends StatelessWidget {
               right: AppSpacing.md,
               left: AppSpacing.md,
               bottom: AppSpacing.md,
-              top: (showInPlanBadge || upgradeRequired)
+              top: (showInPlanBadge || showUpgradeBadge)
                   ? AppSpacing.sm
                   : AppSpacing.base,
             ),
@@ -149,7 +151,7 @@ class FeaturedClassCard extends StatelessWidget {
 
                 SizedBox(height: AppSpacing.xs),
                 AppText(
-                  _buildSubtitle(context),
+                  _buildSubtitle(context, hideSpots: showUpgradeBadge),
                   style: (context) =>
                       AppTextStyles.captionText(context).copyWith(
                         fontSize: size.width * 0.03 > 14
@@ -200,7 +202,7 @@ class FeaturedClassCard extends StatelessWidget {
     );
   }
 
-  String _buildSubtitle(BuildContext context) {
+  String _buildSubtitle(BuildContext context, {required bool hideSpots}) {
     final values = <String>[];
     final branch = featuredClass.branchName?.trim();
     if (branch != null && branch.isNotEmpty) {
@@ -209,7 +211,7 @@ class FeaturedClassCard extends StatelessWidget {
     if (featuredClass.startAt != null) {
       values.add(DateFormat('MMM d, h:mm a').format(featuredClass.startAt!));
     }
-    if (featuredClass.spotsLeft != null) {
+    if (!hideSpots && featuredClass.spotsLeft != null) {
       values.add(context.l10n.spotsLeft(featuredClass.spotsLeft!));
     }
     return values.join(' • ');
