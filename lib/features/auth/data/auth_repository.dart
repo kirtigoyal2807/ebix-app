@@ -319,6 +319,7 @@ class AuthRepository extends BaseRepository {
   /// Update customer profile — `PUT /customers/profile`. All fields optional.
   /// Send only the fields the user changed. Returns the updated [AuthUser].
   /// When [avatarPath] is provided, uses `multipart/form-data`; otherwise JSON.
+  /// When [removeAvatar] is true, sends `avatar: false` to clear the profile picture.
   /// When phone number changes, API may return phone verification required.
   Future<ApiResult<AuthUser>> updateProfile({
     String? firstName,
@@ -328,6 +329,7 @@ class AuthRepository extends BaseRepository {
     String? gender,
     DateTime? dob,
     String? avatarPath,
+    bool removeAvatar = false,
   }) async {
     final fields = <String, dynamic>{};
     if (firstName != null && firstName.isNotEmpty) {
@@ -349,6 +351,9 @@ class AuthRepository extends BaseRepository {
     }
 
     final hasAvatar = avatarPath != null && avatarPath.isNotEmpty;
+    if (!hasAvatar && removeAvatar) {
+      fields['avatar'] = false;
+    }
 
     if (hasAvatar) {
       // PHP/Laravel backends don't parse multipart/form-data on PUT requests,
@@ -414,6 +419,7 @@ class AuthRepository extends BaseRepository {
     String? gender,
     DateTime? dob,
     String? avatarPath,
+    bool removeAvatar = false,
   }) async {
     final fields = <String, dynamic>{};
     if (firstName != null && firstName.isNotEmpty) {
@@ -435,6 +441,9 @@ class AuthRepository extends BaseRepository {
     }
 
     final hasAvatar = avatarPath != null && avatarPath.isNotEmpty;
+    if (!hasAvatar && removeAvatar) {
+      fields['avatar'] = false;
+    }
 
     try {
       final response = await httpClient.request<dynamic>(

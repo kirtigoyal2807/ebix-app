@@ -152,6 +152,7 @@ class PersonalInfoCubit extends Cubit<PersonalInfoState> {
       gender: state.gender,
       dob: state.dateOfBirth,
       avatarPath: state.selectedAvatarPath,
+      removeAvatar: state.removeAvatar,
     );
 
     switch (result) {
@@ -225,6 +226,7 @@ class PersonalInfoCubit extends Cubit<PersonalInfoState> {
       gender: state.gender,
       dob: state.dateOfBirth,
       avatarPath: state.selectedAvatarPath,
+      removeAvatar: state.removeAvatar,
     );
 
     switch (result) {
