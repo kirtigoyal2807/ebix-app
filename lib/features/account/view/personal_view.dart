@@ -18,7 +18,6 @@ import 'package:pilates_app/widgets/app_text.dart';
 import 'package:pilates_app/widgets/app_text_field.dart';
 
 import '../../../config/theme/app_colors.dart';
-import '../../../config/theme/app_radius.dart';
 import '../../../core/localization/arb/app_localizations.dart';
 import '../../../widgets/app_button.dart';
 import '../../../widgets/app_dropdown.dart';
@@ -89,16 +88,15 @@ class _PersonalViewBodyState extends State<_PersonalViewBody> {
     final names = _namesFromUser(widget.initialUser);
     final profilePhone = _parseProfilePhone(widget.initialUser?.phone);
     _phoneCountryIso = profilePhone.iso3166;
-    _phoneCountry = CountryCode.tryFromCountryCode(_phoneCountryIso) ??
+    _phoneCountry =
+        CountryCode.tryFromCountryCode(_phoneCountryIso) ??
         CountryCode.tryFromCountryCode('AE');
     _firstNameController = TextEditingController(text: names.$1);
     _lastNameController = TextEditingController(text: names.$2);
     _emailController = TextEditingController(
       text: widget.initialUser?.email?.trim() ?? '',
     );
-    _phoneController = TextEditingController(
-      text: profilePhone.nationalDigits,
-    );
+    _phoneController = TextEditingController(text: profilePhone.nationalDigits);
     _dobController = TextEditingController(
       text: _formatDate(widget.initialUser?.dateOfBirth),
     );
@@ -142,10 +140,7 @@ class _PersonalViewBodyState extends State<_PersonalViewBody> {
     try {
       final withPlus = raw.startsWith('+') ? raw : '+$raw';
       final parsed = PhoneNumber.parse(withPlus);
-      return (
-        nationalDigits: parsed.nsn,
-        iso3166: parsed.isoCode.name,
-      );
+      return (nationalDigits: parsed.nsn, iso3166: parsed.isoCode.name);
     } catch (_) {
       if (raw.startsWith('+966')) {
         return (nationalDigits: raw.substring(4).trim(), iso3166: 'SA');
@@ -161,7 +156,8 @@ class _PersonalViewBodyState extends State<_PersonalViewBody> {
   String _composePhoneE164() {
     final digits = _phoneController.text.replaceAll(RegExp(r'\D'), '');
     if (digits.isEmpty) return '';
-    final dial = _phoneCountry?.dialCode ??
+    final dial =
+        _phoneCountry?.dialCode ??
         CountryCode.tryFromCountryCode(_phoneCountryIso)?.dialCode ??
         '+971';
     final cleanDial = dial.startsWith('+') ? dial : '+$dial';
@@ -310,7 +306,8 @@ class _PersonalViewBodyState extends State<_PersonalViewBody> {
               ),
             ),
           );
-        } else if (state.saveStatus == PersonalInfoSaveStatus.emailVerificationRequired) {
+        } else if (state.saveStatus ==
+            PersonalInfoSaveStatus.emailVerificationRequired) {
           final personalInfoCubit = context.read<PersonalInfoCubit>();
           final verified = await Navigator.of(context).push<bool>(
             MaterialPageRoute(
@@ -330,7 +327,8 @@ class _PersonalViewBodyState extends State<_PersonalViewBody> {
             context.read<AuthCubit>().refreshProfileWhenSelectingAccountTab();
             Navigator.of(context).pop();
           }
-        } else if (state.saveStatus == PersonalInfoSaveStatus.phoneVerificationRequired) {
+        } else if (state.saveStatus ==
+            PersonalInfoSaveStatus.phoneVerificationRequired) {
           final personalInfoCubit = context.read<PersonalInfoCubit>();
           final verified = await Navigator.of(context).push<bool>(
             MaterialPageRoute(
@@ -364,194 +362,212 @@ class _PersonalViewBodyState extends State<_PersonalViewBody> {
             title: l10n.personalData,
             isMoreMenu: false,
           ),
-          body: SingleChildScrollView(
-            child: Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: AppSpacing.lg,
-                vertical: AppSpacing.sm,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  BlocBuilder<PersonalInfoCubit, PersonalInfoState>(
-                    buildWhen: (p, c) =>
-                        p.selectedAvatarPath != c.selectedAvatarPath ||
-                        p.removeAvatar != c.removeAvatar,
-                    builder: (context, picState) {
-                      return GestureDetector(
-                        onTap: _isEditing
-                            ? () => _showProfilePictureOptions(context)
-                            : null,
-                        child: Column(
-                          children: [
-                            Align(
-                              alignment: Alignment.center,
-                              child: _buildProfileImage(picState),
+          body: Stack(
+            children: [
+              SingleChildScrollView(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: AppSpacing.lg,
+                    vertical: AppSpacing.sm,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      BlocBuilder<PersonalInfoCubit, PersonalInfoState>(
+                        buildWhen: (p, c) =>
+                            p.selectedAvatarPath != c.selectedAvatarPath ||
+                            p.removeAvatar != c.removeAvatar,
+                        builder: (context, picState) {
+                          return GestureDetector(
+                            onTap: _isEditing
+                                ? () => _showProfilePictureOptions(context)
+                                : null,
+                            child: Column(
+                              children: [
+                                Align(
+                                  alignment: Alignment.center,
+                                  child: _buildProfileImage(picState),
+                                ),
+                                SizedBox(height: AppSpacing.sm),
+                                Center(
+                                  child: AppText(
+                                    l10n.changeProfilePicture,
+                                    style: (context) =>
+                                        AppTextStyles.body(context).copyWith(
+                                          fontWeight: FontWeight.w400,
+                                          height: 1.55,
+                                        ),
+                                  ),
+                                ),
+                              ],
                             ),
-                            SizedBox(height: AppSpacing.sm),
-                            Center(
-                              child: AppText(
-                                l10n.changeProfilePicture,
-                                style: (context) =>
-                                    AppTextStyles.body(context).copyWith(
-                                      fontWeight: FontWeight.w400,
-                                      height: 1.55,
-                                    ),
+                          );
+                        },
+                      ),
+                      SizedBox(height: AppSpacing.lg),
+                      IgnorePointer(
+                        ignoring: !_isEditing,
+                        child: AppTextField(
+                          hint: context.l10n.firstName,
+                          label: context.l10n.firstName,
+                          controller: _firstNameController,
+                          focusNode: _firstNameFocus,
+                          keyboardType: TextInputType.name,
+                          textInputAction: TextInputAction.next,
+                          onFieldSubmitted: (_) => FocusScope.of(
+                            context,
+                          ).requestFocus(_lastNameFocus),
+                          readOnly: !_isEditing,
+                        ),
+                      ),
+                      SizedBox(height: AppSpacing.md),
+                      IgnorePointer(
+                        ignoring: !_isEditing,
+                        child: AppTextField(
+                          hint: context.l10n.lastName,
+                          label: context.l10n.lastName,
+                          controller: _lastNameController,
+                          focusNode: _lastNameFocus,
+                          keyboardType: TextInputType.name,
+                          textInputAction: TextInputAction.next,
+                          onFieldSubmitted: (_) =>
+                              FocusManager.instance.primaryFocus?.unfocus(),
+                          readOnly: !_isEditing,
+                        ),
+                      ),
+                      SizedBox(height: AppSpacing.md),
+                      // TEMP: email not editable in edit mode — remove when re-enabling.
+                      IgnorePointer(
+                        child: AppTextField(
+                          hint: context.l10n.recipientEmailHint,
+                          label: l10n.emailAddress,
+                          keyboardType: TextInputType.emailAddress,
+                          controller: _emailController,
+                          focusNode: _emailFocus,
+                          readOnly: true,
+                          enabled: false,
+                        ),
+                      ),
+                      SizedBox(height: AppSpacing.md),
+                      // TEMP: phone + country code not editable in edit mode — remove when re-enabling.
+                      IgnorePointer(
+                        child: PhoneNumberField(
+                          key: ValueKey<String?>(
+                            'personal_phone_${widget.initialUser?.phone ?? ''}',
+                          ),
+                          label: context.l10n.phoneNumber,
+                          countryCode: '+1',
+                          flagAsset: 'assets/flags/us.svg',
+                          controller: _phoneController,
+                          focusNode: _phoneFocus,
+                          enabled: false,
+                          initialCountryIso: _phoneCountryIso,
+                          onCountryChanged: (country) {
+                            setState(() {
+                              _phoneCountry = country;
+                              _phoneCountryIso =
+                                  country.code ?? _phoneCountryIso;
+                            });
+                          },
+                        ),
+                      ),
+                      SizedBox(height: AppSpacing.md),
+                      BlocBuilder<PersonalInfoCubit, PersonalInfoState>(
+                        buildWhen: (p, c) => p.gender != c.gender,
+                        builder: (context, state) {
+                          return AppDropDown<String>(
+                            label: context.l10n.gender,
+                            hint: context.l10n.selectGender,
+                            value: _genderDropdownValue(state.gender),
+                            items: [
+                              DropdownMenuItem(
+                                value: 'female',
+                                child: Text(
+                                  context.l10n.female,
+                                  style: AppTextStyles.textField(context),
+                                ),
+                              ),
+                            ],
+                            onChanged: _isEditing
+                                ? (val) {
+                                    if (val != null) {
+                                      context
+                                          .read<PersonalInfoCubit>()
+                                          .updateGender(val);
+                                    }
+                                  }
+                                : null,
+                          );
+                        },
+                      ),
+                      SizedBox(height: AppSpacing.md),
+                      BlocBuilder<PersonalInfoCubit, PersonalInfoState>(
+                        buildWhen: (p, c) => p.dateOfBirth != c.dateOfBirth,
+                        builder: (context, state) {
+                          _dobController.text = _formatDate(state.dateOfBirth);
+                          return IgnorePointer(
+                            ignoring: !_isEditing,
+                            child: GestureDetector(
+                              onTap: () => _pickDateOfBirth(context),
+                              child: AbsorbPointer(
+                                child: AppTextField(
+                                  hint: 'Select date of birth',
+                                  label: 'Date of Birth',
+                                  controller: _dobController,
+                                ),
                               ),
                             ),
-                          ],
-                        ),
-                      );
-                    },
-                  ),
-                  SizedBox(height: AppSpacing.lg),
-                  IgnorePointer(
-                    ignoring: !_isEditing,
-                    child: AppTextField(
-                      hint: context.l10n.firstName,
-                      label: context.l10n.firstName,
-                      controller: _firstNameController,
-                      focusNode: _firstNameFocus,
-                      keyboardType: TextInputType.name,
-                      textInputAction: TextInputAction.next,
-                      onFieldSubmitted: (_) => FocusScope.of(
-                        context,
-                      ).requestFocus(_lastNameFocus),
-                      readOnly: !_isEditing,
-                    ),
-                  ),
-                  SizedBox(height: AppSpacing.md),
-                  IgnorePointer(
-                    ignoring: !_isEditing,
-                    child: AppTextField(
-                      hint: context.l10n.lastName,
-                      label: context.l10n.lastName,
-                      controller: _lastNameController,
-                      focusNode: _lastNameFocus,
-                      keyboardType: TextInputType.name,
-                      textInputAction: TextInputAction.next,
-                      onFieldSubmitted: (_) =>
-                          FocusManager.instance.primaryFocus?.unfocus(),
-                      readOnly: !_isEditing,
-                    ),
-                  ),
-                  SizedBox(height: AppSpacing.md),
-                  // TEMP: email not editable in edit mode — remove when re-enabling.
-                  IgnorePointer(
-                    child: AppTextField(
-                      hint: context.l10n.recipientEmailHint,
-                      label: l10n.emailAddress,
-                      keyboardType: TextInputType.emailAddress,
-                      controller: _emailController,
-                      focusNode: _emailFocus,
-                      readOnly: true,
-                      enabled: false,
-                    ),
-                  ),
-                  SizedBox(height: AppSpacing.md),
-                  // TEMP: phone + country code not editable in edit mode — remove when re-enabling.
-                  IgnorePointer(
-                    child: PhoneNumberField(
-                      key: ValueKey<String?>(
-                        'personal_phone_${widget.initialUser?.phone ?? ''}',
+                          );
+                        },
                       ),
-                      label: context.l10n.phoneNumber,
-                      countryCode: '+1',
-                      flagAsset: 'assets/flags/us.svg',
-                      controller: _phoneController,
-                      focusNode: _phoneFocus,
-                      enabled: false,
-                      initialCountryIso: _phoneCountryIso,
-                      onCountryChanged: (country) {
-                        setState(() {
-                          _phoneCountry = country;
-                          _phoneCountryIso = country.code ?? _phoneCountryIso;
-                        });
-                      },
-                    ),
+                      SizedBox(height: AppSpacing.xxxl * 2),
+                    ],
                   ),
-                  SizedBox(height: AppSpacing.md),
-                  BlocBuilder<PersonalInfoCubit, PersonalInfoState>(
-                    buildWhen: (p, c) => p.gender != c.gender,
-                    builder: (context, state) {
-                      return AppDropDown<String>(
-                        label: context.l10n.gender,
-                        hint: context.l10n.selectGender,
-                        value: _genderDropdownValue(state.gender),
-                        items: [
-                          DropdownMenuItem(
-                            value: 'female',
-                            child: Text(
-                              context.l10n.female,
-                              style: AppTextStyles.textField(context),
-                            ),
-                          ),
-                        ],
-                        onChanged: _isEditing
-                            ? (val) {
-                                if (val != null) {
-                                  context
-                                      .read<PersonalInfoCubit>()
-                                      .updateGender(val);
-                                }
-                              }
-                            : null,
-                      );
-                    },
-                  ),
-                  SizedBox(height: AppSpacing.md),
-                  BlocBuilder<PersonalInfoCubit, PersonalInfoState>(
-                    buildWhen: (p, c) => p.dateOfBirth != c.dateOfBirth,
-                    builder: (context, state) {
-                      _dobController.text = _formatDate(state.dateOfBirth);
-                      return IgnorePointer(
-                        ignoring: !_isEditing,
-                        child: GestureDetector(
-                          onTap: () => _pickDateOfBirth(context),
-                          child: AbsorbPointer(
-                            child: AppTextField(
-                              hint: 'Select date of birth',
-                              label: 'Date of Birth',
-                              controller: _dobController,
-                            ),
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                  SizedBox(height: AppSpacing.lg),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: isDark ? AppColors.homeBackground : Colors.white,
-                      borderRadius: BorderRadius.circular(AppRadius.xl),
-                      boxShadow: [
-                        BoxShadow(
-                          color: AppColors.shadowColor.withValues(alpha: 0.06),
-                          offset: const Offset(0, 1),
-                          blurRadius: 2,
-                          spreadRadius: 0,
-                        ),
-                      ],
-                    ),
-                    child: AppButton(
-                      label: _isEditing ? l10n.updateProfile : l10n.editDetails,
-                      isLoading: isLoading,
-                      onPressed: isLoading
-                          ? null
-                          : () {
-                              if (_isEditing) {
-                                _submit(context);
-                              } else {
-                                setState(() => _isEditing = true);
-                              }
-                            },
-                      variant: AppButtonVariant.primary,
-                    ),
-                  ),
-                  SizedBox(height: AppSpacing.xl),
-                ],
+                ),
               ),
-            ),
+              Positioned(
+                bottom: 0,
+                left: 0,
+                right: 0,
+                child: Container(
+                  height: AppSpacing.md + 52,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.bottomCenter,
+                      end: Alignment.topCenter,
+                      colors: isDark
+                          ? [
+                              AppColors.darkShadow,
+                              AppColors.darkShadow.withValues(alpha: 0),
+                            ]
+                          : [Colors.white, Colors.white.withValues(alpha: 0)],
+                    ),
+                  ),
+                ),
+              ),
+              Positioned(
+                left: 0,
+                right: 0,
+                bottom: AppSpacing.md,
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+                  child: AppButton(
+                    label: _isEditing ? l10n.updateProfile : l10n.editDetails,
+                    isLoading: isLoading,
+                    onPressed: isLoading
+                        ? null
+                        : () {
+                            if (_isEditing) {
+                              _submit(context);
+                            } else {
+                              setState(() => _isEditing = true);
+                            }
+                          },
+                    variant: AppButtonVariant.primary,
+                  ),
+                ),
+              ),
+            ],
           ),
         );
       },
