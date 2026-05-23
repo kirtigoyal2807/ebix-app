@@ -172,7 +172,10 @@ class InvoiceListPanel extends StatelessWidget {
           onRefresh: () => context.read<InvoiceHistoryCubit>().refresh(),
           child: ListView.builder(
             physics: const AlwaysScrollableScrollPhysics(),
-            padding: EdgeInsets.symmetric(vertical: AppSpacing.md),
+            padding: EdgeInsets.symmetric(
+              vertical: AppSpacing.md,
+              horizontal: AppSpacing.lg,
+            ),
             itemCount: state.invoices.length,
             itemBuilder: (context, index) {
               final inv = state.invoices[index];

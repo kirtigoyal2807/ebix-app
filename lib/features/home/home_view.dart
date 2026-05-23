@@ -320,9 +320,9 @@ class _PendingGiftPopupTriggerState extends State<_PendingGiftPopupTrigger> {
                         .read<HomeCubit>()
                         .refreshHomeAndProfileSilently()
                         .then((_) {
-                      if (!context.mounted) return;
-                      context.read<AuthCubit>().syncUserFromStorage();
-                    }),
+                          if (!context.mounted) return;
+                          context.read<AuthCubit>().syncUserFromStorage();
+                        }),
                   );
                 },
               ),
@@ -396,7 +396,9 @@ class _HomeBookingFlowTabListenerState
   @override
   void dispose() {
     openClassesBookingTabAfterPopToRoot.removeListener(_onOpenClassesRequest);
-    openBrowseAllClassesAfterPopToRoot.removeListener(_onBrowseAllClassesRequest);
+    openBrowseAllClassesAfterPopToRoot.removeListener(
+      _onBrowseAllClassesRequest,
+    );
     super.dispose();
   }
 
@@ -655,7 +657,6 @@ class HomeContentView extends StatelessWidget {
                         },
                       ),
                       SizedBox(height: AppSpacing.lg),
-                      SizedBox(height: AppSpacing.xl),
                     ],
                   ),
                 ),

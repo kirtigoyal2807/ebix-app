@@ -35,9 +35,11 @@ class FilterSelectionBottomSheet extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: AppSpacing.lg,
-                vertical: AppSpacing.lg,
+              padding: EdgeInsets.only(
+                left: AppSpacing.lg,
+                right: AppSpacing.md,
+                top: AppSpacing.lg,
+                bottom: AppSpacing.lg,
               ),
               child: Row(
                 children: [
@@ -51,8 +53,8 @@ class FilterSelectionBottomSheet extends StatelessWidget {
                     icon: Icon(
                       Icons.close,
                       color: isDark
-                          ? AppColors.whiteColor
-                          : AppColors.blackColor,
+                          ? AppColors.lightGrey
+                          : AppColors.closeIconLight,
                     ),
                     onPressed: () => Navigator.of(context).pop(),
                   ),
@@ -121,7 +123,7 @@ class _OptionTile extends StatelessWidget {
                       ? AppColors.primaryDarkButton
                       : AppColors.greyContainerBg)
                 : Colors.transparent,
-            borderRadius: BorderRadius.circular(AppRadius.lg),
+            borderRadius: BorderRadius.circular(AppRadius.sm),
           ),
           child: Row(
             children: [
