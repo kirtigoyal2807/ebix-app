@@ -485,14 +485,15 @@ class _PlanSelectionStepState extends State<_PlanSelectionStep> {
     // `GET /products` — not only when catalog is empty (old products would hide it).
     final showPlansLoading = _productsLoading;
 
-    return Column(
+    return Stack(
+      fit: StackFit.expand,
       children: [
-        Expanded(
-          child: SingleChildScrollView(
-            padding: EdgeInsets.symmetric(vertical: AppSpacing.lg),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
+        SingleChildScrollView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          padding: EdgeInsets.symmetric(vertical: AppSpacing.lg),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
                 // Header
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
@@ -703,32 +704,57 @@ class _PlanSelectionStepState extends State<_PlanSelectionStep> {
                       );
                     },
                   ),
-              ],
+              SizedBox(height: AppSpacing.xxxl * 2),
+            ],
+          ),
+        ),
+        Positioned(
+          bottom: 0,
+          left: 0,
+          right: 0,
+          child: Container(
+            height: AppSpacing.md + 52,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.bottomCenter,
+                end: Alignment.topCenter,
+                colors: isDark
+                    ? [
+                        AppColors.darkShadow,
+                        AppColors.darkShadow.withValues(alpha: 0),
+                      ]
+                    : [
+                        Colors.white,
+                        Colors.white.withValues(alpha: 0),
+                      ],
+              ),
             ),
           ),
         ),
-
-        if (_checkoutMessage != null)
-          Padding(
-            padding: const EdgeInsets.only(left: 24, right: 24, bottom: 8),
-            child: InlineValidationBanner(message: _checkoutMessage!),
-          ),
-
-        // Fixed Bottom Button
-        Padding(
-          padding: const EdgeInsets.only(
-            left: 24,
-            right: 24,
-            bottom: 12,
-            top: 0,
-          ),
-          child: AppButton(
-            label: l10n.continueTxt,
-            onPressed: () {
-              unawaited(_startCheckoutAndNavigate());
-            },
-            buttonColor: isDark ? AppColors.primary : AppColors.primaryBrown,
-            expanded: true,
+        Positioned(
+          left: 0,
+          right: 0,
+          bottom: AppSpacing.md,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              if (_checkoutMessage != null)
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+                  child: InlineValidationBanner(message: _checkoutMessage!),
+                ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+                child: AppButton(
+                  label: l10n.continueTxt,
+                  onPressed: () {
+                    unawaited(_startCheckoutAndNavigate());
+                  },
+                  buttonColor:
+                      isDark ? AppColors.primary : AppColors.primaryBrown,
+                ),
+              ),
+            ],
           ),
         ),
       ],
