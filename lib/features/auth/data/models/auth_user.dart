@@ -521,6 +521,7 @@ class PendingGift {
     this.status,
     this.statusLabel,
     this.redemptionCode,
+    this.sender,
     this.recipient,
     this.message,
     this.deliveryDate,
@@ -538,6 +539,7 @@ class PendingGift {
   final String? status;
   final String? statusLabel;
   final String? redemptionCode;
+  final PendingGiftSender? sender;
   final PendingGiftRecipient? recipient;
   final String? message;
   final String? deliveryDate;
@@ -561,6 +563,12 @@ class PendingGift {
       statusValue = statusRaw;
     }
 
+    PendingGiftSender? sender;
+    final senderRaw = json['sender'];
+    if (senderRaw is Map<String, dynamic>) {
+      sender = PendingGiftSender.fromJson(senderRaw);
+    }
+
     PendingGiftRecipient? recipient;
     final recipientRaw = json['recipient'];
     if (recipientRaw is Map<String, dynamic>) {
@@ -578,6 +586,7 @@ class PendingGift {
       status: statusValue,
       statusLabel: statusLabel,
       redemptionCode: json['redemptionCode'] as String?,
+      sender: sender,
       recipient: recipient,
       message: json['message'] as String?,
       deliveryDate: json['deliveryDate'] as String?,
@@ -600,6 +609,7 @@ class PendingGift {
         ? null
         : {'value': status, if (statusLabel != null) 'label': statusLabel},
     'redemptionCode': redemptionCode,
+    'sender': sender?.toJson(),
     'recipient': recipient?.toJson(),
     'message': message,
     'deliveryDate': deliveryDate,
@@ -634,6 +644,26 @@ class PendingGiftPlan {
     'id': id,
     'name': name,
     'description': description,
+  };
+}
+
+/// Sender block on a [PendingGift].
+class PendingGiftSender {
+  const PendingGiftSender({this.name, this.phone});
+
+  final String? name;
+  final String? phone;
+
+  factory PendingGiftSender.fromJson(Map<String, dynamic> json) {
+    return PendingGiftSender(
+      name: json['name'] as String?,
+      phone: json['phone'] as String?,
+    );
+  }
+
+  Map<String, dynamic> toJson() => {
+    'name': name,
+    'phone': phone,
   };
 }
 

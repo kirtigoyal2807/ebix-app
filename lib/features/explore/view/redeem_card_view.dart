@@ -198,11 +198,11 @@ class _RedeemCardBody extends StatelessWidget {
   }
 
   String _senderLine(BuildContext context) {
-    final fromMessage = _extractSenderFromMessage(pendingGift?.message);
-    if (fromMessage != null && fromMessage.isNotEmpty) {
+    final name = pendingGift?.sender?.name?.trim();
+    if (name != null && name.isNotEmpty) {
       return context.l10n.receivedGiftSubtitle.replaceFirst(
         RegExp(r'^[^\s]+'),
-        fromMessage,
+        name,
       );
     }
     return context.l10n.receivedGiftSubtitle;
@@ -239,6 +239,8 @@ class _MessageCard extends StatelessWidget {
     final giftPlanIncludesMaxLinesHeight =
         (baseCaption.fontSize ?? 12) * (baseCaption.height ?? 1.5) * 6;
 
+    final apiMessage = pendingGift?.message?.trim();
+
     return Container(
       padding: EdgeInsets.all(AppSpacing.md),
       decoration: BoxDecoration(
@@ -253,16 +255,22 @@ class _MessageCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          AppText(
-            context.l10n.message,
-            style: (context) => AppTextStyles.bodyText(
-              context,
-              fontWeight: FontWeight.w500,
-            ).copyWith(height: 1.2),
-          ),
-          SizedBox(height: AppSpacing.md),
-          _messageBlock(context: context),
-          SizedBox(height: AppSpacing.xl),
+          if (apiMessage !=null)
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                AppText(
+                  context.l10n.message,
+                  style: (context) => AppTextStyles.bodyText(
+                    context,
+                    fontWeight: FontWeight.w500,
+                  ).copyWith(height: 1.2),
+                ),
+                SizedBox(height: AppSpacing.md),
+                _messageBlock(context: context, apiMessage: apiMessage),
+                SizedBox(height: AppSpacing.xl),
+              ],
+            ),
           AppText(
             context.l10n.yourGiftIncludes,
             style: (context) => AppTextStyles.bodyText(
@@ -389,13 +397,11 @@ class _MessageCard extends StatelessWidget {
     );
   }
 
-  Widget _messageBlock({required BuildContext context}) {
+  Widget _messageBlock({
+    required BuildContext context,
+    required String? apiMessage,
+  }) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final apiMessage = pendingGift?.message?.trim();
-    final hasApiMessage = apiMessage != null && apiMessage.isNotEmpty;
-    final messageText = hasApiMessage
-        ? '"$apiMessage"'
-        : '''"${context.l10n.birthdayMessage}"''';
 
     final senderName = _RedeemCardBody._extractSenderFromMessage(
       pendingGift?.message,
@@ -417,7 +423,7 @@ class _MessageCard extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           AppText(
-            messageText,
+            apiMessage ?? '',
             style: (context) => AppTextStyles.captionText(context).copyWith(
               color: isDark ? AppColors.lightText : AppColors.lightGrey,
               height: 1.5,
