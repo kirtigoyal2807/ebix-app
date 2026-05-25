@@ -1176,6 +1176,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get englishShort => 'الإنجليزية (EN)';
 
   @override
+  String get arabicShort => 'العربية (AR)';
+
+  @override
   String get homeBranch => 'الفرع الرئيسي';
 
   @override
