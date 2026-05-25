@@ -12,6 +12,22 @@ import '../features/auth/cubit/auth_cubit.dart';
 import 'app_text.dart';
 import 'app_button.dart';
 
+Future<void> showLanguageBottomSheet(BuildContext context) {
+  final isDark = Theme.of(context).brightness == Brightness.dark;
+
+  return showModalBottomSheet<void>(
+    context: context,
+    isScrollControlled: true,
+    barrierColor: AppColors.bottomSheetShadow,
+    backgroundColor:
+        isDark ? AppColors.homeBackground : AppColors.whiteColor,
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+    ),
+    builder: (_) => const LanguageBottomSheet(),
+  );
+}
+
 class LanguageBottomSheet extends StatefulWidget {
   const LanguageBottomSheet({super.key});
 
@@ -31,10 +47,13 @@ class _LanguageBottomSheetState extends State<LanguageBottomSheet> {
   @override
   Widget build(BuildContext context) {
     final isRTL = Directionality.of(context) == TextDirection.rtl;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final sheetColor =
+        isDark ? AppColors.homeBackground : AppColors.whiteColor;
     return BlocBuilder<AuthCubit, AuthState>(
       builder: (context, state) {
         return Material(
-          // color: Colors.white,
+          color: sheetColor,
           borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
           child: SafeArea(
             top: false,
@@ -119,7 +138,7 @@ class _LanguageBottomSheetState extends State<LanguageBottomSheet> {
                 // Confirm button with white background extending to bottom
                 Container(
                   width: double.infinity,
-                  // color: Colors.white,
+                  color: sheetColor,
                   padding: EdgeInsets.fromLTRB(
                     AppSpacing.lg,
                     0,

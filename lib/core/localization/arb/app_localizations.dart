@@ -1496,6 +1496,12 @@ abstract class AppLocalizations {
   /// **'No reviews yet'**
   String get noReviewsYet;
 
+  /// No description provided for @noReviews.
+  ///
+  /// In en, this message translates to:
+  /// **'No Reviews'**
+  String get noReviews;
+
   /// No description provided for @basedOnReviews.
   ///
   /// In en, this message translates to:

@@ -321,6 +321,7 @@
   "itemTowel": "منشفة (اختياري)",
   "itemMat": "سجادة متوفرة في الاستوديو",
   "noReviewsYet": "لا توجد مراجعات بعد",
+  "noReviews": "لا توجد مراجعات",
   "basedOnReviews": "بناءً على {count} مراجعة",
   "@basedOnReviews": {
     "placeholders": {

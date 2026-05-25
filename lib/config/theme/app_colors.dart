@@ -138,4 +138,6 @@ class AppColors {
   static const offlineCircleDark = Color(0xFF241B18);
   static const offlineTryAgainLight = Color(0xFF80604D);
   static const offlineTryAgainDark = Color(0xFFB59D8E);
+
+  static const closeIconLight = Color(0xFF1C1B1F);
 }

@@ -753,6 +753,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get noReviewsYet => 'لا توجد مراجعات بعد';
 
   @override
+  String get noReviews => 'لا توجد مراجعات';
+
+  @override
   String basedOnReviews(int count) {
     return 'بناءً على $count مراجعة';
   }

@@ -127,6 +127,7 @@ class _SignUpExperienceViewState extends State<SignUpExperienceView> {
                                       : const Color(0xff79716B),
                                 ),
                           ),
+                          SizedBox(height: AppSpacing.lg),
                         ],
                       ),
                     ),
