@@ -4,6 +4,7 @@ class AppRadius {
   static const base = 16.0;
   static const lg = 20.0;
   static const xl = 28.0;
+  static const xxl = 64.0;
   static const largeButtonRadius = 22.0;
   static const pillRadius = 100.0; // Fully rounded pill shape
 }

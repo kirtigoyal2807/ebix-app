@@ -49,7 +49,7 @@ class AppButton extends StatelessWidget {
                   ? AppColors.lightDarkGrey
                   : AppColors.languageTextDark,
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(AppRadius.xl),
+                borderRadius: BorderRadius.circular(AppRadius.xxl),
               ),
               padding: EdgeInsets.symmetric(
                 vertical: verticalPadding ?? (AppSpacing.buttonHeight - 30) / 2,
@@ -87,7 +87,7 @@ class AppButton extends StatelessWidget {
                   ? AppColors.lightBlackColor
                   : AppColors.darkGreyBorder,
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(AppRadius.xl),
+                borderRadius: BorderRadius.circular(AppRadius.xxl),
               ),
               padding: EdgeInsets.symmetric(
                 vertical: verticalPadding ?? (AppSpacing.buttonHeight - 30) / 2,
@@ -128,7 +128,7 @@ class AppButton extends StatelessWidget {
                 width: 1.5,
               ),
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(AppRadius.xl),
+                borderRadius: BorderRadius.circular(AppRadius.xxl),
               ),
               padding: EdgeInsets.symmetric(
                 vertical: verticalPadding ?? (AppSpacing.buttonHeight - 30) / 2,
