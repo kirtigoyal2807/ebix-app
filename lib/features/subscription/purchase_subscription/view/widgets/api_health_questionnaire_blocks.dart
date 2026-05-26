@@ -178,11 +178,12 @@ class ApiCheckboxQuestionBlock extends StatelessWidget {
         AppText(
           '${question.displayLabel}${question.isRequired == true ? ' *' : ''}',
           style: (ctx) => AppTextStyles.bodyTextSmall(ctx).copyWith(
-            fontWeight: FontWeight.w600,
+            fontSize: 16,
+            height: 1.4,
             color: isDark ? AppColors.lightText : AppColors.darkText,
           ),
         ),
-        SizedBox(height: AppSpacing.sm),
+        SizedBox(height: AppSpacing.lmd),
         for (final row in rows)
           _MedicalOptionRow(
             label: row.label,
@@ -235,11 +236,12 @@ class _MedicalRadioQuestion extends StatelessWidget {
         AppText(
           '${question.displayLabel}${question.isRequired == true ? ' *' : ''}',
           style: (ctx) => AppTextStyles.bodyTextSmall(ctx).copyWith(
-            fontWeight: FontWeight.w600,
+            fontSize: 16,
+            height: 1.4,
             color: isDark ? AppColors.lightText : AppColors.darkText,
           ),
         ),
-        SizedBox(height: AppSpacing.sm),
+        SizedBox(height: AppSpacing.lmd),
         for (final row in rows)
           _MedicalOptionRow(
             label: row.label,
@@ -293,8 +295,7 @@ class _MedicalTextQuestionState extends State<_MedicalTextQuestion> {
     final q = widget.question;
     final id = q.numericQuestionId!;
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final label =
-        '${q.displayLabel}${q.isRequired == true ? ' *' : ''}';
+    final label = '${q.displayLabel}${q.isRequired == true ? ' *' : ''}';
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -303,11 +304,12 @@ class _MedicalTextQuestionState extends State<_MedicalTextQuestion> {
         AppText(
           label,
           style: (ctx) => AppTextStyles.bodyTextSmall(ctx).copyWith(
-            fontWeight: FontWeight.w600,
+            fontSize: 16,
+            height: 1.4,
             color: isDark ? AppColors.lightText : AppColors.darkText,
           ),
         ),
-        SizedBox(height: AppSpacing.sm),
+        SizedBox(height: AppSpacing.lmd),
         AppTextField(
           controller: _controller,
           hint: q.displayLabel,
@@ -366,7 +368,7 @@ class _MedicalOptionRow extends StatelessWidget {
               child: AppText(
                 label,
                 style: (ctx) => AppTextStyles.bodyTextSmall(ctx).copyWith(
-                  color: isDark ? AppColors.lightGrey : AppColors.lightGrey,
+                  color: AppColors.lightGrey,
                   fontWeight: FontWeight.w500,
                 ),
               ),
@@ -468,11 +470,12 @@ class _BooleanYesNoRow extends StatelessWidget {
         AppText(
           '$label$requiredMark',
           style: (ctx) => AppTextStyles.bodyTextSmall(ctx).copyWith(
-            fontWeight: FontWeight.w600,
+            fontSize: 16,
+            height: 1.4,
             color: isDark ? AppColors.lightText : AppColors.darkText,
           ),
         ),
-        SizedBox(height: AppSpacing.sm),
+        SizedBox(height: AppSpacing.lmd),
         _MedicalOptionRow(
           label: l10n.yes,
           isSelected: value == true,

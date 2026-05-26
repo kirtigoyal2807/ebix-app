@@ -387,9 +387,7 @@ class _ReviewScreenDetailsViewState extends State<ReviewScreenDetailsView> {
           if (_checkoutLoading)
             Padding(
               padding: EdgeInsets.symmetric(vertical: AppSpacing.lg),
-              child: Center(
-                child: AppInlineBusy(size: 28),
-              ),
+              child: Center(child: AppInlineBusy(size: 28)),
             )
           else if (session == null && _checkoutLoadError != null) ...[
             AppText(
@@ -523,6 +521,7 @@ class _ReviewScreenDetailsViewState extends State<ReviewScreenDetailsView> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            SizedBox(height: AppSpacing.md),
             AppText(
               l10n.reviewYourSelection,
               style: (style) => AppTextStyles.heading1(context),
@@ -666,7 +665,8 @@ class _ReviewScreenDetailsViewState extends State<ReviewScreenDetailsView> {
               ),
               SizedBox(width: AppSpacing.md),
               Expanded(
-                child: valueWidget ??
+                child:
+                    valueWidget ??
                     AppText(
                       value!,
                       style: (context) => AppTextStyles.bodyText(context),

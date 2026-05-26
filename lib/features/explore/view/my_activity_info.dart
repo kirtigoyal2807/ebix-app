@@ -1,5 +1,10 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
+import 'package:pilates_app/features/auth/cubit/auth_cubit.dart';
+import 'package:pilates_app/features/explore/gift_redeem_intake_helpers.dart';
 import 'package:pilates_app/features/explore/widget/redeem_gift_card_sheet.dart';
 import 'package:pilates_app/features/explore/view/referral_program_view.dart';
 
@@ -107,7 +112,18 @@ class MyActivityInfo extends StatelessWidget {
         SizedBox(height: AppSpacing.lmd),
         AccountInfoTile(
           onTap: () {
-            showRedeemGiftCardBottomSheet(context);
+            final parentContext = context;
+            final pendingGift =
+                parentContext.read<AuthCubit>().state.user?.pendingGift;
+            unawaited(
+              openGiftRedeemHealthIntake(
+                context: parentContext,
+                pendingGift: pendingGift,
+                onIntakeComplete: () {
+                  showRedeemGiftCardBottomSheet(parentContext);
+                },
+              ),
+            );
           },
           icon: isDark
               ? "assets/images/svg/explore/ic_dark_redeem_gift.svg"

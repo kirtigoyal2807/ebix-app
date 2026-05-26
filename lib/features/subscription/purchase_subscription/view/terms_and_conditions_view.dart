@@ -4,6 +4,7 @@ import 'package:pilates_app/config/theme/app_colors.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/core/localization/arb/app_localizations.dart';
+import 'package:pilates_app/features/explore/gift_redeem_intake_scope.dart';
 import 'package:pilates_app/features/subscription/purchase_subscription/cubit/subscription_cubit.dart';
 import 'package:pilates_app/widgets/app_button.dart';
 import 'package:pilates_app/widgets/app_text.dart';
@@ -63,6 +64,16 @@ class _TermsAndConditionsViewState extends State<TermsAndConditionsView> {
       return;
     }
     setState(() => _termsAcceptanceError = null);
+
+    if (cubit.state.isGiftRedeemIntakeFlow) {
+      final onComplete = GiftRedeemIntakeScope.maybeOf(context)?.onComplete;
+      if (onComplete != null) {
+        Navigator.of(context).pop();
+        onComplete();
+      }
+      return;
+    }
+
     cubit.nextStep();
   }
 

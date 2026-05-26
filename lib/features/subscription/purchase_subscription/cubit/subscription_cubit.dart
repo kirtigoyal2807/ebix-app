@@ -123,6 +123,30 @@ class SubscriptionCubit extends Cubit<SubscriptionState> {
     emit(state.copyWith(isGift: isGift));
   }
 
+  /// Configures the health + consent wizard for pending-gift redemption (steps 1–8).
+  void beginGiftRedeemIntake({
+    required String planId,
+    required int productId,
+    required bool requiresHealthIntake,
+  }) {
+    _cachedQuestionnaireProductId = null;
+    _deferredReceiptPaymentIntent = null;
+    _deferredReceiptGatewayCallback = null;
+    emit(
+      _resolveHealthWizardState(
+        _freshWizardState(
+          const SubscriptionState(isGiftRedeemIntakeFlow: true),
+          selectedPlanId: planId,
+          checkoutProductId: productId,
+          selectedProductRequiresHealthIntake: requiresHealthIntake,
+          currentStep: 1,
+          isGift: true,
+          isGiftRedeemIntakeFlow: true,
+        ),
+      ),
+    );
+  }
+
   /// Updates [checkoutProductId] only (e.g. after `GET /checkout/{id}`) without
   /// clearing questionnaire answers.
   void setCheckoutProductId(int productId) {
@@ -515,6 +539,9 @@ class SubscriptionCubit extends Cubit<SubscriptionState> {
   /// When intake is true and the product questionnaire has loaded, steps 2–5 are skipped if
   /// that slice has no questions (matches per-screen API blocks).
   bool _subscriptionWizardStepSkipped(SubscriptionState st, int step) {
+    if (st.isGiftRedeemIntakeFlow && step >= 1 && step <= 6) {
+      return false;
+    }
     return isSubscriptionHealthWizardShellStepSkipped(
       selectedProductRequiresHealthIntake:
           st.selectedProductRequiresHealthIntake,
@@ -524,6 +551,7 @@ class SubscriptionCubit extends Cubit<SubscriptionState> {
   }
 
   SubscriptionState _clampOutOfBandHealthWizardIfNoIntake(SubscriptionState s) {
+    if (s.isGiftRedeemIntakeFlow) return s;
     if (s.selectedProductRequiresHealthIntake) return s;
     if (s.currentStep >= 1 && s.currentStep <= 6) {
       return s.copyWith(currentStep: _safetyConsentStepIndex);
@@ -533,6 +561,7 @@ class SubscriptionCubit extends Cubit<SubscriptionState> {
 
   /// After loading questionnaire data, advances past steps 2–5 that have no API questions.
   SubscriptionState _withWizardStepSkippingEmptySlices(SubscriptionState base) {
+    if (base.isGiftRedeemIntakeFlow) return base;
     var s = base;
     final qs = s.healthQuestionnaireQuestions;
     if (!s.selectedProductRequiresHealthIntake || qs.isEmpty) {
@@ -555,29 +584,31 @@ class SubscriptionCubit extends Cubit<SubscriptionState> {
   }
 
   void nextStep() {
-    if (state.currentStep >= 10) {
+    final maxStep = state.isGiftRedeemIntakeFlow ? 8 : 10;
+    if (state.currentStep >= maxStep) {
       return;
     }
     var step = state.currentStep + 1;
-    while (step <= 10 && _subscriptionWizardStepSkipped(state, step)) {
+    while (step <= maxStep && _subscriptionWizardStepSkipped(state, step)) {
       step++;
     }
     emit(
       _resolveHealthWizardState(
-        state.copyWith(currentStep: step.clamp(0, 10)),
+        state.copyWith(currentStep: step.clamp(0, maxStep)),
       ),
     );
   }
 
   void previousStep() {
-    if (state.currentStep <= 0 || state.currentStep >= 10) {
+    final minStep = state.isGiftRedeemIntakeFlow ? 1 : 0;
+    if (state.currentStep <= minStep || state.currentStep >= 10) {
       return;
     }
     var step = state.currentStep - 1;
-    while (step >= 1 && _subscriptionWizardStepSkipped(state, step)) {
+    while (step >= minStep && _subscriptionWizardStepSkipped(state, step)) {
       step--;
     }
-    emit(state.copyWith(currentStep: step.clamp(0, 10)));
+    emit(state.copyWith(currentStep: step.clamp(minStep, 10)));
   }
 
   /// Current value for an API-driven personal field (step 1).
@@ -803,6 +834,7 @@ class SubscriptionCubit extends Cubit<SubscriptionState> {
     String? selectedPlanId,
     int? selectedBranchId,
     bool? isGift,
+    bool? isGiftRedeemIntakeFlow,
     int? currentStep,
     bool? selectedProductRequiresHealthIntake,
     String? checkoutSessionId,
@@ -814,6 +846,8 @@ class SubscriptionCubit extends Cubit<SubscriptionState> {
       selectedPlanId: selectedPlanId ?? base.selectedPlanId,
       selectedBranchId: selectedBranchId ?? base.selectedBranchId,
       isGift: isGift ?? base.isGift,
+      isGiftRedeemIntakeFlow:
+          isGiftRedeemIntakeFlow ?? base.isGiftRedeemIntakeFlow,
       currentStep: currentStep ?? base.currentStep,
       selectedProductRequiresHealthIntake:
           selectedProductRequiresHealthIntake ??

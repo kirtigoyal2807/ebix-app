@@ -7,6 +7,7 @@ import 'package:pilates_app/config/theme/app_colors.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/core/localization/localization_extension.dart';
+import 'package:pilates_app/features/explore/gift_redeem_intake_helpers.dart';
 import 'package:pilates_app/features/explore/view/redeem_card_view.dart';
 import 'package:pilates_app/features/explore/widget/receive_gift_sheet.dart';
 import 'package:pilates_app/widgets/app_text.dart';
@@ -313,23 +314,30 @@ class _PendingGiftPopupTriggerState extends State<_PendingGiftPopupTrigger> {
       builder: (_) => ReceiveGiftSheet(
         pendingGift: gift,
         onViewGift: () {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (_) => RedeemCardView(
-                pendingGift: gift,
-                routePopsAfterSuccessModal: 2,
-                onRedeemSuccess: () {
-                  unawaited(
-                    context
-                        .read<HomeCubit>()
-                        .refreshHomeAndProfileSilently()
-                        .then((_) {
-                          if (!context.mounted) return;
-                          context.read<AuthCubit>().syncUserFromStorage();
-                        }),
-                  );
-                },
-              ),
+          final navigator = Navigator.of(context);
+          final homeCubit = context.read<HomeCubit>();
+          final authCubit = context.read<AuthCubit>();
+          unawaited(
+            openGiftRedeemHealthIntake(
+              context: context,
+              pendingGift: gift,
+              onIntakeComplete: () {
+                navigator.push(
+                  MaterialPageRoute(
+                    builder: (_) => RedeemCardView(
+                      pendingGift: gift,
+                      routePopsAfterSuccessModal: 2,
+                      onRedeemSuccess: () {
+                        unawaited(
+                          homeCubit.refreshHomeAndProfileSilently().then((_) {
+                            authCubit.syncUserFromStorage();
+                          }),
+                        );
+                      },
+                    ),
+                  ),
+                );
+              },
             ),
           );
         },
