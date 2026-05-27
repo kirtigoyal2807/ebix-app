@@ -1187,6 +1187,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get englishShort => 'English (EN)';
 
   @override
+  String get arabicShort => 'Arabic (AR)';
+
+  @override
   String get homeBranch => 'Home Branch';
 
   @override

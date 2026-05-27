@@ -13,6 +13,11 @@ class SubscriptionState extends Equatable {
   final String selectedPlanId;
   final int? selectedBranchId;
   final bool isGift;
+
+  /// Pending-gift redemption: steps 1–8 only; Terms continue exits to redeem UI
+  /// instead of plan details / payment.
+  final bool isGiftRedeemIntakeFlow;
+
   final int
   currentStep; // 0: Plan, 1–6: Health, 7: Safety, 8: Terms, 9: Review, 10: Required info
 
@@ -84,6 +89,7 @@ class SubscriptionState extends Equatable {
     this.selectedPlanId = '',
     this.selectedBranchId,
     this.isGift = false,
+    this.isGiftRedeemIntakeFlow = false,
     this.currentStep = 0,
     this.selectedProductRequiresHealthIntake = false,
     this.checkoutSessionId = '',
@@ -125,6 +131,7 @@ class SubscriptionState extends Equatable {
     String? selectedPlanId,
     int? selectedBranchId,
     bool? isGift,
+    bool? isGiftRedeemIntakeFlow,
     int? currentStep,
     bool? selectedProductRequiresHealthIntake,
     String? checkoutSessionId,
@@ -165,6 +172,8 @@ class SubscriptionState extends Equatable {
       selectedPlanId: selectedPlanId ?? this.selectedPlanId,
       selectedBranchId: selectedBranchId ?? this.selectedBranchId,
       isGift: isGift ?? this.isGift,
+      isGiftRedeemIntakeFlow:
+          isGiftRedeemIntakeFlow ?? this.isGiftRedeemIntakeFlow,
       currentStep: currentStep ?? this.currentStep,
       selectedProductRequiresHealthIntake:
           selectedProductRequiresHealthIntake ??
@@ -221,6 +230,7 @@ class SubscriptionState extends Equatable {
     selectedPlanId,
     selectedBranchId,
     isGift,
+    isGiftRedeemIntakeFlow,
     currentStep,
     selectedProductRequiresHealthIntake,
     checkoutSessionId,

@@ -477,6 +477,7 @@
   "appPreferences": "App Preferences",
   "language": "Language",
   "englishShort": "English (EN)",
+  "arabicShort": "Arabic (AR)",
   "homeBranch": "Home Branch",
   "updatePreferredStudio": "Update preferred studio",
   "appTheme": "App Theme",

@@ -2288,6 +2288,12 @@ abstract class AppLocalizations {
   /// **'English (EN)'**
   String get englishShort;
 
+  /// No description provided for @arabicShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Arabic (AR)'**
+  String get arabicShort;
+
   /// No description provided for @homeBranch.
   ///
   /// In en, this message translates to:

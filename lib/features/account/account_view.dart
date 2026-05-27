@@ -76,7 +76,7 @@ class AccountView extends StatelessWidget {
                               backgroundColor: AppColors.logOutButton,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(
-                                  AppRadius.xl,
+                                  AppRadius.xxl,
                                 ),
                               ),
                               padding: EdgeInsets.symmetric(

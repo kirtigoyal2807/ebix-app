@@ -432,4 +432,21 @@ class AppTextStyles {
       hasExplicitWeight: fontWeight != null,
     );
   }
+
+  /// Bottom navigation labels: Inter Semibold when selected, Inter Medium otherwise.
+  static TextStyle bottomNavLabel(
+    BuildContext context, {
+    required double fontSize,
+    required bool selected,
+  }) {
+    return _applyArStyle(
+      context,
+      GoogleFonts.inter(
+        fontSize: fontSize,
+        fontWeight: selected ? FontWeight.w600 : FontWeight.w500,
+      ),
+      isHeading: selected,
+      hasExplicitWeight: true,
+    );
+  }
 }

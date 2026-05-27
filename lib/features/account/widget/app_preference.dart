@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
+import 'package:pilates_app/features/auth/cubit/auth_cubit.dart';
+import 'package:pilates_app/features/auth/cubit/auth_state.dart';
 
 import '../../../config/theme/app_colors.dart';
 import '../../../config/theme/app_text_styles.dart';
@@ -29,15 +32,24 @@ class AppPreference extends StatelessWidget {
           ),
         ),
         SizedBox(height: AppSpacing.lmd),
-        AccountInfoTile(
-          onTap: () {
-            _showLanguageSelector(context);
+        BlocBuilder<AuthCubit, AuthState>(
+          buildWhen: (previous, current) =>
+              previous.locale != current.locale,
+          builder: (context, state) {
+            return AccountInfoTile(
+              onTap: () {
+                _showLanguageSelector(context);
+              },
+              icon: isDark
+                  ? "assets/images/svg/account/ic_dark_language.svg"
+                  : "assets/images/svg/account/ic_language.svg",
+              title: context.l10n.language,
+              subtitle: _languageSubtitle(
+                context,
+                state.locale.languageCode,
+              ),
+            );
           },
-          icon: isDark
-              ? "assets/images/svg/account/ic_dark_language.svg"
-              : "assets/images/svg/account/ic_language.svg",
-          title: context.l10n.language,
-          subtitle: context.l10n.englishShort,
         ),
         SizedBox(height: AppSpacing.lmd),
         AccountInfoTile(
@@ -66,6 +78,17 @@ class AppPreference extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  static String _languageSubtitle(BuildContext context, String languageCode) {
+    final l10n = context.l10n;
+    switch (languageCode) {
+      case 'ar':
+        return l10n.arabicShort;
+      case 'en':
+      default:
+        return l10n.englishShort;
+    }
   }
 
   void _showLanguageSelector(BuildContext context) {

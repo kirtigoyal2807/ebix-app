@@ -149,6 +149,7 @@ class _HomeShell extends StatelessWidget {
         ? AppColors.languageIconDark
         : AppColors.languageIcon;
     final inactiveColor = isDark ? AppColors.lightGrey : AppColors.lightGrey;
+    final labelFontSize = size.width * 0.03 > 12 ? 12.0 : size.width * 0.03;
 
     return Container(
       padding: EdgeInsets.only(bottom: bottomPadding),
@@ -186,12 +187,15 @@ class _HomeShell extends StatelessWidget {
         elevation: 0,
         selectedItemColor: activeColor,
         unselectedItemColor: inactiveColor,
-        selectedLabelStyle: TextStyle(
-          fontSize: size.width * 0.03 > 12 ? 12 : size.width * 0.03,
-          fontWeight: FontWeight.bold,
+        selectedLabelStyle: AppTextStyles.bottomNavLabel(
+          context,
+          fontSize: labelFontSize,
+          selected: true,
         ),
-        unselectedLabelStyle: TextStyle(
-          fontSize: size.width * 0.03 > 12 ? 12 : size.width * 0.03,
+        unselectedLabelStyle: AppTextStyles.bottomNavLabel(
+          context,
+          fontSize: labelFontSize,
+          selected: false,
         ),
         iconSize: size.width * 0.06 > 24 ? 24 : size.width * 0.06,
         items: [
@@ -314,6 +318,7 @@ class _PendingGiftPopupTriggerState extends State<_PendingGiftPopupTrigger> {
               builder: (_) => RedeemCardView(
                 pendingGift: gift,
                 routePopsAfterSuccessModal: 2,
+                openHealthIntakeAfterRedeemSuccess: true,
                 onRedeemSuccess: () {
                   unawaited(
                     context
