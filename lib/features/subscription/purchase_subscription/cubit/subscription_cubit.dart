@@ -137,11 +137,30 @@ class SubscriptionCubit extends Cubit<SubscriptionState> {
   ///
   /// When [requiresHealthIntake] is non-null (from session `data`), it overrides
   /// the catalog flag for navigation and `POST …/health-intake`.
+  ///
+  /// Pass [preserveWizardProgress] when refreshing checkout in the same flow
+  /// (e.g. after applying a promo code) so existing wizard answers and terms
+  /// acceptance are not reset.
   void bindCheckoutSession({
     required String sessionId,
     required int productId,
     bool? requiresHealthIntake,
+    bool preserveWizardProgress = false,
   }) {
+    final intake =
+        requiresHealthIntake ?? state.selectedProductRequiresHealthIntake;
+
+    if (preserveWizardProgress) {
+      emit(
+        state.copyWith(
+          checkoutSessionId: sessionId,
+          checkoutProductId: productId,
+          selectedProductRequiresHealthIntake: intake,
+        ),
+      );
+      return;
+    }
+
     _cachedQuestionnaireProductId = null;
     _deferredReceiptPaymentIntent = null;
     _deferredReceiptGatewayCallback = null;
@@ -152,7 +171,7 @@ class SubscriptionCubit extends Cubit<SubscriptionState> {
           checkoutSessionId: sessionId,
           checkoutProductId: productId,
           selectedProductRequiresHealthIntake:
-              requiresHealthIntake ?? state.selectedProductRequiresHealthIntake,
+              intake,
         ),
       ),
     );

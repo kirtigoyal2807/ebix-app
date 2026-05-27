@@ -179,6 +179,7 @@ class _ReviewScreenDetailsViewState extends State<ReviewScreenDetailsView> {
             sessionId: session.id,
             productId: pid,
             requiresHealthIntake: session.resolvedRequiresHealthIntake,
+            preserveWizardProgress: true,
           );
         } catch (_) {}
         unawaited(_refreshCheckoutDetails());

@@ -46,16 +46,26 @@ class ReviewScreenView extends StatelessWidget {
                     state.currentStep == 9;
                 return AppButton(
                   label: l10n.continueTxt,
-                  onPressed: state.isTermsAccepted && hasAllPaymentInputs
-                      ? () {
-                          unawaited(
-                            runSubscriptionHostedPaymentFlow(
-                              context,
-                              deferReceiptUntilAfterRequiredInformation: true,
-                            ),
-                          );
-                        }
-                      : null,
+                  onPressed: () {
+                    if (!state.isTermsAccepted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text(l10n.pleaseReviewTerms)),
+                      );
+                      return;
+                    }
+                    if (!hasAllPaymentInputs) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text(l10n.pleaseSelectBranch)),
+                      );
+                      return;
+                    }
+                    unawaited(
+                      runSubscriptionHostedPaymentFlow(
+                        context,
+                        deferReceiptUntilAfterRequiredInformation: true,
+                      ),
+                    );
+                  },
                   buttonColor: isDark
                       ? AppColors.primary
                       : AppColors.primaryBrown,

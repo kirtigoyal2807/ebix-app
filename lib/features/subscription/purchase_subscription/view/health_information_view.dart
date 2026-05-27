@@ -8,6 +8,7 @@ import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/core/localization/arb/app_localizations.dart';
 import 'package:pilates_app/core/validation/contact_validators.dart';
 import 'package:pilates_app/core/validation/personal_information_validators.dart';
+import 'package:pilates_app/core/validation/phone_number_country_validation.dart';
 import 'package:pilates_app/features/auth/cubit/auth_cubit.dart';
 import 'package:pilates_app/features/auth/cubit/auth_state.dart';
 import 'package:pilates_app/features/auth/data/models/auth_user.dart';
@@ -235,53 +236,75 @@ class _HealthInformationViewState extends State<HealthInformationView> {
     final l10n = AppLocalizations.of(context);
     _syncCubitFromControllers();
     final s = cubit.state;
+    final phoneIso = (_phoneCountry?.code ?? 'SA').trim().toUpperCase();
+    final phoneDigits = s.phoneNumber.replaceAll(RegExp(r'\D'), '');
 
     final name = s.name.trim();
     final age = s.age.trim();
     final height = s.height.trim();
     final weight = s.weight.trim();
-    final phone = s.phoneNumber.trim();
     final email = s.email.trim();
 
+    final nameError = name.isEmpty
+        ? l10n.pleaseCompletePersonalInformation
+        : (!PersonalInformationValidators.isValidName(name)
+              ? l10n.enterValidName
+              : null);
+    final ageError = age.isEmpty
+        ? l10n.pleaseCompletePersonalInformation
+        : (!PersonalInformationValidators.isValidAge(age)
+              ? l10n.enterValidAge
+              : null);
+    final heightError = height.isEmpty
+        ? l10n.pleaseFillHeight
+        : (!PersonalInformationValidators.isValidHeightCm(s.height)
+              ? l10n.enterValidHeightCm
+              : null);
+    final weightError = weight.isEmpty
+        ? l10n.pleaseFillWeight
+        : (!PersonalInformationValidators.isValidWeightKg(s.weight)
+              ? l10n.enterValidWeightKg
+              : null);
+    final phoneError = phoneDigits.isEmpty
+        ? l10n.pleaseEnterPhone
+        : (!PhoneNumberCountryValidation.isValidNationalNumber(
+              iso3166Alpha2: phoneIso,
+              nationalDigitsOnly: phoneDigits,
+            )
+              ? l10n.invalidPhoneForCountry
+              : null);
+    final emailError = email.isEmpty
+        ? l10n.pleaseCompletePersonalInformation
+        : (!ContactValidators.isValidEmail(s.email)
+              ? l10n.pleaseEnterValidEmail
+              : null);
+
+    final extraQs = extraPersonalInformationQuestionsFromApi(
+      s.healthQuestionnaireQuestions,
+    );
+    final extrasValid = cubit.validateApiPersonalInformationQuestions(
+      extraQs,
+      phoneCountryIso3166Alpha2: phoneIso,
+    );
+
     setState(() {
-      _nameError = name.isEmpty
-          ? l10n.pleaseCompletePersonalInformation
-          : (!PersonalInformationValidators.isValidName(name)
-                ? l10n.enterValidName
-                : null);
-      _ageError = age.isEmpty
-          ? l10n.pleaseCompletePersonalInformation
-          : (!PersonalInformationValidators.isValidAge(age)
-                ? l10n.enterValidAge
-                : null);
-      _heightError = height.isEmpty
-          ? l10n.pleaseFillHeight
-          : (!PersonalInformationValidators.isValidHeightCm(s.height)
-                ? l10n.enterValidHeightCm
-                : null);
-      _weightError = weight.isEmpty
-          ? l10n.pleaseFillWeight
-          : (!PersonalInformationValidators.isValidWeightKg(s.weight)
-                ? l10n.enterValidWeightKg
-                : null);
-      _phoneError = phone.isEmpty
-          ? l10n.pleaseEnterPhone
-          : (!PersonalInformationValidators.isTenDigitMobile(s.phoneNumber)
-                ? l10n.phoneTenDigitsRequired
-                : null);
-      _emailError = email.isEmpty
-          ? l10n.pleaseCompletePersonalInformation
-          : (!ContactValidators.isValidEmail(s.email)
-                ? l10n.pleaseEnterValidEmail
-                : null);
+      _nameError = nameError;
+      _ageError = ageError;
+      _heightError = heightError;
+      _weightError = weightError;
+      _phoneError = phoneError;
+      _emailError = emailError;
+      _apiExtrasValidationMessage =
+          extrasValid ? null : l10n.pleaseCompletePersonalInformation;
     });
 
-    return _nameError == null &&
-        _ageError == null &&
-        _heightError == null &&
-        _weightError == null &&
-        _phoneError == null &&
-        _emailError == null;
+    return nameError == null &&
+        ageError == null &&
+        heightError == null &&
+        weightError == null &&
+        phoneError == null &&
+        emailError == null &&
+        extrasValid;
   }
 
   void _onContinuePersonalInformation(BuildContext context) {
@@ -289,11 +312,10 @@ class _HealthInformationViewState extends State<HealthInformationView> {
     final cubit = context.read<SubscriptionCubit>();
     _syncCubitFromControllers();
 
-    // Advisory only — never block wizard navigation (12-session / API extras can
-    // fail here without field-level errors).
     setState(() => _apiExtrasValidationMessage = null);
-    _validatePersonalInformationFields(context, cubit);
-
+    if (!_validatePersonalInformationFields(context, cubit)) {
+      return;
+    }
     cubit.nextStep();
   }
 
@@ -590,13 +612,18 @@ class _HealthInformationViewState extends State<HealthInformationView> {
                   message: _apiExtrasValidationMessage!,
                 ),
               ],
-              AppButton(
-                label: l10n.continueTxt,
-                onPressed: () => _onContinuePersonalInformation(context),
-                buttonColor: isDark
-                    ? AppColors.primary
-                    : AppColors.primaryBrown,
-                expanded: true,
+              Padding(
+                padding: EdgeInsets.only(
+                  bottom: MediaQuery.viewInsetsOf(context).bottom,
+                ),
+                child: AppButton(
+                  label: l10n.continueTxt,
+                  onPressed: () => _onContinuePersonalInformation(context),
+                  buttonColor: isDark
+                      ? AppColors.primary
+                      : AppColors.primaryBrown,
+                  expanded: true,
+                ),
               ),
             ],
           ),
