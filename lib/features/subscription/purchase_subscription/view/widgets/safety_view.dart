@@ -143,6 +143,7 @@ class _SafetyViewState extends State<SafetyView> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final cubit = context.read<SubscriptionCubit>();
+    final isGiftRedeemIntake = cubit.state.isGiftRedeemIntakeFlow;
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final authUser = context.read<AuthCubit>().state.user;
 
@@ -352,7 +353,7 @@ class _SafetyViewState extends State<SafetyView> {
             ),
           ),
           AppButton(
-            label: l10n.continueToPayment,
+            label: isGiftRedeemIntake ? l10n.continueTxt : l10n.continueToPayment,
             onPressed: fieldsEnabled ? () => _onContinueToNext(l10n) : null,
             buttonColor: isDark ? AppColors.primary : AppColors.primaryBrown,
             expanded: true,

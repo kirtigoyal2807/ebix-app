@@ -1,10 +1,12 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pilates_app/config/theme/app_colors.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/core/localization/arb/app_localizations.dart';
-import 'package:pilates_app/features/explore/gift_redeem_intake_scope.dart';
+import 'package:pilates_app/features/checkout/data/checkout_repository.dart';
 import 'package:pilates_app/features/subscription/purchase_subscription/cubit/subscription_cubit.dart';
 import 'package:pilates_app/widgets/app_button.dart';
 import 'package:pilates_app/widgets/app_text.dart';
@@ -22,6 +24,7 @@ class _TermsAndConditionsViewState extends State<TermsAndConditionsView> {
   bool _termsReadToBottom = false;
 
   String? _termsAcceptanceError;
+  bool _isSubmittingGiftIntake = false;
 
   @override
   void initState() {
@@ -55,7 +58,7 @@ class _TermsAndConditionsViewState extends State<TermsAndConditionsView> {
     }
   }
 
-  void _onContinueToPayment(AppLocalizations l10n) {
+  Future<void> _onContinueToPayment(AppLocalizations l10n) async {
     final cubit = context.read<SubscriptionCubit>();
     if (!cubit.state.isTermsAccepted) {
       setState(() {
@@ -66,11 +69,32 @@ class _TermsAndConditionsViewState extends State<TermsAndConditionsView> {
     setState(() => _termsAcceptanceError = null);
 
     if (cubit.state.isGiftRedeemIntakeFlow) {
-      final onComplete = GiftRedeemIntakeScope.maybeOf(context)?.onComplete;
-      if (onComplete != null) {
-        Navigator.of(context).pop();
-        onComplete();
+      if (_isSubmittingGiftIntake) return;
+      setState(() => _isSubmittingGiftIntake = true);
+
+      final repo = context.read<CheckoutRepository>();
+      final errorMessage = await cubit.submitHealthIntakeForCurrentCheckout(
+        repo,
+      );
+
+      if (!mounted) return;
+      setState(() => _isSubmittingGiftIntake = false);
+
+      if (errorMessage != null) {
+        final messenger = ScaffoldMessenger.of(context);
+        messenger.showSnackBar(
+          SnackBar(
+            content: Text(
+              errorMessage.isNotEmpty
+                  ? errorMessage
+                  : l10n.loginErrorGeneric,
+            ),
+          ),
+        );
+        return;
       }
+
+      cubit.goToGiftRedeemRequiredInformationStep();
       return;
     }
 
@@ -82,6 +106,7 @@ class _TermsAndConditionsViewState extends State<TermsAndConditionsView> {
     final l10n = AppLocalizations.of(context);
     final cubit = context.read<SubscriptionCubit>();
     final state = context.watch<SubscriptionCubit>().state;
+    final isGiftRedeemIntake = state.isGiftRedeemIntakeFlow;
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Padding(
@@ -245,9 +270,11 @@ class _TermsAndConditionsViewState extends State<TermsAndConditionsView> {
             ),
           ),
           AppButton(
-            label: l10n.continueToPayment,
-            onPressed:
-                _termsReadToBottom ? () => _onContinueToPayment(l10n) : null,
+            label: isGiftRedeemIntake ? l10n.continueTxt : l10n.continueToPayment,
+            isLoading: isGiftRedeemIntake && _isSubmittingGiftIntake,
+            onPressed: _termsReadToBottom && !_isSubmittingGiftIntake
+                ? () => unawaited(_onContinueToPayment(l10n))
+                : null,
             buttonColor: isDark ? AppColors.primary : AppColors.primaryBrown,
             expanded: true,
           ),

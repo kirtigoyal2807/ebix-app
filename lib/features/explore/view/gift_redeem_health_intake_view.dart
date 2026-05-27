@@ -14,8 +14,10 @@ import 'package:pilates_app/features/subscription/purchase_subscription/view/hea
 import 'package:pilates_app/features/subscription/purchase_subscription/view/medical_history_view.dart';
 import 'package:pilates_app/features/subscription/purchase_subscription/view/physical_activity_view.dart';
 import 'package:pilates_app/features/subscription/purchase_subscription/view/pregnancy_view.dart';
+import 'package:pilates_app/features/subscription/purchase_subscription/view/required_information_view.dart';
 import 'package:pilates_app/features/subscription/purchase_subscription/view/terms_and_conditions_view.dart';
 import 'package:pilates_app/features/subscription/purchase_subscription/view/widgets/safety_view.dart';
+import 'package:pilates_app/core/network/api_result.dart';
 import 'package:pilates_app/widgets/app_app_bar.dart';
 import 'package:pilates_app/widgets/app_loading_indicator.dart';
 
@@ -92,7 +94,28 @@ class _GiftRedeemHealthIntakeBodyState extends State<_GiftRedeemHealthIntakeBody
       requiresHealthIntake: resolved.requiresHealthIntake,
     );
 
-    if (resolved.requiresHealthIntake && resolved.productId > 0) {
+    final homeBranchId = branchId;
+    if (resolved.productId > 0 &&
+        homeBranchId != null &&
+        homeBranchId > 0) {
+      final startResult = await repo.startCheckout(
+        productId: resolved.productId,
+        branchId: homeBranchId,
+        isGift: false,
+      );
+      if (startResult case ApiSuccess(:final data)) {
+        final sessionProductId = data.resolvedProductId ?? resolved.productId;
+        cubit.bindCheckoutSession(
+          sessionId: data.id,
+          productId: sessionProductId,
+          requiresHealthIntake: data.resolvedRequiresHealthIntake,
+        );
+        cubit.selectBranch(homeBranchId);
+      }
+    }
+
+    if (cubit.state.selectedProductRequiresHealthIntake &&
+        cubit.state.checkoutProductId > 0) {
       await cubit.fetchHealthQuestionnaireForCurrentProduct(repo);
     }
 
@@ -125,36 +148,52 @@ class _GiftRedeemHealthIntakeBodyState extends State<_GiftRedeemHealthIntakeBody
           6 => l10n.declaration,
           7 => l10n.safetyConsent,
           8 => l10n.termsAndConditions,
+          10 => l10n.requiredInformation,
           _ => l10n.personalInformation,
         };
 
-        return Scaffold(
-          resizeToAvoidBottomInset: true,
-          backgroundColor: isDark
-              ? AppColors.homeBackground
-              : AppColors.whiteColor,
-          appBar: AppAppBar(
-            title: appBarTitle,
-            isMoreMenu: false,
-            onBack: () {
-              if (state.currentStep > 1) {
-                context.read<SubscriptionCubit>().previousStep();
-              } else {
-                Navigator.of(context).pop();
-              }
-            },
-          ),
-          body: SafeArea(
-            child: IndexedStack(
-              index: state.currentStep.clamp(1, 8),
-              children: [
-                const SizedBox.shrink(),
-                ...GiftRedeemHealthIntakeView._wizardSteps(
-                  ValueKey<String>(
-                    '${state.selectedPlanId}|gift-redeem-intake',
+        final isMandatoryRequiredInfoStep = state.currentStep == 10;
+        final isGiftRedeemPersonalInfoStep = state.currentStep == 1;
+        final hideAppBarBack =
+            isMandatoryRequiredInfoStep || isGiftRedeemPersonalInfoStep;
+
+        return PopScope(
+          canPop: !isMandatoryRequiredInfoStep && !isGiftRedeemPersonalInfoStep,
+          child: Scaffold(
+            resizeToAvoidBottomInset: true,
+            backgroundColor: isDark
+                ? AppColors.homeBackground
+                : AppColors.whiteColor,
+            appBar: AppAppBar(
+              title: appBarTitle,
+              isMoreMenu: false,
+              leading: hideAppBarBack ? const SizedBox.shrink() : null,
+              onBack: hideAppBarBack
+                  ? null
+                  : () {
+                      if (state.currentStep > 1) {
+                        context.read<SubscriptionCubit>().previousStep();
+                      }
+                    },
+            ),
+            body: SafeArea(
+              child: IndexedStack(
+                index: state.currentStep.clamp(1, 10),
+                children: [
+                  const SizedBox.shrink(),
+                  ...GiftRedeemHealthIntakeView._wizardSteps(
+                    ValueKey<String>(
+                      '${state.selectedPlanId}|${state.checkoutSessionId}|gift-redeem-intake',
+                    ),
                   ),
-                ),
-              ],
+                  const SizedBox.shrink(),
+                  RequiredInformationView(
+                    key: ValueKey<String>(
+                      'gift-required|${state.checkoutSessionId}',
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         );

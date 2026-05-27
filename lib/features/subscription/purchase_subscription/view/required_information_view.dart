@@ -13,6 +13,7 @@ import 'package:pilates_app/core/validation/personal_information_validators.dart
 import 'package:pilates_app/core/validation/phone_number_country_validation.dart';
 import 'package:pilates_app/features/checkout/data/checkout_repository.dart';
 import 'package:pilates_app/features/subscription/purchase_subscription/data/subscription_emergency_contact_body.dart';
+import 'package:pilates_app/features/explore/widget/gift_redeem_success_sheet.dart';
 import 'package:pilates_app/features/subscription/purchase_subscription/cubit/subscription_cubit.dart';
 import 'package:pilates_app/features/subscription/purchase_subscription/view/subscription_hosted_payment_flow.dart';
 import 'package:pilates_app/widgets/app_button.dart';
@@ -183,6 +184,27 @@ class _RequiredInformationViewState extends State<RequiredInformationView> {
         return;
       }
 
+      if (cubit.state.isGiftRedeemIntakeFlow) {
+        if (!context.mounted) return;
+        await showModalBottomSheet<void>(
+          context: context,
+          isScrollControlled: true,
+          isDismissible: false,
+          enableDrag: false,
+          backgroundColor: Colors.transparent,
+          barrierColor: AppColors.bottomSheetShadow,
+          builder: (_) => GiftRedeemSuccessSheet(
+            onContinue: () {
+              Navigator.of(context).pop();
+              if (context.mounted) {
+                Navigator.of(context).pop();
+              }
+            },
+          ),
+        );
+        return;
+      }
+
       if (deferred != null) {
         try {
           await pushSubscriptionReceiptScreen(
@@ -304,11 +326,16 @@ class _RequiredInformationViewState extends State<RequiredInformationView> {
                           buildWhen: (previous, current) =>
                               previous.deferPaymentReceiptPending !=
                                   current.deferPaymentReceiptPending ||
+                              previous.isGiftRedeemIntakeFlow !=
+                                  current.isGiftRedeemIntakeFlow ||
                               previous.currentStep != current.currentStep,
                           builder: (context, blocState) {
-                            final showBanner = context
-                                .read<SubscriptionCubit>()
-                                .hasDeferredPostPaymentReceipt;
+                            final subscriptionCubit =
+                                context.read<SubscriptionCubit>();
+                            final showBanner =
+                                subscriptionCubit
+                                    .hasDeferredPostPaymentReceipt &&
+                                !blocState.isGiftRedeemIntakeFlow;
                             if (!showBanner) {
                               return const SizedBox.shrink();
                             }

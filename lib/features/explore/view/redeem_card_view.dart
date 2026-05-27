@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart';
@@ -11,6 +13,7 @@ import 'package:pilates_app/features/auth/data/models/auth_user.dart';
 import 'package:pilates_app/features/explore/cubit/redeem_gift_cubit.dart';
 import 'package:pilates_app/features/explore/cubit/redeem_gift_state.dart';
 import 'package:pilates_app/features/explore/data/gift_repository.dart';
+import 'package:pilates_app/features/explore/gift_redeem_intake_helpers.dart';
 import 'package:pilates_app/features/explore/widget/gift_redeem_success_sheet.dart';
 import 'package:pilates_app/widgets/app_button.dart';
 
@@ -25,6 +28,9 @@ class RedeemCardView extends StatelessWidget {
     this.pendingGift,
     this.onRedeemSuccess,
     this.routePopsAfterSuccessModal = 1,
+    this.openHealthIntakeAfterRedeemSuccess = false,
+    this.showGiftRedeemSuccessSheet = true,
+    this.onHealthIntakeComplete,
   });
 
   /// When provided, the screen renders the actual gift content (sender/message/code)
@@ -41,6 +47,17 @@ class RedeemCardView extends StatelessWidget {
   /// modal). Use `2` when this screen was opened on top of [ReceiveGiftSheet]
   /// (pending gift on home); default `1` is only [RedeemCardView].
   final int routePopsAfterSuccessModal;
+
+  /// When `true`, a successful `POST /gifts/redeem` opens the health intake
+  /// wizard instead of [showGiftRedeemSuccessSheet].
+  final bool openHealthIntakeAfterRedeemSuccess;
+
+  /// Whether to show [GiftRedeemSuccessSheet] after redeem (ignored when
+  /// [openHealthIntakeAfterRedeemSuccess] is `true`).
+  final bool showGiftRedeemSuccessSheet;
+
+  /// Called when the post-redeem health intake wizard finishes (Terms continue).
+  final VoidCallback? onHealthIntakeComplete;
 
   @override
   Widget build(BuildContext context) {
@@ -119,6 +136,10 @@ class RedeemCardView extends StatelessWidget {
                   pendingGift: pendingGift,
                   onRedeemSuccess: onRedeemSuccess,
                   routePopsAfterSuccessModal: routePopsAfterSuccessModal,
+                  openHealthIntakeAfterRedeemSuccess:
+                      openHealthIntakeAfterRedeemSuccess,
+                  showGiftRedeemSuccessSheet: showGiftRedeemSuccessSheet,
+                  onHealthIntakeComplete: onHealthIntakeComplete,
                 ),
               ),
             ),
@@ -458,11 +479,17 @@ class _RedeemButton extends StatelessWidget {
     required this.pendingGift,
     required this.onRedeemSuccess,
     required this.routePopsAfterSuccessModal,
+    required this.openHealthIntakeAfterRedeemSuccess,
+    required this.showGiftRedeemSuccessSheet,
+    this.onHealthIntakeComplete,
   });
 
   final PendingGift? pendingGift;
   final VoidCallback? onRedeemSuccess;
   final int routePopsAfterSuccessModal;
+  final bool openHealthIntakeAfterRedeemSuccess;
+  final bool showGiftRedeemSuccessSheet;
+  final VoidCallback? onHealthIntakeComplete;
 
   @override
   Widget build(BuildContext context) {
@@ -489,10 +516,22 @@ class _RedeemButton extends StatelessWidget {
         if (state.successPending) {
           context.read<RedeemGiftCubit>().consumeSuccess();
           onRedeemSuccess?.call();
-          _showSuccessSheet(
-            context,
-            routePopsAfterSuccessModal: routePopsAfterSuccessModal,
-          );
+          final gift = pendingGift;
+          if (openHealthIntakeAfterRedeemSuccess && gift != null) {
+            unawaited(
+              openGiftRedeemHealthIntake(
+                context: context,
+                pendingGift: gift,
+                popsBeforeOpen: routePopsAfterSuccessModal,
+                onIntakeComplete: onHealthIntakeComplete ?? () {},
+              ),
+            );
+          } else if (showGiftRedeemSuccessSheet) {
+            _showSuccessSheet(
+              context,
+              routePopsAfterSuccessModal: routePopsAfterSuccessModal,
+            );
+          }
         } else if (state.serverError != null && state.serverError!.isNotEmpty) {
           ScaffoldMessenger.of(
             context,
