@@ -67,14 +67,12 @@ class ClassTypesSection extends StatelessWidget {
                               ),
                         ),
                       ),
-                      SizedBox(height: AppSpacing.base),
+                      SizedBox(height: AppSpacing.sm),
                       AppText(
                         classType.name ?? '',
                         style: (context) =>
                             AppTextStyles.heading1(context).copyWith(
-                              fontSize: size.width * 0.035 > 14
-                                  ? 14
-                                  : size.width * 0.035,
+                              fontSize: 14,
                               color: isDark
                                   ? AppColors.lightText
                                   : AppColors.darkText,
@@ -97,7 +95,36 @@ class ClassTypesSection extends StatelessWidget {
 class TopTrainersSection extends StatelessWidget {
   const TopTrainersSection({super.key, required this.trainers});
 
+  /// Matches rating row: 12pt caption × 1.2 line height (14px star).
+  static const double _ratingRowHeight = 14.4;
+  static const double _avatarRadius = 36;
+  static const String _defaultTrainerAvatarAsset =
+      'assets/images/demo images/Trainer Avatar.png';
+
   final List<HomeTrainer> trainers;
+
+  Widget _buildTrainerAvatar(String? imageUrl) {
+    final size = _avatarRadius * 2;
+    final url = imageUrl?.trim() ?? '';
+    Widget placeholder() => Image.asset(
+      _defaultTrainerAvatarAsset,
+      width: size,
+      height: size,
+      fit: BoxFit.cover,
+    );
+
+    return ClipOval(
+      child: url.isNotEmpty
+          ? Image.network(
+              url,
+              width: size,
+              height: size,
+              fit: BoxFit.cover,
+              errorBuilder: (_, _, _) => placeholder(),
+            )
+          : placeholder(),
+    );
+  }
 
   TrainerResource _toTrainerResource(HomeTrainer trainer) {
     return TrainerResource(
@@ -149,9 +176,8 @@ class TopTrainersSection extends StatelessWidget {
             SizedBox(width: AppSpacing.md),
         itemBuilder: (BuildContext context, int index) {
           final trainer = trainers[index];
-          final subtitle = trainer.specialties.isEmpty
-              ? (trainer.avgRating == null ? '' : '★ ${trainer.avgRating}')
-              : trainer.specialties.join(', ');
+          final resource = _toTrainerResource(trainer);
+          final ratingLabel = resource.displayAverageRating;
           return SizedBox(
             width: itemWidth,
             height: itemHeight,
@@ -179,19 +205,7 @@ class TopTrainersSection extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            CircleAvatar(
-                              radius: itemWidth * 0.20,
-                              backgroundColor: isDark
-                                  ? AppColors.homeBackground
-                                  : AppColors.whiteColor,
-                              backgroundImage:
-                                  (trainer.imageUrl ?? '').trim().isEmpty
-                                  ? null
-                                  : NetworkImage(trainer.imageUrl!),
-                              child: (trainer.imageUrl ?? '').trim().isEmpty
-                                  ? const Icon(Icons.person)
-                                  : null,
-                            ),
+                            _buildTrainerAvatar(trainer.imageUrl ?? ''),
                             SizedBox(height: AppSpacing.sm),
                             AppText(
                               trainer.displayName ?? '',
@@ -207,18 +221,75 @@ class TopTrainersSection extends StatelessWidget {
                               overflow: TextOverflow.ellipsis,
                             ),
                             SizedBox(height: 2),
-                            AppText(
-                              subtitle,
-                              style: (context) =>
-                                  AppTextStyles.captionText(context).copyWith(
-                                    fontSize: 12,
-                                    height: 1.2,
-                                    color: isDark
-                                        ? AppColors.languageIconDark
-                                        : AppColors.lightGrey,
-                                  ),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
+                            SizedBox(
+                              height: _ratingRowHeight,
+                              child: ratingLabel.isNotEmpty
+                                  ? Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        const Icon(
+                                          Icons.star,
+                                          color: AppColors.goldStarColor,
+                                          size: 14,
+                                        ),
+                                        SizedBox(width: AppSpacing.xs),
+                                        Flexible(
+                                          child: AppText(
+                                            ratingLabel,
+                                            style: (context) => AppTextStyles
+                                                .captionText(context)
+                                                .copyWith(
+                                                  fontSize: 12,
+                                                  height: 1.2,
+                                                  color: isDark
+                                                      ? AppColors
+                                                          .languageIconDark
+                                                      : AppColors.lightGrey,
+                                                ),
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        ),
+                                      ],
+                                    )
+                                  : Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Icon(
+                                          Icons.star,
+                                          size: 14,
+                                          color: isDark
+                                              ? AppColors.languageIconDark
+                                              : AppColors.lightGrey,
+                                        ),
+                                        SizedBox(width: AppSpacing.xs),
+                                        Flexible(
+                                          child: AppText(
+                                            context.l10n.noReviews,
+                                            style: (context) => AppTextStyles
+                                                .captionText(context)
+                                                .copyWith(
+                                                  fontSize: 12,
+                                                  height: 1.2,
+                                                  color: isDark
+                                                      ? AppColors
+                                                          .languageIconDark
+                                                      : AppColors.lightGrey,
+                                                ),
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                             ),
                           ],
                         ),

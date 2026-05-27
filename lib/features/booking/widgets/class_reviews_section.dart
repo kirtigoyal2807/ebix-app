@@ -111,7 +111,7 @@ class _EmbeddedRecentReviewsBody extends StatelessWidget {
             ],
           ),
         ),
-        SizedBox(height: AppSpacing.base),
+        SizedBox(height: AppSpacing.xi),
         _DynamicReviewsContent(
           reviews: reviews,
           isDark: isDark,
@@ -197,7 +197,7 @@ class _DynamicReviewsSectionState extends State<_DynamicReviewsSection> {
             ],
           ),
         ),
-        SizedBox(height: AppSpacing.base),
+        SizedBox(height: AppSpacing.xi),
         FutureBuilder<ApiResult<ReviewsListResult>>(
           future: _future,
           builder: (context, snapshot) {
@@ -205,7 +205,7 @@ class _DynamicReviewsSectionState extends State<_DynamicReviewsSection> {
                 snapshot.data == null) {
               return const Padding(
                 padding: EdgeInsets.symmetric(vertical: 48),
-                child: const AppLoadingIndicator(),
+                child: AppLoadingIndicator(),
               );
             }
             final data = snapshot.data!;
@@ -291,7 +291,7 @@ class _DynamicReviewsContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = isDark ? AppColors.darkGreyText : AppColors.textSecondaryLight;
+    final color = isDark ? AppColors.darkGreyText : AppColors.greyText;
 
     final bd = summaryRatingBreakdown;
     final bdTotal = (bd != null && bd.length == 5)

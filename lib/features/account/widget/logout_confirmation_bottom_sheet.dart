@@ -9,14 +9,15 @@ import '../../../widgets/app_button.dart';
 import '../../../widgets/app_text.dart';
 
 Future<bool?> showLogoutConfirmationBottomSheet(BuildContext context) {
-  final theme = Theme.of(context);
+  final isDark = Theme.of(context).brightness == Brightness.dark;
 
   return showModalBottomSheet<bool>(
     context: context,
     isScrollControlled: true,
     useSafeArea: true,
     barrierColor: AppColors.blackColor.withValues(alpha: 0.45),
-    backgroundColor: theme.colorScheme.surface,
+    backgroundColor:
+        isDark ? AppColors.homeBackground : AppColors.whiteColor,
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(top: Radius.circular(AppRadius.xl)),
     ),

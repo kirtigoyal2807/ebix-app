@@ -758,6 +758,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get noReviewsYet => 'No reviews yet';
 
   @override
+  String get noReviews => 'No Reviews';
+
+  @override
   String basedOnReviews(int count) {
     return 'Based on $count reviews';
   }

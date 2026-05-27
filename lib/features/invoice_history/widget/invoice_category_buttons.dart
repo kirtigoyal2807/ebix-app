@@ -21,6 +21,7 @@ class InvoiceCategoryButtons extends StatelessWidget {
         return SizedBox(
           height: 28,
           child: ListView.separated(
+            padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
             itemCount: state.invoiceCategoryList.length,
             shrinkWrap: true,
             scrollDirection: Axis.horizontal,

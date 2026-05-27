@@ -123,48 +123,53 @@ class _PlanDetailsModalState extends State<PlanDetailsModal> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              crossAxisAlignment: .center,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    if (_displayPlan['badge'] != null)
-                      Column(
-                        children: [
-                          Container(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: 8,
-                              vertical: 4,
-                            ),
-                            decoration: BoxDecoration(
-                              color: _displayPlan['isPopular'] == true
-                                  ? AppColors.goldStarColor
-                                  : (isDark
-                                        ? const Color(0x3BFDC700)
-                                        : AppColors.goldStarColor),
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            child: AppText(
-                              _displayPlan['badge'],
-                              style: (context) =>
-                                  AppTextStyles.body(context).copyWith(
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w500,
-                                    color: (isDark
-                                        ? AppColors.blackColor
-                                        : AppColors.darkText),
-                                  ),
-                            ),
+            if (_displayPlan['badge'] != null) ...[
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 4,
+                    ),
+                    decoration: BoxDecoration(
+                      color: _displayPlan['isPopular'] == true
+                          ? AppColors.goldStarColor
+                          : (isDark
+                                ? const Color(0x3BFDC700)
+                                : AppColors.goldStarColor),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: AppText(
+                      _displayPlan['badge'],
+                      style: (context) =>
+                          AppTextStyles.body(context).copyWith(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
+                            color: isDark
+                                ? AppColors.blackColor
+                                : AppColors.darkText,
                           ),
-                          SizedBox(height: AppSpacing.base + 1),
-                        ],
-                      )
-                    else
-                      SizedBox(),
-                    AppText(
+                    ),
+                  ),
+                  _buildCloseButton(isDark),
+                ],
+              ),
+              SizedBox(height: AppSpacing.base + 1),
+              AppText(
+                _displayPlan['title'],
+                style: (context) => AppTextStyles.headline(context).copyWith(
+                  fontWeight: FontWeight.w500,
+                  color: isDark ? AppColors.lightText : AppColors.darkText,
+                ),
+              ),
+            ] else
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: AppText(
                       _displayPlan['title'],
                       style: (context) =>
                           AppTextStyles.headline(context).copyWith(
@@ -174,25 +179,13 @@ class _PlanDetailsModalState extends State<PlanDetailsModal> {
                                 : AppColors.darkText,
                           ),
                     ),
-                  ],
-                ),
-
-                SizedBox(
-                  height: 28,
-                  width: 32,
-                  child: IconButton(
-                    icon: Icon(
-                      Icons.close,
-                      size: 22,
-                      color: isDark
-                          ? AppColors.lightGrey
-                          : AppColors.darkGreyText,
-                    ),
-                    onPressed: () => Navigator.pop(context),
                   ),
-                ),
-              ],
-            ),
+                  Align(
+                    alignment: AlignmentDirectional.centerEnd,
+                    child: _buildCloseButton(isDark),
+                  ),
+                ],
+              ),
 
             if (_detailLoading) ...[
               SizedBox(height: AppSpacing.sm),
@@ -294,6 +287,24 @@ class _PlanDetailsModalState extends State<PlanDetailsModal> {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildCloseButton(bool isDark) {
+    return IconButton(
+      padding: EdgeInsets.zero,
+      constraints: const BoxConstraints(minWidth: 28, minHeight: 28),
+      style: IconButton.styleFrom(
+        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+        visualDensity: VisualDensity.compact,
+      ),
+      alignment: AlignmentDirectional.center,
+      icon: Icon(
+        Icons.close,
+        size: 22,
+        color: isDark ? AppColors.lightGrey : AppColors.darkGreyText,
+      ),
+      onPressed: () => Navigator.pop(context),
     );
   }
 }

@@ -16,13 +16,7 @@ class HomeHeader extends StatelessWidget {
   const HomeHeader({super.key, required this.userName});
 
   void _showLanguageSelector(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      barrierColor: AppColors.bottomSheetShadow,
-      builder: (_) => const LanguageBottomSheet(),
-    );
+    showLanguageBottomSheet(context);
   }
 
   @override

@@ -52,10 +52,7 @@ class InvoiceHistoryView extends StatelessWidget {
               ],
             ),
             body: Padding(
-              padding: EdgeInsets.symmetric(
-                vertical: AppSpacing.sm,
-                horizontal: AppSpacing.lg,
-              ),
+              padding: EdgeInsets.symmetric(vertical: AppSpacing.sm),
               child: const Column(
                 children: [
                   InvoiceCategoryButtons(),

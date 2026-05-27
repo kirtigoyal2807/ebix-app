@@ -321,6 +321,7 @@
   "itemTowel": "Towel (optional)",
   "itemMat": "Mat provided at studio",
   "noReviewsYet": "No reviews yet",
+  "noReviews": "No Reviews",
   "basedOnReviews": "Based on {count} reviews",
   "@basedOnReviews": {
     "placeholders": {
