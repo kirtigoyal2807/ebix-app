@@ -513,8 +513,8 @@ class _PersonalViewBodyState extends State<_PersonalViewBody> {
                               onTap: () => _pickDateOfBirth(context),
                               child: AbsorbPointer(
                                 child: AppTextField(
-                                  hint: 'Select date of birth',
-                                  label: 'Date of Birth',
+                                  hint: context.l10n.selectDOB,
+                                  label: context.l10n.date_of_birth,
                                   controller: _dobController,
                                 ),
                               ),

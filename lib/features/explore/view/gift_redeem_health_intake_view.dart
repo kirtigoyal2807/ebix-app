@@ -159,42 +159,51 @@ class _GiftRedeemHealthIntakeBodyState extends State<_GiftRedeemHealthIntakeBody
 
         return PopScope(
           canPop: !isMandatoryRequiredInfoStep && !isGiftRedeemPersonalInfoStep,
-          child: Scaffold(
-            resizeToAvoidBottomInset: true,
-            backgroundColor: isDark
-                ? AppColors.homeBackground
-                : AppColors.whiteColor,
-            appBar: AppAppBar(
-              title: appBarTitle,
-              isMoreMenu: false,
-              leading: hideAppBarBack ? const SizedBox.shrink() : null,
-              onBack: hideAppBarBack
-                  ? null
-                  : () {
-                      if (state.currentStep > 1) {
-                        context.read<SubscriptionCubit>().previousStep();
-                      }
-                    },
-            ),
-            body: SafeArea(
-              child: IndexedStack(
-                index: state.currentStep.clamp(1, 10),
-                children: [
-                  const SizedBox.shrink(),
-                  ...GiftRedeemHealthIntakeView._wizardSteps(
-                    ValueKey<String>(
-                      '${state.selectedPlanId}|${state.checkoutSessionId}|gift-redeem-intake',
-                    ),
+          child: Stack(
+            children: [
+              Scaffold(
+                resizeToAvoidBottomInset: true,
+                backgroundColor: isDark
+                    ? AppColors.homeBackground
+                    : AppColors.whiteColor,
+                appBar: AppAppBar(
+                  title: appBarTitle,
+                  isMoreMenu: false,
+                  leading: hideAppBarBack ? const SizedBox.shrink() : null,
+                  onBack: hideAppBarBack
+                      ? null
+                      : () {
+                          if (state.currentStep > 1) {
+                            context.read<SubscriptionCubit>().previousStep();
+                          }
+                        },
+                ),
+                body: SafeArea(
+                  child: IndexedStack(
+                    index: state.currentStep.clamp(1, 10),
+                    children: [
+                      const SizedBox.shrink(),
+                      ...GiftRedeemHealthIntakeView._wizardSteps(
+                        ValueKey<String>(
+                          '${state.selectedPlanId}|${state.checkoutSessionId}|gift-redeem-intake',
+                        ),
+                      ),
+                      const SizedBox.shrink(),
+                      RequiredInformationView(
+                        key: ValueKey<String>(
+                          'gift-required|${state.checkoutSessionId}',
+                        ),
+                      ),
+                    ],
                   ),
-                  const SizedBox.shrink(),
-                  RequiredInformationView(
-                    key: ValueKey<String>(
-                      'gift-required|${state.checkoutSessionId}',
-                    ),
-                  ),
-                ],
+                ),
               ),
-            ),
+              if (isMandatoryRequiredInfoStep &&
+                  state.isSubmittingRequiredInformation)
+                const Positioned.fill(
+                  child: RequiredInformationSubmitOverlay(),
+                ),
+            ],
           ),
         );
       },

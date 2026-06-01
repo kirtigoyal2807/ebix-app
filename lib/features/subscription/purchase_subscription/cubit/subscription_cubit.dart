@@ -882,6 +882,11 @@ class SubscriptionCubit extends Cubit<SubscriptionState> {
 
   void updateIdNumber(String val) => emit(state.copyWith(idNumber: val));
 
+  void setRequiredInformationSubmitting(bool submitting) {
+    if (state.isSubmittingRequiredInformation == submitting) return;
+    emit(state.copyWith(isSubmittingRequiredInformation: submitting));
+  }
+
   /// Clears checkout wizard answers/consents; keeps plan, branch, gift, and step.
   ///
   /// Used when the user picks a different plan or starts a new checkout session so

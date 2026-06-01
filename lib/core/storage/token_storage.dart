@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../features/auth/data/models/auth_user.dart';
@@ -16,6 +17,7 @@ class TokenStorage {
   static const _kHomeBranchId = 'auth_home_branch_id';
   static const _kMembershipPlanName = 'membership_plan_name';
   static const _kAppLocaleLanguageCode = 'app_locale_language_code';
+  static const _kAppThemeMode = 'app_theme_mode';
 
   String? readToken() => _prefs.getString(_kAccessToken);
 
@@ -77,4 +79,23 @@ class TokenStorage {
 
   Future<void> saveAppLocaleLanguageCode(String languageCode) =>
       _prefs.setString(_kAppLocaleLanguageCode, languageCode);
+
+  /// Persisted MaterialApp theme: `light` | `dark` | `system`. Null if not chosen yet.
+  ThemeMode? readAppThemeMode() {
+    return switch (_prefs.getString(_kAppThemeMode)) {
+      'light' => ThemeMode.light,
+      'dark' => ThemeMode.dark,
+      'system' => ThemeMode.system,
+      _ => null,
+    };
+  }
+
+  Future<void> saveAppThemeMode(ThemeMode mode) {
+    final value = switch (mode) {
+      ThemeMode.light => 'light',
+      ThemeMode.dark => 'dark',
+      ThemeMode.system => 'system',
+    };
+    return _prefs.setString(_kAppThemeMode, value);
+  }
 }

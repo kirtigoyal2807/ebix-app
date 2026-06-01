@@ -23,6 +23,23 @@ import 'package:pilates_app/widgets/app_text.dart';
 import 'package:pilates_app/widgets/app_text_field.dart';
 import 'package:pilates_app/widgets/phone_number_field.dart';
 
+/// Full-screen dim + spinner; place in a [Stack] above [Scaffold] while submitting.
+class RequiredInformationSubmitOverlay extends StatelessWidget {
+  const RequiredInformationSubmitOverlay({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return AbsorbPointer(
+      child: ColoredBox(
+        color: Colors.black.withValues(alpha: 0.25),
+        child: const Center(
+          child: AppLoadingIndicator(),
+        ),
+      ),
+    );
+  }
+}
+
 class RequiredInformationView extends StatefulWidget {
   const RequiredInformationView({super.key});
 
@@ -43,8 +60,6 @@ class _RequiredInformationViewState extends State<RequiredInformationView> {
   String? _relationshipError;
   String? _idTypeError;
   String? _idNumberError;
-
-  bool _isSubmitting = false;
 
   void _unfocusKeyboard() {
     FocusManager.instance.primaryFocus?.unfocus();
@@ -77,6 +92,7 @@ class _RequiredInformationViewState extends State<RequiredInformationView> {
 
   @override
   void dispose() {
+    context.read<SubscriptionCubit>().setRequiredInformationSubmitting(false);
     _emergencyNameController.dispose();
     _emergencyPhoneController.dispose();
     _idNumberController.dispose();
@@ -146,7 +162,7 @@ class _RequiredInformationViewState extends State<RequiredInformationView> {
     final checkoutId = cubit.state.checkoutSessionId.trim();
     final deferred = cubit.deferredPostPaymentReceiptIntent;
 
-    setState(() => _isSubmitting = true);
+    cubit.setRequiredInformationSubmitting(true);
     try {
       if (checkoutId.isEmpty) {
         messenger.showSnackBar(
@@ -231,7 +247,9 @@ class _RequiredInformationViewState extends State<RequiredInformationView> {
       await runSubscriptionHostedPaymentFlow(context);
     } finally {
       if (mounted) {
-        setState(() => _isSubmitting = false);
+        context.read<SubscriptionCubit>().setRequiredInformationSubmitting(
+          false,
+        );
       }
     }
   }
@@ -300,12 +318,13 @@ class _RequiredInformationViewState extends State<RequiredInformationView> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final cubit = context.read<SubscriptionCubit>();
+    final isSubmitting = context.select(
+      (SubscriptionCubit c) => c.state.isSubmittingRequiredInformation,
+    );
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final keyboardBottom = MediaQuery.viewInsetsOf(context).bottom;
 
-    return Stack(
-      children: [
-        Padding(
+    return Padding(
           padding: EdgeInsets.symmetric(
             vertical: AppSpacing.lg,
             horizontal: AppSpacing.lg,
@@ -645,7 +664,7 @@ class _RequiredInformationViewState extends State<RequiredInformationView> {
                 ),
                 child: AppButton(
                   label: l10n.submit,
-                  onPressed: _isSubmitting
+                  onPressed: isSubmitting
                       ? null
                       : () => unawaited(_validateAndSubmit(l10n)),
                   buttonColor: isDark
@@ -656,19 +675,6 @@ class _RequiredInformationViewState extends State<RequiredInformationView> {
               ),
             ],
           ),
-        ),
-        if (_isSubmitting)
-          Positioned.fill(
-            child: AbsorbPointer(
-              child: ColoredBox(
-                color: Colors.black.withValues(alpha: 0.25),
-                child: const Center(
-                  child: AppLoadingIndicator(),
-                ),
-              ),
-            ),
-          ),
-      ],
     );
   }
 }

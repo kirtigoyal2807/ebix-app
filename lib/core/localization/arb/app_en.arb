@@ -481,6 +481,8 @@
   "homeBranch": "Home Branch",
   "updatePreferredStudio": "Update preferred studio",
   "appTheme": "App Theme",
+  "lightMode": "Light Mode",
+  "darkMode": "Dark Mode",
   "systemMode": "System Mode",
   "billingSubscriptions": "Billing & Subscriptions",
   "mySubscriptions": "My Subscriptions",

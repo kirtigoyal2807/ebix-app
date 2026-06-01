@@ -495,5 +495,6 @@ AuthState initialAuthStateFromTokenStorage(TokenStorage tokenStorage) {
   return AuthState.initial().copyWith(
     flow: hasSavedSession ? AuthFlow.authenticated : AuthFlow.splash,
     locale: locale,
+    themeMode: tokenStorage.readAppThemeMode() ?? ThemeMode.system,
   );
 }

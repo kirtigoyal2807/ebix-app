@@ -7,6 +7,7 @@ import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/core/localization/localization_extension.dart';
 import 'package:pilates_app/features/booking/data/models/trainer_resource.dart';
 import 'package:pilates_app/features/home/data/models/home_response.dart';
+import 'package:pilates_app/widgets/app_loading_indicator.dart';
 import 'package:pilates_app/widgets/app_text.dart';
 
 import '../cubit/home_cubit.dart';
@@ -54,6 +55,23 @@ class ClassTypesSection extends StatelessWidget {
                           width: 140,
                           height: 105,
                           fit: BoxFit.cover,
+                          loadingBuilder: (context, child, progress) {
+                            if (progress == null) {
+                              return child;
+                            }
+                            return SizedBox(
+                              width: 140,
+                              height: 105,
+                              child: Center(
+                                child: AppInlineBusy(
+                                  size: 24,
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .primary,
+                                ),
+                              ),
+                            );
+                          },
                           errorBuilder:
                               (
                                 BuildContext context,

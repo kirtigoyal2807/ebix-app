@@ -106,44 +106,53 @@ class _SubscriptionViewContent extends StatelessWidget {
 
         return PopScope(
           canPop: !isMandatoryRequiredInfoStep,
-          child: Scaffold(
-          // Plan details (step 9) has voucher + text fields — must resize with keyboard.
-          resizeToAvoidBottomInset: true,
-          backgroundColor: isDark
-              ? AppColors.homeBackground
-              : AppColors.whiteColor,
-          appBar: AppAppBar(
-            title: appBarTitle,
-            isMoreMenu: false,
-            leading: isMandatoryRequiredInfoStep
-                ? const SizedBox.shrink()
-                : null,
-            onBack: isMandatoryRequiredInfoStep
-                ? null
-                : () {
-                    if (state.currentStep > 0) {
-                      context.read<SubscriptionCubit>().previousStep();
-                    } else {
-                      Navigator.of(context).pop();
-                    }
-                  },
-          ),
-          body: SafeArea(
-            child: IndexedStack(
-              index: state.currentStep,
-              children: [
-                const _PlanSelectionStep(),
-                // Remount wizard steps when plan or checkout session changes so
-                // local controllers do not show stale data after a plan switch.
-                ..._wizardSteps(
-                  ValueKey<String>(
-                    '${state.selectedPlanId}|${state.checkoutSessionId}',
+          child: Stack(
+            children: [
+              Scaffold(
+                // Plan details (step 9) has voucher + text fields — must resize with keyboard.
+                resizeToAvoidBottomInset: true,
+                backgroundColor: isDark
+                    ? AppColors.homeBackground
+                    : AppColors.whiteColor,
+                appBar: AppAppBar(
+                  title: appBarTitle,
+                  isMoreMenu: false,
+                  leading: isMandatoryRequiredInfoStep
+                      ? const SizedBox.shrink()
+                      : null,
+                  onBack: isMandatoryRequiredInfoStep
+                      ? null
+                      : () {
+                          if (state.currentStep > 0) {
+                            context.read<SubscriptionCubit>().previousStep();
+                          } else {
+                            Navigator.of(context).pop();
+                          }
+                        },
+                ),
+                body: SafeArea(
+                  child: IndexedStack(
+                    index: state.currentStep,
+                    children: [
+                      const _PlanSelectionStep(),
+                      // Remount wizard steps when plan or checkout session changes so
+                      // local controllers do not show stale data after a plan switch.
+                      ..._wizardSteps(
+                        ValueKey<String>(
+                          '${state.selectedPlanId}|${state.checkoutSessionId}',
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-              ],
-            ),
+              ),
+              if (isMandatoryRequiredInfoStep &&
+                  state.isSubmittingRequiredInformation)
+                const Positioned.fill(
+                  child: RequiredInformationSubmitOverlay(),
+                ),
+            ],
           ),
-        ),
         );
       },
     );

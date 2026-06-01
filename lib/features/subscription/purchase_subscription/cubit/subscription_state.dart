@@ -77,6 +77,9 @@ class SubscriptionState extends Equatable {
   // Step 7: Terms & Conditions
   final bool isTermsAccepted;
 
+  /// `true` while [RequiredInformationView] is submitting emergency contact / ID.
+  final bool isSubmittingRequiredInformation;
+
   // Step 8: Required Information
   final String emergencyContactName;
   final String? emergencyContactRelationship;
@@ -119,6 +122,7 @@ class SubscriptionState extends Equatable {
     this.declarationSignature = '',
     this.declarationDate = '',
     this.isTermsAccepted = false,
+    this.isSubmittingRequiredInformation = false,
     this.emergencyContactName = '',
     this.emergencyContactRelationship,
     this.emergencyContactPhone = '',
@@ -161,6 +165,7 @@ class SubscriptionState extends Equatable {
     String? declarationSignature,
     String? declarationDate,
     bool? isTermsAccepted,
+    bool? isSubmittingRequiredInformation,
     String? emergencyContactName,
     String? emergencyContactRelationship,
     String? emergencyContactPhone,
@@ -214,6 +219,8 @@ class SubscriptionState extends Equatable {
       declarationSignature: declarationSignature ?? this.declarationSignature,
       declarationDate: declarationDate ?? this.declarationDate,
       isTermsAccepted: isTermsAccepted ?? this.isTermsAccepted,
+      isSubmittingRequiredInformation: isSubmittingRequiredInformation ??
+          this.isSubmittingRequiredInformation,
       emergencyContactName: emergencyContactName ?? this.emergencyContactName,
       emergencyContactRelationship:
           emergencyContactRelationship ?? this.emergencyContactRelationship,
@@ -260,6 +267,7 @@ class SubscriptionState extends Equatable {
     declarationSignature,
     declarationDate,
     isTermsAccepted,
+    isSubmittingRequiredInformation,
     emergencyContactName,
     emergencyContactRelationship,
     emergencyContactPhone,
