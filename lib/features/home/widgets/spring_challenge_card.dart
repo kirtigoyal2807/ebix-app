@@ -5,6 +5,7 @@ import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/core/localization/localization_extension.dart';
 import 'package:pilates_app/features/home/data/models/home_response.dart';
+import 'package:pilates_app/widgets/app_loading_indicator.dart';
 import 'package:pilates_app/widgets/app_text.dart';
 
 class SpringChallengeCard extends StatefulWidget {
@@ -92,7 +93,15 @@ class _SpringChallengeCardState extends State<SpringChallengeCard> {
                 if (progress == null) {
                   return child;
                 }
-                return Container(color: AppColors.splashBackgroundDark);
+                return Container(
+                  color: AppColors.splashBackgroundDark,
+                  child: Center(
+                    child: AppInlineBusy(
+                      size: 32,
+                      color: Theme.of(context).colorScheme.onPrimary,
+                    ),
+                  ),
+                );
               },
             ),
           ),

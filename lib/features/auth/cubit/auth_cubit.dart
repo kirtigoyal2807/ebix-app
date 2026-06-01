@@ -1331,6 +1331,7 @@ class AuthCubit extends Cubit<AuthState> {
 
   void changeTheme(ThemeMode mode) {
     emit(state.copyWith(themeMode: mode));
+    unawaited(_tokenStorage.saveAppThemeMode(mode));
   }
 
   void changeDOB(DateTime date) {
