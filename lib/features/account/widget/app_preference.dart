@@ -66,15 +66,21 @@ class AppPreference extends StatelessWidget {
           subtitle: context.l10n.updatePreferredStudio,
         ),
         SizedBox(height: AppSpacing.lmd),
-        AccountInfoTile(
-          onTap: () {
-            _showThemeSelector(context);
+        BlocBuilder<AuthCubit, AuthState>(
+          buildWhen: (previous, current) =>
+              previous.themeMode != current.themeMode,
+          builder: (context, state) {
+            return AccountInfoTile(
+              onTap: () {
+                _showThemeSelector(context);
+              },
+              icon: isDark
+                  ? "assets/images/svg/account/ic_dark_theme.svg"
+                  : "assets/images/svg/account/ic_app_theme.svg",
+              title: context.l10n.appTheme,
+              subtitle: _themeSubtitle(context, state.themeMode),
+            );
           },
-          icon: isDark
-              ? "assets/images/svg/account/ic_dark_theme.svg"
-              : "assets/images/svg/account/ic_app_theme.svg",
-          title: context.l10n.appTheme,
-          subtitle: context.l10n.systemMode,
         ),
       ],
     );
@@ -91,12 +97,23 @@ class AppPreference extends StatelessWidget {
     }
   }
 
+  static String _themeSubtitle(BuildContext context, ThemeMode themeMode) {
+    final l10n = context.l10n;
+    switch (themeMode) {
+      case ThemeMode.light:
+        return l10n.lightMode;
+      case ThemeMode.dark:
+        return l10n.darkMode;
+      case ThemeMode.system:
+        return l10n.systemMode;
+    }
+  }
+
   void _showLanguageSelector(BuildContext context) {
     showLanguageBottomSheet(context);
   }
 
   void _showThemeSelector(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,

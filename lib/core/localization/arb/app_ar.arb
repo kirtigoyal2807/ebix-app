@@ -481,6 +481,8 @@
   "homeBranch": "الفرع الرئيسي",
   "updatePreferredStudio": "تحديث الاستوديو المفضل",
   "appTheme": "مظهر التطبيق",
+  "lightMode": "الوضع الفاتح",
+  "darkMode": "الوضع الداكن",
   "systemMode": "وضع النظام",
   "billingSubscriptions": "الفواتير والاشتراكات",
   "mySubscriptions": "اشتراكاتي",

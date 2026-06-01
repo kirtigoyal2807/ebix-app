@@ -2312,6 +2312,18 @@ abstract class AppLocalizations {
   /// **'App Theme'**
   String get appTheme;
 
+  /// No description provided for @lightMode.
+  ///
+  /// In en, this message translates to:
+  /// **'Light Mode'**
+  String get lightMode;
+
+  /// No description provided for @darkMode.
+  ///
+  /// In en, this message translates to:
+  /// **'Dark Mode'**
+  String get darkMode;
+
   /// No description provided for @systemMode.
   ///
   /// In en, this message translates to:
