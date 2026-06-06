@@ -157,9 +157,11 @@ class _SignUpOtpViewState extends State<SignUpOtpView>
             body: Stack(
               children: [
                 Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: AppSpacing.lg,
-                    vertical: AppSpacing.xi,
+                  padding: EdgeInsets.only(
+                    left: AppSpacing.lg,
+                    right: AppSpacing.lg,
+                    top: AppSpacing.xi,
+                    bottom: AppSpacing.bottomActionPadding,
                   ),
                   child: Column(
                     children: [

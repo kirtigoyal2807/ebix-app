@@ -136,7 +136,7 @@ class JoinChallengeBottomSheet extends StatelessWidget {
                   AppSpacing.lg,
                   0,
                   AppSpacing.lg,
-                  AppSpacing.md + 2,
+                  AppSpacing.bottomActionPadding,
                 ),
                 child: AppButton(
                   label: context.l10n.join_challenge,
@@ -263,7 +263,7 @@ class JoinChallengeBottomSheet extends StatelessWidget {
                 AppSpacing.lg,
                 0,
                 AppSpacing.lg,
-                AppSpacing.md + 2,
+                AppSpacing.bottomActionPadding,
               ),
               child: AppButton(
                 label: context.l10n.join_challenge,

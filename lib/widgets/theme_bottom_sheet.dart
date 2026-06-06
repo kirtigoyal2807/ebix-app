@@ -145,7 +145,7 @@ class _ThemeBottomSheetState extends State<ThemeBottomSheet> {
                     AppSpacing.lg,
                     0,
                     AppSpacing.lg,
-                    AppSpacing.md + 2,
+                    AppSpacing.bottomActionPadding,
                   ),
                   child: AppButton(
                     label: context.l10n.switchTheme,

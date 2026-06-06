@@ -206,7 +206,7 @@ class OnboardingView extends StatelessWidget {
                     variant: AppButtonVariant.secondary,
                   ),
 
-                  SizedBox(height: AppSpacing.lg),
+                  SizedBox(height: AppSpacing.bottomActionPadding),
                 ],
               ),
             ),

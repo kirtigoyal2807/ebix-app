@@ -139,9 +139,11 @@ class _RedeemGiftCardSheetState extends State<RedeemGiftCardSheet> {
                 ),
                 child: SingleChildScrollView(
                   child: Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: AppSpacing.lg,
-                      vertical: AppSpacing.lg,
+                    padding: EdgeInsets.only(
+                      left: AppSpacing.lg,
+                      right: AppSpacing.lg,
+                      top: AppSpacing.lg,
+                      bottom: AppSpacing.bottomActionPadding,
                     ),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,

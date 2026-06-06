@@ -62,7 +62,7 @@ class _SignUpPersonalInfoViewState extends State<SignUpPersonalInfoView> {
 
   /// Reserve space for sticky bottom CTA so [Scrollable.ensureVisible] / [scrollPadding] scroll past it.
   static double _signupStickyInset() {
-    return AppSpacing.buttonHeight + AppSpacing.md * 2 + AppSpacing.lg;
+    return AppSpacing.stickyBottomActionScrollInset;
   }
 
   EdgeInsets _signupFieldScrollPadding(BuildContext context) {
@@ -596,7 +596,7 @@ class _SignUpPersonalInfoViewState extends State<SignUpPersonalInfoView> {
                         left: 0,
                         right: 0,
                         child: Container(
-                          height: AppSpacing.md + 52,
+                          height: AppSpacing.stickyBottomActionHeight,
                           decoration: BoxDecoration(
                             gradient: LinearGradient(
                               begin:
@@ -620,7 +620,7 @@ class _SignUpPersonalInfoViewState extends State<SignUpPersonalInfoView> {
                       Positioned(
                         left: 0,
                         right: 0,
-                        bottom: AppSpacing.md,
+                        bottom: AppSpacing.bottomActionPadding,
                         child: AppButton(
                           key: const ValueKey('signup_continue'),
                           label: context.l10n.continueTxt,

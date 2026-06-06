@@ -30,7 +30,7 @@ Future<bool?> showLogoutConfirmationBottomSheet(BuildContext context) {
           AppSpacing.lg,
           AppSpacing.xl,
           AppSpacing.lg,
-          bottomInset + AppSpacing.lg,
+          bottomInset + AppSpacing.bottomActionPadding,
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,

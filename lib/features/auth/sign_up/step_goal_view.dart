@@ -200,10 +200,8 @@ class _SignUpGoalViewState extends State<SignUpGoalView> {
                                   ),
                             ),
                             SizedBox(
-                              height:
-                                  MediaQuery.sizeOf(context).height * 0.04 + 48,
+                              height: AppSpacing.stickyBottomActionScrollInset,
                             ),
-                            SizedBox(height: AppSpacing.lg),
                           ],
                         ),
                       ),
@@ -213,7 +211,7 @@ class _SignUpGoalViewState extends State<SignUpGoalView> {
                         left: 0,
                         right: 0,
                         child: Container(
-                          height: AppSpacing.md + 52,
+                          height: AppSpacing.stickyBottomActionHeight,
                           decoration: BoxDecoration(
                             gradient: LinearGradient(
                               begin:
@@ -237,7 +235,7 @@ class _SignUpGoalViewState extends State<SignUpGoalView> {
                       Positioned(
                         left: 0,
                         right: 0,
-                        bottom: AppSpacing.md,
+                        bottom: AppSpacing.bottomActionPadding,
                         child: Padding(
                           padding: EdgeInsets.symmetric(
                             horizontal: AppSpacing.lg,
