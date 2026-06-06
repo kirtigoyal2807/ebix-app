@@ -11,6 +11,8 @@ class CurrencyAmountText extends StatelessWidget {
     required this.amount,
     required this.currencyCode,
     required this.style,
+    this.colorLight,
+    this.colorDark,
     this.priceSuffix = '',
     this.iconRightPadding = 6,
     this.maxLines = 2,
@@ -22,6 +24,10 @@ class CurrencyAmountText extends StatelessWidget {
   final num? amount;
   final String currencyCode;
   final TextStyle Function(BuildContext) style;
+  /// When set, applied in light mode (overrides [style] color).
+  final Color? colorLight;
+  /// When set, applied in dark mode (overrides [style] color).
+  final Color? colorDark;
   final String priceSuffix;
   final double iconRightPadding;
   final int maxLines;
@@ -30,9 +36,17 @@ class CurrencyAmountText extends StatelessWidget {
   /// Shown before the amount (e.g. `- ` for discounts).
   final String leading;
 
+  TextStyle _resolvedStyle(BuildContext context) {
+    final base = style(context);
+    if (colorLight == null && colorDark == null) return base;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final color = isDark ? (colorDark ?? colorLight) : (colorLight ?? colorDark);
+    return color != null ? base.copyWith(color: color) : base;
+  }
+
   @override
   Widget build(BuildContext context) {
-    final textStyle = style(context);
+    final textStyle = _resolvedStyle(context);
     if (amount == null) {
       return Text(
         '${leading}—',
@@ -74,13 +88,11 @@ class CurrencyAmountText extends StatelessWidget {
             if (leading.isNotEmpty) TextSpan(text: leading),
             WidgetSpan(
               alignment: PlaceholderAlignment.middle,
-              child: Padding(
-                padding: EdgeInsets.only(right: iconRightPadding),
-                child: SvgPicture.asset(
-                  'assets/images/svg/ic_Saudi_Riyal_Symbol.svg',
-                  height: iconHeight,
-                  width: iconWidth,
-                ),
+              child: _saudiRiyalSymbol(
+                iconHeight: iconHeight,
+                iconWidth: iconWidth,
+                iconRightPadding: iconRightPadding,
+                color: textStyle.color,
               ),
             ),
             TextSpan(text: '${formatPrice(amount!)}$priceSuffix'),
@@ -92,6 +104,25 @@ class CurrencyAmountText extends StatelessWidget {
       ),
     );
   }
+}
+
+Widget _saudiRiyalSymbol({
+  required double iconHeight,
+  required double iconWidth,
+  required double iconRightPadding,
+  Color? color,
+}) {
+  return Padding(
+    padding: EdgeInsets.only(right: iconRightPadding),
+    child: SvgPicture.asset(
+      'assets/images/svg/ic_Saudi_Riyal_Symbol.svg',
+      height: iconHeight,
+      width: iconWidth,
+      colorFilter: color != null
+          ? ColorFilter.mode(color, BlendMode.srcIn)
+          : null,
+    ),
+  );
 }
 
 /// Inline spans for embedding a formatted amount inside a larger [Text.rich].
@@ -123,13 +154,11 @@ List<InlineSpan> currencyAmountInlineSpans({
     if (leading.isNotEmpty) TextSpan(text: leading, style: textStyle),
     WidgetSpan(
       alignment: PlaceholderAlignment.middle,
-      child: Padding(
-        padding: EdgeInsets.only(right: iconRightPadding),
-        child: SvgPicture.asset(
-          'assets/images/svg/ic_Saudi_Riyal_Symbol.svg',
-          height: iconHeight,
-          width: iconWidth,
-        ),
+      child: _saudiRiyalSymbol(
+        iconHeight: iconHeight,
+        iconWidth: iconWidth,
+        iconRightPadding: iconRightPadding,
+        color: textStyle.color,
       ),
     ),
     TextSpan(
