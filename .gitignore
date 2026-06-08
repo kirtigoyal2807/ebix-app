@@ -50,7 +50,12 @@ app.*.map.json
 *.keystore
 android/key.properties
 
-# Local setup scripts (not for repo)
+# Local setup / publish scripts (not for team repo)
 fix-github-ssh.sh
 git-pull-fix.sh
 publish-to-github.sh
+publish-both-to-github.sh
+publish-all-ebix-to-github.sh
+
+# Play Store marketing assets (upload separately, not in source repo)
+store-assets/
