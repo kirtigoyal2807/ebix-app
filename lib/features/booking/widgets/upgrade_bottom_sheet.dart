@@ -141,13 +141,20 @@ class BranchNotInPlanSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    return Container(
-      padding: const EdgeInsets.fromLTRB(24, 45, 24, 21),
-      decoration: BoxDecoration(
-        color: isDark ? AppColors.homeBackground : Colors.white,
-        borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
-      ),
-      child: Column(
+    return SafeArea(
+      top: false,
+      child: Container(
+        padding: EdgeInsets.fromLTRB(
+          AppSpacing.horizontalPadding,
+          45,
+          AppSpacing.horizontalPadding,
+          AppSpacing.bottomActionPadding,
+        ),
+        decoration: BoxDecoration(
+          color: isDark ? AppColors.homeBackground : Colors.white,
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+        ),
+        child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           isDark
@@ -193,6 +200,7 @@ class BranchNotInPlanSheet extends StatelessWidget {
             ),
           ),
         ],
+        ),
       ),
     );
   }

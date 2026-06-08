@@ -122,7 +122,7 @@ class BadgeSheetBottomSheet extends StatelessWidget {
                 AppSpacing.lg,
                 0,
                 AppSpacing.lg,
-                AppSpacing.md + 2,
+                AppSpacing.bottomActionPadding,
               ),
               child: Builder(
                 builder: (buttonContext) {

@@ -36,10 +36,7 @@ class _SignUpExperienceViewState extends State<SignUpExperienceView> {
     return AppScaffold(
       appBar: AppAppBar(title: context.l10n.experience, isMoreMenu: false),
       body: Padding(
-        padding: EdgeInsets.symmetric(
-          // horizontal: AppSpacing.lg,
-          vertical: AppSpacing.xi,
-        ),
+        padding: EdgeInsets.only(top: AppSpacing.xi),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -127,7 +124,9 @@ class _SignUpExperienceViewState extends State<SignUpExperienceView> {
                                       : const Color(0xff79716B),
                                 ),
                           ),
-                          SizedBox(height: AppSpacing.lg),
+                          SizedBox(
+                            height: AppSpacing.stickyBottomActionScrollInset,
+                          ),
                         ],
                       ),
                     ),
@@ -137,7 +136,7 @@ class _SignUpExperienceViewState extends State<SignUpExperienceView> {
                     left: 0,
                     right: 0,
                     child: Container(
-                      height: MediaQuery.sizeOf(context).height * 0.04 + 48,
+                      height: AppSpacing.stickyBottomActionHeight,
                       decoration: BoxDecoration(
                         gradient: LinearGradient(
                           begin: Alignment.bottomCenter, // start from bottom
@@ -160,7 +159,7 @@ class _SignUpExperienceViewState extends State<SignUpExperienceView> {
                   Positioned(
                     left: 0,
                     right: 0,
-                    bottom: 0,
+                    bottom: AppSpacing.bottomActionPadding,
                     child: Padding(
                       padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
                       child: AppButton(

@@ -21,4 +21,15 @@ class AppSpacing {
   static double get xxxl => _scaled(48.0);
   static double get horizontalPadding => _scaled(24.0);
   static double get buttonHeight => _scaled(54.0);
+
+  /// Bottom padding below the last action button; matches [OnboardingView].
+  static double get bottomActionPadding => lg;
+
+  /// Sticky CTA height: button + [bottomActionPadding].
+  static double get stickyBottomActionHeight =>
+      buttonHeight + bottomActionPadding;
+
+  /// Scroll inset so content clears a sticky bottom CTA and fade gradient.
+  static double get stickyBottomActionScrollInset =>
+      stickyBottomActionHeight + bottomActionPadding;
 }

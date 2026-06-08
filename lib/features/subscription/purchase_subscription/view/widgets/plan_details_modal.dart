@@ -112,13 +112,20 @@ class _PlanDetailsModalState extends State<PlanDetailsModal> {
     final hasDescription =
         descriptionPlain != null && descriptionPlain.trim().isNotEmpty;
 
-    return Container(
-      padding: EdgeInsets.all(24),
-      decoration: BoxDecoration(
-        color: isDark ? AppColors.surfaceDark : Colors.white,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
-      ),
-      child: SingleChildScrollView(
+    return SafeArea(
+      top: false,
+      child: Container(
+        padding: EdgeInsets.fromLTRB(
+          AppSpacing.lg,
+          AppSpacing.lg,
+          AppSpacing.lg,
+          AppSpacing.bottomActionPadding,
+        ),
+        decoration: BoxDecoration(
+          color: isDark ? AppColors.surfaceDark : Colors.white,
+          borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+        ),
+        child: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -283,9 +290,9 @@ class _PlanDetailsModalState extends State<PlanDetailsModal> {
               buttonColor: isDark ? AppColors.primary : AppColors.primaryBrown,
               expanded: true,
             ),
-            const SizedBox(height: 16),
           ],
         ),
+      ),
       ),
     );
   }

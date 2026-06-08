@@ -248,7 +248,10 @@ class _SignUpBranchViewState extends State<SignUpBranchView> {
                                     state.selectedSignUpBranchId,
                                     fe,
                                   ),
-                                SizedBox(height: AppSpacing.xxxl * 2),
+                                SizedBox(
+                                  height:
+                                      AppSpacing.stickyBottomActionScrollInset,
+                                ),
                               ],
                             ),
                           ),
@@ -259,7 +262,7 @@ class _SignUpBranchViewState extends State<SignUpBranchView> {
                         left: 0,
                         right: 0,
                         child: Container(
-                          height: AppSpacing.md + 52,
+                          height: AppSpacing.stickyBottomActionHeight,
                           decoration: BoxDecoration(
                             gradient: LinearGradient(
                               begin:
@@ -281,7 +284,7 @@ class _SignUpBranchViewState extends State<SignUpBranchView> {
                       Positioned(
                         left: 0,
                         right: 0,
-                        bottom: AppSpacing.md,
+                        bottom: AppSpacing.bottomActionPadding,
                         child: Column(
                           children: [
                             if (_branchPickErrorMessage != null)

@@ -64,32 +64,38 @@ class PauseSubscriptionView extends StatelessWidget {
           ),
         ),
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.symmetric(
-            vertical: AppSpacing.md,
-            horizontal: AppSpacing.lg,
-          ),
-          child: BlocProvider(
-            create: (context) => PauseSubscriptionCubit(
-              subscriptionId: subscriptionId,
-              repository: context.read<SubscriptionsRepository>(),
-              planStartDateLocal: _dateOnly(planStartsAt),
-              planExpiresAtLocal: planExpiresAt != null
-                  ? _dateOnly(planExpiresAt!)
-                  : null,
-              maxFreezeDays: effectiveMaxFreezeDays,
-            ),
-            child: BlocBuilder<PauseSubscriptionCubit, PauseSubscriptionState>(
-              builder: (context, state) {
-                final cubit = context.read<PauseSubscriptionCubit>();
-                final days = PauseSubscriptionCubit.inclusivePauseDays(
-                  state.startDate,
-                  state.endDate,
-                );
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
+      body: BlocProvider(
+        create: (context) => PauseSubscriptionCubit(
+          subscriptionId: subscriptionId,
+          repository: context.read<SubscriptionsRepository>(),
+          planStartDateLocal: _dateOnly(planStartsAt),
+          planExpiresAtLocal: planExpiresAt != null
+              ? _dateOnly(planExpiresAt!)
+              : null,
+          maxFreezeDays: effectiveMaxFreezeDays,
+        ),
+        child: BlocBuilder<PauseSubscriptionCubit, PauseSubscriptionState>(
+          builder: (context, state) {
+            final cubit = context.read<PauseSubscriptionCubit>();
+            final days = PauseSubscriptionCubit.inclusivePauseDays(
+              state.startDate,
+              state.endDate,
+            );
+            final stickyFooterHeight =
+                AppSpacing.md + AppSpacing.buttonHeight;
+
+            return Stack(
+              fit: StackFit.expand,
+              children: [
+                SingleChildScrollView(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(
+                      vertical: AppSpacing.md,
+                      horizontal: AppSpacing.lg,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
                     AppText(
                       context.l10n.pauseDescription,
                       style: (context) => AppTextStyles.bodyText(
@@ -388,8 +394,41 @@ class PauseSubscriptionView extends StatelessWidget {
                       ),
                       SizedBox(height: AppSpacing.md),
                     ],
-                    SizedBox(height: AppSpacing.lg),
-                    AppButton(
+                    SizedBox(height: stickyFooterHeight + AppSpacing.lg),
+                      ],
+                    ),
+                  ),
+                ),
+                Positioned(
+                  bottom: 0,
+                  left: 0,
+                  right: 0,
+                  child: Container(
+                    height: stickyFooterHeight,
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.bottomCenter,
+                        end: Alignment.topCenter,
+                        colors: isDark
+                            ? [
+                                AppColors.darkShadow,
+                                AppColors.darkShadow.withValues(alpha: 0),
+                              ]
+                            : [
+                                Colors.white,
+                                Colors.white.withValues(alpha: 0),
+                              ],
+                      ),
+                    ),
+                  ),
+                ),
+                Positioned(
+                  left: 0,
+                  right: 0,
+                  bottom: AppSpacing.md,
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+                    child: AppButton(
                       label: context.l10n.confirmPause,
                       isLoading: state.isSubmitting,
                       onPressed: () async {
@@ -401,12 +440,11 @@ class PauseSubscriptionView extends StatelessWidget {
                       },
                       variant: AppButtonVariant.primary,
                     ),
-                    SizedBox(height: AppSpacing.xl),
-                  ],
-                );
-              },
-            ),
-          ),
+                  ),
+                ),
+              ],
+            );
+          },
         ),
       ),
     );

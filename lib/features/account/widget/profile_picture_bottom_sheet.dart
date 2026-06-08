@@ -94,7 +94,7 @@ class ProfilePictureBottomSheet extends StatelessWidget {
                       ],
                     ),
                   ),
-                  SizedBox(height: AppSpacing.md),
+                  SizedBox(height: AppSpacing.bottomActionPadding),
                 ],
               ),
             ),

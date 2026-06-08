@@ -143,7 +143,7 @@ class _LanguageBottomSheetState extends State<LanguageBottomSheet> {
                     AppSpacing.lg,
                     0,
                     AppSpacing.lg,
-                    AppSpacing.md + 2,
+                    AppSpacing.bottomActionPadding,
                   ),
                   child: AppButton(
                     label: context.l10n.confirm,

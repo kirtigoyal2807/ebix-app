@@ -25,56 +25,63 @@ class ConfirmationSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    // final theme = Theme.of(context);
-    return Container(
-      padding: EdgeInsets.fromLTRB(24, 24, 24, 24),
-      decoration: BoxDecoration(
-        color: isDark ? AppColors.homeBackground : Colors.white,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          AppText(
-            confirmationText,
-            textAlign: TextAlign.center,
-            style: (context) => AppTextStyles.bottomSheetTitle(context),
-          ),
-          SizedBox(height: AppSpacing.xl),
+    return SafeArea(
+      top: false,
+      child: Container(
+        padding: EdgeInsets.fromLTRB(
+          AppSpacing.lg,
+          AppSpacing.lg,
+          AppSpacing.lg,
+          AppSpacing.bottomActionPadding,
+        ),
+        decoration: BoxDecoration(
+          color: isDark ? AppColors.homeBackground : Colors.white,
+          borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            AppText(
+              confirmationText,
+              textAlign: TextAlign.center,
+              style: (context) => AppTextStyles.bottomSheetTitle(context),
+            ),
+            SizedBox(height: AppSpacing.xl),
 
-          AppButton(
-            label: context.l10n.keepIt,
-            onPressed: () => Navigator.pop(context),
-            variant: AppButtonVariant.primary,
-          ),
+            AppButton(
+              label: context.l10n.keepIt,
+              onPressed: () => Navigator.pop(context),
+              variant: AppButtonVariant.primary,
+            ),
 
-          SizedBox(height: AppSpacing.sm),
+            SizedBox(height: AppSpacing.sm),
 
-          // Cancel
-          Center(
-            child: GestureDetector(
-              onTap: () async {
-                Navigator.pop(context);
-                final run = onDestructive;
-                if (run != null) await run();
-              },
+            // Cancel
+            Center(
+              child: GestureDetector(
+                onTap: () async {
+                  Navigator.pop(context);
+                  final run = onDestructive;
+                  if (run != null) await run();
+                },
 
-              child: Padding(
-                padding: EdgeInsets.symmetric(
-                  vertical: (AppSpacing.buttonHeight - 30) / 2,
-                ),
-                child: AppText(
-                  buttonText,
-                  style: (context) => AppTextStyles.button(
-                    context,
-                  ).copyWith(color: AppColors.lightGrey),
+                child: Padding(
+                  padding: EdgeInsets.symmetric(
+                    vertical: (AppSpacing.buttonHeight - 30) / 2,
+                  ),
+                  child: AppText(
+                    buttonText,
+                    style: (context) => AppTextStyles.button(
+                      context,
+                    ).copyWith(color: AppColors.lightGrey),
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

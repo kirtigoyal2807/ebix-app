@@ -102,15 +102,24 @@ class CurrentPlanView extends StatelessWidget {
           );
         }
 
+        final stickyFooterHeight =
+            AppSpacing.md +
+            AppSpacing.buttonHeight +
+            AppSpacing.sm +
+            AppSpacing.buttonHeight;
+
         return RefreshIndicator(
           onRefresh: () => context.read<SubscriptionsCubit>().load(),
-          child: SingleChildScrollView(
-            physics: const AlwaysScrollableScrollPhysics(),
-            child: Padding(
-              padding: EdgeInsets.all(AppSpacing.lg),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
+          child: Stack(
+            fit: StackFit.expand,
+            children: [
+              SingleChildScrollView(
+                physics: const AlwaysScrollableScrollPhysics(),
+                child: Padding(
+                  padding: EdgeInsets.all(AppSpacing.lg),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
                   Container(
                     padding: EdgeInsets.symmetric(
                       vertical: AppSpacing.lmd,
@@ -373,60 +382,107 @@ class CurrentPlanView extends StatelessWidget {
                         ),
                       ),
                     ),
-                  SizedBox(height: AppSpacing.lg),
-                  AppButton(
-                    label: context.l10n.changePlan,
-                    onPressed: () {
-                      Navigator.of(context).push<void>(
-                        MaterialPageRoute<void>(
-                          builder: (context) => const SubscriptionView(),
-                        ),
-                      );
-                    },
-                    variant: AppButtonVariant.primary,
+                  SizedBox(height: stickyFooterHeight + AppSpacing.lg),
+                    ],
                   ),
-                  SizedBox(height: AppSpacing.sm),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: isDark ? AppColors.homeBackground : Colors.white,
-                      borderRadius: BorderRadius.circular(AppRadius.xl),
-                      boxShadow: [
-                        BoxShadow(
-                          color: AppColors.shadowColor.withValues(alpha: 0.06),
-                          offset: const Offset(0, 1),
-                          blurRadius: 2,
-                          spreadRadius: 0,
-                        ),
-                      ],
-                    ),
-                    child: AppButton(
-                      label: context.l10n.pauseSubscription,
-                      onPressed: () {
-                        Navigator.push<bool>(
-                          context,
-                          MaterialPageRoute<bool>(
-                            builder: (context) => PauseSubscriptionView(
-                              subscriptionId: primary.id,
-                              planStartsAt: primary.startsAt ?? DateTime.now(),
-                              planExpiresAt: primary.expiresAt,
-                              maxFreezeDays:
-                                  primary.maxFreezeDays ??
-                                  primary.product?.maxFreezeDays ??
-                                  30,
-                            ),
-                          ),
-                        ).then((refreshed) {
-                          if (refreshed != true || !context.mounted) return;
-                          context.read<SubscriptionsCubit>().load();
-                        });
-                      },
-                      variant: AppButtonVariant.secondary,
-                    ),
-                  ),
-                  SizedBox(height: AppSpacing.sm),
-                ],
+                ),
               ),
-            ),
+              Positioned(
+                bottom: 0,
+                left: 0,
+                right: 0,
+                child: Container(
+                  height: stickyFooterHeight,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.bottomCenter,
+                      end: Alignment.topCenter,
+                      colors: isDark
+                          ? [
+                              AppColors.darkShadow,
+                              AppColors.darkShadow.withValues(alpha: 0),
+                            ]
+                          : [
+                              Colors.white,
+                              Colors.white.withValues(alpha: 0),
+                            ],
+                    ),
+                  ),
+                ),
+              ),
+              Positioned(
+                left: 0,
+                right: 0,
+                bottom: AppSpacing.md,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+                      child: AppButton(
+                        label: context.l10n.changePlan,
+                        onPressed: () {
+                          Navigator.of(context).push<void>(
+                            MaterialPageRoute<void>(
+                              builder: (context) => const SubscriptionView(),
+                            ),
+                          );
+                        },
+                        variant: AppButtonVariant.primary,
+                      ),
+                    ),
+                    SizedBox(height: AppSpacing.sm),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: isDark
+                              ? AppColors.homeBackground
+                              : Colors.white,
+                          borderRadius: BorderRadius.circular(AppRadius.xl),
+                          boxShadow: [
+                            BoxShadow(
+                              color: AppColors.shadowColor.withValues(
+                                alpha: 0.06,
+                              ),
+                              offset: const Offset(0, 1),
+                              blurRadius: 2,
+                              spreadRadius: 0,
+                            ),
+                          ],
+                        ),
+                        child: AppButton(
+                          label: context.l10n.pauseSubscription,
+                          onPressed: () {
+                            Navigator.push<bool>(
+                              context,
+                              MaterialPageRoute<bool>(
+                                builder: (context) => PauseSubscriptionView(
+                                  subscriptionId: primary.id,
+                                  planStartsAt:
+                                      primary.startsAt ?? DateTime.now(),
+                                  planExpiresAt: primary.expiresAt,
+                                  maxFreezeDays:
+                                      primary.maxFreezeDays ??
+                                      primary.product?.maxFreezeDays ??
+                                      30,
+                                ),
+                              ),
+                            ).then((refreshed) {
+                              if (refreshed != true || !context.mounted) {
+                                return;
+                              }
+                              context.read<SubscriptionsCubit>().load();
+                            });
+                          },
+                          variant: AppButtonVariant.secondary,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
         );
       },
