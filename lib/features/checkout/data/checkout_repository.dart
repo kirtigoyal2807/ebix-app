@@ -14,7 +14,7 @@ import 'package:pilates_app/features/checkout/data/models/product_health_questio
 /// Checkout session APIs.
 ///
 /// **Suggested Hoppscotch order** (paths are relative to the API base URL, e.g.
-/// `https://dev.thepilates.sa/api/v1/`):
+/// `https://admin.thepilates.sa/api/v1/`):
 /// 1. `POST checkout/start` — body must include `"isGift": true` for gift flows;
 ///    otherwise `POST checkout/{id}/gift` returns **422** `"Not a gift"`.
 /// 2. Gift recipient step: `POST checkout/{id}/gift` ([submitGiftDetails]).

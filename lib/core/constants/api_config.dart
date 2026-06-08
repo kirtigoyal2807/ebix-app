@@ -1,4 +1,4 @@
-/// Dev API base (trailing slash). Hopscotch examples for checkout:
+/// Production API base (trailing slash). Hopscotch examples for checkout:
 /// - `POST {base}checkout/start`
 /// - `POST {base}checkout/<uuid>/gift` (when `isGift` is true)
 /// - `GET {base}branches` (studios list; optional `page`, `per_page`, geo query params)
@@ -12,7 +12,7 @@
 abstract final class ApiConfig {
   /// Must end with `/`. Request paths must be **relative** (no leading `/`),
   /// otherwise Dio resolves them from the domain root and **drops** `/api/v1/`.
-  static const String baseUrl = 'https://dev.thepilates.sa/api/v1/';
+  static const String baseUrl = 'https://admin.thepilates.sa/api/v1/';
 
   /// Sent as [headerBrand] (e.g. `pilates`).
   static const String brand = 'pilates';
