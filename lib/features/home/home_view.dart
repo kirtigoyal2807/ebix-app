@@ -59,6 +59,7 @@ class HomeView extends StatelessWidget {
         ),
         tokenStorage: context.read<AuthCubit>().tokenStorage,
         authRepository: context.read<AuthCubit>().authRepository,
+        authCubit: context.read<AuthCubit>(),
         initialState: HomeState.initial().copyWith(
           currentIndex: initialNavIndex,
           selectedBookingTab: initialBookingTab,
