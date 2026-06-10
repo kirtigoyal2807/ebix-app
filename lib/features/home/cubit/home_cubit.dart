@@ -1,6 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pilates_app/core/network/api_result.dart';
+import 'package:pilates_app/core/network/network_exception.dart';
 import 'package:pilates_app/core/storage/token_storage.dart';
+import 'package:pilates_app/features/auth/cubit/auth_cubit.dart';
 import 'package:pilates_app/features/auth/data/auth_repository.dart';
 import 'package:pilates_app/features/auth/data/models/auth_user.dart';
 import 'package:pilates_app/features/booking/cubit/booking_state.dart';
@@ -14,15 +16,18 @@ class HomeCubit extends Cubit<HomeState> {
     required HomeRepository homeRepository,
     required TokenStorage tokenStorage,
     required AuthRepository authRepository,
+    required AuthCubit authCubit,
     HomeState? initialState,
   }) : _homeRepository = homeRepository,
        _tokenStorage = tokenStorage,
        _authRepository = authRepository,
+       _authCubit = authCubit,
        super(initialState ?? HomeState.initial());
 
   final HomeRepository _homeRepository;
   final TokenStorage _tokenStorage;
   final AuthRepository _authRepository;
+  final AuthCubit _authCubit;
 
   void setTab(int index, {BookingTab? bookingTab, String? classCategory}) {
     emit(
@@ -71,6 +76,9 @@ class HomeCubit extends Cubit<HomeState> {
           ),
         );
       case ApiFailure<HomeResponse>(:final exception):
+        if (await _invalidateSessionIfUserNotFound(exception)) {
+          return;
+        }
         emit(
           state.copyWith(
             loadStatus: HomeLoadStatus.failure,
@@ -104,6 +112,9 @@ class HomeCubit extends Cubit<HomeState> {
           ),
         );
       case ApiFailure<HomeResponse>(:final exception):
+        if (await _invalidateSessionIfUserNotFound(exception)) {
+          return;
+        }
         emit(
           state.copyWith(
             loadStatus: HomeLoadStatus.failure,
@@ -132,6 +143,9 @@ class HomeCubit extends Cubit<HomeState> {
           ),
         );
       case ApiFailure<HomeResponse>(:final exception):
+        if (await _invalidateSessionIfUserNotFound(exception)) {
+          return;
+        }
         emit(
           state.copyWith(
             loadStatus: HomeLoadStatus.failure,
@@ -174,7 +188,10 @@ class HomeCubit extends Cubit<HomeState> {
             data: data,
           ),
         );
-      case ApiFailure<HomeResponse>():
+      case ApiFailure<HomeResponse>(:final exception):
+        if (await _invalidateSessionIfUserNotFound(exception)) {
+          return;
+        }
         // Silently fail - don't show error or loading state
         break;
     }
@@ -187,5 +204,15 @@ class HomeCubit extends Cubit<HomeState> {
         // Silently fail - keep existing user data
         break;
     }
+  }
+
+  Future<bool> _invalidateSessionIfUserNotFound(
+    NetworkException exception,
+  ) async {
+    if (!exception.isUserNotFound) {
+      return false;
+    }
+    await _authCubit.logoutLocally();
+    return true;
   }
 }

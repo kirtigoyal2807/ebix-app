@@ -494,16 +494,25 @@ class AuthCubit extends Cubit<AuthState> {
     } finally {
       _logoutInFlight = false;
     }
-    await _tokenStorage.clearToken();
-    await _tokenStorage.clearUser();
-    await _tokenStorage.clearHomeBranchId();
-    await _tokenStorage.clearMembershipPlanName();
+    await _clearLocalAuthStorageAndSignOut();
+  }
+
+  /// Clears local session when the server rejects the user (e.g. home `User not found`).
+  /// Skips `POST /auth/logout` because the account is already invalid server-side.
+  Future<void> logoutLocally() async {
+    if (state.flow != AuthFlow.authenticated) {
+      return;
+    }
+    await _clearLocalAuthStorageAndSignOut();
+  }
+
+  Future<void> cancelPostLoginSetup() async {
+    await _clearLocalAuthStorage();
     emit(
       state
           .copyWith(
             flow: AuthFlow.signIn,
             clearUser: true,
-            clearLastShownPendingGiftId: true,
             loginUiStatus: LoginUiStatus.idle,
             loginErrorMessage: '',
             loginFieldErrors: {},
@@ -516,36 +525,44 @@ class AuthCubit extends Cubit<AuthState> {
           .clearedPostLoginProfile()
           .clearedForgotPasswordFlow()
           .clearedSignInPhoneVerification()
-          .clearedSignUpBranchUi()
-          .clearedSignUpPhoneVerification()
           .clearedProfileEmailOtp(),
     );
   }
 
-  Future<void> cancelPostLoginSetup() async {
+  Future<void> _clearLocalAuthStorage() async {
     await _tokenStorage.clearToken();
     await _tokenStorage.clearUser();
     await _tokenStorage.clearHomeBranchId();
     await _tokenStorage.clearMembershipPlanName();
-    emit(
-      state
-          .copyWith(
-            flow: AuthFlow.signIn,
-            clearUser: true,
-            loginUiStatus: LoginUiStatus.idle,
-            loginErrorMessage: '',
-            loginFieldErrors: {},
-            showPhoneOtpSuccess: false,
-            registerUiStatus: RegisterUiStatus.idle,
-            registerErrorMessage: '',
-            registerFieldErrors: {},
-            showRegisterOtpSuccess: false,
-          )
-          .clearedPostLoginProfile()
-          .clearedForgotPasswordFlow()
-          .clearedSignInPhoneVerification()
-          .clearedProfileEmailOtp(),
-    );
+  }
+
+  Future<void> _clearLocalAuthStorageAndSignOut() async {
+    await _clearLocalAuthStorage();
+    if (isClosed) return;
+    emit(_authenticatedSignedOutState());
+  }
+
+  AuthState _authenticatedSignedOutState() {
+    return state
+        .copyWith(
+          flow: AuthFlow.signIn,
+          clearUser: true,
+          clearLastShownPendingGiftId: true,
+          loginUiStatus: LoginUiStatus.idle,
+          loginErrorMessage: '',
+          loginFieldErrors: {},
+          showPhoneOtpSuccess: false,
+          registerUiStatus: RegisterUiStatus.idle,
+          registerErrorMessage: '',
+          registerFieldErrors: {},
+          showRegisterOtpSuccess: false,
+        )
+        .clearedPostLoginProfile()
+        .clearedForgotPasswordFlow()
+        .clearedSignInPhoneVerification()
+        .clearedSignUpBranchUi()
+        .clearedSignUpPhoneVerification()
+        .clearedProfileEmailOtp();
   }
 
   Future<void> submitPostLoginGoal({

@@ -233,6 +233,11 @@ class NetworkException implements Exception {
     );
   }
 
+  /// Home / profile APIs may return envelope `success: false` with this message
+  /// when the JWT customer no longer exists — app should clear local session.
+  bool get isUserNotFound =>
+      (message ?? '').trim().toLowerCase() == 'user not found';
+
   @override
   String toString() =>
       'NetworkException($type, status: $statusCode, message: $message)';
