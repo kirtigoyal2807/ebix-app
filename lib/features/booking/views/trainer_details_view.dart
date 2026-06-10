@@ -232,6 +232,9 @@ class _TrainerDetailsApiRouteState extends State<_TrainerDetailsApiRoute> {
         final embedded = effective.recentReviews;
         final useEmbeddedReviews = embedded != null && embedded.isNotEmpty;
 
+        final trainerDetailLoaded =
+            data != null && data.isSuccess && data.dataOrNull != null;
+
         final isDark = Theme.of(context).brightness == Brightness.dark;
 
         return Scaffold(
@@ -326,10 +329,12 @@ class _TrainerDetailsApiRouteState extends State<_TrainerDetailsApiRoute> {
                             ),
                           ),
                         ],
-                        SizedBox(height: AppSpacing.lg),
-                        _ApiCertificationsCard(
-                          certifications: effective.certifications,
-                        ),
+                        if (trainerDetailLoaded) ...[
+                          SizedBox(height: AppSpacing.lg),
+                          _ApiCertificationsCard(
+                            certifications: effective.certifications,
+                          ),
+                        ],
                         if (effective.teachingStyles.isNotEmpty)
                           _TrainerTeachingStylesSection(
                             trainer: effective,
