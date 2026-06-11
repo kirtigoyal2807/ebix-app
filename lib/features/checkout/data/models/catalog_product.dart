@@ -54,6 +54,13 @@ class CatalogProduct {
   /// shown in [toPlanMap] instead of derived [_featureLines].
   final List<String>? apiFeatureLines;
 
+  /// Amount shown in plan cards — prefers [salePrice], then [basePrice].
+  num get displayPrice {
+    if (salePrice > 0) return salePrice;
+    if (basePrice > 0) return basePrice;
+    return salePrice;
+  }
+
   factory CatalogProduct.fromJson(Map<String, dynamic> json) {
     int asInt(dynamic v) {
       if (v is int) return v;
@@ -67,6 +74,24 @@ class CatalogProduct {
       return num.tryParse(v.toString().replaceAll(',', '')) ?? 0;
     }
 
+    num? readMajor(Map<String, dynamic> m, List<String> keys) {
+      for (final key in keys) {
+        if (!m.containsKey(key) || m[key] == null) continue;
+        return asMajor(m[key]);
+      }
+      return null;
+    }
+
+    String? readString(Map<String, dynamic> m, List<String> keys) {
+      for (final key in keys) {
+        final raw = m[key];
+        if (raw == null) continue;
+        final s = raw.toString().trim();
+        if (s.isNotEmpty) return s;
+      }
+      return null;
+    }
+
     int? asIntNullable(dynamic v) {
       if (v == null) return null;
       return asInt(v);
@@ -75,6 +100,14 @@ class CatalogProduct {
     bool asBool(dynamic v) {
       if (v is bool) return v;
       if (v == 1 || v == '1' || v == 'true') return true;
+      return false;
+    }
+
+    bool readBool(Map<String, dynamic> m, List<String> keys) {
+      for (final key in keys) {
+        if (!m.containsKey(key)) continue;
+        return asBool(m[key]);
+      }
       return false;
     }
 
@@ -106,28 +139,77 @@ class CatalogProduct {
       return null;
     }
 
+    final basePrice =
+        readMajor(json, const ['basePrice', 'base_price']) ?? 0;
+    var salePrice = readMajor(json, const [
+          'salePrice',
+          'sale_price',
+          'price',
+          'amount',
+        ]) ??
+        0;
+    if (salePrice <= 0 && basePrice <= 0) {
+      final pricing = json['pricing'];
+      if (pricing is Map) {
+        final pm = Map<String, dynamic>.from(pricing);
+        salePrice = readMajor(pm, const [
+              'salePrice',
+              'sale_price',
+              'price',
+              'amount',
+              'total',
+              'totalAmount',
+              'total_amount',
+            ]) ??
+            readMajor(pm, const ['basePrice', 'base_price']) ??
+            0;
+      }
+    }
+
     return CatalogProduct(
       id: asInt(json['id']),
-      sku: json['sku']?.toString() ?? '',
-      type: json['type']?.toString() ?? '',
-      entitlementType: json['entitlementType']?.toString() ?? '',
-      name: json['name']?.toString() ?? '',
-      description: json['description']?.toString() ?? '',
-      basePrice: asMajor(json['basePrice']),
-      salePrice: asMajor(json['salePrice']),
-      currency: json['currency']?.toString() ?? 'SAR',
-      isActive: asBool(json['isActive']),
-      isRecommended: asBool(json['isRecommended']),
-      requiresHealthIntake: asBool(json['requiresHealthIntake']),
-      isGlobal: asBool(json['isGlobal']),
-      isTransferable: asBool(json['isTransferable']),
-      gender: json['gender']?.toString(),
-      validityDays: asInt(json['validityDays']),
-      bonusDays: asInt(json['bonusDays']),
-      maxFreezingAttempts: asInt(json['maxFreezingAttempts']),
-      maxFreezingDays: asInt(json['maxFreezingDays']),
-      sessionCount: asIntNullable(json['sessionCount']),
-      createdAt: json['createdAt']?.toString(),
+      sku: readString(json, const ['sku']) ?? '',
+      type: readString(json, const ['type']) ?? '',
+      entitlementType:
+          readString(json, const ['entitlementType', 'entitlement_type']) ??
+          '',
+      name: readString(json, const ['name', 'title']) ?? '',
+      description: readString(json, const ['description']) ?? '',
+      basePrice: basePrice,
+      salePrice: salePrice,
+      currency:
+          readString(json, const ['currency', 'currency_code']) ?? 'SAR',
+      isActive: json.containsKey('isActive') || json.containsKey('is_active')
+          ? readBool(json, const ['isActive', 'is_active'])
+          : asBool(json['isActive']),
+      isRecommended: readBool(json, const [
+        'isRecommended',
+        'is_recommended',
+      ]),
+      requiresHealthIntake: readBool(json, const [
+        'requiresHealthIntake',
+        'requires_health_intake',
+      ]),
+      isGlobal: readBool(json, const ['isGlobal', 'is_global']),
+      isTransferable: readBool(json, const [
+        'isTransferable',
+        'is_transferable',
+      ]),
+      gender: readString(json, const ['gender']),
+      validityDays: asInt(
+        json['validityDays'] ?? json['validity_days'],
+      ),
+      bonusDays: asInt(json['bonusDays'] ?? json['bonus_days']),
+      maxFreezingAttempts: asInt(
+        json['maxFreezingAttempts'] ?? json['max_freezing_attempts'],
+      ),
+      maxFreezingDays: asInt(
+        json['maxFreezingDays'] ?? json['max_freezing_days'],
+      ),
+      sessionCount: asIntNullable(
+        json['sessionCount'] ?? json['session_count'],
+      ),
+      createdAt: readString(json, const ['createdAt', 'created_at']),
       apiFeatureLines: featureBulletsFromApi(json),
     );
   }
@@ -177,7 +259,8 @@ class CatalogProduct {
     return <String, dynamic>{
       'id': id.toString(),
       'title': name,
-      'price': formatPrice(salePrice),
+      'price': formatPrice(displayPrice),
+      'priceAmount': displayPrice,
       'currency': currency,
       'badge': isRecommended ? l10n.mostPopular : null,
       'isPopular': isRecommended,

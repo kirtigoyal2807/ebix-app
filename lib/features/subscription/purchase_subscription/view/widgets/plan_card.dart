@@ -12,6 +12,8 @@ class PlanCard extends StatelessWidget {
   final String id;
   final String title;
   final String price;
+  /// When set (from catalog [CatalogProduct.displayPrice]), used instead of parsing [price].
+  final num? priceAmount;
   final String currencyCode;
   final bool isSelected;
   final bool isPopular;
@@ -25,6 +27,7 @@ class PlanCard extends StatelessWidget {
     required this.id,
     required this.title,
     required this.price,
+    this.priceAmount,
     this.currencyCode = 'SAR',
     required this.isSelected,
     this.badgeText,
@@ -36,7 +39,7 @@ class PlanCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final parsedPrice = tryParseCurrencyAmount(price);
+    final parsedPrice = priceAmount ?? tryParseCurrencyAmount(price);
 
     return LayoutBuilder(
       // To ensure container doesn't overflow or break
@@ -77,18 +80,23 @@ class PlanCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    AppText(
-                      title,
-                      style: (context) => AppTextStyles.body(context).copyWith(
-                        fontSize: 16,
-                        color: isDark
-                            ? AppColors.lightText
-                            : AppColors.darkText,
+                    Expanded(
+                      child: AppText(
+                        title,
+                        textAlign: TextAlign.start,
+                        style: (context) =>
+                            AppTextStyles.body(context).copyWith(
+                              fontSize: 16,
+                              color: isDark
+                                  ? AppColors.lightText
+                                  : AppColors.darkText,
+                            ),
                       ),
                     ),
-                    if (badgeText != null)
+                    if (badgeText != null) ...[
+                      const SizedBox(width: 8),
                       Container(
                         padding: const EdgeInsets.symmetric(
                           horizontal: 8,
@@ -116,22 +124,25 @@ class PlanCard extends StatelessWidget {
                               ),
                         ),
                       ),
+                    ],
                   ],
                 ),
                 const SizedBox(height: 12),
 
-                Row(
-                  children: [
-                    Expanded(
-                      child: CurrencyAmountText(
-                        amount: parsedPrice,
-                        currencyCode: currencyCode,
-                        priceSuffix: priceSuffix,
-                        style: (context) =>
-                            AppTextStyles.body(context).copyWith(fontSize: 18),
-                      ),
+                Align(
+                  alignment: AlignmentDirectional.centerStart,
+                  child: CurrencyAmountText(
+                    amount: parsedPrice,
+                    currencyCode: currencyCode,
+                    priceSuffix: priceSuffix,
+                    textAlign: TextAlign.start,
+                    style: (context) => AppTextStyles.body(context).copyWith(
+                      fontSize: 18,
+                      color: isDark
+                          ? AppColors.lightText
+                          : AppColors.darkText,
                     ),
-                  ],
+                  ),
                 ),
               ],
             ),

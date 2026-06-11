@@ -263,6 +263,7 @@ class _PlanSelectionStepState extends State<_PlanSelectionStep> {
     setState(() {
       _productsLoading = true;
       _productsLoadFailed = false;
+      _catalogProducts = const [];
     });
     final checkout = context.read<CheckoutRepository>();
     final productResult = await checkout.listProducts(branchId: branchId);
@@ -466,7 +467,12 @@ class _PlanSelectionStepState extends State<_PlanSelectionStep> {
         _catalogProducts,
       ).map((p) => p.toPlanMap(l10n)).toList();
     }
-    return _staticPlans(l10n);
+    // Keep offline fallback when the catalog API fails — not when a branch
+    // legitimately returns an empty product list.
+    if (_productsLoadFailed) {
+      return _staticPlans(l10n);
+    }
+    return const [];
   }
 
   void _syncSelectedPlan(List<Map<String, dynamic>> plans) {
@@ -626,6 +632,18 @@ class _PlanSelectionStepState extends State<_PlanSelectionStep> {
                     ),
                   ),
 
+                if (!_productsLoading &&
+                    !_productsLoadFailed &&
+                    _catalogProducts.isEmpty)
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+                    child: AppText(
+                      l10n.noClassesFound,
+                      style: (context) =>
+                          AppTextStyles.captionText(context),
+                    ),
+                  ),
+
                 // Plans List (`GET /products` when available, else static fallback)
                 if (showPlansLoading)
                   Padding(
@@ -659,6 +677,7 @@ class _PlanSelectionStepState extends State<_PlanSelectionStep> {
                                 id: plan['id'] as String,
                                 title: plan['title'] as String,
                                 price: plan['price'] as String,
+                                priceAmount: plan['priceAmount'] as num?,
                                 currencyCode:
                                     (plan['currency'] as String?)
                                             ?.trim()

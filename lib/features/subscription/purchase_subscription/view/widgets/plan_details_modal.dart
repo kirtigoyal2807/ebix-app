@@ -107,7 +107,10 @@ class _PlanDetailsModalState extends State<PlanDetailsModal> {
         (_displayPlan['currency'] as String?)?.trim().isNotEmpty == true
         ? (_displayPlan['currency'] as String).trim()
         : 'SAR';
-    final parsedPrice = tryParseCurrencyAmount(_displayPlan['price']);
+    final rawAmount = _displayPlan['priceAmount'];
+    final parsedPrice = rawAmount is num
+        ? rawAmount
+        : tryParseCurrencyAmount(_displayPlan['price']);
     final descriptionPlain = _displayPlan['descriptionPlain'] as String?;
     final hasDescription =
         descriptionPlain != null && descriptionPlain.trim().isNotEmpty;
@@ -246,8 +249,7 @@ class _PlanDetailsModalState extends State<PlanDetailsModal> {
                   borderRadius: BorderRadius.circular(16),
                 ),
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: (_displayPlan['features'] as List<String>).map((
                     feature,
                   ) {
@@ -267,6 +269,7 @@ class _PlanDetailsModalState extends State<PlanDetailsModal> {
                           Expanded(
                             child: AppText(
                               feature,
+                              textAlign: TextAlign.start,
                               style: (style) =>
                                   AppTextStyles.bodyTextSmall(context).copyWith(
                                     color: isDark
