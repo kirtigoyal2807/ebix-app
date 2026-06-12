@@ -1681,6 +1681,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get planReviewPendingPayment => 'في انتظار الدفع';
 
   @override
+  String get paymentSuccessful => 'تم الدفع بنجاح';
+
+  @override
   String get cartDateLabel => 'تاريخ السلة';
 
   @override

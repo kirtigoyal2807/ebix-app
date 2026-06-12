@@ -681,6 +681,7 @@
   "apply": "تطبيق",
   "voucherAppliedSuccess": "تم تطبيق القسيمة بنجاح.",
   "planReviewPendingPayment": "في انتظار الدفع",
+  "paymentSuccessful": "تم الدفع بنجاح",
   "cartDateLabel": "تاريخ السلة",
   "checkoutSubtotal": "المجموع الفرعي",
   "checkoutVoucherDiscount": "خصم القسيمة",
