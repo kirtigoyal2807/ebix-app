@@ -27,10 +27,14 @@ class GiftRedeemHealthIntakeView extends StatelessWidget {
     super.key,
     required this.pendingGift,
     required this.onComplete,
+    this.redeemedProductId,
   });
 
   final PendingGift pendingGift;
   final VoidCallback onComplete;
+
+  /// Product id from `POST /gifts/redeem` when [pendingGift.plan] is missing.
+  final int? redeemedProductId;
 
   static List<Widget> _wizardSteps(Key wizardKey) => [
         HealthInformationView(key: wizardKey),
@@ -49,16 +53,23 @@ class GiftRedeemHealthIntakeView extends StatelessWidget {
       create: (_) => SubscriptionCubit(),
       child: GiftRedeemIntakeScope(
         onComplete: onComplete,
-        child: _GiftRedeemHealthIntakeBody(pendingGift: pendingGift),
+        child: _GiftRedeemHealthIntakeBody(
+          pendingGift: pendingGift,
+          redeemedProductId: redeemedProductId,
+        ),
       ),
     );
   }
 }
 
 class _GiftRedeemHealthIntakeBody extends StatefulWidget {
-  const _GiftRedeemHealthIntakeBody({required this.pendingGift});
+  const _GiftRedeemHealthIntakeBody({
+    required this.pendingGift,
+    this.redeemedProductId,
+  });
 
   final PendingGift pendingGift;
+  final int? redeemedProductId;
 
   @override
   State<_GiftRedeemHealthIntakeBody> createState() =>
@@ -84,6 +95,7 @@ class _GiftRedeemHealthIntakeBodyState extends State<_GiftRedeemHealthIntakeBody
       checkoutRepository: repo,
       pendingGift: widget.pendingGift,
       branchId: branchId,
+      redeemedProductId: widget.redeemedProductId,
     );
 
     if (!mounted) return;

@@ -113,7 +113,8 @@ class _PregnancyViewState extends State<PregnancyView> {
                         !_questionnaireLoading &&
                         !_questionnaireLoadFailed &&
                         apiPregnancyQs.isNotEmpty;
-                    final showStaticLegacy = !intake;
+                    final showStaticLegacy =
+                        !intake && !state.isGiftRedeemIntakeFlow;
 
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,

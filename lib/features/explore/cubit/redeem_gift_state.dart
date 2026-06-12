@@ -8,6 +8,7 @@ class RedeemGiftState extends Equatable {
     this.validation = RedeemCodeValidation.none,
     this.serverError,
     this.successPending = false,
+    this.redeemedProductId,
   });
 
   final bool isSubmitting;
@@ -15,18 +16,26 @@ class RedeemGiftState extends Equatable {
   final String? serverError;
   final bool successPending;
 
+  /// From `POST /gifts/redeem` → `subscription.product.id` when present.
+  final int? redeemedProductId;
+
   RedeemGiftState copyWith({
     bool? isSubmitting,
     RedeemCodeValidation? validation,
     String? serverError,
     bool clearServerError = false,
     bool? successPending,
+    int? redeemedProductId,
+    bool clearRedeemedProductId = false,
   }) {
     return RedeemGiftState(
       isSubmitting: isSubmitting ?? this.isSubmitting,
       validation: validation ?? this.validation,
       serverError: clearServerError ? null : (serverError ?? this.serverError),
       successPending: successPending ?? this.successPending,
+      redeemedProductId: clearRedeemedProductId
+          ? null
+          : (redeemedProductId ?? this.redeemedProductId),
     );
   }
 
@@ -36,5 +45,6 @@ class RedeemGiftState extends Equatable {
     validation,
     serverError,
     successPending,
+    redeemedProductId,
   ];
 }

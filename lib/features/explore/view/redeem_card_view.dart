@@ -518,10 +518,13 @@ class _RedeemButton extends StatelessWidget {
           onRedeemSuccess?.call();
           final gift = pendingGift;
           if (openHealthIntakeAfterRedeemSuccess && gift != null) {
+            final redeemedProductId =
+                context.read<RedeemGiftCubit>().state.redeemedProductId;
             unawaited(
               openGiftRedeemHealthIntake(
                 context: context,
                 pendingGift: gift,
+                redeemedProductId: redeemedProductId,
                 popsBeforeOpen: routePopsAfterSuccessModal,
                 onIntakeComplete: onHealthIntakeComplete ?? () {},
               ),

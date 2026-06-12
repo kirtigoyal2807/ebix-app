@@ -106,7 +106,8 @@ class _PhysicalActivityViewState extends State<PhysicalActivityView> {
                     state.healthQuestionnaireQuestions,
                     const [HealthQuestionnaireIds.activityPilates],
                   );
-                  final showStaticLegacy = !intake;
+                  final showStaticLegacy =
+                      !intake && !state.isGiftRedeemIntakeFlow;
                   final useApiActivity =
                       intake &&
                       !_questionnaireLoading &&

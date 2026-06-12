@@ -119,7 +119,8 @@ class _GoalsViewState extends State<GoalsView> {
                           !_questionnaireLoading &&
                           !_questionnaireLoadFailed &&
                           apiGoalsQs.isNotEmpty;
-                      final showStaticLegacy = !intake;
+                      final showStaticLegacy =
+                          !intake && !state.isGiftRedeemIntakeFlow;
 
                       return Column(
                         crossAxisAlignment: CrossAxisAlignment.start,

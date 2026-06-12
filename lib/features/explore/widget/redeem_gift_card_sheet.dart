@@ -68,10 +68,13 @@ class _RedeemGiftSheetListener extends StatelessWidget {
         if (openHealthIntakeAfterSuccess) {
           final pendingGift =
               parentContext.read<AuthCubit>().state.user?.pendingGift;
+          final redeemedProductId =
+              context.read<RedeemGiftCubit>().state.redeemedProductId;
           unawaited(
             openGiftRedeemHealthIntake(
               context: parentContext,
               pendingGift: pendingGift,
+              redeemedProductId: redeemedProductId,
               onIntakeComplete: () {},
             ),
           );

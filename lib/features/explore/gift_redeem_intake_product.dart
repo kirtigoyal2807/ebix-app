@@ -19,15 +19,23 @@ class GiftRedeemIntakeProductContext {
 
 /// Resolves the gifted plan for `GET …/questionnaires/product/{id}`.
 ///
-/// Uses [PendingGift.plan] id only — never substitutes catalog defaults or
-/// product `1`, so questionnaire vs non-questionnaire gifts stay distinct.
+/// Uses [PendingGift.plan] id, or [redeemedProductId] from `POST /gifts/redeem`
+/// when the profile gift payload omits plan id. Never substitutes catalog
+/// defaults or product `1`, so questionnaire vs non-questionnaire gifts stay
+/// distinct.
 Future<GiftRedeemIntakeProductContext> resolveGiftRedeemIntakeProduct({
   required CheckoutRepository checkoutRepository,
   required PendingGift pendingGift,
   int? branchId,
+  int? redeemedProductId,
 }) async {
   final giftPlanId = pendingGift.plan?.id?.trim() ?? '';
-  final productId = subscriptionProductApiId(giftPlanId);
+  var productId = subscriptionProductApiId(giftPlanId);
+  if (productId <= 0 &&
+      redeemedProductId != null &&
+      redeemedProductId > 0) {
+    productId = redeemedProductId;
+  }
 
   if (productId <= 0) {
     return const GiftRedeemIntakeProductContext(
@@ -51,7 +59,7 @@ Future<GiftRedeemIntakeProductContext> resolveGiftRedeemIntakeProduct({
       );
     case ApiFailure():
       return GiftRedeemIntakeProductContext(
-        planId: giftPlanId,
+        planId: giftPlanId.isNotEmpty ? giftPlanId : productId.toString(),
         productId: productId,
         requiresHealthIntake: false,
       );

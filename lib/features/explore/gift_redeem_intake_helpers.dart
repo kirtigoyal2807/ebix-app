@@ -12,6 +12,7 @@ Future<void> openGiftRedeemHealthIntake({
   PendingGift? pendingGift,
   required VoidCallback onIntakeComplete,
   int popsBeforeOpen = 0,
+  int? redeemedProductId,
 }) {
   final navigator = Navigator.of(context);
   for (var i = 0; i < popsBeforeOpen; i++) {
@@ -23,6 +24,7 @@ Future<void> openGiftRedeemHealthIntake({
       builder: (_) => GiftRedeemHealthIntakeView(
         pendingGift: pendingGift ?? const PendingGift(),
         onComplete: onIntakeComplete,
+        redeemedProductId: redeemedProductId,
       ),
     ),
   );

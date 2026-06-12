@@ -52,8 +52,16 @@ class RedeemGiftCubit extends Cubit<RedeemGiftState> {
     final result = await _repository.redeemGift(redemptionCode: code);
 
     switch (result) {
-      case ApiSuccess():
-        emit(state.copyWith(isSubmitting: false, successPending: true));
+      case ApiSuccess(:final data):
+        final productId = data.subscription?.product?.id;
+        emit(
+          state.copyWith(
+            isSubmitting: false,
+            successPending: true,
+            redeemedProductId:
+                (productId != null && productId > 0) ? productId : null,
+          ),
+        );
       case ApiFailure(:final exception):
         final fields = _mapFieldErrors(exception);
         final fieldMsg = fields['redemptioncode'] ?? fields['redemption_code'];

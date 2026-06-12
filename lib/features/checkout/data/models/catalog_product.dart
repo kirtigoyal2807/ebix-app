@@ -54,11 +54,11 @@ class CatalogProduct {
   /// shown in [toPlanMap] instead of derived [_featureLines].
   final List<String>? apiFeatureLines;
 
-  /// Amount shown in plan cards — prefers [salePrice], then [basePrice].
+  /// Amount shown in plan cards — [salePrice] when set, else [basePrice], else `0`.
   num get displayPrice {
     if (salePrice > 0) return salePrice;
     if (basePrice > 0) return basePrice;
-    return salePrice;
+    return 0;
   }
 
   factory CatalogProduct.fromJson(Map<String, dynamic> json) {
@@ -139,19 +139,22 @@ class CatalogProduct {
       return null;
     }
 
-    final basePrice =
-        readMajor(json, const ['basePrice', 'base_price']) ?? 0;
-    var salePrice = readMajor(json, const [
-          'salePrice',
-          'sale_price',
-          'price',
-          'amount',
-        ]) ??
-        0;
-    if (salePrice <= 0 && basePrice <= 0) {
-      final pricing = json['pricing'];
-      if (pricing is Map) {
-        final pm = Map<String, dynamic>.from(pricing);
+    var basePrice = readMajor(json, const ['basePrice', 'base_price']) ?? 0;
+    var salePrice =
+        readMajor(json, const ['salePrice', 'sale_price']) ?? 0;
+    if (salePrice <= 0) {
+      salePrice =
+          readMajor(json, const ['price', 'amount']) ?? salePrice;
+    }
+
+    final pricing = json['pricing'];
+    if (pricing is Map) {
+      final pm = Map<String, dynamic>.from(pricing);
+      if (basePrice <= 0) {
+        basePrice =
+            readMajor(pm, const ['basePrice', 'base_price']) ?? basePrice;
+      }
+      if (salePrice <= 0) {
         salePrice = readMajor(pm, const [
               'salePrice',
               'sale_price',
@@ -161,8 +164,7 @@ class CatalogProduct {
               'totalAmount',
               'total_amount',
             ]) ??
-            readMajor(pm, const ['basePrice', 'base_price']) ??
-            0;
+            salePrice;
       }
     }
 
