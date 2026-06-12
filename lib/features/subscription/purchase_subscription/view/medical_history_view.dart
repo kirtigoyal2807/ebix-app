@@ -126,8 +126,11 @@ class _MedicalHistoryViewState extends State<MedicalHistoryView> {
                   final hasApiMedical = medicalQs.isNotEmpty;
                   final intake = state.selectedProductRequiresHealthIntake;
 
-                  /// Legacy checkboxes only when this product does not use API health intake.
-                  final showStaticLegacy = !intake && !_questionnaireLoading;
+                  /// Legacy checkboxes only for legacy buy flow without API intake —
+                  /// never during gift redeem (use API questionnaire or skip the step).
+                  final showStaticLegacy = !intake &&
+                      !_questionnaireLoading &&
+                      !state.isGiftRedeemIntakeFlow;
 
                   return SingleChildScrollView(
                     child: Column(

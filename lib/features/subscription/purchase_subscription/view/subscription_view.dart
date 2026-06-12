@@ -7,6 +7,7 @@ import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/core/localization/arb/app_localizations.dart';
 import 'package:pilates_app/features/auth/cubit/auth_cubit.dart';
+import 'package:pilates_app/features/auth/cubit/auth_state.dart';
 import 'package:pilates_app/features/auth/data/models/branch.dart';
 import 'package:pilates_app/features/checkout/data/checkout_repository.dart';
 import 'package:pilates_app/features/checkout/data/models/catalog_product.dart';
@@ -179,6 +180,54 @@ class _PlanSelectionStepState extends State<_PlanSelectionStep> {
   String? _branchValidationMessage;
   String? _checkoutMessage;
 
+  /// Last authenticated user id used for catalog load — when it changes, re-default branch.
+  Object? _catalogUserKey;
+
+  /// `true` after the user taps a branch chip (do not override with home branch).
+  bool _userPickedBranch = false;
+
+  int? _preferredBranchId(List<Branch> branches) {
+    if (branches.isEmpty) return null;
+
+    final auth = context.read<AuthCubit>();
+    for (final id in [
+      auth.state.user?.homeBranch?.id,
+      auth.storedHomeBranchId,
+    ]) {
+      if (id != null && id > 0 && branches.any((b) => b.id == id)) {
+        return id;
+      }
+    }
+    return branches.first.id;
+  }
+
+  void _applyDefaultBranchSelection({
+    required SubscriptionCubit cubit,
+    required bool accountChanged,
+    bool homeBranchUpdated = false,
+  }) {
+    if (_branchesLoadFailed || _branches.isEmpty) return;
+
+    final preferred = _preferredBranchId(_branches);
+    if (preferred == null || preferred <= 0) return;
+
+    if (accountChanged) {
+      _userPickedBranch = false;
+    }
+
+    final current = cubit.state.selectedBranchId;
+    final currentValid =
+        current != null && current > 0 && _branches.any((b) => b.id == current);
+
+    if (_userPickedBranch && currentValid) {
+      return;
+    }
+
+    if (accountChanged || homeBranchUpdated || !currentValid) {
+      cubit.selectBranch(preferred);
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -187,7 +236,7 @@ class _PlanSelectionStepState extends State<_PlanSelectionStep> {
     );
   }
 
-  Future<void> _loadBranchesAndProducts() async {
+  Future<void> _loadBranchesAndProducts({bool homeBranchUpdated = false}) async {
     if (!mounted) return;
     setState(() {
       _branchesLoading = true;
@@ -196,10 +245,16 @@ class _PlanSelectionStepState extends State<_PlanSelectionStep> {
       _productsLoadFailed = false;
     });
 
-    final auth = context.read<AuthCubit>().authRepository;
+    final authCubit = context.read<AuthCubit>();
+    final auth = authCubit.authRepository;
     final checkout = context.read<CheckoutRepository>();
 
     final cubit = context.read<SubscriptionCubit>();
+    final userKey = authCubit.state.user?.id ?? authCubit.storedHomeBranchId;
+    final accountChanged =
+        _catalogUserKey != null && userKey != _catalogUserKey;
+    _catalogUserKey = userKey;
+
     final branchResult = await auth.listBranches();
 
     if (!mounted) return;
@@ -221,18 +276,24 @@ class _PlanSelectionStepState extends State<_PlanSelectionStep> {
 
     if (!mounted) return;
 
-    if (!_branchesLoadFailed && _branches.isNotEmpty) {
-      final bid = cubit.state.selectedBranchId;
-      if (bid == null || bid <= 0) {
-        cubit.selectBranch(_branches.first.id);
-      }
-    }
+    _applyDefaultBranchSelection(
+      cubit: cubit,
+      accountChanged: accountChanged,
+      homeBranchUpdated: homeBranchUpdated,
+    );
 
     final branchIdForProducts = cubit.state.selectedBranchId;
+    if (branchIdForProducts == null || branchIdForProducts <= 0) {
+      setState(() {
+        _catalogProducts = const [];
+        _productsLoadFailed = false;
+        _productsLoading = false;
+      });
+      return;
+    }
+
     final productResult = await checkout.listProducts(
-      branchId: (branchIdForProducts != null && branchIdForProducts > 0)
-          ? branchIdForProducts
-          : null,
+      branchId: branchIdForProducts,
     );
 
     if (!mounted) return;
@@ -407,72 +468,11 @@ class _PlanSelectionStepState extends State<_PlanSelectionStep> {
     return out;
   }
 
-  /// Fallback when `GET /products` is unavailable. Use numeric `id` strings so
-  /// `GET …/questionnaires/product/{id}` matches real product ids in your API.
-  List<Map<String, dynamic>> _staticPlans(AppLocalizations l10n) {
-    return [
-      {
-        'id': '1',
-        'title': l10n.premiumPlanTitle,
-        'price': '89',
-        'currency': 'SAR',
-        'badge': l10n.mostPopular,
-        'isPopular': true,
-        'requiresHealthIntake': true,
-        'priceSubtitle': ' / Month',
-        'features': [
-          l10n.feature12Classes,
-          l10n.featureDowntownUptown,
-          l10n.featureFreeMatEquipment,
-          l10n.featurePriorityBooking,
-        ],
-      },
-      {
-        'id': '2',
-        'title': l10n.basicPlanTitle,
-        'price': '49',
-        'currency': 'SAR',
-        'badge': null,
-        'isPopular': false,
-        'requiresHealthIntake': true,
-        'priceSubtitle': ' / Month',
-        'features': [
-          l10n.feature8Classes,
-          l10n.featureDowntownOnly,
-          l10n.featureFreeMat,
-        ],
-      },
-      {
-        'id': '3',
-        'title': l10n.unlimitedPlanTitle,
-        'price': '149',
-        'currency': 'SAR',
-        'badge': null,
-        'isPopular': false,
-        'requiresHealthIntake': true,
-        'priceSubtitle': ' / Month',
-        'features': [
-          l10n.featureUnlimitedClasses,
-          l10n.featureAllStudios,
-          l10n.featureFreeMatEquipment,
-          l10n.featurePriorityGuest,
-        ],
-      },
-    ];
-  }
-
   List<Map<String, dynamic>> _resolvedPlans(AppLocalizations l10n) {
-    if (_catalogProducts.isNotEmpty) {
-      return _orderedCatalogForDisplay(
-        _catalogProducts,
-      ).map((p) => p.toPlanMap(l10n)).toList();
-    }
-    // Keep offline fallback when the catalog API fails — not when a branch
-    // legitimately returns an empty product list.
-    if (_productsLoadFailed) {
-      return _staticPlans(l10n);
-    }
-    return const [];
+    if (_catalogProducts.isEmpty) return const [];
+    return _orderedCatalogForDisplay(
+      _catalogProducts,
+    ).map((p) => p.toPlanMap(l10n)).toList();
   }
 
   void _syncSelectedPlan(List<Map<String, dynamic>> plans) {
@@ -500,7 +500,22 @@ class _PlanSelectionStepState extends State<_PlanSelectionStep> {
     // `GET /products` — not only when catalog is empty (old products would hide it).
     final showPlansLoading = _productsLoading;
 
-    return Stack(
+    return BlocListener<AuthCubit, AuthState>(
+      listenWhen: (previous, current) {
+        if (previous.user?.id != current.user?.id) return true;
+        final prevHome = previous.user?.homeBranch?.id;
+        final currHome = current.user?.homeBranch?.id;
+        return prevHome != currHome && currHome != null && currHome > 0;
+      },
+      listener: (context, state) {
+        final homeBranchUpdated = state.user?.homeBranch?.id != null;
+        unawaited(
+          _loadBranchesAndProducts(
+            homeBranchUpdated: homeBranchUpdated,
+          ),
+        );
+      },
+      child: Stack(
       fit: StackFit.expand,
       children: [
         SingleChildScrollView(
@@ -595,6 +610,7 @@ class _PlanSelectionStepState extends State<_PlanSelectionStep> {
                               branches: _branches,
                               selectedBranchId: state.selectedBranchId,
                               onSelect: (branchId) {
+                                _userPickedBranch = true;
                                 cubit.selectBranch(branchId);
                                 setState(() => _branchValidationMessage = null);
                                 _reloadCatalogForBranch(branchId);
@@ -644,7 +660,7 @@ class _PlanSelectionStepState extends State<_PlanSelectionStep> {
                     ),
                   ),
 
-                // Plans List (`GET /products` when available, else static fallback)
+                // Plans List (`GET /products?branchId=` — branch-scoped catalog)
                 if (showPlansLoading)
                   Padding(
                     padding: EdgeInsets.symmetric(
@@ -786,6 +802,7 @@ class _PlanSelectionStepState extends State<_PlanSelectionStep> {
           ),
         ),
       ],
+    ),
     );
   }
 }

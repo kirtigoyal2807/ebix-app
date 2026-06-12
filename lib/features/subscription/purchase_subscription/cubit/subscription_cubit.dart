@@ -117,7 +117,16 @@ class SubscriptionCubit extends Cubit<SubscriptionState> {
   }
 
   void selectBranch(int branchId) {
-    emit(state.copyWith(selectedBranchId: branchId));
+    if (branchId <= 0 || branchId == state.selectedBranchId) {
+      return;
+    }
+    emit(
+      state.copyWith(
+        selectedBranchId: branchId,
+        selectedPlanId: '',
+        selectedProductRequiresHealthIntake: false,
+      ),
+    );
   }
 
   void toggleGift(bool isGift) {
@@ -559,9 +568,6 @@ class SubscriptionCubit extends Cubit<SubscriptionState> {
   /// When intake is true and the product questionnaire has loaded, steps 2–5 are skipped if
   /// that slice has no questions (matches per-screen API blocks).
   bool _subscriptionWizardStepSkipped(SubscriptionState st, int step) {
-    if (st.isGiftRedeemIntakeFlow && step >= 1 && step <= 6) {
-      return false;
-    }
     return isSubscriptionHealthWizardShellStepSkipped(
       selectedProductRequiresHealthIntake:
           st.selectedProductRequiresHealthIntake,
@@ -571,7 +577,6 @@ class SubscriptionCubit extends Cubit<SubscriptionState> {
   }
 
   SubscriptionState _clampOutOfBandHealthWizardIfNoIntake(SubscriptionState s) {
-    if (s.isGiftRedeemIntakeFlow) return s;
     if (s.selectedProductRequiresHealthIntake) return s;
     if (s.currentStep >= 1 && s.currentStep <= 6) {
       return s.copyWith(currentStep: _safetyConsentStepIndex);
@@ -581,7 +586,6 @@ class SubscriptionCubit extends Cubit<SubscriptionState> {
 
   /// After loading questionnaire data, advances past steps 2–5 that have no API questions.
   SubscriptionState _withWizardStepSkippingEmptySlices(SubscriptionState base) {
-    if (base.isGiftRedeemIntakeFlow) return base;
     var s = base;
     final qs = s.healthQuestionnaireQuestions;
     if (!s.selectedProductRequiresHealthIntake || qs.isEmpty) {

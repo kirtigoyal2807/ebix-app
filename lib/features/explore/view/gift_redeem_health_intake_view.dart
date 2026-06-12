@@ -67,6 +67,7 @@ class _GiftRedeemHealthIntakeBody extends StatefulWidget {
 
 class _GiftRedeemHealthIntakeBodyState extends State<_GiftRedeemHealthIntakeBody> {
   bool _initializing = true;
+  String? _initError;
 
   @override
   void initState() {
@@ -87,6 +88,14 @@ class _GiftRedeemHealthIntakeBodyState extends State<_GiftRedeemHealthIntakeBody
 
     if (!mounted) return;
 
+    if (resolved.productId <= 0) {
+      setState(() {
+        _initializing = false;
+        _initError = AppLocalizations.of(context).loginErrorGeneric;
+      });
+      return;
+    }
+
     final cubit = context.read<SubscriptionCubit>();
     cubit.beginGiftRedeemIntake(
       planId: resolved.planId,
@@ -95,14 +104,13 @@ class _GiftRedeemHealthIntakeBodyState extends State<_GiftRedeemHealthIntakeBody
     );
 
     final homeBranchId = branchId;
-    if (resolved.productId > 0 &&
-        homeBranchId != null &&
-        homeBranchId > 0) {
+    if (homeBranchId != null && homeBranchId > 0) {
       final startResult = await repo.startCheckout(
         productId: resolved.productId,
         branchId: homeBranchId,
         isGift: false,
       );
+      if (!mounted) return;
       if (startResult case ApiSuccess(:final data)) {
         final sessionProductId = data.resolvedProductId ?? resolved.productId;
         cubit.bindCheckoutSession(
@@ -111,6 +119,12 @@ class _GiftRedeemHealthIntakeBodyState extends State<_GiftRedeemHealthIntakeBody
           requiresHealthIntake: data.resolvedRequiresHealthIntake,
         );
         cubit.selectBranch(homeBranchId);
+      } else {
+        setState(() {
+          _initializing = false;
+          _initError = AppLocalizations.of(context).loginErrorGeneric;
+        });
+        return;
       }
     }
 
@@ -131,6 +145,25 @@ class _GiftRedeemHealthIntakeBodyState extends State<_GiftRedeemHealthIntakeBody
             ? AppColors.homeBackground
             : AppColors.whiteColor,
         body: const Center(child: AppLoadingIndicator()),
+      );
+    }
+
+    if (_initError != null) {
+      final l10n = AppLocalizations.of(context);
+      return Scaffold(
+        backgroundColor: Theme.of(context).brightness == Brightness.dark
+            ? AppColors.homeBackground
+            : AppColors.whiteColor,
+        appBar: AppAppBar(title: l10n.subscriptionTitle, isMoreMenu: false),
+        body: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(24),
+            child: Text(
+              _initError!,
+              textAlign: TextAlign.center,
+            ),
+          ),
+        ),
       );
     }
 
