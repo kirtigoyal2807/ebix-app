@@ -3236,6 +3236,12 @@ abstract class AppLocalizations {
   /// **'Pending payment'**
   String get planReviewPendingPayment;
 
+  /// No description provided for @paymentSuccessful.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment successful'**
+  String get paymentSuccessful;
+
   /// No description provided for @cartDateLabel.
   ///
   /// In en, this message translates to:

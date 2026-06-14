@@ -1696,6 +1696,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get planReviewPendingPayment => 'Pending payment';
 
   @override
+  String get paymentSuccessful => 'Payment successful';
+
+  @override
   String get cartDateLabel => 'Cart date';
 
   @override

@@ -386,7 +386,7 @@ class _RequiredInformationViewState extends State<RequiredInformationView> {
                                       SizedBox(width: AppSpacing.sm),
                                       Expanded(
                                         child: AppText(
-                                          'Payment successful',
+                                          l10n.paymentSuccessful,
                                           style: (c) =>
                                               AppTextStyles.bodyText(c)
                                                   .copyWith(

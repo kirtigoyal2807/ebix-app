@@ -700,6 +700,7 @@
   "apply": "Apply",
   "voucherAppliedSuccess": "Voucher applied successfully.",
   "planReviewPendingPayment": "Pending payment",
+  "paymentSuccessful": "Payment successful",
   "cartDateLabel": "Cart date",
   "checkoutSubtotal": "Subtotal",
   "checkoutVoucherDiscount": "Voucher discount",
