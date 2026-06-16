@@ -5,6 +5,9 @@ import 'package:pilates_app/config/theme/app_colors.dart';
 import 'package:pilates_app/config/theme/app_radius.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
+import 'package:pilates_app/core/network/api_result.dart';
+import 'package:pilates_app/core/localization/arb/app_localizations.dart';
+import 'package:pilates_app/features/checkout/data/checkout_repository.dart';
 import 'package:pilates_app/features/invoice_history/data/models/customer_subscription_resource.dart';
 import 'package:pilates_app/features/subscription/purchase_subscription/view/subscription_view.dart';
 import 'package:pilates_app/features/view_subscription/cubit/subscriptions_cubit.dart';
@@ -20,8 +23,16 @@ import '../../../widgets/app_shadow.dart';
 import '../../../widgets/dotted_underline.dart';
 
 /// Current plan tab — primary subscription from §9.3 list.
-class CurrentPlanView extends StatelessWidget {
+class CurrentPlanView extends StatefulWidget {
   const CurrentPlanView({super.key});
+
+  @override
+  State<CurrentPlanView> createState() => _CurrentPlanViewState();
+}
+
+class _CurrentPlanViewState extends State<CurrentPlanView> {
+  final Map<int, List<String>> _productFeatureCache = <int, List<String>>{};
+  final Set<int> _loadingProductIds = <int>{};
 
   String _planTitle(CustomerSubscriptionResource p, BuildContext context) {
     final n = p.product?.name?.trim();
@@ -47,6 +58,60 @@ class CurrentPlanView extends StatelessWidget {
     if (end == null) return '—';
     final locale = Localizations.localeOf(context).toLanguageTag();
     return DateFormat.yMMMd(locale).format(end.toLocal());
+  }
+
+  Future<void> _ensurePlanFeaturesLoaded(CustomerSubscriptionResource p) async {
+    final productId = p.product?.id;
+    if (productId == null || productId <= 0) return;
+    if (_productFeatureCache.containsKey(productId)) return;
+    if (_loadingProductIds.contains(productId)) return;
+
+    _loadingProductIds.add(productId);
+    final repo = context.read<CheckoutRepository>();
+    final l10n = AppLocalizations.of(context);
+    final result = await repo.getProduct(productId);
+    if (!mounted) return;
+
+    final features = switch (result) {
+      ApiSuccess(:final data) => List<String>.from(
+        (data.toPlanMap(l10n)['features'] as List?) ?? const <String>[],
+      ),
+      ApiFailure() => <String>[],
+    };
+
+    setState(() {
+      _loadingProductIds.remove(productId);
+      _productFeatureCache[productId] = features;
+    });
+  }
+
+  List<String> _fallbackPlanDetails(CustomerSubscriptionResource p) {
+    final out = <String>[];
+    final totalSessions = p.sessions?.total;
+    if (totalSessions != null && totalSessions > 0) {
+      out.add(totalSessions == 1 ? '1 session' : '$totalSessions sessions');
+    }
+
+    final starts = p.startsAt;
+    final expires = p.expiresAt;
+    if (starts != null && expires != null) {
+      final days = expires.difference(starts).inDays;
+      if (days > 0) {
+        out.add('Valid $days days');
+      }
+    }
+    return out;
+  }
+
+  List<String> _resolvedPlanDetails(CustomerSubscriptionResource p) {
+    final productId = p.product?.id;
+    if (productId != null && productId > 0) {
+      final cached = _productFeatureCache[productId];
+      if (cached != null && cached.isNotEmpty) {
+        return cached;
+      }
+    }
+    return _fallbackPlanDetails(p);
   }
 
   @override
@@ -100,6 +165,13 @@ class CurrentPlanView extends StatelessWidget {
               ),
             ),
           );
+        }
+
+        if (primary.product?.id != null) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (!mounted) return;
+            _ensurePlanFeaturesLoaded(primary);
+          });
         }
 
         final stickyFooterHeight =
@@ -265,25 +337,9 @@ class CurrentPlanView extends StatelessWidget {
                               AppTextStyles.gelasioRegular(context),
                         ),
                         children: [
-                          _buildCheckRow(
-                            label: context.l10n.featureClasses,
-                            isDark: isDark,
-                          ),
-                          _buildCheckRow(
-                            label: context.l10n.featureStudios,
-                            isDark: isDark,
-                          ),
-                          _buildCheckRow(
-                            label: context.l10n.featureEquipment,
-                            isDark: isDark,
-                          ),
-                          _buildCheckRow(
-                            label: context.l10n.featurePriority,
-                            isDark: isDark,
-                          ),
-                          _buildCheckRow(
-                            label: context.l10n.featurePause,
-                            isDark: isDark,
+                          ..._resolvedPlanDetails(primary).map(
+                            (line) =>
+                                _buildCheckRow(label: line, isDark: isDark),
                           ),
                         ],
                       ),

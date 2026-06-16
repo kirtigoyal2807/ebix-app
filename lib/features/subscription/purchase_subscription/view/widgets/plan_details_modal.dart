@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:html/parser.dart' as html_parser;
 import 'package:pilates_app/config/theme/app_colors.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
@@ -16,8 +15,7 @@ import 'package:pilates_app/widgets/currency_amount_text.dart';
 import 'package:pilates_app/widgets/app_loading_indicator.dart';
 
 /// Bottom sheet for plan summary. When [plan] `id` parses to a positive int,
-/// loads `GET /products/{id}` and merges price, features, [requiresHealthIntake],
-/// and a plain-text excerpt from HTML [description].
+/// loads `GET /products/{id}` and merges price, features, and [requiresHealthIntake].
 class PlanDetailsModal extends StatefulWidget {
   const PlanDetailsModal({
     super.key,
@@ -77,10 +75,6 @@ class _PlanDetailsModalState extends State<PlanDetailsModal> {
         final merged = Map<String, dynamic>.from(widget.plan);
         merged.addAll(product.toPlanMap(l10n));
         merged['id'] = widget.plan['id'];
-        final plain = _htmlToSingleLinePlainText(product.description);
-        if (plain.isNotEmpty) {
-          merged['descriptionPlain'] = plain;
-        }
         setState(() => _displayPlan = merged);
         try {
           final cubit = context.read<SubscriptionCubit>();
@@ -111,9 +105,6 @@ class _PlanDetailsModalState extends State<PlanDetailsModal> {
     final parsedPrice = rawAmount is num
         ? rawAmount
         : tryParseCurrencyAmount(_displayPlan['price']);
-    final descriptionPlain = _displayPlan['descriptionPlain'] as String?;
-    final hasDescription =
-        descriptionPlain != null && descriptionPlain.trim().isNotEmpty;
 
     return SafeArea(
       top: false,
@@ -224,17 +215,6 @@ class _PlanDetailsModalState extends State<PlanDetailsModal> {
                 ),
               ],
             ),
-            if (hasDescription) ...[
-              SizedBox(height: AppSpacing.md),
-              AppText(
-                descriptionPlain.trim(),
-                style: (context) =>
-                    AppTextStyles.bodyTextSmall(context).copyWith(
-                      color: isDark ? AppColors.lightText : AppColors.greyText,
-                      height: 1.35,
-                    ),
-              ),
-            ],
             SizedBox(height: AppSpacing.lg),
             if (_displayPlan['features'] != null)
               Container(
@@ -317,14 +297,6 @@ class _PlanDetailsModalState extends State<PlanDetailsModal> {
       onPressed: () => Navigator.pop(context),
     );
   }
-}
-
-String _htmlToSingleLinePlainText(String? raw) {
-  if (raw == null || raw.trim().isEmpty) {
-    return '';
-  }
-  final text = html_parser.parseFragment(raw).text ?? '';
-  return text.replaceAll(RegExp(r'\s+'), ' ').trim();
 }
 
 /// Text after the formatted price in the plan sheet (e.g. ` / Month`).
