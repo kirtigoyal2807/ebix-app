@@ -413,7 +413,7 @@ abstract class AppLocalizations {
   /// No description provided for @phoneSupportDesc.
   ///
   /// In en, this message translates to:
-  /// **'+966 55 337 8395 • Mon-Sat 9 AM - 7 PM'**
+  /// **'+966 92 001 2483 • Mon-Sat 9 AM - 7 PM'**
   String get phoneSupportDesc;
 
   /// No description provided for @splashAppName.

@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pilates_app/config/theme/app_spacing.dart';
 import 'package:pilates_app/config/theme/app_text_styles.dart';
 import 'package:pilates_app/core/localization/localization_extension.dart';
+import 'package:pilates_app/core/utils/support_launcher.dart';
 import 'package:pilates_app/widgets/app_text.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -31,18 +32,8 @@ class HelpSupportView extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _buildCard(
-              onTap: () async {
-                final Uri url = Uri.parse(
-                  "https://wa.me/${AppConstant.supportNumber.trim()}",
-                );
-
-                debugPrint("whatsapp url::$url");
-                if (await canLaunchUrl(url)) {
-                  await launchUrl(url, mode: LaunchMode.externalApplication);
-                } else {
-                  throw "WhatsApp not installed";
-                }
-              },
+              onTap: () =>
+                  _openSupport(context, () => SupportLauncher.openWhatsApp()),
               icon: isDark
                   ? 'assets/images/svg/explore/ic_dark_chat.svg'
                   : 'assets/images/svg/explore/ic_chat.svg',
@@ -124,4 +115,18 @@ class HelpSupportView extends StatelessWidget {
       ),
     );
   }
+}
+
+Future<void> _openSupport(
+  BuildContext context,
+  Future<bool> Function() launch,
+) async {
+  final messenger = ScaffoldMessenger.maybeOf(context);
+  final message = context.l10n.loginErrorGeneric;
+  Navigator.of(context).pop();
+  final ok = await launch();
+  if (ok) return;
+  messenger?.showSnackBar(
+    SnackBar(content: AppText(message, style: AppTextStyles.body)),
+  );
 }
