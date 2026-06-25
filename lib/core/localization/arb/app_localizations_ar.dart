@@ -169,7 +169,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get phoneSupportDesc =>
-      '+966 55 337 8395 • من الاثنين إلى السبت 9 صباحًا - 7 مساءً';
+      '+966 92 001 2483 • من الاثنين إلى السبت 9 صباحًا - 7 مساءً';
 
   @override
   String get splashAppName => 'ذا بيلاتس';
